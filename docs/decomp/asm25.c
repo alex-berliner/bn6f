@@ -264,7 +264,7 @@ void __noreturn sub_808FB18()
 
     ClearEventFlagFromImmediate(11, 228);
     v0 = ClearEventFlagFromImmediate(11, 229);
-    sub_808FBA0(v0);
+    ow_spawnObject1BAtPlayer(v0);
     sub_809E2FC();
     sub_808F990();
 }
@@ -314,7 +314,7 @@ signed int __fastcall sub_808FB68(int a1)
 
 
 // 0x808fba0
-int __fastcall sub_808FBA0(int a1)
+int __fastcall ow_spawnObject1BAtPlayer(int a1)
 {
     int v1; // r1
     int v2; // r2

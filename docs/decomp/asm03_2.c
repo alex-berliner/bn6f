@@ -2896,7 +2896,7 @@ LABEL_8:
     if ( !v1 )
     {
         sub_8132648();
-        sub_8148D24();
+        rfu_initWirelessSession();
         *(v0 + 1) = 68;
     }
 LABEL_11:
@@ -3410,7 +3410,7 @@ void __noreturn chatbox_inputHandler_8049888()
 
 
 // 0x80498aa
-void __noreturn sub_80498AA()
+void __noreturn battle_preInitSetupState()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -3465,7 +3465,7 @@ void __fastcall sub_80498F8(int a1, int a2, int a3)
 
 
 // 0x8049934
-void __noreturn sub_8049934()
+void __noreturn battle_setupStartTransition()
 {
     int v0; // r5
     char v1; // zf
@@ -3492,7 +3492,7 @@ void __noreturn sub_8049934()
 
 
 // 0x804996a
-void __noreturn sub_804996A()
+void __noreturn battle_beginSetup()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -3532,7 +3532,7 @@ void __noreturn chatbox_stepState_8049984()
 
 
 // 0x80499ae
-void __noreturn sub_80499AE()
+void __noreturn battle_setupBegin()
 {
     int v0; // r5
     char v1; // zf
@@ -3956,7 +3956,7 @@ void __fastcall sub_8049FA4(int a1, int a2, int a3)
 
 
 // 0x8049fe0
-void __noreturn sub_8049FE0()
+void __noreturn t3_waitChatboxThenFadeout()
 {
     int v0; // r5
     char v1; // zf
@@ -4019,7 +4019,7 @@ void __noreturn chatbox_stateStep_804A024()
 
 
 // 0x804a04e
-void __noreturn sub_804A04E()
+void __noreturn e_condInitSceneListSetup()
 {
     _BYTE *v0; // r5
     char v1; // zf

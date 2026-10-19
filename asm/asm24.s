@@ -566,7 +566,7 @@ cutscenescript_808C47B:
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_set_var byte1=0x08 byte2=0x01
 	cs_wait_var_equal byte1=0x08 byte2=0x02
-	cs_call_native_with_return_value ptr1=sub_808C6A4+1
+	cs_call_native_with_return_value ptr1=pet_awardOverflowHPStatOnce+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_run_text_script_not_from_mem byte2=0x03
 	cs_wait_chatbox byte1=0x80
@@ -654,7 +654,7 @@ byte_808C5D2:
 	cs_load_map_gfx_anims_bg_anim
 	cs_sound_cmd_803810e byte1=0x00 byte2=0x1F
 	cs_play_music hword1=0xFFFF
-	cs_call_native_with_return_value ptr1=sub_808C6A4+1
+	cs_call_native_with_return_value ptr1=pet_awardOverflowHPStatOnce+1
 	cs_jump destination1=cutscenescript_808C55F
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
@@ -719,9 +719,9 @@ byte_808C684:
 // symdb: One-shot routine that, the first time it runs, plays a jingle and grants the equipped PET navi stat 0x40 a value derived from its max HP (surplus over a threshold read from unk_2000B40+6), clamped to the stat's cap, then latches event flag 0x9D5 so it never runs again.
 // symdb: (r0 = unused/must be 0) -> r0 = 0; sets event flag EVENT_9D5 and PET navi stat 0x40 on first
 // symdb: call; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C6A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_awardOverflowHPStatOnce.yaml
 	thumb_local_start
-sub_808C6A4:
+pet_awardOverflowHPStatOnce:
 	push {r5, lr}
 	movflag EVENT_9D5
 	bl TestEventFlagFromImmediate
@@ -749,7 +749,7 @@ loc_808C6DC:
 	mov r0, #0
 	pop {r5, pc}
 	.pool
-	thumb_func_end sub_808C6A4
+	thumb_func_end pet_awardOverflowHPStatOnce
 
 
 ccs_808C6E4:

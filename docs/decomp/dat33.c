@@ -31,13 +31,13 @@ int sub_812C320()
     *(v0 + 16) = 12;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(v0 + 38) = 0;
             *(result + 8) = 0;
             *(result + 10) = -292;
@@ -106,14 +106,14 @@ int sub_812C3BC()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
     }
     else if ( v1 != 1 )
     {
         v2 = v1;
         if ( !(v1 & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v3 + 8) = *(v0 + 38);
             *(v3 + 10) = *(v0 + 42);
         }
@@ -177,7 +177,7 @@ LABEL_34:
                             {
                                 *(v0 + 2) = 8;
                                 *(v0 + 3) = 0;
-                                v14 = sub_81325CC();
+                                v14 = camera_copyLinkStateToEnd();
                                 *(v0 + 38) = 2;
                                 *(v14 + 8) = 2;
                                 engine_setScreeneffect(12, 16);
@@ -227,7 +227,7 @@ int sub_812C50C()
     result = sub_803EAE4();
     if ( result == 4 )
     {
-        v10 = sub_812D880();
+        v10 = t4_transitionToTextState1C();
         goto LABEL_22;
     }
     if ( result == 1 )
@@ -235,7 +235,7 @@ int sub_812C50C()
     v2 = result;
     if ( !(result & 0x10) )
     {
-        v3 = sub_81325CC();
+        v3 = camera_copyLinkStateToEnd();
         *(v3 + 8) = *(v0 + 38);
         *(v3 + 10) = *(v0 + 42);
     }
@@ -315,14 +315,14 @@ void sub_812C5D0()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
     }
     else if ( v1 != 1 )
     {
         v2 = v1;
         if ( !(v1 & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v3 + 8) = *(v0 + 38);
             *(v3 + 10) = *(v0 + 42) & 0x7FFF;
         }
@@ -401,7 +401,7 @@ void sub_812C5D0()
                 *(v0 + 20) = 0;
                 *(v0 + 42) = -292;
                 *(v0 + 38) = 0;
-                v17 = sub_81325CC();
+                v17 = camera_copyLinkStateToEnd();
                 *(v17 + 8) = *(v0 + 38);
                 *(v0 + 42) = -292;
                 *(v17 + 10) = -292;
@@ -427,13 +427,13 @@ int sub_812C708()
     *(v0 + 16) = 19;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v3 + 8) = *(v0 + 38);
             *(v3 + 10) = *(v0 + 42) & 0x7FFF;
         }
@@ -499,13 +499,13 @@ int sub_812C7B4()
         *(v0 + 20) = v3;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v5 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(result + 8) = *(v0 + 38);
             *(result + 10) = *(v0 + 42);
         }
@@ -634,14 +634,14 @@ LABEL_14:
     v13 = sub_803EAE4();
     if ( v13 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
     }
     else if ( v13 != 1 )
     {
         v14 = v13;
         if ( !(v13 & 0x10) )
         {
-            v15 = sub_81325CC();
+            v15 = camera_copyLinkStateToEnd();
             *(v15 + 8) = *(v0 + 38);
             *(v15 + 10) = -293;
         }
@@ -696,7 +696,7 @@ LABEL_38:
                     *(v0 + 2) = 20;
                     *(v0 + 3) = 0;
                     *(v0 + 20) = 0;
-                    v27 = sub_81325CC();
+                    v27 = camera_copyLinkStateToEnd();
                     *(v0 + 38) = 0;
                     *(v27 + 8) = 0;
                     *(v0 + 42) = -292;
@@ -709,7 +709,7 @@ LABEL_38:
                     {
                         *(v0 + 2) = 8;
                         *(v0 + 3) = 12;
-                        v25 = sub_81325CC();
+                        v25 = camera_copyLinkStateToEnd();
                         *(v25 + 8) = 4;
                         *(v0 + 38) = 4;
                         *(v25 + 10) = *(v0 + 42);
@@ -770,13 +770,13 @@ int sub_812CA84()
     *(v0 + 16) = 19;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(result + 8) = *(v0 + 38);
             *(result + 10) = *(v0 + 42);
         }
@@ -862,13 +862,13 @@ int sub_812CB74()
     *(v0 + 16) = 19;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(result + 8) = *(v0 + 38);
             *(result + 10) = *(v0 + 42);
         }
@@ -917,7 +917,7 @@ int sub_812CB74()
                                     {
                                         *(v0 + 2) = 4;
                                         *(v0 + 20) = 0;
-                                        result = sub_81325CC();
+                                        result = camera_copyLinkStateToEnd();
                                         *(v0 + 38) = 0;
                                         *(result + 8) = 0;
                                         *(v0 + 42) = -292;
@@ -961,13 +961,13 @@ int sub_812CC44()
     *(v0 + 16) = 25;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             if ( v2 & 8 )
             {
                 v3 = result;
@@ -1237,7 +1237,7 @@ int sub_812CEF0()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
 LABEL_22:
         sub_812D778();
         goto LABEL_24;
@@ -1247,7 +1247,7 @@ LABEL_22:
         v2 = v1;
         if ( !(v1 & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v3 + 8) = *(v0 + 38);
             *(v3 + 10) = *(v0 + 42);
         }
@@ -1341,14 +1341,14 @@ int sub_812CFD4()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
     }
     else if ( v1 != 1 )
     {
         v2 = v1;
         if ( !(v1 & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v0 + 10) = *(v0 + 42);
             *(v3 + 8) = *(v0 + 38);
         }
@@ -1440,13 +1440,13 @@ int sub_812D0C0()
     *(v0 + 16) = 19;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812D880();
+        return t4_transitionToTextState1C();
     if ( result != 1 )
     {
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(result + 8) = *(v0 + 38);
             *(result + 10) = 2048;
         }
@@ -1478,7 +1478,7 @@ int sub_812D0C0()
                                 *(v0 + 2) = 20;
                                 *(v0 + 3) = 0;
                                 *(v0 + 20) = 0;
-                                result = sub_81325CC();
+                                result = camera_copyLinkStateToEnd();
                                 *(v0 + 38) = 0;
                                 *(result + 8) = 0;
                                 *(v0 + 42) = -292;
@@ -1511,14 +1511,14 @@ int sub_812D164()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812D880();
+        t4_transitionToTextState1C();
     }
     else if ( v1 != 1 )
     {
         v5 = v1;
         if ( !(v1 & 0x10) )
         {
-            v6 = sub_81325CC();
+            v6 = camera_copyLinkStateToEnd();
             *(v6 + 8) = *(v0 + 38);
             *(v6 + 10) = *(v0 + 42);
         }
@@ -1581,7 +1581,7 @@ void __noreturn sub_812D204()
         *(v1 + 42) = v2;
         *(v1 + 44) = v3;
     }
-    v4 = sub_81325CC();
+    v4 = camera_copyLinkStateToEnd();
     *(v4 + 10) = -293;
     *(v1 + 38) = 0;
     *(v4 + 8) = 0;

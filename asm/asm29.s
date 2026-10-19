@@ -1855,7 +1855,7 @@ loc_80A5BB0:
 	beq loc_80A5BDA
 	cmp r0, #2
 	beq loc_80A5C62
-	bl sub_80A5CF0
+	bl sprite_syncAnimation
 	mov r0, #0
 	str r0, [r5,#0x24]
 	mov r7, #0
@@ -2020,9 +2020,9 @@ sprite_updateAnimFacingPlayer:
 
 // symdb: Applies an object's pending animation change: if the current animation index differs from the last applied one, sets it, reloads animation data, and drops the shadow.
 // symdb: (r5 = object pointer, no args) -> void; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5CF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_syncAnimation.yaml
 	thumb_local_start
-sub_80A5CF0:
+sprite_syncAnimation:
 	push {r4,lr}
 	ldrb r0, [r5,#5]
 	ldr r1, [r5,#0x34]
@@ -2035,7 +2035,7 @@ sub_80A5CF0:
 	str r4, [r5,#0x34]
 locret_80A5D0A:
 	pop {r4,pc}
-	thumb_func_end sub_80A5CF0
+	thumb_func_end sprite_syncAnimation
 
 // symdb: Picks a per-map 8-byte Beast Out data entry for the object in r5, using the current map (group 0x81 uses its map number, everything else table slot 3).
 // symdb: (implicit r5 = BattleObject/transform record, implicit r10 = toolkit) -> r0 = pointer to an
@@ -2980,7 +2980,7 @@ JumpTable_80A6ABC:
 	.word sub_80A6CFC+1
 	.word sub_80A6D38+1
 	.word sub_80A6D42+1
-	.word sub_80A6D5C+1
+	.word sprite_setupScalableObjectScale+1
 	.word sub_80A6D7A+1
 	.word sub_80A6D8A+1
 	.word sub_80A6DAC+1
@@ -3313,9 +3313,9 @@ sub_80A6D42:
 
 // symdb: Makes a battle object's sprite scalable, applies scale values taken from a battle-object list node, and sets a follow-up sprite state.
 // symdb: (r0 = battle object) -> r0 = 1 (success); flags destroyed by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6D5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setupScalableObjectScale.yaml
 	thumb_local_start
-sub_80A6D5C:
+sprite_setupScalableObjectScale:
 	push {lr}
 	bl sprite_makeScalable
 	bl battleObject_getFromListPair_80A6E78
@@ -3327,7 +3327,7 @@ sub_80A6D5C:
 	bl sub_80A6E70
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_80A6D5C
+	thumb_func_end sprite_setupScalableObjectScale
 
 	thumb_local_start
 sub_80A6D7A:
@@ -7432,7 +7432,7 @@ sub_80A8B4C:
 	lsl r0, r0, #0x10
 	add r0, r0, r2
 	str r0, [r5,#0x14]
-	bl sub_80A8C98
+	bl ow_refreshObjectSpritePriority
 	bl sub_80A8C7C
 	bl sub_80A8CB8
 	bl sub_80A8D7C
@@ -7471,7 +7471,7 @@ loc_80A8BD8:
 	ldrb r0, [r5,#4]
 	bl sub_8143220
 loc_80A8BEC:
-	bl sub_80A8C98
+	bl ow_refreshObjectSpritePriority
 	bl sub_80A8C7C
 	bl sub_80A8CB8
 	bl sub_80A8D7C
@@ -7529,7 +7529,7 @@ sub_80A8C08:
 	strb r0, [r7]
 	bl FreeOverworldMapObject
 loc_80A8C68:
-	bl sub_80A8C98
+	bl ow_refreshObjectSpritePriority
 loc_80A8C6C:
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -7561,9 +7561,9 @@ dword_80A8C94:
 // symdb: Recomputes an overworld object's sprite OAM priority from its z-coordinate modifiers and the current map's layer effect table.
 // symdb: (r5 = overworld object pointer, fields 0x0C z and 0x14 z-value used) -> r0 =
 // symdb: sprite_setPriority_8002E14 result; sets sprite priority bits 2-3 of sprite byte 0x15.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8C98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_refreshObjectSpritePriority.yaml
 	thumb_local_start
-sub_80A8C98:
+ow_refreshObjectSpritePriority:
 	push {r4-r7,lr}
 	ldr r4, [r5,#0x14]
 	mov r0, r5
@@ -7577,7 +7577,7 @@ sub_80A8C98:
 	str r4, [r5,#0x14]
 	bl sprite_setPriority_8002E14
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A8C98
+	thumb_func_end ow_refreshObjectSpritePriority
 
 	thumb_local_start
 sub_80A8CB8:
@@ -10371,7 +10371,7 @@ off_80AA150:
 off_80AA154:
 	.word sub_80AA160+1
 	.word sub_80AA194+1
-	.word sub_80AA1C8+1
+	.word object_updateFreeOnFrameFlag+1
 	thumb_func_end sub_80AA140
 
 	thumb_local_start
@@ -10423,9 +10423,9 @@ loc_80AA1C2:
 
 // symdb: Sprite-update routine for an overworld map object that frees the object when the current animation frame's attribute byte has bit 0x80 set, then updates the sprite.
 // symdb: (r0 = object pointer) -> void; flags set by tst/bit test only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA1C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateFreeOnFrameFlag.yaml
 	thumb_local_start
-sub_80AA1C8:
+object_updateFreeOnFrameFlag:
 	push {r4-r7,lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -10436,7 +10436,7 @@ loc_80AA1D8:
 	bl sprite_update
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80AA1C8
+	thumb_func_end object_updateFreeOnFrameFlag
 
 	thumb_func_start sub_80AA1E0
 sub_80AA1E0:
@@ -12067,7 +12067,7 @@ sub_80AAC8C:
 	ldr r0, dword_80AAD00 // =0xffff 
 	b loc_80AACF8
 loc_80AACAA:
-	bl sub_80AADA6
+	bl pack_sortAndReinitChipAuxData
 	add r0, sp, #4
 	bl sub_80AAD70
 	ldr r0, [sp]
@@ -12211,9 +12211,9 @@ loc_80AAD9A:
 
 // symdb: Sorts the chip pack by removing and re-adding all chips, then reinitializes the 320-entry per-chip auxiliary array from a template, zeroing excluded/special chips' entries.
 // symdb: (r10 = toolkit) -> r0 = none; destroys r4, r6, r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AADA6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pack_sortAndReinitChipAuxData.yaml
 	thumb_local_start
-sub_80AADA6:
+pack_sortAndReinitChipAuxData:
 	push {r4,r6,r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_S2001c04_Ptr]
@@ -12288,7 +12288,7 @@ loc_80AAE28:
 	cmp r4, r0
 	blt loc_80AADFC
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80AADA6
+	thumb_func_end pack_sortAndReinitChipAuxData
 
 	thumb_local_start
 sub_80AAE36:

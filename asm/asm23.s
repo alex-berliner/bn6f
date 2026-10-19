@@ -850,7 +850,7 @@ jt_80895C0:
 	.word sub_8089B7E+1
 	.word sub_8089B94+1
 	.word sub_8089BAA+1
-	.word sub_8089BC0+1
+	.word ai_event745OnceInit+1
 	.word sub_8089BE4+1
 	.word sub_8089BFA+1
 	thumb_func_end battleObject_runUpdateJumpTable_80895A8
@@ -1628,9 +1628,9 @@ loc_8089BBC:
 
 // symdb: One-time AI trigger: if chatbox flag bit 0x80 is clear, sets event 745 and resets the entity's AI state, then returns 1.
 // symdb: (r5 = AI/entity control struct) -> r0 = 1 always; sets EVENT_745 when flag bit 0x80 was clear
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_event745OnceInit.yaml
 	thumb_local_start
-sub_8089BC0:
+ai_event745OnceInit:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1646,7 +1646,7 @@ sub_8089BC0:
 loc_8089BE0:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089BC0
+	thumb_func_end ai_event745OnceInit
 
 	thumb_local_start
 sub_8089BE4:

@@ -4367,9 +4367,9 @@ sub_80282D2:
 // symdb: Queues the icon graphics (and code-related tile) for the battle chip stored in a chip-slot struct, given a destination/state pointer.
 // symdb: (r0 = unused/overwritten, r1 = gfx destination/state pointer, r4 = chip slot struct) -> r0 =
 // symdb: result of last queue call; r1 advanced past queued chunks
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80282E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueChipIconGfx.yaml
 	thumb_local_start
-sub_80282E8:
+battle_queueChipIconGfx:
 	push {lr}
 	ldrb r0, [r4,#7]
 	cmp r0, #2
@@ -4388,7 +4388,7 @@ loc_80282FC:
 	lsr r0, r0, #9
 	bl gfx_QueueNext64ByteChunk_8028204
 	pop {pc}
-	thumb_func_end sub_80282E8
+	thumb_func_end battle_queueChipIconGfx
 
 // symdb: Runs the standard end-of-battle-action bookkeeping, resetting a battle counter with 0x1FF and then firing scripted action 0x1D.
 // symdb: void battle_endActionSetup(void) // no meaningful inputs; returns to caller via lr (r0-r1
@@ -4460,8 +4460,8 @@ off_8028370:
 	.word sub_80282C2+1
 	.word sub_80282D2+1
 	.word nullsub_14+1
-	.word sub_80282E8+1
-	.word sub_80282E8+1
+	.word battle_queueChipIconGfx+1
+	.word battle_queueChipIconGfx+1
 	.word sub_8028340+1
 	.word nullsub_14+1
 	.word battle_endActionSetup_8028310+1
@@ -4626,7 +4626,7 @@ loc_80284BE:
 	bl beastout_loadSelectionScreenChipUseGfx
 	b locret_80284E0
 loc_80284C4:
-	bl sub_80287A4
+	bl beastout_loadSelectionScreenGfx
 	b locret_80284E0
 loc_80284CA:
 	ldr r0, [r0,#8]
@@ -4634,10 +4634,10 @@ loc_80284CA:
 	bl sub_80285FE
 	b locret_80284E0
 loc_80284D4:
-	bl sub_8028754
+	bl beastout_loadCustomScreenGfx
 	b locret_80284E0
 loc_80284DA:
-	bl sub_802877C
+	bl beastout_loadChipUseGfx
 	b locret_80284E0
 locret_80284E0:
 	pop {pc}
@@ -4982,9 +4982,9 @@ off_8028750:
 
 // symdb: Queues the Beast Out chip's graphics for the custom screen: a 0x540-byte tile block into VRAM, a 0x20-byte block into the IWRAM sprite buffer, then loads the Beast Out selection sprite sheets.
 // symdb: () -> r0 = undefined; queues two GFX transfers and calls the sheet loader
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028754.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastout_loadCustomScreenGfx.yaml
 	thumb_local_start
-sub_8028754:
+beastout_loadCustomScreenGfx:
 	push {lr}
 	bl loadOneSpriteTileRow_80287D2
 	ldr r0, off_8028774 // =dword_87225B4 
@@ -5002,14 +5002,14 @@ off_8028774:
 	.word dword_87225B4
 off_8028778:
 	.word dword_87257D4
-	thumb_func_end sub_8028754
+	thumb_func_end beastout_loadCustomScreenGfx
 
 // symdb: As part of the custom-screen Beast Out chip effect, queues the chip's sprite tile graphics into VRAM, its 16-color palette into the EWRAM palette buffer, then loads the Beast Out selection sprite sheets.
 // symdb: () -> r0 = undefined; queues GFX transfers: 0x540 bytes of tiles to VRAM 0x6009560 and 0x20
 // symdb: bytes of palette data to unk_3001AA0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802877C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastout_loadChipUseGfx.yaml
 	thumb_local_start
-sub_802877C:
+beastout_loadChipUseGfx:
 	push {lr}
 	bl loadOneSpriteTileRow_80287D2
 	ldr r0, off_802879C // =dword_8733E74 
@@ -5027,14 +5027,14 @@ off_802879C:
 	.word dword_8733E74
 off_80287A0:
 	.word dword_87343D4
-	thumb_func_end sub_802877C
+	thumb_func_end beastout_loadChipUseGfx
 
 // symdb: Loads the graphics needed for one step of the Beast Out selection screen: a sprite tile row, a VRAM graphics block, a 0x20-byte chunk, and the Beast Out sprite sheets.
 // symdb: (r0 = pointer to selection-screen entry struct; if [r0]==5 r0 is rewound 0xC to the real entry)
 // symdb: -> void; uses [r0+4] as descriptor/slot index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80287A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastout_loadSelectionScreenGfx.yaml
 	thumb_local_start
-sub_80287A4:
+beastout_loadSelectionScreenGfx:
 	push {lr}
 	ldrb r1, [r0]
 	cmp r1, #5
@@ -5055,7 +5055,7 @@ loc_80287AE:
 	bl beastout_LoadSelectionScreenSpriteSheets_802869E
 	pop {r0}
 	pop {pc}
-	thumb_func_end sub_80287A4
+	thumb_func_end beastout_loadSelectionScreenGfx
 
 // symdb: Prime the engine's sprite descriptor slot from the local descriptor table and queue a 0x20-byte tile row of sprite graphics from ROM into VRAM.
 // symdb: void sub_80287D2(/* r2 r4 r5 r6 r7 preserved, lr preserved */)
@@ -5673,7 +5673,7 @@ off_8028C9C:
 	.word sub_8028CCC+1
 	.word custMenuPressOK_8028D3A+1
 	.word sub_8028D6C+1
-	.word sub_8028DBC+1
+	.word custMenuConfirmMarkedEntry+1
 	.word sub_8028DD6+1
 	.word sub_8028DD6+1
 	.word nullsub_59+1
@@ -5828,9 +5828,9 @@ locret_8028DBA:
 
 // symdb: Custom Screen action handler: flags the currently indexed 0x20-byte entry as chosen (byte+8 = 1), sets a global confirm flag, then runs the OK-confirm path.
 // symdb: () -> r0 = 0; no meaningful flags; sets entry[+8] = 1 and byte_20349A4 = 1 as side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028DBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/custMenuConfirmMarkedEntry.yaml
 	thumb_local_start
-sub_8028DBC:
+custMenuConfirmMarkedEntry:
 	push {lr}
 	bl battle_getStateByte0d_800A7E2
 
@@ -5847,7 +5847,7 @@ sub_8028DBC:
 	mov r0, #0
 
 	pop {pc}
-	thumb_func_end sub_8028DBC
+	thumb_func_end custMenuConfirmMarkedEntry
 
 // symdb: Shuffle-once button handler (custom screen, active slot 8): a chip of type 4/5 whose enabled byte is 0 starts the shuffle state machine (jump 0x28 -> sub_80271F8) with sound 0x82; a nonzero enabled byte plays SOUND_CANT_JACK_IN instead.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028DD6.yaml
@@ -14935,9 +14935,9 @@ sub_802D0BA:
 // symdb: Computes a rounded-up percentage (100*a/b) from the player's and a specific enemy's object fields and stores the two bytes into a 0x20-byte IWRAM table record.
 // symdb: (r0 = record index into IWRAM table 0x203C4A0) -> r0 = last stored byte; writes entry+0xC
 // symdb: (player percent) and entry+0xE (enemy percent); flags from tst on enemy-search result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D0C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_storePercentRatios.yaml
 	thumb_local_start
-sub_802D0C8:
+battle_storePercentRatios:
 	push {r4,r7,lr}
 	sub sp, sp, #0x10
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
@@ -14974,7 +14974,7 @@ loc_802D112:
 	strb r0, [r7,#0xe]
 	add sp, sp, #0x10
 	pop {r4,r7,pc}
-	thumb_func_end sub_802D0C8
+	thumb_func_end battle_storePercentRatios
 
 	thumb_local_start
 sub_802D118:
@@ -15490,7 +15490,7 @@ sub_802D3CA:
 	ldr r3, off_802D630 // =byte_802D420
 loc_802D3DA:
 	bl GetAllianceDependentPanelParamArgs
-	bl sub_802D430
+	bl battle_pickRandomTargetPanel
 	strb r0, [r7,#oAIAttackVars_TargetPanelX]
 	strb r1, [r7,#oAIAttackVars_TargetPanelY]
 	mov r0, #0
@@ -15523,8 +15523,8 @@ byte_802D420:
 // symdb: Picks a random panel for an attack, preferring panels occupied by objects over empty filtered panels, and returns its coordinates.
 // symdb: (r0 = row/alliance param for the row-object picker, r2/r3 = filter args, r5 = source battle
 // symdb: object) -> r0 = panel x (low 3 bits), r1 = panel y; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D430.yaml
-sub_802D430:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomTargetPanel.yaml
+battle_pickRandomTargetPanel:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x20
 	str r2, [sp]
@@ -15544,7 +15544,7 @@ loc_802D446:
 	ldr r3, [sp,#4]
 	push {r4}
 	mov r4, #0
-	bl sub_8015CC0
+	bl battle_pickRandomPanelAlongRow
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r7]
@@ -15600,7 +15600,7 @@ loc_802D4B6:
 	pop {r0,r1}
 	add sp, sp, #0x20
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_802D430
+	thumb_func_end battle_pickRandomTargetPanel
 
 	thumb_func_start sub_802D4C6
 sub_802D4C6:
@@ -16338,7 +16338,7 @@ off_802DABC:
 	.word battle_objectPanelEmergeStep+1
 	.word sub_802DB58+1
 	.word sub_802DB80+1
-	.word sub_802DC66+1
+	.word battle_attackEndTimerStep+1
 	thumb_func_end sub_802DAA8
 
 // symdb: Per-frame state step that plays an object's one-shot emerge-from-panel setup (white flash, panel reserve, flip, effects, sound) and then counts down a 10-frame timer before advancing the state machine.
@@ -16517,9 +16517,9 @@ loc_802DC60:
 // symdb: Per-frame step that gives an attacking battle object a 4-frame lingering window (with collision region 1 set on entry), then clears its AI condition flags and exits the attack state.
 // symdb: (r0 = unused at entry; r7 = battle object) -> r0 = result of object_exitAttackState; decrements
 // symdb: object timer, clears AI/battle flags when it expires
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DC66.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_attackEndTimerStep.yaml
 	thumb_local_start
-sub_802DC66:
+battle_attackEndTimerStep:
 	push {lr}
 	ldrb r0, [r7,#1]
 	tst r0, r0
@@ -16567,7 +16567,7 @@ off_802DCC4:
 	.word eBattleNaviStats2034A60
 dword_802DCC8:
 	.word 0xC008600
-	thumb_func_end sub_802DC66
+	thumb_func_end battle_attackEndTimerStep
 
 	thumb_local_start
 sub_802DCCC:
@@ -17498,7 +17498,7 @@ loc_802E37C:
 	mov r0, #SOUND_CANT_JACK_IN
 	bl PlaySoundEffect
 loc_802E390:
-	bl sub_801EC44
+	bl battle_hudQueueGfxLoadAndStartTimer
 	b loc_802E406
 loc_802E396:
 	ldrh r0, [r7,#0x28]
@@ -17786,9 +17786,9 @@ dword_802E584:
 // symdb: Adds a chip (by ID) to one of the battle hand structures, failing if that hand already holds 5 chips, and optionally records the chip ID in an event-flag block.
 // symdb: (r0 = hand/entry index into the 0x20349C0 hand array and the 0x2036120 record array, r1 = chip
 // symdb: ID, r2 = mode flag) -> r0 = 1 on success, 0 if hand count >= 5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E588.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handAddChip.yaml
 	thumb_local_start
-sub_802E588:
+battle_handAddChip:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -17846,7 +17846,7 @@ loc_802E5F4:
 	.balign 4, 0
 off_802E5F8:
 	.word EVENT_2020
-	thumb_func_end sub_802E588
+	thumb_func_end battle_handAddChip
 
 	thumb_local_start
 sub_802E5FC:
@@ -25048,7 +25048,7 @@ dword_8031690:
 	.word sub_803178A+1 // 0x1
 	.word sub_80317A6+1 // 0x2
 	.word sub_80317C2+1 // 0x3
-	.word sub_80317DE+1 // 0x4
+	.word battle_edgeTestGetCurrentTableEntry+1 // 0x4
 	.word NULL // 0x5
 	.word NULL // 0x6
 	.word NULL // 0x7
@@ -25246,9 +25246,9 @@ sub_80317C2:
 // symdb: Computes an entity's position relative to a target, runs a half-plane test against a fixed edge, then returns a pointer into the current hit-area table entry with r1 cleared.
 // symdb: (r0 = entity ptr, r1 = target/ref ptr) -> r0 = pointer to current table entry header + offset,
 // symdb: r1 = 0; flags from the final add
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80317DE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_edgeTestGetCurrentTableEntry.yaml
 	thumb_local_start
-sub_80317DE:
+battle_edgeTestGetCurrentTableEntry:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25260,7 +25260,7 @@ sub_80317DE:
 	add r0, r0, r1
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_80317DE
+	thumb_func_end battle_edgeTestGetCurrentTableEntry
 
 // symdb: Reads the current table entry's column count (r0+r1) and returns total row size minus 2
 // symdb: () -> r0 = header.r0 + header.r1 ; side effects: calls table_GetCurrentEntryHeader_8031760
@@ -25449,10 +25449,10 @@ off_8031914:
 	.word dword_8031918
 dword_8031918:
 	.word NULL
-	.word sub_803199E+1
+	.word battle_aiActorCountForTargetSide+1
 	.word sub_80319B6+1
 	.word sub_80319CE+1
-	.word sub_80319E6+1
+	.word battle_aiActorCountByTargetSide+1
 	.word NULL
 	.word NULL
 	.word NULL
@@ -25460,7 +25460,7 @@ dword_8031918:
 	.word battle_aiTargetInRangeActorCount+1
 	.word sub_8031A16+1
 	.word sub_8031A2E+1
-	.word sub_8031A46+1
+	.word battle_aiActorCountByFieldSide+1
 	.word NULL
 	.word NULL
 	.word NULL
@@ -25507,9 +25507,9 @@ sub_8031998:
 // symdb: Battle AI helper that picks an actor count (3 or 2) depending on which side of a fixed line the target's relative position falls.
 // symdb: (r0 = entity/actor struct ptr, r1 = target ref) -> r0 = per-actor count (3 when the relative
 // symdb: position is on the clockwise side of the line, else 2); flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803199E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiActorCountForTargetSide.yaml
 	thumb_local_start
-sub_803199E:
+battle_aiActorCountForTargetSide:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #4
@@ -25519,7 +25519,7 @@ sub_803199E:
 	bl math_pointCrossHalfPlaneTest_8031594
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
-	thumb_func_end sub_803199E
+	thumb_func_end battle_aiActorCountForTargetSide
 
 	thumb_local_start
 sub_80319B6:
@@ -25550,9 +25550,9 @@ sub_80319CE:
 // symdb: AI helper that returns the actor count (3 or 2) for a sub-state chosen by which side of the horizontal line y=12 the target lies on.
 // symdb: (r0 = entity ptr, r1 = target ptr) -> r0 = 3 if target is on the negative (clockwise) side of
 // symdb: edge (0,12)-(16,12), else 2; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80319E6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiActorCountByTargetSide.yaml
 	thumb_local_start
-sub_80319E6:
+battle_aiActorCountByTargetSide:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25562,7 +25562,7 @@ sub_80319E6:
 	bl math_pointCrossHalfPlaneTest_8031594
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
-	thumb_func_end sub_80319E6
+	thumb_func_end battle_aiActorCountByTargetSide
 
 // symdb: Checks whether a target-relative position falls within a fixed half-panel rectangle and returns 3 if it does, else 2, for AI use.
 // symdb: (r0 = entity ptr, r1 = target ref?) -> r0 = 3 if the rectangle test hits, else 2; flags from
@@ -25610,9 +25610,9 @@ sub_8031A2E:
 // symdb: Battle-AI helper that returns 3 or 2 actors depending on which side of the field diagonal the entity is relative to its target.
 // symdb: (r0 = entity struct passed to calcRelPosToTarget) -> r0 = actor count for the AI sub-state (3 if
 // symdb: the relative point is left of the (0,16)->(16,0) diagonal, else 2); flags set by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031A46.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiActorCountByFieldSide.yaml
 	thumb_local_start
-sub_8031A46:
+battle_aiActorCountByFieldSide:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #0
@@ -25622,7 +25622,7 @@ sub_8031A46:
 	bl math_pointLeftOfLineTest_80315DC
 	bl battle_aiIndexToActorCount_8031980
 	pop {pc}
-	thumb_func_end sub_8031A46
+	thumb_func_end battle_aiActorCountByFieldSide
 
 // symdb: Thin wrapper that returns the chip-lockout palette index 3 (locked) by forwarding `r0 = 1` to the chip-lockout colour helper and returning its result.
 // symdb: () -> r0 = 3 (carry set in all captured snapshots); no side effects

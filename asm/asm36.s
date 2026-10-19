@@ -2,7 +2,7 @@
 	thumb_local_start
 sub_8130020:
 	push {r4-r7,lr}
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldr r1, byte_8130054 // =0xdb
 	strh r1, [r0,#0xa]
 	mov r1, #0
@@ -40,7 +40,7 @@ sub_813005C:
 	lsl r2, r2, #8
 	orr r4, r2
 	strh r4, [r5,#0x2a]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #2
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -312,7 +312,7 @@ sub_8130290:
 	bne locret_81302A8
 	mov r2, #0x40 
 	ldr r0, off_81302AC // =byte_812F04C
-	bl sub_81302D0
+	bl battle_spawnEStructRecordsAtPosition
 locret_81302A8:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -331,7 +331,7 @@ sub_81302B0:
 	bne locret_81302C8
 	mov r2, #0xb0
 	ldr r0, off_81302CC // =byte_812F054
-	bl sub_81302D0
+	bl battle_spawnEStructRecordsAtPosition
 locret_81302C8:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -342,9 +342,9 @@ off_81302CC:
 // symdb: Spawns eStruct records from a caller-supplied table into a given slot and, if one was created, positions it on the battle field.
 // symdb: (r0 = eStruct spawn table ptr, r1 = eStructArr2008450 slot index, r2 = coordinate/position
 // symdb: value) -> r0 = undefined; flags from getStructFrom2008450's in-use byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructRecordsAtPosition.yaml
 	thumb_local_start
-sub_81302D0:
+battle_spawnEStructRecordsAtPosition:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r2, [sp]
@@ -361,7 +361,7 @@ loc_81302EE:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81302D0
+	thumb_func_end battle_spawnEStructRecordsAtPosition
 
 	thumb_func_start sub_81302F4
 sub_81302F4:
@@ -529,9 +529,9 @@ sub_813040C:
 // symdb: Puts an NPC into its talking state (backing up its previous state) and starts a dialog from the shared text-script archive, unless a flag suppresses it.
 // symdb: (r0 unused?, r5 = NPC object struct pointer) -> void; starts chatbox script eTextScript201BA20
 // symdb: at index from eStruct200BC30[0xE]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130424.yaml
-	thumb_func_start sub_8130424
-sub_8130424:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_startDialogScript.yaml
+	thumb_func_start npc_startDialogScript
+npc_startDialogScript:
 	push {lr}
 	bl screenFade_80062C8
 	cmp r0, #0xc
@@ -563,7 +563,7 @@ loc_813045C:
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 locret_8130462:
 	pop {pc}
-	thumb_func_end sub_8130424
+	thumb_func_end npc_startDialogScript
 
 	thumb_func_start sub_8130464
 sub_8130464:
@@ -858,9 +858,9 @@ dword_8130688:
 // symdb: Builds (or clears) a 0x60-byte record at unk_202708C: 0x20 bytes of text from the chatbox script pool followed by a 0x3C-byte selected-chip entry plus a halfword checksum.
 // symdb: () -> r0 = undefined; writes unk_202708C[0..0x60) and fields of the struct returned by
 // symdb: sub_8130404; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813068C.yaml
-	thumb_func_start sub_813068C
-sub_813068C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_packChipEntryRecord.yaml
+	thumb_func_start battle_packChipEntryRecord
+battle_packChipEntryRecord:
 	push {r4-r7,lr}
 	ldr r7, off_813071C // =unk_202708C 
 	push {r5}
@@ -909,7 +909,7 @@ loc_81306E4:
 	str r0, [r5,#0x40]
 	str r0, [r5,#0x3c]
 	pop {r4-r7,pc}
-	thumb_func_end sub_813068C
+	thumb_func_end battle_packChipEntryRecord
 
 	thumb_func_start sub_81306F0
 sub_81306F0:
@@ -985,7 +985,7 @@ loc_813075C:
 	cmp r1, r2
 	beq loc_8130772
 loc_813076C:
-	bl sub_8130424
+	bl npc_startDialogScript
 	b locret_8130776
 loc_8130772:
 	bl sub_8130020
@@ -1219,7 +1219,7 @@ sub_813096C:
 	beq loc_8130988
 	b loc_8130996
 loc_8130988:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1307,7 +1307,7 @@ loc_8130A20:
 	beq loc_8130A2A
 	b loc_8130A36
 loc_8130A2A:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1395,7 +1395,7 @@ loc_8130ADA:
 	strb r1, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	ldr r1, dword_8130C94 // =0xfed9 
@@ -1446,7 +1446,7 @@ sub_8130B30:
 	beq loc_8130B4C
 	b loc_8130B58
 loc_8130B4C:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1530,7 +1530,7 @@ loc_8130BDA:
 	beq loc_8130BF4
 	b loc_8130C00
 loc_8130BF4:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1627,7 +1627,7 @@ loc_8130CAE:
 	beq loc_8130CB8
 	b loc_8130CBC
 loc_8130CB8:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 loc_8130CBC:
 	mov r1, #8
 	tst r4, r1
@@ -1709,7 +1709,7 @@ sub_8130D40:
 	beq loc_8130D5C
 	b loc_8130D68
 loc_8130D5C:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1781,7 +1781,7 @@ sub_8130DD0:
 	beq loc_8130DEC
 	b loc_8130DF8
 loc_8130DEC:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -2044,7 +2044,7 @@ sub_8130FC8:
 	beq loc_8130FEC
 	b loc_8130FF8
 loc_8130FEC:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -2123,7 +2123,7 @@ loc_8131078:
 	beq loc_8131082
 	b loc_813108E
 loc_8131082:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x2a]
 	strh r1, [r5,#0xa]
 	ldrh r1, [r5,#0x26]
@@ -2294,7 +2294,7 @@ dead_81311C8:
 	push {r4-r7, lr}
 	mov r0, #0x1c
 	strb r0, [r5, #2]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5, #0x26]
 	strh r1, [r0, #8]
@@ -2503,7 +2503,7 @@ loc_8131348:
 	mov r1, #0x80
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 loc_8131350:
-	bl sub_8131400
+	bl init_loadCutsceneSceneAssets
 	bl sub_8131440
 
 	mov r0, #0
@@ -2589,9 +2589,9 @@ locret_81313FC:
 
 // symdb: Loads the three graphics asset archives (LZ77-compressed) used by the cutscene/battle-scene UI into their RAM buffers.
 // symdb: () -> void; no meaningful return flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131400.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_loadCutsceneSceneAssets.yaml
 	thumb_local_start
-sub_8131400:
+init_loadCutsceneSceneAssets:
 	push {lr}
 	bl decomp_buildInitRefTable_812AF3C
 	bl loadDecompressedAsset_812AF78
@@ -2613,7 +2613,7 @@ byte_8131418:
 	.word unk_2021DA0
 	.word eDecompBuffer2013A00
 	.word NULL
-	thumb_func_end sub_8131400
+	thumb_func_end init_loadCutsceneSceneAssets
 
 	thumb_local_start
 sub_8131440:
@@ -4065,7 +4065,7 @@ loc_8132126:
 	bl sub_8147B24
 	b loc_813214C
 loc_8132148:
-	bl sub_8148D24
+	bl rfu_initWirelessSession
 loc_813214C:
 	bl sub_813D5D0
 	mov r6, r0
@@ -4136,7 +4136,7 @@ submenu_linkResultHandler:
 
 	b loc_81321C0
 loc_81321B6:
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26] // (sSubmenu.unk_26 - 0x2009a30)
 	strh r1, [r0,#8]
@@ -4800,9 +4800,9 @@ sub_81325C0:
 
 // symdb: Copies two fields of the eLinkState global (offsets 0x1C and 0x0A) into the eCamera end struct at eCamera.unk_84+4 and +2.
 // symdb: () -> void; writes eCamera.unk_84+2 (halfword) and +4 (word), clobbers r0-r1, r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81325CC.yaml
-	thumb_func_start sub_81325CC
-sub_81325CC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_copyLinkStateToEnd.yaml
+	thumb_func_start camera_copyLinkStateToEnd
+camera_copyLinkStateToEnd:
 	push {r4,lr}
 	bl sub_803E8F8
 	mov r4, r0
@@ -4813,7 +4813,7 @@ sub_81325CC:
 	ldrh r1, [r4,#0xa]
 	strh r1, [r0,#2]
 	pop {r4,pc}
-	thumb_func_end sub_81325CC
+	thumb_func_end camera_copyLinkStateToEnd
 
 // symdb: Returns the byte at dword_81325F0[r0], a small 3-byte lookup table (data at 0x081325f0 = 0x100C08).
 // symdb: uint8_t sub_81325E4(uint32_t index /* r0 */); // returns byte in r0, scratch in r1; no flag
@@ -11489,7 +11489,7 @@ off_81357E0:
 	.word sub_8135A24+1
 	.word sub_81368D4+1
 	.word sub_8135A44+1
-	.word sub_8135AF8+1
+	.word t4_waitChatboxThenFadeScene+1
 	.word sub_8135B38+1
 	thumb_func_end beastsp_dispatchHandler_81357C4
 
@@ -11549,7 +11549,7 @@ loc_8135876:
 	mov r0, #JOYPAD_START | JOYPAD_B
 	bl IsButtonPressed
 	beq loc_8135888
-	bl sub_813627C
+	bl navicust_boardInputCancelExit
 	b loc_81358EE
 loc_8135888:
 	mov r0, #JOYPAD_A
@@ -11885,9 +11885,9 @@ locret_8135AF2:
 // symdb: Cutscene-style step that waits for the chatbox to become inactive, then sets a scene state, triggers a screen fade, and advances before pumping the chatbox handler.
 // symdb: (r0 = unused, r5 = per-scene state struct pointer) -> r0 = clobbered; sets [r5+1] = 8, [r5+2] =
 // symdb: 0 or 4; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135AF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_waitChatboxThenFadeScene.yaml
 	thumb_local_start
-sub_8135AF8:
+t4_waitChatboxThenFadeScene:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -11915,7 +11915,7 @@ locret_8135B2E:
 	pop {pc}
 	.word 0x120
 	.word 0x100
-	thumb_func_end sub_8135AF8
+	thumb_func_end t4_waitChatboxThenFadeScene
 
 	thumb_local_start
 sub_8135B38:
@@ -12532,7 +12532,7 @@ sub_8135FDC:
 	tst r4, r1
 	beq loc_8135FFC
 	bl navicust_boardCursorUp
-	bl sub_81360DC
+	bl navicust_exitBoardScreen
 	b locret_81360A6
 loc_8135FFC:
 	mov r1, #4
@@ -12653,9 +12653,9 @@ sub_81360B4:
 	thumb_func_end sub_81360B4
 // symdb: Exit routine for the Navi Customizer board screen: resets state, unhighlights the cursor cell, redraws the board, and plays the exit sound.
 // symdb: () -> void; r0 and r5 clobbered via calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81360DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_exitBoardScreen.yaml
 	thumb_local_start
-sub_81360DC:
+navicust_exitBoardScreen:
 	push {lr}
 	mov r0, #0xc
 	strb r0, [r5,#2]
@@ -12670,7 +12670,7 @@ sub_81360DC:
 	bl PlaySoundEffect
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_81360DC
+	thumb_func_end navicust_exitBoardScreen
 	thumb_local_start
 sub_8136100:
 	push {lr}
@@ -12871,9 +12871,9 @@ off_8136278:
 
 // symdb: Cancel/exit action for the Navi Customizer board screen: clears the text box, plays the unselect sound, and sets the screen state to 0x34.
 // symdb: (r0-r3 unused) -> void; r5 = board context struct, byte [r5,#2] = new screen/state code
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813627C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_boardInputCancelExit.yaml
 	thumb_local_start
-sub_813627C:
+navicust_boardInputCancelExit:
 	push {lr}
 	mov r0, #0
 	bl chatbox_runScript_803FD9C_on_eTextScript201D280
@@ -12882,7 +12882,7 @@ sub_813627C:
 	mov r0, #0x34 
 	strb r0, [r5,#2]
 	pop {pc}
-	thumb_func_end sub_813627C
+	thumb_func_end navicust_boardInputCancelExit
 
 // symdb: Returns the address of an entry (index*4) in the BeastSP secret-code table at word_201DA80.
 // symdb: (r0 = entry index) -> r0 = pointer to code entry (word_201DA80 + index*4); flags not meaningful
@@ -15982,7 +15982,7 @@ battle_initRoundState:
 	mov r0, #0x10
 	bl toolkit_applyOverlayPalette_80015FC
 	bl battle_resetEStructRecords_8046664 // () -> void
-	bl sub_8137ACC
+	bl battle_loadNaviBackground
 
 	mov r0, #0
 	strb r0, [r5,#0xc]
@@ -16053,7 +16053,7 @@ off_8137980:
 	.word off_8137984
 off_8137984:
 	.word sub_8137990+1
-	.word sub_81379A0+1
+	.word submenu_handleConfirmCancelCursorInput+1
 	.word sub_8137A1C+1
 	thumb_func_end sub_8137964
 	thumb_local_start
@@ -16071,9 +16071,9 @@ locret_813799C:
 // symdb: Per-frame input handler for a submenu: A confirms a highlighted entry (buzzer if invalid), B exits the submenu with a screen fade, and D-pad/shoulder moves the cursor, refreshing the display on change.
 // symdb: (r5 = menu state struct) -> void; writes state bytes [r5+1], [r5+2], advances cursor at
 // symdb: [r5+0x1e]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81379A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_handleConfirmCancelCursorInput.yaml
 	thumb_local_start
-sub_81379A0:
+submenu_handleConfirmCancelCursorInput:
 	push {lr}
 	movflag EVENT_1710
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -16127,7 +16127,7 @@ loc_81379FE:
 	bl sub_8137F5C
 locret_8137A1A:
 	pop {pc}
-	thumb_func_end sub_81379A0
+	thumb_func_end submenu_handleConfirmCancelCursorInput
 
 	thumb_local_start
 sub_8137A1C:
@@ -16212,9 +16212,9 @@ locret_8137ACA:
 
 // symdb: Loads a per-navi background scene: resolves an asset list by key (likely navi ID), decompresses tiles/palettes into VRAM, loads the navi tile grid, and draws a full 30x20 tile block to background block 1.
 // symdb: () -> void; no arguments, no meaningful return, clobbers r0-r5 and flags via callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137ACC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadNaviBackground.yaml
 	thumb_local_start
-sub_8137ACC:
+battle_loadNaviBackground:
 	push {r4-r7,lr}
 	ldr r4, off_8137B9C // =unk_20096E0 
 	mov r6, #0
@@ -16325,7 +16325,7 @@ off_8137BC0:
 	.word byte_30016D0
 	.word 0x20
 	.word NULL
-	thumb_func_end sub_8137ACC
+	thumb_func_end battle_loadNaviBackground
 	thumb_local_start
 sub_8137BF0:
 	push {r4-r7,lr}

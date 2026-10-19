@@ -2121,7 +2121,7 @@ byte_809A8A8:
 	cs_decomp_text_archive ptr1=TextScriptChipTrader86C580C
 	cs_run_text_script_from_mem byte1=0x04
 	cs_call_native_with_return_value ptr1=sub_809A950+1
-	cs_call_native_with_return_value ptr1=sub_809A98C+1
+	cs_call_native_with_return_value ptr1=battle_scriptStepSlideSpriteTriple+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_call_native_with_return_value ptr1=sub_809A9CC+1
 	cs_chatbox_cmd_8037a70
@@ -2217,9 +2217,9 @@ off_809A988:
 // symdb: Script/battle-cutscene step: advances a counter, slides a group of three sprite-table entries to (0,0x58), pumps the per-frame entity and eStruct sprite updates, and returns 1 only once event flag EVENT_F5 is set.
 // symdb: (r5 = script/state struct, r10 = toolkit) -> r0 = 0 while step still running, 1 when EVENT_F5 is
 // symdb: set; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A98C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scriptStepSlideSpriteTriple.yaml
 	thumb_local_start
-sub_809A98C:
+battle_scriptStepSlideSpriteTriple:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	add r0, #0x10
@@ -2249,7 +2249,7 @@ loc_809A9A4:
 loc_809A9C8:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_809A98C
+	thumb_func_end battle_scriptStepSlideSpriteTriple
 
 	thumb_local_start
 sub_809A9CC:

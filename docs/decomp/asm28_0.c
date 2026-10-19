@@ -941,7 +941,7 @@ signed int sub_809A950()
 
 
 // 0x809a98c
-signed int sub_809A98C()
+signed int battle_scriptStepSlideSpriteTriple()
 {
     int v0; // r5
     int v1; // r10

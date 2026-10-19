@@ -1184,7 +1184,7 @@ LABEL_24:
         }
         else if ( v4 != 2 )
         {
-            sub_80A5CF0();
+            sprite_syncAnimation();
             *(v0 + 36) = 0;
             *(v0 + 9) = 0;
             ClearEventFlagFromImmediate(23, 7);
@@ -1267,7 +1267,7 @@ int sprite_updateAnimFacingPlayer()
 
 
 // 0x80a5cf0
-int sub_80A5CF0()
+int sprite_syncAnimation()
 {
     int v0; // r5
     int result; // r0
@@ -1937,7 +1937,7 @@ signed int __fastcall __noreturn sub_80A6D42(int a1)
 
 
 // 0x80a6d5c
-signed int sub_80A6D5C()
+signed int sprite_setupScalableObjectScale()
 {
     int v0; // r0
 
@@ -4977,7 +4977,7 @@ void __noreturn sub_80A8B4C()
         *(v0 + 16) -= v3;
         sub_809E1AE();
         *(v0 + 20) = v4 + 1310720;
-        sub_80A8C98();
+        ow_refreshObjectSpritePriority();
         v5 = sub_80A8C7C();
         sub_80A8CB8(v5);
         sub_80A8D7C();
@@ -5010,7 +5010,7 @@ void __noreturn sub_80A8BBC()
             sub_8143204(*(v0 + 4));
             sub_8143220(*(v0 + 4));
         }
-        sub_80A8C98();
+        ow_refreshObjectSpritePriority();
         v5 = sub_80A8C7C();
         sub_80A8CB8(v5);
         sub_80A8D7C();
@@ -5048,7 +5048,7 @@ void __noreturn sub_80A8C08()
             *v1 = 0;
             FreeOverworldMapObject();
         }
-        sub_80A8C98();
+        ow_refreshObjectSpritePriority();
     }
     sprite_update(v0);
 }
@@ -5064,7 +5064,7 @@ int sub_80A8C7C()
 
 
 // 0x80a8c98
-int sub_80A8C98()
+int ow_refreshObjectSpritePriority()
 {
     int v0; // r5
     int v1; // r4
@@ -7018,7 +7018,7 @@ void __noreturn sub_80AA194()
 
 
 // 0x80aa1c8
-void __noreturn sub_80AA1C8()
+void __noreturn object_updateFreeOnFrameFlag()
 {
     Battle *v0; // r5
 
@@ -8214,7 +8214,7 @@ signed int __fastcall sub_80AAC8C(int a1)
     GetPositiveSignedRNG();
     if ( v1 < 8 && !sub_80AAE36() )
         return 0xFFFF;
-    sub_80AADA6();
+    pack_sortAndReinitChipAuxData();
     sub_80AAD70(&v15);
     v3 = sub_80AAB68(v14);
     v4 = 2 * v3;
@@ -8350,7 +8350,7 @@ char *__fastcall sub_80AAD70(_DWORD *a1)
 
 
 // 0x80aada6
-signed int sub_80AADA6()
+signed int pack_sortAndReinitChipAuxData()
 {
     _DWORD *v0; // r10
     _WORD *v1; // r7

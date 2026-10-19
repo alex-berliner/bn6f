@@ -2643,7 +2643,7 @@ int __fastcall ai_useChipAttack(int a1, char a2, char a3)
 
 
 // 0x80105f2
-void __fastcall sub_80105F2(int a1, char a2, char a3, int a4)
+void __fastcall ai_beginAttack(int a1, char a2, char a3, int a4)
 {
     int v4; // r5
     char v5; // ST04_1
@@ -6739,7 +6739,7 @@ int pwrAtkRelated_readsFromJoypad_8012FC8()
         if ( *(*(v1 + oToolkit_S2034880_Ptr) + 13) == v8 )
         {
             PlaySoundEffect(105, v8, v7);
-            sub_801EC44();
+            battle_hudQueueGfxLoadAndStartTimer();
         }
     }
     if ( sub_802D234() != 1 )
@@ -8085,7 +8085,7 @@ char *battle_naviAI_tick_8013DA0()
                         *(v3 + 11) = v11;
                         if ( v11 == 2 )
                         {
-                            result = sub_80143CE();
+                            result = battle_naviAISetFlag2Default();
                         }
                         else if ( v11 == 1 )
                         {
@@ -8722,7 +8722,7 @@ int battleObject_markUsedAction_80143A6()
 
 
 // 0x80143ce
-int sub_80143CE()
+int battle_naviAISetFlag2Default()
 {
     int result; // r0
     char v1; // zf
@@ -9210,7 +9210,7 @@ int sub_8014754()
 
 
 // 0x8014760
-int sub_8014760()
+int battle_setupNoCustomPlusObjectCollision()
 {
     int v0; // r0
     int v1; // r0
@@ -9229,7 +9229,7 @@ int sub_8014776()
 
     if ( *(*(v0 + oToolkit_S2034880_Ptr) + 7) != 1 )
         battle_clearObjectStatusFlagsAndTimers_801A264();
-    return sub_8014760();
+    return battle_setupNoCustomPlusObjectCollision();
 }
 
 
@@ -9237,7 +9237,7 @@ int sub_8014776()
 int sub_801478C()
 {
     object_setFlag1(0x20000);
-    return sub_8014760();
+    return battle_setupNoCustomPlusObjectCollision();
 }
 
 
@@ -10388,7 +10388,7 @@ int sub_80152C8()
 
 
 // 0x80153b0
-void sub_80153B0()
+void ai_attackStateTimeout()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -11366,7 +11366,7 @@ int __fastcall __noreturn sub_8015C94(int a1, int a2, int a3, int a4)
 
 
 // 0x8015cc0
-int __fastcall __noreturn sub_8015CC0(int a1, int a2, int a3, int a4)
+int __fastcall __noreturn battle_pickRandomPanelAlongRow(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r5
@@ -21826,7 +21826,7 @@ int sub_801EC38()
 
 
 // 0x801ec44
-signed int sub_801EC44()
+signed int battle_hudQueueGfxLoadAndStartTimer()
 {
     signed int result; // r0
 

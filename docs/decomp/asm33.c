@@ -1798,7 +1798,7 @@ int sprite_stage2InitBattleState_8124E7C()
 
 
 // 0x8124ed4
-int sub_8124ED4()
+int battle_updateSceneFrame()
 {
     int v0; // r5
     int v1; // r0
@@ -1840,7 +1840,7 @@ int sub_8124ED4()
 
 
 // 0x8124f30
-int sub_8124F30()
+int battle_updateIntroState()
 {
     int v0; // r5
     int v1; // r0
@@ -2079,7 +2079,7 @@ int __fastcall sub_8125128(int a1)
 
 
 // 0x812514c
-int __fastcall sub_812514C(int a1)
+int __fastcall battle_transitionAnimUpdate(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -4316,7 +4316,7 @@ int sub_8126F94()
 
 
 // 0x8126fa8
-int sub_8126FA8()
+int pet_saveDialogUpdate()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -6720,7 +6720,7 @@ void sub_8129454()
 
 
 // 0x812952c
-int sub_812952C()
+int battle_updateEntitiesAndStartFadeOut()
 {
     int v0; // r5
     int result; // r0
@@ -8187,7 +8187,7 @@ int sub_812A224()
 
 
 // 0x812a240
-int sub_812A240()
+int initLinkSceneState()
 {
     int v0; // r5
     int v1; // r0
@@ -8568,7 +8568,7 @@ LABEL_9:
             sub_803EA78();
             if ( sub_803EA50() )
             {
-                if ( sub_8148D24() )
+                if ( rfu_initWirelessSession() )
                 {
                     ++*(v0 + 40);
                 }
@@ -8675,7 +8675,7 @@ void *sub_812A6F8()
         sub_803EA78();
         if ( sub_803EA50() )
         {
-            if ( sub_8148D24() )
+            if ( rfu_initWirelessSession() )
             {
                 ++*(v0 + 40);
             }
@@ -8765,7 +8765,7 @@ LABEL_29:
     *(v0 + 16) = 1;
     if ( !(v2 & 0x10) )
     {
-        v4 = sub_81325CC();
+        v4 = camera_copyLinkStateToEnd();
         *(v0 + 38) = 0;
         *(v4 + 8) = 0;
     }
@@ -8841,7 +8841,7 @@ LABEL_30:
 
 
 // 0x812a8a4
-int sub_812A8A4()
+int object_tickChipCursorSprite()
 {
     int v0; // r5
     int result; // r0
@@ -9081,7 +9081,7 @@ LABEL_31:
     else if ( v3 != 1 )
     {
         *(v0 + 16) = 1;
-        *(sub_81325CC() + 8) = *(v0 + 38);
+        *(camera_copyLinkStateToEnd() + 8) = *(v0 + 38);
         v4 = sub_803E8F8();
         v5 = sub_803EF74();
         v6 = sub_81323B0(v5);
@@ -9308,7 +9308,7 @@ int sub_812AD04()
     {
         v2 = v1;
         if ( !(v1 & 0x10) )
-            *(sub_81325CC() + 8) = *(v0 + 38);
+            *(camera_copyLinkStateToEnd() + 8) = *(v0 + 38);
         if ( !(v2 & 8) )
         {
             v3 = sub_803E8F8();
@@ -9922,7 +9922,7 @@ int sub_812B5AC()
 
 
 // 0x812b5c8
-int sub_812B5C8()
+int e_beastLinkGateFrameHandler()
 {
     int v0; // r5
     int result; // r0
@@ -10326,7 +10326,7 @@ int sub_812B9F8()
     if ( result != 1 )
     {
         *(v0 + 16) = 6;
-        *(sub_81325CC() + 8) = *(v0 + 38);
+        *(camera_copyLinkStateToEnd() + 8) = *(v0 + 38);
         v5 = sub_803E8F8();
         v6 = sub_803EF74();
         result = sub_81323B0(v6);
@@ -10403,7 +10403,7 @@ int sub_812BB08()
     v2 = result;
     if ( !(result & 0x10) )
     {
-        result = sub_81325CC();
+        result = camera_copyLinkStateToEnd();
         *(result + 8) = *(v0 + 38);
     }
     if ( v2 & 8 )
@@ -10923,7 +10923,7 @@ int sub_812C0EC()
     int *v2; // r1
     int result; // r0
 
-    v1 = sub_81325CC();
+    v1 = camera_copyLinkStateToEnd();
     if ( *(v0 + 18) )
     {
         sub_812C21C(&unk_2034400);
@@ -10951,7 +10951,7 @@ int sub_812C11C()
     int *v2; // r1
     int result; // r0
 
-    v1 = sub_81325CC();
+    v1 = camera_copyLinkStateToEnd();
     if ( *(v0 + 18) )
         v2 = dword_30;
     else

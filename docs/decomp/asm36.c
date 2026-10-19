@@ -5,7 +5,7 @@ int sub_8130020()
 	u32 v1; // r0
 	int v2; // r0
 
-	v1 = sub_81325CC();
+	v1 = camera_copyLinkStateToEnd();
 	*(v1 + 10) = -293;
 	*(v0 + 38) = 0;
 	*(v1 + 8) = 0;
@@ -30,7 +30,7 @@ u32 sub_813005C()
 	*(v0 + 3) = 0;
 	v1 = sub_8130404()[12] | 0x8000;
 	*(v0 + 42) = v1;
-	result = sub_81325CC();
+	result = camera_copyLinkStateToEnd();
 	*(v0 + 38) = 2;
 	*(result + 8) = 2;
 	*(result + 10) = v1;
@@ -191,7 +191,7 @@ int sub_8130290()
 
 	result = getStructFrom2008450(0);
 	if ( v1 )
-		result = sub_81302D0(byte_812F04C, 0, 64);
+		result = battle_spawnEStructRecordsAtPosition(byte_812F04C, 0, 64);
 	return result;
 }
 
@@ -204,13 +204,13 @@ int sub_81302B0()
 
 	result = getStructFrom2008450(1);
 	if ( v1 )
-		result = sub_81302D0(byte_812F054, 1, 176);
+		result = battle_spawnEStructRecordsAtPosition(byte_812F054, 1, 176);
 	return result;
 }
 
 
 // 0x81302d0
-int __fastcall sub_81302D0(void *a1, int a2, int a3)
+int __fastcall battle_spawnEStructRecordsAtPosition(void *a1, int a2, int a3)
 {
 	int v3; // r6
 	int result; // r0
@@ -284,7 +284,7 @@ int sub_813040C()
 
 
 // 0x8130424
-void sub_8130424()
+void npc_startDialogScript()
 {
 	_BYTE *v0; // r5
 	int v1; // r1
@@ -417,7 +417,7 @@ signed int sub_813064C()
 
 
 // 0x813068c
-int sub_813068C()
+int battle_packChipEntryRecord()
 {
 	int v0; // r10
 	int v1; // r0
@@ -525,7 +525,7 @@ void __fastcall sub_8130728(int a1)
 			sub_8130020();
 		else
 LABEL_12:
-			sub_8130424();
+			npc_startDialogScript();
 	}
 }
 
@@ -662,7 +662,7 @@ void sub_813096C()
 		v2 = v1;
 		if ( !(v1 & 0x10) )
 		{
-			v3 = sub_81325CC();
+			v3 = camera_copyLinkStateToEnd();
 			*(v0 + 38) = 0;
 			*(v3 + 8) = 0;
 			*(v3 + 10) = -292;
@@ -738,7 +738,7 @@ void __noreturn e_linkMatchObjectUpdate()
 	v2 = v1;
 	if ( !(v1 & 0x10) )
 	{
-		v3 = sub_81325CC();
+		v3 = camera_copyLinkStateToEnd();
 		*(v3 + 8) = *(v0 + 38);
 		*(v3 + 10) = *(v0 + 42);
 	}
@@ -787,7 +787,7 @@ LABEL_27:
 						{
 							*(v0 + 2) = 8;
 							*(v0 + 3) = 0;
-							sub_81325CC();
+							camera_copyLinkStateToEnd();
 							*(v0 + 38) = 0;
 							*(v0 + 42) = -295;
 							sub_8131C04();
@@ -854,7 +854,7 @@ void __noreturn sub_8130B30()
 		v2 = v1;
 		if ( !(v1 & 0x10) )
 		{
-			v3 = sub_81325CC();
+			v3 = camera_copyLinkStateToEnd();
 			*(v3 + 8) = *(v0 + 38);
 			*(v3 + 10) = *(v0 + 42);
 		}
@@ -925,7 +925,7 @@ int sub_8130BC8()
 		v3 = result;
 		if ( !(result & 0x10) )
 		{
-			v4 = sub_81325CC();
+			v4 = camera_copyLinkStateToEnd();
 			*(v4 + 8) = *(v0 + 38);
 			*(v4 + 10) = *(v0 + 42);
 		}
@@ -996,7 +996,7 @@ int sub_8130C98()
 	{
 		v2 = result;
 		if ( !(result & 0x10) )
-			result = sub_81325CC();
+			result = camera_copyLinkStateToEnd();
 		if ( v2 & 8 )
 			sub_8131570();
 		sub_81317F0(result);
@@ -1063,7 +1063,7 @@ void __noreturn sub_8130D40()
 		v2 = v1;
 		if ( !(v1 & 0x10) )
 		{
-			v3 = sub_81325CC();
+			v3 = camera_copyLinkStateToEnd();
 			*(v3 + 8) = *(v0 + 38);
 			*(v3 + 10) = *(v0 + 42);
 		}
@@ -1133,7 +1133,7 @@ void sub_8130DD0()
 		v2 = v1;
 		if ( !(v1 & 0x10) )
 		{
-			v3 = sub_81325CC();
+			v3 = camera_copyLinkStateToEnd();
 			*(v3 + 8) = *(v0 + 38);
 			*(v3 + 10) = *(v0 + 42);
 		}
@@ -1327,7 +1327,7 @@ LABEL_13:
         v2 = result;
         if ( !(result & 0x10) )
         {
-            result = sub_81325CC();
+            result = camera_copyLinkStateToEnd();
             *(result + 8) = *(v0 + 38);
             *(result + 10) = *(v0 + 42);
         }
@@ -1394,7 +1394,7 @@ void __noreturn sub_8131068()
         v2 = v1;
         if ( !(v1 & 0x10) )
         {
-            v3 = sub_81325CC();
+            v3 = camera_copyLinkStateToEnd();
             *(v0 + 10) = *(v0 + 42);
             *(v3 + 8) = *(v0 + 38);
         }
@@ -1642,7 +1642,7 @@ void __noreturn init_cutsceneSceneState()
     {
         ZeroFillByEightWords(v2, 128);
     }
-    sub_8131400();
+    init_loadCutsceneSceneAssets();
     sub_8131440();
 }
 
@@ -1686,7 +1686,7 @@ void sub_81313C0()
 
 
 // 0x8131400
-void sub_8131400()
+void init_loadCutsceneSceneAssets()
 {
     decomp_buildInitRefTable_812AF3C();
     loadDecompressedAsset_812AF78();
@@ -2494,7 +2494,7 @@ LABEL_2:
         sub_8132398(v2, v3, v4, v5);
         *(v0 + 3) = 12;
         if ( sub_803EA50() )
-            sub_8148D24();
+            rfu_initWirelessSession();
         else
             sub_8147B24();
     }
@@ -2556,7 +2556,7 @@ void submenu_linkResultHandler()
     else if ( v0 != 1 )
     {
         sSubmenu.unk_10 = 1;
-        v1 = sub_81325CC();
+        v1 = camera_copyLinkStateToEnd();
         sSubmenu.unk_26 = 0;
         *(v1 + 8) = 0;
         v2 = sub_803E8F8();
@@ -2963,7 +2963,7 @@ int __fastcall sub_81325C0(int a1)
 
 
 // 0x81325cc
-u32 sub_81325CC()
+u32 camera_copyLinkStateToEnd()
 {
     u8 *v0; // r4
     u32 result; // r0
@@ -6767,7 +6767,7 @@ int navicust_handleBoardInput()
         JoypadKeyPressed();
         if ( !v2 )
         {
-            sub_813627C();
+            navicust_boardInputCancelExit();
             goto LABEL_20;
         }
         JoypadKeyPressed();
@@ -7057,7 +7057,7 @@ int sub_8135A44()
 
 
 // 0x8135af8
-int sub_8135AF8()
+int t4_waitChatboxThenFadeScene()
 {
     int v0; // r5
     int result; // r0
@@ -7428,7 +7428,7 @@ void __fastcall sub_8135FDC(int a1, int a2, int a3)
     if ( v5 & 8 )
     {
         navicust_boardCursorUp(v6, 8, a3);
-        sub_81360DC();
+        navicust_exitBoardScreen();
     }
     if ( v5 & 4 )
     {
@@ -7500,7 +7500,7 @@ void __noreturn sub_81360B4()
 
 
 // 0x81360dc
-void __noreturn sub_81360DC()
+void __noreturn navicust_exitBoardScreen()
 {
     int v0; // r5
 
@@ -7657,7 +7657,7 @@ int sub_8136218()
 
 
 // 0x813627c
-signed int sub_813627C()
+signed int navicust_boardInputCancelExit()
 {
     int v0; // r5
     int v1; // r1
@@ -9858,7 +9858,7 @@ void __fastcall __noreturn battle_initRoundState(int a1, int a2, int a3, int a4)
     ZeroFillGFX30025c0();
     toolkit_applyOverlayPalette_80015FC(16);
     battle_resetEStructRecords_8046664();
-    sub_8137ACC();
+    battle_loadNaviBackground();
 }
 
 
@@ -9893,7 +9893,7 @@ int sub_8137990()
 
 
 // 0x81379a0
-signed int sub_81379A0()
+signed int submenu_handleConfirmCancelCursorInput()
 {
     _BYTE *v0; // r5
     int v1; // r10
@@ -10009,7 +10009,7 @@ signed int sub_8137A7C()
 
 
 // 0x8137acc
-void __noreturn sub_8137ACC()
+void __noreturn battle_loadNaviBackground()
 {
     int v0; // r6
     int v1; // r7

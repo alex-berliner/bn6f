@@ -70,7 +70,7 @@ sub_812DB44::
 	beq loc_812DB64
 	b loc_812DB72
 loc_812DB64::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -151,7 +151,7 @@ loc_812DBFA::
 	beq loc_812DC04
 	b loc_812DC10
 loc_812DC04::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -243,7 +243,7 @@ loc_812DCB2::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #2
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -313,7 +313,7 @@ loc_812DD40::
 	beq loc_812DD4A
 	b loc_812DD56
 loc_812DD4A::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -411,7 +411,7 @@ loc_812DDFC::
 	beq loc_812DE06
 	b loc_812DE18
 loc_812DE06::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -520,7 +520,7 @@ loc_812DEC2::
 	strh r0, [r5,#0x2a]
 	mov r1, #0
 	strh r1, [r5,#0x26]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, byte_812DF9C // =0xdc 
@@ -553,7 +553,7 @@ loc_812DF14::
 	beq loc_812DF1E
 	b loc_812DF30
 loc_812DF1E::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -652,7 +652,7 @@ loc_812DFCA::
 	beq loc_812DFE0
 	b loc_812DFEC
 loc_812DFE0::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -804,7 +804,7 @@ loc_812E10C::
 	beq loc_812E116
 	b loc_812E122
 loc_812E116::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, dword_812E260 // =0xfedb 
@@ -877,7 +877,7 @@ loc_812E184::
 	strb r0, [r5,#2]
 	mov r0, #0xc
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #4
 	strh r1, [r0,#8]
 	strh r1, [r5,#0x26]
@@ -904,7 +904,7 @@ loc_812E1D6::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1002,7 +1002,7 @@ sub_812E280::
 	beq loc_812E29C
 	b loc_812E2A8
 loc_812E29C::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1118,7 +1118,7 @@ sub_812E370::
 	beq loc_812E38C
 	b loc_812E398
 loc_812E38C::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1180,7 +1180,7 @@ loc_812E3F6::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1229,7 +1229,7 @@ loc_812E456::
 	beq loc_812E460
 	b loc_812E504
 loc_812E460::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #8
 	tst r4, r1
 	beq loc_812E478
@@ -1588,7 +1588,7 @@ loc_812E728::
 	beq loc_812E732
 	b loc_812E73E
 loc_812E732::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x2a]
 	strh r1, [r5,#0xa]
 	ldrh r1, [r5,#0x26]
@@ -1702,7 +1702,7 @@ sub_812E7F4::
 	beq loc_812E810
 	b loc_812E81E
 loc_812E810::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	mov r1, #0x80
@@ -1752,7 +1752,7 @@ loc_812E840::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1784,7 +1784,7 @@ loc_812E8A8::
 	beq loc_812E8B2
 	b loc_812E8BE
 loc_812E8B2::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1851,7 +1851,7 @@ loc_812E928::
 	strh r6, [r5,#0x2a]
 	strh r7, [r5,#0x2c]
 loc_812E92C::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldr r1, dword_812E9A4 // =0xfedb 
 	strh r1, [r0,#0xa]
 	mov r1, #0
@@ -1888,7 +1888,7 @@ loc_812E92C::
 	bl sub_8046696
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]

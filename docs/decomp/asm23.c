@@ -850,7 +850,7 @@ signed int __fastcall sub_8089BAA(int a1)
 
 
 // 0x8089bc0
-signed int sub_8089BC0()
+signed int ai_event745OnceInit()
 {
     _BYTE *v0; // r5
     char v1; // zf

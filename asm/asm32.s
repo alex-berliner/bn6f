@@ -3888,7 +3888,7 @@ ai_rushGetApproachColumn:
 	ldrb r0, [r5,r0]
 	tst r0, r0
 	beq loc_810FA0C
-	bl sub_810FA2C
+	bl ai_rushPickRandomTargetPanel
 	tst r0, r0
 	beq loc_810FA28
 	mov r1, #0
@@ -3916,9 +3916,9 @@ locret_810FA2A:
 // symdb: Picks a random battle panel (via the alliance-dependent panel filter) for the Rush attack to charge at.
 // symdb: (r0 = attacker battle object) -> r0 = chosen panel (x = low bits, y = high nibble), or current
 // symdb: panel if list empty; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FA2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_rushPickRandomTargetPanel.yaml
 	thumb_local_start
-sub_810FA2C:
+ai_rushPickRandomTargetPanel:
 	push {r4-r7,lr}
 	ldr r3, off_810FCD0 // =byte_810FA3C
 	bl GetAllianceDependentPanelParamArgs
@@ -3927,7 +3927,7 @@ sub_810FA2C:
 	.balign 4, 0
 byte_810FA3C:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_810FA2C
+	thumb_func_end ai_rushPickRandomTargetPanel
 
 	thumb_func_start sub_810FA4C
 sub_810FA4C:
@@ -5828,7 +5828,7 @@ loc_81109A6:
 	bl object_updateCollisionPanels
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_811109C
+	bl ai_spawnPanelEffect
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
@@ -5905,7 +5905,7 @@ loc_8110A3E:
 	bl object_updateCollisionPanels
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_811109C
+	bl ai_spawnPanelEffect
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
@@ -6146,7 +6146,7 @@ loc_8110BDE:
 	bl object_updateCollisionPanels
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_811109C
+	bl ai_spawnPanelEffect
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
@@ -6221,7 +6221,7 @@ loc_8110C7E:
 	bl object_updateCollisionPanels
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_811109C
+	bl ai_spawnPanelEffect
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	bl object_removePanelReserve
@@ -6724,9 +6724,9 @@ loc_811108E:
 
 // symdb: Spawns a battle effect object at a given panel's screen position, oriented by the acting object's team/facing.
 // symdb: (r0 = panel column, r1 = panel row; r5 = battle object) -> r0 = spawned effect object pointer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811109C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_spawnPanelEffect.yaml
 	thumb_local_start
-sub_811109C:
+ai_spawnPanelEffect:
 	push {r4-r7,lr}
 	push {r0,r1}
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -6748,7 +6748,7 @@ sub_811109C:
 	.balign 4, 0
 dword_81110C4:
 	.word 0x15
-	thumb_func_end sub_811109C
+	thumb_func_end ai_spawnPanelEffect
 
 	thumb_local_start
 sub_81110C8:
@@ -8133,7 +8133,7 @@ ai_attackSpawnVariant:
 	ldr r1, dword_8111D90 // =0xa000
 	tst r0, r1
 	beq loc_8111C1A
-	bl sub_8111D28
+	bl ai_attackGetAlliancePanelRegion
 	b loc_8111C1E
 loc_8111C1A:
 	mov lr, pc
@@ -8288,9 +8288,9 @@ sub_8111D06:
 // symdb: AI attack-variant helper that fetches the team-dependent panel-effect parameter and uses it to obtain a panel region for the attack.
 // symdb: (r5 = battle object) -> r0 = region handle/result from object_getPanelRegion; r4/r6 clobbered by
 // symdb: convention
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111D28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackGetAlliancePanelRegion.yaml
 	thumb_local_start
-sub_8111D28:
+ai_attackGetAlliancePanelRegion:
 	push {r7,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #5
@@ -8304,7 +8304,7 @@ sub_8111D28:
 	mov r4, #0x23
 	bl object_getPanelRegion
 	pop {r7,pc}
-	thumb_func_end sub_8111D28
+	thumb_func_end ai_attackGetAlliancePanelRegion
 
 	thumb_local_start
 sub_8111D46:
@@ -13711,7 +13711,7 @@ snakearmAI_81149E0:
 	bl snakearm_getPanelParamAndNext
 	tst r0, r0
 	bne loc_8114A02
-	bl sub_8114A64
+	bl snakearm_pickAllianceRandomPanel
 	tst r0, r0
 	bne loc_8114A02
 	bl sub_8114A84
@@ -13775,9 +13775,9 @@ off_8114A60:
 // symdb: Fetches the alliance-dependent panel parameter for SnakeArm and uses it to pick a random panel, returning that panel's coords.
 // symdb: (r0 = battle object ptr) -> r0 = panel word (x in low 3 bits / y in high bits, or current panel
 // symdb: on failure); clobbers r4-r7, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114A64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/snakearm_pickAllianceRandomPanel.yaml
 	thumb_local_start
-sub_8114A64:
+snakearm_pickAllianceRandomPanel:
 	push {r4-r7,lr}
 	ldr r3, off_8114A80 // =byte_8114C30
 	bl GetAllianceDependentPanelParamArgs
@@ -13787,7 +13787,7 @@ sub_8114A64:
 	.balign 4, 0
 off_8114A80:
 	.word byte_8114C30
-	thumb_func_end sub_8114A64
+	thumb_func_end snakearm_pickAllianceRandomPanel
 
 	thumb_local_start
 sub_8114A84:
@@ -19333,7 +19333,7 @@ off_8117790:
 	.word off_8117794
 off_8117794:
 	.word sub_81177A4+1
-	.word sub_81177EC+1
+	.word object_updateSpriteAnimState+1
 	.word sub_8117818+1
 off_81177A0:
 	.word byte_2011C10
@@ -19362,7 +19362,7 @@ sub_81177A4:
 	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_81177EC
+	bl object_updateSpriteAnimState
 	pop {pc}
 	.balign 4, 0
 off_81177E4:
@@ -19373,9 +19373,9 @@ off_81177E8:
 
 // symdb: Per-frame update for a fixed-position sprite object: recomputes an animation index each frame, applies it only when it changed, then runs the sprite update.
 // symdb: () -> void; uses r5 as object struct (field 0xC = cached animation index), no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81177EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateSpriteAnimState.yaml
 	thumb_local_start
-sub_81177EC:
+object_updateSpriteAnimState:
 	push {lr}
 	mov r0, #0x78
 	mov r1, #0x40
@@ -19392,7 +19392,7 @@ sub_81177EC:
 loc_8117812:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_81177EC
+	thumb_func_end object_updateSpriteAnimState
 
 	thumb_local_start
 sub_8117818:
@@ -27843,7 +27843,7 @@ loc_811B5A2:
 	bl sub_811B6E0
 	bl sub_811B71C
 	bl sub_811B7D4
-	bl sub_811B814
+	bl battle_setupObjectSpriteFromEntry
 	bl sub_811B914
 	mov r0, #4
 	strb r0, [r5,#9]
@@ -27924,7 +27924,7 @@ sub_811B620:
 	bl sub_811B6E0
 	bl sub_811B71C
 	bl sub_811B7D4
-	bl sub_811B814
+	bl battle_setupObjectSpriteFromEntry
 locret_811B646:
 	pop {pc}
 	thumb_func_end sub_811B620
@@ -27979,7 +27979,7 @@ loc_811B678:
 	bl sub_811B6E0
 	bl sub_811B71C
 	bl sub_811B7D4
-	bl sub_811B814
+	bl battle_setupObjectSpriteFromEntry
 locret_811B6B4:
 	pop {pc}
 	.balign 4, 0x00
@@ -27993,7 +27993,7 @@ sub_811B6B8:
 	bl sub_811B6E0
 	bl sub_811B71C
 	bl sub_811B7D4
-	bl sub_811B814
+	bl battle_setupObjectSpriteFromEntry
 	ldr r0, off_811B980 // =unk_2037780
 	mov r1, #0
 	strb r1, [r0,#0xc] // (byte_203778C - 0x2037780)
@@ -28160,9 +28160,9 @@ locret_811B812:
 // symdb: Looks up a sprite ID from the word_2023FA0 table for the entry selected by the caller and configures the current battle object's sprite (shadow flag, animation, animation data).
 // symdb: (r5 = entry struct; byte [r5+4] = list index) -> void; sets up sprite state for the object
 // symdb: resolved via battleObject_getByIndex
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B814.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupObjectSpriteFromEntry.yaml
 	thumb_local_start
-sub_811B814:
+battle_setupObjectSpriteFromEntry:
 	push {r4-r7,lr}
 	ldr r6, off_811B980 // =unk_2037780
 	ldrh r0, [r6,#0x24] // (word_20377A4 - 0x2037780)
@@ -28228,7 +28228,7 @@ byte_811B8A4:
 	.byte 0x6, 0x80, 0x35, 0x1, 0x6, 0x80, 0x2C, 0x1, 0x6, 0x80, 0x23
 	.byte 0x1, 0x6, 0x80, 0x1A, 0x1, 0x6, 0x80, 0x11, 0x1, 0x6, 0x80
 	.byte 0x8, 0x1, 0x6
-	thumb_func_end sub_811B814
+	thumb_func_end battle_setupObjectSpriteFromEntry
 
 	thumb_local_start
 sub_811B8C8:

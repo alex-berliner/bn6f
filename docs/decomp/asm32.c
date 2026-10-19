@@ -2479,7 +2479,7 @@ int __fastcall ai_rushGetApproachColumn(int a1, int a2, int a3)
     int result; // r0
 
     if ( v3->extraVars[31] )
-        sub_810FA2C(v3->extraVars[31], a2, a3);
+        ai_rushPickRandomTargetPanel(v3->extraVars[31], a2, a3);
     v5 = object_getFrontDirection(v3);
     v6 = *(v4 + 44);
     if ( v6 && *(v6 + 36) > 0 )
@@ -2491,7 +2491,7 @@ int __fastcall ai_rushGetApproachColumn(int a1, int a2, int a3)
 
 
 // 0x810fa2c
-void __fastcall __noreturn sub_810FA2C(int a1, int a2, int a3)
+void __fastcall __noreturn ai_rushPickRandomTargetPanel(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -4207,7 +4207,7 @@ int __fastcall sub_8111030(char a1, char a2)
 
 
 // 0x811109c
-void __fastcall sub_811109C(char a1)
+void __fastcall ai_spawnPanelEffect(char a1)
 {
     Battle *v1; // r5
     int v2; // ST04_4
@@ -5125,7 +5125,7 @@ int __fastcall ai_attackSpawnVariant(int a1)
     v3 = *(&off_8111C74 + a1);
     v4 = object_getFlag();
     if ( v4 & 0xA000 )
-        result = sub_8111D28(v4, 40960, v5);
+        result = ai_attackGetAlliancePanelRegion(v4, 40960, v5);
     else
         result = v3();
     if ( result )
@@ -5232,7 +5232,7 @@ int __fastcall sub_8111D06(int a1, int a2, int a3)
 
 
 // 0x8111d28
-int __fastcall sub_8111D28(int a1, int a2, int a3)
+int __fastcall ai_attackGetAlliancePanelRegion(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r6
@@ -8727,7 +8727,7 @@ void __fastcall __noreturn snakearm_getPanelParamAndNext(int a1, int a2, int a3)
 
 
 // 0x8114a64
-void __fastcall __noreturn sub_8114A64(int a1, int a2, int a3)
+void __fastcall __noreturn snakearm_pickAllianceRandomPanel(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -12212,12 +12212,12 @@ void __noreturn sub_81177A4()
     sprite_setSubRecordFieldA_8003060(1);
     sprite_setPriority_8002E14(0);
     *(v0 + 8) = 4;
-    sub_81177EC();
+    object_updateSpriteAnimState();
 }
 
 
 // 0x81177ec
-void __noreturn sub_81177EC()
+void __noreturn object_updateSpriteAnimState()
 {
     int v0; // r5
     signed int v1; // r0
@@ -17153,7 +17153,7 @@ signed int sub_811B594()
         sub_811B6E0();
         sub_811B71C();
         sub_811B7D4();
-        v2 = sub_811B814();
+        v2 = battle_setupObjectSpriteFromEntry();
         sub_811B914(v2);
         *(v0 + 9) = 4;
         result = 0;
@@ -17200,7 +17200,7 @@ int sub_811B620()
         sub_811B6E0();
         sub_811B71C();
         sub_811B7D4();
-        result = sub_811B814();
+        result = battle_setupObjectSpriteFromEntry();
     }
     return result;
 }
@@ -17238,7 +17238,7 @@ char *sub_811B6B8()
     sub_811B6E0();
     sub_811B71C();
     sub_811B7D4();
-    sub_811B814();
+    battle_setupObjectSpriteFromEntry();
     result = &eT4BattleObjects[3872];
     eT4BattleObjects[3884] = 0;
     return result;
@@ -17341,7 +17341,7 @@ int sub_811B7D4()
 
 
 // 0x811b814
-int sub_811B814()
+int battle_setupObjectSpriteFromEntry()
 {
     int v0; // r5
     int v1; // r0

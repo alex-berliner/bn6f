@@ -3753,9 +3753,9 @@ loc_80105EE:
 // symdb: Initializes an enemy AI's attack/chip-use parameters and kicks the battle object into one of two attack states.
 // symdb: (r0 = flags (bit 0x200 selects state 0x48 vs 0x47), r1 = chipUseDelay, r2 = aiDifficultyTier, r3
 // symdb: = damage) -> void; relies on caller-set r5 (battle object), clobbers r0-r3,r7,LR
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80105F2.yaml
-	thumb_func_start sub_80105F2
-sub_80105F2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_beginAttack.yaml
+	thumb_func_start ai_beginAttack
+ai_beginAttack:
 	push {r7,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -3807,7 +3807,7 @@ loc_8010656:
 loc_801065C:
 	add sp, sp, #0x10
 	pop {r7,pc}
-	thumb_func_end sub_80105F2
+	thumb_func_end ai_beginAttack
 
 // symdb: When the battle-effects low-HP flag and navi stats low-HP bit are set and HP has dropped to 25% or less of max, clears the navi stats flag and fires a panel tile effect at the object's position.
 // symdb: u32 battle_lowHPTileTrigger_8010660(u32 objPtr /*r5*/, u32 r2, u32 r3) -> r0..r3, C, V
@@ -9764,7 +9764,7 @@ loc_8013008:
 	bne loc_8013044
 	mov r0, #SOUND_CANT_JACK_IN
 	bl PlaySoundEffect
-	bl sub_801EC44
+	bl battle_hudQueueGfxLoadAndStartTimer
 	b loc_8013044
 loc_801303C:
 	ldr r0, off_80133B8 // =timer_2000000 
@@ -11844,7 +11844,7 @@ loc_8013E00:
 	bl battle_setPlayerNaviStatsField0E_8015BEC
 	b loc_8013E38
 loc_8013E2E:
-	bl sub_80143CE
+	bl battle_naviAISetFlag2Default
 	b loc_8013E38
 loc_8013E34:
 	bl ai_clearCounterHitChainFlag
@@ -12697,9 +12697,9 @@ loc_80143B6:
 
 // symdb: Conditionally sets flags-2 bit 0x200 on the battle object's AI data when two AI-state gate fields are clear
 // symdb: (r0 = BattleObject ptr via callee convention) -> r0 = clobbered; flags from callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80143CE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_naviAISetFlag2Default.yaml
 	thumb_local_start
-sub_80143CE:
+battle_naviAISetFlag2Default:
 	push {lr}
 	bl battle_aiAIDataUnk32IsZero_801445C
 	bne locret_80143E2
@@ -12709,7 +12709,7 @@ sub_80143CE:
 	bl object_setFlag2
 locret_80143E2:
 	pop {pc}
-	thumb_func_end sub_80143CE
+	thumb_func_end battle_naviAISetFlag2Default
 
 // symdb: If a battle object's AI data has any anger built up, flashes its sprite with the enraged red color shader (0xF).
 // symdb: void battle_updateAngerTint(battleObj in r5); out: r3, flags c/v preserved from caller, nz set
@@ -13220,17 +13220,17 @@ off_80146B8:
 	.word sub_8014746+1
 	.word nullsub_5+1
 	.word sub_8014754+1
-	.word sub_8014760+1
+	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_8014754+1
 	.word sub_8014754+1
 	.word sub_8014754+1
 	.word sub_8014754+1
 	.word sub_8014754+1
-	.word sub_8014760+1
+	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_8014776+1
-	.word sub_8014760+1
+	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_801478C+1
-	.word sub_8014760+1
+	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_801479C+1
 	.word sub_80147B2+1
 	thumb_func_end sub_801469C
@@ -13316,9 +13316,9 @@ sub_8014754:
 
 // symdb: Flags the current battle object with 0x30 in ObjectFlags1 and refreshes its collision with a hit modifier of 3 when the NoCustomPlus battle effect is active, else 0.
 // symdb: () -> void; operates on the current battle object tracked outside this function
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014760.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupNoCustomPlusObjectCollision.yaml
 	thumb_local_start
-sub_8014760:
+battle_setupNoCustomPlusObjectCollision:
 	push {lr}
 	mov r0, #0x30 
 	bl object_setFlag1 // (int a1) -> void
@@ -13327,7 +13327,7 @@ sub_8014760:
 	mov r2, #2
 	bl object_updateCollisionData
 	pop {pc}
-	thumb_func_end sub_8014760
+	thumb_func_end battle_setupNoCustomPlusObjectCollision
 
 	thumb_local_start
 sub_8014776:
@@ -13339,7 +13339,7 @@ sub_8014776:
 	beq loc_8014786
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 loc_8014786:
-	bl sub_8014760
+	bl battle_setupNoCustomPlusObjectCollision
 	pop {pc}
 	thumb_func_end sub_8014776
 
@@ -13349,7 +13349,7 @@ sub_801478C:
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
 	bl object_setFlag1 // (int a1) -> void
-	bl sub_8014760
+	bl battle_setupNoCustomPlusObjectCollision
 	pop {pc}
 	thumb_func_end sub_801478C
 
@@ -13856,7 +13856,7 @@ off_8014AF0:
 	.word sub_801516C+1
 	.word sub_80151D4+1
 	.word sub_80152C8+1
-	.word sub_80153B0+1
+	.word ai_attackStateTimeout+1
 off_8014B00:
 	.word off_8014B04
 off_8014B04:
@@ -14900,9 +14900,9 @@ dword_80153AC:
 // symdb: Runs a per-frame countdown on a battle object; once the timer expires, clears AI-state flags and exits the attack state.
 // symdb: (r7 = battle object with AI attack vars) -> r0 = scratch; sets/clears object AI flag bits and
 // symdb: battle flag 0x20
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80153B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackStateTimeout.yaml
 	thumb_local_start
-sub_80153B0:
+ai_attackStateTimeout:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
@@ -14930,7 +14930,7 @@ locret_80153E4:
 	.balign 4, 0
 dword_80153E8:
 	.word 0x80000
-	thumb_func_end sub_80153B0
+	thumb_func_end ai_attackStateTimeout
 
 // symdb: Completes an AI-controlled object's emergence onto its reserved target panel: commits panel coords, updates collision/sprite, clears invulnerability, and advances the AI attack state.
 // symdb: (r5 = battle object, r7 = oAIAttackVars of the AI attack state) -> void; r0 = 4 (HitElement) on
@@ -16170,9 +16170,9 @@ loc_8015CBC:
 // symdb: oBattleObject_Alliance/oBattleObject_DirectionFlip) -> r0 = chosen column (low nibble), r1 =
 // symdb: chosen row (high nibble), r2/r3 = column/row of last panel matching the alliance mask; flags
 // symdb: clobbered.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015CC0.yaml
-	thumb_func_start sub_8015CC0
-sub_8015CC0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomPanelAlongRow.yaml
+	thumb_func_start battle_pickRandomPanelAlongRow
+battle_pickRandomPanelAlongRow:
 	push {lr}
 	sub sp, sp, #0x34
 	str r0, [sp,#8]
@@ -16267,7 +16267,7 @@ off_8015D74:
 	.word byte_8015D78
 byte_8015D78:
 	.byte 0x0, 0x0, 0x80, 0x1, 0x0, 0x0, 0x80, 0x2
-	thumb_func_end sub_8015CC0
+	thumb_func_end battle_pickRandomPanelAlongRow
 
 	thumb_func_start panelFlagCheck_8015D80
 // r0 - panel X
@@ -33506,9 +33506,9 @@ sub_801EC38:
 // symdb: Loads two blocks of graphics (to VRAM and an IWRAM buffer) and kicks off a HUD request with a 60-frame timer in the battle HUD state.
 // symdb: () -> (); queues two GFX transfers, sets request bit 0x00200000 via
 // symdb: eStruct2035280_SetRequestBits, dispatches it, and writes 0x3C to eStruct2035280+0x1B
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EC44.yaml
-	thumb_func_start sub_801EC44
-sub_801EC44:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_hudQueueGfxLoadAndStartTimer.yaml
+	thumb_func_start battle_hudQueueGfxLoadAndStartTimer
+battle_hudQueueGfxLoadAndStartTimer:
 	push {r4,r6,r7,lr}
 	ldr r0, off_801EC74 // =dword_86E994C 
 	ldr r1, dword_801EC78 // =0x6016d00 
@@ -33537,7 +33537,7 @@ off_801EC7C:
 	.word dword_86E9A0C
 off_801EC80:
 	.word byte_30016F0
-	thumb_func_end sub_801EC44
+	thumb_func_end battle_hudQueueGfxLoadAndStartTimer
 
 	thumb_local_start
 sub_801EC84:

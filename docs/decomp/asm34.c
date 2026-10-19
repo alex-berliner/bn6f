@@ -417,7 +417,7 @@ int sub_812D854()
 
 
 // 0x812d880
-int sub_812D880()
+int t4_transitionToTextState1C()
 {
 	_BYTE *v0; // r5
 	int v1; // r1

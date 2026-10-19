@@ -2192,7 +2192,7 @@ LABEL_10:
 
 
 // 0x800d300
-int __fastcall sub_800D300(int a1, int a2, int a3, int a4)
+int __fastcall battle_findMatchingPanelsPerRow(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r7

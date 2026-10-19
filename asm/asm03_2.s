@@ -1800,7 +1800,7 @@ dialogueEnd_unlockPlayer_8046E48:
 	cmp r0, #1
 	bne loc_8046E6E
 	mov r0, r1
-	bl sub_803D0B4
+	bl bugfrags_syncProtectedCounters
 	b loc_8046E74
 loc_8046E6E:
 	mov r0, r1
@@ -5359,7 +5359,7 @@ loc_8049450:
 	bl sub_803CB18
 	beq loc_8049464
 	bl sub_8132648
-	bl sub_8148D24
+	bl rfu_initWirelessSession
 	mov r0, #0x44 
 	strb r0, [r5,#1]
 loc_8049464:
@@ -5746,14 +5746,14 @@ off_8049730:
 	.word sub_8049844+1
 	.word sub_804986E+1
 	.word chatbox_inputHandler_8049888+1
-	.word sub_80498AA+1
+	.word battle_preInitSetupState+1
 	.word sub_80498D4+1
 	.word sub_80498E4+1
 	.word sub_80498F8+1
-	.word sub_8049934+1
-	.word sub_804996A+1
+	.word battle_setupStartTransition+1
+	.word battle_beginSetup+1
 	.word chatbox_stepState_8049984+1
-	.word sub_80499AE+1
+	.word battle_setupBegin+1
 	.word chatbox_closeFadeHandler_80499CE+1
 	thumb_func_end sub_804971C
 
@@ -5935,9 +5935,9 @@ loc_80498A4:
 // symdb: Before initializing the battle module, resets/normalizes a 2-byte-strided table and stores its entry count plus two mode bytes into a global state struct, unless cutscene flag bit 0x80 marks it as already done.
 // symdb: () -> void; r5 = pointer to a global battle-state struct (byte fields at +0x01, +0x10, +0x13);
 // symdb: reads eFlags2009F38 bit 0x80; clobbers r0-r1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80498AA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_preInitSetupState.yaml
 	thumb_local_start
-sub_80498AA:
+battle_preInitSetupState:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -5956,7 +5956,7 @@ sub_80498AA:
 loc_80498CE:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_80498AA
+	thumb_func_end battle_preInitSetupState
 
 // symdb: Initializes a battle work structure (clears byte at +8, writes 0x24 marker at +1) before handing it to battle_moduleInit_803A820 to fill in.
 // symdb: void battle_workInit_80498D4(u32 r5 /* work struct */); out: r3, r8-r12, C, V (preserved by
@@ -6025,9 +6025,9 @@ dword_804991C:
 // symdb: Picks the battle-entry transition mode (fade vs skip) from chatbox/cutscene state, then initializes the battle module.
 // symdb: (r5 = battle-transition state struct; byte [r5+3] = sub-state, byte [r5+1] = mode written) ->
 // symdb: void; sets mode byte then calls battle init
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049934.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupStartTransition.yaml
 	thumb_local_start
-sub_8049934:
+battle_setupStartTransition:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -6054,14 +6054,14 @@ loc_8049960:
 loc_8049964:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049934
+	thumb_func_end battle_setupStartTransition
 
 // symdb: Entry into battle setup: if the screen is currently fading, loads battle background/tile data and sets a two-byte state (4,0), then kicks off the battle module's main init.
 // symdb: (r5 = destination battle-state struct, set by caller; no args in r0-r3) -> r0 = 0 after
 // symdb: battle_moduleInit call; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804996A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beginSetup.yaml
 	thumb_local_start
-sub_804996A:
+battle_beginSetup:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_804997E
@@ -6073,7 +6073,7 @@ sub_804996A:
 loc_804997E:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_804996A
+	thumb_func_end battle_beginSetup
 
 // symdb: Drives one tick of the chatbox state machine, branching to a "done" phase or a fade-out phase based on chatbox state and an eFlags bit.
 // symdb: void chatbox_stepState_8049984(struct ChatboxStateObj *r5, void *r10)
@@ -6103,9 +6103,9 @@ loc_80499A8:
 
 // symdb: Battle-start state handler: if the 0x80 cutscene/event flag is clear it resets two state bytes and runs a list-reset helper, then always launches the battle module init.
 // symdb: (r5 = task/state struct) -> r0 = battle module init result; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80499AE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBegin.yaml
 	thumb_local_start
-sub_80499AE:
+battle_setupBegin:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -6120,7 +6120,7 @@ sub_80499AE:
 loc_80499C8:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_80499AE
+	thumb_func_end battle_setupBegin
 
 // symdb: Chatbox cleanup/reset handler gated on the screen-fade state (resets fade flag, clears VRAM/GFX, reinitializes chatbox state machine when not fading; otherwise takes an alternate early-out path).
 // symdb: void sub_80499CE(u16* fadeState_r5, ... r6 r7 r8 r9 r10 r11 r12 lr) -> clobbers nz cv r0 r1 r2
@@ -6745,10 +6745,10 @@ off_8049E98:
 	.word screenFadeUpdateTick_8049F32+1
 	.word sub_8049F8A+1
 	.word sub_8049FA4+1
-	.word sub_8049FE0+1
+	.word t3_waitChatboxThenFadeout+1
 	.word sub_804A00A+1
 	.word chatbox_stateStep_804A024+1
-	.word sub_804A04E+1
+	.word e_condInitSceneListSetup+1
 	.word sceneUpdate_804A078+1
 	thumb_func_end sub_8049E84
 
@@ -6921,9 +6921,9 @@ dword_8049FC8:
 // symdb: Script/scene step handler that waits for the textbox to clear, then triggers a screen fade and advances the state machine.
 // symdb: (r5 = scene/script state struct, byte [r5+1] = current step) -> void; flags from flag-mask test
 // symdb: used to branch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049FE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_waitChatboxThenFadeout.yaml
 	thumb_local_start
-sub_8049FE0:
+t3_waitChatboxThenFadeout:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -6943,7 +6943,7 @@ loc_8049FF8:
 loc_804A004:
 	bl sub_8049F70
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049FE0
+	thumb_func_end t3_waitChatboxThenFadeout
 
 	thumb_local_start
 sub_804A00A:
@@ -6990,9 +6990,9 @@ loc_804A048:
 // symdb: Script/event step that, when event-flag bit 0x80 is not yet set, sanitizes and counts a halfword entry list and sets up scene state fields, then always resumes scene/script playback.
 // symdb: (r5 = scene/task context struct) -> r0 = passthrough of sub_8049F70; writes r5+0x00, r5+0x10,
 // symdb: r5+0x13; reads event flag bit 0x80
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A04E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_condInitSceneListSetup.yaml
 	thumb_local_start
-sub_804A04E:
+e_condInitSceneListSetup:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -7011,7 +7011,7 @@ sub_804A04E:
 loc_804A072:
 	bl sub_8049F70
 	pop {r4-r7,pc}
-	thumb_func_end sub_804A04E
+	thumb_func_end e_condInitSceneListSetup
 
 // symdb: Scene-update hook that, while a screen fade is active, tears down scene graphics (VRAM, GFX buffer, tile memory, LCD control, chatbox, system init); otherwise delegates to sub_8049F70.
 // symdb: void sub_804A078(void) /* r5/r10/lr in, no return value, clobbers r0-r3/r12 + nzcv */

@@ -5349,7 +5349,7 @@ JumpTable8005948:
   // fade to black warp
   .word gameState_beginEndingSequence_800596C+1 // (self: * GameState $r5) -> ()
   // fade to white warp
-	.word sub_8005990+1 // (self: * GameState $r5) -> ()
+	.word gamestate_setEventFlagsAndFadeOut+1 // (self: * GameState $r5) -> ()
   // jack out anim, fade to black, fade from black, jack in anim, walk in direction
 	.word map_onMapWarpCutscene_80059B4+1 // (self: * GameState $r5) -> ()
   // jack out anim, auto camera scroll to another area in the same map, jack in anim, walk in direction
@@ -5359,7 +5359,7 @@ JumpTable8005948:
   // levbus warp
 	.word startBeastSpCutscene+1 // (self: * GameState $r5) -> ()
   // underground warp
-	.word sub_8005A0C+1 // (self: * GameState $r5) -> ()
+	.word start_cutsceneWithFlagSwap+1 // (self: * GameState $r5) -> ()
   // todo check this one with sound. like 0x0, but has a delay + plays a hardcoded sound
 	.word sub_8005A28+1 // (self: * GameState $r5) -> ()
   // same as above, but with a different delay
@@ -5395,9 +5395,9 @@ gameState_beginEndingSequence_800596C: // (self: * GameState $r5) -> ()
 
 // symdb: A GameState handler that sets two story flags, starts a screen fade, ticks the countdown-timer table, and advances to overworld subsystem 0x10.
 // symdb: (r0 = GameState* in r5, self) -> r0 = 0x10 stored to oGameState_SubsystemIndex; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005990.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gamestate_setEventFlagsAndFadeOut.yaml
 	thumb_local_start
-sub_8005990: // (self: * GameState $r5) -> ()
+gamestate_setEventFlagsAndFadeOut: // (self: * GameState $r5) -> ()
 	push {lr}
 	movflag EVENT_1703
 	bl SetEventFlagFromImmediate
@@ -5416,7 +5416,7 @@ sub_8005990: // (self: * GameState $r5) -> ()
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
 	pop {pc}
-	thumb_func_end sub_8005990
+	thumb_func_end gamestate_setEventFlagsAndFadeOut
 
 // symdb: Handler for warping on a map — resets two event flags and starts the "on-map warp" cutscene that makes the warp interactable.
 // symdb: void map_onMapWarpCutscene(GameState* self /* in r5 */)
@@ -5494,9 +5494,9 @@ startBeastSpCutscene: // (self: * GameState $r5) -> ()
 // symdb: Story trigger: clears event flag 1703, sets event flag 1738, and launches cutscene script CutsceneScript_8098B1C with param 0
 // symdb: (r0 = * GameState (unused by the body)) -> r0 = undefined; calls ClearEventFlagFromImmediate,
 // symdb: SetEventFlagFromImmediate, StartCutscene
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_cutsceneWithFlagSwap.yaml
 	thumb_local_start
-sub_8005A0C: // (self: * GameState $r5) -> ()
+start_cutsceneWithFlagSwap: // (self: * GameState $r5) -> ()
 	push {lr}
 	movflag EVENT_1703
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -5508,7 +5508,7 @@ sub_8005A0C: // (self: * GameState $r5) -> ()
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 
 	pop {pc}
-	thumb_func_end sub_8005A0C
+	thumb_func_end start_cutsceneWithFlagSwap
 
 	thumb_local_start
 sub_8005A28: // (self: * GameState $r5) -> ()
@@ -9400,7 +9400,7 @@ spawnGuardian_800751C: // (self: * EnemySetup $r6) -> ()
 	ldrb r3, [r6,#2]
 	mov r4, #1
 	ldr r6, byte_80077F8 // =0xc8
-	bl sub_80D4FA6
+	bl spawnGuardianObject
 	pop {r4,r6,pc}
 	thumb_func_end spawnGuardian_800751C
 
@@ -10930,16 +10930,16 @@ sub_8007F4E: // (self: * BattleState $r5) -> ()
 off_8007F98:
 	.word off_8007F9C
 off_8007F9C:
-	.word sub_8007FA4+1
+	.word battle_pauseAndFadeOut+1
 	.word sub_8007FD2+1
 	thumb_func_end sub_8007F4E
 
 // symdb: Battle state step that pauses the battle, runs two init sub-steps, starts a screen fade, and advances the phase once the fade completes.
 // symdb: (r0 = battle state pointer (also in r5), no args) -> r0 = 4 when fade done, r0 = 0xC/0x10
 // symdb: clobbered; sets phase 4 via strh to oBattleState_StatePhaseAndInitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007FA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pauseAndFadeOut.yaml
 	thumb_local_start
-sub_8007FA4:
+battle_pauseAndFadeOut:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -10960,7 +10960,7 @@ loc_8007FC4:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007FD0:
 	pop {pc}
-	thumb_func_end sub_8007FA4
+	thumb_func_end battle_pauseAndFadeOut
 
 	thumb_local_start
 sub_8007FD2:
@@ -11694,7 +11694,7 @@ off_8008508:
 	.word sub_8008764+1
 	.word sub_80087D8+1
 	.word sub_8008840+1
-	.word sub_8008900+1
+	.word npc_checkRecordFlagFinish+1
 off_8008524:
 	.word dword_203CA70
 	thumb_func_end sub_80084F0
@@ -12137,7 +12137,7 @@ sub_8008840:
 off_8008850:
 	.word off_8008854
 off_8008854:
-	.word sub_8008864+1
+	.word battle_crossNetIntroStep+1
 	.word sub_8008894+1
 	.word sub_80088B2+1
 	.word sub_80088D6+1
@@ -12146,9 +12146,9 @@ off_8008854:
 // symdb: Battle-side update step that fires the cross-net battle intro once (effect kind 0x54) and then waits until the linked partner reports battle-ready.
 // symdb: (r5 = battle sub-state struct ptr, no r0 args) -> r0 clobbered; writes [r5+2] (halfword), [r5+3]
 // symdb: (byte), [r5+8] (halfword)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008864.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_crossNetIntroStep.yaml
 	thumb_local_start
-sub_8008864:
+battle_crossNetIntroStep:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12171,7 +12171,7 @@ loc_8008886:
 	strh r0, [r5,#2]
 locret_8008892:
 	pop {pc}
-	thumb_func_end sub_8008864
+	thumb_func_end battle_crossNetIntroStep
 
 	thumb_local_start
 sub_8008894:
@@ -12245,9 +12245,9 @@ locret_80088FE:
 // symdb: If bit 3 of a record flag in the 0x2036820 table is set, plays sound 0x9F, advances the r5 object's state field to 4, and dispatches event 0x200.
 // symdb: (r0/r5 = object struct, [r5+5] = record index into table 0x2036820) -> r0 = clobbered; [r5+0] =
 // symdb: 4 when flag set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008900.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_checkRecordFlagFinish.yaml
 	thumb_local_start
-sub_8008900:
+npc_checkRecordFlagFinish:
 	push {lr}
 	ldrb r0, [r5,#5]
 	bl getRecordFlagBit3
@@ -12265,7 +12265,7 @@ locret_800891C:
 	.word dword_2036820
 off_8008924:
 	.word 0x200
-	thumb_func_end sub_8008900
+	thumb_func_end npc_checkRecordFlagFinish
 
 	thumb_local_start
 sub_8008928:
@@ -12883,7 +12883,7 @@ off_8008D7C:
 	.word sub_8008DDC+1
 	.word sub_8008E7C+1
 	.word battle_stepLoseSequence+1
-	.word sub_8008FF0+1
+	.word battle_stepEndFadeWait+1
 	.word sub_8009058+1
 	.word sub_8009118+1
 off_8008D98:
@@ -13208,9 +13208,9 @@ locret_8008FEE:
 // symdb: Battle-loop state step that triggers the battle-end effect (kind 0x1C), waits out a 102-frame timer (and linked-battle partner readiness), then advances the battle-end sequence.
 // symdb: (r5 = battle scene state struct, no register args) -> updates [r5]+3 phase byte, +8 timer, +4
 // symdb: and [r5] next-state; writes oGameState_BattleEndSubState; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008FF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepEndFadeWait.yaml
 	thumb_local_start
-sub_8008FF0:
+battle_stepEndFadeWait:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13261,7 +13261,7 @@ loc_800904C:
 	strb r0, [r1,#oGameState_BattleEndSubState]
 locret_8009056:
 	pop {pc}
-	thumb_func_end sub_8008FF0
+	thumb_func_end battle_stepEndFadeWait
 
 	thumb_local_start
 sub_8009058:
@@ -14524,16 +14524,16 @@ sub_80098BC:
 off_80098CC:
 	.word off_80098D0
 off_80098D0:
-	.word sub_80098D8+1
+	.word battle_waitForResultScreenSync+1
 	.word sub_8009916+1
 	thumb_func_end sub_80098BC
 
 // symdb: Link-battle state handler: initializes the result transition, waits until both players' tracked id equals 0x1f2f3f4f (or a 180-frame timeout), then restores result records and advances the battle state.
 // symdb: (r0-r4 = state work area in r5, no args) -> r0 = clobbered; sets
 // symdb: oBattleState_StatePhaseAndInitFlag = 4 on sync or oBattleState_Index_00 = 0xc on timeout
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80098D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitForResultScreenSync.yaml
 	thumb_local_start
-sub_80098D8:
+battle_waitForResultScreenSync:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14567,7 +14567,7 @@ loc_8009906:
 
 locret_8009914:
 	pop {pc}
-	thumb_func_end sub_80098D8
+	thumb_func_end battle_waitForResultScreenSync
 
 	thumb_local_start
 sub_8009916:
@@ -15421,15 +15421,15 @@ sub_8009EE2:
 off_8009EF0:
 	.word off_8009EF4
 off_8009EF4:
-	.word sub_8009EFC+1
+	.word battle_waitLinkResultsSyncPhase+1
 	.word sub_8009F3A+1
 	thumb_func_end sub_8009EE2
 
 // symdb: Battle-state handler that waits for link sync of post-battle results, then restores result records and advances to phase 4 (with a 180-frame timeout fallback).
 // symdb: (r5 = battle state struct) -> r0 = 0/unused; flags from tst/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009EFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitLinkResultsSyncPhase.yaml
 	thumb_local_start
-sub_8009EFC:
+battle_waitLinkResultsSyncPhase:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15463,7 +15463,7 @@ loc_8009F2A:
 
 locret_8009F38:
 	pop {pc}
-	thumb_func_end sub_8009EFC
+	thumb_func_end battle_waitLinkResultsSyncPhase
 
 	thumb_local_start
 sub_8009F3A:
@@ -15941,9 +15941,9 @@ locret_800A1A8:
 // symdb: Returns whether this frame's rare-event roll in battle state hit, gated on no time-stop and the battle still running.
 // symdb: () -> r0 = 1 if battle state field 0x38 (rare-event roll) >= 0x2D0 and battle is active and not
 // symdb: time-stopped, else 0; flags clobbered by BLs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A1AA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_isRareEventRollSuccess.yaml
 	thumb_local_start
-sub_800A1AA:
+battle_isRareEventRollSuccess:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A1C8
@@ -15962,7 +15962,7 @@ loc_800A1C8:
 	.balign 4, 0
 off_800A1CC:
 	.word 0x2D0
-	thumb_func_end sub_800A1AA
+	thumb_func_end battle_isRareEventRollSuccess
 
 // symdb: Returns 1 if the player or enemy navi is under a freeze/slowdown status and the corresponding battle flag bit confirms it is currently in effect.
 // symdb: battle_checkNaviFreeze_800A1D0(u32 r6, u32 r10) -> r0 (active: 0 or 1), r1 (flag bit consulted),

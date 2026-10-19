@@ -10291,9 +10291,9 @@ off_8148D20:
 // symdb: Resets the wireless-link working buffers, registers the link callbacks, sets the recv buffer/slot and starts a 14-byte periodic send, returning 0 with error code 0x31 on failure.
 // symdb: (r0 = unused) -> r0 = 1 on success, 0 on rfu_UNI_setSendData failure; writes error/state 0x31 to
 // symdb: word_200BC58 on failure
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148D24.yaml
-	thumb_func_start sub_8148D24
-sub_8148D24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initWirelessSession.yaml
+	thumb_func_start rfu_initWirelessSession
+rfu_initWirelessSession:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	ldr r2, off_8148E1C // =byte_2010480 
@@ -10457,7 +10457,7 @@ loc_8148E6A:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8148D24
+	thumb_func_end rfu_initWirelessSession
 
 	thumb_local_start
 sub_8148E74:

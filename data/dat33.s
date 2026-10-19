@@ -73,7 +73,7 @@ sub_812C320::
 	beq loc_812C340
 	b loc_812C34E
 loc_812C340::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -126,7 +126,7 @@ loc_812C370::
 	bl sub_812D5A0
 	b loc_812C3B6
 loc_812C3B2::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812C3B6::
 	b locret_812C3B8
 locret_812C3B8::
@@ -154,7 +154,7 @@ loc_812C3D6::
 	beq loc_812C3E0
 	b loc_812C3EC
 loc_812C3E0::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -246,7 +246,7 @@ loc_812C48E::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #2
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -255,7 +255,7 @@ loc_812C48E::
 	bl SetScreenFade // (int a1, int a2) -> void
 	b loc_812C4C2
 loc_812C4B2::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 	b loc_812C4C2
 loc_812C4B8::
 	bl IsScreenFadeActive // () -> zf
@@ -317,7 +317,7 @@ loc_812C520::
 	beq loc_812C52A
 	b loc_812C536
 loc_812C52A::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -367,7 +367,7 @@ loc_812C562::
 	bne loc_812C596
 	b loc_812C596
 loc_812C590::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 	b loc_812C5B6
 loc_812C596::
 	ldrb r0, [r5,#3]
@@ -419,7 +419,7 @@ loc_812C5E4::
 	beq loc_812C5EE
 	b loc_812C600
 loc_812C5EE::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -523,7 +523,7 @@ loc_812C6B8::
 	bl sub_812D204
 	b loc_812C6FC
 loc_812C6C2::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 	b loc_812C6FC
 loc_812C6C8::
 	mov r0, #JOYPAD_B
@@ -542,7 +542,7 @@ loc_812C6C8::
 	strh r0, [r5,#0x2a]
 	mov r1, #0
 	strh r1, [r5,#0x26]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, dword_812C7A4 // =0xfedc 
@@ -576,7 +576,7 @@ loc_812C71C::
 	beq loc_812C726
 	b loc_812C738
 loc_812C726::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -628,7 +628,7 @@ loc_812C764::
 	strb r0, [r5,#3]
 	b loc_812C794
 loc_812C790::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812C794::
 	b locret_812C79C
 loc_812C796::
@@ -678,7 +678,7 @@ loc_812C7D4::
 	beq loc_812C7EA
 	b loc_812C7F6
 loc_812C7EA::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -741,7 +741,7 @@ loc_812C846::
 	strb r0, [r5,#2]
 	b loc_812C880
 loc_812C87C::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812C880::
 	b locret_812C882
 locret_812C882::
@@ -821,7 +821,7 @@ loc_812C904::
 	beq loc_812C90E
 	b loc_812C91A
 loc_812C90E::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, dword_812CA64 // =0xfedb 
@@ -899,7 +899,7 @@ loc_812C986::
 	strb r0, [r5,#2]
 	mov r0, #0xc
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #4
 	strh r1, [r0,#8]
 	strh r1, [r5,#0x26]
@@ -926,7 +926,7 @@ loc_812C9D8::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -974,7 +974,7 @@ loc_812CA32::
 	strh r0, [r5,#0x28]
 	b loc_812CA50
 loc_812CA4C::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812CA50::
 	b locret_812CA58
 loc_812CA52::
@@ -1024,7 +1024,7 @@ sub_812CA84::
 	beq loc_812CAA0
 	b loc_812CAAC
 loc_812CAA0::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1110,7 +1110,7 @@ loc_812CB46::
 	strh r0, [r5,#0x28]
 	b loc_812CB62
 loc_812CB5E::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812CB62::
 	b locret_812CB64
 locret_812CB64::
@@ -1140,7 +1140,7 @@ sub_812CB74::
 	beq loc_812CB90
 	b loc_812CB9C
 loc_812CB90::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1202,7 +1202,7 @@ loc_812CBFA::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1223,7 +1223,7 @@ loc_812CC22::
 	strh r0, [r5,#0x28]
 	b loc_812CC3E
 loc_812CC3A::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812CC3E::
 	b locret_812CC40
 locret_812CC40::
@@ -1251,7 +1251,7 @@ loc_812CC5A::
 	beq loc_812CC64
 	b loc_812CD08
 loc_812CC64::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #8
 	tst r4, r1
 	beq loc_812CC7C
@@ -1383,7 +1383,7 @@ loc_812CD6E::
 	strb r2, [r5,#0x10]
 	b loc_812CD76
 loc_812CD72::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812CD76::
 	b locret_812CD78
 locret_812CD78::
@@ -1591,7 +1591,7 @@ loc_812CF04::
 	beq loc_812CF0E
 	b loc_812CF1A
 loc_812CF0E::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1666,7 +1666,7 @@ loc_812CF9E::
 	bl sub_812D748
 	b loc_812CFBC
 loc_812CFA8::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812CFAC::
 	bl sub_812D778
 	b loc_812CFBC
@@ -1700,7 +1700,7 @@ loc_812CFE4::
 	beq loc_812CFEE
 	b loc_812CFFA
 loc_812CFEE::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x2a]
 	strh r1, [r5,#0xa]
 	ldrh r1, [r5,#0x26]
@@ -1790,7 +1790,7 @@ loc_812D09A::
 	strb r0, [r5,#3]
 	b loc_812D0AA
 loc_812D0A6::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812D0AA::
 	b loc_812D0AC
 loc_812D0AC::
@@ -1821,7 +1821,7 @@ sub_812D0C0::
 	beq loc_812D0DC
 	b loc_812D0EA
 loc_812D0DC::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	mov r1, #0x80
@@ -1871,7 +1871,7 @@ loc_812D10C::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1880,7 +1880,7 @@ loc_812D10C::
 	strh r1, [r0,#0xa]
 	b loc_812D160
 loc_812D15C::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 loc_812D160::
 	b locret_812D162
 locret_812D162::
@@ -1903,7 +1903,7 @@ loc_812D174::
 	beq loc_812D17E
 	b loc_812D18A
 loc_812D17E::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1934,7 +1934,7 @@ loc_812D1B0::
 	bl chatbox_8040818
 	b loc_812D1C0
 loc_812D1B8::
-	bl sub_812D880
+	bl t4_transitionToTextState1C
 	b loc_812D1BE
 loc_812D1BE::
 	b loc_812D1C0
@@ -1987,7 +1987,7 @@ loc_812D21C::
 	strh r6, [r5,#0x2a]
 	strh r7, [r5,#0x2c]
 loc_812D220::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldr r1, dword_812D290 // =0xfedb 
 	strh r1, [r0,#0xa]
 	mov r1, #0
@@ -2022,7 +2022,7 @@ loc_812D220::
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]

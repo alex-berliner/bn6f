@@ -3858,9 +3858,9 @@ loc_800D2EC:
 // symdb: (r0 = panel status high-byte value to match, r1 = unused?, r2 = required-flag mask, r3 =
 // symdb: forbidden-flag mask; r5 = entity, r7 = output byte buffer) -> r0 = number of panels found (0-3);
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D300.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findMatchingPanelsPerRow.yaml
 	thumb_local_start
-sub_800D300:
+battle_findMatchingPanelsPerRow:
 	push {r6,lr}
 	sub sp, sp, #0x20
 	str r0, [sp]
@@ -3945,7 +3945,7 @@ loc_800D392:
 	mov r0, r6
 	add sp, sp, #0x20
 	pop {r6,pc}
-	thumb_func_end sub_800D300
+	thumb_func_end battle_findMatchingPanelsPerRow
 
 	thumb_local_start
 sub_800D3A6:

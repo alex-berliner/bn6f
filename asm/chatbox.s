@@ -4919,7 +4919,7 @@ loc_8041E5A:
 	ldrb r1, [r4,#4]
 	// off
 	ldrb r2, [r4,#5]
-	bl sub_8021B78 // (int idx, int searchItem, int off) -> void*
+	bl pack_setChipQuantity // (int idx, int searchItem, int off) -> void*
 	pop {r4,r5}
 	add r4, #6
 	mov r0, #1
@@ -7004,7 +7004,7 @@ loc_8042C84:
 	orr r0, r1
 	orr r0, r2
 	orr r0, r3
-	bl sub_803D0B4
+	bl bugfrags_syncProtectedCounters
 	pop {r4,r5}
 	push {r0}
 	mov r0, #SOUND_UNK_73

@@ -4619,7 +4619,7 @@ LABEL_28:
 
 
 // 0x8148d24
-signed int sub_8148D24()
+signed int rfu_initWirelessSession()
 {
     unsigned int v0; // r2
     int v1; // r0

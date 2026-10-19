@@ -110,7 +110,7 @@ _BYTE *__fastcall sub_8021B5A(_BYTE *result, int a2, int a3)
 // 0x8021b78
 // [break (E7FE)]
 //     When getting an item; like from mayl, or when loading shops
-void *__cdecl sub_8021B78(int idx, int searchItem, int off)
+void *__cdecl pack_setChipQuantity(int idx, int searchItem, int off)
 {
     void *result; // r0
     int r0; // [sp+0h] [bp-10h]

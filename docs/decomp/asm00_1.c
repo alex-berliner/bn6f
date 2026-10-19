@@ -3047,7 +3047,7 @@ signed int gameState_beginEndingSequence_800596C()
 
 
 // 0x8005990
-signed int sub_8005990()
+signed int gamestate_setEventFlagsAndFadeOut()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -3105,7 +3105,7 @@ void *__fastcall startBeastSpCutscene(int a1, int a2, int a3, int a4)
 
 
 // 0x8005a0c
-void *sub_8005A0C()
+void *start_cutsceneWithFlagSwap()
 {
     int v0; // r2
     int v1; // r3
@@ -5366,7 +5366,7 @@ _BYTE *__noreturn spawnGuardian_800751C()
     v2 = v1 & 7;
     v3 = v1 >> 4;
     v4 = object_getPanelDataOffset(v1 & 7, v1 >> 4);
-    return sub_80D4FA6(v2, v3, v4[3], *(v0 + 2));
+    return spawnGuardianObject(v2, v3, v4[3], *(v0 + 2));
 }
 
 
@@ -6381,7 +6381,7 @@ signed int __fastcall sub_8007F4E(int a1)
 
 
 // 0x8007fa4
-int sub_8007FA4()
+int battle_pauseAndFadeOut()
 {
     int v0; // r5
     int result; // r0
@@ -7326,7 +7326,7 @@ int sub_8008840()
 
 
 // 0x8008864
-int sub_8008864()
+int battle_crossNetIntroStep()
 {
     int v0; // r5
     int result; // r0
@@ -7426,7 +7426,7 @@ int sub_80088D6()
 
 
 // 0x8008900
-int sub_8008900()
+int npc_checkRecordFlagFinish()
 {
     int v0; // r5
     int result; // r0
@@ -8186,7 +8186,7 @@ int battle_stepLoseSequence()
 
 
 // 0x8008ff0
-int sub_8008FF0()
+int battle_stepEndFadeWait()
 {
     int v0; // r5
     int v1; // r10
@@ -9295,7 +9295,7 @@ int sub_80098BC()
 
 
 // 0x80098d8
-int sub_80098D8()
+int battle_waitForResultScreenSync()
 {
     int v0; // r5
     int result; // r0
@@ -10092,7 +10092,7 @@ int sub_8009EE2()
 
 
 // 0x8009efc
-int sub_8009EFC()
+int battle_waitLinkResultsSyncPhase()
 {
     int v0; // r5
     int result; // r0
@@ -10503,7 +10503,7 @@ signed int battle_isBattleOver()
 
 
 // 0x800a1aa
-BOOL sub_800A1AA()
+BOOL battle_isRareEventRollSuccess()
 {
     char v0; // zf
 

@@ -330,7 +330,7 @@ JumpTable8033A1C:
 	.word sub_8033AB0+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_resetState_8033AC4+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033ADC+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033AF0+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_queueBattleIntroOam+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_initBattleStartOverlay_8033A80+1 // (self: * S2011E30 $r5) -> ()
@@ -341,16 +341,16 @@ off_8033A48:
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/JumpTableInternet8033A4C.yaml
 JumpTableInternet8033A4C:
 	.word noop_8033B08+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B0C+1 // (self: * S2011E30 $r5) -> ()
+	.word ow_drawInternetHud+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B30+1 // (self: * S2011E30 $r5) -> ()
+	.word internet_updateOverworldHud+1 // (self: * S2011E30 $r5) -> ()
 	.word internet_redrawOverworldUi+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B5C+1 // (self: * S2011E30 $r5) -> ()
+	.word ow_drawHudOverlays+1 // (self: * S2011E30 $r5) -> ()
 	.word sub_8033B6E+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B0C+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B0C+1 // (self: * S2011E30 $r5) -> ()
+	.word ow_drawInternetHud+1 // (self: * S2011E30 $r5) -> ()
+	.word ow_drawInternetHud+1 // (self: * S2011E30 $r5) -> ()
 off_8033A78:
 	.word eS2011E30
 	thumb_func_end dispatch_80339CC
@@ -437,9 +437,9 @@ sub_8033ADC: // (self: * S2011E30 $r5) -> ()
 
 // symdb: One step of the battle-intro (jack-in) animation: queues the navi frame, the battle-start overlay, an extra step handler, and the real-world navi icon OAM.
 // symdb: (self in r5: * S2011E30) -> r0 = last callee's return; no flags relied on by caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033AF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueBattleIntroOam.yaml
 	thumb_local_start
-sub_8033AF0: // (self: * S2011E30 $r5) -> ()
+battle_queueBattleIntroOam: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #1
 	bl sprite_queueOamByFrameIndex_8033B80
@@ -448,7 +448,7 @@ sub_8033AF0: // (self: * S2011E30 $r5) -> ()
 	bl sub_8033CF0
 	bl battleObject_queueRealWorldNaviIconOAM_8033BE8
 	pop {pc}
-	thumb_func_end sub_8033AF0
+	thumb_func_end battle_queueBattleIntroOam
 
 	thumb_local_start
 noop_8033B08: // (self: * S2011E30 $r5) -> ()
@@ -458,16 +458,16 @@ noop_8033B08: // (self: * S2011E30 $r5) -> ()
 
 // symdb: Redraws the Internet overworld HUD: PET HP digits, battle-start overlay, and map name.
 // symdb: (r0 = self: *S2011E30) -> r0 = destroyed; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_drawInternetHud.yaml
 	thumb_local_start
-sub_8033B0C: // (self: * S2011E30 $r5) -> ()
+ow_drawInternetHud: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
-	thumb_func_end sub_8033B0C
+	thumb_func_end ow_drawInternetHud
 
 // symdb: Per-frame update hook while browsing the Internet overworld — runs the common Internet update step, requests state 1, and redraws the current map/area name display.
 // symdb: void onUpdateInInternet_8033B1E(self: *S2011E30 /* in r5 */); reads r4-r7, r9-r12, lr from
@@ -486,9 +486,9 @@ onUpdateInInternet_8033B1E: // (self: * S2011E30 $r5) -> ()
 // symdb: Per-frame update/draw of the Internet-overworld HUD: HP digits, battle-start overlay, alert beep, and map name.
 // symdb: () -> (); preserves registers, no return value; r5 already points at the S2011E30 Internet-UI
 // symdb: state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B30.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/internet_updateOverworldHud.yaml
 	thumb_local_start
-sub_8033B30: // (self: * S2011E30 $r5) -> ()
+internet_updateOverworldHud: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
@@ -496,7 +496,7 @@ sub_8033B30: // (self: * S2011E30 $r5) -> ()
 	bl internet_tickAlertSoundTimer
 	bl RenderMapName_8033EE8
 	pop {pc}
-	thumb_func_end sub_8033B30
+	thumb_func_end internet_updateOverworldHud
 
 // symdb: Redraws the Internet-overworld HUD: PET HP digits, battle-start overlay state, an extra UI layer, and the current map name.
 // symdb: (no register args; callee set uses r5 = self * S2011E30) -> no return value; r0 clobbered by
@@ -515,16 +515,16 @@ internet_redrawOverworldUi: // (self: * S2011E30 $r5) -> ()
 
 // symdb: Per-frame HUD refresh: draws PET HP digits, the battle-start overlay if active, and the current map name.
 // symdb: (r0/r5 = overworld state struct S2011E30) -> r0 = clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_drawHudOverlays.yaml
 	thumb_local_start
-sub_8033B5C: // (self: * S2011E30 $r5) -> ()
+ow_drawHudOverlays: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
-	thumb_func_end sub_8033B5C
+	thumb_func_end ow_drawHudOverlays
 
 	thumb_local_start
 sub_8033B6E: // (self: * S2011E30 $r5) -> ()

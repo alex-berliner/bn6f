@@ -399,7 +399,7 @@ sub_808FB18:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_BE5
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_808FBA0
+	bl ow_spawnObject1BAtPlayer
 	bl ZeroOWPlayerNaviPaletteIndex
 	bl sub_808F990
 	bl owPlayer_clearInteractionLocked_809e23c
@@ -458,9 +458,9 @@ dword_808FB9C:
 
 // symdb: Spawns overworld map object type 0x1B at the player's current position, passing the player's facing direction.
 // symdb: (no args) -> r0 = spawned object or its handle from SpawnOverworldMapObject; clobbers r0-r4, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FBA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnObject1BAtPlayer.yaml
 	thumb_local_start
-sub_808FBA0:
+ow_spawnObject1BAtPlayer:
 	push {lr}
 	bl ReadOWPlayerObjectCoords
 	mov r3, r2
@@ -474,7 +474,7 @@ sub_808FBA0:
 	pop {r5}
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808FBA0
+	thumb_func_end ow_spawnObject1BAtPlayer
 
 	thumb_local_start
 sub_808FBC0:

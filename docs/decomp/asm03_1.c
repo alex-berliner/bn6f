@@ -108,7 +108,7 @@ void __noreturn sub_8033ADC()
 
 
 // 0x8033af0
-void __noreturn sub_8033AF0()
+void __noreturn battle_queueBattleIntroOam()
 {
     sprite_queueOamByFrameIndex_8033B80(1);
 }
@@ -122,7 +122,7 @@ void noop_8033B08()
 
 
 // 0x8033b0c
-void __noreturn sub_8033B0C()
+void __noreturn ow_drawInternetHud()
 {
     internet_drawHpDigits_8033E0C();
 }
@@ -136,7 +136,7 @@ void __noreturn onUpdateInInternet_8033B1E()
 
 
 // 0x8033b30
-void __noreturn sub_8033B30()
+void __noreturn internet_updateOverworldHud()
 {
     internet_drawHpDigits_8033E0C();
 }
@@ -150,7 +150,7 @@ void __noreturn internet_redrawOverworldUi()
 
 
 // 0x8033b5c
-void __noreturn sub_8033B5C()
+void __noreturn ow_drawHudOverlays()
 {
     internet_drawHpDigits_8033E0C();
 }
@@ -8300,7 +8300,7 @@ signed int __fastcall sub_803ABF4(int a1, int a2, int a3)
 
 
 // 0x803ac02
-void __noreturn sub_803AC02()
+void __noreturn battle_startTransitionStep()
 {
     int v0; // r5
     char v1; // zf
@@ -8344,7 +8344,7 @@ void __noreturn sub_803AC2C()
 
 
 // 0x803ac56
-void __noreturn sub_803AC56()
+void __noreturn battle_startInit()
 {
     int v0; // r5
     char v1; // zf
@@ -8669,7 +8669,7 @@ signed int __fastcall sub_803AED8(int a1, int a2, int a3)
 
 
 // 0x803aee6
-void __noreturn sub_803AEE6()
+void __noreturn battle_startFadeIn()
 {
     int v0; // r5
     char v1; // zf
@@ -8740,7 +8740,7 @@ void __noreturn sub_803AF46()
 
 
 // 0x803af70
-void __noreturn sub_803AF70()
+void __noreturn battle_condInitModule()
 {
     int v0; // r5
     char v1; // zf
@@ -10943,7 +10943,7 @@ int sub_803CC28()
 
 
 // 0x803cc40
-int sub_803CC40()
+int t1_screenFadeBlankAndDispatch()
 {
     int v0; // r5
     int result; // r0
@@ -11461,7 +11461,7 @@ void GiveBugfrags()
 
 
 // 0x803d0b4
-void sub_803D0B4()
+void bugfrags_syncProtectedCounters()
 {
     int v0; // r10
     int v1; // r0
@@ -14695,7 +14695,7 @@ signed int infoText_IsTimestampUnchanged_803F8F4()
 
 
 // 0x803f918
-signed int sub_803F918()
+signed int saveInfoTextBlockToSram()
 {
     signed int v0; // r1
     int v1; // r2

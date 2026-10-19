@@ -133,7 +133,7 @@ sub_812F0F8::
 	beq loc_812F118
 	b loc_812F126
 loc_812F118::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -185,7 +185,7 @@ loc_812F148::
 	bl t4_sceneInit
 	b loc_812F18A
 loc_812F186::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F18A::
 	b locret_812F18C
 locret_812F18C::
@@ -213,7 +213,7 @@ loc_812F1AA::
 	beq loc_812F1B4
 	b loc_812F1C0
 loc_812F1B4::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -301,7 +301,7 @@ loc_812F25A::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #2
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -310,7 +310,7 @@ loc_812F25A::
 	bl SetScreenFade // (int a1, int a2) -> void
 	b loc_812F28E
 loc_812F27E::
-	bl sub_8130424
+	bl npc_startDialogScript
 	b loc_812F28E
 loc_812F284::
 	bl IsScreenFadeActive // () -> zf
@@ -368,7 +368,7 @@ loc_812F2E4::
 	beq loc_812F2EE
 	b loc_812F2FA
 loc_812F2EE::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -413,7 +413,7 @@ loc_812F31C::
 	bne loc_812F350
 	b loc_812F350
 loc_812F34A::
-	bl sub_8130424
+	bl npc_startDialogScript
 	b loc_812F376
 loc_812F350::
 	bl IsScreenFadeActive // () -> zf
@@ -466,7 +466,7 @@ loc_812F3A4::
 	beq loc_812F3AE
 	b loc_812F3C0
 loc_812F3AE::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -554,7 +554,7 @@ loc_812F456::
 	bl sub_812FFA0
 	b loc_812F48E
 loc_812F460::
-	bl sub_8130424
+	bl npc_startDialogScript
 	b loc_812F48E
 loc_812F466::
 	mov r0, #JOYPAD_B
@@ -569,7 +569,7 @@ loc_812F466::
 	strh r0, [r5,#0x2a]
 	mov r1, #0
 	strh r1, [r5,#0x26]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, byte_812F520 // =0xdc 
@@ -600,7 +600,7 @@ loc_812F4A8::
 	beq loc_812F4B2
 	b loc_812F4C4
 loc_812F4B2::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -647,7 +647,7 @@ loc_812F4E6::
 	strb r0, [r5,#3]
 	b loc_812F516
 loc_812F512::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F516::
 	b locret_812F518
 locret_812F518::
@@ -692,7 +692,7 @@ loc_812F550::
 	beq loc_812F566
 	b loc_812F572
 loc_812F566::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -772,7 +772,7 @@ loc_812F5EE::
 	strb r0, [r5,#2]
 	b loc_812F622
 loc_812F61E::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F622::
 	b locret_812F624
 locret_812F624::
@@ -853,7 +853,7 @@ loc_812F6A8::
 	beq loc_812F6B2
 	b loc_812F6BE
 loc_812F6B2::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, dword_812F7C4 // =0xfedb 
@@ -907,7 +907,7 @@ loc_812F6E2::
 	strb r0, [r5,#2]
 	mov r0, #0xc
 	strb r0, [r5,#3]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #4
 	strh r1, [r0,#8]
 	strh r1, [r5,#0x26]
@@ -928,7 +928,7 @@ loc_812F73E::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -976,7 +976,7 @@ loc_812F798::
 	strh r0, [r5,#0x28]
 	b loc_812F7B6
 loc_812F7B2::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F7B6::
 	b locret_812F7B8
 locret_812F7B8::
@@ -1010,7 +1010,7 @@ loc_812F7DE::
 	beq loc_812F7E8
 	b loc_812F7F4
 loc_812F7E8::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldr r1, dword_812F8FC // =0xfed8 
@@ -1052,14 +1052,14 @@ loc_812F818::
 	ble loc_812F818
 	tst r3, r3
 	bne loc_812F852
-	bl sub_813068C
+	bl battle_packChipEntryRecord
 	mov r0, #0x34 
 	strb r0, [r5,#2]
 	mov r0, #0x41 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	b loc_812F852
 loc_812F84E::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F852::
 	b locret_812F854
 locret_812F854::
@@ -1087,7 +1087,7 @@ loc_812F86E::
 	beq loc_812F878
 	b loc_812F87C
 loc_812F878::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 loc_812F87C::
 	mov r1, #8
 	tst r4, r1
@@ -1140,7 +1140,7 @@ loc_812F8A4::
 	bl sub_8130728
 	b loc_812F8EA
 loc_812F8E6::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F8EA::
 	b locret_812F8EC
 locret_812F8EC::
@@ -1188,7 +1188,7 @@ sub_812F920::
 	beq loc_812F93C
 	b loc_812F948
 loc_812F93C::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1272,7 +1272,7 @@ loc_812F9DE::
 	strh r0, [r5,#0x28]
 	b loc_812F9FA
 loc_812F9F6::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812F9FA::
 	b locret_812F9FC
 locret_812F9FC::
@@ -1304,7 +1304,7 @@ sub_812FA0C::
 	beq loc_812FA30
 	b loc_812FA3C
 loc_812FA30::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	ldrh r1, [r5,#0x2a]
@@ -1366,7 +1366,7 @@ loc_812FA9A::
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1387,7 +1387,7 @@ loc_812FAC2::
 	strh r0, [r5,#0x28]
 	b loc_812FADE
 loc_812FADA::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812FADE::
 	b locret_812FAE0
 locret_812FAE0::
@@ -1415,7 +1415,7 @@ loc_812FAFA::
 	beq loc_812FB04
 	b loc_812FB86
 loc_812FB04::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #8
 	tst r4, r1
 	beq loc_812FB10
@@ -1556,7 +1556,7 @@ loc_812FC14::
 	strb r2, [r5,#0x10]
 	b loc_812FC1C
 loc_812FC18::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812FC1C::
 	b locret_812FC1E
 locret_812FC1E::
@@ -1822,7 +1822,7 @@ loc_812FE24::
 	beq loc_812FE2E
 	b loc_812FE3A
 loc_812FE2E::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x2a]
 	strh r1, [r5,#0xa]
 	ldrh r1, [r5,#0x26]
@@ -1912,7 +1912,7 @@ loc_812FEDA::
 	strb r0, [r5,#3]
 	b loc_812FEEA
 loc_812FEE6::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812FEEA::
 	b locret_812FEEC
 locret_812FEEC::
@@ -1936,7 +1936,7 @@ sub_812FEF0::
 	beq loc_812FF0C
 	b loc_812FF1A
 loc_812FF0C::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldrh r1, [r5,#0x26]
 	strh r1, [r0,#8]
 	mov r1, #0x80
@@ -1986,7 +1986,7 @@ loc_812FF3C::
 	strb r0, [r5,#3]
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]
@@ -1995,7 +1995,7 @@ loc_812FF3C::
 	strh r1, [r0,#0xa]
 	b loc_812FF90
 loc_812FF8C::
-	bl sub_8130424
+	bl npc_startDialogScript
 loc_812FF90::
 	b locret_812FF92
 locret_812FF92::
@@ -2024,7 +2024,7 @@ loc_812FFB8::
 	strh r6, [r5,#0x2a]
 	strh r7, [r5,#0x2c]
 loc_812FFBC::
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	ldr r1, dword_8130018 // =0xfedb 
 	strh r1, [r0,#0xa]
 	mov r1, #0
@@ -2055,7 +2055,7 @@ loc_812FFBC::
 	bl sub_8046696
 	mov r0, #0
 	strb r0, [r5,#0x14]
-	bl sub_81325CC
+	bl camera_copyLinkStateToEnd
 	mov r1, #0
 	strh r1, [r5,#0x26]
 	strh r1, [r0,#8]

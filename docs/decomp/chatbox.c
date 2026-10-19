@@ -2642,7 +2642,7 @@ int __fastcall chatbox_8041DF4(int a1, int a2, int a3, int a4, int (__fastcall *
             if ( v7 == 2 )
             {
                 PlaySoundEffect(115, a2, a3);
-                sub_8021B78(v5[2] | (v5[3] << 8), v5[4], v5[5]);
+                pack_setChipQuantity(v5[2] | (v5[3] << 8), v5[4], v5[5]);
             }
             else
             {
@@ -3708,7 +3708,7 @@ signed int chatbox_8042C18()
         if ( v2 == 2 )
         {
             v12 = v0[2] | (v0[3] << 8) | (v0[4] << 16) | (v0[5] << 24);
-            sub_803D0B4();
+            bugfrags_syncProtectedCounters();
             PlaySoundEffect(115, v13, v14);
             return 1;
         }

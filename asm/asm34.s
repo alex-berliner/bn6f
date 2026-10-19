@@ -717,9 +717,9 @@ off_812D87C:
 
 // symdb: State-machine handler that saves the current state, switches the task to state 0x1C, and opens a text script (0x30 or 0x40) in the chatbox, also fixing up an in-progress screen fade.
 // symdb: (r0 = unused, r1 = unused, r5 = task struct) -> void; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D880.yaml
-	thumb_func_start sub_812D880
-sub_812D880:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_transitionToTextState1C.yaml
+	thumb_func_start t4_transitionToTextState1C
+t4_transitionToTextState1C:
 	push {lr}
 	bl screenFade_80062C8
 	cmp r0, #0xc
@@ -755,7 +755,7 @@ loc_812D8BC:
 	bl sub_8120AB8
 locret_812D8C6:
 	pop {pc}
-	thumb_func_end sub_812D880
+	thumb_func_end t4_transitionToTextState1C
 
 	thumb_func_start sub_812D8C8
 sub_812D8C8:

@@ -2871,7 +2871,7 @@ int sub_80282D2()
 
 
 // 0x80282e8
-int sub_80282E8()
+int battle_queueChipIconGfx()
 {
     int v0; // r4
     __int16 v1; // r0
@@ -2995,7 +2995,7 @@ void battleObject_runCustomScreenChipPickerEffect_8028476()
     }
     else if ( v3 == 4 || v3 == 5 )
     {
-        sub_80287A4(v1, v3, v2);
+        beastout_loadSelectionScreenGfx(v1, v3, v2);
     }
     else
     {
@@ -3003,11 +3003,11 @@ void battleObject_runCustomScreenChipPickerEffect_8028476()
             sub_80285FE(**(v1 + 2));
         if ( v3 == 3 )
         {
-            sub_8028754(v1, 3, v2);
+            beastout_loadCustomScreenGfx(v1, 3, v2);
         }
         else if ( v3 == 8 || v3 == 9 )
         {
-            sub_802877C(v1, v3, v2);
+            beastout_loadChipUseGfx(v1, v3, v2);
         }
     }
 }
@@ -3194,7 +3194,7 @@ void __fastcall beastout_loadSelectionScreenChipUseGfx(int a1, int a2, int a3)
 
 
 // 0x8028754
-void __fastcall sub_8028754(int a1, int a2, int a3)
+void __fastcall beastout_loadCustomScreenGfx(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -3208,7 +3208,7 @@ void __fastcall sub_8028754(int a1, int a2, int a3)
 
 
 // 0x802877c
-void __fastcall sub_802877C(int a1, int a2, int a3)
+void __fastcall beastout_loadChipUseGfx(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -3222,7 +3222,7 @@ void __fastcall sub_802877C(int a1, int a2, int a3)
 
 
 // 0x80287a4
-int __fastcall sub_80287A4(_BYTE *a1, int a2, int a3)
+int __fastcall beastout_loadSelectionScreenGfx(_BYTE *a1, int a2, int a3)
 {
     int v3; // r1
     int v4; // ST00_4
@@ -3719,7 +3719,7 @@ signed int __fastcall sub_8028D6C(int a1, int a2, int a3)
 
 
 // 0x8028dbc
-int sub_8028DBC()
+int custMenuConfirmMarkedEntry()
 {
     int v0; // r0
     int v1; // r2
@@ -9553,7 +9553,7 @@ char *__fastcall sub_802D0BA(int a1)
 
 
 // 0x802d0c8
-int __fastcall sub_802D0C8(int a1)
+int __fastcall battle_storePercentRatios(int a1)
 {
     char *v1; // r7
     int v2; // r0
@@ -9987,12 +9987,12 @@ void __noreturn sub_802D3CA()
     if ( v0 & 0x10 )
         v2 = byte_802D420;
     sub_81096FA(v0, 16, v1, v2);
-    sub_802D430(v3, v4, v5, v6);
+    battle_pickRandomTargetPanel(v3, v4, v5, v6);
 }
 
 
 // 0x802d430
-__int64 __fastcall __noreturn sub_802D430(int a1, int a2, int a3, int a4)
+__int64 __fastcall __noreturn battle_pickRandomTargetPanel(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r1
@@ -10018,7 +10018,7 @@ __int64 __fastcall __noreturn sub_802D430(int a1, int a2, int a3, int a4)
     {
         v8 = battle_pickRandomRowObjectFields_810971A(v7, v5, v6);
         if ( v8 )
-            sub_8015CC0(v8, v5, v21, v22);
+            battle_pickRandomPanelAlongRow(v8, v5, v21, v22);
         ++v7;
     }
     while ( v7 <= 3 );
@@ -10765,7 +10765,7 @@ signed int __noreturn sub_802DB80()
 
 
 // 0x802dc66
-void sub_802DC66()
+void battle_attackEndTimerStep()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -11410,7 +11410,7 @@ LABEL_18:
             if ( *(*(v1 + oToolkit_S2034880_Ptr) + 13) == v2 )
             {
                 PlaySoundEffect(105, 1, v10);
-                sub_801EC44();
+                battle_hudQueueGfxLoadAndStartTimer();
             }
             goto LABEL_28;
         }
@@ -11575,7 +11575,7 @@ int __fastcall sub_802E558(int a1)
 
 
 // 0x802e588
-signed int __fastcall sub_802E588(int a1, int a2, int a3)
+signed int __fastcall battle_handAddChip(int a1, int a2, int a3)
 {
     char *v3; // r7
     _WORD *v4; // r4
@@ -15837,7 +15837,7 @@ __int64 __fastcall sub_80317C2(_DWORD *a1)
 
 
 // 0x80317de
-__int64 __fastcall sub_80317DE(_DWORD *a1)
+__int64 __fastcall battle_edgeTestGetCurrentTableEntry(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -15982,7 +15982,7 @@ int sub_8031998()
 
 
 // 0x803199e
-signed int __fastcall sub_803199E(_DWORD *a1)
+signed int __fastcall battle_aiActorCountForTargetSide(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -16021,7 +16021,7 @@ signed int __fastcall sub_80319CE(_DWORD *a1)
 
 
 // 0x80319e6
-signed int __fastcall sub_80319E6(_DWORD *a1)
+signed int __fastcall battle_aiActorCountByTargetSide(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
@@ -16073,7 +16073,7 @@ signed int __fastcall sub_8031A2E(_DWORD *a1)
 
 
 // 0x8031a46
-signed int __fastcall sub_8031A46(_DWORD *a1)
+signed int __fastcall battle_aiActorCountByFieldSide(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1
