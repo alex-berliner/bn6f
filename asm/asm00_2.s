@@ -15729,6 +15729,10 @@ locret_80158F8:
 	pop {pc}
 	thumb_func_end sub_80158CC
 
+// symdb: Clears a battle object's status/ailment state: hitstun, invulnerability, status-effect timers and related AI/flag bits.
+// symdb: (uses caller's battle object in r5; no args) -> r0 clobbered; ObjectFlags1/2 bits cleared,
+// symdb: oBattleObject_AIType=0, collision timers zeroed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80158FA.yaml
 	thumb_local_start
 sub_80158FA:
 	push {lr}
@@ -31735,6 +31739,10 @@ custGauge_Init_801DED0:
 	pop {pc}
 	thumb_func_end custGauge_Init_801DED0
 
+// symdb: End-of-turn handler that empties the custom gauge, reloads its gauge tile graphics into VRAM, and posts request 0x20 to refresh the gauge display.
+// symdb: () -> r0 = request id passed to dispatcher; calls ClearCustGauge, queues GFX transfer, ORs bit
+// symdb: 0x20 into eStruct2035280 request dword.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DEEE.yaml
 	thumb_func_start sub_801DEEE
 sub_801DEEE:
 	push {lr}
@@ -31750,6 +31758,9 @@ sub_801DEEE:
 	pop {pc}
 	thumb_func_end sub_801DEEE
 
+// symdb: Resets the in-battle custom gauge for the next turn: clears gauge state, reloads its tile graphics, and flags the HUD for redraw.
+// symdb: () -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DF0C.yaml
 	thumb_func_start sub_801DF0C
 sub_801DF0C:
 	push {lr}

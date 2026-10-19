@@ -1672,6 +1672,9 @@ byte_80A5A14:
 	.byte 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x1, 0x0
 	thumb_func_end sub_80A59B8
 
+// symdb: Copies a stored position triple into a battle object's position fields (current and target), then turns the object's navi sprite to face the same direction as the overworld player.
+// symdb: (r5 = battle object) -> r0 = direction octant from the final anim call; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5A1C.yaml
 	thumb_local_start
 sub_80A5A1C:
 	push {r4-r7,lr}
@@ -2240,6 +2243,10 @@ byte_80A5E3C:
 	.byte 0x2, 0x2, 0x0, 0x6, 0x4, 0x0, 0x0, 0x0
 	thumb_func_end sprite_updateAnimByAngleToTarget
 
+// symdb: Turns the overworld player's facing direction and animation toward the position of the object passed in r5.
+// symdb: (r5 = target object with X at +0xC and Y at +0x10) -> r0 = undefined; r4 clobbered; sets player
+// symdb: animation via eStruct200ace0 and player facing direction
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E44.yaml
 	thumb_local_start
 sub_80A5E44:
 	push {r4,lr}
@@ -2925,6 +2932,10 @@ off_80A6A28:
 	.word sub_80A6B08+1
 	thumb_func_end battleObject_dispatchRunActionByState_80A6A16
 
+// symdb: Battle-object action sub-step that loads the object's sprite, sets its initial animation, disables the shadow, and advances the action state machine.
+// symdb: (r5 = battle object work area) -> r0 = result of
+// symdb: battleObject_runActionSubroutineDispatch_80A6A62; flags from that call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6A34.yaml
 	thumb_local_start
 sub_80A6A34:
 	push {lr}
@@ -10137,6 +10148,10 @@ ow_startLogoutEffect:
 	pop {r4-r7,pc}
 	thumb_func_end ow_startLogoutEffect
 
+// symdb: Per-frame update for the log-out effect object: on a flagged animation frame it advances the object's state to 8, then updates the sprite.
+// symdb: (r0 = object ptr? sprite args for frame params) -> void; sets [r5,#8]=8 when frame attribute bit
+// symdb: 0x80 set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F30.yaml
 	thumb_local_start
 sub_80A9F30:
 	push {r4-r7,lr}

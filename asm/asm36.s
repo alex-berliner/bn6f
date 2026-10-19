@@ -15906,6 +15906,10 @@ loc_813778A:
 
 	thumb_local_start
 // r7 input not used here
+// symdb: When a new Beast chip is registered, shifts the currently equipped S-chip record from slot 1 to slot 2 and loads the caller's record into slot 1, updating the beast-chip state bytes and a NaviStats flag.
+// symdb: (r0-r3 = sChip_loadRecordIntoSlot args with the record for slot 1, r4 = record pointer, r7 =
+// symdb: unused input) -> r0 = 1 if the shift ran, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137790.yaml
 sub_8137790:
 	push {r4-r7,lr}
 	mov r6, r7

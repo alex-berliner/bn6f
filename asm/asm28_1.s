@@ -164,6 +164,10 @@ loc_809FABC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809FA68
 
+// symdb: Writes a 16-bit value into the mystery-data event-flag buffer entry for a given offset.
+// symdb: (r0 = offset from 0x1400 into the 0x02004xxx flags buffer, r1 = low byte value, r2 = high byte
+// symdb: value) -> r0 = address of the written halfword; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FACE.yaml
 	thumb_local_start
 sub_809FACE:
 	push {r4-r7,lr}

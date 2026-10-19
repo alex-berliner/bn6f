@@ -6890,6 +6890,9 @@ sub_80062D0:
 	b loc_80062DA
 	thumb_func_end sub_80062D0
 
+// symdb: Stops, frees the palettes of, and zero-fills the second screen-fade slot in eScreenFade.
+// symdb: () -> void; r0/r1 clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80062D6.yaml
 	thumb_local_start
 sub_80062D6:
 	push {r5,lr}

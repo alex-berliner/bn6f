@@ -2772,6 +2772,10 @@ locret_8027794:
 	pop {r4,r6,pc}
 	thumb_func_end sub_802777C
 
+// symdb: On leaving the custom screen, rotates the queued chip entries right by one and reloads each chip's sprite tiles into its VRAM slot, then runs the exit sequence with a screen fade.
+// symdb: (r0 = ??? passed straight to battle_getActorEmotion, r5 = custom-screen state struct) -> r0 =
+// symdb: destroyed; sets state field [r5+2]h = 0x10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027796.yaml
 	thumb_local_start
 sub_8027796:
 	push {r4,r6,lr}
@@ -2963,6 +2967,10 @@ dword_8027908:
 	.word 0xFFF
 	thumb_func_end sub_8027834
 
+// symdb: Per-frame step for the custom screen 'chip selected' animation: plays the select sound, waits 5 frames while pulsing the slot, then clears selection and runs the chosen chip's effect.
+// symdb: (r0 = self pointer to custom-screen state struct, also in r5) -> r0 = clobbered; updates state
+// symdb: byte [+1]=4, phase byte [+2], counter [+0x40]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802790C.yaml
 	thumb_local_start
 sub_802790C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -3198,6 +3206,9 @@ locret_8027AAC:
 	pop {pc}
 	thumb_func_end screenFadeWaitStep
 
+// symdb: Custom-screen handler for confirming the highlighted chip: starts a screen fade, fires the chip's picker effect and sound, then advances the custom-screen state machine.
+// symdb: (r5 = custom-screen/battle state struct, read-only) -> void; writes state 0xC to [r5+2]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027AAE.yaml
 	thumb_local_start
 sub_8027AAE:
 	push {r4,r6,lr}
@@ -5723,6 +5734,11 @@ off_8028CC8:
 	.word 0x200
 	thumb_func_end custMenuSomeHandler_8028B74
 
+// symdb: Confirm handler for the Custom screen: adds the currently selected chip as the next placed chip, shows its sprite in its slot, then leaves the selection state.
+// symdb: (r4 = screen-state (byte +7 = phase, word +8 = ptr to selected chip entry halfword), r5 = screen
+// symdb: ctx (+8 = placed count, +0x48+count = slot list, +0xF = flag)) -> r0 = 1 on reject, else chip
+// symdb: ID; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028CCC.yaml
 	thumb_local_start
 sub_8028CCC:
 	push {lr}

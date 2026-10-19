@@ -147,6 +147,10 @@ off_809D268:
 	.word eStruct200ace0
 	thumb_func_end owPlayer_main
 
+// symdb: Initializes the overworld player object: picks and loads the player's sprite (current navi, with internet/Cybeast-override), resets player state, and runs one update frame.
+// symdb: (r5 = player object header/OWPlayer) -> sets oGameState_OverworldPlayerObjectPtr; no return
+// symdb: value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D270.yaml
 	thumb_local_start
 sub_809D270:
 	push {r4,lr}

@@ -4137,6 +4137,10 @@ cutscenescript_809C068::
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Grants the mail attached to a BBS board post, then marks that post as read.
+// symdb: (r0 = unused/ignored, r5 = context: [r5+6] = BBS post index, [r5+7] = mark-read flag) -> r0 = 0;
+// symdb: flags set/cleared via event-flag calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C09C.yaml
 	thumb_local_start
 sub_809C09C:
 	push {r4-r7,lr}

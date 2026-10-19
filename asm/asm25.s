@@ -1159,6 +1159,10 @@ loc_8090034:
 	.balign 4, 0x00
 	thumb_func_end weatherComp_checkTrigger60_8090020
 
+// symdb: Event-script side effect: once event flag BE4 is set, runs an unknown effect with arg 4, sets the GameState control byte to 3, and marks BBS request flag 0x7 in event byte 0x17.
+// symdb: () -> void; calls TestEventFlagFromImmediate(EVENT_BE4) and only proceeds when the flag is set
+// symdb: (Z clear), clobbers r4/lr per ABI
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809003C.yaml
 	thumb_local_start
 sub_809003C:
 	push {r4,lr}

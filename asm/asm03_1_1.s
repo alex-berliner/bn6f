@@ -14475,6 +14475,10 @@ loc_803FA36:
 	pop {r1-r7,pc}
 	thumb_func_end sub_803F9E4
 
+// symdb: At title-screen init, verifies the ROM's version string and checksum of a data blob against saved values; on mismatch clears a story flag and reinitializes the state block.
+// symdb: () -> r0 = 0 if the version string and checksum match (EVENT_1737 set), r0 = 1 otherwise
+// symdb: (EVENT_1737 cleared, state block reinitialized)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803FA42.yaml
 	thumb_func_start sub_803FA42
 sub_803FA42:
 	push {r1-r7,lr}

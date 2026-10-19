@@ -1155,6 +1155,10 @@ dword_808CAD0:
 	.word 0x100
 	thumb_func_end init_beastSpScenario
 
+// symdb: Overworld story-progress trigger: marks one event flag, then if a guard flag is already set, sets another flag and launches a map cutscene object with a jack-out lock.
+// symdb: () -> r0 = 0; sets EVENT_9D6 (always) and, if EVENT_9D8 set, EVENT_9D7, EVENT_1700, BBS flag
+// symdb: e17b0f7, GameState.Unk_09 = 3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CAD4.yaml
 	thumb_local_start
 sub_808CAD4:
 	push {r5,lr}

@@ -9989,6 +9989,10 @@ locret_8112B04:
 	pop {pc}
 	thumb_func_end battle_aiSnakeArmTickStep_8112A78
 
+// symdb: AI helper that returns a random battle panel (x,y) for the acting enemy to target, temporarily reserving the object's own panel while searching.
+// symdb: (r4 = AI data of acting object, r5 = its battle object) -> r0 = chosen panel X (low 3 bits), r1
+// symdb: = chosen panel Y (high nibble); both 0 if no candidate panel was found.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112B06.yaml
 	thumb_local_start
 sub_8112B06:
 	push {r4,r7,lr}
@@ -14680,6 +14684,10 @@ off_81151B4:
 	.word sub_8115404+1
 	thumb_func_end sub_81151A0
 
+// symdb: Runs an AI battle object's charging/ramming attack across the panels: initializes it on the first call, then advances its scripted move each frame.
+// symdb: (r7 = AI attack vars, r5 = battle object) -> void; branch into runMoveStep once AttackElement is
+// symdb: set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81151CC.yaml
 	thumb_local_start
 sub_81151CC:
 	push {lr}
@@ -15044,6 +15052,9 @@ locret_8115490:
 	pop {r4,pc}
 	thumb_func_end sub_8115466
 
+// symdb: Advances the AI move-step counter and highlights the next panel in the object's move path (one panel ahead in its facing direction).
+// symdb: (r7 = attackVars, r5 = battleObject, hidden) -> void; r0 destroyed, lr popped
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115492.yaml
 	thumb_local_start
 sub_8115492:
 	push {lr}
@@ -15066,6 +15077,10 @@ locret_81154B6:
 	pop {pc}
 	thumb_func_end sub_8115492
 
+// symdb: When the AI object's step animation (anim 2) reaches its marked final frame, switch to anim 3 and set the object's GUARD flag.
+// symdb: (r5 = battle object, r0 unused on entry) -> void; sets oBattleObject_CurAnim = 3 and ORs
+// symdb: OBJECT_FLAGS_GUARD into ObjectFlags1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81154B8.yaml
 	thumb_local_start
 sub_81154B8:
 	push {lr}
@@ -23536,6 +23551,10 @@ loc_811958E:
 	.balign 4, 0x00
 	thumb_func_end chipPanel_renderChipGfxAndText_8119438
 
+// symdb: Formats a number as packed BCD and copies its right-aligned digit glyphs (0x40 bytes each) into the chip selection panel's number buffer.
+// symdb: (r0 = value to render (0xAAAA = special marker), r1 = panel buffer base) -> writes up to 3 glyph
+// symdb: tiles at r1+0x8C0..0x980; r0/r1 clobbered, void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119594.yaml
 	thumb_local_start
 sub_8119594:
 	push {r4-r7,lr}
@@ -29544,6 +29563,9 @@ off_811C188:
 	.word 0x390
 	thumb_func_end battleObject_initBeastOutOverworldGui_811C13C
 
+// symdb: Per-frame update handler for the beast-out overworld GUI object: refreshes its ReqBBS GUI state, then updates its sprite.
+// symdb: (r0 = beast-out overworld GUI object ptr) -> r0 = sprite_update result; flags from sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C18C.yaml
 	thumb_local_start
 sub_811C18C:
 	push {lr}

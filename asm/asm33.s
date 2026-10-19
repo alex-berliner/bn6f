@@ -16890,6 +16890,10 @@ off_812B2C0:
 	.word 0x28
 	thumb_func_end submenu_positionOptionSprite
 
+// symdb: Per-frame animated-sprite step: queues one OAM entry for the entity's current animation frame and advances to the next frame when the frame timer expires.
+// symdb: (r0 = offset/id selecting a byte in the entity record r5, r5 = entity/anim-state record) ->
+// symdb: void; r4, r6 preserved, r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B2C4.yaml
 	thumb_local_start
 sub_812B2C4:
 	push {r4,r6,lr}
