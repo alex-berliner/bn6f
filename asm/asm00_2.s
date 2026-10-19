@@ -4529,6 +4529,10 @@ locret_8010BCE:
 	pop {pc}
 	thumb_func_end sub_8010B78
 
+// symdb: Returns how much HP the player has lost (MaxHP - HP), capped at 500.
+// symdb: (r0 = unused/ignored, r1 = alliance flag for battle_findPlayer) -> r0 = min(MaxHP - HP, 500);
+// symdb: flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010BD0.yaml
 	thumb_local_start
 sub_8010BD0:
 	push {r6,r7,lr}
@@ -6777,6 +6781,10 @@ sub_8011CA8:
 	mov pc, lr
 	thumb_func_end sub_8011CA8
 
+// symdb: AI attack-state handler: queries the use-chip state machine and sets charge-ready or difficulty-tier flags based on its result code.
+// symdb: (r0 unused, forced to 0; r7 = AI attack-vars struct pointer) -> r0 = status code: unchanged
+// symdb: (0x53/0x54) when charge flag set, otherwise 0x41
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011CB4.yaml
 	thumb_local_start
 sub_8011CB4:
 	push {r4,lr}
@@ -6983,6 +6991,10 @@ sub_8011DDC:
 	pop {pc}
 	thumb_func_end sub_8011DDC
 
+// symdb: Initializes an AI attack-vars record for a Beast Out power attack, computing its damage via the scaled-base helper.
+// symdb: (r7 = pointer to AI attack vars struct; no args in r0-r3) -> r0 = 0x50 (the base damage); flags
+// symdb: unused
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011DFC.yaml
 	thumb_local_start
 sub_8011DFC:
 	push {lr}
@@ -7486,6 +7498,10 @@ sub_8012124:
 	pop {pc}
 	thumb_func_end sub_8012124
 
+// symdb: Initializes the battle AI attack variables for a Navi-controlled attack, scaling base damage from the battle object's NaviStats byte and setting fixed per-tier constants.
+// symdb: (r0 = battle object ptr; r7 = oAIAttackVars struct base) -> r0 = 0x38 (state/attack id); no
+// symdb: flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012144.yaml
 	thumb_local_start
 sub_8012144:
 	push {lr}
@@ -12102,7 +12118,7 @@ sub_8013F14:
 	pop {pc}
 	thumb_func_end sub_8013F14
 
-// symdb: After a hit lands, sums the three panel-damage slots on the attacker's collision record; if any damage was dealt, updates the AI's "did damage" latch and dispatches to the per-alliance damage handler (null for one team, object_applyStatusEffect50/F8C/F96 for the others).
+// symdb: After a hit lands, sums the three panel-damage slots on the attacker's collision record; if any damage was dealt, updates the AI's "did damage" latch and dispatches to the per-alliance damage handler (null for one team, sub_8013F82/F8C/F96 for the others).
 // symdb: void handlePanelDamage_8013F1E(u32 obj /* r5 */); /* reads r5, returns nothing; flags NZVC
 // symdb: clobbered */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/handlePanelDamage_8013F1E.yaml
@@ -30388,6 +30404,10 @@ locret_801D562:
 	pop {pc}
 	thumb_func_end object_countdownDispatch
 
+// symdb: Parameterless helper that enqueues two hard-coded OAM entries (offsets 0xD368 and 0xD36C) through the OAM queue.
+// symdb: () -> r0 = undefined (clobbered by calls); queues two sprite_queueOamEntry calls with r2 = r3 =
+// symdb: 0 and returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D564.yaml
 	thumb_local_start
 sub_801D564:
 	push {r4-r7,lr}

@@ -15958,6 +15958,10 @@ dword_812ABE8:
 	.word 0xFFFFFFFF
 	thumb_func_end sub_812AAC0
 
+// symdb: Battle entity step routine that calls one of four per-entity handlers selected by a byte at [r5,#2], then runs the standard wait-for-state battle update.
+// symdb: (r5 = entity/work struct) -> r0 = result of battle_stepWaitForStateRunUpdate; no flags
+// symdb: meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ABEC.yaml
 	thumb_local_start
 sub_812ABEC:
 	push {lr}
@@ -18793,6 +18797,10 @@ loc_812C10C:
 	pop {r7,pc}
 	thumb_func_end sub_812C0EC
 
+// symdb: Refreshes the camera's end-state from eLinkState and writes a fixed end-camera pair (0x30 or 0x48, then 0x4321) plus clears two fields of the caller's struct.
+// symdb: (no args read; r5 = caller-provided struct with flag byte at +0x12, word at +0x40, halfword at
+// symdb: +0x2E) -> r0 = eCamera end-struct base (from callee), clobbered; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C11C.yaml
 	thumb_local_start
 sub_812C11C:
 	push {r7,lr}

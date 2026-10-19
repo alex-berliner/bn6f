@@ -2272,6 +2272,10 @@ loc_809E164:
 	pop {r4-r7,pc}
 	thumb_func_end owPlayer_RequestFixedAnimation_809E14C
 
+// symdb: Setter that records a state byte in the eStruct and the player object, then sets story event flag 1719.
+// symdb: (r0 = state value) -> stores r0 at eStruct200ACE2 and ~r0 at player object+0x15; sets
+// symdb: EVENT_1719; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E168.yaml
 	thumb_local_start
 sub_809E168:
 	push {lr}

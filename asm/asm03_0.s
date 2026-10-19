@@ -355,6 +355,10 @@ sub_80266AC:
 	pop {pc}
 	thumb_func_end sub_80266AC
 
+// symdb: Runs the facing-offset tile checker on an object using one of two special-case offset tables, chosen by comparing a computed alliance/facing value against r6.
+// symdb: (r4 = battle object, r6 = value to match) -> r0 = nonzero if the checker hit on a listed
+// symdb: relative tile; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80266BA.yaml
 	thumb_local_start
 sub_80266BA:
 	push {lr}
@@ -4193,6 +4197,10 @@ sprite_CopyObjTilesToVramSlot_80281D4:
 	pop {r1,r2,pc}
 	thumb_func_end sprite_CopyObjTilesToVramSlot_80281D4
 
+// symdb: Copies the 128-byte (8-tile) graphics block at index r0 from the ROM array byte_8725894 into VRAM slot r1 at 0x0600A4A0 via a queued transfer.
+// symdb: (r0 = source block index into byte_8725894, r1 = destination slot index in 0x0600A4A0 VRAM
+// symdb: tiles) -> r0 = trashed (callees), no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80281E4.yaml
 	thumb_local_start
 sub_80281E4:
 	push {r1-r3,lr}
@@ -5904,6 +5912,10 @@ locret_8028E02:
 	pop {pc}
 	thumb_func_end sub_8028DD6
 
+// symdb: Attempts to jack into a linked overworld object, playing a select sound and starting the jack-in state on success or a buzz and returning 1 on failure.
+// symdb: (r4 = pointer to object/trigger struct, r5 = task context struct) -> r0 = 0 if accepted, 1 if
+// symdb: refused; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028E04.yaml
 	thumb_local_start
 sub_8028E04:
 	push {r6,r7,lr}
@@ -13780,6 +13792,10 @@ byte_802C8A0:
 	.byte 0x90, 0xCC, 0x90, 0xCD, 0x90, 0xCE, 0x90
 	thumb_func_end battle_chipSelectDrawMeterBlocks_802C85C
 
+// symdb: Picks a random index from a byte-weight table, weighted by each entry's value.
+// symdb: (r0 = pointer to byte weight table, r1 = total sum of weights) -> r0 = selected index; destroys
+// symdb: r1-r3, r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C8B0.yaml
 	thumb_local_start
 sub_802C8B0:
 	push {lr}
@@ -14273,6 +14289,10 @@ off_802CBC0:
 	.word sub_802CC8C+1
 	thumb_func_end sub_802CBAC
 
+// symdb: State step of a battle object: spawns battle sub-effect kind 0x28 at the object's (possibly mirrored) position, then advances the object to state 4 with a zeroed counter.
+// symdb: (r0 unused, r5 = battle object struct: +8/+0xA = coords, +1 = state, +2 = counter) -> r0 =
+// symdb: dispatch result; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CBCC.yaml
 	thumb_local_start
 sub_802CBCC:
 	push {lr}
@@ -16010,6 +16030,10 @@ off_802D710:
 	.word dword_203C970
 	thumb_func_end sub_802D6C4
 
+// symdb: Dispatches on the object's HitElement to one of three per-element effect handlers, then refreshes the sprite animation.
+// symdb: (r7 = object whose oAIAttackVars_HitElement is set, r0/r1 scratch) -> r0 = handler return value;
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D714.yaml
 	thumb_func_start sub_802D714
 sub_802D714:
 	push {lr}
@@ -17960,6 +17984,10 @@ off_802E5F8:
 	.word EVENT_2020
 	thumb_func_end battle_handAddChip
 
+// symdb: Appends a halfword value to one of up to 5 slots in a 0x1D0-byte record from the array at 0x2036120, failing when the record's list is full.
+// symdb: (r0 = record index, r1 = halfword value, r2 = extra arg passed on to sub_802E674) -> r0 = 1 if
+// symdb: appended, 0 if the record already holds 5 entries; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E5FC.yaml
 	thumb_local_start
 sub_802E5FC:
 	push {r4-r6,lr}
@@ -18636,6 +18664,9 @@ sub_802EB60:
 	pop {pc}
 	thumb_func_end sub_802EB60
 
+// symdb: Initializes a battle object's attack/state struct (state 0, counter 3, timer 0x23C) and queues attack 0x2B via object_setAttack0.
+// symdb: (r6 = object struct pointer, passed implicitly via register) -> r0 = 1 (success); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EB80.yaml
 	thumb_local_start
 sub_802EB80:
 	push {lr}
@@ -18660,6 +18691,10 @@ off_802EBA4:
 	.word 0x23C
 	thumb_func_end sub_802EB80
 
+// symdb: Resets an entity's attack-state fields and queues attack 0x2B via object_setAttack0.
+// symdb: (r0 = unused, r6 = battle entity/attack struct) -> r0 = 1; sets struct fields at r6+2..+0xC and
+// symdb: attack id 0x2B
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EBA8.yaml
 	thumb_local_start
 sub_802EBA8:
 	push {lr}
@@ -18902,6 +18937,9 @@ off_802EDB8:
 	.word 0x23C
 	thumb_func_end sub_802ED8A
 
+// symdb: Initializes an enemy's state-work fields, sets a 40-frame timer, and makes the object begin attack id 0x16 (22).
+// symdb: (r6 = object/enemy work pointer, set by caller) -> r0 = 1, r1 = 0; clobbers lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EDBC.yaml
 	thumb_local_start
 sub_802EDBC:
 	push {lr}

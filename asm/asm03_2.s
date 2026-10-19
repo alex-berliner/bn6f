@@ -5565,7 +5565,7 @@ loc_80495C8:
 	thumb_func_end sub_80495B4
 
 // symdb: Reloads an 0x800-byte OBJ tile block (and a 32-byte palette) and defers a follow-up callback until the screen fade ends, otherwise performs the immediate alternative.
-// symdb: () -> r0 = undefined; calls copyMemory_8001850 then t1_setMainState1cWithArg(callback=sub_8039570+1) when
+// symdb: () -> r0 = undefined; calls copyMemory_8001850 then sub_803CB8C(callback=sub_8039570+1) when
 // symdb: IsScreenFadeActive, else calls sub_803A1B0; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesDuringFadeOrRun.yaml
 	thumb_local_start
@@ -7697,6 +7697,10 @@ dword_804A5B0:
 	.word 0xFFFFFFD8
 	thumb_func_end sub_804A574
 
+// symdb: Advances an object's sprite-id step by 0x10 up to 0x28, flags state 8 when capped, and moves the 3-sprite group to (0x58, 0).
+// symdb: (r0 = unused on entry, r5 = object struct) -> r0 = final step id passed to callee; stores step
+// symdb: to [r5+0x18], state 8 to [r5+1] when clamped
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A5B4.yaml
 	thumb_local_start
 sub_804A5B4:
 	push {lr}

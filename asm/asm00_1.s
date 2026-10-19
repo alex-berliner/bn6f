@@ -1801,6 +1801,10 @@ Is_eStruct2001010_Initialized:
 	mov pc, lr
 	thumb_func_end Is_eStruct2001010_Initialized
 
+// symdb: Returns TRUE only if eStruct2001010 is initialized and its byte at offset 1 equals the given id.
+// symdb: (r0 = id to match against byte_2001011) -> r0 = 1 if initialized and id matches, else 0; sets
+// symdb: flags via tst on result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003B24.yaml
 	thumb_local_start
 sub_8003B24:
 	push {r4-r7,lr}
@@ -11458,6 +11462,10 @@ off_800835C:
 	.word sub_800838A+1
 	thumb_func_end sub_800834A
 
+// symdb: Per-frame object update that initializes a 60-frame timer on first run, then dispatches object event 0x800 and sets state 4 when the timer expires.
+// symdb: (r0 unused on entry; r5 = object/actor struct) -> void; updates r5 fields at +2 (halfword), +3
+// symdb: (byte), +8 (halfword)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008364.yaml
 	thumb_local_start
 sub_8008364:
 	push {lr}
@@ -11820,6 +11828,10 @@ locret_80085FC:
 	pop {pc}
 	thumb_func_end battle_dispatchNextPhase
 
+// symdb: Runs the same routine (sub_8008622) over the alive player-actor list and the alive opponent-actor list during battle phase dispatch.
+// symdb: (r0 = battleState via r10) -> r0 = result of last sub_8008622 call; calls sub_8008622(listHead,
+// symdb: listHead+4, index) twice
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80085FE.yaml
 	thumb_local_start
 sub_80085FE:
 	push {r5,lr}
@@ -11998,6 +12010,10 @@ locret_8008738:
 	pop {pc}
 	thumb_func_end sub_8008716
 
+// symdb: Per-frame step of a one-shot 30-frame delay that, on expiry, advances the battle-end sequence (sets BattleEndSubState = 1 and clears player-struct unk02).
+// symdb: (r5 = state struct: +3 state byte, +4 done flag, +8 halfword frame counter; r10 = toolkit) -> r0
+// symdb: = 0 return from callee; no meaningful return, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800873A.yaml
 	thumb_local_start
 sub_800873A:
 	push {lr}
@@ -12234,6 +12250,9 @@ locret_80088D4:
 	pop {pc}
 	thumb_func_end battle_introWaitCrossNetReady
 
+// symdb: Runs a 30-frame countdown that, when it expires, advances the battle-end sequence by setting GameState.BattleEndSubState = 7 and flagging the overworld player struct.
+// symdb: (r5 = battle-end state struct) -> void; r0 clobbered, r1 clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80088D6.yaml
 	thumb_local_start
 sub_80088D6:
 	push {lr}
@@ -13385,6 +13404,9 @@ locret_80090EC:
 	pop {pc}
 	thumb_func_end battle_stepKindEffectWaitCrossNetReady
 
+// symdb: One-shot battle state that waits 30 frames, then triggers the battle-end sequence (substate 7) and flags the overworld player struct.
+// symdb: (r5 = battle state struct) -> r0 = 0/1 from eStruct200A008_setUnk02; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80090EE.yaml
 	thumb_local_start
 sub_80090EE:
 	push {lr}

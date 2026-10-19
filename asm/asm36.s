@@ -2342,6 +2342,10 @@ off_81311E8::
 off_81311EC::
 	.word 0xFEDB
 
+// symdb: Switches a state/context variable to 0x14 (20) and starts a screen fade with parameters (12, 16).
+// symdb: (r0 = unused by body, caller context) with r5 = global state/context struct pointer -> r0 =
+// symdb: SetScreenFade return (void); no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81311F0.yaml
 	thumb_local_start
 sub_81311F0:
 	push {lr}
@@ -7501,6 +7505,10 @@ off_8133A40:
 	.word unk_202A3E0
 	thumb_func_end petNavi_perFrameUpdate_81339BC
 
+// symdb: Dispatches a submenu widget's per-state handler (r5+2 = state, 3 states) via jump table, then draws the submenu box.
+// symdb: (r5 = submenu widget struct; r5+2 = state byte 0-2) -> r0 = result of state handler; calls
+// symdb: menu_drawSubmenuBox_8134490 afterwards
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133A44.yaml
 	thumb_local_start
 sub_8133A44:
 	push {lr}

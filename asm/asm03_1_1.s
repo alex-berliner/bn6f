@@ -1079,6 +1079,10 @@ byte_80390C4:
 	.byte 0x4, 0x0, 0x0
 	thumb_func_end sub_8039084
 
+// symdb: Initialises two EmotionData slots of type 0x3A (tags 0 and 1) in the battle emotion table at 0x02008450.
+// symdb: (no args) -> void; calls battle_initEmotionTableEntry twice with (type=0x3A, tag=0, flags=0x8)
+// symdb: and (type=0x3A, tag=1, flags=0x108)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80390D8.yaml
 	thumb_local_start
 sub_80390D8:
 	push {lr}
@@ -5688,6 +5692,10 @@ loc_803B8EA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803B880
 
+// symdb: Builds and queues one OAM entry for a hardware-flipped sprite whose tile comes from an index, using palette 12.
+// symdb: (r0 = attr0 value (Y/shape, ≤16 bits), r1 = attr1 X/attribute bits, r2 = tile index) -> void;
+// symdb: flags not meaningful.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B8F8.yaml
 	thumb_local_start
 sub_803B8F8:
 	push {r4-r7,lr}
@@ -5783,6 +5791,10 @@ off_803B9FC:
 	.word 0x414
 	thumb_func_end sub_803B9C0
 
+// symdb: Queues a single OAM entry with a fixed tile (0x41E) and fixed attribute bits (0x5000) at a position computed by sub_803B9C0, offset 12 px in X.
+// symdb: () -> void; r0/r1 from sub_803B9C0 are consumed: a1 = ((x - 12) << 16) | (y | 0x5000), a2 =
+// symdb: 0x41E, a4 = 7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BA00.yaml
 	thumb_local_start
 sub_803BA00:
 	push {r4-r7,lr}
@@ -6855,6 +6867,10 @@ loc_803C264:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C248
 
+// symdb: Zeros two 16-byte fields (at struct+0x130 and struct+0x150) of the structure whose pointer the caller left in r5.
+// symdb: (r5 = base pointer of an as-yet-unnamed struct) -> r0/r1 clobbered; both 16-byte fields zero-
+// symdb: filled
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C26A.yaml
 	thumb_func_start sub_803C26A
 sub_803C26A:
 	push {r4-r7,lr}
@@ -8187,6 +8203,9 @@ sub_803CAF8:
 	.byte 0x0, 0x0
 	thumb_func_end sub_803CAF8
 
+// symdb: ORs the caller's bits into the flags word (offset 0xC) of the RFU/wireless shared state structure at 0x200BC50.
+// symdb: (r0 = flag bits to set) -> r0 = clobbered; no condition flags meaningful, returns via mov pc, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB00.yaml
 	thumb_func_start sub_803CB00
 sub_803CB00:
 	ldr r3, off_803CB20 // =eS200BC50
@@ -8211,6 +8230,10 @@ clearStatusBits:
 	.balign 4, 0x00
 	thumb_func_end clearStatusBits
 
+// symdb: Tests a caller-supplied bitmask against a global status flags word and returns the result in the Z flag.
+// symdb: (r0 = bitmask of flags to test) -> r0 unchanged; Z set if none of the masked bits are set, Z
+// symdb: clear if any bit matches dword_200BC5C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB18.yaml
 	thumb_func_start sub_803CB18
 sub_803CB18:
 	ldr r3, off_803CB20 // =eS200BC50

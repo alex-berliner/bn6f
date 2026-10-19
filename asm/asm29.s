@@ -11970,6 +11970,9 @@ loc_80AAB64:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80AAB04
 
+// symdb: Picks a random 2-bit result (0-3) for a given id from a 16x16 lookup table, using the global RNG.
+// symdb: (r0 = table group id (0-15)) -> r0 = random 2-bit value (0-3); flags destroyed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAB68.yaml
 	thumb_local_start
 sub_80AAB68:
 	push {r4,lr}

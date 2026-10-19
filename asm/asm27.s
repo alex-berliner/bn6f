@@ -26,6 +26,9 @@ initRefs_80946D4:
 	.word NULL
 	thumb_func_end sub_80946C4
 
+// symdb: Re-blits the stored overworld tilemap snapshot at unk_2025404 into the map tilemap buffer and redraws the tilemap around the camera.
+// symdb: () -> r0 = 0; no flags set meaningfully (values from callee are discarded)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094708.yaml
 	thumb_local_start
 sub_8094708:
 	push {r4-r7,lr}
@@ -35,6 +38,10 @@ sub_8094708:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8094708
 
+// symdb: Re-blits the overworld map tilemap block using parameters stored at unk_2026404 and redraws the area around the camera.
+// symdb: () -> r0 = 0; r1-r3/r4-r7 unspecified on entry, so remaining arguments come from the struct at
+// symdb: unk_2026404 or the caller's state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094714.yaml
 	thumb_local_start
 sub_8094714:
 	push {r4-r7,lr}

@@ -5060,6 +5060,10 @@ off_81464D0:
 	.word eStruct200FE00
 	thumb_func_end rfu_reqEndConnection
 
+// symdb: Advances the wireless-adapter link-loss state machine at eStruct200FE00+0x2, firing the connection callback with code 0x45 once the disconnect is fully processed.
+// symdb: () -> r0 = undefined (tail of callback path returns from callee); writes state byte
+// symdb: eStruct200FE00+0x2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81464D4.yaml
 	thumb_local_start
 sub_81464D4:
 	push {lr}
@@ -5150,6 +5154,9 @@ def_8146518:
 	.balign 4, 0
 	thumb_func_end sub_81464FC
 
+// symdb: Returns 1 while the RFU connection state halfword (word_20102D0) is not 3, and 0 once it reaches 3.
+// symdb: () -> r0 = 0 if word_20102D0 == 3 (connected), else 1; flags set by the cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814656C.yaml
 	thumb_func_start sub_814656C
 sub_814656C:
 	push {lr}
@@ -10846,6 +10853,9 @@ off_8149128:
 	.word eS200BC50
 	thumb_func_end sub_8148FC0
 
+// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via sub_8144DB0(1).
+// symdb: () -> r0 = result of sub_8144DB0(1); no meaningful input
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814912C.yaml
 	thumb_local_start
 sub_814912C:
 	push {lr}

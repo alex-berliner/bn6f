@@ -561,6 +561,9 @@ sub_808FC34:
 byte_808FC50:
 	.word 0x0BEA0BE9, 0x00000BEB
 
+// symdb: Clears the single story event flag selected by the current value of a global state byte
+// symdb: () -> r0 = 0; calls ClearEventFlag(flagId)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FC58.yaml
 	thumb_local_start
 sub_808FC58:
 	push {r5, lr}

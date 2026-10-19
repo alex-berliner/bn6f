@@ -1373,6 +1373,9 @@ byte_809A2EC:
   .word NULL
 	thumb_func_end sub_809A2DC
 
+// symdb: Decompresses two LZ77-compressed ROM assets into fixed RAM buffers via the table-driven loader.
+// symdb: () -> void; no return value, no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A308.yaml
 	thumb_local_start
 sub_809A308:
 	push {lr}

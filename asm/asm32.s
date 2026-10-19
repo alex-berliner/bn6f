@@ -4349,6 +4349,9 @@ dword_810FDAC:
 	.word 0xC000000
 	thumb_func_end sub_810FD90
 
+// symdb: Clears a battle object's collision region when its collision flags indicate a hit, then performs an unknown follow-up call.
+// symdb: (r5 = battle object) -> r0 = return of sub_8016B72; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FDB0.yaml
 	thumb_local_start
 sub_810FDB0:
 	push {lr}
@@ -19546,6 +19549,10 @@ loc_81178A8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_811788C
 
+// symdb: Looks up the current animation frame in an 8-byte-per-entry event table and, if the entry is type 3, plays the sound effect recorded in that entry.
+// symdb: (r6 = sprite/anim struct; reads [r6+0x14] anim id and [r6+0x18] frame index) -> r0 = 0, or
+// symdb: result of sub_803D148(r0 = sfx id, r1 = entry halfword at +4)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81178AC.yaml
 	thumb_local_start
 sub_81178AC:
 	push {r4-r7,lr}
@@ -20650,6 +20657,10 @@ locret_811802C:
 	.byte 0, 0
 	thumb_func_end sub_811800C
 
+// symdb: Counts down a per-entry delay; when it expires, commits a pending value into the entry, halves a submenu counter, and re-renders the entry text.
+// symdb: (r5 = pointer to submenu entry struct, no r0 use) -> r0 = clobbered; sets r5+0x14 from r5+0x10,
+// symdb: clears r5+0x0A, halves sSubmenu+0x0D
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118030.yaml
 	thumb_local_start
 sub_8118030:
 	push {lr}
@@ -27925,6 +27936,10 @@ byte_811B55C:
 	.byte 0x6E, 0x0, 0x80, 0x0, 0x92, 0x0, 0x0, 0x0
 	thumb_func_end sub_811B4CC
 
+// symdb: Per-frame update for a sprite object: dispatches to one of two state handlers selected by the object's state byte, then runs shared post-update logic and sprite_update.
+// symdb: (r5 = object/sprite struct; state = [r5+9]) -> r0 destroyed; updates object state via handler,
+// symdb: refreshes sprite
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B570.yaml
 	thumb_local_start
 sub_811B570:
 	push {lr}
@@ -28025,6 +28040,9 @@ locret_811B61C:
 	.byte 0, 0
 	thumb_func_end sub_811B5FC
 
+// symdb: Per-frame update for a battle object's number/text popup: counts down a delay, and when it expires copies the base delay and runs the queued glyph load, text-row render, and sprite setup.
+// symdb: (r5 = battle object/popup state struct) -> void; flags from the timer decrement (bgt)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B620.yaml
 	thumb_local_start
 sub_811B620:
 	push {lr}
@@ -28973,6 +28991,10 @@ sub_811BD34:
 	pop {pc}
 	thumb_func_end sub_811BD34
 
+// symdb: Thin wrapper that calls sprite_clearScaleCounterAndMakeUnscalable on the sprite passed in r0, likely an alternate entry point (e.g. for a callback table).
+// symdb: (r0 = sprite object/works pointer) -> r0 preserved; calls
+// symdb: sprite_clearScaleCounterAndMakeUnscalable_804668A(r0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BD3C.yaml
 	thumb_local_start
 sub_811BD3C:
 	push {lr}
@@ -32462,6 +32484,10 @@ off_811DBCC:
 	.word 0x8C
 	thumb_func_end sub_811DB7C
 
+// symdb: Appends a new EmotionData entry (type 0x3A, flags 6, byte 9 = 0xC) to the 0x02008450 emotion table and updates counters in the caller's state struct.
+// symdb: (no args; r5 = pointer to caller's state struct) -> r0 = pointer to the newly initialised
+// symdb: EmotionData entry; no flags set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DBD0.yaml
 	thumb_local_start
 sub_811DBD0:
 	push {lr}
@@ -33651,6 +33677,10 @@ object_setRandomStateByte:
 	.balign 4, 0x00
 	thumb_func_end object_setRandomStateByte
 
+// symdb: Per-frame step of a color tint effect: applies an increasingly bright uniform color shader to the object's sprite and advances a saturating frame counter.
+// symdb: (r0 = unused, r5 = object struct; field 0x1C = effect counter) -> r0 = packed color passed to
+// symdb: sprite_setColorShader; counter [r5,#0x1C] incremented, saturating at 0x1F
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E558.yaml
 	thumb_local_start
 sub_811E558:
 	push {lr}

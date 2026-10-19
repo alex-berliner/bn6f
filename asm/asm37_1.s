@@ -1925,6 +1925,9 @@ off_8142AAC:
 	.word eOverworldMapObjects
 	thumb_func_end sub_8142A84
 
+// symdb: Returns whether the current scenario id (field 0x18 of the scenario effect state) appears in the 20-entry table at byte_2006670.
+// symdb: () -> r0 = 1 if found, 0 if not; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142AB0.yaml
 	thumb_local_start
 sub_8142AB0:
 	push {r4-r7,lr}
