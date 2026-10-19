@@ -2736,7 +2736,7 @@ int __fastcall sub_800232A(int *a1, int a2, int a3)
 
 
 // 0x8002338
-unsigned int __fastcall sub_8002338(int *a1)
+unsigned int __fastcall sprite_setOrClearEventFlag(int *a1)
 {
     int v1; // r0
     unsigned int result; // r0

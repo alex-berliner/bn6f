@@ -1434,9 +1434,9 @@ pet_zeroStatSlotBuffer:
 // symdb: Grants a range of NaviCust programs to the player, reading which ones/quantities from a lookup table.
 // symdb: (no args) -> none; r0-r7 clobbered; calls GiveNaviCustPrograms(r0 = program id 0x94..0x148, r1 =
 // symdb: table byte, r2 = 9)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C030.yaml
-	thumb_func_start sub_813C030
-sub_813C030:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_grantProgramsFromTable.yaml
+	thumb_func_start navicust_grantProgramsFromTable
+navicust_grantProgramsFromTable:
 	push {r4-r7,lr}
 	mov r5, #0x94
 	mov r6, #1
@@ -1469,7 +1469,7 @@ off_813C064:
 	.word StructArr_813944C
 off_813C068:
 	.word 0x14C
-	thumb_func_end sub_813C030
+	thumb_func_end navicust_grantProgramsFromTable
 
 // symdb: Iterates the battle slot table for the beast-out forms, swaps in matched chip/animation pairs into `unk_30019E0` when the active navi owns the appropriate flag.
 // symdb: (r0 = ?, r1 = ?, r2 = modeFlag, r10 = toolkit) -> r0 = 0 ; side effects: writes to unk_30019E0
@@ -3259,7 +3259,7 @@ sub_813CE04:
 sub_813CE08:
 	push {r4-r7,lr}
 	mov r4, #1
-	bl sub_813CE26
+	bl pet_addNaviStatsByte18AndMarkField16
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CE08
 
@@ -3267,7 +3267,7 @@ sub_813CE08:
 sub_813CE12:
 	push {r4-r7,lr}
 	mov r4, #2
-	bl sub_813CE26
+	bl pet_addNaviStatsByte18AndMarkField16
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CE12
 
@@ -3275,15 +3275,15 @@ sub_813CE12:
 sub_813CE1C:
 	push {r4-r7,lr}
 	mov r4, #3
-	bl sub_813CE26
+	bl pet_addNaviStatsByte18AndMarkField16
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CE1C
 
 // symdb: Adds r4 to byte 0x18 of the selected PET navi's NaviStats record and then sets byte 0x16 to 3.
 // symdb: (r0, r1 unused) r4 = amount to add -> r0 = 0 (from SetCurPETNaviStatsByte); no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE26.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_addNaviStatsByte18AndMarkField16.yaml
 	thumb_local_start
-sub_813CE26:
+pet_addNaviStatsByte18AndMarkField16:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x18
@@ -3298,7 +3298,7 @@ sub_813CE26:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CE26
+	thumb_func_end pet_addNaviStatsByte18AndMarkField16
 
 	thumb_local_start
 sub_813CE48:
@@ -3480,9 +3480,9 @@ sub_813CF3C:
 
 // symdb: Adds a signed delta to the PET navi's NaviStats byte at offset 0x18, capping the result at 7.
 // symdb: (r0 = signed delta) -> void; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviStat18.yaml
 	thumb_local_start
-sub_813CF4C:
+pet_addCurNaviStat18:
 	push {r4,lr}
 	mov r4, r0
 	mov r0, #0
@@ -3498,13 +3498,13 @@ sub_813CF4C:
 loc_813CF66:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {r4,pc}
-	thumb_func_end sub_813CF4C
+	thumb_func_end pet_addCurNaviStat18
 
 // symdb: Adds r0 to a byte field (offset 0x19) of the currently selected PET navi's NaviStats, clamping the result to a maximum of 7.
 // symdb: (r0 = amount to add) -> r0 = unchanged?; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_addCurNaviStatsByteCapped7.yaml
 	thumb_local_start
-sub_813CF6C:
+pet_addCurNaviStatsByteCapped7:
 	push {r4,lr}
 	mov r4, r0
 	mov r0, #0
@@ -3520,7 +3520,7 @@ sub_813CF6C:
 loc_813CF86:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {r4,pc}
-	thumb_func_end sub_813CF6C
+	thumb_func_end pet_addCurNaviStatsByteCapped7
 
 	thumb_local_start
 sub_813CF8C:

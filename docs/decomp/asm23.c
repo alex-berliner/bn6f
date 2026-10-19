@@ -508,7 +508,7 @@ signed int __fastcall sub_80898E8(int a1)
 
 
 // 0x80898fc
-signed int sub_80898FC()
+signed int ai_setStateIfTeamAlive()
 {
     _BYTE *v0; // r5
 
@@ -884,7 +884,7 @@ signed int __fastcall sub_8089BE4(int a1)
 
 
 // 0x8089bfa
-signed int sub_8089BFA()
+signed int ai_setupStateTimer1C()
 {
     _BYTE *v0; // r5
     char v1; // zf

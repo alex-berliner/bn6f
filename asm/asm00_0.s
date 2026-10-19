@@ -4041,7 +4041,7 @@ off_8001C24:
    // 0x10 play sound effect
 	.word sub_800232A+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x14 set or clear event flag
-	.word sub_8002338+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+	.word sprite_setOrClearEventFlag+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x18 copy 0x40 sized tiles
 	.word buildGFXAnimFrame_8001CFC+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 off_8001C40:
@@ -5071,9 +5071,9 @@ sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 // symdb: Animation/script callback that sets or clears a single event-work flag depending on the sign of the value stored in its parameter struct.
 // symdb: (r0 = pointer to a struct whose first u32 word is a signed flag id) -> r0 clobbered; calls
 // symdb: SetEventFlag/ClearEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002338.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setOrClearEventFlag.yaml
 	thumb_local_start
-sub_8002338: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+sprite_setOrClearEventFlag: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
 	ldr r0, [r0]
 	cmp r0, #0
@@ -5088,7 +5088,7 @@ sub_8002338: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	bl ClearEventFlag // (u16 entryFlagBitfield) -> void
 .done
 	pop {pc}
-	thumb_func_end sub_8002338
+	thumb_func_end sprite_setOrClearEventFlag
 
 // symdb: Loads every GFX animation script from a NULL/negative-terminated array of GFXAnimScript pointers.
 // symdb: void LoadGFXAnims(void* gfx_anim_data_arr /* FFStop32<[GFXAnimScript*]> in r0 */)

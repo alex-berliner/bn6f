@@ -41,7 +41,7 @@ battle_initChipSearchList:
 	ldr r0, off_812D3DC // =word_2023FA0 
 	mov r1, #0x20 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
-	bl sub_8120A88
+	bl removeFolderChipsFromPack
 	ldr r0, off_812D3E0 // =unk_2023FC0 
 	mov r1, #1
 	bl buildChipSearchTable_811FE7C
@@ -755,7 +755,7 @@ loc_812D8BC:
 	ldrb r0, [r5,#0x16]
 	cmp r0, #0
 	beq locret_812D8C6
-	bl sub_8120AB8
+	bl pack_addAllFolderChipsToPack
 locret_812D8C6:
 	pop {pc}
 	thumb_func_end t4_transitionToTextState1C
@@ -1004,7 +1004,7 @@ loc_812DA84:
 	mov r1, #0
 	strb r1, [r5,#0xc]
 	strb r1, [r5,#3]
-	bl sub_8120AB8
+	bl pack_addAllFolderChipsToPack
 	// <endpool> <endfile>
 	pop {r0,pc}
 	thumb_func_end sub_812DA60

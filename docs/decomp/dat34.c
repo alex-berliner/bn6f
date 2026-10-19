@@ -997,7 +997,7 @@ void sub_812E440()
                         *(v0 + 48) = v9;
                         (loc_812EE38)(0);
                     }
-                    sub_811BC24(v8 + 60, 68, 0);
+                    sprite_setCoordinatesIfEntityExists(v8 + 60, 68, 0);
                     v10 = 180 - *(v0 + 46);
                     if ( v10 <= 60 )
                     {
@@ -1005,7 +1005,7 @@ void sub_812E440()
                         *(v0 + 48) = v11;
                         (loc_812EE38)(1);
                     }
-                    sub_811BC24(v10, 68, 1);
+                    sprite_setCoordinatesIfEntityExists(v10, 68, 1);
                 }
                 *(v0 + 38) = 0;
                 *(v6 + 8) = 0;

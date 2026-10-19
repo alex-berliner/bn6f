@@ -474,7 +474,7 @@ unsigned int sub_8142102()
 
 
 // 0x8142134
-int __fastcall sub_8142134(int a1, int a2, int a3, int a4)
+int __fastcall clearScenarioEffectState(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&byte_2000784[4], 64);
     SetEventFlagFromImmediate(7, 64);
@@ -864,7 +864,7 @@ unsigned int GetSoulWeaponsMapIndex()
 
 
 // 0x814270a
-int sub_814270A()
+int getSoulWeaponsUnlockedCount()
 {
     int v0; // r7
     int v1; // r4
@@ -2385,7 +2385,7 @@ int __fastcall sub_8143C30(int a1, int a2, int a3, int a4)
     int v5; // r1
     int v6; // r0
 
-    sub_8143F20(a1, a2, a3, a4);
+    e_resetEffectStruct(a1, a2, a3, a4);
     v4 = sub_8143B5E(0);
     ClearEventFlagRange(v4, v5, 48);
     ClearEventFlagRangeFromImmediate(13, 152, 10);
@@ -2551,7 +2551,7 @@ int sub_8143EA4()
 
 
 // 0x8143eb0
-unsigned int sub_8143EB0()
+unsigned int groundmanMinigameGridDirBetween()
 {
     int v0; // r1
     int v1; // ST00_4
@@ -2599,7 +2599,7 @@ void sub_8143F1C()
 
 
 // 0x8143f20
-int __fastcall sub_8143F20(int a1, int a2, int a3, int a4)
+int __fastcall e_resetEffectStruct(int a1, int a2, int a3, int a4)
 {
     initMinigameEffect_8003a64(5u, a2, a3, a4);
     ZeroFillByWord(&byte_2001018, 64);

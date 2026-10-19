@@ -2314,7 +2314,7 @@ loc_80A5EE2:
 	bgt loc_80A5F12
 	movflag EVENT_5E0
 	bl SetEventFlagFromImmediate
-	bl sub_80A5F68
+	bl ow_spawnLogoutObject
 	mov r0, #3
 	strb r0, [r5]
 	ldrb r0, [r5,#5]
@@ -2377,9 +2377,9 @@ byte_80A5F67:
 // symdb: Spawns overworld map object 0x14 and plays the log-out sound effect, matching the jack-out/logout sequence.
 // symdb: (r5 = context struct; r1 = [r5,#0xc], r2 = [r5,#0x10], r3 = [r5,#0x14] as spawn params) -> r0 =
 // symdb: sound result; calls SpawnOverworldMapObject(r0=0x14,...) and PlaySoundEffect(0x76)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnLogoutObject.yaml
 	thumb_local_start
-sub_80A5F68:
+ow_spawnLogoutObject:
 	push {lr}
 	push {r5}
 	mov r0, #0x14
@@ -2392,7 +2392,7 @@ sub_80A5F68:
 	bl PlaySoundEffect
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A5F68
+	thumb_func_end ow_spawnLogoutObject
 
 // symdb: Checks a story flag selected by a form index to gate whether a Beast Out transformation may activate.
 // symdb: (r5 = state struct ptr; field [r5,#6] = form/variant index) -> r0 = 1 if transformation not
@@ -9455,7 +9455,7 @@ off_80A9A1C:
 	.word off_80A9A20
 off_80A9A20:
 	.word sub_80A9A2C+1
-	.word sub_80A9A76+1
+	.word sprite_animateCheckAttributeFlag+1
 	.word sub_80A9A96+1
 	thumb_func_end sub_80A9A0C
 
@@ -9487,16 +9487,16 @@ sub_80A9A2C:
 	bl sprite_setPalette // (int pallete) -> void
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A9A76
+	bl sprite_animateCheckAttributeFlag
 	pop {pc}
 	thumb_func_end sub_80A9A2C
 
 // symdb: Advances an object's sprite animation counter, and if the current frame's attribute has bit 7 set, writes 8 to a state byte before running the sprite update.
 // symdb: (r0 = unused on entry, r5 = object struct) -> r0 = value passed to sprite_update; no flags
 // symdb: relied on
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A76.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_animateCheckAttributeFlag.yaml
 	thumb_local_start
-sub_80A9A76:
+sprite_animateCheckAttributeFlag:
 	push {lr}
 	ldr r0, [r5,#0x14]
 	mov r1, #2
@@ -9512,7 +9512,7 @@ sub_80A9A76:
 loc_80A9A90:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80A9A76
+	thumb_func_end sprite_animateCheckAttributeFlag
 
 	thumb_local_start
 sub_80A9A96:
@@ -11713,9 +11713,9 @@ loc_80AAA18:
 // symdb: Builds a 4-bit mask of which reward-entry category values (top 2 bits of each of the 20 halfwords) appear in an enemy's battle reward table row.
 // symdb: (r0 = reward table row index, passed to sub_80AAE98) -> r0 = bitmask, bit n set if some entry's
 // symdb: bits 14-15 equal n; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAA1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectRewardRarityMask.yaml
 	thumb_local_start
-sub_80AAA1C:
+battle_collectRewardRarityMask:
 	push {r4,lr}
 	bl sub_80AAE98
 	mov r3, r0
@@ -11732,9 +11732,9 @@ loc_80AAA28:
 	cmp r4, #0x14
 	blt loc_80AAA28
 	pop {r4,pc}
-	thumb_func_end sub_80AAA1C
+	thumb_func_end battle_collectRewardRarityMask
 
-// symdb: Picks the reward enemy id: mode 0 = one GetPositiveSignedRNG % count over the caller's table; mode nonzero = filters the entries through sub_80AAA1C first, then rolls over the filtered count.
+// symdb: Picks the reward enemy id: mode 0 = one GetPositiveSignedRNG % count over the caller's table; mode nonzero = filters the entries through battle_collectRewardRarityMask first, then rolls over the filtered count.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAA3C.yaml
 	thumb_local_start
 sub_80AAA3C:
@@ -11759,7 +11759,7 @@ loc_80AAA5E:
 	add r1, r6, r6
 	ldrh r0, [r4,r1]
 	str r0, [sp,#4]
-	bl sub_80AAA1C
+	bl battle_collectRewardRarityMask
 	mov r1, #1
 	tst r0, r1
 	beq loc_80AAA7A

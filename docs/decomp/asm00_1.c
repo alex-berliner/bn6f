@@ -238,7 +238,7 @@ int *__usercall object_spawnType4@<R0>(Battle *obj@<R5>, int a1@<R0>, int a2@<R1
 
 
 // 0x80033c8
-int *__fastcall sub_80033C8(int a1, int a2, int a3, int a4)
+int *__fastcall spawnBattleObject4(int a1, int a2, int a3, int a4)
 {
 	int v4; // r4
 	int v5; // r5
@@ -3313,7 +3313,7 @@ int __fastcall sub_8005B6E(int a1, int a2, int a3, int a4, int a5, int (__fastca
                                         a2 = *v9;
                                         v7 = v9[1];
                                         if ( v7 & 4 )
-                                            v7 = sub_8005E86();
+                                            v7 = ow_startWarpTransition();
                                     }
                                 }
                             }
@@ -3651,7 +3651,7 @@ int __noreturn dead_8005E54()
 
 
 // 0x8005e86
-signed int sub_8005E86()
+signed int ow_startWarpTransition()
 {
     int v0; // r10
     int v1; // r5
@@ -6065,7 +6065,7 @@ int __fastcall sub_8007C50(int a1)
     if ( sub_802D246() & &byte_400 )
     {
         v2 = battle_getStateByteNibbles_800A832();
-        if ( v2 != 5 && v2 != 9 && v2 != 10 && !sub_800AF50() )
+        if ( v2 != 5 && v2 != 9 && v2 != 10 && !battle_comparePhaseToCustCharge() )
             goto LABEL_10;
     }
     if ( !*(v1 + 3) )
@@ -6136,7 +6136,7 @@ void __fastcall battle_state_tick_8007CA0(int a1, int a2, int a3)
         v8 = battle_getStateByteNibbles_800A832();
         if ( v8 != 5 && v8 != 9 && v8 != 10 )
         {
-            v9 = sub_800AF50();
+            v9 = battle_comparePhaseToCustCharge();
             if ( !v9 )
             {
                 SetDummyBGScrollCallbacks();
@@ -6713,7 +6713,7 @@ int sub_80082DC()
     if ( !result )
     {
         v3 = *(v0 + 8);
-        if ( sub_802D246() & &byte_400 && (v4 = sub_800AF50()) != 0 && v4 != 2 )
+        if ( sub_802D246() & &byte_400 && (v4 = battle_comparePhaseToCustCharge()) != 0 && v4 != 2 )
         {
             if ( v4 == 1 )
             {
@@ -7292,7 +7292,7 @@ int sub_80087D8()
     if ( !result )
     {
         v3 = *(v0 + 8);
-        if ( sub_802D246() & &byte_400 && (v4 = sub_800AF50()) != 0 && v4 != 2 )
+        if ( sub_802D246() & &byte_400 && (v4 = battle_comparePhaseToCustCharge()) != 0 && v4 != 2 )
         {
             if ( v4 == 1 )
             {
@@ -7376,7 +7376,7 @@ int sub_8008894()
 
 
 // 0x80088b2
-int sub_80088B2()
+int battle_introWaitCrossNetReady()
 {
     int v0; // r5
     int result; // r0
@@ -7639,7 +7639,7 @@ int sub_8008B10()
 
 
 // 0x8008b2e
-int sub_8008B2E()
+int battle_waitCrossNetReadyStep()
 {
     int v0; // r5
     int result; // r0
@@ -7750,7 +7750,7 @@ int sub_8008BF0()
     if ( !result )
     {
         v3 = *(v0 + 8);
-        if ( sub_802D246() & &byte_400 && (v4 = sub_800AF50()) != 0 && v4 != 2 )
+        if ( sub_802D246() & &byte_400 && (v4 = battle_comparePhaseToCustCharge()) != 0 && v4 != 2 )
         {
             if ( v4 == 1 )
             {
@@ -7834,7 +7834,7 @@ int sub_8008CAC()
 
 
 // 0x8008cca
-int sub_8008CCA()
+int battle_effectWaitCrossNetReady()
 {
     int v0; // r5
     int result; // r0
@@ -8096,7 +8096,7 @@ int sub_8008F10()
 
 
 // 0x8008f2e
-int sub_8008F2E()
+int battle_linkBattleIntroWaitUpdate()
 {
     int v0; // r5
     int result; // r0
@@ -8207,7 +8207,7 @@ int battle_stepEndFadeWait()
     if ( !result )
     {
         v3 = *(v0 + 8);
-        if ( sub_802D246() & &byte_400 && (v4 = sub_800AF50()) != 0 && v4 != 2 )
+        if ( sub_802D246() & &byte_400 && (v4 = battle_comparePhaseToCustCharge()) != 0 && v4 != 2 )
         {
             if ( v4 == 1 )
             {
@@ -8291,7 +8291,7 @@ int sub_80090AC()
 
 
 // 0x80090ca
-int sub_80090CA()
+int battle_stepKindEffectWaitCrossNetReady()
 {
     int v0; // r5
     int result; // r0
@@ -8680,7 +8680,7 @@ void __fastcall battle_stepRunAndDecideResult_800938A(int a1, int a2, int a3, in
                 v10 = 16;
                 if ( !(v11 & &byte_400) )
                     goto LABEL_22;
-                v12 = sub_800AF50();
+                v12 = battle_comparePhaseToCustCharge();
                 v10 = 16;
                 if ( v12 )
                 {
@@ -8703,7 +8703,7 @@ void __fastcall battle_stepRunAndDecideResult_800938A(int a1, int a2, int a3, in
                     v10 = 16;
                     if ( !(v15 & &byte_400) )
                         goto LABEL_22;
-                    v16 = sub_800AF50();
+                    v16 = battle_comparePhaseToCustCharge();
                     v10 = 16;
                     if ( v16 )
                     {
@@ -9247,7 +9247,7 @@ void __fastcall sub_800980E(int a1, int a2, int a3, int a4)
                     v10 = 16;
                     if ( !(v9 & &byte_400) )
                         goto LABEL_18;
-                    v11 = sub_800AF50();
+                    v11 = battle_comparePhaseToCustCharge();
                     v10 = 16;
                     if ( v11 )
                         goto LABEL_18;
@@ -9266,7 +9266,7 @@ void __fastcall sub_800980E(int a1, int a2, int a3, int a4)
                         if ( !(v14 & &byte_400) )
                             goto LABEL_18;
                         v15 = v10;
-                        v16 = sub_800AF50();
+                        v16 = battle_comparePhaseToCustCharge();
                         v10 = v15;
                         if ( v16 )
                             goto LABEL_18;
@@ -9332,7 +9332,7 @@ int battle_waitForResultScreenSync()
 
 
 // 0x8009916
-int sub_8009916()
+int battle_stepNaviDisplayThenChipSelect()
 {
     int v0; // r5
     int result; // r0
@@ -9541,7 +9541,7 @@ int sub_8009AA8()
 
 
 // 0x8009ad8
-int sub_8009AD8()
+int battle_stateCrossNetBattleIntroStep()
 {
     int v0; // r5
     int result; // r0
@@ -9645,7 +9645,7 @@ void __fastcall battle_runBattleStep_8009B20(int a1, int a2, int a3, int a4)
                         if ( !(v11 & &byte_400) )
                             goto LABEL_15;
                         v13 = v12;
-                        v14 = sub_800AF50();
+                        v14 = battle_comparePhaseToCustCharge();
                         v12 = v13;
                         if ( v14 )
                             goto LABEL_15;
@@ -9711,7 +9711,7 @@ int sub_8009BC8()
 
 
 // 0x8009c06
-int sub_8009C06()
+int battle_stateResultScreenHandler()
 {
     int v0; // r5
     int result; // r0
@@ -10063,7 +10063,7 @@ void __fastcall sub_8009E56(int a1, int a2, int a3, int a4)
                         if ( !(v11 & &byte_400) )
                             goto LABEL_15;
                         v13 = v12;
-                        v14 = sub_800AF50();
+                        v14 = battle_comparePhaseToCustCharge();
                         v12 = v13;
                         if ( v14 )
                             goto LABEL_15;
@@ -10129,7 +10129,7 @@ int battle_waitLinkResultsSyncPhase()
 
 
 // 0x8009f3a
-int sub_8009F3A()
+int battle_stateChipSelectOpen()
 {
     int v0; // r5
     int result; // r0
@@ -12082,7 +12082,7 @@ int __fastcall sub_800AE54(int a1, int a2, int a3)
 
 
 // 0x800ae90
-int __fastcall sub_800AE90(int a1, int a2)
+int __fastcall sprite_queueHpGaugeEntry(int a1, int a2)
 {
     int v2; // r10
     int result; // r0
@@ -12128,13 +12128,13 @@ char *handleVariableDamageChip_800AEE8()
 
 
 // 0x800af34
-int __fastcall sub_800AF34(int a1)
+int __fastcall battle_fillCustGauge(int a1)
 {
     int v1; // r5
     int result; // r0
 
     if ( battle_testFlag0x40_800A8F8(a1) )
-        result = sub_802E032(*(v1 + 22), 5461);
+        result = battle_addCappedCounter(*(v1 + 22), 5461);
     else
         result = SetCustGauge(0x4000);
     return result;
@@ -12142,7 +12142,7 @@ int __fastcall sub_800AF34(int a1)
 
 
 // 0x800af50
-signed int sub_800AF50()
+signed int battle_comparePhaseToCustCharge()
 {
     int v0; // r10
     unsigned __int8 *v1; // r5

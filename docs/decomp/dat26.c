@@ -93,7 +93,7 @@ signed int __fastcall sub_8092F1E(int a1)
         (loc_809E1A4)(v4);
         sub_8143EA4();
         v5 = *v2;
-        v6 = sub_8143EB0();
+        v6 = groundmanMinigameGridDirBetween();
         sub_809E2AE(v6);
         v7 = sub_809E2B8();
         sub_809E13C(byte_8092F5C[v7]);

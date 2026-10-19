@@ -478,9 +478,9 @@ ow_spawnObject1BAtPlayer:
 
 // symdb: Snaps the camera to the X/Y position of the entry selected by a mode byte in a global struct, with Z fixed at 0x40.
 // symdb: (no args) -> r0 = 0; sets camera 0 position and a byte/word in its struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FBC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_snapToIndexedTarget.yaml
 	thumb_local_start
-sub_808FBC0:
+camera_snapToIndexedTarget:
 	push {r5,lr}
 	ldr r5, off_808FCE0 // =off_808F5D4 
 	ldr r5, [r5]
@@ -501,7 +501,7 @@ sub_808FBC0:
 	bl SetCameraXYZ
 	mov r0, #0
 	pop {r5,pc}
-	thumb_func_end sub_808FBC0
+	thumb_func_end camera_snapToIndexedTarget
 
 	thumb_local_start
 sub_808FBEC:

@@ -6144,7 +6144,7 @@ chatbox_80426C4:
 	thumb_local_start
 chatbox_80426D4:
 	push {lr}
-	bl sub_813C030 // () -> void
+	bl navicust_grantProgramsFromTable // () -> void
 	add r4, #2
 	mov r0, #1
 	pop {pc}
@@ -8961,7 +8961,7 @@ jt_8043B00:
 	.word sub_8001154+1
 	.word initScenarioEffect_8003914+1
 	.word sub_814187C+1
-	.word sub_8142134+1
+	.word clearScenarioEffectState+1
 	.word sub_8048F88+1
 	.word sub_814227A+1
 	.word sub_802D15E+1

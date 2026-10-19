@@ -2454,7 +2454,7 @@ void __fastcall object_updateCollisionPanels_300777C(unsigned __int8 *a1)
 
 
 // 0x3007828
-int __fastcall sub_3007828(unsigned __int8 *a1)
+int __fastcall battle_clearObjectCollisionArea(unsigned __int8 *a1)
 {
     unsigned __int8 *v1; // r5
     char *v2; // r4

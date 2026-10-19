@@ -820,9 +820,9 @@ off_8142130:
 
 // symdb: Resets the scenario-effect state block at 0x2000780 and sets story flag EVENT_740, returning 0.
 // symdb: () -> r0 = 0; zeroes 0x40 bytes at eScenarioEffectState2000780+8, sets event flag 740
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142134.yaml
-	thumb_func_start sub_8142134
-sub_8142134:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearScenarioEffectState.yaml
+	thumb_func_start clearScenarioEffectState
+clearScenarioEffectState:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r0, r5
@@ -833,7 +833,7 @@ sub_8142134:
 	bl SetEventFlagFromImmediate
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142134
+	thumb_func_end clearScenarioEffectState
 
 	thumb_local_start
 sub_814214E:
@@ -1455,9 +1455,9 @@ SoulWeaponsMaps:
 
 // symdb: Counts how many of the soul-weapon flags unlocked for the current soul-weapons map entry are set.
 // symdb: () -> r0 = number of set flags in the soul-weapon flag range; flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814270A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponsUnlockedCount.yaml
 	thumb_local_start
-sub_814270A:
+getSoulWeaponsUnlockedCount:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex
 	ldr r7, off_8142770 // =byte_8142774 
@@ -1478,7 +1478,7 @@ loc_814271E:
 loc_8142730:
 	mov r0, r6
 	pop {r4-r7,pc}
-	thumb_func_end sub_814270A
+	thumb_func_end getSoulWeaponsUnlockedCount
 
 	thumb_local_start
 sub_8142734:
@@ -3832,7 +3832,7 @@ dword_8143C2C:
 	thumb_local_start
 sub_8143C30:
 	push {r4-r7,lr}
-	bl sub_8143F20
+	bl e_resetEffectStruct
 	mov r0, #0
 	bl sub_8143B5E
 	mov r0, r0
@@ -4144,9 +4144,9 @@ sub_8143EA4:
 // symdb: Returns an 8-way direction index pointing from one Groundman-minigame grid cell to another.
 // symdb: (r0 = packed grid coords of point A, r1 = packed grid coords of point B) -> r0 = direction 0-7
 // symdb: from A to B; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EB0.yaml
-	thumb_func_start sub_8143EB0
-sub_8143EB0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/groundmanMinigameGridDirBetween.yaml
+	thumb_func_start groundmanMinigameGridDirBetween
+groundmanMinigameGridDirBetween:
 	push {r4-r7,lr}
 	mov r4, r1
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
@@ -4166,7 +4166,7 @@ sub_8143EB0:
 	mov r1, #7
 	and r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143EB0
+	thumb_func_end groundmanMinigameGridDirBetween
 
 	thumb_func_start sub_8143EDC
 sub_8143EDC:
@@ -4213,9 +4213,9 @@ sub_8143F1C:
 
 // symdb: Initializes the eStruct2001010 effect state: selects effect type 5 and clears its 0x40-byte data block.
 // symdb: () -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_resetEffectStruct.yaml
 	thumb_local_start
-sub_8143F20:
+e_resetEffectStruct:
 	push {r4-r7,lr}
 	mov r0, #5
 	bl initMinigameEffect_8003a64
@@ -4228,7 +4228,7 @@ sub_8143F20:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143F20
+	thumb_func_end e_resetEffectStruct
 
 	thumb_local_start
 sub_8143F38:

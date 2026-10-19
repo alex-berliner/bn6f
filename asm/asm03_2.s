@@ -1143,9 +1143,9 @@ off_80467F8:
 // symdb: Walks a 0xFF-terminated table of 4-byte entries and initializes one AI chip-queue slot per entry via battleObject_initAIChipQueueSlot.
 // symdb: (r0 = pointer to entry table) -> r0 = clobbered (advanced past table); no meaningful return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80467FC.yaml
-	thumb_func_start sub_80467FC
-sub_80467FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAIChipQueueList.yaml
+	thumb_func_start battle_initAIChipQueueList
+battle_initAIChipQueueList:
 	push {r4-r7,lr}
 loc_80467FE:
 	ldrb r7, [r0]
@@ -1161,7 +1161,7 @@ loc_80467FE:
 	b loc_80467FE
 locret_8046816:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80467FC
+	thumb_func_end battle_initAIChipQueueList
 
 // symdb: Iterates up to 5 AI slots in the battle dispatch table and dispatches handlers based on a per-slot flag and sub-index; void, used as a per-frame AI tick.
 // symdb: () -> void ; side effects: calls function pointers loaded from off_804679C[idx] via a hand-
@@ -4948,7 +4948,7 @@ off_8049098:
 	.word sub_8049582+1
 	.word sub_804959C+1
 	.word sub_80495B4+1
-	.word sub_80495CE+1
+	.word sprite_loadTilesDuringFadeOrRun+1
 	.word sub_80495EC+1
 	.word sub_8049606+1
 	.word sub_804961C+1
@@ -5550,9 +5550,9 @@ loc_80495C8:
 // symdb: Reloads an 0x800-byte OBJ tile block (and a 32-byte palette) and defers a follow-up callback until the screen fade ends, otherwise performs the immediate alternative.
 // symdb: () -> r0 = undefined; calls copyMemory_8001850 then sub_803CB8C(callback=sub_8039570+1) when
 // symdb: IsScreenFadeActive, else calls sub_803A1B0; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80495CE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesDuringFadeOrRun.yaml
 	thumb_local_start
-sub_80495CE:
+sprite_loadTilesDuringFadeOrRun:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_80495E2
@@ -5566,7 +5566,7 @@ loc_80495E2:
 	.balign 4, 0
 off_80495E8:
 	.word sub_8039570+1
-	thumb_func_end sub_80495CE
+	thumb_func_end sprite_loadTilesDuringFadeOrRun
 
 	thumb_local_start
 sub_80495EC:
@@ -5878,7 +5878,7 @@ dword_804982C:
 	.word handleExitSubmenu_803AA24+1
 	.word battleObj_dispatchSubstate_803AA40+1
 	.word sub_803ABF4+1
-	.word sub_803AB6C+1
+	.word battle_advanceMoveStep+1
 	.word sub_803AB94+1
 	thumb_func_end sub_8049808
 
@@ -6031,7 +6031,7 @@ dword_804991C:
 	.word chipSelect_dispatchState_803AD20+1
 	.word sub_803AED8+1
 	.word sub_803AE50+1
-	.word sub_803AE78+1
+	.word submenu_moveCursorBack+1
 	thumb_func_end sub_80498F8
 
 // symdb: Picks the battle-entry transition mode (fade vs skip) from chatbox/cutscene state, then initializes the battle module.
@@ -6926,7 +6926,7 @@ dword_8049FC8:
 	.word handleExitSubmenu_803AA24+1
 	.word battleObj_dispatchSubstate_803AA40+1
 	.word sub_803ABF4+1
-	.word sub_803AB6C+1
+	.word battle_advanceMoveStep+1
 	.word sub_803AB94+1
 	thumb_func_end sub_8049FA4
 
@@ -7321,7 +7321,7 @@ byte_804A2B0:
 sub_804A2CC:
 	push {r5,lr}
 	push {r0}
-	bl sub_804A2E8
+	bl submenu_clearTraderState
 	pop {r0}
 	ldr r5, off_804A300 // =eS200AC80 
 	str r0, [r5,#0x30] // (dword_200ACB0 - 0x200ac80)
@@ -7335,9 +7335,9 @@ sub_804A2CC:
 
 // symdb: Zero-fills the chip-trader submenu state buffers (the 0x58-byte block at 0x200AC80 and the toolkit's 0x80-byte submenu structure) before the BugFrag chip trader opens.
 // symdb: () -> r0,r1 clobbered; zeroes eS200AC80 (0x58 bytes) and toolkit->SubmenuPtr buffer (0x80 bytes)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A2E8.yaml
-	thumb_func_start sub_804A2E8
-sub_804A2E8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_clearTraderState.yaml
+	thumb_func_start submenu_clearTraderState
+submenu_clearTraderState:
 	push {r5,lr}
 	// memBlock
 	ldr r0, off_804A300 // =eS200AC80 
@@ -7354,7 +7354,7 @@ sub_804A2E8:
 	.balign 4, 0
 off_804A300:
 	.word eS200AC80
-	thumb_func_end sub_804A2E8
+	thumb_func_end submenu_clearTraderState
 
 // symdb: Per-frame callback of the chip trader subsystem (main_subsystemJumpTable 0x34) that runs the trader screen's current state handler, updates its objects and advances the primary RNG once, discarding the value.
 // symdb: () -> nothing meaningful. Calls the state handler with r5 = &sSubmenu. Preserves r4-r7 and r8,
@@ -7414,7 +7414,7 @@ sub_804A360:
 	// size
 	ldr r1, off_804A3F4 // =0x3c0 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_8120A88
+	bl removeFolderChipsFromPack
 	ldr r0, off_804A3EC // =unk_202A3E0 
 	mov r1, #1
 	bl buildChipSearchTable_811FE7C
@@ -7479,7 +7479,7 @@ sub_804A3FC:
 	strb r0, [r5,#3]
 	bl pet_menuCancel
 	bne loc_804A44C
-	bl sub_804AAD0
+	bl submenu_toggleStateStartOrB
 	bne loc_804A44C
 	mov r0, #JOYPAD_RIGHT
 	bl IsButtonPressed
@@ -7494,7 +7494,7 @@ sub_804A3FC:
 loc_804A42C:
 	mov r0, #4
 	strb r0, [r5,#3]
-	bl sub_804AB10
+	bl submenu_confirmSelection
 	beq loc_804A436
 loc_804A436:
 	ldrh r0, [r5,#0x28]
@@ -7529,7 +7529,7 @@ sub_804A460:
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl owPlayer_unlockPlayerAfterNonNPCDialogue_809E122
 	bl next_exitToMap_811F728
-	bl sub_8120AB8
+	bl pack_addAllFolderChipsToPack
 	ldrb r0, [r5]
 	cmp r0, #0x10
 	beq loc_804A4AA
@@ -7599,7 +7599,7 @@ loc_804A50A:
 	thumb_local_start
 sub_804A514:
 	push {lr}
-	bl sub_804AAD0
+	bl submenu_toggleStateStartOrB
 	bne loc_804A53C
 	bl sub_804AE04
 	bne loc_804A534
@@ -7639,7 +7639,7 @@ off_804A564:
 	.word sub_804A574+1
 	.word sub_804A5B4+1
 	.word sub_804A5D4+1
-	.word sub_804A5EC+1
+	.word object_riseOffscreenAndClear+1
 	thumb_func_end sub_804A54C
 
 	thumb_local_start
@@ -7714,9 +7714,9 @@ locret_804A5E8:
 // symdb: Moves an object's sprite group upward 16px per call and despawns (clears sprites, state 4) once it goes past the top of the screen.
 // symdb: (r0 = object struct in r5 convention; y at [r5+0x18]) -> updates [r5+0x18], sets [r5]=4 and
 // symdb: clears three sprite-table entries when off-screen; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A5EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_riseOffscreenAndClear.yaml
 	thumb_local_start
-sub_804A5EC:
+object_riseOffscreenAndClear:
 	push {lr}
 	mov r1, #0x18
 	ldrsh r0, [r5,r1]
@@ -7741,7 +7741,7 @@ loc_804A60C:
 	.balign 4, 0
 dword_804A618:
 	.word 0xFFFFFFD8
-	thumb_func_end sub_804A5EC
+	thumb_func_end object_riseOffscreenAndClear
 
 	thumb_local_start
 sub_804A61C:
@@ -8363,9 +8363,9 @@ locret_804AACC:
 // symdb: Handles START/B input to open or close a menu state 0x14, playing select/exit sound effects and resetting a sub-field when opened.
 // symdb: (r0 unused/scratch, r5 = menu work struct pointer) -> r0 = 0 when no input taken; state byte
 // symdb: [r5] toggled 4<->0x14, halfword [r5+0x34] zeroed on open
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AAD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_toggleStateStartOrB.yaml
 	thumb_local_start
-sub_804AAD0:
+submenu_toggleStateStartOrB:
 	push {lr}
 	mov r0, #JOYPAD_START
 	bl IsButtonPressed
@@ -8398,14 +8398,14 @@ loc_804AB0A:
 	tst r0, r0
 locret_804AB0E:
 	pop {pc}
-	thumb_func_end sub_804AAD0
+	thumb_func_end submenu_toggleStateStartOrB
 
 // symdb: A-button confirm handler for a menu: recomputes a 1-based page/group index, updates two state bytes, runs the apply helpers and plays the menu-select sound.
 // symdb: (r5 = menu state struct pointer; no r0-r3 args) -> r0 = 1 if A newly pressed else 0; writes
 // symdb: r5+0x44 and r5+0x45
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AB10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_confirmSelection.yaml
 	thumb_local_start
-sub_804AB10:
+submenu_confirmSelection:
 	push {r4-r7,lr}
 	mov r6, #0
 	mov r0, #JOYPAD_A
@@ -8433,7 +8433,7 @@ loc_804AB44:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804AB10
+	thumb_func_end submenu_confirmSelection
 
 	thumb_local_start
 sub_804AB4C:
@@ -11152,9 +11152,9 @@ off_804CADC:
 
 // symdb: Prepares a map (re)load for the current map group/number and kicks off the map setup routine.
 // symdb: () -> r0 = map id from lookup; clobbers r0-r3, lr; clears bits 0x2800 of RenderInfo halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CAE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_loadCurrentMap.yaml
 	thumb_local_start
-sub_804CAE0:
+ow_loadCurrentMap:
 	push {r4-r7,lr}
 	bl zeroFill_e2009740
 	mov r1, r10
@@ -11175,7 +11175,7 @@ sub_804CAE0:
 	.balign 4, 0
 off_804CB08:
 	.word sub_8006A5C+1
-	thumb_func_end sub_804CAE0
+	thumb_func_end ow_loadCurrentMap
 
 	thumb_local_start
 sub_804CB0C:

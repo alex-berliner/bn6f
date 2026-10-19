@@ -3858,7 +3858,7 @@ sub_8124F8C:
 	bl sub_81268D8
 	bl battle_runTransition_8125444
 	bl sub_8125F5C
-	bl sub_812653C
+	bl battle_transitionAnimQueueOam
 	mov r1, #0
 	ldr r0, [r5,#0x60]
 	cmp r0, #5
@@ -4079,7 +4079,7 @@ battle_transitionAnimUpdate:
 	bl sprite_queueBattleOamEntry
 	bl battle_runTransition_8125444
 	bl sub_8125F5C
-	bl sub_812653C
+	bl battle_transitionAnimQueueOam
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812516C
 	mov r0, #8
@@ -6829,9 +6829,9 @@ sub_8126524:
 
 // symdb: Queues the fixed animated OAM entry for the battle transition animation element.
 // symdb: () -> r0 = result of battle_queueAnimatedOamEntry; flags clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812653C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_transitionAnimQueueOam.yaml
 	thumb_local_start
-sub_812653C:
+battle_transitionAnimQueueOam:
 	push {r4-r7,lr}
 	mov r0, #0x5a 
 	mov r1, #0x20 
@@ -6843,7 +6843,7 @@ sub_812653C:
 	bl battle_queueAnimatedOamEntry
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812653C
+	thumb_func_end battle_transitionAnimQueueOam
 
 // symdb: Thin wrapper that loads a fixed argument set (90, 32, 60, 12, two data-table pointers and the flag word 0x40000000) and tail-invokes sub_8126570, passing its results straight back.
 // symdb: void sub_8126554(void) -> (r1, r2, r3, C, V from sub_8126570); reads r4, r5, r10 as inputs to
@@ -7749,7 +7749,7 @@ off_8126DC0:
 	.word chatbox_fadeGuardThenRunState_8126DF8+1
 	.word battle_cursorMoveAndDispatchNext_8126E10+1
 	.word sub_8126E88+1
-	.word sub_8126EA4+1
+	.word battle_cmdWaitForScreenFade+1
 	.word submenu_stepSlideToSelection+1
 	.word sub_8126F40+1
 	.word sub_8126F94+1
@@ -7864,9 +7864,9 @@ loc_8126E9C:
 // symdb: (r5 = battle object ptr, set by dispatcher; no args in r0-r3) -> r0 = result of
 // symdb: battle_dispatchNextCmd_81272C4; object fields [r5+0xC] |= 0x2 and [r5+1] = 8 when a fade is
 // symdb: active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126EA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_cmdWaitForScreenFade.yaml
 	thumb_local_start
-sub_8126EA4:
+battle_cmdWaitForScreenFade:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8126EB8
@@ -7880,7 +7880,7 @@ loc_8126EB8:
 	bl battle_dispatchNextCmd_81272C4
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_8126EA4
+	thumb_func_end battle_cmdWaitForScreenFade
 
 // symdb: Per-frame update of a 3-choice menu: slides an animated cursor/offset by ±2 toward the selected entry's target value, and when it lands, performs the chosen action and advances the state machine.
 // symdb: (r5 = menu-state struct: +0x0D signed anim offset, +0x10 selection, +0x11 prev/target selection,
@@ -8886,7 +8886,7 @@ loc_8127672:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_81276B6
 loc_8127682:
-	bl sub_81276E4
+	bl battle_getCurNaviTableEntry
 	mov r7, r0
 	mov r2, #0
 loc_812768A:
@@ -8945,9 +8945,9 @@ loc_81276DA:
 // symdb: Returns a word from the currently selected PET navi's data table, indexed by an entry in the toolkit battle struct minus a per-navi base.
 // symdb: () -> r0 = word from [ *[pt_8121200[navi]] + ([S2001c04+0x30] - byte_81211B4[navi])*4 ];
 // symdb: clobbers r1-r4, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81276E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getCurNaviTableEntry.yaml
 	thumb_local_start
-sub_81276E4:
+battle_getCurNaviTableEntry:
 	push {r4,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_S2001c04_Ptr]
@@ -8974,7 +8974,7 @@ off_8127710:
 	.word byte_81211B4
 off_8127714:
 	.word unk_2024394
-	thumb_func_end sub_81276E4
+	thumb_func_end battle_getCurNaviTableEntry
 
 // symdb: Prints the next batch of pending characters from the textbox text buffer into the textbox tile area in VRAM, calling the per-character renderer for each slice.
 // symdb: void chatbox_printPendingChars(TextboxState* r5 /* print state */) — in r5 (textbox print state;
@@ -13845,8 +13845,8 @@ off_8129C40:
 	.word sub_8129D58+1
 	.word sub_8129D78+1
 	.word sub_8129DC4+1
-	.word sub_8129E28+1
-	.word sub_8129E54+1
+	.word npc_showStateDialogue+1
+	.word npc_talkIfFlagSet+1
 	.word sub_8129D78+1
 	.word sub_8129E7C+1
 	.word sub_8129ECC+1
@@ -14112,9 +14112,9 @@ off_8129E24:
 // symdb: Shows one of a handful of text-script dialogue lines chosen by an NPC object's state byte, unless the screen is fading.
 // symdb: (r0/r4? caller context, r5 = NPC/object pointer) -> r0 = script-run result (clobbered); writes
 // symdb: 0x1C to [r5+3]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_showStateDialogue.yaml
 	thumb_local_start
-sub_8129E28:
+npc_showStateDialogue:
 	push {r4,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8129E42
@@ -14133,14 +14133,14 @@ off_8129E44:
 	.word byte_8129E48
 byte_8129E48:
 	.byte 0x0, 0x50, 0x51, 0x52, 0x0, 0x53, 0x0, 0x0, 0x0, 0x30, 0x0, 0x0
-	thumb_func_end sub_8129E28
+	thumb_func_end npc_showStateDialogue
 
 // symdb: If chatbox event flag bit 8 is set and the object's state byte isn't 9, runs its chatbox line and clears a state bit.
 // symdb: (r5 = npc/object struct) -> r0 = void; flags from chatbox_mask_eFlags2009F38 used for the
 // symdb: initial beq
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_talkIfFlagSet.yaml
 	thumb_local_start
-sub_8129E54:
+npc_talkIfFlagSet:
 	push {lr}
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -14160,7 +14160,7 @@ sub_8129E54:
 locret_8129E78:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8129E54
+	thumb_func_end npc_talkIfFlagSet
 
 	thumb_local_start
 sub_8129E7C:
@@ -14933,9 +14933,9 @@ sub_812A424:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812A488
 	mov r0, #0
-	bl sub_811B010
+	bl sprite_unscaleEntryIfBusy
 	mov r0, #1
-	bl sub_811B010
+	bl sprite_unscaleEntryIfBusy
 	bl battle_initScene_8129248
 	bl screens3_loadBackgroundTiles
 	bl loadEntityJumpOffset00Gfx_812B530
@@ -15086,7 +15086,7 @@ off_812A558:
 	.word sub_812A574+1
 	.word sub_812A5B4+1
 	.word sub_812A5F8+1
-	.word sub_812A67C+1
+	.word ow_beginScreenFadeUnlessFlagSet+1
 	.word sub_812A694+1
 	.word sub_812A6F8+1
 	.word sub_812A758+1
@@ -15224,9 +15224,9 @@ locret_812A676:
 
 // symdb: If the 0x200BC50 flag bit is clear, starts a screen fade (mode 12, speed 16) and writes state 0x10 to [r5+0xC]; otherwise does nothing.
 // symdb: () -> void; uses caller's r5 as a state struct, branches on the flag test's Z flag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A67C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_beginScreenFadeUnlessFlagSet.yaml
 	thumb_local_start
-sub_812A67C:
+ow_beginScreenFadeUnlessFlagSet:
 	push {lr}
 	bl test0x200bc50_0x5_813D60C
 	bne locret_812A690
@@ -15238,7 +15238,7 @@ sub_812A67C:
 locret_812A690:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812A67C
+	thumb_func_end ow_beginScreenFadeUnlessFlagSet
 
 	thumb_local_start
 sub_812A694:
@@ -17656,7 +17656,7 @@ off_812B854:
 off_812B858:
 	.word sub_812B8DC+1
 	.word sub_812B97C+1
-	.word sub_812B9F8+1
+	.word link_verifyChecksumAndMatchPartner+1
 	.word sub_812BB08+1
 	.word sub_812BC14+1
 	.word sub_812BF6C+1
@@ -17865,9 +17865,9 @@ locret_812B9F6:
 // symdb: Link-comm state handler: checksums the received buffer at unk_2033C00, then matches the link partner's eLinkState fields against a table to set the next state.
 // symdb: (r5 = comm state-machine context: +0x34 payload size, +0x26 result flag, +0x10 state, +0x2
 // symdb: substate) -> writes [r5+0x26], [r5+0x10], [r5+2]; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B9F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_verifyChecksumAndMatchPartner.yaml
 	thumb_local_start
-sub_812B9F8:
+link_verifyChecksumAndMatchPartner:
 	push {r7,lr}
 	ldr r4, off_812BAF4 // =unk_2033C00 
 	ldr r7, [r5,#0x34]
@@ -18012,7 +18012,7 @@ dword_812BAFC:
 dword_812BB00:
 	.word 0x8888
 	.word eS200A290
-	thumb_func_end sub_812B9F8
+	thumb_func_end link_verifyChecksumAndMatchPartner
 
 	thumb_local_start
 sub_812BB08:

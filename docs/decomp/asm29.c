@@ -1526,7 +1526,7 @@ LABEL_11:
     if ( v4 <= 0 )
     {
         SetEventFlagFromImmediate(5, 224);
-        sub_80A5F68();
+        ow_spawnLogoutObject();
         *v0 = 3;
         sprite_setAnimation(v0, *(v0 + 5) + 25);
         sprite_loadAnimationData(v0);
@@ -1568,7 +1568,7 @@ int sub_80A5F48()
 
 
 // 0x80a5f68
-int sub_80A5F68()
+int ow_spawnLogoutObject()
 {
     int *v0; // r5
     int v1; // r1
@@ -6414,12 +6414,12 @@ void __noreturn sub_80A9A2C()
     sprite_noShadow(v0);
     sprite_setPallete(*(v0 + 5));
     *(v0 + 8) = 4;
-    sub_80A9A76();
+    sprite_animateCheckAttributeFlag();
 }
 
 
 // 0x80a9a76
-void __noreturn sub_80A9A76()
+void __noreturn sprite_animateCheckAttributeFlag()
 {
     int v0; // r5
 
@@ -7915,7 +7915,7 @@ LABEL_23:
 
 
 // 0x80aaa1c
-int __fastcall sub_80AAA1C(int a1)
+int __fastcall battle_collectRewardRarityMask(int a1)
 {
     char *v1; // r3
     int result; // r0
@@ -7958,7 +7958,7 @@ int __fastcall sub_80AAA3C(int a1, int a2, int a3)
         {
             v11 = *(v3 + 2 * v10);
             v14 = *(v3 + 2 * v10);
-            if ( sub_80AAA1C(v11) & 1 )
+            if ( battle_collectRewardRarityMask(v11) & 1 )
             {
                 v12 = v15;
                 *(&v13 + v15) = v14;

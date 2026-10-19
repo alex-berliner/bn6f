@@ -428,9 +428,9 @@ loc_80033C4:
 
 // symdb: Thin wrapper that spawns a battle object of type 4 from a 5-word caller context and links it into the battle object list.
 // symdb: (r0-r4 = spawn record fields) -> r0 = BattleObject* or NULL; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80033C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnBattleObject4.yaml
 	thumb_local_start
-sub_80033C8:
+spawnBattleObject4:
 	push {r7,lr}
 	sub sp, sp, #0x14
 	mov r7, sp
@@ -444,7 +444,7 @@ sub_80033C8:
 loc_80033E0:
 	add sp, sp, #0x14
 	pop {r7,pc}
-	thumb_func_end sub_80033C8
+	thumb_func_end spawnBattleObject4
 
 	thumb_func_start sub_80033E4
 sub_80033E4:
@@ -5745,7 +5745,7 @@ sub_8005B6E:
 	mov r2, #4
 	tst r0, r2
 	beq locret_8005BC6
-	bl sub_8005E86
+	bl ow_startWarpTransition
 locret_8005BC6:
 	pop {r5,pc}
 	thumb_func_end sub_8005B6E
@@ -6194,9 +6194,9 @@ dead_8005E54:
 
 // symdb: Begins a warp: remembers the previous map group and player position, fades the screen, and switches the game to the warp subsystem.
 // symdb: () -> void; no arguments, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005E86.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startWarpTransition.yaml
 	thumb_local_start
-sub_8005E86:
+ow_startWarpTransition:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -6215,7 +6215,7 @@ sub_8005E86:
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_8005E86
+	thumb_func_end ow_startWarpTransition
 
 	thumb_func_start sub_8005EA2
 sub_8005EA2:
@@ -10559,7 +10559,7 @@ sub_8007C50:
 	beq loc_8007C74
 	cmp r0, #0xa
 	beq loc_8007C74
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	beq loc_8007C90
 loc_8007C74:
@@ -10611,7 +10611,7 @@ battle_state_tick_8007CA0: // (self: *mut BattleState $r5) -> ()
 	beq loc_8007D06
 	cmp r0, #0xa
 	beq loc_8007D06
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	bne loc_8007CF2
 	bl SetDummyBGScrollCallbacks
@@ -11409,7 +11409,7 @@ loc_80082FE:
 	ldr r1, off_80084E0 // =0x400 
 	tst r0, r1
 	beq loc_8008338
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	cmp r0, #0
 	beq loc_8008338
 	cmp r0, #2
@@ -12106,7 +12106,7 @@ loc_80087FA:
 	ldr r1, off_8008940 // =0x400 
 	tst r0, r1
 	beq loc_8008834
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	cmp r0, #0
 	beq loc_8008834
 	cmp r0, #2
@@ -12145,7 +12145,7 @@ off_8008850:
 off_8008854:
 	.word battle_crossNetIntroStep+1
 	.word sub_8008894+1
-	.word sub_80088B2+1
+	.word battle_introWaitCrossNetReady+1
 	.word sub_80088D6+1
 	thumb_func_end sub_8008840
 
@@ -12204,9 +12204,9 @@ locret_80088B0:
 // symdb: (r0 = unused, r5 = battle intro/effect state struct) -> r0 = result of
 // symdb: comm_checkCrossNetBattleReady (not meaningful); mutates fields r5+2 (halfword state), r5+3 (byte
 // symdb: state), r5+8 (halfword)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80088B2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_introWaitCrossNetReady.yaml
 	thumb_local_start
-sub_80088B2:
+battle_introWaitCrossNetReady:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12225,7 +12225,7 @@ loc_80088C8:
 	strh r0, [r5,#2]
 locret_80088D4:
 	pop {pc}
-	thumb_func_end sub_80088B2
+	thumb_func_end battle_introWaitCrossNetReady
 
 	thumb_local_start
 sub_80088D6:
@@ -12461,7 +12461,7 @@ off_8008A8C:
 off_8008A90:
 	.word battle_tickPreBattleInit_8008AA0+1
 	.word sub_8008B10+1
-	.word sub_8008B2E+1
+	.word battle_waitCrossNetReadyStep+1
 	.word battle_battleEndDelayStep+1
 	thumb_func_end sub_8008A7C
 
@@ -12548,9 +12548,9 @@ locret_8008B2C:
 // symdb: Battle-object state step: starts effect kind 0x58 once, then waits until the cross-net (linked) battle is ready, setting a 0xC state/timer while waiting.
 // symdb: (r0 = ? unused; r5 = object/eStruct-like state block) -> r0 = clobbered by calls; updates r5+3
 // symdb: (state byte), r5+8 halfword, r5+2 halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008B2E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitCrossNetReadyStep.yaml
 	thumb_local_start
-sub_8008B2E:
+battle_waitCrossNetReadyStep:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12569,7 +12569,7 @@ loc_8008B44:
 	strh r0, [r5,#2]
 locret_8008B50:
 	pop {pc}
-	thumb_func_end sub_8008B2E
+	thumb_func_end battle_waitCrossNetReadyStep
 
 // symdb: Per-frame countdown (30 frames) that, on expiry, advances the battle-end substate and clears a flag in the overworld player struct.
 // symdb: (r5 = battle-side struct with state at +3, timer at +8 halfword, result flag at +4; r10 =
@@ -12694,7 +12694,7 @@ loc_8008C12:
 	ldr r1, off_8008D58 // =0x400 
 	tst r0, r1
 	beq loc_8008C4C
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	cmp r0, #0
 	beq loc_8008C4C
 	cmp r0, #2
@@ -12733,7 +12733,7 @@ off_8008C68:
 off_8008C6C:
 	.word sub_8008C7C+1
 	.word sub_8008CAC+1
-	.word sub_8008CCA+1
+	.word battle_effectWaitCrossNetReady+1
 	.word sub_8008CEE+1
 	thumb_func_end sub_8008C58
 
@@ -12787,9 +12787,9 @@ locret_8008CC8:
 // symdb: Battle sub-effect handler that starts sub-effect kind 0x1C and waits, refreshing a 0xC timer, until the linked cross-net battle partner is ready.
 // symdb: (r5 = effect struct: +2 halfword timer, +3 byte state, +8 halfword work) -> r0 = clobbered; no
 // symdb: meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008CCA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_effectWaitCrossNetReady.yaml
 	thumb_local_start
-sub_8008CCA:
+battle_effectWaitCrossNetReady:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12808,7 +12808,7 @@ loc_8008CE0:
 	strh r0, [r5,#2]
 locret_8008CEC:
 	pop {pc}
-	thumb_func_end sub_8008CCA
+	thumb_func_end battle_effectWaitCrossNetReady
 
 	thumb_local_start
 sub_8008CEE:
@@ -13033,7 +13033,7 @@ off_8008E8C:
 off_8008E90:
 	.word sub_8008EA0+1
 	.word sub_8008F10+1
-	.word sub_8008F2E+1
+	.word battle_linkBattleIntroWaitUpdate+1
 	.word sub_8008F52+1
 	thumb_func_end sub_8008E7C
 
@@ -13116,9 +13116,9 @@ locret_8008F2C:
 // symdb: Battle state-machine step that, once per intro phase, fires effect kind 0x58 and then idles until the cross-net (link) battle is ready before advancing.
 // symdb: (r5 = battle effect/state struct, r0 ignored) -> r0 = result of comm_checkCrossNetBattleReady
 // symdb: (clobbered); no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008F2E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_linkBattleIntroWaitUpdate.yaml
 	thumb_local_start
-sub_8008F2E:
+battle_linkBattleIntroWaitUpdate:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13137,7 +13137,7 @@ loc_8008F44:
 	strh r0, [r5,#2]
 locret_8008F50:
 	pop {pc}
-	thumb_func_end sub_8008F2E
+	thumb_func_end battle_linkBattleIntroWaitUpdate
 
 	thumb_local_start
 sub_8008F52:
@@ -13262,7 +13262,7 @@ loc_8009012:
 	ldr r1, off_8009154 // =0x400 
 	tst r0, r1
 	beq loc_800904C
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	cmp r0, #0
 	beq loc_800904C
 	cmp r0, #2
@@ -13301,7 +13301,7 @@ off_8009068:
 off_800906C:
 	.word sub_800907C+1
 	.word sub_80090AC+1
-	.word sub_80090CA+1
+	.word battle_stepKindEffectWaitCrossNetReady+1
 	.word sub_80090EE+1
 	thumb_func_end sub_8009058
 
@@ -13355,9 +13355,9 @@ locret_80090C8:
 // symdb: Battle task step: launches sub-effect kind 0x1C once, then waits until the cross-net/linked battle is ready before proceeding.
 // symdb: (r5 = battle task/work struct; r0 unused on entry) -> void; sets phase byte [r5+3], halfword
 // symdb: timers [r5+2] and [r5+8]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80090CA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepKindEffectWaitCrossNetReady.yaml
 	thumb_local_start
-sub_80090CA:
+battle_stepKindEffectWaitCrossNetReady:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13376,7 +13376,7 @@ loc_80090E0:
 	strh r0, [r5,#2]
 locret_80090EC:
 	pop {pc}
-	thumb_func_end sub_80090CA
+	thumb_func_end battle_stepKindEffectWaitCrossNetReady
 
 	thumb_local_start
 sub_80090EE:
@@ -13867,7 +13867,7 @@ loc_80093B0:
 	tst r0, r1
 	beq loc_8009454
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_8009452
@@ -13894,7 +13894,7 @@ loc_8009414:
 	tst r0, r1
 	beq loc_8009454
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_8009452
@@ -14498,7 +14498,7 @@ loc_800981E:
 	tst r0, r1
 	beq loc_80098B4
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_80098B2
@@ -14522,7 +14522,7 @@ loc_8009870:
 	tst r0, r1
 	beq loc_80098B4
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_80098B2
@@ -14556,7 +14556,7 @@ off_80098CC:
 	.word off_80098D0
 off_80098D0:
 	.word battle_waitForResultScreenSync+1
-	.word sub_8009916+1
+	.word battle_stepNaviDisplayThenChipSelect+1
 	thumb_func_end sub_80098BC
 
 // symdb: Link-battle state handler: initializes the result transition, waits until both players' tracked id equals 0x1f2f3f4f (or a 180-frame timeout), then restores result records and advances the battle state.
@@ -14603,9 +14603,9 @@ locret_8009914:
 // symdb: Battle state handler: on entry sets up the result/navi display once, then runs the chip-select init until it finishes, then advances the battle state machine to 0x14.
 // symdb: (r5 = battle state struct) -> r0 = 0 when chip-select init still running, 1/nonnull when phase
 // symdb: done and state advanced; writes state fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009916.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepNaviDisplayThenChipSelect.yaml
 	thumb_local_start
-sub_8009916:
+battle_stepNaviDisplayThenChipSelect:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14624,7 +14624,7 @@ loc_8009928:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009938:
 	pop {pc}
-	thumb_func_end sub_8009916
+	thumb_func_end battle_stepNaviDisplayThenChipSelect
 
 	thumb_local_start
 sub_800993A:
@@ -14824,7 +14824,7 @@ off_8009A98:
 	.word off_8009A9C
 off_8009A9C:
 	.word sub_8009AA8+1
-	.word sub_8009AD8+1
+	.word battle_stateCrossNetBattleIntroStep+1
 	.word sub_8009AFC+1
 	thumb_func_end sub_8009A88
 
@@ -14862,9 +14862,9 @@ locret_8009AD6:
 // symdb: Battle state-machine sub-phase handler: fires a one-shot battle sub-effect (using the event count as kind byte), then polls cross-net/linked-battle readiness before advancing to state 8.
 // symdb: (r0,r1 unused on entry; r5 = battle state struct) -> r0 clobbered; updates
 // symdb: oBattleState_SubPhaseInitFlag / StatePhaseAndInitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009AD8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateCrossNetBattleIntroStep.yaml
 	thumb_local_start
-sub_8009AD8:
+battle_stateCrossNetBattleIntroStep:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14883,7 +14883,7 @@ loc_8009AEE:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009AFA:
 	pop {pc}
-	thumb_func_end sub_8009AD8
+	thumb_func_end battle_stateCrossNetBattleIntroStep
 
 	thumb_local_start
 sub_8009AFC:
@@ -14960,7 +14960,7 @@ loc_8009B60:
 	tst r0, r1
 	beq loc_8009BA4
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_8009BA2
@@ -14994,7 +14994,7 @@ off_8009BBC:
 	.word off_8009BC0
 off_8009BC0:
 	.word sub_8009BC8+1
-	.word sub_8009C06+1
+	.word battle_stateResultScreenHandler+1
 	thumb_func_end sub_8009BAC
 
 	thumb_local_start
@@ -15037,9 +15037,9 @@ locret_8009C04:
 // symdb: Battle state handler: sets up the result/navi-display screen once, then runs the chip-select state until it finishes, advancing to state 0x14.
 // symdb: (r5 = battle state struct) -> r0 = 0 when chip select still active, or sets state to
 // symdb: Index_01=0x14 with SubPhase/InitFlag cleared; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009C06.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateResultScreenHandler.yaml
 	thumb_local_start
-sub_8009C06:
+battle_stateResultScreenHandler:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15058,7 +15058,7 @@ loc_8009C18:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009C28:
 	pop {pc}
-	thumb_func_end sub_8009C06
+	thumb_func_end battle_stateResultScreenHandler
 
 // symdb: Battle sub-phase that fades the screen out, then on fade completion stops the music, frees object type 0x1A, and advances the battle state to 8.
 // symdb: (r5 = battle state struct) -> void; sets oBattleState_SubPhaseInitFlag, oBattleState_Index_00
@@ -15436,7 +15436,7 @@ loc_8009E96:
 	tst r0, r1
 	beq loc_8009EDA
 	push {r2}
-	bl sub_800AF50
+	bl battle_comparePhaseToCustCharge
 	tst r0, r0
 	pop {r2}
 	beq loc_8009ED8
@@ -15469,7 +15469,7 @@ off_8009EF0:
 	.word off_8009EF4
 off_8009EF4:
 	.word battle_waitLinkResultsSyncPhase+1
-	.word sub_8009F3A+1
+	.word battle_stateChipSelectOpen+1
 	thumb_func_end sub_8009EE2
 
 // symdb: Battle-state handler that waits for link sync of post-battle results, then restores result records and advances to phase 4 (with a 180-frame timeout fallback).
@@ -15516,9 +15516,9 @@ locret_8009F38:
 // symdb: (r5 = battle state struct, r0 unused on entry) -> writes oBattleState_SubPhaseInitFlag and, when
 // symdb: chip select finishes, oBattleState_Index_01 = 0x14 and resets
 // symdb: oBattleState_StatePhaseAndInitFlag; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009F3A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stateChipSelectOpen.yaml
 	thumb_local_start
-sub_8009F3A:
+battle_stateChipSelectOpen:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15537,7 +15537,7 @@ loc_8009F4C:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009F5C:
 	pop {pc}
-	thumb_func_end sub_8009F3A
+	thumb_func_end battle_stateChipSelectOpen
 
 // symdb: Battle sub-phase that fades the screen out, then stops music, clears objects, and advances the battle state
 // symdb: (r0-r4 unused, r5 = battleState struct) -> void; sets oBattleState_Index_00 = 8 when fade
@@ -18205,9 +18205,9 @@ dword_800AE8C:
 // symdb: Queues a 16-byte graphics-FIFO record that draws a small HP-gauge sprite at the given screen position, alternating its record type every 8 frames and playing sfx 0x91 every 16 frames.
 // symdb: (r0 = screen x, r1 = screen y) -> void; plays sfx 0x91 when (frame & 0xF)==0; pushes FIFO record
 // symdb: only if x+16 < 0xFF and y+16 < 0xB0; clobbers r2-r7,r6 via calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AE90.yaml
-	thumb_func_start sub_800AE90
-sub_800AE90:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueHpGaugeEntry.yaml
+	thumb_func_start sprite_queueHpGaugeEntry
+sprite_queueHpGaugeEntry:
 	push {r5-r7,lr}
 	push {r0,r1}
 	mov r7, r10
@@ -18252,7 +18252,7 @@ locret_800AEE0:
 	.balign 4, 0
 dword_800AEE4:
 	.word 0xD3CA
-	thumb_func_end sub_800AE90
+	thumb_func_end sprite_queueHpGaugeEntry
 
 // symdb: Re-rolls the damage value of the currently selected chip in both battlers' records, but only when that chip has the variable-damage flag set.
 // symdb: void handleVariableDamageChip_800AEE8(void)
@@ -18301,10 +18301,10 @@ locret_800AF32:
 
 // symdb: Adds to the custom gauge each tick: normally 0x4000 via SetCustGauge, or an alliance-scaled amount when battle flag 0x40 is set
 // symdb: (r5 = battle object) -> r0 = gauge result path; calls SetCustGauge(0x4000) or
-// symdb: sub_802E032(alliance, 0x1555)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AF34.yaml
-	thumb_func_start sub_800AF34
-sub_800AF34:
+// symdb: battle_addCappedCounter(alliance, 0x1555)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fillCustGauge.yaml
+	thumb_func_start battle_fillCustGauge
+battle_fillCustGauge:
 	push {lr}
 	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
@@ -18315,16 +18315,16 @@ sub_800AF34:
 loc_800AF46:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldr r1, dword_800B140 // =0x1555
-	bl sub_802E032
+	bl battle_addCappedCounter
 	pop {pc}
-	thumb_func_end sub_800AF34
+	thumb_func_end battle_fillCustGauge
 
 // symdb: Three-way comparison of the battle phase-step index against the custom gauge charge level, offset by (3 - state-4 event count), returning which side leads or a special value.
 // symdb: () -> r0 = 1 if phaseStep > charge + (3 - eventCount), -1 if charge > phaseStep + (3 -
 // symdb: eventCount), 2 if instead eventCount >= 3, else 0; no inputs, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AF50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_comparePhaseToCustCharge.yaml
 	thumb_local_start
-sub_800AF50:
+battle_comparePhaseToCustCharge:
 	push {r4,r5,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_BattleStatePtr]
@@ -18356,7 +18356,7 @@ loc_800AF80:
 	mov r0, #0
 locret_800AF82:
 	pop {r4,r5,pc}
-	thumb_func_end sub_800AF50
+	thumb_func_end battle_comparePhaseToCustCharge
 
 // symdb: Picks a busting-level category (0/1/2) for sub_800AC20 based on battle-effects flags and battle state's Unk_0d byte, then forwards to sub_800AC20.
 // symdb: (r0 = unused, r1 = unused, r10 = Toolkit ptr) -> r0 = category arg for sub_800AC20 (0, 1, or 2);

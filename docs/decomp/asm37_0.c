@@ -1127,7 +1127,7 @@ int pet_zeroStatSlotBuffer()
 
 // 0x813c030
 // () -> void
-void __cdecl sub_813C030()
+void __cdecl navicust_grantProgramsFromTable()
 {
     int v0; // r5
     signed int v1; // r6
@@ -2358,26 +2358,26 @@ void sub_813CE04()
 // 0x813ce08
 int sub_813CE08()
 {
-    return sub_813CE26();
+    return pet_addNaviStatsByte18AndMarkField16();
 }
 
 
 // 0x813ce12
 int sub_813CE12()
 {
-    return sub_813CE26();
+    return pet_addNaviStatsByte18AndMarkField16();
 }
 
 
 // 0x813ce1c
 int sub_813CE1C()
 {
-    return sub_813CE26();
+    return pet_addNaviStatsByte18AndMarkField16();
 }
 
 
 // 0x813ce26
-int sub_813CE26()
+int pet_addNaviStatsByte18AndMarkField16()
 {
     char v0; // r4
     char v1; // r0
@@ -2521,7 +2521,7 @@ int sub_813CF3C()
 
 
 // 0x813cf4c
-int __fastcall sub_813CF4C(int a1)
+int __fastcall pet_addCurNaviStat18(int a1)
 {
     int v1; // r4
     int v2; // r3
@@ -2537,7 +2537,7 @@ int __fastcall sub_813CF4C(int a1)
 
 
 // 0x813cf6c
-int __fastcall sub_813CF6C(int a1)
+int __fastcall pet_addCurNaviStatsByteCapped7(int a1)
 {
     int v1; // r4
     int v2; // r3

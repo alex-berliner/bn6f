@@ -5371,7 +5371,7 @@ void __fastcall __noreturn battle_initReturnSceneGfx(int a1, int a2, int a3, int
     runSetupStepAndClearWorkArea_8005F6C();
     sprite_initBattleFadeGfxState_80027C4();
     decomp_initGfx_8038F30();
-    sub_8038F74();
+    battle_renderCommErrorTextGfx();
 }
 
 
@@ -5643,7 +5643,7 @@ int sub_8038DB0()
 
 
 // 0x8038de0
-int __fastcall sub_8038DE0(int a1, int a2, int a3)
+int __fastcall object_delayedSoundAndAnims(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -5745,7 +5745,7 @@ int sub_8038EAC()
     v1 = *(v0 + 4) - 1;
     *(v0 + 4) = v1;
     if ( !v1 )
-        sub_8038F74();
+        battle_renderCommErrorTextGfx();
     return sub_8039198();
 }
 
@@ -5801,7 +5801,7 @@ void decomp_initGfx_8038F30()
 
 
 // 0x8038f74
-int __noreturn sub_8038F74()
+int __noreturn battle_renderCommErrorTextGfx()
 {
     return renderTextGfx_8045F8C(TextScriptCommError873B9E0, 40, eDecompBuffer2013A00, 100683776);
 }
@@ -6022,7 +6022,7 @@ int init_videoSystemsReset()
 
 
 // 0x8039658
-int sub_8039658()
+int battle_dispatchModeAndRunUpdates()
 {
     int v0; // r5
 
@@ -6238,7 +6238,7 @@ int sub_8039846()
 
 
 // 0x8039864
-signed int sub_8039864()
+signed int init_objBg2DisplayMode()
 {
     int v0; // r5
     signed int result; // r0
@@ -6854,7 +6854,7 @@ LABEL_8:
     {
         sub_803CB0C(256);
         sub_8146CFC();
-        sub_802D070(0);
+        init_tableEntry(0);
         sub_8147B24();
         v3 = engine_setScreeneffect(44, 16);
         musicGameState_8000784(v3, v4, v5);
@@ -7057,7 +7057,7 @@ int __fastcall sub_8039F78(int a1)
     {
         sub_803CB0C(256);
         sub_8146CFC();
-        sub_802D070(0);
+        init_tableEntry(0);
         sub_8147B24();
         v6 = engine_setScreeneffect(44, 16);
         musicGameState_8000784(v6, v7, v8);
@@ -8190,7 +8190,7 @@ int sub_803AB20()
 
 
 // 0x803ab46
-int sub_803AB46()
+int battle_tryJackIn()
 {
     int v0; // r5
     int v1; // r1
@@ -8207,7 +8207,7 @@ int sub_803AB46()
 
 
 // 0x803ab6c
-int __fastcall sub_803AB6C(int a1, int a2, int a3)
+int __fastcall battle_advanceMoveStep(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r1
@@ -8542,7 +8542,7 @@ void __fastcall __noreturn sub_803ADDA(int a1, int a2, int a3)
 
 
 // 0x803ae04
-int sub_803AE04()
+int battle_tryConfirmAction()
 {
     int v0; // r5
     int v1; // r1
@@ -8587,7 +8587,7 @@ int __fastcall sub_803AE50(int a1, int a2, int a3)
     v4 = *(v3 + 17) + 1;
     v5 = *(v3 + 38);
     if ( v4 > v5 )
-        return sub_803AEC0(v4, v5, a3);
+        return menuClearElementSelection(v4, v5, a3);
     *(v3 + 17) = v4;
     sub_803C040(17, 144);
     *(v3 + 19) = 0;
@@ -8596,7 +8596,7 @@ int __fastcall sub_803AE50(int a1, int a2, int a3)
 
 
 // 0x803ae78
-int sub_803AE78()
+int submenu_moveCursorBack()
 {
     int v0; // r5
     int v1; // r0
@@ -8629,7 +8629,7 @@ signed int __fastcall menuSelectElement_803AE98(int a1, int a2, int a3)
     v4 = *(v3 + 17);
     v5 = *(v3 + 38);
     if ( v4 >= v5 )
-        return sub_803AEC0(v4, v5, a3);
+        return menuClearElementSelection(v4, v5, a3);
     PlaySoundEffect(129, v5, a3);
     *(v3 + 19) = 0;
     sub_803BF70(17, 144);
@@ -8638,7 +8638,7 @@ signed int __fastcall menuSelectElement_803AE98(int a1, int a2, int a3)
 
 
 // 0x803aec0
-signed int __fastcall sub_803AEC0(int a1, int a2, int a3)
+signed int __fastcall menuClearElementSelection(int a1, int a2, int a3)
 {
     int v3; // r5
     signed int result; // r0
@@ -11261,7 +11261,7 @@ int petnavi_setStat42ToStat3EPlusCounter_803CED4()
 
 
 // 0x803cef8
-int __fastcall sub_803CEF8(int a1)
+int __fastcall pet_copyCurNaviStat42To40(int a1)
 {
     int v1; // r4
     __int16 v2; // r0
@@ -13877,7 +13877,7 @@ signed int __fastcall sub_803F00C(int a1, unsigned int a2)
 
 
 // 0x803f030
-signed int __fastcall sub_803F030(int a1, unsigned int a2)
+signed int __fastcall rfu_queuePushEntry(int a1, unsigned int a2)
 {
     if ( byte_200AC20 == byte_200AC22 )
         return 1;

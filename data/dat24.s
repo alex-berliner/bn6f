@@ -2232,7 +2232,7 @@ cutscenescript_808EB60:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000003
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000003
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04
@@ -3193,7 +3193,7 @@ byte_808F748::
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_BEF
 	cs_decomp_text_archive ptr1=TextScript87E1718
-	cs_call_native_with_return_value ptr1=sub_808FBC0+1
+	cs_call_native_with_return_value ptr1=camera_snapToIndexedTarget+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_call_native_with_return_value ptr1=sub_808FC34+1
 	cs_pause byte1=0xFF byte2=0x1E

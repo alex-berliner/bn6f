@@ -28,7 +28,7 @@ u32 sub_813005C()
 
 	*(v0 + 2) = 8;
 	*(v0 + 3) = 0;
-	v1 = sub_8130404()[12] | 0x8000;
+	v1 = t4_getWork()[12] | 0x8000;
 	*(v0 + 42) = v1;
 	result = camera_copyLinkStateToEnd();
 	*(v0 + 38) = 2;
@@ -51,7 +51,7 @@ int t4_sceneInit()
 	_WORD *v7; // r0
 	char v8; // r1
 
-	v2 = sub_8130404();
+	v2 = t4_getWork();
 	zeroFillVRAM();
 	ZeroFill_byte_3001960(v3, v4, v5, v6);
 	ZeroFillGFX30025c0();
@@ -69,7 +69,7 @@ int t4_sceneInit()
 	ZeroFillByEightWords(v2, 128);
 	sub_8130194();
 	sub_8130108();
-	sub_813017C();
+	t4_loadSceneBackground();
 	sub_81301DC();
 	sub_8130208();
 	sub_813064C();
@@ -93,7 +93,7 @@ void sub_8130108()
 
 
 // 0x813017c
-void sub_813017C()
+void t4_loadSceneBackground()
 {
 	CopyBackgroundTiles(0, 0, 1, &unk_201F820, 30, dword_14);
 }
@@ -109,7 +109,7 @@ int sub_8130194()
 	int v4; // r2
 	int result; // r0
 
-	v1 = sub_8130404();
+	v1 = t4_getWork();
 	ZeroFillByEightWords(word_2023FA0, 16);
 	word_2023FA0[0] = 38;
 	word_2023FA2 = 1;
@@ -184,7 +184,7 @@ signed int sub_8130250()
 
 
 // 0x8130290
-int sub_8130290()
+int battle_spawnEStructIfSlotEmpty()
 {
 	int result; // r0
 	char v1; // zf
@@ -197,7 +197,7 @@ int sub_8130290()
 
 
 // 0x81302b0
-int sub_81302B0()
+int battle_spawnEStruct1IfEmpty()
 {
 	int result; // r0
 	char v1; // zf
@@ -248,7 +248,7 @@ void __noreturn sub_8130370()
 	int v4; // r3
 	int v5; // r0
 
-	v1 = sub_8130404();
+	v1 = t4_getWork();
 	*(v1 + 15) = 26;
 	*(v1 + 20) = 26;
 	*(v1 + 25) = 26;
@@ -270,7 +270,7 @@ void __noreturn sub_8130370()
 
 
 // 0x8130404
-char *sub_8130404()
+char *t4_getWork()
 {
 	return &eT4BattleObjects[3872];
 }
@@ -279,7 +279,7 @@ char *sub_8130404()
 // 0x813040c
 int sub_813040C()
 {
-	return sub_8130404()[12] | 0x8000;
+	return t4_getWork()[12] | 0x8000;
 }
 
 
@@ -312,9 +312,9 @@ void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
 	ZeroFillGFX30025c0();
 	battle_resetEStructRecords_8046664();
 	CopyBackgroundTiles(0, 0, 1, &unk_201F320, 30, dword_14);
-	sub_8130290();
+	battle_spawnEStructIfSlotEmpty();
 	sub_81302F4(*(v4 + 42), 0);
-	sub_81302B0();
+	battle_spawnEStruct1IfEmpty();
 	sub_81302F4(128, 1);
 	sub_81304A4();
 }
@@ -335,7 +335,7 @@ void t4_refreshChipPackBuffer()
 	int v2; // r2
 	int v3; // r3
 
-	v0 = sub_8130404()[12];
+	v0 = t4_getWork()[12];
 	if ( v0 )
 		battle_buildChipPackFromFolderEntries_811FCB8(v0 - 1, &unk_2023FB0, 1, &unk_2024370);
 	else
@@ -348,7 +348,7 @@ void sub_81304EC()
 {
 	char *v0; // r7
 
-	v0 = sub_8130404();
+	v0 = t4_getWork();
 	if ( v0[12] )
 	{
 		battle_drawChipSelectFighterNames_81200EC(*&v0[*(&dword_8130618 + v0[12] - 1)], &unk_2023FB0, byte_20243E8);
@@ -407,7 +407,7 @@ signed int sub_813064C()
 	char *v0; // r5
 	signed int result; // r0
 
-	v0 = sub_8130404();
+	v0 = t4_getWork();
 	sub_8130250();
 	result = v0[12];
 	if ( v0[12] )
@@ -435,7 +435,7 @@ int battle_packChipEntryRecord()
 	int result; // r0
 	_DWORD *v14; // [sp+0h] [bp-18h]
 
-	v1 = sub_8130404()[12];
+	v1 = t4_getWork()[12];
 	v4 = v14;
 	if ( v1 )
 	{
@@ -603,7 +603,7 @@ void sub_8130810()
 	char *v0; // r7
 	unsigned int v1; // r0
 
-	v0 = sub_8130404();
+	v0 = t4_getWork();
 	sub_8130850();
 	if ( v0[12] )
 	{
@@ -745,7 +745,7 @@ void __noreturn e_linkMatchObjectUpdate()
 	if ( v2 & 8 )
 	{
 		if ( !eStruct200BC30_getJumpOffset00() )
-			sub_8131570();
+			e_copyBgTileBlock11x3();
 	}
 	else
 	{
@@ -795,7 +795,7 @@ LABEL_27:
 						}
 						else
 						{
-							sub_813178C();
+							e_linkMatchShowScript67();
 						}
 					}
 					else
@@ -823,7 +823,7 @@ LABEL_27:
 		}
 	}
 LABEL_29:
-	sub_8131570();
+	e_copyBgTileBlock11x3();
 }
 
 
@@ -860,7 +860,7 @@ void __noreturn sub_8130B30()
 		}
 		if ( v2 & 8 )
 LABEL_19:
-			sub_8131570();
+			e_copyBgTileBlock11x3();
 		v4 = sub_803E8F8();
 		v5 = get_eLinkStateUnk38();
 		v6 = sub_81323B0(v5);
@@ -888,7 +888,7 @@ LABEL_19:
 		}
 	}
 LABEL_15:
-	sub_8131570();
+	e_copyBgTileBlock11x3();
 }
 
 
@@ -930,7 +930,7 @@ int sub_8130BC8()
 			*(v4 + 10) = *(v0 + 42);
 		}
 		if ( v3 & 8 )
-			sub_8131570();
+			e_copyBgTileBlock11x3();
 		v5 = sub_803E8F8();
 		v6 = get_eLinkStateUnk38();
 		v7 = sub_81323B0(v6);
@@ -965,7 +965,7 @@ int sub_8130BC8()
 			}
 		}
 LABEL_20:
-		sub_8131570();
+		e_copyBgTileBlock11x3();
 	}
 	return result;
 }
@@ -998,7 +998,7 @@ int sub_8130C98()
 		if ( !(result & 0x10) )
 			result = camera_copyLinkStateToEnd();
 		if ( v2 & 8 )
-			sub_8131570();
+			e_copyBgTileBlock11x3();
 		sub_81317F0(result);
 		v3 = sub_803E8F8();
 		v4 = get_eLinkStateUnk38();
@@ -1027,7 +1027,7 @@ int sub_8130C98()
 			}
 		}
 LABEL_15:
-		sub_8131570();
+		e_copyBgTileBlock11x3();
 	}
 	return result;
 }
@@ -1100,7 +1100,7 @@ void __noreturn sub_8130D40()
 		}
 	}
 LABEL_16:
-	sub_8131570();
+	e_copyBgTileBlock11x3();
 }
 
 
@@ -1461,7 +1461,7 @@ LABEL_30:
         }
     }
 LABEL_32:
-    sub_8131570();
+    e_copyBgTileBlock11x3();
 }
 
 
@@ -1494,7 +1494,7 @@ int sub_8131150()
         }
     }
     if ( *(v0 + 31) == 4 )
-        sub_8131570();
+        e_copyBgTileBlock11x3();
     return sub_813188C(1);
 }
 
@@ -1643,12 +1643,12 @@ void __noreturn init_cutsceneSceneState()
         ZeroFillByEightWords(v2, 128);
     }
     init_loadCutsceneSceneAssets();
-    sub_8131440();
+    init_loadSceneBackground();
 }
 
 
 // 0x8131390
-char *sub_8131390()
+char *init_cutsceneEmotionEntries()
 {
     int v0; // r4
     char *result; // r0
@@ -1695,7 +1695,7 @@ void init_loadCutsceneSceneAssets()
 
 
 // 0x8131440
-void __noreturn sub_8131440()
+void __noreturn init_loadSceneBackground()
 {
     CopyBackgroundTiles(0, 0, 1, &unk_2021DA0, 30, dword_14);
     JUMPOUT(locret_8131452);
@@ -1753,7 +1753,7 @@ void __noreturn sub_81314E4()
 
 
 // 0x8131570
-void __noreturn sub_8131570()
+void __noreturn e_copyBgTileBlock11x3()
 {
     CopyBackgroundTiles(17, 3, 0, byte_8130884, 8, &dword_8);
     JUMPOUT(locret_8131582);
@@ -1890,7 +1890,7 @@ char *sub_8131704()
 
 
 // 0x813171c
-char *sub_813171C()
+char *pet_setCurNaviHp()
 {
     int v0; // r0
     int v1; // r0
@@ -1938,7 +1938,7 @@ signed int __fastcall e_linkMatchObjectStateExit(int a1, int a2, int a3)
 
 
 // 0x813178c
-signed int sub_813178C()
+signed int e_linkMatchShowScript67()
 {
     int v0; // r5
     signed int result; // r0
@@ -4038,7 +4038,7 @@ void sub_8133618()
         }
         else
         {
-            sub_813367C(v1);
+            chatbox_showCantJackInMsg(v1);
             *(v0 + 104) = 16;
         }
     }
@@ -4068,7 +4068,7 @@ void sub_8133648()
         }
         else
         {
-            sub_813367C(v1);
+            chatbox_showCantJackInMsg(v1);
             *(v0 + 104) = 8;
         }
     }
@@ -4083,7 +4083,7 @@ void sub_8133648()
 
 
 // 0x813367c
-int __fastcall sub_813367C(int a1)
+int __fastcall chatbox_showCantJackInMsg(int a1)
 {
     int v1; // r1
     int v2; // r2
@@ -9863,7 +9863,7 @@ void __fastcall __noreturn battle_initRoundState(int a1, int a2, int a3, int a4)
 
 
 // 0x8137964
-void sub_8137964()
+void submenu_runPromptFrameUpdate()
 {
     int v0; // r5
 
@@ -9914,7 +9914,7 @@ signed int submenu_handleConfirmCancelCursorInput()
         JoypadKeyPressed();
         if ( !v2 )
         {
-            if ( !sub_8138170() )
+            if ( !submenu_showSelectedFastestTime() )
             {
                 PlaySoundEffect(129, v3, v4);
                 result = 8;
@@ -10123,7 +10123,7 @@ void __fastcall __noreturn sub_8137DA4(int a1, int a2, u16 *a3)
 
 
 // 0x8137db4
-void __fastcall __noreturn sub_8137DB4(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn chatbox_renderTextEntry(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -10296,7 +10296,7 @@ signed int __fastcall sub_8137F08(__int16 a1, _WORD *a2, _WORD *a3, signed int a
 
 
 // 0x8137f5c
-void __fastcall __noreturn sub_8137F5C(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn sprite_renderCharGlyph(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -10463,7 +10463,7 @@ int __fastcall sub_8138104(int a1, int a2, int a3, int a4)
 
 
 // 0x8138170
-signed int sub_8138170()
+signed int submenu_showSelectedFastestTime()
 {
     int v0; // r5
     int v1; // r10

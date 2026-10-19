@@ -2758,7 +2758,7 @@ int sub_810FDD0()
 
 
 // 0x810fdf0
-int sub_810FDF0()
+int battle_objectUpdateFlagBit30Handler()
 {
     int v0; // r5
     int v1; // r0
@@ -6461,7 +6461,7 @@ int battle_spawnObject54OnCountdownEnd()
 
 
 // 0x8112d2a
-int sub_8112D2A()
+int ai_repeatQueuedAttackState()
 {
     int v0; // r7
     int v1; // r0
@@ -7992,7 +7992,7 @@ int ai_initAttackVars()
 
 
 // 0x8113f60
-__int64 __noreturn sub_8113F60()
+__int64 __noreturn object_probePanelReserve()
 {
     int v0; // r5
     __int64 v1; // r0
@@ -11900,12 +11900,12 @@ void __noreturn sprite_initVariantObject()
     sprite_setCoordinates(0, 0);
     *(v0 + 8) = 4;
     sub_81175AC();
-    sub_8117488();
+    sprite_updateVariantObject();
 }
 
 
 // 0x8117488
-void sub_8117488()
+void sprite_updateVariantObject()
 {
     Battle *v0; // r5
     unsigned __int16 *v1; // r0
@@ -12223,7 +12223,7 @@ void __noreturn object_updateSpriteAnimState()
     signed int v1; // r0
 
     sprite_setCoordinates(120, 64);
-    sub_8117872();
+    sprite_updatePalette();
     sub_8117820();
     v1 = sub_811788C();
     if ( v1 != *(v0 + 12) )
@@ -12280,7 +12280,7 @@ int sub_8117820()
 
 
 // 0x8117872
-void sub_8117872()
+void sprite_updatePalette()
 {
     int v0; // r0
 
@@ -14273,12 +14273,12 @@ void __noreturn spawn_initGuiSpriteEntry()
     sprite_setPallete(0);
     v0->currState = 4;
     sprite_setCoordinates(128, 20 * *(v1 + 32) + 27);
-    sub_8118DE0();
+    spawn_updateGuiSpriteEntry();
 }
 
 
 // 0x8118de0
-void __noreturn sub_8118DE0()
+void __noreturn spawn_updateGuiSpriteEntry()
 {
     Battle *v0; // r5
 
@@ -15835,7 +15835,7 @@ void __noreturn sub_811A358()
 
 
 // 0x811a370
-void __noreturn sub_811A370()
+void __noreturn sprite_cyclePaletteAnim()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -16263,7 +16263,7 @@ int sub_811A8EC()
 
 
 // 0x811a8f4
-int __fastcall sub_811A8F4(int a1, __int16 a2, int a3)
+int __fastcall object_setPositionIfActive(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -16566,7 +16566,7 @@ int __fastcall sub_811AD04(__int16 a1, int a2, int a3)
 
 
 // 0x811ad18
-int __fastcall sub_811AD18(int a1, __int16 a2, int a3)
+int __fastcall object_setPositionIfEntryActive(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -16781,7 +16781,7 @@ int __fastcall sub_811AFFC(int a1)
 
 
 // 0x811b010
-int __fastcall sub_811B010(int a1)
+int __fastcall sprite_unscaleEntryIfBusy(int a1)
 {
     int result; // r0
     int v2; // r1
@@ -17728,7 +17728,7 @@ int __fastcall sub_811BC00(__int16 a1, int a2, int a3, __int16 a4)
 
 
 // 0x811bc24
-int __fastcall sub_811BC24(int a1, __int16 a2, int a3)
+int __fastcall sprite_setCoordinatesIfEntityExists(int a1, __int16 a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -18894,7 +18894,7 @@ int sub_811CE34()
 
 
 // 0x811ce64
-int sub_811CE64()
+int object_timerBeepTick()
 {
     int v0; // r5
     int result; // r0
@@ -23617,19 +23617,19 @@ __int64 sub_8120A38()
 {
     __int64 v0; // ST00_8
 
-    sub_8120A88();
+    removeFolderChipsFromPack();
     LODWORD(v0) = sub_8120898(0);
     HIDWORD(v0) = sub_8120898(1);
     GetTotalChipCount(311);
     sub_8120898(2);
     sub_8120898(5);
-    sub_8120AB8();
+    pack_addAllFolderChipsToPack();
     return v0;
 }
 
 
 // 0x8120a88
-signed int sub_8120A88()
+signed int removeFolderChipsFromPack()
 {
     int v0; // r10
     int v1; // r4
@@ -23660,7 +23660,7 @@ signed int sub_8120A88()
 
 
 // 0x8120ab8
-int sub_8120AB8()
+int pack_addAllFolderChipsToPack()
 {
     int v0; // r10
     int v1; // r4

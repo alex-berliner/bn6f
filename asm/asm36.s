@@ -34,7 +34,7 @@ sub_813005C:
 	strb r0, [r5,#2]
 	mov r0, #0
 	strb r0, [r5,#3]
-	bl sub_8130404
+	bl t4_getWork
 	ldrb r4, [r0,#0xc]
 	mov r2, #0x80
 	lsl r2, r2, #8
@@ -55,7 +55,7 @@ sub_813005C:
 	thumb_func_start t4_sceneInit
 t4_sceneInit:
 	push {r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r7, r0
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFill_byte_3001960
@@ -80,7 +80,7 @@ t4_sceneInit:
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	bl sub_8130194
 	bl sub_8130108
-	bl sub_813017C
+	bl t4_loadSceneBackground
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_813064C
@@ -145,9 +145,9 @@ byte_8130124:
 
 // symdb: Copies a full 30x20-tile (whole-screen) background map from RAM into BG tile block 1 when an overlay cutscene is set up.
 // symdb: () -> void; no input args, all parameters hardcoded
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813017C.yaml
-	thumb_func_start sub_813017C
-sub_813017C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_loadSceneBackground.yaml
+	thumb_func_start t4_loadSceneBackground
+t4_loadSceneBackground:
 	push {r4-r7,lr}
 	mov r0, #0
 	mov r1, #0
@@ -160,12 +160,12 @@ sub_813017C:
 	.balign 4, 0
 off_8130190:
 	.word unk_201F820
-	thumb_func_end sub_813017C
+	thumb_func_end t4_loadSceneBackground
 
 	thumb_local_start
 sub_8130194:
 	push {r4-r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r5, r0
 	ldr r0, off_81301D0 // =word_2023FA0 
 	ldr r1, dword_81301D8 // =0x10 
@@ -307,9 +307,9 @@ dword_813028C:
 // symdb: Refills battle eStruct slot 0 from a fixed spawn table whenever slot 0 is currently unused.
 // symdb: (r0 = unused/0 passed through, r1 = unused) -> r0 = spawned eStruct or 0; flags NZ from slot-0
 // symdb: in-use byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130290.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructIfSlotEmpty.yaml
 	thumb_local_start
-sub_8130290:
+battle_spawnEStructIfSlotEmpty:
 	push {r4-r7,lr}
 	mov r1, #0
 	push {r1}
@@ -325,14 +325,14 @@ locret_81302A8:
 	.balign 4, 0
 off_81302AC:
 	.word byte_812F04C
-	thumb_func_end sub_8130290
+	thumb_func_end battle_spawnEStructIfSlotEmpty
 
 // symdb: Spawns the eStruct records from table byte_812F054 into eStruct slot 1 at x=0xB0 on the battle field, but only if slot 1 is currently free.
 // symdb: () -> r0 = spawn result/last record (from callee), void effect; flags set by
 // symdb: getStructFrom2008450 on slot-1 in-use byte (spawn skipped when set)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStruct1IfEmpty.yaml
 	thumb_local_start
-sub_81302B0:
+battle_spawnEStruct1IfEmpty:
 	push {r4-r7,lr}
 	mov r1, #1
 	push {r1}
@@ -348,7 +348,7 @@ locret_81302C8:
 	.balign 4, 0
 off_81302CC:
 	.word byte_812F054
-	thumb_func_end sub_81302B0
+	thumb_func_end battle_spawnEStruct1IfEmpty
 
 // symdb: Spawns eStruct records from a caller-supplied table into a given slot and, if one was created, positions it on the battle field.
 // symdb: (r0 = eStruct spawn table ptr, r1 = eStructArr2008450 slot index, r2 = coordinate/position
@@ -443,7 +443,7 @@ off_813036C:
 sub_8130370:
 	push {r4-r7,lr}
 	mov r7, r5
-	bl sub_8130404
+	bl t4_getWork
 	mov r5, r0
 	mov r0, #0x1a
 	strh r0, [r5,#0x1e]
@@ -517,19 +517,19 @@ dword_8130400:
 	thumb_func_end sub_8130370
 // symdb: Returns a pointer to the overlay's global work struct at 0x2037780.
 // symdb: () -> r0 = &unk_2037780; flags clobbered only by the return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130404.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_getWork.yaml
 	thumb_local_start
-sub_8130404:
+t4_getWork:
 	ldr r0, off_8130408 // =unk_2037780 
 	mov pc, lr
 off_8130408:
 	.word unk_2037780
-	thumb_func_end sub_8130404
+	thumb_func_end t4_getWork
 
 	thumb_func_start sub_813040C
 sub_813040C:
 	push {lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r1, r0
 	ldrb r0, [r1,#0xc]
 	mov r2, #0x80
@@ -593,11 +593,11 @@ sub_8130464:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	mov r5, r7
-	bl sub_8130290
+	bl battle_spawnEStructIfSlotEmpty
 	ldrh r0, [r5,#0x2a]
 	mov r1, #0
 	bl sub_81302F4
-	bl sub_81302B0
+	bl battle_spawnEStruct1IfEmpty
 	mov r0, #0x80
 	mov r1, #1
 	bl sub_81302F4
@@ -628,13 +628,13 @@ off_81304B8:
 	thumb_func_end sub_81304A4
 
 // symdb: Rebuilds (or clears) the 30-slot battle chip-pack buffer used by the t4 overlay scene, driven by a flag byte in the scene state.
-// symdb: (r0 = passed through to sub_8130404) -> r0 = state pointer from sub_8130404; returns after
+// symdb: (r0 = passed through to t4_getWork) -> r0 = state pointer from t4_getWork; returns after
 // symdb: clearing or refilling unk_2023FB0; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_refreshChipPackBuffer.yaml
 	thumb_func_start t4_refreshChipPackBuffer
 t4_refreshChipPackBuffer:
 	push {r4-r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r7, r0
 	ldrb r0, [r7,#0xc]
 	tst r0, r0
@@ -661,7 +661,7 @@ off_81304E8:
 	thumb_func_start sub_81304EC
 sub_81304EC:
 	push {r4-r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r7, r0
 	ldrb r0, [r7,#0xc]
 	tst r0, r0
@@ -841,7 +841,7 @@ off_8130648:
 	thumb_func_start sub_813064C
 sub_813064C:
 	push {r4-r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r5, r0
 	bl sub_8130250
 	ldrb r0, [r5,#0xc]
@@ -875,14 +875,14 @@ dword_8130688:
 
 // symdb: Builds (or clears) a 0x60-byte record at unk_202708C: 0x20 bytes of text from the chatbox script pool followed by a 0x3C-byte selected-chip entry plus a halfword checksum.
 // symdb: () -> r0 = undefined; writes unk_202708C[0..0x60) and fields of the struct returned by
-// symdb: sub_8130404; no meaningful flags
+// symdb: t4_getWork; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_packChipEntryRecord.yaml
 	thumb_func_start battle_packChipEntryRecord
 battle_packChipEntryRecord:
 	push {r4-r7,lr}
 	ldr r7, off_813071C // =unk_202708C 
 	push {r5}
-	bl sub_8130404
+	bl t4_getWork
 	mov r5, r0
 	ldr r1, off_8130724 // =byte_20065C0 
 	ldrb r0, [r5,#0xc]
@@ -1102,7 +1102,7 @@ locret_813080C:
 	thumb_func_start sub_8130810
 sub_8130810:
 	push {r4-r7,lr}
-	bl sub_8130404
+	bl t4_getWork
 	mov r7, r0
 	bl sub_8130850
 	ldrb r0, [r7,#0xc]
@@ -1406,7 +1406,7 @@ loc_8130AC8:
 	ldrh r2, [r0,#0xa]
 	cmp r1, r2
 	beq loc_8130ADA
-	bl sub_813178C
+	bl e_linkMatchShowScript67
 	b loc_8130B08
 loc_8130ADA:
 	mov r1, #8
@@ -1429,11 +1429,11 @@ loc_8130AFE:
 	beq loc_8130B08
 	bl sub_8131210
 loc_8130B08:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 	b locret_8130B2C
 loc_8130B12:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 
 	bl sub_8131458
 	mov r0, #0x30 
@@ -1513,11 +1513,11 @@ loc_8130B7A:
 loc_8130BAE:
 	bl sub_81313C0
 loc_8130BB2:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 	b locret_8130BC4
 loc_8130BBC:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 
 	bl sub_8131458
 locret_8130BC4:
@@ -1609,11 +1609,11 @@ loc_8130C50:
 loc_8130C6C:
 	bl sub_81313C0
 loc_8130C70:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 	b locret_8130C82
 loc_8130C7A:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 locret_8130C82:
 	pop {r4-r7,pc}
@@ -1700,11 +1700,11 @@ loc_8130CE4:
 loc_8130D26:
 	bl sub_81313C0
 loc_8130D2A:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 	b locret_8130D3C
 loc_8130D34:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 locret_8130D3C:
 	pop {r4-r7,pc}
@@ -1778,7 +1778,7 @@ loc_8130DC0:
 loc_8130DC4:
 	b loc_8130DC6
 loc_8130DC6:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 
 	bl sub_8131458
 	pop {r4-r7,pc}
@@ -1941,7 +1941,7 @@ sub_8130EDC:
 	bl sub_813188C
 	b locret_8130F06
 loc_8130EFE:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 locret_8130F06:
 	pop {pc}
@@ -2239,7 +2239,7 @@ loc_813113A:
 loc_8131144:
 	b loc_8131146
 loc_8131146:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 
 	bl sub_8131458
 	pop {pc}
@@ -2295,7 +2295,7 @@ loc_813119C:
 	bl sub_813188C
 	b locret_81311B2
 loc_81311AA:
-	bl sub_8131570
+	bl e_copyBgTileBlock11x3
 	bl sub_8131458
 locret_81311B2:
 	pop {r4-r7,pc}
@@ -2522,7 +2522,7 @@ loc_8131348:
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 loc_8131350:
 	bl init_loadCutsceneSceneAssets
-	bl sub_8131440
+	bl init_loadSceneBackground
 
 	mov r0, #0
 	ldr r1, off_813138C // =dword_8129180 
@@ -2530,7 +2530,7 @@ loc_8131350:
 	lsl r1, r1, #4
 	orr r0, r1
 	strb r0, [r7,#0x12]
-	bl sub_8131390
+	bl init_cutsceneEmotionEntries
 	bl sub_81314E4
 	mov r0, #8
 	mov r1, #0x10
@@ -2550,9 +2550,9 @@ off_813138C:
 	thumb_func_end init_cutsceneSceneState
 // symdb: Initialises four fixed EmotionData slots (type 0x1C, tag 0x09) from a static flags table as part of cutscene battle-scene setup.
 // symdb: () -> r0 = clobbered; fills EmotionData slots 0..3 of the 0x02008450 EWRAM array
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131390.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_cutsceneEmotionEntries.yaml
 	thumb_local_start
-sub_8131390:
+init_cutsceneEmotionEntries:
 	push {r4,lr}
 	mov r4, #0
 loc_8131394:
@@ -2571,7 +2571,7 @@ off_81313AC:
 	.word byte_81313B0
 byte_81313B0:
 	.byte 0x0, 0x8, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0x2, 0x0
-	thumb_func_end sub_8131390
+	thumb_func_end init_cutsceneEmotionEntries
 
 	thumb_local_start
 sub_81313C0:
@@ -2638,9 +2638,9 @@ byte_8131418:
 
 // symdb: Copies a full 30x20 background tilemap from unk_2021DA0 into background tile block 1 during cutscene scene setup.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131440.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_loadSceneBackground.yaml
 	thumb_local_start
-sub_8131440:
+init_loadSceneBackground:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0
@@ -2657,7 +2657,7 @@ sub_8131440:
 	pop {r4-r7,pc}
 off_8131454:
 	.word unk_2021DA0
-	thumb_func_end sub_8131440
+	thumb_func_end init_loadSceneBackground
 	thumb_local_start
 sub_8131458:
 	push {r4-r7,lr}
@@ -2803,9 +2803,9 @@ byte_8131568:
 	thumb_func_end sub_81314E4
 // symdb: Copies a fixed 8x8 tile block of tile IDs into BG tile block 0 at tile position (0x11, 3), used by the eLink match object's update paths to redraw part of the background.
 // symdb: () -> void; no return value, no flag guarantees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131570.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_copyBgTileBlock11x3.yaml
 	thumb_local_start
-sub_8131570:
+e_copyBgTileBlock11x3:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0x11
@@ -2819,7 +2819,7 @@ sub_8131570:
 	mov r5, #8
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_8131570
+	thumb_func_end e_copyBgTileBlock11x3
 off_8131584:
 	.word byte_8130884
 
@@ -2891,7 +2891,7 @@ off_813160C:
 	.word sub_81316D4+1
 	.word sub_81316EC+1
 	.word sub_8131704+1
-	.word sub_813171C+1
+	.word pet_setCurNaviHp+1
 off_8131628:
 	.word pet_setCurNaviFlag23+1
 	.word pet_setCurNaviStatAto7+1
@@ -3047,9 +3047,9 @@ loc_8131710:
 // symdb: Writes one of three HP values (800/1000/1200) into both max-HP and current-HP fields of the navi currently selected on the PET
 // symdb: (entry point at 0x813171C/0x8131722/0x8131728 selects HP = 800/1000/1200; r0-r3 args unused) ->
 // symdb: r0 = ?; sets stats[0x40] and stats[0x42] to the chosen halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813171C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviHp.yaml
 	thumb_local_start
-sub_813171C:
+pet_setCurNaviHp:
 	push {r4,lr}
 	ldr r4, off_8131748 // =0x320 
 	b loc_813172C
@@ -3077,7 +3077,7 @@ off_813174C:
 	.word 0x3E8
 off_8131750:
 	.word 0x4B0
-	thumb_func_end sub_813171C
+	thumb_func_end pet_setCurNaviHp
 
 	thumb_local_start
 sub_8131754:
@@ -3126,9 +3126,9 @@ dword_8131788:
 // symdb: State handler for the eLink match object: displays chatbox text script 0x67 from eTextScript201BA20 and advances the object to state 0xC with a fresh delay timer.
 // symdb: (r4 = caller context, r5 = link-match object state struct) -> r0 = 0 from chatbox call; struct
 // symdb: fields written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813178C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_linkMatchShowScript67.yaml
 	thumb_local_start
-sub_813178C:
+e_linkMatchShowScript67:
 	push {lr}
 	mov r0, #0x67 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
@@ -3142,7 +3142,7 @@ sub_813178C:
 	.balign 4, 0
 dword_81317A4:
 	.word 0xFEDA
-	thumb_func_end sub_813178C
+	thumb_func_end e_linkMatchShowScript67
 
 	thumb_local_start
 sub_81317A8:
@@ -6929,7 +6929,7 @@ sub_8133618:
 	str r0, [r5,#0x68]
 	b locret_8133646
 loc_813362C:
-	bl sub_813367C
+	bl chatbox_showCantJackInMsg
 	mov r0, #0x10
 	str r0, [r5,#0x68]
 	b locret_8133646
@@ -6956,7 +6956,7 @@ sub_8133648:
 	str r0, [r5,#0x68]
 	b locret_813367A
 loc_813365C:
-	bl sub_813367C
+	bl chatbox_showCantJackInMsg
 	mov r0, #8
 	str r0, [r5,#0x68]
 	b locret_813367A
@@ -6974,9 +6974,9 @@ locret_813367A:
 
 // symdb: Runs one of three canned text scripts from eTextScript2028A20 and plays the 'can't jack in' error sound, i.e. shows a connection-denied message.
 // symdb: (r0 = selector, 4..6) -> r0 = chatbox_runScript result; plays sound SOUND_CANT_JACK_IN
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813367C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_showCantJackInMsg.yaml
 	thumb_local_start
-sub_813367C:
+chatbox_showCantJackInMsg:
 	push {lr}
 	sub r0, #4
 	ldr r1, off_8133690 // =byte_8133694
@@ -6990,7 +6990,7 @@ off_8133690:
 	.word byte_8133694
 byte_8133694:
 	.byte 0x1, 0x0, 0x0, 0x0, 0xE, 0x0, 0x0, 0x0, 0xF, 0x0, 0x0, 0x0
-	thumb_func_end sub_813367C
+	thumb_func_end chatbox_showCantJackInMsg
 
 	thumb_local_start
 sub_81336A0:
@@ -16027,7 +16027,7 @@ off_81378C4:
 	.word off_81378C8
 off_81378C8:
 	.word battle_initRoundState+1
-	.word sub_8137964+1
+	.word submenu_runPromptFrameUpdate+1
 	.word sub_8137A7C+1
 	thumb_func_end sub_81378B4
 
@@ -16060,9 +16060,9 @@ loc_8137906:
 	bl sub_8137BF0
 	strh r0, [r5,#0x1e]
 	bl sub_8137D20
-	bl sub_8137DB4
+	bl chatbox_renderTextEntry
 	bl sub_8137E4C
-	bl sub_8137F5C
+	bl sprite_renderCharGlyph
 	mov r7, r10
 	ldr r0, [r7,#8]
 	ldr r1, dword_8137958 // =0x1f40 
@@ -16101,9 +16101,9 @@ off_8137960:
 // symdb: Per-frame update for a menu/prompt state machine: dispatches a handler chosen by the state byte in the r5 context, then ticks battle entities and sprites, always returning 0.
 // symdb: (r5 = context struct; state id = byte [r5,#2]) -> r0 = 0; updates entity records and sprites
 // symdb: each frame
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137964.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_runPromptFrameUpdate.yaml
 	thumb_local_start
-sub_8137964:
+submenu_runPromptFrameUpdate:
 	push {lr}
 	ldr r0, off_8137980 // =off_8137984 
 	ldrb r1, [r5,#2]
@@ -16122,7 +16122,7 @@ off_8137984:
 	.word sub_8137990+1
 	.word submenu_handleConfirmCancelCursorInput+1
 	.word sub_8137A1C+1
-	thumb_func_end sub_8137964
+	thumb_func_end submenu_runPromptFrameUpdate
 	thumb_local_start
 sub_8137990:
 	push {lr}
@@ -16148,7 +16148,7 @@ submenu_handleConfirmCancelCursorInput:
 	mov r0, #JOYPAD_A
 	bl IsButtonPressed
 	beq loc_81379D0
-	bl sub_8138170
+	bl submenu_showSelectedFastestTime
 	tst r0, r0
 	beq loc_81379C4
 	mov r0, #SOUND_CANT_JACK_IN
@@ -16189,9 +16189,9 @@ loc_81379FE:
 	tst r0, r0
 	beq locret_8137A1A
 	bl sub_8137D20
-	bl sub_8137DB4
+	bl chatbox_renderTextEntry
 	bl sub_8137E4C
-	bl sub_8137F5C
+	bl sprite_renderCharGlyph
 locret_8137A1A:
 	pop {pc}
 	thumb_func_end submenu_handleConfirmCancelCursorInput
@@ -16223,9 +16223,9 @@ sub_8137A1C:
 	ldrh r1, [r2,r0]
 	strh r1, [r3,r0]
 	bl sub_8137D20
-	bl sub_8137DB4
+	bl chatbox_renderTextEntry
 	bl sub_8137E4C
-	bl sub_8137F5C
+	bl sprite_renderCharGlyph
 loc_8137A64:
 	bl chatbox_8040818
 	mov r0, #4
@@ -16561,9 +16561,9 @@ sub_8137DA4:
 // symdb: Clears a text work buffer, draws the message selected by the caller's text ID from table unk_201CF00 into it, and places it at a fixed screen position.
 // symdb: (r0-r3 = caller state; reads caller's r5 struct field +0x24 as a text/message ID) -> r0 = ?;
 // symdb: renders into unk_2017AE0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137DB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_renderTextEntry.yaml
 	thumb_local_start
-sub_8137DB4:
+chatbox_renderTextEntry:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, off_8137DDC // =unk_2017AE0 
@@ -16586,7 +16586,7 @@ off_8137DDC:
 	.word unk_2017AE0
 off_8137DE0:
 	.word unk_201CF00
-	thumb_func_end sub_8137DB4
+	thumb_func_end chatbox_renderTextEntry
 	thumb_local_start
 sub_8137DE4:
 	push {r4-r7,lr}
@@ -16810,9 +16810,9 @@ dword_8137F58:
 // symdb: Clears a sprite/OAM work buffer and rebuilds it from a single character code looked up in a table, then finalizes it into OAM entries.
 // symdb: (r0-r4 undefined on entry, caller sets r5 = object/struct; reads [r5+0x24] as a 16-bit
 // symdb: char/index) -> r0 = undefined; buffer unk_2017C68 rebuilt
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137F5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_renderCharGlyph.yaml
 	thumb_local_start
-sub_8137F5C:
+sprite_renderCharGlyph:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, off_8137F84 // =unk_2017C68 
@@ -16835,7 +16835,7 @@ off_8137F84:
 	.word unk_2017C68
 off_8137F88:
 	.word unk_201CF00
-	thumb_func_end sub_8137F5C
+	thumb_func_end sprite_renderCharGlyph
 	thumb_local_start
 sub_8137F8C:
 	push {r4-r7,lr}
@@ -17084,9 +17084,9 @@ off_813816C:
 // symdb: Time-attack result readout for the open submenu entry: takes the faster of two recorded times for that entry and prints it (min:sec.centis) via a chatbox script.
 // symdb: (r5 = submenu/list state: cursor at +0x24, list base at +0x20; r10 = toolkit) -> r0 = 0 if a
 // symdb: time was displayed, 1 if the time exceeded the 9:59.99 cap; clobbers r4-r7.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138170.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_showSelectedFastestTime.yaml
 	thumb_local_start
-sub_8138170:
+submenu_showSelectedFastestTime:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x24]
 	ldrh r1, [r5,#0x20]
@@ -17167,7 +17167,7 @@ dword_8138208:
 	.word 0x95999
 off_813820C:
 	.word eTextScript201BF00
-	thumb_func_end sub_8138170
+	thumb_func_end submenu_showSelectedFastestTime
 
 	thumb_local_start
 sub_8138210:

@@ -1179,7 +1179,7 @@ cutscenescript_8095434:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000005
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000005
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04
@@ -1619,7 +1619,7 @@ cutscenescript_8095948:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000006
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000006
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04
@@ -1950,7 +1950,7 @@ cutscenescript_8095CD8:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000007
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000007
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04
@@ -3195,7 +3195,7 @@ cutscenescript_8096B5C:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000008
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000008
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_free_ow_map_object nybble1=0x00
@@ -3350,7 +3350,7 @@ cutscenescript_8096B5C:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000009
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000009
 	cs_pause byte1=0xFF byte2=0x78
 	cs_kill_cutscene_process byte1=0x20
 	cs_play_music hword1=0x0063
@@ -5116,7 +5116,7 @@ cutscenescript_8098170:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x0000000D
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x0000000D
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04
@@ -5207,7 +5207,7 @@ cutscenescript_8098284:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x0000000C
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x0000000C
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04

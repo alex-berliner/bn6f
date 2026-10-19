@@ -1230,9 +1230,9 @@ off_800F4E0:
 // symdb: Checks whether the panel at the given battle-grid coordinates has flag 0x10 set in the panel-state table, returning 1/0.
 // symdb: (r0 = column (1-based), r1 = row (1-based)) -> r0 = 1 if panel valid and flag-mask 0x10 matches
 // symdb: in table at 0x3880080, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F4E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_isPanelFlag10Set.yaml
 	thumb_local_start
-sub_800F4E4:
+battle_isPanelFlag10Set:
 	push {r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -1252,7 +1252,7 @@ dword_800F504:
 	.word 0x10
 dword_800F508:
 	.word 0x3880080
-	thumb_func_end sub_800F4E4
+	thumb_func_end battle_isPanelFlag10Set
 
 	thumb_local_start
 sub_800F50C:
@@ -6236,7 +6236,7 @@ off_80117D4:
 	.word sub_8011CB4+1 // 0x11
 	.word slashcrossBPwrAtk_init_8011CD6+1 // 0x12
 	.word nullsub_44+1 // 0x13
-	.word sub_8011CF8+1 // 0x14
+	.word battle_aiInitBeastPwrAttackVars+1 // 0x14
 	.word sub_8011D20+1 // 0x15
 	.word ai_initBeastPwrAttackVars+1 // 0x16
 	.word sub_8011D54+1 // 0x17
@@ -6266,7 +6266,7 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x2f
 	.word sub_8012018+1 // 0x30
 	.word sub_8012044+1 // 0x31
-	.word sub_801206E+1 // 0x32
+	.word battle_setBeastOutAttackDamage+1 // 0x32
 	.word sub_801208A+1 // 0x33
 	.word sub_80120A6+1 // 0x34
 	.word sub_80120CC+1 // 0x35
@@ -6329,7 +6329,7 @@ off_80117D4:
 	.word sub_801245A+1 // 0x6e
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x6f
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x70
-	.word sub_8012464+1 // 0x71
+	.word ai_bossAttemptChipSteal+1 // 0x71
 	.word sub_8012484+1 // 0x72
 	.word sub_801248E+1 // 0x73
 	.word sub_8012498+1 // 0x74
@@ -6801,9 +6801,9 @@ slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
 // symdb: Initializes an AI attack's variables: Beast-Out-scaled damage, fixed extra damage, a difficulty tier read from NaviStats, and returns the attack ID 0x45.
 // symdb: (r7 = battle/AI object with oAIAttackVars fields) -> r0 = 0x45 (attack/anim ID); writes Damage,
 // symdb: ExtraDamage, AiDifficultyTier, InitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011CF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiInitBeastPwrAttackVars.yaml
 	thumb_local_start
-sub_8011CF8:
+battle_aiInitBeastPwrAttackVars:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x14
@@ -6823,7 +6823,7 @@ loc_8011D16:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x45 
 	pop {pc}
-	thumb_func_end sub_8011CF8
+	thumb_func_end battle_aiInitBeastPwrAttackVars
 
 	thumb_local_start
 sub_8011D20:
@@ -7334,9 +7334,9 @@ sub_8012044:
 // symdb: (r0 unused/scratch; uses r5 = attacker battle object, r7 = AI attack vars) -> writes
 // symdb: oAIAttackVars_Damage (scaled beast power-Atk) and oAIAttackVars_ExtraDamage = 0x8A; no return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801206E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setBeastOutAttackDamage.yaml
 	thumb_local_start
-sub_801206E:
+battle_setBeastOutAttackDamage:
 	push {lr}
 	mov r0, #0x48 
 	bl loc_80126EA
@@ -7349,7 +7349,7 @@ sub_801206E:
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	pop {r0}
 	pop {pc}
-	thumb_func_end sub_801206E
+	thumb_func_end battle_setBeastOutAttackDamage
 
 	thumb_local_start
 sub_801208A:
@@ -8019,9 +8019,9 @@ sub_801245A:
 // symdb: Boss-AI step: tries to steal a chip from the enemy (player) Navi; on success ends the attack with a short cooldown, otherwise resets difficulty tier and arms a long boost timer before the next attack.
 // symdb: (r7 = boss/attacker object) -> r0 = frames until next AI action (8 on steal, 0x1C on fail); r7
 // symdb: fields modified on failure
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012464.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_bossAttemptChipSteal.yaml
 	thumb_local_start
-sub_8012464:
+ai_bossAttemptChipSteal:
 	push {lr}
 	ldr r0, dword_80126DC // =0x17e 
 	bl battleObject_stealChipFromEnemyNavi_8010740
@@ -8038,7 +8038,7 @@ loc_8012478:
 	mov r0, #0x1c
 locret_8012482:
 	pop {pc}
-	thumb_func_end sub_8012464
+	thumb_func_end ai_bossAttemptChipSteal
 
 	thumb_local_start
 sub_8012484:
@@ -13051,17 +13051,17 @@ JumpTable8014550:
 	.word nullsub_4+1
 	.word sub_80145EC+1
 	.word sub_8014606+1
-	.word sub_8014650+1
-	.word sub_8014650+1
-	.word sub_8014650+1
-	.word sub_8014650+1
-	.word sub_8014650+1
+	.word battle_grantSuperArmorInvulnerability+1
+	.word battle_grantSuperArmorInvulnerability+1
+	.word battle_grantSuperArmorInvulnerability+1
+	.word battle_grantSuperArmorInvulnerability+1
+	.word battle_grantSuperArmorInvulnerability+1
 	.word sub_8014606+1
 	.word sub_801462A+1
 	.word sub_8014606+1
 	.word sub_8014640+1
 	.word sub_8014606+1
-	.word sub_8014650+1
+	.word battle_grantSuperArmorInvulnerability+1
 	.word sub_8014674+1
 	thumb_func_end sub_8014536
 
@@ -13204,9 +13204,9 @@ sub_8014640:
 
 // symdb: Sets the SuperArmor object flag and gives the current battle object a near-permanent (0xFFFF) invulnerability timer.
 // symdb: () -> void; no meaningful return, flags clobbered by bls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014650.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_grantSuperArmorInvulnerability.yaml
 	thumb_local_start
-sub_8014650:
+battle_grantSuperArmorInvulnerability:
 	push {r7,lr}
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
@@ -13222,7 +13222,7 @@ loc_8014668:
 	bl object_setInvulnerableTime
 	bl sub_802D310
 	pop {r7,pc}
-	thumb_func_end sub_8014650
+	thumb_func_end battle_grantSuperArmorInvulnerability
 
 	thumb_local_start
 sub_8014674:
@@ -13281,7 +13281,7 @@ off_80146B8:
 	.word battle_setupNoCustomPlusObjectCollision+1
 	.word sub_8014776+1
 	.word battle_setupNoCustomPlusObjectCollision+1
-	.word sub_801478C+1
+	.word battle_applySuperArmorEffect+1
 	.word battle_setupNoCustomPlusObjectCollision+1
 	.word battle_applySuperArmorInvulnerability+1
 	.word sub_80147B2+1
@@ -13398,16 +13398,16 @@ loc_8014786:
 // symdb: Gives the current battle object the SuperArmor flag and sets up its collision behaviour for the NoCustom+ case.
 // symdb: () -> void; calls object_setFlag1 with (1 << OBJECT_FLAGS_SUPERARMOR_BIT) on the current object,
 // symdb: then battle_setupNoCustomPlusObjectCollision
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801478C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applySuperArmorEffect.yaml
 	thumb_local_start
-sub_801478C:
+battle_applySuperArmorEffect:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
 	bl object_setFlag1 // (int a1) -> void
 	bl battle_setupNoCustomPlusObjectCollision
 	pop {pc}
-	thumb_func_end sub_801478C
+	thumb_func_end battle_applySuperArmorEffect
 
 // symdb: Grants the current battle object SuperArmor (no flinch) and effectively permanent invulnerability.
 // symdb: (object in implicit current-object slot / r0 unused) -> void; no meaningful return
@@ -17968,9 +17968,9 @@ byte_8016A9C:
 
 // symdb: Each frame, picks one of 26 palette slots from a cycle table and applies it to the current object's sprite, producing a palette-cycling animation driven by the battle-state counter.
 // symdb: () -> r0 = void; reads battle state field Unk_40 as counter, writes object sprite palette index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016AD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_cycleSpritePalette.yaml
 	thumb_local_start
-sub_8016AD0:
+battle_cycleSpritePalette:
 	push {lr}
 	bl battle_getStateUnk40_800A704
 	mov r1, #0x1a // (battleObject_initAndRunAI_8016B02 - 0x8016ae8)
@@ -17986,7 +17986,7 @@ off_8016AE8:
 	.word unk_2020000
 	.byte 0x2, 0x2, 0x2, 0x2, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x2, 0x2, 0x2
 	.byte 0x2, 0x2, 0x2, 0x2, 0x2
-	thumb_func_end sub_8016AD0
+	thumb_func_end battle_cycleSpritePalette
 
 // symdb: Battle object per-frame handler that initializes an object's AI on first call, dispatches its AI handler, then commits a pending state transition if one was staged in Unk_5c
 // symdb: (r5 = BattleObject*, r10 = Toolkit*) -> void ; side effects: clears OBJECT_FLAGS_INVULNERABLE in
@@ -23229,7 +23229,7 @@ loc_801A38A:
 	blt loc_801A3AC
 	cmp r1, #0xc
 	bgt loc_801A3AC
-	bl sub_801A400
+	bl battle_startPlayerContact
 	pop {r4,r7,pc}
 loc_801A3AC:
 	bl object_getFlag // () -> int
@@ -23279,9 +23279,9 @@ locret_801A3FE:
 
 // symdb: Per-frame check for a battle object touching the player: guards against frozen/flagged objects, then marks the contact and sets contact state 3.
 // symdb: (r5 = battle object) -> void; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A400.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startPlayerContact.yaml
 	thumb_local_start
-sub_801A400:
+battle_startPlayerContact:
 	push {r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	ldrh r1, [r7,#oAIData_CollisionFreezeTimer]
@@ -23297,7 +23297,7 @@ sub_801A400:
 	strb r0, [r5,#oBattleObject_ContactState]
 locret_801A41E:
 	pop {r7,pc}
-	thumb_func_end sub_801A400
+	thumb_func_end battle_startPlayerContact
 
 // symdb: Decrements the CollisionData::CounterTimer of the battle object held in r5 by 1 when non-zero
 // symdb: (r5 = BattleObject*) -> r0 = decremented value (only when timer was non-zero) ; modifies the
@@ -23346,7 +23346,7 @@ locret_801A45A:
 	thumb_func_end battle_spawnHitEffectAtArm_801A42E
 
 // symdb: Handles a crouch/slide result of 0x40 in the object's collision flag set: flips the partner's alliance state, adds the player's churn-row column 8 counter, resets the object counter-timer, refreshes the chatbox window panel, and plays the "crouch" sound effect.
-// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: sub_802E032(0x1500),
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: battle_addCappedCounter(0x1500),
 // symdb: tableAddSaturatedByte_800AB46(...), PlaySoundEffect(SOUND_SELECT_86), sub_801E270 (window panel
 // symdb: update)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleCollisionCrouchSlideReset_801A45C.yaml
@@ -23365,7 +23365,7 @@ battle_handleCollisionCrouchSlideReset_801A45C:
 	mov r1, #1
 	eor r0, r1
 	ldr r1, off_801A54C // =0x1500 
-	bl sub_802E032
+	bl battle_addCappedCounter
 loc_801A47C:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #1
@@ -27136,12 +27136,12 @@ off_801BF04:
 	.word nullsub_58+1
 	.word battleObject_updateAnimAndState_801CADC+1
 	.word sub_801CE28+1
-	.word sub_801D1D8+1
+	.word req_countdownDispatch+1
 	.word battle_playCounterHitSound_801C5F4+1
 	.word sub_801D2A0+1
-	.word sub_801D450+1
+	.word battle_advanceAnimCounters+1
 	.word sub_801D514+1
-	.word sub_801D548+1
+	.word object_countdownDispatch+1
 	.word battle_queueCounterDigitGfx+1
 	.word sub_801D71A+1
 	thumb_func_end battle_dispatchFlaggedUpdates_801BEE0
@@ -29804,9 +29804,9 @@ off_801D1D4:
 // symdb: Counts down a one-byte timer at 0x2036857 and, when it hits zero, clears request-flag bit 16 and fires dispatch_801DACC with that mask.
 // symdb: (void) -> r0 = result of dispatch_801DACC; the counter decrement sets NZ for the branch, no LR
 // symdb: kept beyond tail pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D1D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_countdownDispatch.yaml
 	thumb_local_start
-sub_801D1D8:
+req_countdownDispatch:
 	push {lr}
 	ldr r3, off_801D27C // =unk_2036850 
 	ldrb r0, [r3,#0x7] // (byte_2036857 - 0x2036850)
@@ -29821,7 +29821,7 @@ sub_801D1D8:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 locret_801D1F4:
 	pop {pc}
-	thumb_func_end sub_801D1D8
+	thumb_func_end req_countdownDispatch
 
 	thumb_local_start
 sub_801D1F6:
@@ -30113,9 +30113,9 @@ byte_801D410:
 // symdb: Advances a two-digit base-6 frame counter in a battle object, frozen while the battle is paused or time-stopped.
 // symdb: (r5 = object/work struct with counter fields) -> r0 clobbered; no return value, flags not
 // symdb: meaningful to caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D450.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceAnimCounters.yaml
 	thumb_local_start
-sub_801D450:
+battle_advanceAnimCounters:
 	push {lr}
 	bl battle_isPaused
 	tst r0, r0
@@ -30138,7 +30138,7 @@ loc_801D476:
 	strh r0, [r5,#0x34]
 locret_801D478:
 	pop {pc}
-	thumb_func_end sub_801D450
+	thumb_func_end battle_advanceAnimCounters
 
 // symdb: Uploads a two-frame 2-tile graphic to OBJ VRAM and queues three OAM sprites (one 16x16, two 32x32 with one h-flipped) anchored horizontally to the player-side battle entity.
 // symdb: (r5 = battle object ptr, field +0x36 halfword = state; r10 = toolkit) -> void; queues GFX + OAM,
@@ -30254,9 +30254,9 @@ dword_801D544:
 // symdb: Decrements an object's one-byte countdown timer at +0x1B; on reaching zero it clears global flag bit 21 (0x00200000) and dispatches with that flag mask.
 // symdb: (r5 = structure with u8 countdown at +0x1B) -> r0 = 0x00200000 passed to dispatch; Z flag of the
 // symdb: decrement escapes via the bne
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D548.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_countdownDispatch.yaml
 	thumb_local_start
-sub_801D548:
+object_countdownDispatch:
 	push {lr}
 	ldrb r0, [r5,#0x1b]
 	sub r0, #1
@@ -30270,7 +30270,7 @@ sub_801D548:
 	bl dispatch_801DACC // (a0: flags32) -> ()
 locret_801D562:
 	pop {pc}
-	thumb_func_end sub_801D548
+	thumb_func_end object_countdownDispatch
 
 	thumb_local_start
 sub_801D564:
@@ -30828,12 +30828,12 @@ off_801DA6C:
 	.word sub_801E748+1
 	.word sub_801EB0C+1
 	.word sub_801DE82+1
-	.word sub_801EB7C+1
+	.word ow_patchBackgroundStrip+1
 	.word sub_801EBDE+1
-	.word sub_801E3E4+1
+	.word ow_drawBackgroundTilePatch+1
 	.word sub_801EC38+1
 	.word sub_801EC90+1
-	.word sub_801E07C+1
+	.word e_copyHudTiles+1
 	thumb_func_end dispatch_801DA48
 
 	thumb_func_start dispatch_801DACC
@@ -31808,9 +31808,9 @@ sub_801E060:
 
 // symdb: Copies a fixed 6x2 tile run into background tile block 3 at tile (24,0) and flags the HUD for redraw.
 // symdb: () -> void; no return value, sets bit 0x800000 in eStruct2035280+0x44 via flagSetBits
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E07C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_copyHudTiles.yaml
 	thumb_local_start
-sub_801E07C:
+e_copyHudTiles:
 	push {r4,r5,lr}
 	ldr r3, off_801E0D8 // =eStruct2035280
 	// j
@@ -31831,7 +31831,7 @@ sub_801E07C:
 	.balign 4, 0
 off_801E09C:
 	.word byte_801EDFC
-	thumb_func_end sub_801E07C
+	thumb_func_end e_copyHudTiles
 
 // symdb: Posts a battle subsystem event to eStruct2035280 by copying a halfword from +0x24 of a pointer at +0x48 into the struct's own +0x24, storing r0/r1 into byte fields, ORing bit 0x80 into the request dword, then dispatching with mask 0x80.
 // symdb: (r0 = param0 -> byte_2035281, r1 = param1 -> byte_2035282, r10 = toolkit) -> void ; side
@@ -32331,9 +32331,9 @@ dword_801E3E0:
 
 // symdb: Copies an 8x2 patch of tiles from byte_801EF10 onto background tile block 3 at position (j=11,i=16), then sets flag bit 0x100000 in the eStruct at 0x2035280+0x44.
 // symdb: () -> void; ORs 0x100000 into word at eStruct2035280+0x44 (returned in r2 by callee)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E3E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_drawBackgroundTilePatch.yaml
 	thumb_local_start
-sub_801E3E4:
+ow_drawBackgroundTilePatch:
 	push {r4,r5,lr}
 	// j
 	mov r0, #0xb
@@ -32354,7 +32354,7 @@ dword_801E400:
 	.word 0x100000
 off_801E404:
 	.word byte_801EF10
-	thumb_func_end sub_801E3E4
+	thumb_func_end ow_drawBackgroundTilePatch
 
 // symdb: Draws a fixed text script (TextScript86F0374) into the battle HUD's text tile area via the text renderer, then flags the HUD for redraw and dispatches that request.
 // symdb: () -> void; sets HUD request bit 0x100000 in eStruct2035280+0x40 and dispatches it
@@ -33486,9 +33486,9 @@ sub_801EB50:
 
 // symdb: Draws a fixed 30x2 tile strip (tile block 3) into the background map at (0,0x12) and sets the matching bit 18 in the area flags word, marking that region changed.
 // symdb: () -> r0 = updated flag word from flagSetBits; no meaningful return otherwise
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EB7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_patchBackgroundStrip.yaml
 	thumb_local_start
-sub_801EB7C:
+ow_patchBackgroundStrip:
 	push {lr}
 	// j
 	mov r0, #0
@@ -33509,7 +33509,7 @@ sub_801EB7C:
 	.balign 4, 0
 off_801EB98:
 	.word byte_801EE98
-	thumb_func_end sub_801EB7C
+	thumb_func_end ow_patchBackgroundStrip
 
 	thumb_local_start
 sub_801EB9C:

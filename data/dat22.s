@@ -2189,7 +2189,7 @@ cutscenescript_8088B40:
 	cs_load_gfx_anims ptr1=gfx_anim_script_8034994
 	cs_pause byte1=0xFF byte2=0x10
 	cs_terminate_bg_scroll_effect
-	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=sub_804CAE0+1 word9=0x00000000
+	cs_init_eStruct200a6a0 ptr1=sub_804CA90+1 ptr5=ow_loadCurrentMap+1 word9=0x00000000
 	cs_pause byte1=0xFF byte2=0x5A
 	cs_play_sound hword1=0x00C3
 	cs_set_screen_fade byte1=0xFF byte2=0x04 byte3=0x04

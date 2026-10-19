@@ -4873,9 +4873,9 @@ off_81463CC:
 // symdb: Stores a caller-supplied value into the wireless-link work struct and registers the MSC callback that will receive it.
 // symdb: (r0 = arg stored in eStruct200FE00+0x44, passed on to the MSC callback) -> r0 = destroyed; no
 // symdb: return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81463D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setMscCallbackArg.yaml
 	thumb_local_start
-sub_81463D0:
+rfu_setMscCallbackArg:
 	push {lr}
 	ldr r1, off_81463E0 // =eStruct200FE00 
 	str r0, [r1,#0x44] // (dword_200FE44 - 0x200fe00)
@@ -4888,7 +4888,7 @@ off_81463E0:
 	.word eStruct200FE00
 off_81463E4:
 	.word sub_8145D54+1
-	thumb_func_end sub_81463D0
+	thumb_func_end rfu_setMscCallbackArg
 
 	thumb_local_start
 sub_81463E8:
@@ -9425,11 +9425,11 @@ loc_81485A8:
 	bl sub_803ECFC
 	mov r0, r4
 	mov r1, #0xc
-	bl sub_803F030
+	bl rfu_queuePushEntry
 	ldr r0, off_8148718 // =sub_8148738+1 
 	bl sub_81463E8
 	ldr r0, off_814871C // =sub_8148878+1 
-	bl sub_81463D0
+	bl rfu_setMscCallbackArg
 	mov r4, #0
 loc_814861A:
 	ldr r5, off_814870C // =byte_2010290 
@@ -10045,7 +10045,7 @@ loc_8148B08:
 	ldr r5, off_8148B64 // =byte_20101E0 
 	mov r0, r5
 	mov r1, #0xc
-	bl sub_803F030
+	bl rfu_queuePushEntry
 	cmp r0, #0
 	bne loc_8148B38
 	ldr r0, off_8148B68 // =byte_20103F0 
@@ -10422,7 +10422,7 @@ loc_8148D9C:
 	ldr r0, off_8148E58 // =sub_8148E74+1 
 	bl sub_81463E8
 	ldr r0, off_8148E5C // =sub_8148FB4+1 
-	bl sub_81463D0
+	bl rfu_setMscCallbackArg
 	ldr r4, off_8148E60 // =byte_20103E0 
 	ldrb r1, [r4]
 	ldr r2, off_8148E30 // =unk_20103A0 
@@ -10435,7 +10435,7 @@ loc_8148D9C:
 	bl sub_803ECFC
 	mov r0, r5
 	mov r1, #0xc
-	bl sub_803F030
+	bl rfu_queuePushEntry
 	mov r0, #0x80
 	lsl r0, r0, #0x11
 	ldrb r4, [r4]
@@ -10875,7 +10875,7 @@ loc_8149164:
 	ldr r4, off_81491C4 // =byte_2010390 
 	mov r0, r4
 	mov r1, #0xc
-	bl sub_803F030
+	bl rfu_queuePushEntry
 	cmp r0, #0
 	beq loc_81491C8
 	mov r0, #0x83

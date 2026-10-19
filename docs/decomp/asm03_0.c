@@ -1074,7 +1074,7 @@ int sub_80270D0()
 
 
 // 0x80270ea
-int sub_80270EA()
+int object_timerFadeStateTick()
 {
     int v0; // r5
     int v1; // r0
@@ -1110,7 +1110,7 @@ int sub_8027118()
 
 
 // 0x8027134
-int sub_8027134()
+int triggerScreenFadeOut()
 {
     int v0; // r5
 
@@ -1729,7 +1729,7 @@ signed int sub_8027672()
 
 
 // 0x80276d6
-int sub_80276D6()
+int battle_runFirstTutorialChatboxStep()
 {
     int v0; // r5
     int result; // r0
@@ -6865,7 +6865,7 @@ int sub_802AE84()
 
 
 // 0x802aeb8
-int sub_802AEB8()
+int object_renderSpritePair()
 {
     int v0; // r5
     char v1; // zf
@@ -7732,7 +7732,7 @@ void chip_previewShowSelectedChip()
 
 
 // 0x802b9b8
-int sub_802B9B8()
+int comm_waitCrossNetReadyFallback()
 {
     int v0; // r5
     int result; // r0
@@ -9499,7 +9499,7 @@ char *__fastcall getTableEntryPtr32_802D064(int a1)
 
 
 // 0x802d070
-signed int __fastcall sub_802D070(int a1)
+signed int __fastcall init_tableEntry(int a1)
 {
     char *v1; // ST00_4
     signed int result; // r0
@@ -10663,7 +10663,7 @@ int battle_objectPanelEmergeStep()
 
 
 // 0x802db58
-int sub_802DB58()
+int object_flashWhiteDelay()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10914,7 +10914,7 @@ int __fastcall battleObject_runAIScript_802DE5C(int a1)
 
 
 // 0x802de74
-char *sub_802DE74()
+char *battle_handShiftStep()
 {
     int v0; // r5
     char *v1; // r0
@@ -10949,7 +10949,7 @@ char *sub_802DE74()
 
 
 // 0x802deae
-signed int sub_802DEAE()
+signed int battle_getObjectHandCardId()
 {
     int v0; // r5
     signed int v1; // r4
@@ -11090,7 +11090,7 @@ char *battle_setupAllianceEntryKind3_802DFC8()
         v2[16] = 1;
         v2[17] = *(v0 + 18);
         v2[14] = 3;
-        result = sub_802E07C(*(v0 + 22));
+        result = battle_initAllianceEntryDefaults(*(v0 + 22));
     }
     return result;
 }
@@ -11116,7 +11116,7 @@ int __fastcall zeroFill_802E014(int a1, int a2, int a3, int a4)
 
 
 // 0x802e032
-int __fastcall sub_802E032(int a1, int a2)
+int __fastcall battle_addCappedCounter(int a1, int a2)
 {
     int v2; // ST00_4
     char *v3; // r0
@@ -11171,7 +11171,7 @@ char *__fastcall getEntryPtr_2036120_1D0_802E070(int a1)
 
 
 // 0x802e07c
-char *__fastcall sub_802E07C(int a1)
+char *__fastcall battle_initAllianceEntryDefaults(int a1)
 {
     char *result; // r0
 
@@ -11378,7 +11378,7 @@ int __fastcall sub_802E2C4(int a1)
         if ( !v6 )
             goto LABEL_28;
         v7 = sub_802E69C();
-        sub_802E032(v2, v7);
+        battle_addCappedCounter(v2, v7);
         if ( battle_isBattleOver() )
             goto LABEL_28;
         v8 = 1;
@@ -11436,7 +11436,7 @@ LABEL_28:
         if ( v15 )
         {
             battle_setEntryFieldAndAIDataFlag(v2, *(v3 + 21), v20);
-            sub_802E07C(v2);
+            battle_initAllianceEntryDefaults(v2);
             *(v3 + 20) = 0;
         }
         else
@@ -12028,7 +12028,7 @@ int __fastcall sub_802E95C(int a1)
     if ( (*off_802E9F8[v2])[v3] & 0x80 )
         sub_802E04E(*(v1 + 22));
     else
-        sub_802E032(*(v1 + 22), (*off_802E9F8[v2])[v3] << 8);
+        battle_addCappedCounter(*(v1 + 22), (*off_802E9F8[v2])[v3] << 8);
     return v11;
 }
 
@@ -12107,7 +12107,7 @@ __int64 __fastcall sub_802EBD0(int a1)
 
 
 // 0x802ebe4
-__int64 sub_802EBE4()
+__int64 battle_copyNaviStatsByteToObject()
 {
     int v0; // r5
     int v1; // r0
@@ -12287,7 +12287,7 @@ int __fastcall sub_802EEA2(int a1)
     if ( a1 & 0x80 )
         result = sub_802E04E(*(v1 + 22));
     else
-        result = sub_802E032(*(v1 + 22), a1 << 8);
+        result = battle_addCappedCounter(*(v1 + 22), a1 << 8);
     return result;
 }
 
@@ -12499,7 +12499,7 @@ int sub_802F084()
     v1 = getEntryPtr_2036120_1D0_802E070(*(v0 + 22));
     if ( v1[3] )
         *(v1 + 20) = 0;
-    sub_802E07C(*(v0 + 22));
+    battle_initAllianceEntryDefaults(*(v0 + 22));
     return sub_800FFEE(&timer_2000000);
 }
 

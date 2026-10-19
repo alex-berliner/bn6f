@@ -1441,7 +1441,7 @@ loc_812CDC4::
 	mov r2, #1
 	bl GiveChips
 loc_812CDDA::
-	bl sub_8120AB8
+	bl pack_addAllFolderChipsToPack
 	bl sub_803F798
 	mov r0, #0x3d 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20

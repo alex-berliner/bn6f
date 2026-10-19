@@ -3342,7 +3342,7 @@ signed int chatbox_80426C4()
 // .global r4
 int __cdecl chatbox_80426D4()
 {
-    sub_813C030();
+    navicust_grantProgramsFromTable();
     return 1;
 }
 

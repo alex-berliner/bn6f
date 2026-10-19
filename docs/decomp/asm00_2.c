@@ -727,7 +727,7 @@ void __fastcall sub_800F4B2(int a1)
 
 
 // 0x800f4e4
-BOOL __fastcall sub_800F4E4(int a1, int a2)
+BOOL __fastcall battle_isPanelFlag10Set(int a1, int a2)
 {
     int v2; // r6
     int v3; // r7
@@ -4444,7 +4444,7 @@ signed int slashcrossBPwrAtk_init_8011CD6()
 
 
 // 0x8011cf8
-signed int sub_8011CF8()
+signed int battle_aiInitBeastPwrAttackVars()
 {
     int v0; // r7
     int v1; // r0
@@ -4847,7 +4847,7 @@ signed int sub_8012044()
 
 
 // 0x801206e
-int sub_801206E()
+int battle_setBeastOutAttackDamage()
 {
     int v0; // r5
     int v1; // r7
@@ -5427,7 +5427,7 @@ int sub_801245A()
 
 
 // 0x8012464
-signed int sub_8012464()
+signed int ai_bossAttemptChipSteal()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -9120,7 +9120,7 @@ int sub_8014640()
 
 
 // 0x8014650
-_DWORD *sub_8014650()
+_DWORD *battle_grantSuperArmorInvulnerability()
 {
     int v0; // r6
     int v1; // r1
@@ -9234,7 +9234,7 @@ int sub_8014776()
 
 
 // 0x801478c
-int sub_801478C()
+int battle_applySuperArmorEffect()
 {
     object_setFlag1(0x20000);
     return battle_setupNoCustomPlusObjectCollision();
@@ -12523,7 +12523,7 @@ int __fastcall sub_8016A38(int a1)
 
 
 // 0x8016ad0
-void sub_8016AD0()
+void battle_cycleSpritePalette()
 {
     battle_getStateUnk40_800A704();
     __asm { SVC         6 }
@@ -15539,7 +15539,7 @@ void object_tickIcePanelFreeze_801A36A()
     v7 = object_getPanelDataOffset(*(v1 + 10), *(v1 + 11))[2];
     if ( v7 >= 9 && v7 <= 12 )
     {
-        sub_801A400();
+        battle_startPlayerContact();
         return;
     }
     if ( object_getFlag() & 0x80000 )
@@ -15581,7 +15581,7 @@ int sub_801A3DA()
 
 
 // 0x801a400
-void sub_801A400()
+void battle_startPlayerContact()
 {
     int v0; // r5
 
@@ -15641,7 +15641,7 @@ void __fastcall battle_handleCollisionCrouchSlideReset_801A45C(int a1)
     if ( *(v2 + 112) & 0x40 )
     {
         if ( battle_testFlag0x40_800A8F8(a1) )
-            sub_802E032(*(v1 + 22) ^ 1, &loc_1500);
+            battle_addCappedCounter(*(v1 + 22) ^ 1, &loc_1500);
         tableAddSaturatedByte_800AB46(*(v1 + 22) ^ 1, 8, 1);
         *(v2 + 13) = 0;
         if ( !battle_isBattleOver() )
@@ -19899,7 +19899,7 @@ void __fastcall __noreturn sub_801D12A(unsigned int a1, int a2, int a3, int a4, 
 
 
 // 0x801d1d8
-int sub_801D1D8()
+int req_countdownDispatch()
 {
     bool v0; // zf
     int result; // r0
@@ -20042,7 +20042,7 @@ void __fastcall sub_801D3F8(int a1, int a2, int a3, int a4)
 
 
 // 0x801d450
-int sub_801D450()
+int battle_advanceAnimCounters()
 {
     int v0; // r5
     int result; // r0
@@ -20114,7 +20114,7 @@ int sub_801D514()
 
 
 // 0x801d548
-int sub_801D548()
+int object_countdownDispatch()
 {
     int v0; // r5
     int result; // r0
@@ -20926,7 +20926,7 @@ int __noreturn sub_801E060()
 
 
 // 0x801e07c
-int __noreturn sub_801E07C()
+int __noreturn e_copyHudTiles()
 {
     CopyBackgroundTiles(24, 0, 3, byte_801EDFC, 6, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(0x800000);
@@ -21160,7 +21160,7 @@ int __noreturn sub_801E3C4()
 
 
 // 0x801e3e4
-int __noreturn sub_801E3E4()
+int __noreturn ow_drawBackgroundTilePatch()
 {
     CopyBackgroundTiles(11, 16, 3, byte_801EF10, 8, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(0x100000);
@@ -21777,7 +21777,7 @@ int __noreturn sub_801EB50()
 
 
 // 0x801eb7c
-int __noreturn sub_801EB7C()
+int __noreturn ow_patchBackgroundStrip()
 {
     CopyBackgroundTiles(0, 18, 3, byte_801EE98, 30, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(0x40000);

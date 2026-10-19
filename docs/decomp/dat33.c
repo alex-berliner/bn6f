@@ -1090,7 +1090,7 @@ signed int sub_812CDAC()
     v6 = v4 & 0x1FF;
     if ( v6 )
         GiveChips(v6, (v5 << 17) >> 26, 1);
-    sub_8120AB8();
+    pack_addAllFolderChipsToPack();
     sub_803F798();
     chatbox_runScript_803FD9C_on_eTextScript201BA20(61);
     PlaySoundEffect(115, v7, v8);

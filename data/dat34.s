@@ -1275,7 +1275,7 @@ loc_812E492::
 loc_812E4BC::
 	mov r1, #0x44 
 	mov r2, #0
-	bl sub_811BC24
+	bl sprite_setCoordinatesIfEntityExists
 	mov r0, #0xb4
 	ldrh r1, [r5,#0x2e]
 	sub r0, r0, r1
@@ -1294,7 +1294,7 @@ loc_812E4BC::
 loc_812E4E6::
 	mov r1, #0x44 
 	mov r2, #1
-	bl sub_811BC24
+	bl sprite_setCoordinatesIfEntityExists
 loc_812E4EE::
 	mov r1, #0
 	strh r1, [r5,#0x26]

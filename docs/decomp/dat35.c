@@ -587,7 +587,7 @@ void sub_812F530()
 											sub_813064C();
 											sub_8130810();
 											sub_81304EC();
-											sub_813017C();
+											t4_loadSceneBackground();
 											*(v0 + 2) = 4;
 										}
 									}
@@ -984,7 +984,7 @@ void sub_812F920()
                                         sub_8130250();
                                         t4_refreshChipPackBuffer();
                                         sub_81304EC();
-                                        sub_813017C();
+                                        t4_loadSceneBackground();
                                     }
                                 }
                             }
@@ -1160,11 +1160,11 @@ void sub_812FAE4()
                     v7 = v6 + 64;
                     if ( v6 + 64 >= 176 )
                         v7 = 176;
-                    sub_811AD18(v7, 68, 0);
+                    object_setPositionIfEntryActive(v7, 68, 0);
                     v8 = 176 - *(v0 + 46);
                     if ( v8 <= 64 )
                         v8 = 64;
-                    sub_811AD18(v8, 68, 1);
+                    object_setPositionIfEntryActive(v8, 68, 1);
                 }
                 *(v0 + 38) = 0;
                 *(v4 + 8) = 0;

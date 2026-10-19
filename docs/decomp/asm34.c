@@ -18,7 +18,7 @@ signed int __fastcall battle_initChipSearchList(int a1, int a2, int a3, int a4)
 	signed int result; // r0
 
 	ZeroFillByEightWords(word_2023FA0, 32);
-	sub_8120A88();
+	removeFolderChipsFromPack();
 	v8 = buildChipSearchTable_811FE7C(&unk_2023FC0, 1, v6, v7) + 1;
 	*(v4 + 40) = v8;
 	battle_fieldLockDispatch_8120018(&unk_2023FC0, v8, 5, 4);
@@ -437,7 +437,7 @@ int t4_transitionToTextState1C()
 	}
 	result = v0[22];
 	if ( v0[22] )
-		result = sub_8120AB8();
+		result = pack_addAllFolderChipsToPack();
 	return result;
 }
 
@@ -564,7 +564,7 @@ void sub_812DA60()
 	v0[2] = 28;
 	v0[12] = 0;
 	v0[3] = 0;
-	sub_8120AB8();
+	pack_addAllFolderChipsToPack();
 }
 
 

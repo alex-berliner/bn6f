@@ -767,7 +767,7 @@ loc_812F5EE::
 	bl sub_813064C
 	bl sub_8130810
 	bl sub_81304EC
-	bl sub_813017C
+	bl t4_loadSceneBackground
 	mov r0, #4
 	strb r0, [r5,#2]
 	b loc_812F622
@@ -1257,7 +1257,7 @@ loc_812F9A6::
 	bl sub_8130250
 	bl t4_refreshChipPackBuffer
 	bl sub_81304EC
-	bl sub_813017C
+	bl t4_loadSceneBackground
 	b loc_812F9FA
 loc_812F9DE::
 	mov r0, r4
@@ -1447,7 +1447,7 @@ loc_812FB2A::
 loc_812FB3E::
 	mov r1, #0x44 
 	mov r2, #0
-	bl sub_811AD18
+	bl object_setPositionIfEntryActive
 	mov r0, #0xb0
 	ldrh r1, [r5,#0x2e]
 	sub r0, r0, r1
@@ -1457,7 +1457,7 @@ loc_812FB3E::
 loc_812FB52::
 	mov r1, #0x44 
 	mov r2, #1
-	bl sub_811AD18
+	bl object_setPositionIfEntryActive
 loc_812FB5A::
 	mov r1, #0
 	strh r1, [r5,#0x26]

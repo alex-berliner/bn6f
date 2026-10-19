@@ -327,7 +327,7 @@ int __fastcall ow_spawnObject1BAtPlayer(int a1)
 
 
 // 0x808fbc0
-int __fastcall sub_808FBC0(int a1, int a2)
+int __fastcall camera_snapToIndexedTarget(int a1, int a2)
 {
     sub_80301B2(0, a2);
     SetCameraXYZ(*(&eWeatherCompState + byte_200031C + 32) << 16, *(&eWeatherCompState + byte_200031C + 35) << 16, 0x400000);

@@ -194,7 +194,7 @@ signed int ow_bugfragTraderExchange()
         }
         if ( !chatbox_GetState_8045F4C() )
         {
-            sub_804A2E8(0, v3, v4, v5);
+            submenu_clearTraderState(0, v3, v4, v5);
             chipTraderRollReward();
             word_200AC84 = v6;
             word_200AC86 = v7;
@@ -2241,7 +2241,7 @@ signed int sub_809CC60()
     int v8; // r1
     int v9; // r2
 
-    sub_809CE14();
+    battle_checkLinkPartnerCamera();
     if ( v2 )
     {
         chatbox_mask_eFlags2009F38(8);
@@ -2384,7 +2384,7 @@ int sub_809CDD4()
 
 
 // 0x809ce14
-signed int sub_809CE14()
+signed int battle_checkLinkPartnerCamera()
 {
     int v0; // r5
     signed int v1; // r4

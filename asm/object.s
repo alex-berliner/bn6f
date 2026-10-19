@@ -5426,9 +5426,9 @@ dword_800E5F8:
 
 // symdb: Returns 1 when the current battle object's first object-flag word has none of the bits in mask 0x1040 set, else 0.
 // symdb: () -> r0 = 1 if (object flag word & 0x1040) == 0, else 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E5FC.yaml
-	thumb_func_start sub_800E5FC
-sub_800E5FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_isFlagMask1040Clear.yaml
+	thumb_func_start object_isFlagMask1040Clear
+object_isFlagMask1040Clear:
 	push {r4,lr}
 	bl object_getFlag // () -> int
 	mov r4, r0
@@ -5443,7 +5443,7 @@ loc_800E60E:
 	.balign 4, 0
 off_800E614:
 	.word 0x1040
-	thumb_func_end sub_800E5FC
+	thumb_func_end object_isFlagMask1040Clear
 
 // symdb: Picks a panel-parameter pair from a small table (selected by the object's alliance and whether it carries flag 0x10 / stands on a solid panel) and passes it, together with the target panel, to object_checkPanelParameters; returns immediately if the target panel is invalid.
 // symdb: void playerObject_movingToPanel_check_800E618(u32 panelX /* r0 */, u32 panelY /* r1 */, u32 obj

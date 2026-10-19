@@ -3013,7 +3013,7 @@ BOOL __fastcall object_canMove(int a1)
 
 
 // 0x800e5fc
-BOOL __fastcall sub_800E5FC(int a1)
+BOOL __fastcall object_isFlagMask1040Clear(int a1)
 {
     return (object_getFlag() & &loc_1040) == 0;
 }

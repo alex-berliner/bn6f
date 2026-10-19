@@ -4196,9 +4196,9 @@ off_3007824:
 // symdb: Frees (clears) the battle collision-index bits for every panel a battle object currently occupies, using its shape's panel-offset list and facing side.
 // symdb: (r0 = battle object struct ptr) -> r0 = last test-and-clear result from
 // symdb: object_testAndClearCollisionIndexBit; clobbers r4-r6, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007828.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearObjectCollisionArea.yaml
 	thumb_local_start
-sub_3007828:
+battle_clearObjectCollisionArea:
 	push {r4-r6,lr}
 	mov r5, r0
 	ldrb r1, [r0,#1]
@@ -4232,7 +4232,7 @@ locret_3007860:
 	.balign 4, 0
 off_3007864:
 	.word PanelOffsetListsPointerTable
-	thumb_func_end sub_3007828
+	thumb_func_end battle_clearObjectCollisionArea
 
 // symdb: Sets one panel's collision-index bit in the battle panel-collision bitmap (unk_2034F60).
 // symdb: (r0 = word column index in bitmap, r1 = row index, r2 = ptr to collision data whose

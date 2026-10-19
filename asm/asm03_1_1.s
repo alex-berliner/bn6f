@@ -346,11 +346,11 @@ battle_initReturnSceneGfx:
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sprite_initBattleFadeGfxState_80027C4
 	bl decomp_initGfx_8038F30 // () -> void
-	bl sub_8038F74
+	bl battle_renderCommErrorTextGfx
 	bl sub_80468BA
 	bl battle_resetEStructRecords_8046664 // () -> void
 	ldr r0, off_8038B60 // =byte_80386E8
-	bl sub_80467FC
+	bl battle_initAIChipQueueList
 	bl chatbox_8040818
 	mov r0, #8
 	mov r1, #8
@@ -421,7 +421,7 @@ off_8038BB0:
 	.word sub_8038D94+1
 	.word sub_8038DB0+1
 	.word loc_8038DC8+1
-	.word sub_8038DE0+1
+	.word object_delayedSoundAndAnims+1
 	.word sub_8038E14+1
 	.word sub_8038E48+1
 	.word sub_8038E5C+1
@@ -691,9 +691,9 @@ locret_8038DDE:
 
 // symdb: Object step callback that, once a frame-countdown at [r5+4] expires, plays sound 0x100, starts two GFX anim scripts, and rearms the timer.
 // symdb: (r0 = unused/ignored, r5 = object struct) -> r0 = destroyed; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038DE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_delayedSoundAndAnims.yaml
 	thumb_local_start
-sub_8038DE0:
+object_delayedSoundAndAnims:
 	push {lr}
 	ldrh r0, [r5,#4]
 	sub r0, #1
@@ -718,7 +718,7 @@ off_8038E0C:
 	.word byte_80389AC
 off_8038E10:
 	.word 0x100
-	thumb_func_end sub_8038DE0
+	thumb_func_end object_delayedSoundAndAnims
 
 	thumb_local_start
 sub_8038E14:
@@ -816,7 +816,7 @@ sub_8038EAC:
 	sub r0, #1
 	strh r0, [r5,#4]
 	bne loc_8038ECE
-	bl sub_8038F74
+	bl battle_renderCommErrorTextGfx
 	ldr r0, off_8038ED4 // =byte_8038A6C
 	bl LoadGFXAnim // (script: * GFXAnimScript) -> ()
 	ldr r0, off_8038ED8 // =byte_8038A84
@@ -915,9 +915,9 @@ initRefs_8038F40:
 // symdb: Renders the glyph graphics for the communication-error text into VRAM during battle scene (re)initialization.
 // symdb: (no args) -> r0-r7 clobbered; publishes TextScriptCommError text and decompresses its glyph
 // symdb: chunk into VRAM at 0x6005000
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038F74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderCommErrorTextGfx.yaml
 	thumb_local_start
-sub_8038F74:
+battle_renderCommErrorTextGfx:
 	push {r4-r7,lr}
 	ldr r0, off_8038F8C // =TextScriptCommError873B9E0
 	mov r1, #0x28
@@ -938,7 +938,7 @@ dword_8038F94:
 	.word 0x6005000
 off_8038F98:
 	.word dword_86B7AE0
-	thumb_func_end sub_8038F74
+	thumb_func_end battle_renderCommErrorTextGfx
 
 	thumb_local_start
 sub_8038F9C:
@@ -1344,7 +1344,7 @@ off_80395C8:
   // 0x04
 	.word init_videoSystemsReset+1
   // 0x08
-	.word sub_8039658+1
+	.word battle_dispatchModeAndRunUpdates+1
   // 0x0C
 	.word sub_80399CE+1
   // 0x10
@@ -1416,9 +1416,9 @@ off_8039654:
 // symdb: Per-frame dispatcher: jumps to one of 8 mode handlers selected by a state byte, then unconditionally runs the entity update pass and the eStruct sprite pipeline.
 // symdb: (r5 = state struct; byte [r5,#1] = mode index 0-7) -> r0 = result of entity/sprite passes; does
 // symdb: not return a meaningful value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039658.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchModeAndRunUpdates.yaml
 	thumb_local_start
-sub_8039658:
+battle_dispatchModeAndRunUpdates:
 	push {r4-r7,lr}
 	ldr r0, off_8039670 // =off_8039674
 	ldrb r1, [r5,#1]
@@ -1440,7 +1440,7 @@ off_8039674:
 	.word sub_8039816+1
 	.word sub_8039830+1
 	.word sub_8039846+1
-	thumb_func_end sub_8039658
+	thumb_func_end battle_dispatchModeAndRunUpdates
 
 	thumb_local_start
 sub_8039694:
@@ -1670,16 +1670,16 @@ sub_8039846:
 off_8039854:
 	.word off_8039858
 off_8039858:
-	.word sub_8039864+1
+	.word init_objBg2DisplayMode+1
 	.word sub_8039888+1
 	.word sub_80398B0+1
 	thumb_func_end sub_8039846
 
 // symdb: Switches the LCD to a OBJ+BG2 (1D object mapping) display mode and initializes a state struct in r5 for that mode.
 // symdb: (r0 unused, r5 = state struct) -> r0 = 0; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039864.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_objBg2DisplayMode.yaml
 	thumb_local_start
-sub_8039864:
+init_objBg2DisplayMode:
 	push {r4-r7,lr}
 	ldr r0, dword_8039880 // =0x1240
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
@@ -1697,7 +1697,7 @@ dword_8039880:
 	.word 0x1240
 off_8039884:
 	.word byte_80393A4
-	thumb_func_end sub_8039864
+	thumb_func_end init_objBg2DisplayMode
 
 	thumb_local_start
 sub_8039888:
@@ -2406,7 +2406,7 @@ loc_8039DF2:
 	bl sub_803CB0C
 	bl sub_8146CFC
 	mov r0, #0
-	bl sub_802D070
+	bl init_tableEntry
 	bl sub_8147B24
 	mov r0, #0x2c
 	mov r1, #0x10
@@ -2625,7 +2625,7 @@ loc_8039FBA:
 	bl sub_803CB0C
 	bl sub_8146CFC
 	mov r0, #0
-	bl sub_802D070
+	bl init_tableEntry
 	bl sub_8147B24
 	mov r0, #0x2c
 	mov r1, #0x10
@@ -4025,7 +4025,7 @@ dword_803AA0C:
 	.word handleExitSubmenu_803AA24+1
 	.word battleObj_dispatchSubstate_803AA40+1
 	.word sub_803ABF4+1
-	.word sub_803AB6C+1
+	.word battle_advanceMoveStep+1
 	.word sub_803AB94+1
 	thumb_func_end submenu_chipSelectFrameUpdate
 
@@ -4093,8 +4093,8 @@ off_803AA80:
 	.word sub_803AAD8+1
 	.word submenu_toggleMode+1
 	.word sub_803AB20+1
-	.word sub_803AB46+1
-	.word sub_803AB6C+1
+	.word battle_tryJackIn+1
+	.word battle_advanceMoveStep+1
 	.word sub_803AB94+1
 	.word shopBuyMenu_confirm_803ABB4+1
 	thumb_func_end battleObj_dispatchSubstate_803AA40
@@ -4197,9 +4197,9 @@ loc_803AB3E:
 // symdb: Attempts to move/jack-in a battle object to a target spot; on success sets its pending state to 0x20 and plays the move sound, otherwise plays the denied/can't-jack-in buzz.
 // symdb: (r5 = battle object, r0-r2 = fixed check args 1/0x30/0x10 passed to sub_803BFA0) -> r0 =
 // symdb: clobbered; side effects: [r5+0x13] = 0x20, sound effect played, object reset via sub_803A85C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AB46.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryJackIn.yaml
 	thumb_local_start
-sub_803AB46:
+battle_tryJackIn:
 	push {r4-r7,lr}
 	mov r0, #1
 	mov r1, #0x30
@@ -4216,14 +4216,14 @@ loc_803AB64:
 	mov r0, #SOUND_CANT_JACK_IN
 	bl PlaySoundEffect
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AB46
+	thumb_func_end battle_tryJackIn
 
 // symdb: Advances a battle object's multi-step move/animation counter each tick, playing the move sound and restarting a sub-effect, and marks the object's current action done once the steps run out.
 // symdb: (r5 = battle object ptr, set by caller; no args) -> r0 = undefined; increments obj+0x10, clears
 // symdb: obj+0x13 when a new step starts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AB6C.yaml
-	thumb_func_start sub_803AB6C
-sub_803AB6C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceMoveStep.yaml
+	thumb_func_start battle_advanceMoveStep
+battle_advanceMoveStep:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#0x10]
 	ldrh r1, [r5,#0x24]
@@ -4242,7 +4242,7 @@ sub_803AB6C:
 loc_803AB8E:
 	bl markBattleObjCurDone_803ABDC
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AB6C
+	thumb_func_end battle_advanceMoveStep
 
 	thumb_func_start sub_803AB94
 sub_803AB94:
@@ -4470,7 +4470,7 @@ dword_803ACEC:
 	.word chipSelect_dispatchState_803AD20+1
 	.word sub_803AED8+1
 	.word sub_803AE50+1
-	.word sub_803AE78+1
+	.word submenu_moveCursorBack+1
 	thumb_func_end submenu_guestLibraryFrameUpdate
 
 	thumb_func_start sub_803AD04
@@ -4532,10 +4532,10 @@ off_803AD60:
 	.word handleMenuAction90_803AD80+1
 	.word sub_803ADB8+1
 	.word sub_803ADDA+1
-	.word sub_803AE04+1
+	.word battle_tryConfirmAction+1
 	.word sub_803AE2A+1
 	.word sub_803AE50+1
-	.word sub_803AE78+1
+	.word submenu_moveCursorBack+1
 	.word menuSelectElement_803AE98+1
 	thumb_func_end chipSelect_dispatchState_803AD20
 
@@ -4615,9 +4615,9 @@ locret_803AE02:
 // symdb: Battle-side attempt at a command: if a check succeeds it stamps command/state 0x20 on the actor, plays a confirm sound and finishes the turn; otherwise it plays the denied buzz.
 // symdb: (r0-r3 clobbered; uses r5 = battle object ptr) -> r0 = sub_803BFA0 result (nonzero = allowed);
 // symdb: sets [r5+0x13] = 0x20 on success
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AE04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tryConfirmAction.yaml
 	thumb_local_start
-sub_803AE04:
+battle_tryConfirmAction:
 	push {r4-r7,lr}
 	mov r0, #0
 	mov r1, #0x90
@@ -4634,7 +4634,7 @@ loc_803AE22:
 	mov r0, #SOUND_CANT_JACK_IN
 	bl PlaySoundEffect
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AE04
+	thumb_func_end battle_tryConfirmAction
 
 	thumb_local_start
 sub_803AE2A:
@@ -4674,16 +4674,16 @@ sub_803AE50:
 	bl PlaySoundEffect
 	pop {r4-r7,pc}
 loc_803AE72:
-	bl sub_803AEC0
+	bl menuClearElementSelection
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AE50
 
 // symdb: Menu input handler that moves the selection back one entry, cleans up the entry buffer, and plays the cursor-move sound effect.
 // symdb: (r5 = menu/screen state struct) -> decrements u8 at r5+0x11, clears u8 at r5+0x13, plays sound;
 // symdb: no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AE78.yaml
-	thumb_func_start sub_803AE78
-sub_803AE78:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_moveCursorBack.yaml
+	thumb_func_start submenu_moveCursorBack
+submenu_moveCursorBack:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x11]
 	sub r0, #1
@@ -4699,7 +4699,7 @@ sub_803AE78:
 	b locret_803AE96
 locret_803AE96:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AE78
+	thumb_func_end submenu_moveCursorBack
 
 // symdb: Handles the "select" action on a UI list element: if its current index is below its max, plays a select SFX, clears a flag, opens sub-window 0x11 with ID 0x90, then refreshes the menu; otherwise defers to the overflow handler.
 // symdb: void menuSelectElement_803AE98(u32 r2, Element* r5, u32 lr) -> r10 preserved; NZCV clobbered
@@ -4721,16 +4721,16 @@ menuSelectElement_803AE98:
 	bl sub_803A878
 	pop {r4-r7,pc}
 loc_803AEBA:
-	bl sub_803AEC0
+	bl menuClearElementSelection
 	pop {r4-r7,pc}
 	thumb_func_end menuSelectElement_803AE98
 
 // symdb: Cancels the current element selection in a menu: plays the cursor-move SFX and sets the selection index to the 'none' sentinel 0x3F.
 // symdb: (r0 = menu element struct in r5 via caller, unused) -> r0 = PlaySoundEffect return; sets [r5+8]
 // symdb: = 0x3F, [r5+0x13] = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AEC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menuClearElementSelection.yaml
 	thumb_local_start
-sub_803AEC0:
+menuClearElementSelection:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#8]
 	cmp r0, #0x3f
@@ -4743,7 +4743,7 @@ sub_803AEC0:
 	strb r0, [r5,#8]
 locret_803AED6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AEC0
+	thumb_func_end menuClearElementSelection
 
 // symdb: Plays the cursor-move SFX (SOUND_CUR_MOVE_80) and marks the object as having already triggered its movement-cursor SFX this step by writing 0x3F to its byte flag.
 // symdb: void playCurMoveSfx_803AED8(struct Obj* r5, uint32_t r2, uint32_t lr); flags clobbered (NZCV),
@@ -8765,9 +8765,9 @@ petnavi_setStat42ToStat3EPlusCounter_803CED4:
 
 // symdb: Copies one u16 stat field (0x42) of the navi currently selected on the PET into another field (0x40) of the same navi's stats entry.
 // symdb: (r0 = navi selection/index u8) -> r0 = destroyed; no flags returned
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CEF8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_copyCurNaviStat42To40.yaml
 	thumb_local_start
-sub_803CEF8:
+pet_copyCurNaviStat42To40:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r1, #0x42
@@ -8778,7 +8778,7 @@ sub_803CEF8:
 	bl SetCurPETNaviStatsHword
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_803CEF8
+	thumb_func_end pet_copyCurNaviStat42To40
 
 // symdb: Recomputes the selected PET navi's 16-bit stat 0x42 as stat 0x3E plus a global modifier, clamped to at least 1.
 // symdb: () -> void; no return value, no flags used
@@ -12691,9 +12691,9 @@ sub_803F00C:
 // symdb: Enqueues a caller-supplied data block into a wireless-link ring buffer of 0x40-byte slots, returning 1 when the queue is full.
 // symdb: (r0 = src data pointer, r1 = size in bytes for CopyWords) -> r0 = 0 on success, 1 if queue full;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F030.yaml
-	thumb_func_start sub_803F030
-sub_803F030:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_queuePushEntry.yaml
+	thumb_func_start rfu_queuePushEntry
+rfu_queuePushEntry:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -12717,7 +12717,7 @@ loc_803F044:
 loc_803F058:
 	mov r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_803F030
+	thumb_func_end rfu_queuePushEntry
 
 	thumb_func_start sub_803F05C
 sub_803F05C:

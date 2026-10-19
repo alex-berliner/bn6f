@@ -668,7 +668,7 @@ void __cdecl initWorkArea5Entries_80467D8()
 
 
 // 0x80467fc
-unsigned __int8 *__fastcall sub_80467FC(unsigned __int8 *result)
+unsigned __int8 *__fastcall battle_initAIChipQueueList(unsigned __int8 *result)
 {
     unsigned __int8 *v1; // ST00_4
 
@@ -3079,7 +3079,7 @@ int sub_80495B4()
 
 
 // 0x80495ce
-int sub_80495CE()
+int sprite_loadTilesDuringFadeOrRun()
 {
     char v0; // zf
     int v1; // r1
@@ -4171,7 +4171,7 @@ void __fastcall sub_804A2CC(int a1, int a2, int a3, int a4)
     int v5; // ST00_4
 
     v5 = a1;
-    sub_804A2E8(a1, a2, a3, a4);
+    submenu_clearTraderState(a1, a2, a3, a4);
     dword_200ACB0 = v5;
     *(*(v4 + oToolkit_GameStatePtr) + oGameState_LastMapGroup) = *(*(v4 + oToolkit_GameStatePtr) + oGameState_MapGroup);
     battle_resetEStructRecords_8046664();
@@ -4179,7 +4179,7 @@ void __fastcall sub_804A2CC(int a1, int a2, int a3, int a4)
 
 
 // 0x804a2e8
-void __fastcall sub_804A2E8(int a1, int a2, int a3, int a4)
+void __fastcall submenu_clearTraderState(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
 
@@ -4223,7 +4223,7 @@ void __fastcall __noreturn sub_804A360(int a1, int a2, int a3, int a4)
     toolkit_applyOverlayPalette_80015FC(16);
     battle_resetEStructRecords_8046664();
     ZeroFillByWord(word_202A020, &dword_3C0);
-    sub_8120A88();
+    removeFolderChipsFromPack();
     v12 = buildChipSearchTable_811FE7C(&unk_202A3E0, 1, v10, v11);
     *(v4 + 40) = v12;
     battle_fieldLockDispatch_8120018(&unk_202A3E0, v12, 5, 4);
@@ -4248,7 +4248,7 @@ void __noreturn sub_804A3FC()
     {
         menu->unk_03 = 0;
         pet_menuCancel();
-        if ( !zf || (sub_804AAD0(), !zf) )
+        if ( !zf || (submenu_toggleStateStartOrB(), !zf) )
 LABEL_11:
             sub_804A8F4();
         JoypadKeyPressed();
@@ -4260,7 +4260,7 @@ LABEL_11:
             goto LABEL_11;
         }
         menu->unk_03 = 4;
-        sub_804AB10();
+        submenu_confirmSelection();
     }
     if ( menu->unk_28 )
         menu_adjustCursorOrValue_811F7F8(tk->joystick->keyPress, 7u, 0, 10);
@@ -4312,7 +4312,7 @@ void __fastcall __noreturn sub_804A514(int a1)
     int v2; // r10
     char v3; // zf
 
-    sub_804AAD0();
+    submenu_toggleStateStartOrB();
     if ( !v3 )
     {
         sub_804AA58();
@@ -4387,7 +4387,7 @@ void sub_804A5D4()
 
 
 // 0x804a5ec
-int sub_804A5EC()
+int object_riseOffscreenAndClear()
 {
     int v0; // r5
     int v1; // r0
@@ -4598,7 +4598,7 @@ void pet_menuCancel()
 
 
 // 0x804aad0
-void sub_804AAD0()
+void submenu_toggleStateStartOrB()
 {
     int v0; // r5
     int v1; // r1
@@ -4624,7 +4624,7 @@ void sub_804AAD0()
 
 
 // 0x804ab10
-signed int sub_804AB10()
+signed int submenu_confirmSelection()
 {
     unsigned __int8 *v0; // r5
     signed int v1; // r6
@@ -6254,7 +6254,7 @@ int sub_804CA90()
 
 
 // 0x804cae0
-signed int __fastcall sub_804CAE0(int a1, int a2, int a3, int a4)
+signed int __fastcall ow_loadCurrentMap(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
 

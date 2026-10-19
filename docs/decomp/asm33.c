@@ -1900,7 +1900,7 @@ int sub_8124F8C()
     sub_81268D8();
     battle_runTransition_8125444();
     sub_8125F5C();
-    sub_812653C();
+    battle_transitionAnimQueueOam();
     v3 = 0;
     v4 = *(v0 + 96);
     if ( v4 == 5 )
@@ -2089,7 +2089,7 @@ int __fastcall battle_transitionAnimUpdate(int a1)
     sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
     sub_8125F5C();
-    sub_812653C();
+    battle_transitionAnimQueueOam();
     result = IsPaletteFadeActive();
     if ( !v3 )
     {
@@ -3658,7 +3658,7 @@ int sub_8126524()
 
 
 // 0x812653c
-int sub_812653C()
+int battle_transitionAnimQueueOam()
 {
     return battle_queueAnimatedOamEntry(90, 32, 50, 12);
 }
@@ -4207,7 +4207,7 @@ int sub_8126E88()
 
 
 // 0x8126ea4
-int sub_8126EA4()
+int battle_cmdWaitForScreenFade()
 {
     int v0; // r5
     char v1; // zf
@@ -4670,7 +4670,7 @@ char *battle_buildPetNaviList_8127638()
     TestEventFlagFromImmediate(1, 99);
     if ( !v5 )
     {
-        v6 = sub_81276E4();
+        v6 = battle_getCurNaviTableEntry();
         v7 = 0;
         while ( *v6 != -1 )
         {
@@ -4715,7 +4715,7 @@ char *battle_buildPetNaviList_8127638()
 
 
 // 0x81276e4
-int sub_81276E4()
+int battle_getCurNaviTableEntry()
 {
     int v0; // r10
     int v1; // r4
@@ -7786,7 +7786,7 @@ int sub_8129DC4()
 
 
 // 0x8129e28
-int sub_8129E28()
+int npc_showStateDialogue()
 {
     int v0; // r5
     int result; // r0
@@ -7804,7 +7804,7 @@ int sub_8129E28()
 
 
 // 0x8129e54
-int sub_8129E54()
+int npc_talkIfFlagSet()
 {
     int v0; // r5
     int result; // r0
@@ -8386,8 +8386,8 @@ int __fastcall sub_812A424(int a1)
         result = IsPaletteFadeActive();
         if ( !v2 )
         {
-            sub_811B010(0);
-            v3 = sub_811B010(1);
+            sprite_unscaleEntryIfBusy(0);
+            v3 = sprite_unscaleEntryIfBusy(1);
             battle_initScene_8129248(v3, v4, v5, v6);
             screens3_loadBackgroundTiles();
         }
@@ -8607,7 +8607,7 @@ LABEL_14:
 
 
 // 0x812a67c
-int __fastcall sub_812A67C(int a1)
+int __fastcall ow_beginScreenFadeUnlessFlagSet(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -10298,7 +10298,7 @@ int sub_812B97C()
 
 
 // 0x812b9f8
-int sub_812B9F8()
+int link_verifyChecksumAndMatchPartner()
 {
     int v0; // r5
     int v1; // r3

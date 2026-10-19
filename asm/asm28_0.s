@@ -1076,7 +1076,7 @@ ow_bugfragTraderExchange:
 	bl chatbox_GetState_8045F4C
 	cmp r0, #0
 	bne loc_809A0F2
-	bl sub_804A2E8
+	bl submenu_clearTraderState
 	ldr r7, off_809A0FC // =eS200AC80
 	bl chipTraderRollReward
 	strh r0, [r7,#0x4] // (word_200AC84 - 0x200ac80)
@@ -5048,7 +5048,7 @@ off_809CC5C:
 	thumb_local_start
 sub_809CC60:
 	push {r4-r7,lr}
-	bl sub_809CE14
+	bl battle_checkLinkPartnerCamera
 	beq loc_809CC70
 	mov r0, #0
 	strb r0, [r5,#8]
@@ -5253,9 +5253,9 @@ locret_809CE10:
 // symdb: Checks the link-battle state and partner slot; on success stores the partner's eCamera-related value into [r5+0x74] and returns 0, otherwise returns 1.
 // symdb: (uses caller's r5 as destination struct, r7/r12 saved around the call) -> r0 = 0 on success
 // symdb: (value stored) or 1 if link state is nonzero or slot 4 is active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CE14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkLinkPartnerCamera.yaml
 	thumb_local_start
-sub_809CE14:
+battle_checkLinkPartnerCamera:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r7, r12
@@ -5276,7 +5276,7 @@ loc_809CE38:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809CE14
+	thumb_func_end battle_checkLinkPartnerCamera
 
 	thumb_local_start
 sub_809CE40:

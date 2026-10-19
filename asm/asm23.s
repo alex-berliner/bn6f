@@ -838,7 +838,7 @@ jt_80895C0:
 	.word sub_808989C+1
 	.word battleObject_beastModeAiPhaseInit_80898B2+1
 	.word sub_80898E8+1
-	.word sub_80898FC+1
+	.word ai_setStateIfTeamAlive+1
 	.word sub_808991C+1
 	.word sub_8089960+1
 	.word sub_808997E+1
@@ -856,7 +856,7 @@ jt_80895C0:
 	.word sub_8089BAA+1
 	.word ai_event745OnceInit+1
 	.word sub_8089BE4+1
-	.word sub_8089BFA+1
+	.word ai_setupStateTimer1C+1
 	thumb_func_end battleObject_runUpdateJumpTable_80895A8
 
 	thumb_local_start
@@ -1254,9 +1254,9 @@ loc_80898F8:
 
 // symdb: If any actor on team 0x10 is still alive, triggers an AI action, loads a 30-frame value into AIData+0x18, and sets the AI state byte to 0x44; always returns 1.
 // symdb: (no meaningful args; r5 = AI/entity context set up by callee) -> r0 = 1; flags from tst r0,r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80898FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setStateIfTeamAlive.yaml
 	thumb_local_start
-sub_80898FC:
+ai_setStateIfTeamAlive:
 	push {r4-r7,lr}
 	mov r0, #0x10
 	bl battle_countAliveActorsOnTeam_8142C20
@@ -1271,7 +1271,7 @@ sub_80898FC:
 loc_8089918:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80898FC
+	thumb_func_end ai_setStateIfTeamAlive
 
 	thumb_local_start
 sub_808991C:
@@ -1672,9 +1672,9 @@ loc_8089BF6:
 // symdb: AI step that, unless event flag 0x80 (of eFlags2009F38) is set, resets the AI object's state byte and starts a 0x1E-frame timer in AIData.
 // symdb: (r5 = AIData struct pointer, r0/r1 unused on entry) -> r0 = 1 (always); sets byte AIData+0x00 =
 // symdb: 0x1C, byte AIData+0x08 = 0, halfword AIData+0x18 = 0x1E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BFA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupStateTimer1C.yaml
 	thumb_local_start
-sub_8089BFA:
+ai_setupStateTimer1C:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1688,7 +1688,7 @@ sub_8089BFA:
 loc_8089C12:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089BFA
+	thumb_func_end ai_setupStateTimer1C
 
 // symdb: Beast-mode overworld AI step: drives transform/fail handling by inspecting the current PET navi and HP, sets the OW player animation, then writes a new state byte.
 // symdb: (r5 = AIData ptr, r10 = Toolkit ptr) -> r0 = 1 ; side effects: writes AIData+0x00, AIData+0x08,
