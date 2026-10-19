@@ -9,7 +9,7 @@ int __fastcall renderTextGfx_8045F8C(void *dialogScript, int a2, int a3, int a4)
 
 
 // 0x8045fbc
-void sub_8045FBC()
+void sprite_runDefaultAnimation()
 {
     JUMPOUT(&loc_8045FEE);
 }
@@ -2895,7 +2895,7 @@ LABEL_8:
     sub_803CB18();
     if ( !v1 )
     {
-        sub_8132648();
+        submenu_resetCursor();
         rfu_initWirelessSession();
         *(v0 + 1) = 68;
     }
@@ -2988,7 +2988,7 @@ void sub_80494DE()
     }
     else
     {
-        sub_803CB0C(256);
+        clearStatusBits(256);
         *(v0 + 1) = 68;
     }
     sub_803A104();
@@ -3090,7 +3090,7 @@ int sprite_loadTilesDuringFadeOrRun()
     if ( v0 )
         return sub_803A1B0();
     copyMemory_8001850();
-    return sub_803CB8C(sub_8039570, v1, v2, v3);
+    return t1_setMainState1cWithArg(sub_8039570, v1, v2, v3);
 }
 
 
@@ -4321,7 +4321,7 @@ void __fastcall __noreturn sub_804A514(int a1)
     sub_804AE04();
     if ( v3 )
         *(v1 + 52) = menu_moveCursorUpDown_811FA22(*(*(v2 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 52));
-    sub_804AE50();
+    ow_copyTiles8x17ToBg();
 }
 
 
@@ -4996,7 +4996,7 @@ void sub_804AE04()
 
 
 // 0x804ae50
-void __noreturn sub_804AE50()
+void __noreturn ow_copyTiles8x17ToBg()
 {
     CopyBackgroundTiles(21, 2, 0, &unk_203486C, 8, &dword_10 + 1);
 }

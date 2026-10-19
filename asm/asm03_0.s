@@ -2441,7 +2441,7 @@ off_8027564:
 	.word sub_8027574+1
 	.word sub_8027580+1
 	.word sub_802759E+1
-	.word sub_80275D8+1
+	.word state_waitFadeEndThenAdvance+1
 	thumb_func_end sub_8027548
 
 	thumb_local_start
@@ -2507,9 +2507,9 @@ off_80275D4:
 // symdb: Waits while a screen fade is running, then sets a state field to 4 and clears a counter, advancing some state machine once the fade ends.
 // symdb: (r5 = pointer to state struct; byte at +1 = state, halfword at +2 = counter/timer) -> r0 = 0 on
 // symdb: the advance path; no other return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80275D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/state_waitFadeEndThenAdvance.yaml
 	thumb_local_start
-sub_80275D8:
+state_waitFadeEndThenAdvance:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	cmp r0, #0
@@ -2520,7 +2520,7 @@ sub_80275D8:
 	strh r0, [r5,#2]
 locret_80275EA:
 	pop {pc}
-	thumb_func_end sub_80275D8
+	thumb_func_end state_waitFadeEndThenAdvance
 
 	thumb_local_start
 sub_80275EC: // (self: * S20364C0 $r5) -> ()
@@ -10195,7 +10195,7 @@ sub_802AC6E:
 	ble loc_802AC8C
 	sub r1, #1
 	strb r1, [r5,#9]
-	bl sub_802B5D0
+	bl sound_playSfx66
 	b loc_802AD48
 loc_802AC8C:
 	mov r1, #0x80
@@ -10206,7 +10206,7 @@ loc_802AC8C:
 	bge loc_802ACA2
 	add r1, #1
 	strb r1, [r5,#9]
-	bl sub_802B5D0
+	bl sound_playSfx66
 	b loc_802AD48
 loc_802ACA2:
 	mov r1, #0x20 
@@ -10217,7 +10217,7 @@ loc_802ACA2:
 	ble loc_802ACB8
 	sub r1, #1
 	strb r1, [r5,#8]
-	bl sub_802B5D0
+	bl sound_playSfx66
 	b loc_802AD48
 loc_802ACB8:
 	mov r1, #0x10
@@ -10228,7 +10228,7 @@ loc_802ACB8:
 	bge loc_802ACCE
 	add r1, #1
 	strb r1, [r5,#8]
-	bl sub_802B5D0
+	bl sound_playSfx66
 	b loc_802AD48
 loc_802ACCE:
 	mov r1, #1
@@ -11378,15 +11378,15 @@ off_802B5CC:
 
 // symdb: One-line wrapper that plays sound effect ID 0x66 via the M4A engine.
 // symdb: () -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B5D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_playSfx66.yaml
 	thumb_local_start
-sub_802B5D0:
+sound_playSfx66:
 	push {lr}
 	mov r0, #SOUND_UNK_66
 	bl PlaySoundEffect
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_802B5D0
+	thumb_func_end sound_playSfx66
 
 	thumb_local_start
 sub_802B5DC:
@@ -11708,11 +11708,11 @@ loc_802B8B8:
 	mov r0, #3
 	mul r1, r0
 	add r1, #5
-	bl sub_802BA18
+	bl get_bg2ScrollXTile
 	mov r2, #3
 	mov r4, #9
 	mov r5, #2
-	bl sub_802BA24
+	bl bg_copyTilesIfRequested
 	add sp, sp, #0x24
 	pop {r4,r5,pc}
 	thumb_func_end sub_802B8B0
@@ -11735,7 +11735,7 @@ sub_802B8E0:
 	mul r5, r0
 	sub r5, #1
 	ldr r0, off_802BA44 // =word_2036660 
-	bl sub_802BA18
+	bl get_bg2ScrollXTile
 	mov r2, #3
 	mov r3, #0
 	mov r4, #9
@@ -11797,7 +11797,7 @@ loc_802B96E:
 	mov r0, #0
 	strh r0, [r5,#2]
 	bl sub_801E780
-	bl sub_802BA18
+	bl get_bg2ScrollXTile
 	mov r1, #5
 	mov r2, #3
 	mov r3, #0
@@ -11899,24 +11899,24 @@ off_802BA14:
 
 // symdb: Small getter returning the chip-preview background's BG2 X scroll converted to tile units plus one.
 // symdb: () -> r0 = (RenderInfo->BG2ScrollX >> 3) + 1; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_bg2ScrollXTile.yaml
 	thumb_local_start
-sub_802BA18:
+get_bg2ScrollXTile:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_RenderInfoPtr]
 	ldrh r0, [r0,#oRenderInfo_BG2ScrollX]
 	asr r0, r0, #3
 	add r0, #1
 	mov pc, lr
-	thumb_func_end sub_802BA18
+	thumb_func_end get_bg2ScrollXTile
 
 // symdb: Conditionally performs a pending background tile copy: if the flag byte at 0x2036667 is set, falls through to CopyBackgroundTiles, otherwise does nothing.
 // symdb: (r0-r3 = pass-through args for CopyBackgroundTiles: i, j, which_tile_block_32x32, tile_ids*,
 // symdb: plus stack args j_size, i_size) -> r0 = undefined; calls CopyBackgroundTiles only when
 // symdb: byte_2036667 != 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_copyTilesIfRequested.yaml
 	thumb_local_start
-sub_802BA24:
+bg_copyTilesIfRequested:
 	push {r6,lr}
 	ldr r6, off_802BA44 // =word_2036660 
 	ldrb r6, [r6,#0x7] // (byte_2036667 - 0x2036660)
@@ -11925,7 +11925,7 @@ sub_802BA24:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 locret_802BA32:
 	pop {r6,pc}
-	thumb_func_end sub_802BA24
+	thumb_func_end bg_copyTilesIfRequested
 
 	thumb_local_start
 sub_802BA34:
@@ -14995,16 +14995,16 @@ sub_802D09E:
 // symdb: Fetches one entry from the IWRAM table at byte_203C4A0 and zeroes its first two words.
 // symdb: () -> r0 = pointer to the entry's first word (return value of getTableEntryPtr32); flags
 // symdb: clobbered by bl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D0BA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clear_tableEntryFields.yaml
 	thumb_local_start
-sub_802D0BA:
+clear_tableEntryFields:
 	push {lr}
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	mov r1, #0
 	str r1, [r0]
 	str r1, [r0,#4]
 	pop {pc}
-	thumb_func_end sub_802D0BA
+	thumb_func_end clear_tableEntryFields
 
 // symdb: Computes a rounded-up percentage (100*a/b) from the player's and a specific enemy's object fields and stores the two bytes into a 0x20-byte IWRAM table record.
 // symdb: (r0 = record index into IWRAM table 0x203C4A0) -> r0 = last stored byte; writes entry+0xC
@@ -16581,7 +16581,7 @@ sub_802DB80:
 	ldrb r0, [r5,#0x16]
 	bl sub_80108FC
 	bl battle_clearCollisionData
-	bl sub_801A66C
+	bl battle_setObjectInvisible
 	ldrb r0, [r5,#0x14]
 	ldrb r1, [r5,#0x15]
 	bl object_removePanelReserve
@@ -18835,7 +18835,7 @@ loc_802ED0E:
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	ldr r1, off_802ED48 // =byte_802ED50 
 	ldrb r0, [r0,r1]
-	bl sub_802EEA2
+	bl battle_addCounterAmount
 	mov r0, #0x11
 	bl object_setAttack0
 	mov r0, #0
@@ -18891,7 +18891,7 @@ sub_802ED8A:
 	ldr r0, off_802EDB8 // =0x23c 
 	str r0, [r6,#0xc]
 	mov r0, #0x8b
-	bl sub_802EEA2
+	bl battle_addCounterAmount
 	mov r0, #0x2b 
 	bl object_setAttack0
 	mov r0, #1
@@ -18918,7 +18918,7 @@ sub_802EDBC:
 	mov r0, #0x28 
 	strh r0, [r6,#8]
 	mov r0, #0xa
-	bl sub_802EEA2
+	bl battle_addCounterAmount
 	mov r0, #0x16
 	bl object_setAttack0
 	mov r0, #1
@@ -18948,7 +18948,7 @@ sub_802EDEC:
 	mov r0, #0x13
 	bl object_setAttack0
 	mov r0, #0x95
-	bl sub_802EEA2
+	bl battle_addCounterAmount
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
@@ -19011,9 +19011,9 @@ byte_802EE64:
 // symdb: Adds an encoded amount (256 per unit) to a battle entity's counter at field 0x28, choosing a capped or alternate add path based on bit 7 of the argument.
 // symdb: (r0 = encoded amount, bit7 = variant flag, bits0-6 = unit count; r5 = battle entity pointer) ->
 // symdb: r0 = result of the add callee; calls battle_addCappedCounter or sub_802E04E
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EEA2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_addCounterAmount.yaml
 	thumb_local_start
-sub_802EEA2:
+battle_addCounterAmount:
 	push {lr}
 	mov r1, #0x80
 	tst r0, r1
@@ -19031,7 +19031,7 @@ loc_802EEB4:
 locret_802EEC0:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_802EEA2
+	thumb_func_end battle_addCounterAmount
 
 	thumb_local_start
 sub_802EEC4:
@@ -19057,7 +19057,7 @@ sub_802EEC4:
 	beq loc_802EF00
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
-	bl sub_802EFD8
+	bl battle_checkPanelTypeMatch
 	beq loc_802EF18
 	b loc_802EF12
 loc_802EF00:
@@ -19094,7 +19094,7 @@ loc_802EF2E:
 	str r0, [sp]
 	ldr r1, [sp,#4]
 loc_802EF3A:
-	bl sub_802EFD8
+	bl battle_checkPanelTypeMatch
 	beq loc_802EF44
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
@@ -19183,9 +19183,9 @@ loc_802EFD4:
 
 // symdb: Returns 1 if the panel at the given (x,y) has the same type byte as the calling object's field 0x16, else 0.
 // symdb: (r0 = panel X, r1 = panel Y; r5 = object) -> r0 = 1 if panel type equals [r5+0x16], else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EFD8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelTypeMatch.yaml
 	thumb_local_start
-sub_802EFD8:
+battle_checkPanelTypeMatch:
 	push {lr}
 	bl object_getPanelDataOffset
 	ldrb r1, [r0,#3]
@@ -19197,7 +19197,7 @@ sub_802EFD8:
 loc_802EFEA:
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_802EFD8
+	thumb_func_end battle_checkPanelTypeMatch
 
 	thumb_local_start
 sub_802EFEE:
@@ -21317,9 +21317,9 @@ off_802FE34:
 // symdb: Pass-through veneer that long-calls sprite_queueOamEntries with all arguments untouched.
 // symdb: (r0-r3 = forwarded to sprite_queueOamEntries) -> r0 = sprite_queueOamEntries result; preserves
 // symdb: r4, LR clobbered by veneer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802FE38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntriesThunk.yaml
 	thumb_local_start
-sub_802FE38:
+sprite_queueOamEntriesThunk:
 	push {r4,lr}
 	ldr r4, off_802FE44 // =sprite_queueOamEntries+1 
 	mov lr, pc
@@ -21328,7 +21328,7 @@ sub_802FE38:
 	.balign 4, 0x00
 off_802FE44:
 	.word sprite_queueOamEntries+1
-	thumb_func_end sub_802FE38
+	thumb_func_end sprite_queueOamEntriesThunk
 
 // symdb: Allocates a free actor slot index from a 16-bit bitmap in EWRAM and returns the slot index (or 0xFF if full)
 // symdb: (no args) -> r0 = allocated slot index (0..15) or 0xFF on full ; side effect: sets the

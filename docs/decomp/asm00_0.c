@@ -1446,7 +1446,7 @@ int __fastcall math_getPolarVector(int a1, int a2)
 
 
 // 0x80011c0
-int __fastcall sub_80011C0(int a1, int a2)
+int __fastcall math_directionToVector(int a1, int a2)
 {
     int result; // r0
 

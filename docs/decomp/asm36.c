@@ -20,7 +20,7 @@ int sub_8130020()
 
 
 // 0x813005c
-u32 sub_813005C()
+u32 camera_beginLinkPan()
 {
 	int v0; // r5
 	__int16 v1; // r4
@@ -233,7 +233,7 @@ int __fastcall sub_81302F4(__int16 a1, int a2)
 	int v2; // r4
 
 	v2 = a1 & 0x7FFF;
-	sub_811AD04(a1 & 0x7FFF, a2, a2);
+	e_setEntryValue0C(a1 & 0x7FFF, a2, a2);
 	return v2;
 }
 
@@ -316,12 +316,12 @@ void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
 	sub_81302F4(*(v4 + 42), 0);
 	battle_spawnEStruct1IfEmpty();
 	sub_81302F4(128, 1);
-	sub_81304A4();
+	e_spawnStructsFromTable();
 }
 
 
 // 0x81304a4
-void sub_81304A4()
+void e_spawnStructsFromTable()
 {
 	battle_spawnEStructRecordsFromTable_80465A0(byte_812F05C);
 }
@@ -2359,7 +2359,7 @@ int sub_8131FC4()
 
 
 // 0x813201c
-signed int sub_813201C()
+signed int t4_tickSubsystemE290()
 {
     return cb_8048FD4();
 }
@@ -3020,7 +3020,7 @@ signed int sub_8132614()
 
 
 // 0x8132648
-signed int sub_8132648()
+signed int submenu_resetCursor()
 {
     int v0; // r1
     int v1; // r2
@@ -3205,7 +3205,7 @@ void sub_813281C()
         v8 = *&byte_8132888[v2];
         v9 = *&byte_8132894[v2];
         v10 = *(&off_81328AC + v2);
-        sub_8045FBC();
+        sprite_runDefaultAnimation();
         v14 += 4;
     }
     while ( v14 < 8 );
@@ -3257,7 +3257,7 @@ void sub_81328D0()
         v6 = *&byte_8132948[v0];
         v7 = *&byte_8132954[v0];
         v8 = *(&off_813296C + v0);
-        sub_8045FBC();
+        sprite_runDefaultAnimation();
         v12 += 4;
     }
     while ( v12 < 8 );
@@ -10129,7 +10129,7 @@ void __fastcall __noreturn chatbox_renderTextEntry(int a1, int a2, int a3, int a
 
     ZeroFillByHalfword(&unk_2017AE0, 0xE0u, a3, a4);
     sub_8137DE4(*(v4 + 36), byte_201CF00, &unk_2017AE0, 7);
-    sub_8137E3C(10, 4, &unk_2017AE0);
+    chatbox_copyTextWindowTiles(10, 4, &unk_2017AE0);
 }
 
 
@@ -10155,7 +10155,7 @@ _WORD *__fastcall sub_8137DE4(int a1, int a2, int a3, int a4)
     {
         if ( *v5 )
         {
-            v7 = sub_8137EF0(v4, &unk_2000260);
+            v7 = get_indexedTimeBcd(v4, &unk_2000260);
             sub_8137F08(v9, v10, v11, v7);
         }
         v5 += 2;
@@ -10171,7 +10171,7 @@ _WORD *__fastcall sub_8137DE4(int a1, int a2, int a3, int a4)
 
 
 // 0x8137e3c
-void __fastcall __noreturn sub_8137E3C(int a1, int a2, u16 *a3)
+void __fastcall __noreturn chatbox_copyTextWindowTiles(int a1, int a2, u16 *a3)
 {
     CopyBackgroundTiles(a1, a2, 2, a3, 7, &dword_C + 2);
     JUMPOUT(locret_8137E4A);
@@ -10185,7 +10185,7 @@ void __fastcall __noreturn sub_8137E4C(int a1, int a2, int a3, int a4)
 
     ZeroFillByHalfword(&unk_2017BA4, 0xE0u, a3, a4);
     sub_8137E7C(*(v4 + 36), byte_201CF00, &unk_2017BA4, 7);
-    sub_8137EE0(18, 4, &unk_2017BA4);
+    copy_bgTilesToBlock2(18, 4, &unk_2017BA4);
 }
 
 
@@ -10215,7 +10215,7 @@ _WORD *__fastcall sub_8137E7C(int a1, int a2, int a3, int a4)
     {
         if ( *v6 )
         {
-            sub_8137EF0(v5, &unk_20018C0);
+            get_indexedTimeBcd(v5, &unk_20018C0);
             v8 = sub_8138210(v11, v14, v5);
             sub_8137F08(v8, v12, v13, v9);
         }
@@ -10232,7 +10232,7 @@ _WORD *__fastcall sub_8137E7C(int a1, int a2, int a3, int a4)
 
 
 // 0x8137ee0
-void __fastcall __noreturn sub_8137EE0(int a1, int a2, u16 *a3)
+void __fastcall __noreturn copy_bgTilesToBlock2(int a1, int a2, u16 *a3)
 {
     CopyBackgroundTiles(a1, a2, 2, a3, 7, &dword_C + 2);
     JUMPOUT(locret_8137EEE);
@@ -10240,7 +10240,7 @@ void __fastcall __noreturn sub_8137EE0(int a1, int a2, u16 *a3)
 
 
 // 0x8137ef0
-int __fastcall sub_8137EF0(int a1, int a2)
+int __fastcall get_indexedTimeBcd(int a1, int a2)
 {
     return memory_bcd_8000D84(*(a2 + byte_201CF00[a1 + 1]));
 }
@@ -10302,7 +10302,7 @@ void __fastcall __noreturn sprite_renderCharGlyph(int a1, int a2, int a3, int a4
 
     ZeroFillByHalfword(&unk_2017C68, 0x54u, a3, a4);
     sub_8137F8C(*(v4 + 36), byte_201CF00, &unk_2017C68, 7);
-    sub_813808C(26, 4, &unk_2017C68);
+    sprite_copyGlyphTiles3x14(26, 4, &unk_2017C68);
 }
 
 
@@ -10391,7 +10391,7 @@ signed int __fastcall sub_813802C(int a1)
 
 
 // 0x813808c
-void __fastcall __noreturn sub_813808C(int a1, int a2, u16 *a3)
+void __fastcall __noreturn sprite_copyGlyphTiles3x14(int a1, int a2, u16 *a3)
 {
     CopyBackgroundTiles(a1, a2, 2, a3, 3, &dword_C + 2);
     JUMPOUT(locret_813809A);
@@ -10728,7 +10728,7 @@ signed int sub_8138514()
     int v1; // r3
 
     *(v0 + 1) = 12;
-    sub_8138884();
+    object_freeAllOfType25();
     *(v0 + 24) = v1 + 1;
     return 1;
 }
@@ -10810,7 +10810,7 @@ void sub_8138580()
 
 
 // 0x8138584
-int __fastcall sub_8138584(int a1, int a2, int a3, int a4)
+int __fastcall scriptCmdFadeScreen(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r1
@@ -11115,7 +11115,7 @@ int __fastcall ow_perFrameUpdateAndRender(int a1, int a2, int a3, int a4)
 
 
 // 0x8138884
-unsigned int sub_8138884()
+unsigned int object_freeAllOfType25()
 {
     return sub_80035A2(0x25u);
 }

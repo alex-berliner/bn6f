@@ -3977,7 +3977,7 @@ loc_80A7190:
 loc_80A71C0:
 	mov r0, #3
 	strb r0, [r6,#7]
-	bl sub_80A71EC
+	bl object_timerCountdownPlaySfx
 	bl sprite_getFrameParameters
 	mov r1, #0x80
 	tst r0, r1
@@ -3999,9 +3999,9 @@ locret_80A71E8:
 // symdb: Decrements an object's countdown timer at +0x38 and plays SFX 0xE2 on its final tick
 // symdb: (r5 = object struct with u32 timer at +0x38; no args) -> r0 = destroyed (void); no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A71EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timerCountdownPlaySfx.yaml
 	thumb_local_start
-sub_80A71EC:
+object_timerCountdownPlaySfx:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x38]
 	cmp r0, #0
@@ -4017,7 +4017,7 @@ loc_80A71FE:
 locret_80A7204:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A71EC
+	thumb_func_end object_timerCountdownPlaySfx
 
 	thumb_local_start
 sub_80A7208:
@@ -4675,7 +4675,7 @@ loc_80A7670:
 loc_80A76A0:
 	mov r0, #3
 	strb r0, [r6,#7]
-	bl sub_80A76CC
+	bl object_playDelayedSfx
 	bl sprite_getFrameParameters
 	mov r1, #0x80
 	tst r0, r1
@@ -4697,9 +4697,9 @@ locret_80A76C8:
 // symdb: Counts down an object's delay timer at +0x34 and plays sound effect 0xE2 once when the timer reaches 1.
 // symdb: (r0 = unused by the callee body; r5 = object work struct, caller-set) -> r0 = sound ID passed to
 // symdb: PlaySoundEffect when timer hits 1; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A76CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_playDelayedSfx.yaml
 	thumb_local_start
-sub_80A76CC:
+object_playDelayedSfx:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x34]
 	cmp r0, #0
@@ -4715,7 +4715,7 @@ loc_80A76DE:
 locret_80A76E4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A76CC
+	thumb_func_end object_playDelayedSfx
 
 	thumb_local_start
 sub_80A76E8:
@@ -9251,16 +9251,16 @@ sub_80A9824:
 off_80A9834:
 	.word off_80A9838
 off_80A9838:
-	.word sub_80A9844+1
+	.word object_storyExplosionBeginPhase4+1
 	.word sub_80A9858+1
 	.word sub_80A98CC+1
 	thumb_func_end sub_80A9824
 
 // symdb: Map-object handler that switches the story-explosion object to state 4, latches two byte fields into word fields, and runs its update.
 // symdb: (r5 = map object struct, no register args) -> void; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9844.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_storyExplosionBeginPhase4.yaml
 	thumb_local_start
-sub_80A9844:
+object_storyExplosionBeginPhase4:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -9270,7 +9270,7 @@ sub_80A9844:
 	str r0, [r5,#0x28]
 	bl sub_80A9858
 	pop {pc}
-	thumb_func_end sub_80A9844
+	thumb_func_end object_storyExplosionBeginPhase4
 
 // symdb: Story-explosion map object update (map object types 1 / 0x1E / 0x1F family): burns 1-2 primary RNG draws per explosion puff.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9858.yaml
@@ -9357,16 +9357,16 @@ sub_80A98D4:
 off_80A98E4:
 	.word off_80A98E8
 off_80A98E8:
-	.word sub_80A98F4+1
+	.word object_storyExplosionInit+1
 	.word sub_80A9908+1
 	.word sub_80A9A04+1
 	thumb_func_end sub_80A98D4
 
 // symdb: Initializes a story-explosion map object: sets its state byte and copies two params into counters, then runs one update step.
 // symdb: (r0 unused, r5 = map object struct) -> r0 from callee; writes obj+8, obj+0x24, obj+0x28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A98F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_storyExplosionInit.yaml
 	thumb_local_start
-sub_80A98F4:
+object_storyExplosionInit:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -9376,7 +9376,7 @@ sub_80A98F4:
 	str r0, [r5,#0x28]
 	bl sub_80A9908
 	pop {pc}
-	thumb_func_end sub_80A98F4
+	thumb_func_end object_storyExplosionInit
 
 // symdb: Story-explosion map object update (map object types 1 / 0x1E / 0x1F family): burns 1-2 primary RNG draws per explosion puff.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9908.yaml
@@ -11216,10 +11216,10 @@ JumpTable80AA6B8:
 	.word tryEvent214LuckyRoll_80AA78C+1
 	.word get_eventFlag215AsBool+1
 	.word isEventFlag216Set+1
-	.word sub_80AA7D4+1
-	.word sub_80AA7E8+1
-	.word sub_80AA7FC+1
-	.word sub_80AA810+1
+	.word checkEventFlag217+1
+	.word e_isEvent218Set+1
+	.word get_eventFlag219+1
+	.word get_eventFlag222+1
 	thumb_func_end dispatchGameHandlerByIndex_80AA6A4
 
 // symdb: Trivial helper that unconditionally returns 1 ("true") in R0.
@@ -11393,9 +11393,9 @@ loc_80AA7D0:
 
 // symdb: Returns 1 if story/event flag 217 is set, else 0.
 // symdb: () -> r0 = 1 if EVENT_217 set, else 0; ZF from TestEventFlagFromImmediate consumed internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/checkEventFlag217.yaml
 	thumb_local_start
-sub_80AA7D4:
+checkEventFlag217:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_217
@@ -11405,14 +11405,14 @@ sub_80AA7D4:
 loc_80AA7E4:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA7D4
+	thumb_func_end checkEventFlag217
 
 // symdb: Returns 1 if story/event flag EVENT_218 is set, else 0 — a simple boolean getter for that event flag.
 // symdb: () -> r0 = bool (1 if EVENT_218 set, else 0); Z flag from TestEventFlagFromImmediate is consumed
 // symdb: internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_isEvent218Set.yaml
 	thumb_local_start
-sub_80AA7E8:
+e_isEvent218Set:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_218
@@ -11422,13 +11422,13 @@ sub_80AA7E8:
 loc_80AA7F8:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA7E8
+	thumb_func_end e_isEvent218Set
 
 // symdb: Returns 1 if event flag EVENT_219 is set, else 0 — a boolean wrapper over one story-progress flag.
 // symdb: () -> r0 = 1 if EVENT_219 set else 0; ZF from final mov/pop is meaningless
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA7FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eventFlag219.yaml
 	thumb_local_start
-sub_80AA7FC:
+get_eventFlag219:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_219
@@ -11438,13 +11438,13 @@ sub_80AA7FC:
 loc_80AA80C:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA7FC
+	thumb_func_end get_eventFlag219
 
 // symdb: Returns 1 if story/event flag 222 is set, otherwise 0.
 // symdb: () -> r0 = 1 if EVENT_222 set else 0; flags clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA810.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eventFlag222.yaml
 	thumb_local_start
-sub_80AA810:
+get_eventFlag222:
 	push {r4,lr}
 	mov r4, #0
 	movflag EVENT_222
@@ -11454,7 +11454,7 @@ sub_80AA810:
 loc_80AA820:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_80AA810
+	thumb_func_end get_eventFlag222
 
 // symdb: A battle-settings entry's kind bits for pickBattleSettingsEntry_80AA5F4's filter: 0x20 when its setup has a Navi (enemy data byte 2 >= 4), else a bit per enemy family (bit from the enemy data's top nibble), plus 0x40 when the entry's byte 7 is 2.
 // symdb: (r0 = BattleSettings *) -> r0 = kind bits; r4, r6, r7 restored

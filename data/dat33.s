@@ -265,7 +265,7 @@ loc_812C4C2::
 	b loc_812C4CA
 loc_812C4C4::
 	mov r0, #4
-	bl sub_812DA4C
+	bl npc_runDialog41
 loc_812C4CA::
 	bl sub_812D5A0
 	bl sub_812D3E4
@@ -396,7 +396,7 @@ loc_812C5C6::
 	b locret_812C5CE
 loc_812C5C8::
 	mov r0, #8
-	bl sub_812DA4C
+	bl npc_runDialog41
 locret_812C5CE::
 	pop {r4-r7,pc}
 	thumb_func_end sub_812C50C
@@ -552,7 +552,7 @@ loc_812C6FC::
 	b locret_812C704
 loc_812C6FE::
 	mov r0, #8
-	bl sub_812DA4C
+	bl npc_runDialog41
 locret_812C704::
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -633,7 +633,7 @@ loc_812C794::
 	b locret_812C79C
 loc_812C796::
 	mov r0, #8
-	bl sub_812DA4C
+	bl npc_runDialog41
 locret_812C79C::
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -914,7 +914,7 @@ loc_812C986::
 	strh r0, [r5,#0x30]
 	mov r0, #1
 	bl sub_812D99C
-	bl sub_812D91C
+	bl battle_spawnEStructsFromTablePair
 	b loc_812CA50
 loc_812C9D8::
 	mov r0, #0xc
@@ -979,7 +979,7 @@ loc_812CA50::
 	b locret_812CA58
 loc_812CA52::
 	mov r0, #0x10
-	bl sub_812DA4C
+	bl npc_runDialog41
 locret_812CA58::
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1673,7 +1673,7 @@ loc_812CFAC::
 loc_812CFB2::
 	bl sub_812D778
 	mov r0, #0x20 
-	bl sub_812DA4C
+	bl npc_runDialog41
 loc_812CFBC::
 	bl sub_812D3E4
 	bl sub_812D4FC
@@ -1942,7 +1942,7 @@ loc_812D1C0::
 	ldrb r0, [r5,#0x1f]
 	cmp r0, #0x20 
 	bne loc_812D1D4
-	bl sub_812D78C
+	bl copyBgTilesToBlock0
 	bl sub_812D3E4
 	bl sub_812D4FC
 	b locret_812D1F4

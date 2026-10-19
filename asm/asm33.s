@@ -7756,7 +7756,7 @@ off_8126DC0:
 	.word battle_cmdWaitForScreenFade+1
 	.word submenu_stepSlideToSelection+1
 	.word sub_8126F40+1
-	.word sub_8126F94+1
+	.word t3_clearWhileScreenFade+1
 	.word pet_saveDialogUpdate+1
 	.word loc_8126FC4+1
 off_8126DE4:
@@ -8000,9 +8000,9 @@ dword_8126F90:
 // symdb: Zeroes three bytes of a struct at r5 while a screen fade is in progress, otherwise does nothing.
 // symdb: (r5 = struct pointer, set by caller; no args in r0-r3) -> r0 clobbered; ZF from
 // symdb: IsScreenFadeActive leaks through on the early-return path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126F94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_clearWhileScreenFade.yaml
 	thumb_local_start
-sub_8126F94:
+t3_clearWhileScreenFade:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8126FA4
@@ -8013,7 +8013,7 @@ sub_8126F94:
 locret_8126FA4:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8126F94
+	thumb_func_end t3_clearWhileScreenFade
 
 // symdb: PET-menu task that, once the screen fade ends, raises the save prompt (dialog 0x35, or 0x39 when saving is disabled) and clears its request flags.
 // symdb: (r0 = context object, r5 = related struct with byte fields at +1/+2/+3) -> void; sets
@@ -11953,7 +11953,7 @@ loc_8128E64:
 	cmp r0, r1
 	bne loc_8128E92
 	mov r0, #0
-	bl sub_811C4D8
+	bl e_resetEntryStatus
 	mov r0, #1
 	bl sub_811DF0C
 	b loc_8128EB8
@@ -14068,7 +14068,7 @@ loc_8129DAC:
 	thumb_local_start
 object_waitEntriesIdleThenFade:
 	push {r4-r7,lr}
-	bl sub_812B5AC
+	bl object_setAnimationFromState
 	mov r3, #0x20 
 	ldrb r7, [r5,r3]
 	lsl r7, r7, #2
@@ -14181,7 +14181,7 @@ locret_8129E78:
 	thumb_local_start
 object_allClearedRunScriptFade:
 	push {r4-r7,lr}
-	bl sub_812B5AC
+	bl object_setAnimationFromState
 	mov r3, #0x20 
 	ldrb r7, [r5,r3]
 	lsl r7, r7, #2
@@ -15044,7 +15044,7 @@ sub_812A4DC:
 	mov lr, pc
 	bx r0
 	mov r0, #1
-	bl sub_803CB0C
+	bl clearStatusBits
 	pop {pc}
 	.balign 4, 0
 off_812A4F0:
@@ -15197,7 +15197,7 @@ loc_812A610:
 	bl sub_803CB18
 	beq locret_812A676
 	mov r0, #8
-	bl sub_803CB0C
+	bl clearStatusBits
 	b loc_812A602
 loc_812A628:
 	bl sub_803EA78
@@ -17320,9 +17320,9 @@ sub_812B590:
 // symdb: Battle-object update callback that picks a sprite animation (4, 5, or 7) from the entity's current pose/state byte and applies it.
 // symdb: (r5 = entity pointer; reads state byte at [r5,#2]) -> r0 = result of sprite_setEntityAnimation
 // symdb: (r1 = 0 always); no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B5AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setAnimationFromState.yaml
 	thumb_local_start
-sub_812B5AC:
+object_setAnimationFromState:
 	push {lr}
 	mov r0, #4
 	ldrb r1, [r5,#2]
@@ -17337,7 +17337,7 @@ loc_812B5C0:
 	mov r1, #0
 	bl sprite_setEntityAnimation
 	pop {pc}
-	thumb_func_end sub_812B5AC
+	thumb_func_end object_setAnimationFromState
 
 // symdb: Per-frame driver of the Beast Link gate sequence: refreshes a mode byte, dispatches the current step handler from a 5-entry jump table, and runs the standard entity/sprite update once the sequence reports completion (0x1C).
 // symdb: () -> void; uses r5 as pointer to the sequence state whose byte at +2 is the step index; writes
@@ -17810,7 +17810,7 @@ loc_812B964:
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	b loc_812B976
 loc_812B972:
-	bl sub_812C24C
+	bl link_setStateFields
 loc_812B976:
 	b locret_812B978
 locret_812B978:
@@ -17875,7 +17875,7 @@ loc_812B9BC:
 	strb r0, [r5,#2]
 	b loc_812B9F4
 loc_812B9F0:
-	bl sub_812C24C
+	bl link_setStateFields
 loc_812B9F4:
 	b locret_812B9F6
 locret_812B9F6:
@@ -18015,7 +18015,7 @@ loc_812BADE:
 	mov r0, #2
 	strb r0, [r5,#0x10]
 loc_812BAE6:
-	bl sub_812C24C
+	bl link_setStateFields
 loc_812BAEA:
 	b locret_812BAEC
 locret_812BAEC:
@@ -18162,7 +18162,7 @@ loc_812BBFE:
 	mov r0, #2
 	strb r0, [r5,#0x10]
 loc_812BC06:
-	bl sub_812C24C
+	bl link_setStateFields
 loc_812BC0A:
 	b locret_812BC0C
 locret_812BC0C:
@@ -18968,9 +18968,9 @@ off_812C248:
 
 // symdb: Writes a fixed value 0x34 into byte +1 and clears bytes +2/+3 of an r5 struct used by link-communication state handlers.
 // symdb: (r0 = unused, r5 = pointer to link state struct) -> r0 = 0 on return; no flags set meaningfully
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C24C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_setStateFields.yaml
 	thumb_local_start
-sub_812C24C:
+link_setStateFields:
 	mov r0, #0x34 
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -18978,6 +18978,6 @@ sub_812C24C:
 	strb r0, [r5,#3]
 	// <endpool> <endfile>
 	mov pc, lr
-	thumb_func_end sub_812C24C
+	thumb_func_end link_setStateFields
 
 /*For debugging purposes, connect comment at any range!*/

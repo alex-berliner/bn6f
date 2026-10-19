@@ -127,7 +127,7 @@ signed int __fastcall initGuiSprite_8002770(int guiSpriteIdx, void *defaultGuiPt
 
 
 // 0x800279c
-signed int __fastcall sub_800279C(int a1)
+signed int __fastcall sprite_initMugshot(int a1)
 {
     int v1; // r5
     signed int result; // r0

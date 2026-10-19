@@ -3492,7 +3492,7 @@ int sub_800EABA()
 
 
 // 0x800eac4
-int sub_800EAC4()
+int battle_settleCollisionCounters()
 {
     int v0; // r5
     int v1; // r2

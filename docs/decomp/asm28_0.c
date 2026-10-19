@@ -157,7 +157,7 @@ signed int sub_809A03C()
 
 
 // 0x809a05c
-int sub_809A05C()
+int submenu_chipTraderRunResultScript()
 {
     int v0; // r5
 
@@ -2294,7 +2294,7 @@ LABEL_11:
 
 
 // 0x809cd34
-int sub_809CD34()
+int chatbox_runGlobalScript21()
 {
     chatbox_runScript(&eTextScript2033404, 33);
     return 0;

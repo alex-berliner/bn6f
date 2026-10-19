@@ -955,7 +955,7 @@ byte_8099EA0:
 cutscenescript_8099EDF:
 	cs_call_native_with_return_value ptr1=sub_809A02C+1
 	cs_call_native_with_return_value ptr1=sub_809A03C+1
-	cs_call_native_with_return_value ptr1=sub_809A05C+1
+	cs_call_native_with_return_value ptr1=submenu_chipTraderRunResultScript+1
 
 cutscenescript_8099EEE:
 	.word 0x09A0794B, 0x59001B08, 0x1402011C, 0x0108099F, 0x09A1054B, 0x01FF0208, 0x09A2614B, 0x043F3B08
@@ -1045,9 +1045,9 @@ loc_809A054:
 
 // symdb: Chip-trader menu handler that runs the result dialog script for the traded chip index, then performs a follow-up step and clears the menu's script-active flag.
 // symdb: (r5 = chipTrader menu state object) -> r0 = 0; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A05C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_chipTraderRunResultScript.yaml
 	thumb_local_start
-sub_809A05C:
+submenu_chipTraderRunResultScript:
 	push {r4-r7,lr}
 	ldr r0, off_809A074 // =TextScriptChipTrader86C580C
 	ldr r1, [r5,#8]
@@ -1061,7 +1061,7 @@ sub_809A05C:
 	.balign 4, 0
 off_809A074:
 	.word TextScriptChipTrader86C580C
-	thumb_func_end sub_809A05C
+	thumb_func_end submenu_chipTraderRunResultScript
 
 // symdb: BugFrag trader interaction: waits for the chatbox to be free, then takes 10 bugfrags, grants one random chip, and opens the ChipTrader text script.
 // symdb: (r5/r10 = object/work pointers set up by caller, r0/r1 unused on entry) -> r0 = 0 when
@@ -4892,7 +4892,7 @@ byte_809CB0D:
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809CB28
 
 byte_809CB1C:
-	cs_call_native_with_return_value ptr1=sub_809CD34+1
+	cs_call_native_with_return_value ptr1=chatbox_runGlobalScript21+1
 	cs_wait_chatbox byte1=0x88
 	cs_jump destination1=byte_809CB40
 
@@ -5134,9 +5134,9 @@ byte_809CD18:
 
 // symdb: Runs chatbox script 0x21 from an archive whose pointer is held in a global, then returns 0
 // symdb: () -> r0 = 0; no flags meaningful (tail is a plain return)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CD34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_runGlobalScript21.yaml
 	thumb_local_start
-sub_809CD34:
+chatbox_runGlobalScript21:
 	push {r4-r7,lr}
 	ldr r0, byte_809CEAC+4 // =0x4
 	mov r1, #0x21
@@ -5144,7 +5144,7 @@ sub_809CD34:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809CD34
+	thumb_func_end chatbox_runGlobalScript21
 
 	thumb_local_start
 sub_809CD44:

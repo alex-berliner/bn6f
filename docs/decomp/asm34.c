@@ -294,7 +294,7 @@ void sub_812D748()
 		sub_812D7A4();
 		if ( v2 )
 			*(v1 + 26) = menu_moveCursorUpDown_811FA22(*(*(v0 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 26));
-		sub_812D78C();
+		copyBgTilesToBlock0();
 	}
 }
 
@@ -307,13 +307,13 @@ int sub_812D778()
 
 	result = *(v0 + 2);
 	if ( result == 32 )
-		sub_812D78C();
+		copyBgTilesToBlock0();
 	return result;
 }
 
 
 // 0x812d78c
-void __noreturn sub_812D78C()
+void __noreturn copyBgTilesToBlock0()
 {
 	CopyBackgroundTiles(21, 2, 0, &unk_20227A0, 8, &dword_10 + 1);
 	JUMPOUT(locret_812D79E);
@@ -392,7 +392,7 @@ char *sub_812D830()
 
 
 // 0x812d83c
-void sub_812D83C()
+void npc_runScript41OncePerCooldown()
 {
 	int v0; // r5
 
@@ -459,7 +459,7 @@ void __fastcall __noreturn sub_812D8C8(int a1, int a2, int a3, int a4)
 
 
 // 0x812d91c
-void sub_812D91C()
+void battle_spawnEStructsFromTablePair()
 {
 	battle_spawnEStructRecordsFromTable_80465A0(byte_812C278);
 }
@@ -536,7 +536,7 @@ int sub_812DA3C()
 
 
 // 0x812da4c
-signed int __fastcall sub_812DA4C(char a1)
+signed int __fastcall npc_runDialog41(char a1)
 {
 	int v1; // r5
 	signed int result; // r0

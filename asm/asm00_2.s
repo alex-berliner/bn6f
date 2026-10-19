@@ -3707,15 +3707,15 @@ loc_801055A:
 // symdb: returns the total damage the player has taken in the current battle
 // symdb: (r0 = alliance flag passed through to battle_findPlayer) -> r0 = player BattleObject's
 // symdb: AIData.TotalDamageTaken
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801055E.yaml
-	thumb_func_start sub_801055E
-sub_801055E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPlayerTotalDamageTaken.yaml
+	thumb_func_start battle_getPlayerTotalDamageTaken
+battle_getPlayerTotalDamageTaken:
 	push {lr}
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
 	ldr r0, [r0,#oBattleObject_AIDataPtr]
 	ldrh r0, [r0,#oAIData_TotalDamageTaken]
 	pop {pc}
-	thumb_func_end sub_801055E
+	thumb_func_end battle_getPlayerTotalDamageTaken
 
 // symdb: Sets up the player-AI's chip attack: loads the chip's stats into the AI attack vars and dispatches one of three attack behaviors.
 // symdb: (r0 = behavior flags, r1 = chip-use delay, r2 = AI difficulty tier) -> r0 = 0; side effects on
@@ -4355,7 +4355,7 @@ off_80109DC:
 	.word sub_8010AE4+1
 	.word sub_8010B78+1
 	.word sub_8010BD0+1
-	.word sub_8010BF0+1
+	.word battle_getPlayerHpMod100+1
 	.word sub_8010C06+1
 	.word battle_chargePwrAtk_8010C50+1
 	.word battle_chargePwrAtk_8010C50+1
@@ -4552,9 +4552,9 @@ locret_8010BEE:
 // symdb: Returns the current player's HP modulo 100 (low two digits).
 // symdb: (r0 = ?, r1 = alliance flag passed to battle_findPlayer) -> r0 = playerHP % 100; r1 = remainder
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010BF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPlayerHpMod100.yaml
 	thumb_local_start
-sub_8010BF0:
+battle_getPlayerHpMod100:
 	push {lr}
 	mov r0, r1
 	bl battle_findPlayer // (alliance: bool) -> * BattleObject
@@ -4566,7 +4566,7 @@ sub_8010BF0:
 	mov r0, r1
 locret_8010C04:
 	pop {pc}
-	thumb_func_end sub_8010BF0
+	thumb_func_end battle_getPlayerHpMod100
 
 	thumb_local_start
 sub_8010C06:
@@ -6176,9 +6176,9 @@ sub_801177A:
 // symdb: Dispatches to a per-ability handler via a jump table indexed by the AI data's BLeftAbility field, with r7 pointing at the AI's attack vars.
 // symdb: (r6 = AIData struct) -> tail-calls handler from table off_80117D4 indexed by
 // symdb: [r6,#oAIData_BLeftAbility]*4, r7 = r6+oAIData_AttackVars; returns via pop {r6,r7,pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011790.yaml
-	thumb_func_start sub_8011790
-sub_8011790:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_dispatchBLeftAbility.yaml
+	thumb_func_start ai_dispatchBLeftAbility
+ai_dispatchBLeftAbility:
 	push {r6,r7,lr}
 	mov r7, #oAIData_AttackVars
 	add r7, r7, r6
@@ -6189,7 +6189,7 @@ sub_8011790:
 	mov lr, pc
 	bx r1
 	pop {r6,r7,pc}
-	thumb_func_end sub_8011790
+	thumb_func_end ai_dispatchBLeftAbility
 
 // symdb: Dispatches the player's buster/attack handler selected by the AI's BPwrAtk level via a jump table.
 // symdb: (r5 = battle object) -> calls handler table[BPwrAtk] with r7 = AIData+AttackVars; returns
@@ -6239,8 +6239,8 @@ off_80117D4:
 	.word nullsub_44+1 // 0x5
 	.word sub_8011BA2+1 // 0x6
 	.word greatfireAPwrAtk_init_8011BD0+1 // 0x7
-	.word sub_8011BE8+1 // 0x8
-	.word sub_8011C00+1 // 0x9
+	.word ai_setupBeastOutAttackDamage+1 // 0x8
+	.word ai_initBeastPwrAtkAttack+1 // 0x9
 	.word sub_8011C18+1 // 0xa
 	.word sub_8011C38+1 // 0xb
 	.word spoutcrossBPwrAtk_init_8011C5E+1 // 0xc
@@ -6303,7 +6303,7 @@ off_80117D4:
 	.word tomahawkmanBPwrAtk_init_8012258+1 // 0x45
 	.word ai_setupAttackVars+1 // 0x46
 	.word sub_8012292+1 // 0x47
-	.word sub_80122AA+1 // 0x48
+	.word ai_setBeastAtkDamage+1 // 0x48
 	.word sub_80122C2+1 // 0x49
 	.word sub_80122DA+1 // 0x4a
 	.word sub_80122F2+1 // 0x4b
@@ -6349,7 +6349,7 @@ off_80117D4:
 	.word init_chipParams30+1 // 0x73
 	.word sub_8012498+1 // 0x74
 	.word sub_80124B8+1 // 0x75
-	.word sub_80124C2+1 // 0x76
+	.word something_writeChipParams83+1 // 0x76
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x77
 	.word sub_80124CC+1 // 0x78
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x79
@@ -6364,10 +6364,10 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x82
 	.word sub_8012526+1 // 0x83
 	.word sub_8012536+1 // 0x84
-	.word sub_8012540+1 // 0x85
+	.word init_chipParams051+1 // 0x85
 	.word sub_801254A+1 // 0x86
 	.word sub_8012552+1 // 0x87
-	.word sub_801255C+1 // 0x88
+	.word ai_scheduleChipAttack+1 // 0x88
 	.word sub_8012572+1 // 0x89
 	.word sub_801257C+1 // 0x8a
 	.word sub_8012586+1 // 0x8b
@@ -6647,9 +6647,9 @@ greatfireAPwrAtk_init_8011BD0:
 // symdb: Computes an AI enemy's Beast Out-scaled attack damage and initializes the attack's damage variables.
 // symdb: (r7 = AI attack vars struct pointer, values read from it) -> r0 = 0x3a (next state/step); sets
 // symdb: Damage, ExtraDamage, InitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011BE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupBeastOutAttackDamage.yaml
 	thumb_local_start
-sub_8011BE8:
+ai_setupBeastOutAttackDamage:
 	push {lr}
 	mov r0, #0xa
 	mov r1, #0xa
@@ -6661,14 +6661,14 @@ sub_8011BE8:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3a 
 	pop {pc}
-	thumb_func_end sub_8011BE8
+	thumb_func_end ai_setupBeastOutAttackDamage
 
 // symdb: Initializes an AI attack's damage values for the beast-power attack (40 base scaled by the beast-out multiplier) plus a flat extra damage of 138, and returns 60.
 // symdb: (r7 = enemy/AI object with oAIAttackVars fields) -> r0 = 60 (likely attack duration/frame
 // symdb: count); no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011C00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_initBeastPwrAtkAttack.yaml
 	thumb_local_start
-sub_8011C00:
+ai_initBeastPwrAtkAttack:
 	push {lr}
 	mov r0, #0x28 
 	mov r1, #0x1e
@@ -6680,7 +6680,7 @@ sub_8011C00:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x3c 
 	pop {pc}
-	thumb_func_end sub_8011C00
+	thumb_func_end ai_initBeastPwrAtkAttack
 
 	thumb_local_start
 sub_8011C18:
@@ -7715,9 +7715,9 @@ sub_8012292:
 // symdb: AI attack-setup step that computes a Cybeast power-attack damage from the object's alliance and stores it into the AI attack vars
 // symdb: (r5 = battle object, r7 = AI attack vars) -> r0 = 9 (next AI state/action code); no flags
 // symdb: meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80122AA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setBeastAtkDamage.yaml
 	thumb_local_start
-sub_80122AA:
+ai_setBeastAtkDamage:
 	push {lr}
 	mov r0, #8
 	ldrb r1, [r5,#oBattleObject_Alliance]
@@ -7729,7 +7729,7 @@ sub_80122AA:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #9
 	pop {pc}
-	thumb_func_end sub_80122AA
+	thumb_func_end ai_setBeastAtkDamage
 
 	thumb_local_start
 sub_80122C2:
@@ -8129,14 +8129,14 @@ sub_80124B8:
 
 // symdb: Thin wrapper that invokes the chip-parameter writer with parameter ID 0x83.
 // symdb: () -> void; r0 clobbered (set to 0x83 before the call)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80124C2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/something_writeChipParams83.yaml
 	thumb_local_start
-sub_80124C2:
+something_writeChipParams83:
 	push {lr}
 	mov r0, #0x83
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_80124C2
+	thumb_func_end something_writeChipParams83
 
 	thumb_local_start
 sub_80124CC:
@@ -8227,14 +8227,14 @@ sub_8012536:
 
 // symdb: One-line wrapper that writes the battle chip parameter set for chip ID 0x33 (decimal 51).
 // symdb: (no inputs) -> r0 = 0x33 passed to the chip-parameter writer; result returned from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012540.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_chipParams051.yaml
 	thumb_local_start
-sub_8012540:
+init_chipParams051:
 	push {lr}
 	mov r0, #0x33 
 	bl loc_80126EA
 	pop {pc}
-	thumb_func_end sub_8012540
+	thumb_func_end init_chipParams051
 
 	thumb_local_start
 sub_801254A:
@@ -8254,9 +8254,9 @@ sub_8012552:
 
 // symdb: AI attack routine that loads chip params for chip 0x25 and arms the AI attack-vars timer fields in r7 to fire it after a 40-frame delay.
 // symdb: (r7 = AI attack-vars struct base; no args in r0-r3) -> void; r0 clobbered by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801255C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_scheduleChipAttack.yaml
 	thumb_local_start
-sub_801255C:
+ai_scheduleChipAttack:
 	push {lr}
 	mov r0, #0x25 
 	bl loc_80126EA
@@ -8267,7 +8267,7 @@ sub_801255C:
 	mov r1, #1
 	strb r1, [r7,#oAIAttackVars_TimerOrCycles]
 	pop {pc}
-	thumb_func_end sub_801255C
+	thumb_func_end ai_scheduleChipAttack
 
 	thumb_local_start
 sub_8012572:
@@ -12006,11 +12006,11 @@ off_8013E9C:
 	.word nullsub_45+1
 	.word sub_8013EC2+1
 	.word sub_8013ECC+1
-	.word sub_8013ED6+1
+	.word battle_applyBlindStatus+1
 	.word sub_8013EE6+1
 	.word sub_8013EF0+1
 	.word sub_8013EFA+1
-	.word sub_8013F04+1
+	.word battle_setBlind+1
 	.word sub_8013F14+1
 	thumb_func_end sub_8013E58
 
@@ -12041,9 +12041,9 @@ sub_8013ECC:
 // symdb: Applies the Blind status to a battle object: sets its blind timer to 5 seconds and flags it in collision flags2.
 // symdb: (r0 unused?, r5 = battle object pointer) -> r0 = flags2 result; sets BlindTimer = 300 and flag
 // symdb: 0x20 in collision flags2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013ED6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyBlindStatus.yaml
 	thumb_local_start
-sub_8013ED6:
+battle_applyBlindStatus:
 	push {lr}
 	ldr r0, off_80141BC // =0x12c 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -12051,7 +12051,7 @@ sub_8013ED6:
 	mov r0, #0x20 
 	bl object_setFlag2
 	pop {pc}
-	thumb_func_end sub_8013ED6
+	thumb_func_end battle_applyBlindStatus
 
 	thumb_local_start
 sub_8013EE6:
@@ -12081,9 +12081,9 @@ sub_8013EFA:
 // symdb: Inflicts the blind (darkness) status on a battle object for 600 frames and sets its blind flag.
 // symdb: (r0 unused, r5 = battle object) -> writes BlindTimer to the object's collision data and sets
 // symdb: flags2 bit 0x20; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013F04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setBlind.yaml
 	thumb_local_start
-sub_8013F04:
+battle_setBlind:
 	push {lr}
 	ldr r0, off_80141C0 // =0x258 
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
@@ -12091,7 +12091,7 @@ sub_8013F04:
 	mov r0, #0x20 
 	bl object_setFlag2
 	pop {pc}
-	thumb_func_end sub_8013F04
+	thumb_func_end battle_setBlind
 
 	thumb_local_start
 sub_8013F14:
@@ -12102,7 +12102,7 @@ sub_8013F14:
 	pop {pc}
 	thumb_func_end sub_8013F14
 
-// symdb: After a hit lands, sums the three panel-damage slots on the attacker's collision record; if any damage was dealt, updates the AI's "did damage" latch and dispatches to the per-alliance damage handler (null for one team, sub_8013F82/F8C/F96 for the others).
+// symdb: After a hit lands, sums the three panel-damage slots on the attacker's collision record; if any damage was dealt, updates the AI's "did damage" latch and dispatches to the per-alliance damage handler (null for one team, object_applyStatusEffect50/F8C/F96 for the others).
 // symdb: void handlePanelDamage_8013F1E(u32 obj /* r5 */); /* reads r5, returns nothing; flags NZVC
 // symdb: clobbered */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/handlePanelDamage_8013F1E.yaml
@@ -12153,8 +12153,8 @@ off_8013F6C:
 	.word off_8013F70
 off_8013F70:
 	.word nullsub_46+1
-	.word sub_8013F82+1
-	.word sub_8013F8C+1
+	.word object_applyStatusEffect50+1
+	.word battle_setCollisionStatusEffect22+1
 	.word battle_incrementNaviStatsCounter+1
 	thumb_func_end handlePanelDamage_8013F1E
 
@@ -12168,25 +12168,25 @@ nullsub_46:
 
 // symdb: Tiny wrapper that applies collision status effect 0x32 (50) to an entity
 // symdb: (no meaningful args) -> calls object_setCollisionStatusEffect2(r0=0x32); returns its result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013F82.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_applyStatusEffect50.yaml
 	thumb_local_start
-sub_8013F82:
+object_applyStatusEffect50:
 	push {lr}
 	mov r0, #0x32 
 	bl object_setCollisionStatusEffect2
 	pop {pc}
-	thumb_func_end sub_8013F82
+	thumb_func_end object_applyStatusEffect50
 
 // symdb: One-line battle helper that applies collision status effect 0x22 (a fixed effect ID) via the shared collision-status setter.
 // symdb: () -> no return value; r0 set to 0x22 before call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013F8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setCollisionStatusEffect22.yaml
 	thumb_local_start
-sub_8013F8C:
+battle_setCollisionStatusEffect22:
 	push {lr}
 	mov r0, #0x22 
 	bl object_setCollisionStatusEffect2
 	pop {pc}
-	thumb_func_end sub_8013F8C
+	thumb_func_end battle_setCollisionStatusEffect22
 
 // symdb: Increments a counter byte (offset 0x18) in the NaviStats record of the navi a battle object represents, saturating at 7.
 // symdb: (r0 = battle object pointer) -> r0 = new counter value (unchanged if already >7); flags set by
@@ -12966,9 +12966,9 @@ nullsub_6:
 // symdb: Sets the acting object's AI-data poison damage to a fixed value and records a poison flag on that side's player NaviStats.
 // symdb: (r5 = battle object, r0 on entry unused) -> r0 = result from battle_setPlayerNaviStatsField0E;
 // symdb: no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014466.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setPoisonDamagePerTick.yaml
 	thumb_local_start
-sub_8014466:
+battle_setPoisonDamagePerTick:
 	push {lr}
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, off_80144BC // =0x3c0 
@@ -12977,7 +12977,7 @@ sub_8014466:
 	mov r1, #0
 	bl battle_setPlayerNaviStatsField0E_8015BEC
 	pop {pc}
-	thumb_func_end sub_8014466
+	thumb_func_end battle_setPoisonDamagePerTick
 
 	thumb_local_start
 sub_8014478:
@@ -13346,8 +13346,8 @@ off_80146B8:
 	.word nullsub_8014726
 	.word nullsub_8014728
 	.word sub_801472A+1
-	.word sub_801473C+1
-	.word sub_8014746+1
+	.word battle_setAirshoeFlag+1
+	.word battle_grantSuperArmor+1
 	.word nullsub_5+1
 	.word sub_8014754+1
 	.word battle_setupNoCustomPlusObjectCollision+1
@@ -13415,27 +13415,27 @@ locret_801473A:
 
 // symdb: Thunk that sets the AirShoe flag bit in a battle object's ObjectFlags1.
 // symdb: () -> void; r0 input is ignored/clobbered with the flag constant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801473C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setAirshoeFlag.yaml
 	thumb_local_start
-sub_801473C:
+battle_setAirshoeFlag:
 	push {lr}
 	mov r0, #OBJECT_FLAGS_AIRSHOE
 	bl object_setFlag1 // (int a1) -> void
 	pop {pc}
-	thumb_func_end sub_801473C
+	thumb_func_end battle_setAirshoeFlag
 
 // symdb: Sets the Super Armor ObjectFlags1 bit on a battle object so it cannot be flinched/knocked back.
 // symdb: (r0 = ignored, r1 = battle object ptr) -> r0 = void; sets bit OBJECT_FLAGS_SUPERARMOR_BIT in the
 // symdb: object's ObjectFlags1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014746.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_grantSuperArmor.yaml
 	thumb_local_start
-sub_8014746:
+battle_grantSuperArmor:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
 	bl object_setFlag1 // (int a1) -> void
 	pop {pc}
-	thumb_func_end sub_8014746
+	thumb_func_end battle_grantSuperArmor
 
 	thumb_local_start
 nullsub_5:
@@ -15666,7 +15666,7 @@ sub_80158CC:
 	bl ai_clearCounterHitChainFlag
 	b locret_80158F8
 loc_80158F4:
-	bl sub_8014466
+	bl battle_setPoisonDamagePerTick
 locret_80158F8:
 	pop {pc}
 	thumb_func_end sub_80158CC
@@ -17400,7 +17400,7 @@ battle_objectUpdateDispatchPhase_80165C2:
 	bx r1
 	pop {pc}
 loc_80165E0:
-	bl sub_8016EC4
+	bl battle_defeatPhaseDispatch
 locret_80165E4:
 	pop {pc}
 	.balign 4, 0
@@ -18606,9 +18606,9 @@ dword_8016EC0:
 // symdb: Phase dispatcher for a battle object's defeat sequence, branching to the defeat-object handler or the next defeat sub-phase.
 // symdb: (r5 = battle object pointer, r0 unused on entry) -> tail-calls handler selected by
 // symdb: [r5+oBattleObject_CurPhase]; returns to caller via lr/pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016EC4.yaml
-	thumb_func_start sub_8016EC4
-sub_8016EC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_defeatPhaseDispatch.yaml
+	thumb_func_start battle_defeatPhaseDispatch
+battle_defeatPhaseDispatch:
 	push {lr}
 	ldr r1, JumpTable8016ED8_p // =JumpTable8016ED8
 	ldrb r0, [r5,#oBattleObject_CurPhase]
@@ -18622,7 +18622,7 @@ JumpTable8016ED8_p:
 JumpTable8016ED8:
 	.word battle_defeatObject+1
 	.word sub_8016F1A+1
-	thumb_func_end sub_8016EC4
+	thumb_func_end battle_defeatPhaseDispatch
 
 // symdb: Fully resets the current battle object as defeated: clears all collision/AI state, releases its slot, updates alliance counts, dispatches destroy events, and sets HP to 0 with phase 4 (dead).
 // symdb: (r5 = battle object pointer, no args) -> r0 = 4 (phase value written); no meaningful return
@@ -20605,7 +20605,7 @@ off_8017E34:
 off_8017E38:
 	.word ai_beginPanelSlideMove+1
 	.word sub_8017F38+1
-	.word sub_8017FE6+1
+	.word object_decrementPhaseCountdown+1
 	thumb_func_end sub_8017E26
 
 // symdb: Battle-object AI step: snaps the object onto its queued next panel, picks an adjacent-panel slide direction, and starts a velocity-driven move onto it (or falls back to phase 0x18 if blocked).
@@ -20816,9 +20816,9 @@ loc_8017FDC:
 // symdb: Counts down a battle object's current phase; once it runs out, clears the phase-countdown flag and switches to the object's pending state action.
 // symdb: (r0..r3 unused; operates on the current battle object in r5) -> void; flags set by the decrement
 // symdb: (bge) decide early return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017FE6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_decrementPhaseCountdown.yaml
 	thumb_local_start
-sub_8017FE6:
+object_decrementPhaseCountdown:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	sub r0, #1
@@ -20833,7 +20833,7 @@ sub_8017FE6:
 	str r0, [r5,#oBattleObject_PendingStateAction]
 locret_8018000:
 	pop {pc}
-	thumb_func_end sub_8017FE6
+	thumb_func_end object_decrementPhaseCountdown
 
 	thumb_local_start
 sub_8018002:
@@ -23784,9 +23784,9 @@ locret_801A66A:
 
 // symdb: Starts an invisibility state on a battle object: 120-frame invisible timer plus the invisible flag.
 // symdb: (r5 = battle object) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A66C.yaml
-	thumb_func_start sub_801A66C
-sub_801A66C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setObjectInvisible.yaml
+	thumb_func_start battle_setObjectInvisible
+battle_setObjectInvisible:
 	push {lr}
 	ldr r1, [r5,#oBattleObject_CollisionDataPtr]
 	mov r0, #0x78 
@@ -23795,7 +23795,7 @@ sub_801A66C:
 	lsl r0, r0, #9
 	bl object_setFlag1 // (int a1) -> void
 	pop {pc}
-	thumb_func_end sub_801A66C
+	thumb_func_end battle_setObjectInvisible
 
 // symdb: Clears a battle object's "flashing while invisible" timer in its collision data and returns the collision data pointer.
 // symdb: battle_resetFlashingInvisTimer(struct BattleObject* obj /* r5 */) -> struct CollisionData* /* r3
@@ -23829,16 +23829,16 @@ sub_801A686:
 
 // symdb: Zero-fills a 0x14-byte region at offset 0x80 of the active battle object's collision data block.
 // symdb: (r5 = battle object, no args) -> r0 = destroyed; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A6A6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearCollisionDataExtra.yaml
 	thumb_local_start
-sub_801A6A6:
+battle_clearCollisionDataExtra:
 	push {r4,lr}
 	ldr r0, [r5,#oBattleObject_CollisionDataPtr]
 	add r0, #0x80
 	mov r1, #0x14
 	bl ZeroFillByHalfword
 	pop {r4,pc}
-	thumb_func_end sub_801A6A6
+	thumb_func_end battle_clearCollisionDataExtra
 
 // symdb: When the given battle object registers a collision hit, increments its alliance navi stat at offset 0x18 by one, capped at 7.
 // symdb: void battle_incrementAllianceStatOnCollisionHit(BattleObject *obj /* r5 */); clobbers r0-r3,
@@ -24760,7 +24760,7 @@ object_applyCollisionHit_801AD9E:
 	bl object_setFlag2
 	mov r0, #4
 	bl object_clearFlag2
-	bl sub_801A6A6
+	bl battle_clearCollisionDataExtra
 	mov r0, #1
 	strb r0, [r5,#oBattleObject_ContactState]
 loc_801ADF0:
@@ -26593,9 +26593,9 @@ loc_801BB66:
 // symdb: (r0, r1 = arguments forwarded to object_getPanelDataOffset, likely panel x/y or panel lookup
 // symdb: key) -> r0 = panelData->field1C, or 0 if object_getPanelDataOffset returned NULL; flags set by
 // symdb: the tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801BB6A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_getPanelDataField1C.yaml
 	thumb_local_start
-sub_801BB6A:
+object_getPanelDataField1C:
 	push {lr}
 	bl object_getPanelDataOffset
 	tst r0, r0
@@ -26603,7 +26603,7 @@ sub_801BB6A:
 	ldr r0, [r0,#0x1c]
 locret_801BB76:
 	pop {pc}
-	thumb_func_end sub_801BB6A
+	thumb_func_end object_getPanelDataField1C
 
 // symdb: Releases every panel reserve on the 7x4 battlefield that is owned by the given battle object, if that object holds any.
 // symdb: void RemoveBattleObjectPanelReserves(ObjectHeader* obj /* r5 */)
@@ -30946,7 +30946,7 @@ off_801DA6C:
 	.word sub_801E4F4+1
 	.word sub_801E5EC+1
 	.word sub_801E748+1
-	.word sub_801EB0C+1
+	.word e_setFlagBit16+1
 	.word sub_801DE82+1
 	.word ow_patchBackgroundStrip+1
 	.word sub_801EBDE+1
@@ -33545,15 +33545,15 @@ sub_801EB00:
 // symdb: Sets bit 16 (0x10000) of the flag word at eStruct2035280+0x44.
 // symdb: () -> r0 clobbered; flag word at eStruct2035280+0x44 |= 0x10000, updated value returned in r2 by
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EB0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setFlagBit16.yaml
 	thumb_local_start
-sub_801EB0C:
+e_setFlagBit16:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #0x10
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {pc}
-	thumb_func_end sub_801EB0C
+	thumb_func_end e_setFlagBit16
 
 	thumb_func_start sub_801EB18
 sub_801EB18:

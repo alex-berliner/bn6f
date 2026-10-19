@@ -10452,7 +10452,7 @@ loc_8148D9C:
 	strb r0, [r5,#0xc] // (byte_201039C - 0x2010390)
 	ldr r0, off_8148E58 // =sub_8148E74+1 
 	bl sub_81463E8
-	ldr r0, off_8148E5C // =sub_8148FB4+1 
+	ldr r0, off_8148E5C // =rfu_recvData+1 
 	bl rfu_setMscCallbackArg
 	ldr r4, off_8148E60 // =byte_20103E0 
 	ldrb r1, [r4]
@@ -10517,7 +10517,7 @@ off_8148E54:
 off_8148E58:
 	.word sub_8148E74+1
 off_8148E5C:
-	.word sub_8148FB4+1
+	.word rfu_recvData+1
 off_8148E60:
 	.word byte_20103E0
 off_8148E64:
@@ -10710,15 +10710,15 @@ off_8148FB0:
 // symdb: Tail-call wrapper that invokes rfu_REQ_recvData unchanged.
 // symdb: (r0-r3 = arguments passed straight through to rfu_REQ_recvData) -> returns rfu_REQ_recvData's
 // symdb: result; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148FB4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_recvData.yaml
 	thumb_local_start
-sub_8148FB4:
+rfu_recvData:
 	push {lr}
 	bl rfu_REQ_recvData
 	pop {r0}
 	bx r0
 	.byte 0, 0
-	thumb_func_end sub_8148FB4
+	thumb_func_end rfu_recvData
 
 	thumb_func_start sub_8148FC0
 sub_8148FC0:

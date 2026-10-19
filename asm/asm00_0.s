@@ -2296,9 +2296,9 @@ off_80011BC:
 // symdb: Converts a direction index (1–8) plus a magnitude into a (dx, dy) vector, returning (0,0) for direction 0.
 // symdb: (r0 = direction index (0 = none, 1–8 = one of 8 directions), r1 = magnitude) -> r0 = dx, r1 =
 // symdb: dy; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/math_directionToVector.yaml
 	thumb_local_start
-sub_80011C0:
+math_directionToVector:
 	push {lr}
 	tst r0, r0
 	beq loc_80011D0
@@ -2310,7 +2310,7 @@ loc_80011D0:
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_80011C0
+	thumb_func_end math_directionToVector
 
 // symdb: Returns 1 if an overworld object (or NPC) lies within a signed-axis-aligned cube of half-extent `r4` around the point `(r0, r1)` on the XY plane with both Z extents checked `>= 0`; 0 otherwise.
 // symdb: (r0 = X0 unsigned fixed, r1 = Y0 unsigned fixed, r2 = X1 unsigned fixed, r3 = Y1 unsigned fixed,

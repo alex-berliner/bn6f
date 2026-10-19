@@ -262,7 +262,7 @@ int *__fastcall spawnBattleObject4(int a1, int a2, int a3, int a4)
 
 
 // 0x80033e4
-_DWORD *__fastcall sub_80033E4(int a1, int a2, int a3, int a4)
+_DWORD *__fastcall spawnBattleObjectTypeFour(int a1, int a2, int a3, int a4)
 {
 	int v4; // r4
 	int v5; // r5
@@ -1648,7 +1648,7 @@ signed int sub_80049BA()
 
 
 // 0x80049e0
-int *__fastcall sub_80049E0(int a1, int a2, int a3, int a4)
+int *__fastcall init_zeroWorkBuffer(int a1, int a2, int a3, int a4)
 {
 	int *result; // r0
 
@@ -6806,8 +6806,8 @@ int sub_800838A()
     }
     else
     {
-        v2 = sub_801055E(1);
-        v3 = sub_801055E(0);
+        v2 = battle_getPlayerTotalDamageTaken(1);
+        v3 = battle_getPlayerTotalDamageTaken(0);
         sub_802CB38(v2, v3);
         result = 4;
         *(v0 + 3) = 4;
@@ -11125,7 +11125,7 @@ signed int isSameSubsystem_800A732()
 
 
 // 0x800a754
-BOOL __fastcall sub_800A754(int a1)
+BOOL __fastcall battle_testStateUnk5cFlag(int a1)
 {
     int v1; // ST00_4
     int v2; // r0
@@ -12545,7 +12545,7 @@ void sub_800B49E()
 
 
 // 0x800b4b2
-int __fastcall sub_800B4B2(int a1, int a2)
+int __fastcall battle_linkSendTaggedPacketMode3(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5
@@ -12896,7 +12896,7 @@ char *__fastcall battle_incrementNaviStatsByte18Saturating(int a1)
 
 
 // 0x800b800
-char *__fastcall sub_800B800(int a1)
+char *__fastcall battle_setNaviStatsByte18To7(int a1)
 {
     return sub_8013754(a1, 24, 7);
 }

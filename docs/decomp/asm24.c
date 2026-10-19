@@ -303,7 +303,7 @@ int ow_storePlayerPosDup()
 
 
 // 0x808cc98
-int sub_808CC98()
+int object_snapPosToPlayer()
 {
     _WORD *v0; // r5
     __int64 v1; // r0

@@ -2158,7 +2158,7 @@ void sub_813CCE8()
 
 
 // 0x813ccec
-int sub_813CCEC()
+int pet_setCurNaviStatsFlag31()
 {
     return SetCurPETNaviStatsByte(0, 49, 1);
 }
@@ -2192,7 +2192,7 @@ int sub_813CD14()
     int v1; // r1
 
     v0 = sub_813CD3E();
-    return sub_813CD4C(v0, v1, 2);
+    return pet_clearCurNaviStatsByte19(v0, v1, 2);
 }
 
 
@@ -2203,7 +2203,7 @@ int sub_813CD22()
     int v1; // r1
 
     v0 = sub_813CD3E();
-    return sub_813CD4C(v0, v1, 3);
+    return pet_clearCurNaviStatsByte19(v0, v1, 3);
 }
 
 
@@ -2214,7 +2214,7 @@ int sub_813CD30()
     int v1; // r1
 
     v0 = sub_813CD3E();
-    return sub_813CD4C(v0, v1, 4);
+    return pet_clearCurNaviStatsByte19(v0, v1, 4);
 }
 
 
@@ -2226,7 +2226,7 @@ int sub_813CD3E()
 
 
 // 0x813cd4c
-int __fastcall sub_813CD4C(int a1, int a2, char a3)
+int __fastcall pet_clearCurNaviStatsByte19(int a1, int a2, char a3)
 {
     return SetCurPETNaviStatsByte(0, 19, a3);
 }
@@ -2242,26 +2242,26 @@ void sub_813CD58()
 // 0x813cd5c
 int __fastcall sub_813CD5C(int a1, int a2)
 {
-    return sub_813CD7A(a1, a2, 4);
+    return pet_clearCurNaviStatsByte63(a1, a2, 4);
 }
 
 
 // 0x813cd66
 int __fastcall sub_813CD66(int a1, int a2)
 {
-    return sub_813CD7A(a1, a2, 3);
+    return pet_clearCurNaviStatsByte63(a1, a2, 3);
 }
 
 
 // 0x813cd70
 int __fastcall sub_813CD70(int a1, int a2)
 {
-    return sub_813CD7A(a1, a2, 2);
+    return pet_clearCurNaviStatsByte63(a1, a2, 2);
 }
 
 
 // 0x813cd7a
-int __fastcall sub_813CD7A(int a1, int a2, char a3)
+int __fastcall pet_clearCurNaviStatsByte63(int a1, int a2, char a3)
 {
     return SetCurPETNaviStatsByte(0, 99, a3);
 }
@@ -2488,7 +2488,7 @@ int __fastcall sub_813CEF8(char a1)
 
     v1 = a1;
     v2 = SetCurPETNaviStatsByte(0, 18, 3);
-    return sub_813CD4C(v2, v3, v1);
+    return pet_clearCurNaviStatsByte19(v2, v3, v1);
 }
 
 
@@ -2500,7 +2500,7 @@ int sub_813CF10()
 
 
 // 0x813cf1c
-int __fastcall sub_813CF1C(char a1)
+int __fastcall pet_setCurNaviStatsByte16(char a1)
 {
     return SetCurPETNaviStatsByte(0, 22, a1);
 }

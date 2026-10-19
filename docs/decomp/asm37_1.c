@@ -1552,7 +1552,7 @@ int sub_8142ECC()
     int v15; // [sp-8h] [bp-1Ch]
     int v16; // [sp-4h] [bp-18h]
 
-    v1 = sub_81430DC();
+    v1 = ow_crowLessonGetTextId();
     TestEventFlag(v1);
     if ( v2 )
     {
@@ -1622,7 +1622,7 @@ int ow_crowLessonInteraction()
     check_playerCanAdvanceForward_8034C36();
     if ( v4 )
         goto LABEL_20;
-    v1 = sub_81430DC();
+    v1 = ow_crowLessonGetTextId();
     TestEventFlag(v1);
     if ( !v4 )
         goto LABEL_20;
@@ -1633,7 +1633,7 @@ int ow_crowLessonInteraction()
     {
         if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_CoordInteractionTriggered) )
         {
-            sub_81433DA();
+            ow_crowLessonFlagCheck();
             if ( v4 )
                 PlaySoundEffect(105, v2, v3);
             else
@@ -1653,7 +1653,7 @@ int ow_crowLessonInteraction()
             if ( v5 )
             {
                 StartCutscene(byte_808C2F0, 0, v6, v7);
-                sub_81433F6(1);
+                ow_crowLessonSubtractCounter(1);
             }
             ClearEventFlagFromImmediate(9, 98);
             ClearEventFlagFromImmediate(9, 99);
@@ -1704,7 +1704,7 @@ int __fastcall sub_81430B6(int a1)
 
 
 // 0x81430dc
-int sub_81430DC()
+int ow_crowLessonGetTextId()
 {
     return *(&dword_81430F0 + sub_8143088());
 }
@@ -1950,7 +1950,7 @@ int sub_8143314()
     int v10; // r0
 
     v1 = byte_2000D20;
-    result = sub_8143470();
+    result = crow_decrementCounter();
     if ( v3 )
     {
         sub_814343A();
@@ -2019,7 +2019,7 @@ int __fastcall sub_81433D2(int result)
 
 
 // 0x81433da
-int sub_81433DA()
+int ow_crowLessonFlagCheck()
 {
     return byte_2001019;
 }
@@ -2039,7 +2039,7 @@ int __fastcall sub_81433E4(int result)
 
 
 // 0x81433f6
-signed int __fastcall sub_81433F6(signed int result)
+signed int __fastcall ow_crowLessonSubtractCounter(signed int result)
 {
     char v1; // r1
 
@@ -2076,7 +2076,7 @@ int sub_814343A()
 
 
 // 0x8143470
-int sub_8143470()
+int crow_decrementCounter()
 {
     int result; // r0
 
@@ -2123,7 +2123,7 @@ BOOL sub_81434BA()
     {
         if ( sub_8143088() != 255 )
         {
-            v1 = sub_81430DC();
+            v1 = ow_crowLessonGetTextId();
             TestEventFlag(v1);
             if ( v0 )
                 result = 0;

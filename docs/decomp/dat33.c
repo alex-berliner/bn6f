@@ -120,7 +120,7 @@ int sub_812C3BC()
         if ( v2 & 8 )
         {
             if ( !eStruct200BC30_getJumpOffset00() )
-                sub_812DA4C(4);
+                npc_runDialog41(4);
         }
         else
         {
@@ -243,7 +243,7 @@ int sub_812C50C()
     {
         result = eStruct200BC30_getJumpOffset00();
         if ( !result )
-            result = sub_812DA4C(8);
+            result = npc_runDialog41(8);
         return result;
     }
     v4 = sub_803E8F8();
@@ -329,7 +329,7 @@ void sub_812C5D0()
         if ( v2 & 8 )
         {
             if ( !eStruct200BC30_getJumpOffset00() )
-                sub_812DA4C(8);
+                npc_runDialog41(8);
         }
         else
         {
@@ -467,7 +467,7 @@ int sub_812C708()
         }
         else
         {
-            result = sub_812DA4C(8);
+            result = npc_runDialog41(8);
         }
     }
     return result;
@@ -648,7 +648,7 @@ LABEL_14:
         if ( v14 & 8 )
         {
             if ( !eStruct200BC30_getJumpOffset00() )
-                sub_812DA4C(16);
+                npc_runDialog41(16);
         }
         else
         {
@@ -716,7 +716,7 @@ LABEL_38:
                         v26 = sub_812D5D0(0, 3, 0);
                         *(v0 + 48) = sub_812D934(v26, 1);
                         sub_812D99C(1);
-                        sub_812D91C();
+                        battle_spawnEStructsFromTablePair();
                         return;
                     }
                     goto LABEL_38;
@@ -1257,7 +1257,7 @@ LABEL_22:
             {
 LABEL_23:
                 sub_812D778();
-                sub_812DA4C(32);
+                npc_runDialog41(32);
                 goto LABEL_24;
             }
         }
@@ -1541,7 +1541,7 @@ int sub_812D164()
     }
     result = *(v0 + 31);
     if ( result == 32 )
-        sub_812D78C();
+        copyBgTilesToBlock0();
     if ( result == 8 )
     {
         result = *(v0 + 3);

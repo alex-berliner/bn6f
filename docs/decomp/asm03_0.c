@@ -1600,7 +1600,7 @@ int sub_802759E()
 
 
 // 0x80275d8
-int sub_80275D8()
+int state_waitFadeEndThenAdvance()
 {
     int v0; // r5
     int result; // r0
@@ -6659,25 +6659,25 @@ int __fastcall sub_802AC6E(int a1, int a2, int a3)
     {
         v7 = v6 - 1;
         *(v3 + 9) = v7;
-        sub_802B5D0(v5, v7, a3);
+        sound_playSfx66(v5, v7, a3);
     }
     else if ( v5 & 0x80 && (v8 = *(v3 + 9), v8 < 3) )
     {
         v9 = v8 + 1;
         *(v3 + 9) = v9;
-        sub_802B5D0(v5, v9, a3);
+        sound_playSfx66(v5, v9, a3);
     }
     else if ( v5 & 0x20 && (v10 = *(v3 + 8), v10 > 1) )
     {
         v11 = v10 - 1;
         *(v3 + 8) = v11;
-        sub_802B5D0(v5, v11, a3);
+        sound_playSfx66(v5, v11, a3);
     }
     else if ( v5 & 0x10 && (v12 = *(v3 + 8), v12 < 3) )
     {
         v13 = v12 + 1;
         *(v3 + 8) = v13;
-        sub_802B5D0(v5, v13, a3);
+        sound_playSfx66(v5, v13, a3);
     }
     else if ( v5 & 1 )
     {
@@ -7429,7 +7429,7 @@ int __fastcall battle_subtractLookupValue(int a1)
 
 
 // 0x802b5d0
-int __fastcall sub_802B5D0(int a1, int a2, int a3)
+int __fastcall sound_playSfx66(int a1, int a2, int a3)
 {
     return PlaySoundEffect(102, a2, a3);
 }
@@ -7664,8 +7664,8 @@ void __fastcall sub_802B8B0(int a1)
         --v2;
     }
     while ( v2 );
-    v4 = sub_802BA18();
-    sub_802BA24(v4, v5, 3, v6);
+    v4 = get_bg2ScrollXTile();
+    bg_copyTilesIfRequested(v4, v5, 3, v6);
 }
 
 
@@ -7688,7 +7688,7 @@ int sub_802B8E0()
         v2 = v0;
         v3 = 3 * *(v0 + 6) + 5;
         v4 = 3 * *(v0 + 7) - 1;
-        v5 = sub_802BA18();
+        v5 = get_bg2ScrollXTile();
         sub_802BA34(v5, v6, 3, 0);
         *(v2 + 1) = 16;
         *(v2 + 2) = 0;
@@ -7718,7 +7718,7 @@ void chip_previewShowSelectedChip()
         *(v0 + 1) = 20;
         *(v0 + 2) = 0;
         sub_801E780();
-        v6 = sub_802BA18();
+        v6 = get_bg2ScrollXTile();
         sub_802BA34(v6, 5, 3, 0);
     }
     else if ( v1 == 16 )
@@ -7790,7 +7790,7 @@ int __fastcall sub_802B9FE(int a1)
 
 
 // 0x802ba18
-int sub_802BA18()
+int get_bg2ScrollXTile()
 {
     int v0; // r10
 
@@ -7799,7 +7799,7 @@ int sub_802BA18()
 
 
 // 0x802ba24
-void __fastcall sub_802BA24(int a1, int a2, int a3, u16 *a4)
+void __fastcall bg_copyTilesIfRequested(int a1, int a2, int a3, u16 *a4)
 {
     int v4; // r4
     int v5; // r5
@@ -9541,7 +9541,7 @@ int __fastcall sub_802D09E(int a1, int a2, int a3)
 
 
 // 0x802d0ba
-char *__fastcall sub_802D0BA(int a1)
+char *__fastcall clear_tableEntryFields(int a1)
 {
     char *result; // r0
 
@@ -10750,7 +10750,7 @@ signed int __noreturn sub_802DB80()
     battleRefreshTrackedObjectArmPos_801DBD4();
     sub_80108FC(v0->Alliance);
     battle_clearCollisionData();
-    sub_801A66C();
+    battle_setObjectInvisible();
     object_removePanelReserve(v0->futurePanelX, v0->futurePanelY);
     v17 = object_clearFlag(GameEntryPoint);
     battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
@@ -12163,7 +12163,7 @@ __int64 __fastcall battle_chargeShotSetup(int a1)
     v3 = byte_802ED5C[sub_8013774(0, 41)];
     *(v1 + 8) = v3;
     v4 = sub_8013774(v3, 41);
-    sub_802EEA2(byte_802ED50[v4]);
+    battle_addCounterAmount(byte_802ED50[v4]);
     object_setAttack0();
     return 0LL;
 }
@@ -12200,7 +12200,7 @@ signed __int64 sub_802ED8A()
     *(v0 + 10) = 0;
     *(v0 + 8) = 0;
     *(v0 + 12) = &dword_23C;
-    sub_802EEA2(139);
+    battle_addCounterAmount(139);
     object_setAttack0();
     return 1LL;
 }
@@ -12219,7 +12219,7 @@ signed __int64 sub_802EDBC()
     *(v0 + 5) = 0;
     *(v0 + 12) = 0;
     *(v0 + 8) = 40;
-    sub_802EEA2(10);
+    battle_addCounterAmount(10);
     object_setAttack0();
     return 1LL;
 }
@@ -12243,7 +12243,7 @@ signed __int64 sub_802EDEC()
     *(v0 + 3) = 1;
     *(v0 + 4) = 1;
     object_setAttack0();
-    sub_802EEA2(149);
+    battle_addCounterAmount(149);
     return 1LL;
 }
 
@@ -12279,7 +12279,7 @@ int __fastcall sub_802EE40(int a1)
 
 
 // 0x802eea2
-int __fastcall sub_802EEA2(int a1)
+int __fastcall battle_addCounterAmount(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -12311,12 +12311,12 @@ int sub_802EEC4()
         v5 = *(v2 + 18) + getEntryPtr_2036120_1D0_802E070(*(v0 + 22))[14] * v3;
         v6 = *(v2 + 19);
         if ( object_getPanelDataOffset(v5, v6) )
-            sub_802EFD8(v5, v6);
+            battle_checkPanelTypeMatch(v5, v6);
         v4 = 0;
         if ( v5 <= 1 )
             v4 = 1;
         if ( *(v0 + 22) != v4 )
-            sub_802EFD8(5 * *(v0 + 22) + 1, v6);
+            battle_checkPanelTypeMatch(5 * *(v0 + 22) + 1, v6);
         result = object_getClosestPanelMatchingRowFiltered(
                              *(v0 + 22),
                              v6,
@@ -12396,7 +12396,7 @@ signed int __fastcall sub_802EF74(int a1)
 
 
 // 0x802efd8
-BOOL __fastcall __noreturn sub_802EFD8(int a1, int a2)
+BOOL __fastcall __noreturn battle_checkPanelTypeMatch(int a1, int a2)
 {
     int v2; // r5
 
@@ -13512,7 +13512,7 @@ signed int __fastcall sprite_queueOamEntryThunk_802FE28(signed int a1, __int16 a
 
 
 // 0x802fe38
-int __fastcall sub_802FE38(int a1, int a2)
+int __fastcall sprite_queueOamEntriesThunk(int a1, int a2)
 {
     return sprite_queueOamEntries(a1, a2);
 }

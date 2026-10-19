@@ -29,9 +29,9 @@ byte_8130054:
 
 // symdb: Starts a camera state-8 pan: picks a target id from overlay work, marks it 0x8000, snapshots the link state into the camera end position, and sets speed 2.
 // symdb: () -> void; reads target camera struct from caller-set r5, no args or return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813005C.yaml
-	thumb_func_start sub_813005C
-sub_813005C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_beginLinkPan.yaml
+	thumb_func_start camera_beginLinkPan
+camera_beginLinkPan:
 	push {r4,lr}
 	mov r0, #8
 	strb r0, [r5,#2]
@@ -50,7 +50,7 @@ sub_813005C:
 	strh r4, [r0,#0xa]
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813005C
+	thumb_func_end camera_beginLinkPan
 
 // symdb: Full initialization routine for an overlay cutscene/scene: resets video, scene records, chatbox, and the scene object's animation state, then fades in.
 // symdb: () -> void; r5 = scene/object state ptr, r10 = toolkit must be set by caller; clobbers r7
@@ -388,7 +388,7 @@ sub_81302F4:
 	lsr r0, r0, #0x11
 	mov r4, r0
 	mov r2, r1
-	bl sub_811AD04
+	bl e_setEntryValue0C
 	mov r0, r4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -608,7 +608,7 @@ sub_8130464:
 	mov r0, #0x80
 	mov r1, #1
 	bl sub_81302F4
-	bl sub_81304A4
+	bl e_spawnStructsFromTable
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_81304A0:
@@ -618,9 +618,9 @@ off_81304A0:
 // symdb: Wrapper that feeds a fixed (id, slot, param) table into the eStruct table-spawner to create type-9 records in eStructArr2008450.
 // symdb: () -> void; r0 clobbered with table pointer, calls
 // symdb: battle_spawnEStructRecordsFromTable_80465A0(r0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304A4.yaml
-	thumb_func_start sub_81304A4
-sub_81304A4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_spawnStructsFromTable.yaml
+	thumb_func_start e_spawnStructsFromTable
+e_spawnStructsFromTable:
 	push {lr}
 	ldr r0, off_81304B4 // =byte_812F05C
 	b loc_81304AE
@@ -636,7 +636,7 @@ off_81304B4:
 	.word byte_812F05C
 off_81304B8:
 	.word byte_812F064
-	thumb_func_end sub_81304A4
+	thumb_func_end e_spawnStructsFromTable
 
 // symdb: Rebuilds (or clears) the 30-slot battle chip-pack buffer used by the t4 overlay scene, driven by a flag byte in the scene state.
 // symdb: (r0 = passed through to sub_8130404) -> r0 = state pointer from sub_8130404; returns after
@@ -3924,7 +3924,7 @@ off_8131FB0:
 	.word off_8131FB4
 off_8131FB4:
 	.word sub_8131FC4+1
-	.word sub_813201C+1
+	.word t4_tickSubsystemE290+1
 	.word sub_813202C+1
 	.word submenu_linkResultHandler+1
 	thumb_func_end sub_8131FA0
@@ -3971,9 +3971,9 @@ dword_8132018:
 
 // symdb: Update-callback wrapper that ticks the subsystem state at eS200A290, which fires event 0xDA(2) once the subsystem is no longer in use.
 // symdb: () -> none; calls cb_8048FD4 with r0 = eS200A290; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813201C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_tickSubsystemE290.yaml
 	thumb_local_start
-sub_813201C:
+t4_tickSubsystemE290:
 	push {r5,lr}
 	ldr r5, off_8132028 // =eS200A290 
 	bl cb_8048FD4
@@ -3981,7 +3981,7 @@ sub_813201C:
 	.balign 4, 0
 off_8132028:
 	.word eS200A290
-	thumb_func_end sub_813201C
+	thumb_func_end t4_tickSubsystemE290
 
 	thumb_local_start
 sub_813202C:
@@ -4956,9 +4956,9 @@ loc_8132640:
 
 // symdb: After dispatching the current engine-mode handler, resets the submenu's index/state bytes (0x10, 0) and refreshes it via a helper.
 // symdb: () -> void; no meaningful args or return; clobbers r5 via callee-saved push
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132648.yaml
-	thumb_func_start sub_8132648
-sub_8132648:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_resetCursor.yaml
+	thumb_func_start submenu_resetCursor
+submenu_resetCursor:
 	push {r5,lr}
 
 	bl sub_803EA78
@@ -4977,7 +4977,7 @@ sub_8132648:
 	.balign 4, 0
 off_8132660:
 	.word sSubmenu
-	thumb_func_end sub_8132648
+	thumb_func_end submenu_resetCursor
 
 	thumb_func_start sub_8132664
 sub_8132664:
@@ -5221,7 +5221,7 @@ loc_813282E:
 	ldr r7, off_81328A8 // =off_81328AC 
 	ldr r7, [r7,r6]
 	ldr r6, off_8132874 // =byte_86ACD60
-	bl sub_8045FBC
+	bl sprite_runDefaultAnimation
 	ldr r6, [sp,#0xc]
 	add r6, #4
 	str r6, [sp,#0xc]
@@ -5310,7 +5310,7 @@ loc_81328E4:
 	ldr r7, off_8132968 // =off_813296C 
 	ldr r7, [r7,r6]
 	ldr r6, off_8132934 // =byte_86ACD60
-	bl sub_8045FBC
+	bl sprite_runDefaultAnimation
 	ldr r6, [sp,#0xc]
 	add r6, #4
 	str r6, [sp,#0xc]
@@ -16599,7 +16599,7 @@ chatbox_renderTextEntry:
 	mov r0, #0xa
 	mov r1, #4
 	ldr r2, off_8137DDC // =unk_2017AE0 
-	bl sub_8137E3C
+	bl chatbox_copyTextWindowTiles
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -16629,7 +16629,7 @@ loc_8137DFE:
 	beq loc_8137E18
 	mov r0, r7
 	ldr r1, off_8137E34 // =unk_2000260 
-	bl sub_8137EF0
+	bl get_indexedTimeBcd
 	mov r3, r0
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
@@ -16658,9 +16658,9 @@ off_8137E38:
 
 // symdb: Copies a 7×14 block of tile-ids (the text-window background for a message) into background tile block 2 at the given tile coordinates.
 // symdb: (r0 = dest tile j, r1 = dest tile i, r2 = tile_ids *const u16) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137E3C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_copyTextWindowTiles.yaml
 	thumb_local_start
-sub_8137E3C:
+chatbox_copyTextWindowTiles:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -16671,7 +16671,7 @@ sub_8137E3C:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_8137E3C
+	thumb_func_end chatbox_copyTextWindowTiles
 	thumb_local_start
 sub_8137E4C:
 	push {r4-r7,lr}
@@ -16688,7 +16688,7 @@ sub_8137E4C:
 	mov r0, #0x12
 	mov r1, #4
 	ldr r2, off_8137E74 // =unk_2017BA4 
-	bl sub_8137EE0
+	bl copy_bgTilesToBlock2
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -16721,7 +16721,7 @@ loc_8137E9C:
 	beq loc_8137EBE
 	mov r0, r7
 	ldr r1, off_8137ED8 // =unk_20018C0 
-	bl sub_8137EF0
+	bl get_indexedTimeBcd
 	mov r3, r0
 	ldr r0, [sp]
 	ldr r1, [sp,#0xc]
@@ -16754,9 +16754,9 @@ off_8137EDC:
 // symdb: Thin wrapper that blits a caller-supplied tile array as a 7x14-tile rectangle into background tile block 2.
 // symdb: (r0 = dst i, r1 = dst j, r2 = tile_ids *const u16) -> void; corrupts r2-r5, calls
 // symdb: CopyBackgroundTiles(i, j, 2, tile_ids, j_size=7, i_size=14)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137EE0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_bgTilesToBlock2.yaml
 	thumb_local_start
-sub_8137EE0:
+copy_bgTilesToBlock2:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -16767,13 +16767,13 @@ sub_8137EE0:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_8137EE0
+	thumb_func_end copy_bgTilesToBlock2
 // symdb: Picks a halfword counter from a table using a selector byte stored at unk_201CF00+r0+1 and returns it converted to packed-BCD time.
 // symdb: (r0 = record index into unk_201CF00 (selector byte at +1), r1 = pointer to halfword table) -> r0
 // symdb: = packed-BCD HH:MM:SS.cc of selected halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137EF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_indexedTimeBcd.yaml
 	thumb_local_start
-sub_8137EF0:
+get_indexedTimeBcd:
 	push {r4-r7,lr}
 	ldr r7, off_8137F04 // =unk_201CF00 
 	add r7, r7, r0
@@ -16785,7 +16785,7 @@ sub_8137EF0:
 	pop {r4-r7,pc}
 off_8137F04:
 	.word unk_201CF00
-	thumb_func_end sub_8137EF0
+	thumb_func_end get_indexedTimeBcd
 
 	thumb_local_start
 sub_8137F08:
@@ -16859,7 +16859,7 @@ sprite_renderCharGlyph:
 	mov r0, #0x1a
 	mov r1, #4
 	ldr r2, off_8137F84 // =unk_2017C68 
-	bl sub_813808C
+	bl sprite_copyGlyphTiles3x14
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -16982,9 +16982,9 @@ byte_8138040:
 // symdb: Blits a fixed 3x14 block of tiles from a tile-id list into BG tile block 2, as the draw step of glyph rendering.
 // symdb: (r0 = dest tile j, r1 = dest tile i, r2 = *tile_ids u16) -> void; r3-r5 repurposed as
 // symdb: CopyBackgroundTiles args (tile block 2, size 3, size 14)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813808C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_copyGlyphTiles3x14.yaml
 	thumb_local_start
-sub_813808C:
+sprite_copyGlyphTiles3x14:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -16995,7 +16995,7 @@ sub_813808C:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_813808C
+	thumb_func_end sprite_copyGlyphTiles3x14
 	thumb_local_start
 sub_813809C:
 	push {r4-r7,lr}
@@ -17505,7 +17505,7 @@ off_8138444:
 	.word sub_8138560+1
 	.word sub_8138570+1
 	.word sub_8138580+1
-	.word sub_8138584+1
+	.word scriptCmdFadeScreen+1
 	.word sub_8138598+1
 	.word sub_81385AC+1
 	thumb_func_end sub_813842C
@@ -17603,7 +17603,7 @@ sub_8138514:
 	push {lr}
 	mov r0, #0xc
 	strb r0, [r5,#1]
-	bl sub_8138884
+	bl object_freeAllOfType25
 	add r3, #1
 	str r3, [r5,#0x18]
 	mov r0, #1
@@ -17678,9 +17678,9 @@ sub_8138580:
 
 // symdb: Script opcode handler: starts a screen fade (kind 0xC) to the level given by the next script byte.
 // symdb: (r3 = script pointer, r5 = interpreter state) -> r0 = 0 (continue); [r5+0x18] = r3+2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138584.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/scriptCmdFadeScreen.yaml
 	thumb_local_start
-sub_8138584:
+scriptCmdFadeScreen:
 	push {lr}
 	mov r0, #0xc
 	ldrb r1, [r3,#1]
@@ -17690,7 +17690,7 @@ sub_8138584:
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8138584
+	thumb_func_end scriptCmdFadeScreen
 
 	thumb_local_start
 sub_8138598:
@@ -18084,15 +18084,15 @@ ow_perFrameUpdateAndRender:
 
 // symdb: Frees every active battle object of type 0x25 in one call.
 // symdb: () -> r0 = 0; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138884.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_freeAllOfType25.yaml
 	thumb_local_start
-sub_8138884:
+object_freeAllOfType25:
 	push {lr}
 	mov r0, #0x25 
 	bl FreeAllObjectsOfSpecifiedTypes
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_8138884
+	thumb_func_end object_freeAllOfType25
 
 	thumb_local_start
 sub_8138890:

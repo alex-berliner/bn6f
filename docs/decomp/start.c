@@ -78,7 +78,7 @@ int __fastcall __noreturn start_dead_800025C(int a1)
 // 0x8000268
 void __fastcall __noreturn start_dead_8000268(int a1)
 {
-    sub_3005E02(a1);
+    start_clearIrqEnableBits(a1);
 }
 
 
@@ -115,7 +115,7 @@ int __noreturn start_800029C()
 // 0x80002a8
 void __noreturn start_80002A8()
 {
-    sub_3005E6A();
+    disableInterrupts();
 }
 
 

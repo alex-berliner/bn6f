@@ -33,15 +33,15 @@ off_8045FB8:
 // symdb: Wrapper that tail-calls the animation script runner with entry index 0 and r3 = 0.
 // symdb: (r0-r3 = original args, saved to stack) -> r0 = 0, r3 = 0, then b sprite_runAnimationScript;
 // symdb: returns its result.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8045FBC.yaml
-	thumb_func_start sub_8045FBC
-sub_8045FBC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_runDefaultAnimation.yaml
+	thumb_func_start sprite_runDefaultAnimation
+sprite_runDefaultAnimation:
 	push {lr}
 	push {r0-r3}
 	mov r0, #0
 	mov r3, #0
 	b loc_8045FEE
-	thumb_func_end sub_8045FBC
+	thumb_func_end sprite_runDefaultAnimation
 
 	thumb_func_start sub_8045FC6
 sub_8045FC6:
@@ -5383,7 +5383,7 @@ loc_8049450:
 	mov r0, #0x10
 	bl sub_803CB18
 	beq loc_8049464
-	bl sub_8132648
+	bl submenu_resetCursor
 	bl rfu_initWirelessSession
 	mov r0, #0x44 
 	strb r0, [r5,#1]
@@ -5475,7 +5475,7 @@ loc_804950A:
 loc_8049516:
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB0C
+	bl clearStatusBits
 	mov r0, #0x44 
 	strb r0, [r5,#1]
 loc_8049522:
@@ -5565,7 +5565,7 @@ loc_80495C8:
 	thumb_func_end sub_80495B4
 
 // symdb: Reloads an 0x800-byte OBJ tile block (and a 32-byte palette) and defers a follow-up callback until the screen fade ends, otherwise performs the immediate alternative.
-// symdb: () -> r0 = undefined; calls copyMemory_8001850 then sub_803CB8C(callback=sub_8039570+1) when
+// symdb: () -> r0 = undefined; calls copyMemory_8001850 then t1_setMainState1cWithArg(callback=sub_8039570+1) when
 // symdb: IsScreenFadeActive, else calls sub_803A1B0; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesDuringFadeOrRun.yaml
 	thumb_local_start
@@ -5575,7 +5575,7 @@ sprite_loadTilesDuringFadeOrRun:
 	beq loc_80495E2
 	bl copyMemory_8001850
 	ldr r0, off_80495E8 // =sub_8039570+1 
-	bl sub_803CB8C
+	bl t1_setMainState1cWithArg
 	pop {r4-r7,pc}
 loc_80495E2:
 	bl sub_803A1B0
@@ -6044,10 +6044,10 @@ off_8049918:
 	.word dword_804991C
 dword_804991C:
 	.word 0x0
-	.word sub_803AD04+1
+	.word submenu_tryExit+1
 	.word chipSelect_dispatchState_803AD20+1
 	.word sub_803AED8+1
-	.word sub_803AE50+1
+	.word menuSelectNextElement+1
 	.word submenu_moveCursorBack+1
 	thumb_func_end sub_80498F8
 
@@ -7633,7 +7633,7 @@ sub_804A514:
 	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r5,#0x34]
 loc_804A534:
-	bl sub_804AE50
+	bl ow_copyTiles8x17ToBg
 	bl sub_804AE68
 loc_804A53C:
 	bl sub_804AA58
@@ -8893,9 +8893,9 @@ off_804AE4C:
 // symdb: Blits a fixed 8x17-tile image stored in RAM (unk_203486C) onto background tile block 0 at column 0x15, row 2.
 // symdb: () -> r0 = void; calls CopyBackgroundTiles(0x15, 2, 0, unk_203486C, 8, 0x11); no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AE50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_copyTiles8x17ToBg.yaml
 	thumb_local_start
-sub_804AE50:
+ow_copyTiles8x17ToBg:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0x15
@@ -8912,7 +8912,7 @@ sub_804AE50:
 	.balign 4, 0
 off_804AE64:
 	.word unk_203486C
-	thumb_func_end sub_804AE50
+	thumb_func_end ow_copyTiles8x17ToBg
 
 	thumb_local_start
 sub_804AE68:

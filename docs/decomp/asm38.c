@@ -138,7 +138,7 @@ int __fastcall sub_3005DEC(int result)
 
 
 // 0x3005e02
-int __fastcall sub_3005E02(int result)
+int __fastcall start_clearIrqEnableBits(int result)
 {
     __int16 *v1; // r3
     __int16 v2; // r4
@@ -197,7 +197,7 @@ void start_enableInterrupts()
 
 
 // 0x3005e6a
-void sub_3005E6A()
+void disableInterrupts()
 {
     *off_3005E74 = 0;
 }

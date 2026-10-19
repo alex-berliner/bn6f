@@ -4297,7 +4297,7 @@ void sub_8126F40()
 
 
 // 0x8126f94
-int sub_8126F94()
+int t3_clearWhileScreenFade()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -7750,7 +7750,7 @@ int object_waitEntriesIdleThenFade()
     int result; // r0
     int v4; // r6
 
-    sub_812B5AC();
+    object_setAnimationFromState();
     v1 = 4 * v0[32];
     v2 = 0;
     while ( 1 )
@@ -7835,7 +7835,7 @@ int object_allClearedRunScriptFade()
     int result; // r0
     int v4; // r6
 
-    sub_812B5AC();
+    object_setAnimationFromState();
     v1 = 4 * *(v0 + 32);
     v2 = 0;
     while ( 1 )
@@ -8447,7 +8447,7 @@ int sub_812A4DC()
     int v0; // r5
 
     (*(&off_812A4F4 + *(v0 + 3)))();
-    return sub_803CB0C(1);
+    return clearStatusBits(1);
 }
 
 
@@ -8593,7 +8593,7 @@ LABEL_9:
         sub_803CB18();
         if ( v1 )
             return;
-        sub_803CB0C(8);
+        clearStatusBits(8);
     }
     *(v0 + 12) = 20;
     sub_803CB18();
@@ -9905,7 +9905,7 @@ signed int sub_812B590()
 
 
 // 0x812b5ac
-int sub_812B5AC()
+int object_setAnimationFromState()
 {
     int v0; // r5
     int v1; // r0
@@ -10203,7 +10203,7 @@ void sub_812B8DC()
     v1 = sub_803EAE4();
     if ( v1 == 4 )
     {
-        sub_812C24C();
+        link_setStateFields();
     }
     else if ( v1 != 1 )
     {
@@ -10265,7 +10265,7 @@ int sub_812B97C()
 
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812C24C();
+        return link_setStateFields();
     if ( result != 1 )
     {
         *(v0 + 16) = 6;
@@ -10322,7 +10322,7 @@ int link_verifyChecksumAndMatchPartner()
     *(v0 + 38) = v3;
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812C24C();
+        return link_setStateFields();
     if ( result != 1 )
     {
         *(v0 + 16) = 6;
@@ -10367,7 +10367,7 @@ int link_verifyChecksumAndMatchPartner()
                     if ( v9 > 1 )
                         return result;
                     *(v0 + 16) = 2;
-                    return sub_812C24C();
+                    return link_setStateFields();
                 }
             }
         }
@@ -10397,7 +10397,7 @@ int sub_812BB08()
 
     result = sub_803EAE4();
     if ( result == 4 )
-        return sub_812C24C();
+        return link_setStateFields();
     if ( result == 1 )
         return result;
     v2 = result;
@@ -10431,7 +10431,7 @@ int sub_812BB08()
         if ( v7 > 1 )
             return result;
         *(v0 + 16) = 2;
-        return sub_812C24C();
+        return link_setStateFields();
     }
     v8 = *(v0 + 38);
     if ( v8 == 16 )
@@ -11056,7 +11056,7 @@ int __fastcall sub_812C21C(int a1)
 
 
 // 0x812c24c
-int sub_812C24C()
+int link_setStateFields()
 {
     _BYTE *v0; // r5
     int result; // r0

@@ -1343,7 +1343,7 @@ int sub_810E8DA()
     int v3; // r0
 
     if ( object_getFlag() & 0x40000000 )
-        return sub_8016EC4();
+        return battle_defeatPhaseDispatch();
     result = battle_isTimeStop();
     if ( v2 )
     {
@@ -1479,7 +1479,7 @@ unsigned int __fastcall sub_810E9D4(int a1, int a2, int a3)
 
 
 // 0x810ea3e
-int sub_810EA3E()
+int battle_clearRecordAndResetPhase()
 {
     int v0; // r5
     int result; // r0
@@ -2769,7 +2769,7 @@ int battle_objectUpdateFlagBit30Handler()
         v1 = object_getFlag();
         if ( v1 & 0x40000000 )
         {
-            sub_80C10E8(*(v0 + 104));
+            battle_objectSetAuxField8(*(v0 + 104));
             v1 = 0;
             *(v0 + 104) = 0;
         }
@@ -11899,7 +11899,7 @@ void __noreturn sprite_initVariantObject()
     sprite_setSubRecordFieldA_8003060(0);
     sprite_setCoordinates(0, 0);
     *(v0 + 8) = 4;
-    sub_81175AC();
+    sprite_loadVariantSpritePtr();
     sprite_updateVariantObject();
 }
 
@@ -12006,7 +12006,7 @@ signed int sub_811756C()
 // 0x8117588
 signed int sub_8117588()
 {
-    sub_81175AC();
+    sprite_loadVariantSpritePtr();
     return 1;
 }
 
@@ -12026,7 +12026,7 @@ signed int __noreturn sub_8117592()
 
 
 // 0x81175ac
-char (*sub_81175AC())[24]
+char (*sprite_loadVariantSpritePtr())[24]
 {
     int v0; // r5
     char (*result)[24]; // r0
@@ -16546,7 +16546,7 @@ int sub_811ACFC()
 
 
 // 0x811ad04
-int __fastcall sub_811AD04(__int16 a1, int a2, int a3)
+int __fastcall e_setEntryValue0C(__int16 a1, int a2, int a3)
 {
     __int16 v3; // r4
     int result; // r0
@@ -17006,12 +17006,12 @@ void __noreturn sub_811B35C()
     sprite_setPallete(0);
     v0->currState = 4;
     sprite_setCoordinates(32, 80);
-    sub_811B3B0();
+    object_dispatchTypeUpdate();
 }
 
 
 // 0x811b3b0
-void sub_811B3B0()
+void object_dispatchTypeUpdate()
 {
     Battle *v0; // r5
 
@@ -17568,7 +17568,7 @@ int __noreturn sub_811BAC4()
     *v0 = v1;
     sub_811BB50();
     sub_811BBB8();
-    v2 = sub_811BB18();
+    v2 = battle_getAdjustedCountFromObject();
     sprite_setAnimation(v0, v2);
     return sprite_loadAnimationData(v0);
 }
@@ -17598,7 +17598,7 @@ int sub_811BAF4()
 
 
 // 0x811bb18
-int sub_811BB18()
+int battle_getAdjustedCountFromObject()
 {
     int v0; // r5
     int *v1; // r1
@@ -18282,7 +18282,7 @@ int __fastcall sub_811C440(int a1)
 
 
 // 0x811c4d8
-int __fastcall sub_811C4D8(int a1)
+int __fastcall e_resetEntryStatus(int a1)
 {
     int result; // r0
     _BYTE *v2; // r1
@@ -18340,7 +18340,7 @@ int sub_811C53C()
 
 
 // 0x811c544
-int __fastcall sub_811C544(int a1)
+int __fastcall e_setField12IfActive(int a1)
 {
     int result; // r0
     int v2; // r1
@@ -19395,7 +19395,7 @@ void sub_811D2C4()
 
 
 // 0x811d2c8
-void __noreturn sub_811D2C8()
+void __noreturn object_waitTimerGotoState23()
 {
     int v0; // r5
 
@@ -19585,7 +19585,7 @@ int __fastcall sub_811D634(int a1, int a2, int a3)
     if ( !v4 )
     {
         sub_811D6CC();
-        result = sub_811D6E8();
+        result = object_syncSpritePosition();
     }
     return result;
 }
@@ -19651,7 +19651,7 @@ int sub_811D6CC()
 
 
 // 0x811d6e8
-int sub_811D6E8()
+int object_syncSpritePosition()
 {
     int v0; // r5
 
@@ -19947,12 +19947,12 @@ void sub_811DC54()
     v0[8] = 4;
     sprite_setCoordinates(176, 64);
     v0[8] = 4;
-    sub_811DC70();
+    sprite_updateIfFlagSet();
 }
 
 
 // 0x811dc70
-void sub_811DC70()
+void sprite_updateIfFlagSet()
 {
     Battle *v0; // r5
 
@@ -20757,7 +20757,7 @@ int sub_811E6A0()
 {
     int v0; // r0
 
-    v0 = sub_81433DA();
+    v0 = ow_crowLessonFlagCheck();
     return sprite_setUnk0x2c(byte_811E6B8[v0] << 24);
 }
 

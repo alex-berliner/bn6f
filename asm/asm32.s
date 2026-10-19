@@ -1938,7 +1938,7 @@ sub_810E8DA:
 	bx r1
 	b locret_810E90E
 loc_810E904:
-	bl sub_8016EC4
+	bl battle_defeatPhaseDispatch
 	b locret_810E90E
 loc_810E90A:
 	bl battle_objectUpdateDispatchPhase_80165C2
@@ -1952,7 +1952,7 @@ off_810E914:
 	.word sub_810E97A+1
 	.word sub_810E9B6+1
 	.word sub_810E9D4+1
-	.word sub_810EA3E+1
+	.word battle_clearRecordAndResetPhase+1
 	thumb_func_end sub_810E8DA
 
 	thumb_local_start
@@ -2097,9 +2097,9 @@ loc_810EA38:
 
 // symdb: Marks the battle object's extra-var flag, unregisters its record from a four-slot table, and resets its phase to 0.
 // symdb: (r5 = battle object ptr, also used as record id by callee) -> r0 = 0; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810EA3E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearRecordAndResetPhase.yaml
 	thumb_local_start
-sub_810EA3E:
+battle_clearRecordAndResetPhase:
 	push {lr}
 	mov r0, #1
 	str r0, [r5,#oBattleObject_ExtraVars+8]
@@ -2107,7 +2107,7 @@ sub_810EA3E:
 	mov r0, #0
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 	pop {pc}
-	thumb_func_end sub_810EA3E
+	thumb_func_end battle_clearRecordAndResetPhase
 
 // symdb: AI state dispatcher for the battle-sweep actor: reads the object's AI state id and tail-calls that state's handler from a 4-entry jump table.
 // symdb: (r6 = AI object, [r6+oAIState_ScriptId] = state id) -> jumps to handler table[state]; no return
@@ -4400,7 +4400,7 @@ battle_objectUpdateFlagBit30Handler:
 	tst r0, r1
 	beq loc_810FE0C
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
-	bl sub_80C10E8
+	bl battle_objectSetAuxField8
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 loc_810FE0C:
@@ -18936,7 +18936,7 @@ sprite_initVariantObject:
 	bl sprite_setCoordinates
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_81175AC
+	bl sprite_loadVariantSpritePtr
 	bl sprite_updateVariantObject
 	pop {pc}
 	.balign 4, 0
@@ -19088,7 +19088,7 @@ sub_811756C:
 	thumb_local_start
 sub_8117588:
 	push {lr}
-	bl sub_81175AC
+	bl sprite_loadVariantSpritePtr
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_8117588
@@ -19109,9 +19109,9 @@ sub_8117592:
 // symdb: Loads the sprite-data pointer matching the entity's variant byte into the sprite object's field +0xC.
 // symdb: (r5 = sprite object, byte [r5+5] = variant index) -> r0 = selected pointer, stored to [r5+0xC];
 // symdb: no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81175AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadVariantSpritePtr.yaml
 	thumb_local_start
-sub_81175AC:
+sprite_loadVariantSpritePtr:
 	ldrb r0, [r5,#5]
 	ldr r1, off_81175B8 // =off_811735C
 	lsl r0, r0, #2
@@ -19120,7 +19120,7 @@ sub_81175AC:
 	mov pc, lr
 off_81175B8:
 	.word off_811735C
-	thumb_func_end sub_81175AC
+	thumb_func_end sprite_loadVariantSpritePtr
 
 	thumb_local_start
 sub_81175BC:
@@ -26813,9 +26813,9 @@ sub_811ACFC:
 // symdb: Writes a 16-bit value into field 0xC of an entry of the 0x58-byte struct array at 2008450 and clears that entry's byte 0x9, if the entry is in use.
 // symdb: (r0 = value to store, r2 = entry index, r1 unused) -> void; no meaningful return, flags
 // symdb: clobbered by callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811AD04.yaml
-	thumb_func_start sub_811AD04
-sub_811AD04:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setEntryValue0C.yaml
+	thumb_func_start e_setEntryValue0C
+e_setEntryValue0C:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r2
@@ -26826,7 +26826,7 @@ sub_811AD04:
 	strb r0, [r1,#9]
 locret_811AD16:
 	pop {r4-r7,pc}
-	thumb_func_end sub_811AD04
+	thumb_func_end e_setEntryValue0C
 
 // symdb: Sets an object's sprite coordinates only if the corresponding entry in the 0x58-byte struct array at eStructArr2008450 is active.
 // symdb: (r0 = object/resource pointer, r1 = coordinate value/struct for sprite_setCoordinates, r2 =
@@ -27636,7 +27636,7 @@ off_811B348:
 	.word off_811B34C
 off_811B34C:
 	.word sub_811B35C+1
-	.word sub_811B3B0+1
+	.word object_dispatchTypeUpdate+1
 	.word sub_811B3EC+1
 off_811B358:
 	.word sSubmenu
@@ -27669,7 +27669,7 @@ sub_811B35C:
 	mov r0, #0x20
 	mov r1, #0x50
 	bl sprite_setCoordinates
-	bl sub_811B3B0
+	bl object_dispatchTypeUpdate
 	pop {pc}
 	.balign 4, 0
 off_811B3A8:
@@ -27681,9 +27681,9 @@ off_811B3AC:
 // symdb: Object update step: dispatches the object's per-type behavior handler from a jump table, then refreshes its sprite.
 // symdb: (r5 = object struct) -> r0 = result of the dispatched handler; then sprite_update runs on the
 // symdb: object; flags from handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B3B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchTypeUpdate.yaml
 	thumb_local_start
-sub_811B3B0:
+object_dispatchTypeUpdate:
 	push {lr}
 	ldr r0, off_811B3C4 // =off_811B3C8
 	ldrb r1, [r5,#9]
@@ -27697,7 +27697,7 @@ off_811B3C4:
 	.word off_811B3C8
 off_811B3C8:
 	.word sub_811B3CC+1
-	thumb_func_end sub_811B3B0
+	thumb_func_end object_dispatchTypeUpdate
 
 	thumb_local_start
 sub_811B3CC:
@@ -28639,7 +28639,7 @@ loc_811BAD2:
 	strb r1, [r5]
 	bl sub_811BB50
 	bl sub_811BBB8
-	bl sub_811BB18
+	bl battle_getAdjustedCountFromObject
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	pop {pc}
@@ -28678,9 +28678,9 @@ locret_811BB16:
 // symdb: Returns a count from the caller struct, plus one if the referenced battle object's flag byte is set.
 // symdb: (r0 = none/scratch; r5 = caller struct with count byte at +0xC and object halfword at +0xE) ->
 // symdb: r0 = [r5+0xC] (+1 if object descriptor byte 1 nonzero); flags set by cmp r1,#0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BB18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAdjustedCountFromObject.yaml
 	thumb_local_start
-sub_811BB18:
+battle_getAdjustedCountFromObject:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	sub r0, #0x90
@@ -28693,7 +28693,7 @@ sub_811BB18:
 	add r0, #1
 locret_811BB2E:
 	pop {pc}
-	thumb_func_end sub_811BB18
+	thumb_func_end battle_getAdjustedCountFromObject
 
 	thumb_local_start
 sub_811BB30:
@@ -29809,9 +29809,9 @@ byte_811C460:
 // symdb: Forces an active entry of the eStructArr2008450 array back to status 1, leaving free (0) entries untouched.
 // symdb: (r0 = entry index into eStructArr2008450) -> r0 clobbered by callee call; entry's status byte
 // symdb: set to 1 if it was nonzero; flags from getStructFrom2008450
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C4D8.yaml
-	thumb_func_start sub_811C4D8
-sub_811C4D8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_resetEntryStatus.yaml
+	thumb_func_start e_resetEntryStatus
+e_resetEntryStatus:
 	push {lr}
 	bl getStructFrom2008450
 	beq locret_811C4E4
@@ -29820,7 +29820,7 @@ sub_811C4D8:
 locret_811C4E4:
 	pop {pc}
 	.byte 0x0, 0x0
-	thumb_func_end sub_811C4D8
+	thumb_func_end e_resetEntryStatus
 
 	thumb_func_start sub_811C4E8
 sub_811C4E8:
@@ -29883,9 +29883,9 @@ sub_811C53C:
 // symdb: (r0 = index into eStructArr2008450, passed through to callee) -> r0 = 1 if entry was active and
 // symdb: byte 0x12 written, 0 if entry inactive; flags consumed from getStructFrom2008450's NZ on the in-
 // symdb: use byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C544.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setField12IfActive.yaml
 	thumb_local_start
-sub_811C544:
+e_setField12IfActive:
 	push {r5,lr}
 	bl getStructFrom2008450
 	beq locret_811C550
@@ -29894,7 +29894,7 @@ sub_811C544:
 locret_811C550:
 	pop {r5,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811C544
+	thumb_func_end e_setField12IfActive
 
 	thumb_local_start
 sub_811C554:
@@ -30689,7 +30689,7 @@ off_811CD28:
 	.word sub_811D1B8+1
 	.word sub_811D1B8+1
 	.word sub_811D2C4+1
-	.word sub_811D2C8+1
+	.word object_waitTimerGotoState23+1
 	.word sub_811D1B8+1
 	thumb_func_end sub_811CD08
 
@@ -31466,9 +31466,9 @@ sub_811D2C4:
 // symdb: Object state handler that counts down a delay timer and switches the object to state 0x23 when it expires
 // symdb: (r5 = object struct) -> void; decrements timer at r5+0xC, writes state 0x23 to r5+0 when it hits
 // symdb: zero
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D2C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_waitTimerGotoState23.yaml
 	thumb_local_start
-sub_811D2C8:
+object_waitTimerGotoState23:
 	push {lr}
 	ldrh r0, [r5,#0xc]
 	tst r0, r0
@@ -31482,7 +31482,7 @@ loc_811D2D6:
 loc_811D2DA:
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811D2C8
+	thumb_func_end object_waitTimerGotoState23
 
 	thumb_local_start
 sub_811D2E0:
@@ -31840,7 +31840,7 @@ sub_811D634:
 	beq loc_811D64E
 	mov r5, r1
 	bl sub_811D6CC
-	bl sub_811D6E8
+	bl object_syncSpritePosition
 loc_811D64E:
 	add sp, sp, #8
 	pop {r5,pc}
@@ -31930,15 +31930,15 @@ sub_811D6CC:
 // symdb: Copies the object's stored x/y fields into its sprite's coordinates.
 // symdb: (r5 = object struct, no register args) -> r0 clobbered by callee; calls sprite_setCoordinates
 // symdb: with x = [r5+0x1A], y = [r5+0x1E]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D6E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_syncSpritePosition.yaml
 	thumb_local_start
-sub_811D6E8:
+object_syncSpritePosition:
 	push {lr}
 	ldrh r0, [r5,#0x1a]
 	ldrh r1, [r5,#0x1e]
 	bl sprite_setCoordinates
 	pop {pc}
-	thumb_func_end sub_811D6E8
+	thumb_func_end object_syncSpritePosition
 
 	thumb_local_start
 sub_811D6F4:
@@ -32536,7 +32536,7 @@ off_811DC44:
 	.word off_811DC48
 off_811DC48:
 	.word sub_811DC54+1
-	.word sub_811DC70+1
+	.word sprite_updateIfFlagSet+1
 	.word sub_811DC80+1
 	thumb_func_end sub_811DC34
 
@@ -32552,16 +32552,16 @@ sub_811DC54:
 	bl sprite_setCoordinates
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811DC70
+	bl sprite_updateIfFlagSet
 	pop {r4,pc}
 	thumb_func_end sub_811DC54
 
 // symdb: Object step that runs sprite_update only when the object's byte-0 flag 0x02 is set.
 // symdb: (r5 = object struct pointer, no args in registers) -> r0 = sprite_update result if flag set,
 // symdb: else untouched; flags from tst/bl.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DC70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateIfFlagSet.yaml
 	thumb_local_start
-sub_811DC70:
+sprite_updateIfFlagSet:
 	push {lr}
 	mov r1, #2
 	ldrb r0, [r5]
@@ -32570,7 +32570,7 @@ sub_811DC70:
 	bl sprite_update
 locret_811DC7E:
 	pop {pc}
-	thumb_func_end sub_811DC70
+	thumb_func_end sprite_updateIfFlagSet
 
 	thumb_local_start
 sub_811DC80:
@@ -33833,7 +33833,7 @@ sub_811E698:
 	thumb_local_start
 sub_811E6A0:
 	push {r4-r7,lr}
-	bl sub_81433DA
+	bl ow_crowLessonFlagCheck
 	ldr r1, off_811E6B4 // =byte_811E6B8
 	ldrb r0, [r1,r0]
 	lsl r0, r0, #0x18

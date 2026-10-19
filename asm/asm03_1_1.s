@@ -855,7 +855,7 @@ loc_8038EE6:
 	mov r0, #8
 	strb r0, [r5]
 loc_8038EFE:
-	bl sub_8038F9C
+	bl t3_loadBackgroundTiles
 	bl sub_8039198
 	pop {pc}
 	.balign 4, 0
@@ -942,9 +942,9 @@ off_8038F98:
 
 // symdb: Loads a strip of background tiles into BG tile block 3, likely a scene/background tile setup helper
 // symdb: () -> void; calls CopyBackgroundTiles(3, 8, 3, tile_ids, 0x17, 2)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038F9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_loadBackgroundTiles.yaml
 	thumb_local_start
-sub_8038F9C:
+t3_loadBackgroundTiles:
 	push {r4-r7,lr}
 	// j
 	mov r0, #3
@@ -961,7 +961,7 @@ sub_8038F9C:
 	.balign 4, 0
 off_8038FB0:
 	.word byte_8038700
-	thumb_func_end sub_8038F9C
+	thumb_func_end t3_loadBackgroundTiles
 
 	thumb_local_start
 sub_8038FB4:
@@ -2222,7 +2222,7 @@ loc_8039C6A:
 loc_8039C7C:
 	bl sub_803A104
 	mov r0, #1
-	bl sub_803CB0C
+	bl clearStatusBits
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8039C88:
@@ -2406,7 +2406,7 @@ loc_8039DF2:
 	beq loc_8039E26
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB0C
+	bl clearStatusBits
 	bl sub_8146CFC
 	mov r0, #0
 	bl init_tableEntry
@@ -2586,7 +2586,7 @@ sub_8039F62:
 sub_8039F6A:
 	push {r4-r7,lr}
 	ldr r0, off_8039F74 // =sub_8039570+1
-	bl sub_803CB8C
+	bl t1_setMainState1cWithArg
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8039F74:
@@ -2625,7 +2625,7 @@ loc_8039FAE:
 loc_8039FBA:
 	mov r0, #0x10
 	lsl r0, r0, #4
-	bl sub_803CB0C
+	bl clearStatusBits
 	bl sub_8146CFC
 	mov r0, #0
 	bl init_tableEntry
@@ -2728,7 +2728,7 @@ sub_803A086:
 	beq loc_803A09A
 	bl copyMemory_8001850
 	ldr r0, off_803A0A0 // =sub_8039570+1
-	bl sub_803CB8C
+	bl t1_setMainState1cWithArg
 	pop {r4-r7,pc}
 loc_803A09A:
 	bl sub_803A1B0
@@ -4474,19 +4474,19 @@ off_803ACE8:
 	.word dword_803ACEC
 dword_803ACEC:
 	.word 0x0
-	.word sub_803AD04+1
+	.word submenu_tryExit+1
 	.word chipSelect_dispatchState_803AD20+1
 	.word sub_803AED8+1
-	.word sub_803AE50+1
+	.word menuSelectNextElement+1
 	.word submenu_moveCursorBack+1
 	thumb_func_end submenu_guestLibraryFrameUpdate
 
 // symdb: If the exit check passes, clears a menu-state flag, plays the exit-submenu sound, and tears down the submenu.
 // symdb: (r4/r5 = menu/UI state struct, preserved) -> r0 = clobbered; sets byte [r5,#0x13]=0 when exit
 // symdb: condition holds
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AD04.yaml
-	thumb_func_start sub_803AD04
-sub_803AD04:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_tryExit.yaml
+	thumb_func_start submenu_tryExit
+submenu_tryExit:
 	push {r4-r7,lr}
 	mov r0, #0x11
 	mov r1, #0x90
@@ -4499,7 +4499,7 @@ sub_803AD04:
 	bl sub_803A86A
 locret_803AD1E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AD04
+	thumb_func_end submenu_tryExit
 
 // symdb: Dispatches to one of seven chip-select screen handlers based on the state byte at r5+0x08.
 // symdb: void sub_803AD20(void);  // uses caller-supplied r2/r4/r5/r10 and lr; outputs/clobbers
@@ -4546,7 +4546,7 @@ off_803AD60:
 	.word sub_803ADDA+1
 	.word battle_tryConfirmAction+1
 	.word sub_803AE2A+1
-	.word sub_803AE50+1
+	.word menuSelectNextElement+1
 	.word submenu_moveCursorBack+1
 	.word menuSelectElement_803AE98+1
 	thumb_func_end chipSelect_dispatchState_803AD20
@@ -4671,9 +4671,9 @@ loc_803AE48:
 // symdb: Advances the element-selection menu cursor to the next element, or clears the selection if it wraps past the last element.
 // symdb: (r5 = element-selection menu state struct) -> r0 = clobbered; no return value; plays cursor SFX
 // symdb: on success
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AE50.yaml
-	thumb_func_start sub_803AE50
-sub_803AE50:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menuSelectNextElement.yaml
+	thumb_func_start menuSelectNextElement
+menuSelectNextElement:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x11]
 	add r0, #1
@@ -4692,7 +4692,7 @@ sub_803AE50:
 loc_803AE72:
 	bl menuClearElementSelection
 	pop {r4-r7,pc}
-	thumb_func_end sub_803AE50
+	thumb_func_end menuSelectNextElement
 
 // symdb: Menu input handler that moves the selection back one entry, cleans up the entry buffer, and plays the cursor-move sound effect.
 // symdb: (r5 = menu/screen state struct) -> decrements u8 at r5+0x11, clears u8 at r5+0x13, plays sound;
@@ -5071,7 +5071,7 @@ sub_803B1C4:
 	mov r0, #8
 	strb r0, [r5,#1]
 loc_803B1D0:
-	bl sub_803B518
+	bl t3_loadToolkitBgTile10
 	pop {r4-r7,pc}
 	thumb_func_end sub_803B1C4
 
@@ -5089,7 +5089,7 @@ sub_803B1D6:
 	mov r0, #0xc
 	strb r0, [r5,#1]
 loc_803B1F2:
-	bl sub_803B518
+	bl t3_loadToolkitBgTile10
 	pop {r4-r7,pc}
 	thumb_func_end sub_803B1D6
 
@@ -5106,7 +5106,7 @@ sub_803B1F8:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_803B210:
-	bl sub_803B518
+	bl t3_loadToolkitBgTile10
 	pop {r4-r7,pc}
 	thumb_func_end sub_803B1F8
 
@@ -5400,14 +5400,14 @@ initRefs_803B490:
 
 // symdb: Loads toolkit BG tile table entry 10 into the toolkit iBGTileIdBlocks blit buffer.
 // symdb: () -> r0 = result of sub_803B91C; no flag use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B518.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_loadToolkitBgTile10.yaml
 	thumb_local_start
-sub_803B518:
+t3_loadToolkitBgTile10:
 	push {r4-r7,lr}
 	mov r0, #0xa
 	bl sub_803B91C
 	pop {r4-r7,pc}
-	thumb_func_end sub_803B518
+	thumb_func_end t3_loadToolkitBgTile10
 
 // symdb: Picks a 16-byte tutorial-step descriptor for the current state and dispatches to one of two tutorial-script players (<0xA vs ≥0xA).
 // symdb: void sub_803B522(u32 state /* r0 */, u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg3 /* r3 */);
@@ -7367,7 +7367,7 @@ sub_803C570:
 	push {r4-r7,lr}
 	ldr r5, off_803C57C // =eS200A290
 	mov r0, #2
-	bl sub_803CB0C
+	bl clearStatusBits
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C57C:
@@ -7388,7 +7388,7 @@ sub_803C58C:
 	push {r4-r7,lr}
 	ldr r5, off_803C598 // =eS200A290
 	mov r0, #0x40
-	bl sub_803CB0C
+	bl clearStatusBits
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C598:
@@ -7476,9 +7476,9 @@ off_803C61C:
 dispatch_803C620: // () -> (u32?, bool)
 	push {r4-r7,lr}
 	mov r0, #2
-	bl sub_803CB0C
+	bl clearStatusBits
 	mov r0, #0x40
-	bl sub_803CB0C
+	bl clearStatusBits
 	ldr r7, off_803C648 // =eS200BC50
 	ldrb r0, [r7, #oS200BC50_Index00]
 	mov r1, #FALSE
@@ -7507,7 +7507,7 @@ dword_803C650:
 	// 0x08
 	.word sub_803C6C0+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x0C
-	.word sub_803C6D8+1 // (self: * S200BC50 $r7) -> (u32?, bool)
+	.word rfu_resetSlotsAndReportOffline+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x10
 	.word sub_803C6F4+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x14
@@ -7576,9 +7576,9 @@ sub_803C6C0: // (self: * S200BC50 $r7) -> (u32?, bool)
 
 // symdb: Clears all wireless RFU slot buffers and link state, performs two reset writes, and always returns false/zero (offline).
 // symdb: () -> r0 = 0, r1 = 0 (false); no input registers are read
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C6D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_resetSlotsAndReportOffline.yaml
 	thumb_local_start
-sub_803C6D8: // (self: * S200BC50 $r7) -> (u32?, bool)
+rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl rfu_clearAllSlot
 	bl sub_813D978
@@ -7589,7 +7589,7 @@ sub_803C6D8: // (self: * S200BC50 $r7) -> (u32?, bool)
 	mov r0, #0
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_803C6D8
+	thumb_func_end rfu_resetSlotsAndReportOffline
 
 	thumb_local_start
 sub_803C6F4: // (self: * S200BC50 $r7) -> (u32?, bool)
@@ -7846,7 +7846,7 @@ sub_803C888:
 	mov r0, #0x40
 	bl sub_803CB00
 	mov r0, #2
-	bl sub_803CB0C
+	bl clearStatusBits
 	mov r0, #4
 	strb r0, [r7,#3]
 loc_803C8AC:
@@ -8200,16 +8200,16 @@ sub_803CB00:
 // symdb: clears the caller-supplied bit mask in the status/flag word at 0x200BC5C
 // symdb: (r0 = bit mask of flags to clear) -> r0 = clobbered? (not preserved, but not returned); no
 // symdb: flags; writes [0x200BC5C] &= ~r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB0C.yaml
-	thumb_func_start sub_803CB0C
-sub_803CB0C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearStatusBits.yaml
+	thumb_func_start clearStatusBits
+clearStatusBits:
 	ldr r3, off_803CB20 // =eS200BC50
 	ldr r1, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	bic r1, r0
 	str r1, [r3,#0xc] // (dword_200BC5C - 0x200bc50)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_803CB0C
+	thumb_func_end clearStatusBits
 
 	thumb_func_start sub_803CB18
 sub_803CB18:
@@ -8244,7 +8244,7 @@ loc_803CB3C:
 sub_803CB44:
 	push {r4,r7,lr}
 	ldr r0, off_803CB74 // =0x200
-	bl sub_803CB0C
+	bl clearStatusBits
 	mov r4, #0
 	mov r0, #1
 	bl sub_803CB18
@@ -8286,9 +8286,9 @@ off_803CB88:
 // symdb: Requests main-loop jumptable state 0x1C, zeroing its 8-byte state block and storing the caller's pointer (likely a deferred callback/data) as its argument.
 // symdb: (r0 = arg pointer for state 0x1C handler, passed through) -> r0 unchanged; writes
 // symdb: byte_2008978..980 = 0, [0x200897C] = r0, toolkit MainJumptableIndex = 0x1C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB8C.yaml
-	thumb_func_start sub_803CB8C
-sub_803CB8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_setMainState1cWithArg.yaml
+	thumb_func_start t1_setMainState1cWithArg
+t1_setMainState1cWithArg:
 	push {r4-r7,lr}
 	ldr r5, off_803CBB8 // =byte_2008978
 	mov r4, r0
@@ -8303,7 +8303,7 @@ sub_803CB8C:
 	mov r0, #0x1c
 	strb r0, [r1]
 	pop {r4-r7,pc}
-	thumb_func_end sub_803CB8C
+	thumb_func_end t1_setMainState1cWithArg
 
 	thumb_func_start cb_803CBA6
 cb_803CBA6:

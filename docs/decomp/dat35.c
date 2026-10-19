@@ -567,7 +567,7 @@ void sub_812F530()
 							v14 = sub_8132430(v10);
 							if ( v14 == 4 )
 							{
-								sub_813005C();
+								camera_beginLinkPan();
 							}
 							else
 							{
@@ -746,7 +746,7 @@ LABEL_31:
 						*(v0 + 38) = 4;
 						*(v24 + 10) = *(v0 + 42);
 						sub_81302F4(128, 1);
-						sub_81304A4();
+						e_spawnStructsFromTable();
 						return;
 					}
 					goto LABEL_31;

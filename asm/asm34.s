@@ -550,7 +550,7 @@ sub_812D748:
 	bl menu_moveCursorUpDown_811FA22
 	strh r0, [r7,#0x34]
 loc_812D76E:
-	bl sub_812D78C
+	bl copyBgTilesToBlock0
 	bl sub_812D668
 locret_812D776:
 	pop {r7,pc}
@@ -562,7 +562,7 @@ sub_812D778:
 	ldrb r0, [r5,#2]
 	cmp r0, #0x20 
 	bne locret_812D788
-	bl sub_812D78C
+	bl copyBgTilesToBlock0
 	bl sub_812D668
 locret_812D788:
 	pop {pc}
@@ -571,9 +571,9 @@ locret_812D788:
 
 // symdb: Blits a fixed 8x17 tile patch from the RAM buffer unk_20227A0 into background tile block 0 at position (j=0x15, i=2).
 // symdb: () -> void; no flags (r0-r5 set internally, calls CopyBackgroundTiles)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D78C.yaml
-	thumb_func_start sub_812D78C
-sub_812D78C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyBgTilesToBlock0.yaml
+	thumb_func_start copyBgTilesToBlock0
+copyBgTilesToBlock0:
 	push {r4-r7,lr}
 	// j
 	mov r0, #0x15
@@ -590,7 +590,7 @@ sub_812D78C:
 	pop {r4-r7,pc}
 off_812D7A0:
 	.word unk_20227A0
-	thumb_func_end sub_812D78C
+	thumb_func_end copyBgTilesToBlock0
 	thumb_local_start
 sub_812D7A4:
 	push {r4-r7,lr}
@@ -680,9 +680,9 @@ sub_812D830:
 
 // symdb: Runs text script 0x41 from eTextScript201BA20 once, guarding repeats with a 100-frame cooldown stored in the object's work area.
 // symdb: (r5 = object/npc work struct) -> r0 = chatbox script-runner result; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D83C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_runScript41OncePerCooldown.yaml
 	thumb_local_start
-sub_812D83C:
+npc_runScript41OncePerCooldown:
 	push {lr}
 	ldr r0, [r5,#0x6c]
 	tst r0, r0
@@ -696,7 +696,7 @@ locret_812D84E:
 	.balign 4, 0
 off_812D850:
 	.word 0x64
-	thumb_func_end sub_812D83C
+	thumb_func_end npc_runScript41OncePerCooldown
 
 	thumb_func_start sub_812D854
 sub_812D854:
@@ -795,7 +795,7 @@ sub_812D8C8:
 	mov r1, #3
 	mov r2, #0
 	bl sub_812D5D0
-	bl sub_812D91C
+	bl battle_spawnEStructsFromTablePair
 	pop {r4-r7,pc}
 off_812D914:
 	.word dword_201E420
@@ -804,9 +804,9 @@ off_812D914:
 // symdb: Wrapper that spawns a batch of eStruct records from one of two hardcoded 0xFF-terminated (id, slot, param) tables.
 // symdb: (r0 = unused/ignored) -> r0 = result of battle_spawnEStructRecordsFromTable; secondary entry at
 // symdb: sub_812D922 selects the second table
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D91C.yaml
-	thumb_func_start sub_812D91C
-sub_812D91C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructsFromTablePair.yaml
+	thumb_func_start battle_spawnEStructsFromTablePair
+battle_spawnEStructsFromTablePair:
 	push {lr}
 	ldr r0, off_812D92C // =byte_812C278 
 	b loc_812D926
@@ -822,7 +822,7 @@ off_812D92C:
 	.word byte_812C278
 off_812D930:
 	.word byte_812C280
-	thumb_func_end sub_812D91C
+	thumb_func_end battle_spawnEStructsFromTablePair
 
 	thumb_func_start sub_812D934
 sub_812D934:
@@ -981,9 +981,9 @@ locret_812DA4A:
 // symdb: Stores a caller-supplied byte into an NPC state struct, sets its state to 0x30, then makes the chatbox play text script 0x41 from archive eTextScript201BA20 and loads a 0xF0 timer.
 // symdb: (r0 = byte parameter stored at [r5,#0x1f], r5 = NPC/object work struct) -> r0 =
 // symdb: chatbox_runScript return value; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA4C.yaml
-	thumb_func_start sub_812DA4C
-sub_812DA4C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_runDialog41.yaml
+	thumb_func_start npc_runDialog41
+npc_runDialog41:
 	push {lr}
 	strb r0, [r5,#0x1f]
 	mov r0, #0x30 
@@ -993,7 +993,7 @@ sub_812DA4C:
 	mov r0, #0xf0
 	strh r0, [r5,#0x28]
 	pop {pc}
-	thumb_func_end sub_812DA4C
+	thumb_func_end npc_runDialog41
 
 	thumb_func_start sub_812DA60
 sub_812DA60:

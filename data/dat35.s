@@ -732,7 +732,7 @@ loc_812F594::
 	bl sub_8132430
 	cmp r0, #4
 	bne loc_812F5C2
-	bl sub_813005C
+	bl camera_beginLinkPan
 	b loc_812F622
 loc_812F5C2::
 	bl sub_803DD60
@@ -916,7 +916,7 @@ loc_812F6E2::
 	mov r0, #0x80
 	mov r1, #1
 	bl sub_81302F4
-	bl sub_81304A4
+	bl e_spawnStructsFromTable
 	b loc_812F7B6
 loc_812F73E::
 	mov r0, #0xc

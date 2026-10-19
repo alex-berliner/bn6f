@@ -5769,7 +5769,7 @@ void sub_8038EDC()
         engine_setScreeneffect(12, 8);
         *v0 = 8;
     }
-    sub_8038F9C();
+    t3_loadBackgroundTiles();
 }
 
 
@@ -5808,7 +5808,7 @@ int __noreturn battle_renderCommErrorTextGfx()
 
 
 // 0x8038f9c
-void __noreturn sub_8038F9C()
+void __noreturn t3_loadBackgroundTiles()
 {
     CopyBackgroundTiles(3, 8, 3, byte_8038700, 23, &byte_0[2]);
 }
@@ -6674,7 +6674,7 @@ int sub_8039C32()
         }
     }
     sub_803A104();
-    return sub_803CB0C(1);
+    return clearStatusBits(1);
 }
 
 
@@ -6852,7 +6852,7 @@ LABEL_8:
     sub_803CB18();
     if ( !v2 )
     {
-        sub_803CB0C(256);
+        clearStatusBits(256);
         sub_8146CFC();
         init_tableEntry(0);
         sub_8147B24();
@@ -7013,7 +7013,7 @@ int __fastcall sub_8039F62(int a1, int a2, int a3, int a4)
 // 0x8039f6a
 int __fastcall sub_8039F6A(int a1, int a2, int a3, int a4)
 {
-    return sub_803CB8C(sub_8039570, a2, a3, a4);
+    return t1_setMainState1cWithArg(sub_8039570, a2, a3, a4);
 }
 
 
@@ -7055,7 +7055,7 @@ int __fastcall sub_8039F78(int a1)
     }
     else
     {
-        sub_803CB0C(256);
+        clearStatusBits(256);
         sub_8146CFC();
         init_tableEntry(0);
         sub_8147B24();
@@ -7159,7 +7159,7 @@ int sub_803A086()
     if ( v0 )
         return sub_803A1B0();
     copyMemory_8001850();
-    return sub_803CB8C(sub_8039570, v1, v2, v3);
+    return t1_setMainState1cWithArg(sub_8039570, v1, v2, v3);
 }
 
 
@@ -8417,7 +8417,7 @@ void __fastcall submenu_guestLibraryFrameUpdate(int a1, int a2, int a3)
 
 
 // 0x803ad04
-int sub_803AD04()
+int submenu_tryExit()
 {
     int v0; // r5
     int result; // r0
@@ -8576,7 +8576,7 @@ int sub_803AE2A()
 
 
 // 0x803ae50
-int __fastcall sub_803AE50(int a1, int a2, int a3)
+int __fastcall menuSelectNextElement(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -8886,7 +8886,7 @@ int sub_803B1C4()
     IsPaletteFadeActive();
     if ( !v1 )
         *(v0 + 1) = 8;
-    return sub_803B518();
+    return t3_loadToolkitBgTile10();
 }
 
 
@@ -8905,7 +8905,7 @@ int sub_803B1D6()
         engine_setScreeneffect(12, 16);
         *(v0 + 1) = 12;
     }
-    return sub_803B518();
+    return t3_loadToolkitBgTile10();
 }
 
 
@@ -8923,7 +8923,7 @@ int sub_803B1F8()
         *v0 = 8;
         v0[1] = 0;
     }
-    return sub_803B518();
+    return t3_loadToolkitBgTile10();
 }
 
 
@@ -8992,7 +8992,7 @@ int __fastcall copyData_803B45C(int a1, int a2, int a3, int a4)
 
 
 // 0x803b518
-int sub_803B518()
+int t3_loadToolkitBgTile10()
 {
     return sub_803B91C(10);
 }
@@ -10253,7 +10253,7 @@ int sub_803C564()
 // 0x803c570
 int sub_803C570()
 {
-    return sub_803CB0C(2);
+    return clearStatusBits(2);
 }
 
 
@@ -10267,7 +10267,7 @@ int sub_803C580()
 // 0x803c58c
 int sub_803C58C()
 {
-    return sub_803CB0C(64);
+    return clearStatusBits(64);
 }
 
 
@@ -10322,8 +10322,8 @@ int dispatch_803C620()
 {
     int result; // r0
 
-    sub_803CB0C(2);
-    sub_803CB0C(64);
+    clearStatusBits(2);
+    clearStatusBits(64);
     result = eS200BC50;
     if ( eS200BC50 )
         result = (dword_803C650[eS200BC50])();
@@ -10351,7 +10351,7 @@ signed __int64 sub_803C6C0()
 
 
 // 0x803c6d8
-__int64 sub_803C6D8()
+__int64 rfu_resetSlotsAndReportOffline()
 {
     rfu_clearAllSlot();
     sub_813D978();
@@ -10555,7 +10555,7 @@ signed __int64 sub_803C888()
     if ( !sub_8146D40(&unk_200AF80) )
     {
         sub_803CB00(64);
-        sub_803CB0C(2);
+        clearStatusBits(2);
         *(v0 + 3) = 4;
     }
     return sub_803C90C();
@@ -10794,7 +10794,7 @@ int __fastcall sub_803CB00(int result)
 
 
 // 0x803cb0c
-int __fastcall sub_803CB0C(int result)
+int __fastcall clearStatusBits(int result)
 {
     dword_200BC5C &= ~result;
     return result;
@@ -10835,7 +10835,7 @@ signed int sub_803CB44()
     signed int v1; // r4
     char v2; // zf
 
-    sub_803CB0C(byte_200);
+    clearStatusBits(byte_200);
     v1 = 0;
     sub_803CB18();
     if ( !v2 && *(*(v0 + oToolkit_JoypadPtr) + 2) & 0x300 )
@@ -10860,7 +10860,7 @@ char *sub_803CB78()
 
 
 // 0x803cb8c
-signed int __fastcall sub_803CB8C(int a1, int a2, int a3, int a4)
+signed int __fastcall t1_setMainState1cWithArg(int a1, int a2, int a3, int a4)
 {
     _BYTE **v4; // r10
     int v5; // r4

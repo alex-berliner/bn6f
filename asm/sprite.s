@@ -197,9 +197,9 @@ off_8002798:
 // symdb: Resets one of the mugshot sprites by table index and sets a flag/counter of 0x80 in the caller's object struct.
 // symdb: (r0 = mugshot sprite index into mugshotSpritePtrs, r5 = object struct ptr, untouched) -> r0
 // symdb: clobbered by callee; stores halfword 0x80 at [r5+0x20+0x16]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800279C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initMugshot.yaml
 	thumb_local_start
-sub_800279C:
+sprite_initMugshot:
 	push {r5,lr}
 	add r5, #0x20
 	lsl r0, r0, #2
@@ -212,7 +212,7 @@ sub_800279C:
 	.balign 4, 0
 off_80027B0:
 	.word mugshotSpritePtrs
-	thumb_func_end sub_800279C
+	thumb_func_end sprite_initMugshot
 
 // symdb: Writes 0x1 to the render-flush latch at EWRAM 0x0200F350, signalling that the next render-flush pass should execute.
 // symdb: (lr = caller's return address) -> r0 = 0x0200F350, r1 = 0x1 (trashed); no other side effects

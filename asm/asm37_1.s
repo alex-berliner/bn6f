@@ -2486,7 +2486,7 @@ byte_8142EA0:
 	thumb_local_start
 sub_8142ECC:
 	push {r4-r7,lr}
-	bl sub_81430DC
+	bl ow_crowLessonGetTextId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_8142FBA
@@ -2616,7 +2616,7 @@ ow_crowLessonInteraction:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_814305E
-	bl sub_81430DC
+	bl ow_crowLessonGetTextId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_814305E
@@ -2630,7 +2630,7 @@ ow_crowLessonInteraction:
 	ldrb r0, [r3,#oGameState_CoordInteractionTriggered]
 	tst r0, r0
 	beq loc_8143048
-	bl sub_81433DA
+	bl ow_crowLessonFlagCheck
 	beq loc_8143008
 	movflag EVENT_962
 	bl SetEventFlagFromImmediate
@@ -2653,7 +2653,7 @@ loc_8143024:
 	mov r1, #0
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 	mov r0, #1
-	bl sub_81433F6
+	bl ow_crowLessonSubtractCounter
 loc_8143038:
 	movflag EVENT_962
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -2741,9 +2741,9 @@ byte_81430D4:
 // symdb: Returns one of two text/message IDs (0x96E/0x96F) for the Cybercrow lesson spot, chosen by a state value from a helper.
 // symdb: () -> r0 = message/text ID (halfword 0x96E or 0x96F from table dword_81430F0); no flag
 // symdb: guarantees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_crowLessonGetTextId.yaml
 	thumb_local_start
-sub_81430DC:
+ow_crowLessonGetTextId:
 	push {r4-r7,lr}
 	bl sub_8143088
 	ldr r1, off_81430EC // =dword_81430F0 
@@ -2755,7 +2755,7 @@ off_81430EC:
 	.word dword_81430F0
 dword_81430F0:
 	.word 0x96F096E
-	thumb_func_end sub_81430DC
+	thumb_func_end ow_crowLessonGetTextId
 
 	thumb_local_start
 sub_81430F4:
@@ -3072,7 +3072,7 @@ locret_814330C:
 sub_8143314:
 	push {r4-r7,lr}
 	ldr r5, off_8143398 // =byte_2000D20 
-	bl sub_8143470
+	bl crow_decrementCounter
 	bne locret_814338E
 	bl sub_814343A
 	mov r4, #0
@@ -3183,15 +3183,15 @@ sub_81433D2:
 
 // symdb: Returns nonzero when the crow-lesson event flag at eStruct2001010+0x9 is set
 // symdb: (void) -> r0 = flag byte from eStruct2001010+0x9 (0 or nonzero); flags set by tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433DA.yaml
-	thumb_func_start sub_81433DA
-sub_81433DA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_crowLessonFlagCheck.yaml
+	thumb_func_start ow_crowLessonFlagCheck
+ow_crowLessonFlagCheck:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	ldrb r0, [r5,#0x9] // (byte_2001019 - 0x2001010)
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_81433DA
+	thumb_func_end ow_crowLessonFlagCheck
 
 	thumb_func_start sub_81433E4
 sub_81433E4:
@@ -3210,9 +3210,9 @@ loc_81433F2:
 // symdb: Subtracts r0 from the crow-lesson counter at eStruct2001010+0x9, clamping the result at zero.
 // symdb: (r0 = amount to subtract) -> r0 preserved; counter at byte_2001019 becomes max(counter - r0, 0);
 // symdb: flags set by the SUB
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433F6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_crowLessonSubtractCounter.yaml
 	thumb_local_start
-sub_81433F6:
+ow_crowLessonSubtractCounter:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	ldrb r1, [r5,#0x9] // (byte_2001019 - 0x2001010)
@@ -3222,7 +3222,7 @@ sub_81433F6:
 loc_8143402:
 	strb r1, [r5,#0x9] // (byte_2001019 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81433F6
+	thumb_func_end ow_crowLessonSubtractCounter
 
 // symdb: Writes GetRNG & 3 into eStruct2001010 + 0xA (byte_200101A); meaning unknown (the vidsync doc flags it the same way).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143406.yaml
@@ -3286,9 +3286,9 @@ byte_8143464:
 // symdb: Decrements a saturating counter in the crow/bird system struct (eStruct2001010+0xC), clamping at zero and returning the new value.
 // symdb: () -> r0 = new counter value (old value - 1, min 0); flags set from final value (Z if zero, N if
 // symdb: negative before clamp)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143470.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/crow_decrementCounter.yaml
 	thumb_local_start
-sub_8143470:
+crow_decrementCounter:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	ldr r0, [r5,#0xc] // (dword_200101C - 0x2001010)
@@ -3299,7 +3299,7 @@ loc_814347C:
 	str r0, [r5,#0xc] // (dword_200101C - 0x2001010)
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143470
+	thumb_func_end crow_decrementCounter
 
 	thumb_func_start sub_8143482
 sub_8143482:
@@ -3338,7 +3338,7 @@ sub_81434BA:
 	bl sub_8143088
 	cmp r0, #0xff
 	beq loc_81434DC
-	bl sub_81430DC
+	bl ow_crowLessonGetTextId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_81434DC

@@ -853,9 +853,9 @@ jt_80895C0:
 	.word owPlayer_handleBeastSpawnTransition_8089B54+1
 	.word sub_8089B7E+1
 	.word sub_8089B94+1
-	.word sub_8089BAA+1
+	.word battle_waitChipLockoutEnd+1
 	.word ai_event745OnceInit+1
-	.word sub_8089BE4+1
+	.word battle_aiChipLockoutWait+1
 	.word ai_setupStateTimer1C+1
 	thumb_func_end battleObject_runUpdateJumpTable_80895A8
 
@@ -1621,9 +1621,9 @@ loc_8089BA6:
 
 // symdb: Battle-side handler that idles while the chip lockout timer runs, then once it expires fires an action (0xD) and sets an 0x80 flag.
 // symdb: (r5 = state object whose byte field receives 0x80) -> r0 = 1 always; no flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BAA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitChipLockoutEnd.yaml
 	thumb_local_start
-sub_8089BAA:
+battle_waitChipLockoutEnd:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BBC
@@ -1634,7 +1634,7 @@ sub_8089BAA:
 loc_8089BBC:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089BAA
+	thumb_func_end battle_waitChipLockoutEnd
 
 // symdb: One-time AI trigger: if chatbox flag bit 0x80 is clear, sets event 745 and resets the entity's AI state, then returns 1.
 // symdb: (r5 = AI/entity control struct) -> r0 = 1 always; sets EVENT_745 when flag bit 0x80 was clear
@@ -1661,9 +1661,9 @@ loc_8089BE0:
 // symdb: AI routine that waits until the chip lockout timer expires, then issues action 0xE and stores state 0x88 before returning 1.
 // symdb: (implicit r5 = byte state field pointer) -> r0 = 1 always; flags from battle_tickChipLockout
 // symdb: result inside
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiChipLockoutWait.yaml
 	thumb_local_start
-sub_8089BE4:
+battle_aiChipLockoutWait:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BF6
@@ -1674,7 +1674,7 @@ sub_8089BE4:
 loc_8089BF6:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089BE4
+	thumb_func_end battle_aiChipLockoutWait
 
 // symdb: AI step that, unless event flag 0x80 (of eFlags2009F38) is set, resets the AI object's state byte and starts a 0x1E-frame timer in AIData.
 // symdb: (r5 = AIData struct pointer, r0/r1 unused on entry) -> r0 = 1 (always); sets byte AIData+0x00 =

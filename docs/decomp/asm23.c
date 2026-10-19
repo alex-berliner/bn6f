@@ -834,7 +834,7 @@ signed int sub_8089B94()
 
 
 // 0x8089baa
-signed int __fastcall sub_8089BAA(int a1)
+signed int __fastcall battle_waitChipLockoutEnd(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -868,7 +868,7 @@ signed int ai_event745OnceInit()
 
 
 // 0x8089be4
-signed int __fastcall sub_8089BE4(int a1)
+signed int __fastcall battle_aiChipLockoutWait(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf

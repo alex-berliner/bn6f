@@ -2976,9 +2976,9 @@ off_813CC14:
 byte_813CC18:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.word sub_813CCE8+1
-	.word sub_813CCEC+1
-	.word sub_813CCEC+1
-	.word sub_813CCEC+1
+	.word pet_setCurNaviStatsFlag31+1
+	.word pet_setCurNaviStatsFlag31+1
+	.word pet_setCurNaviStatsFlag31+1
 	.word sub_813CCFC+1
 	.word sub_813CD00+1
 	.word sub_813CD00+1
@@ -3033,9 +3033,9 @@ sub_813CCE8:
 
 // symdb: Sets byte 0x31 of the currently selected PET navi's NaviStats record to 1, marking some per-navi flag/progress value.
 // symdb: () -> void; calls SetCurPETNaviStatsByte(0, 0x31, 1)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CCEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStatsFlag31.yaml
 	thumb_local_start
-sub_813CCEC:
+pet_setCurNaviStatsFlag31:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x31 
@@ -3043,7 +3043,7 @@ sub_813CCEC:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CCEC
+	thumb_func_end pet_setCurNaviStatsFlag31
 
 	thumb_local_start
 sub_813CCFC:
@@ -3073,7 +3073,7 @@ sub_813CD14:
 	push {lr}
 	bl sub_813CD3E
 	mov r2, #2
-	bl sub_813CD4C
+	bl pet_clearCurNaviStatsByte19
 	pop {pc}
 	thumb_func_end sub_813CD14
 
@@ -3082,7 +3082,7 @@ sub_813CD22:
 	push {lr}
 	bl sub_813CD3E
 	mov r2, #3
-	bl sub_813CD4C
+	bl pet_clearCurNaviStatsByte19
 	pop {pc}
 	thumb_func_end sub_813CD22
 
@@ -3091,7 +3091,7 @@ sub_813CD30:
 	push {lr}
 	bl sub_813CD3E
 	mov r2, #4
-	bl sub_813CD4C
+	bl pet_clearCurNaviStatsByte19
 	pop {pc}
 	thumb_func_end sub_813CD30
 
@@ -3107,15 +3107,15 @@ sub_813CD3E:
 
 // symdb: Writes 0 to byte 0x13 (offset 19) of the NaviStats record of the navi currently selected in the PET.
 // symdb: () -> void; calls SetCurPETNaviStatsByte(0, 0x13), no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_clearCurNaviStatsByte19.yaml
 	thumb_local_start
-sub_813CD4C:
+pet_clearCurNaviStatsByte19:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x13
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
-	thumb_func_end sub_813CD4C
+	thumb_func_end pet_clearCurNaviStatsByte19
 
 	thumb_local_start
 sub_813CD58:
@@ -3127,7 +3127,7 @@ sub_813CD58:
 sub_813CD5C:
 	push {lr}
 	mov r2, #4
-	bl sub_813CD7A
+	bl pet_clearCurNaviStatsByte63
 	pop {pc}
 	thumb_func_end sub_813CD5C
 
@@ -3135,7 +3135,7 @@ sub_813CD5C:
 sub_813CD66:
 	push {lr}
 	mov r2, #3
-	bl sub_813CD7A
+	bl pet_clearCurNaviStatsByte63
 	pop {pc}
 	thumb_func_end sub_813CD66
 
@@ -3143,22 +3143,22 @@ sub_813CD66:
 sub_813CD70:
 	push {lr}
 	mov r2, #2
-	bl sub_813CD7A
+	bl pet_clearCurNaviStatsByte63
 	pop {pc}
 	thumb_func_end sub_813CD70
 
 // symdb: Zeroes the byte at offset 0x63 of the currently selected PET navi's NaviStats record.
 // symdb: (no args) -> void; writes 0 via SetCurPETNaviStatsByte(0, 0x63, 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD7A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_clearCurNaviStatsByte63.yaml
 	thumb_local_start
-sub_813CD7A:
+pet_clearCurNaviStatsByte63:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x63 
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CD7A
+	thumb_func_end pet_clearCurNaviStatsByte63
 
 	thumb_local_start
 sub_813CD88:
@@ -3441,7 +3441,7 @@ sub_813CEF8:
 	mov r2, #3
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	mov r2, r4
-	bl sub_813CD4C
+	bl pet_clearCurNaviStatsByte19
 	pop {r4,pc}
 	thumb_func_end sub_813CEF8
 
@@ -3456,9 +3456,9 @@ sub_813CF10:
 
 // symdb: Writes an 8-bit value at offset 0x16 of the PET's currently selected Navi's stats record.
 // symdb: (r0 = byte value to store) -> void; flags clobbered by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_setCurNaviStatsByte16.yaml
 	thumb_local_start
-sub_813CF1C:
+pet_setCurNaviStatsByte16:
 	push {lr}
 	mov r2, r0
 	mov r0, #0
@@ -3466,7 +3466,7 @@ sub_813CF1C:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CF1C
+	thumb_func_end pet_setCurNaviStatsByte16
 
 	thumb_local_start
 sub_813CF2C:

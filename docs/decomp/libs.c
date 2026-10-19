@@ -4653,7 +4653,7 @@ signed int rfu_initWirelessSession()
     byte_2010274 = byte_2010292;
     byte_201039C = 0;
     sub_81463E8(sub_8148E74);
-    rfu_setMscCallbackArg(sub_8148FB4);
+    rfu_setMscCallbackArg(rfu_recvData);
     rfu_setRecvBuffer(16, byte_20103E0, &unk_20103A0, 64);
     v1 = rfu_clearSlot(3, byte_20103E0);
     sub_803ECFC(v1);
@@ -4758,7 +4758,7 @@ LABEL_25:
 
 
 // 0x8148fb4
-int sub_8148FB4()
+int rfu_recvData()
 {
     int v1; // [sp+0h] [bp-4h]
 

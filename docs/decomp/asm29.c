@@ -2421,7 +2421,7 @@ int __fastcall sub_80A7160(int a1, int a2, int a3)
     if ( v5 > 2 )
     {
         *(v4 + 7) = 3;
-        sub_80A71EC(3, a2, a3);
+        object_timerCountdownPlaySfx(3, a2, a3);
         result = sprite_getFrameParameters();
         if ( result & 0x80 )
         {
@@ -2451,7 +2451,7 @@ int __fastcall sub_80A7160(int a1, int a2, int a3)
 
 
 // 0x80a71ec
-int __fastcall sub_80A71EC(int a1, int a2, int a3)
+int __fastcall object_timerCountdownPlaySfx(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -2929,7 +2929,7 @@ int __fastcall sub_80A7640(int a1, int a2, int a3)
     if ( v5 > 2 )
     {
         *(v4 + 7) = 3;
-        sub_80A76CC(3, a2, a3);
+        object_playDelayedSfx(3, a2, a3);
         result = sprite_getFrameParameters();
         if ( result & 0x80 )
         {
@@ -2959,7 +2959,7 @@ int __fastcall sub_80A7640(int a1, int a2, int a3)
 
 
 // 0x80a76cc
-int __fastcall sub_80A76CC(int a1, int a2, int a3)
+int __fastcall object_playDelayedSfx(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -6255,7 +6255,7 @@ int sub_80A9824()
 
 
 // 0x80a9844
-int sub_80A9844()
+int object_storyExplosionBeginPhase4()
 {
     int v0; // r5
 
@@ -6328,7 +6328,7 @@ int sub_80A98D4()
 
 
 // 0x80a98f4
-int sub_80A98F4()
+int object_storyExplosionInit()
 {
     int v0; // r5
 
@@ -7637,7 +7637,7 @@ signed int isEventFlag216Set()
 
 
 // 0x80aa7d4
-signed int sub_80AA7D4()
+signed int checkEventFlag217()
 {
     signed int v0; // r4
     char v1; // zf
@@ -7651,7 +7651,7 @@ signed int sub_80AA7D4()
 
 
 // 0x80aa7e8
-signed int sub_80AA7E8()
+signed int e_isEvent218Set()
 {
     signed int v0; // r4
     char v1; // zf
@@ -7665,7 +7665,7 @@ signed int sub_80AA7E8()
 
 
 // 0x80aa7fc
-signed int sub_80AA7FC()
+signed int get_eventFlag219()
 {
     signed int v0; // r4
     char v1; // zf
@@ -7679,7 +7679,7 @@ signed int sub_80AA7FC()
 
 
 // 0x80aa810
-signed int sub_80AA810()
+signed int get_eventFlag222()
 {
     signed int v0; // r4
     char v1; // zf

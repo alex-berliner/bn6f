@@ -449,9 +449,9 @@ loc_80033E0:
 // symdb: Spawns a battle object of pool type 4 from a five-word parameter record and runs its initializer.
 // symdb: (r0-r4 = five-word spawn record: type fields/position/params copied to stack) -> r0 =
 // symdb: BattleObject pointer or NULL; flags untouched by caller contract
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80033E4.yaml
-	thumb_func_start sub_80033E4
-sub_80033E4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnBattleObjectTypeFour.yaml
+	thumb_func_start spawnBattleObjectTypeFour
+spawnBattleObjectTypeFour:
 	push {r7,lr}
 	sub sp, sp, #0x14
 	mov r7, sp
@@ -465,7 +465,7 @@ sub_80033E4:
 loc_80033FC:
 	add sp, sp, #0x14
 	pop {r7,pc}
-	thumb_func_end sub_80033E4
+	thumb_func_end spawnBattleObjectTypeFour
 
 // symdb: Inserts a freshly-spawned battle object into the doubly-linked list just before the node held in eUnkBattleObjectLinkedList, falling back to UpdateBattleObjectLinkedList when there is no previous entry.
 // symdb: (r5 = pointer to new BattleObject payload) -> r0 = same pointer ; side effects: rewrites the
@@ -3514,9 +3514,9 @@ off_80049DC:
 
 // symdb: Zero-fills a 0x400-byte work buffer and publishes its address through a global pointer.
 // symdb: () -> void; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80049E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_zeroWorkBuffer.yaml
 	thumb_local_start
-sub_80049E0:
+init_zeroWorkBuffer:
 	push {lr}
 	ldr r0, off_8004D2C // =byte_2006848
 	ldr r1, off_80049F4 // =0x400
@@ -3528,7 +3528,7 @@ sub_80049E0:
 	.balign 4, 0
 off_80049F4:
 	.word 0x400
-	thumb_func_end sub_80049E0
+	thumb_func_end init_zeroWorkBuffer
 
 	thumb_local_start
 sub_80049F8:
@@ -11489,10 +11489,10 @@ sub_800838A:
 	tst r0, r0
 	bne loc_80083AE
 	mov r0, #1
-	bl sub_801055E
+	bl battle_getPlayerTotalDamageTaken
 	push {r0}
 	mov r0, #0
-	bl sub_801055E
+	bl battle_getPlayerTotalDamageTaken
 	mov r1, r0
 	pop {r0}
 	bl sub_802CB38
@@ -16909,9 +16909,9 @@ off_800A750:
 
 // symdb: Boolean check on a flag in the battle state's Unk_5c field.
 // symdb: () -> r0 = 1 if battle state Unk_5c has the flag bit set, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A754.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_testStateUnk5cFlag.yaml
 	thumb_local_start
-sub_800A754:
+battle_testStateUnk5cFlag:
 	push {lr}
 	push {r0}
 	bl battle_getStateUnk5c_800139A
@@ -16928,7 +16928,7 @@ loc_800A766:
 loc_800A76E:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_800A754
+	thumb_func_end battle_testStateUnk5cFlag
 
 	thumb_func_start battle_canAllianceAct_800A772
 // lockout check?
@@ -19101,9 +19101,9 @@ sub_800B49E:
 // symdb: Writes a 0xA9B8C7D6-tagged two-word packet into the outgoing battle link buffer and requests battle mode 3.
 // symdb: (r0 = passed to sub_800B4CE, r1 = second payload word) -> r0 = 1 from
 // symdb: battle_requestSetBattleMode; r4 consumed as first payload word
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B4B2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_linkSendTaggedPacketMode3.yaml
 	thumb_local_start
-sub_800B4B2:
+battle_linkSendTaggedPacketMode3:
 	push {r4,r5,lr}
 	mov r5, r1
 	bl sub_800B4CE
@@ -19116,7 +19116,7 @@ sub_800B4B2:
 	mov r0, #3
 	bl battle_requestSetBattleMode_80200A4
 	pop {r4,r5,pc}
-	thumb_func_end sub_800B4B2
+	thumb_func_end battle_linkSendTaggedPacketMode3
 
 	thumb_local_start
 sub_800B4CE:
@@ -19626,7 +19626,7 @@ off_800B7B8:
 off_800B7BC:
 	.word sub_800B7D0+1
 	.word battle_incrementNaviStatsByte18Saturating+1
-	.word sub_800B800+1
+	.word battle_setNaviStatsByte18To7+1
 	.word nullsub_2+1
 	.word sub_800B80E+1
 	thumb_func_end sub_800B79A
@@ -19667,15 +19667,15 @@ loc_800B7F8:
 // symdb: Wrapper that writes the value 7 to byte 0x18 of the NaviStats record of the navi a battle object represents (alliance-selected record).
 // symdb: (r0 = battle object) -> r0 = result byte written by callee; flags set by
 // symdb: SetBattleNaviStatsByte_AllianceFromBattleObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B800.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setNaviStatsByte18To7.yaml
 	thumb_local_start
-sub_800B800:
+battle_setNaviStatsByte18To7:
 	push {lr}
 	mov r1, #0x18
 	mov r2, #7
 	bl SetBattleNaviStatsByte_AllianceFromBattleObject
 	pop {pc}
-	thumb_func_end sub_800B800
+	thumb_func_end battle_setNaviStatsByte18To7
 
 	thumb_local_start
 nullsub_2:

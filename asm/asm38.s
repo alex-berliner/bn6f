@@ -331,9 +331,9 @@ sub_3005DEC:
 // symdb: C hardware helper that clears selected interrupt sources in the IE register without ever leaving interrupts globally disabled
 // symdb: (r0 = bitmask of IE bits to clear) -> r0 = 0 (side effect on IE); flags from mov/bic, no
 // symdb: meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E02.yaml
-	thumb_func_start sub_3005E02
-sub_3005E02:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_clearIrqEnableBits.yaml
+	thumb_func_start start_clearIrqEnableBits
+start_clearIrqEnableBits:
 	push {r4,lr}
 	ldr r3, off_3005E54 // =InterruptMasterEnableRegister
 	ldrh r4, [r3]
@@ -345,7 +345,7 @@ sub_3005E02:
 	strh r2, [r1]
 	strh r4, [r3]
 	pop {r4,pc}
-	thumb_func_end sub_3005E02
+	thumb_func_end start_clearIrqEnableBits
 
 	thumb_func_start sub_3005E18
 sub_3005E18:
@@ -418,9 +418,9 @@ start_enableInterrupts:
 
 // symdb: Clears REG_IME, globally disabling interrupts.
 // symdb: () -> r0 = clobbered (not meaningful); REG_IME = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E6A.yaml
-	thumb_func_start sub_3005E6A
-sub_3005E6A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/disableInterrupts.yaml
+	thumb_func_start disableInterrupts
+disableInterrupts:
 	push {r4,lr}
 	ldr r3, off_3005E74 // =InterruptMasterEnableRegister
 	mov r2, #0
@@ -432,7 +432,7 @@ off_3005E78:
 	.word libSIO814469C+1
 off_3005E7C:
 	.word sio_linkStateUpdate+1
-	thumb_func_end sub_3005E6A
+	thumb_func_end disableInterrupts
 
 	thumb_func_start iCopyBackgroundTiles
 // (int j, int i, int tileBlock32x32, u16 *tileIds, int j_size@R4, int i_size@R5) -> void

@@ -211,7 +211,7 @@ start_dead_800025C:
 	thumb_local_start
 start_dead_8000268:
 	push {lr}
-	ldr r1, off_8000278 // =sub_3005E02+1 
+	ldr r1, off_8000278 // =start_clearIrqEnableBits+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
@@ -219,7 +219,7 @@ start_dead_8000268:
 off_8000274:
 	.word sub_3005DEC+1
 off_8000278:
-	.word sub_3005E02+1
+	.word start_clearIrqEnableBits+1
 	thumb_func_end start_dead_8000268
 
 // symdb: ROM entry point; trampolines to the game's main boot routine that was copied into EWRAM at 0x3005E18 and then returns through the normal caller.
@@ -267,7 +267,7 @@ start_800029C:
 	thumb_local_start
 start_80002A8:
 	push {lr}
-	ldr r1, off_80002B8 // =sub_3005E6A+1 
+	ldr r1, off_80002B8 // =disableInterrupts+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
@@ -275,7 +275,7 @@ start_80002A8:
 off_80002B4:
 	.word start_enableInterrupts+1
 off_80002B8:
-	.word sub_3005E6A+1
+	.word disableInterrupts+1
 	thumb_func_end start_80002A8
 
 /*For debugging purposes, connect comment at any range!*/
