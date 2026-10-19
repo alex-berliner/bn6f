@@ -421,7 +421,7 @@ off_8123448:
 
 // symdb: One-time initialization of the chip folder screen: sets screen state, loads folder graphics and font/text tables, registers two on-screen windows, and runs the screen's setup routine.
 // symdb: void sub_812345C(void); // no meaningful inputs; r0-r7, lr and nz/c/v on return are whatever the
-// symdb: final callee (chipFolder_initEntryList) leaves
+// symdb: final callee (sub_8123D24) leaves
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chipFolder_screenInit_812345C.yaml
 	thumb_local_start
 chipFolder_screenInit_812345C:
@@ -9242,6 +9242,11 @@ sub_81278D8:
 	.balign 4, 0x00
 	thumb_func_end sub_81278D8
 
+// symdb: Queues two OAM sprite entries for a battle object, selecting a variant from two adjacent lookup tables via the object's byte at +0xD.
+// symdb: (r5 = battle object ptr, reads signed byte at r5+0xD as variant index; r0 = ((variant*8 +
+// symdb: 0x200)<<16)|0x70 and +0x220 variant, r1 = 0x70, r2 = 0, r3 = table, r4 = 0x80004000) -> r0 =
+// symdb: callee result (next row index); queues 2 OAM entries, then calls sub_8127944
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81278E8.yaml
 	thumb_local_start
 sub_81278E8:
 	push {r4-r7,lr}
@@ -17348,6 +17353,10 @@ off_812B58C:
 	.word dword_814FE94
 	thumb_func_end sub_812B574
 
+// symdb: Plays text script 0x2f from archive eTextScript201BA20 in the chatbox, then advances the caller's state struct.
+// symdb: (r0 = unused entry value, r5 = state struct pointer from caller) -> r0 = script-run result;
+// symdb: writes [r5+1]=0x3C, [r5+2]=4, [r5+0x10]=5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B590.yaml
 	thumb_local_start
 sub_812B590:
 	push {r4,lr}

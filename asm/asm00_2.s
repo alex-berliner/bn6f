@@ -2146,7 +2146,7 @@ byte_800FB4C:
 // symdb: Player AI: if A-pressed/held, try to fire the queued attack chip for the controlled battle object, clearing the pending-input flag and returning the chosen chip id, damage and attack boost.
 // symdb: (r5 = *BattleObject, r10 = *Toolkit) -> r0 = chip id (u16), r1 = damage (u16), r2 = attack boost
 // symdb: (u16); side effects mutate AIData+0x44 flags, AIData+0xA0 AttackVars and call object_setAttack2
-// symdb: / useChipRelated_80127C0 / sub_80117BA / battle_beastPwrAtkHitEnemies.
+// symdb: / useChipRelated_80127C0 / sub_80117BA / sub_8012CB2.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/playerAI_tryExecuteAttackChip_800FB54.yaml
 	thumb_func_start playerAI_tryExecuteAttackChip_800FB54
 playerAI_tryExecuteAttackChip_800FB54:
@@ -6643,6 +6643,10 @@ loc_8011B96:
 	pop {pc}
 	thumb_func_end sub_8011B4A
 
+// symdb: Initializes an enemy AI attack-vars block for a beast-power attack with base damage 30 x multiplier 20 and fixed difficulty/charge settings.
+// symdb: (r7 = pointer to oAIAttackVars struct, implicit) -> r0 = 0x27 (next attack state/step); struct
+// symdb: fields Damage/ExtraDamage/InitFlag/etc. written
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011BA2.yaml
 	thumb_local_start
 sub_8011BA2:
 	push {lr}
@@ -6722,6 +6726,9 @@ ai_initBeastPwrAtkAttack:
 	pop {pc}
 	thumb_func_end ai_initBeastPwrAtkAttack
 
+// symdb: Initializes the AI attack variable block for a beast-power attack: computes damage from a base/multiplier pair and sets extra damage, an init flag, and a boost word.
+// symdb: (r7 = AI attack vars struct) -> r0 = 0x3d (attack/state id?); r0..r1 clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011C18.yaml
 	thumb_local_start
 sub_8011C18:
 	push {lr}
@@ -7008,6 +7015,9 @@ sub_8011DBC:
 	pop {pc}
 	thumb_func_end sub_8011DBC
 
+// symdb: Initializes the AI attack-vars block for a BeastOut-style attack: resets charge/delay/boost, sets extra damage, and computes the base damage from a scaled BeastOut value.
+// symdb: (r0 unused; r7 = AI attack vars struct) -> writes oAIAttackVars_* fields; r0 = 0x4F on return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011DDC.yaml
 	thumb_local_start
 sub_8011DDC:
 	push {lr}
@@ -7283,6 +7293,10 @@ ai_setChipUseDelay:
 	mov pc, lr
 	thumb_func_end ai_setChipUseDelay
 
+// symdb: One step of MegaMan's AI B+power charge-shot attack: counts down a delay, then loads attack parameters and hands off to the shot initializer.
+// symdb: (r6 = oAIData entity, r7 = oAIAttackVars) -> r0 = 0x11 next-state code (or callee's return when
+// symdb: firing); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011F8C.yaml
 	thumb_local_start
 sub_8011F8C:
 	push {lr}
@@ -7527,6 +7541,10 @@ off_8012120:
 	.word 0x114
 	thumb_func_end sub_80120FE
 
+// symdb: Initializes an AI attack's parameter block on a battle object, scaling base damage by the attacker's side and returning attack id 0x5d.
+// symdb: (r0 = battle object ptr) -> r0 = 0x5d attack id; writes oAIAttackVars fields of the object's AI
+// symdb: struct (via r7 in caller frame)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012124.yaml
 	thumb_local_start
 sub_8012124:
 	push {lr}
@@ -7641,6 +7659,10 @@ sub_80121BC:
 	mov pc, lr
 	thumb_func_end sub_80121BC
 
+// symdb: Battle-AI attack initializer: computes a beast-power-scaled damage value and sets up the AI attack vars, returning state 9
+// symdb: (r0 = 0, r5 = battle object, r7 = AI attack vars) -> r0 = 9 (next AI state); writes
+// symdb: oAIAttackVars_Damage, _ExtraDamage, _InitFlag, _AttackBoost2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80121DC.yaml
 	thumb_local_start
 sub_80121DC:
 	push {lr}
@@ -7765,6 +7787,10 @@ ai_setupAttackVars:
 	pop {pc}
 	thumb_func_end ai_setupAttackVars
 
+// symdb: AI attack-step setup: computes the beast power-attack damage for alliance index 6 and stores it (plus a fixed extra damage) into the AI attack vars, then advances to AI state 9.
+// symdb: (r5 = battle object pointer, r7 = AI attack vars struct) -> stores oAIAttackVars_Damage,
+// symdb: oAIAttackVars_ExtraDamage=0x8A, oAIAttackVars_InitFlag=0; r0 = 9 (next AI state/step)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012292.yaml
 	thumb_local_start
 sub_8012292:
 	push {lr}
@@ -7814,6 +7840,10 @@ sub_80122C2:
 	pop {pc}
 	thumb_func_end sub_80122C2
 
+// symdb: AI attack step that computes a Beast-Out scaled attack damage and stores it into the attack vars, returning the next state 9.
+// symdb: (r5 = battle object, r7 = AI attack vars) -> stores damage to
+// symdb: oAIAttackVars_Damage/ExtraDamage/InitFlag; r0 = 9 (next state code)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80122DA.yaml
 	thumb_local_start
 sub_80122DA:
 	push {lr}
@@ -8255,6 +8285,9 @@ sub_80124F4:
 	pop {pc}
 	thumb_func_end sub_80124F4
 
+// symdb: Initializes the AI attack-vars struct for one attack (damage 50, extra 10, tier 2, boost 4) and returns attack id 0x25.
+// symdb: (r0 = unused) -> r0 = 0x25 attack id; r7 = attack-vars struct base is supplied by caller context
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80124FE.yaml
 	thumb_local_start
 sub_80124FE:
 	push {lr}
@@ -8282,6 +8315,9 @@ sub_801251C:
 	pop {pc}
 	thumb_func_end sub_801251C
 
+// symdb: AI attack-routine setup that forces easy-tier behavior (no chip use, zero damage) and returns 0x1c.
+// symdb: (r7 = oAIAttackVars struct, no args) -> r0 = 0x1c; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012526.yaml
 	thumb_local_start
 sub_8012526:
 	mov r0, #9

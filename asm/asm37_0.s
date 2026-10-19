@@ -531,6 +531,9 @@ sub_813BA48:
 	.balign 4, 0x00
 	thumb_func_end sub_813BA48
 
+// symdb: Resets the toolkit's text-script working buffers by copying default script data (0x40 bytes) and default state/data (0x188 bytes) into the buffers pointed to by toolkit fields 0x14c and 0x190.
+// symdb: () -> void; no return value, clobbers r0-r3, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BA64.yaml
 	thumb_func_start sub_813BA64
 sub_813BA64:
 	push {lr}

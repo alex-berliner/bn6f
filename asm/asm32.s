@@ -12674,6 +12674,10 @@ battle_pickAllianceParamPanel:
 	pop {r4-r7,pc}
 	thumb_func_end battle_pickAllianceParamPanel
 
+// symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to sub_8114088 to run.
+// symdb: (r4 = index into PanelOffsetListsPointerTable, r6 = parameter passed through) -> tail-calls
+// symdb: sub_8114088(r4 = list pointer, r6); no direct return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114074.yaml
 	thumb_local_start
 sub_8114074:
 	push {r4-r7,lr}

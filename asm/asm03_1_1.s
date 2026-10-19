@@ -6998,6 +6998,9 @@ sub_803C2EC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2EC
 
+// symdb: Adds 10 to a halfword counter/offset at +0x14 in the toolkit's render info struct, then returns.
+// symdb: (no args read) -> r0 = new value of field +0x14; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C2F0.yaml
 	thumb_local_start
 sub_803C2F0:
 	push {r4-r7,lr}
@@ -9360,6 +9363,10 @@ sub_803D170:
 	.byte 0, 0
 	thumb_func_end sub_803D170
 
+// symdb: Scans four consecutive battle-object descriptor slots (starting 0x90 index-units before r0) and returns the relative index of the first one whose byte at +3 is nonzero, or 0 if all four are clear.
+// symdb: (r0 = base battle-object descriptor index) -> r0 = base + offset (0..3) of first slot with
+// symdb: byte[+3] != 0, or 0 if none; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D180.yaml
 	thumb_local_start
 sub_803D180:
 	push {r4-r7,lr}
@@ -11562,6 +11569,10 @@ off_803E84C:
 	.word eLinkState // eLinkState
 	thumb_func_end link_setStateFromObjectCoords
 
+// symdb: Raises the link-state timeout counter (eLinkState+0x54) to at least max(obj+0xE, obj+0xF)+8 and switches the link state byte to 0xC, unless both bytes are <=5.
+// symdb: (r5 = struct with progress bytes at +0xE/+0xF) -> r0 = new counter value; writes eLinkState+0x54
+// symdb: (word) and eLinkState+0x00 (byte = 0xC)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E850.yaml
 	thumb_local_start
 sub_803E850:
 	push {r0-r2,r7,lr}
@@ -12281,6 +12292,10 @@ off_803EBF8:
 	.word eStruct200BC30
 	thumb_func_end eStruct200BC30_getRef
 
+// symdb: Dispatches the current step of the eStruct200BC30 sequence through its handler table and returns the handler's completion result; callers treat nonzero as 'step finished' and advance the state.
+// symdb: (r0 = passthrough/unused by dispatcher) -> r0 = result of the selected step handler (nonzero
+// symdb: when the step is done); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EBFC.yaml
 	thumb_local_start
 sub_803EBFC:
 	push {r4-r7,lr}

@@ -21962,6 +21962,9 @@ chatbox_PrintBuffer_WriteNextGlyph_814E234:
 	bx r12
 	thumb_func_end chatbox_PrintBuffer_WriteNextGlyph_814E234
 
+// symdb: Battle script opcode handler that writes a byte from the object's update script to a raw PSG/sound hardware register.
+// symdb: (r0 = unused on entry, r1 = battle object) -> writes script value to sound register; flags n/a
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E248.yaml
 	thumb_func_start sub_814E248
 sub_814E248:
 	mov r12, lr

@@ -4336,6 +4336,9 @@ sub_8143F58:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143F58
 
+// symdb: Trivial getter returning the dword at offset 0x10 of the eStruct2001010 structure.
+// symdb: () -> r0 = *(u32*)(eStruct2001010+0x10)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F60.yaml
 	thumb_local_start
 sub_8143F60:
 	push {r4-r7,lr}

@@ -1922,7 +1922,7 @@ off_80271F4:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end sub_80271C2
 
-// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or customScreen_shuffleAnimationTick (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
+// symdb: Shuffle-once state machine step: dispatches on S20364C0+2 to sub_802721C (state 0: initial shuffle) or sub_802723A (state 4: ticking shuffles + finish), then sub_8029C08 and sub_802899C.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80271F8.yaml
 	thumb_local_start
 sub_80271F8: // (self: * S20364C0 $r5) -> ()
@@ -7275,7 +7275,7 @@ off_8029684:
 	.word dword_203CA48
 	thumb_func_end sub_8029652
 
-// symdb: Shuffle-once, per-tick step: copies the hand's eligible chips into dword_2033000, shuffles them with ShuffleHwordList_SecondaryRNG and writes them back into eBattleFolder — one secondary-RNG shuffle per tick (8 ticks, from customScreen_shuffleAnimationTick).
+// symdb: Shuffle-once, per-tick step: copies the hand's eligible chips into dword_2033000, shuffles them with ShuffleHwordList_SecondaryRNG and writes them back into eBattleFolder — one secondary-RNG shuffle per tick (8 ticks, from sub_802723A).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029688.yaml
 	thumb_local_start
 sub_8029688:
@@ -10859,6 +10859,10 @@ off_802B08C:
 	.word NULL
 	thumb_func_end decomp_802B060
 
+// symdb: Queues a fixed set of four OAM sprite entries for an object, advancing its animation frame counter at object+0xF.
+// symdb: (r0-r3 = don't care, r5 = object struct; frame index at [r5,#0xF]) -> r0 = next frame index
+// symdb: stored to [r5,#0xF]; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B0EC.yaml
 	thumb_local_start
 sub_802B0EC:
 	push {r4-r7,lr}

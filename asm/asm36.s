@@ -381,6 +381,9 @@ loc_81302EE:
 	.balign 4, 0x00
 	thumb_func_end battle_spawnEStructRecordsAtPosition
 
+// symdb: Thin wrapper around e_setEntryValue0C: masks the value to 17 bits, writes it to entry field 0xC, and returns the masked value.
+// symdb: (r0 = value, r1 = entry index/handle) -> r0 = r0 & 0x1FFFF; flags clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302F4.yaml
 	thumb_func_start sub_81302F4
 sub_81302F4:
 	push {r4-r7,lr}
@@ -3316,6 +3319,10 @@ off_8131888:
 	.word unk_2037700
 	thumb_func_end sub_8131864
 
+// symdb: Sets or clears bit 0x40 in a battle object's flags byte at +0x1b, then runs the state-update dispatcher on the battle object at unk_2037700.
+// symdb: (r0 = bool: set flag if nonzero, clear if zero; r5 = battle object whose +0x1b flag byte is
+// symdb: modified) -> r0 = result of battleObject_dispatchUpdateByState; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813188C.yaml
 	thumb_local_start
 sub_813188C:
 	push {r4-r7,lr}
@@ -3914,6 +3921,10 @@ dword_8131F7C:
 	.word 0x2000
 	thumb_func_end startLinkSceneSetup
 
+// symdb: Dispatcher that indexes a handler table with the first byte of the EWRAM 0x200BC30 record and jumps to the selected handler.
+// symdb: (no args) -> r0 = value from eStruct200BC30_getJumpOffset00; returns to this function's caller
+// symdb: via handler's lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131F80.yaml
 	thumb_local_start
 sub_8131F80:
 	push {lr}
@@ -16085,6 +16096,10 @@ off_813788C:
 	.word unk_20018EC
 	thumb_func_end battle_getPlayerCurState_8137884
 
+// symdb: Returns the address of the 0x3C-byte chip entry at index r0 in the toolkit's S_Chip array.
+// symdb: (r0 = chip entry index) -> r0 = pointer to that 60-byte chip entry in
+// symdb: (*toolkit->oToolkit_S_Chip_2002178_Ptr); no flags matter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137890.yaml
 	thumb_func_start sub_8137890
 sub_8137890:
 	push {lr}

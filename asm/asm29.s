@@ -3038,6 +3038,10 @@ sub_80A6B08:
 	pop {pc}
 	thumb_func_end sub_80A6B08
 
+// symdb: Runs one step of a sine-eased movement of a battle object from its current position toward a target position over a fixed number of frames, returning 1 when finished.
+// symdb: (r5 = movement-work struct, r4 = state byte offset, r7 = progress counter halfword offset) -> r0
+// symdb: = 0 while moving, 1 when move completed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6B10.yaml
 	thumb_local_start
 sub_80A6B10:
 	push {lr}

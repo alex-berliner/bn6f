@@ -407,6 +407,9 @@ loc_80991D2:
 	.pool
 	thumb_func_end ow_cutsceneLoadEntry
 
+// symdb: Writes 1 into a byte field and clears a word field of the camera struct reached from the r10 globals, then returns 0.
+// symdb: () -> r0 = 0; writes via camera_writeUnk03_14 into camera struct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80991E0.yaml
 	thumb_local_start
 sub_80991E0:
 	push {r4-r7, lr}
@@ -904,6 +907,10 @@ byte_8099E2C:
 	pop {r4-r7, pc}
 	thumb_func_end byte_8099E2C
 
+// symdb: Runs a prerequisite step, then looks up the current Navi's mystery-data entry and stores it plus a status byte into a work structure, returning 0.
+// symdb: (no meaningful args; uses r5/r7/r10 as context pointers) -> r0 = 0; r2 from callee stored to
+// symdb: [r5,#4]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099E3C.yaml
 	thumb_local_start
 sub_8099E3C:
 	push {r4-r7, lr}
@@ -3469,6 +3476,10 @@ loc_809B864:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809B800
 
+// symdb: Stores a pointer to a 0x34-byte record table entry (selected by the struct's field +8) into the struct and sets story event flags 38 and 39.
+// symdb: (r0 = unused, r5 = object/work struct: +8 = record index, +0x34 = record pointer out) -> r0 = 0;
+// symdb: flags set via EVENT_38, EVENT_39
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B868.yaml
 	thumb_local_start
 sub_809B868:
 	push {r4-r7,lr}
