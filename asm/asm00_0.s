@@ -5376,6 +5376,11 @@ off_80024C8:
 	.word eStruct200a6a0
 	thumb_func_end Is_eStruct200a6a0_Initialized
 
+// symdb: Projects a world position through the camera, centers the background scroll on it, and redraws that region's BG tiles.
+// symdb: (r0 = world x, r1 = world y, r2 = region width in px (rounded up to even), r3 = region height in
+// symdb: px (rounded up to even)) -> r0 = left clamp from CopyBackgroundTiles; writes RenderInfo BG
+// symdb: scroll and Unk200f3a0 extents; clobbered r2-r7, r8-r10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80024CC.yaml
 	thumb_local_start
 sub_80024CC:
 	push {r4-r7,lr}

@@ -659,6 +659,10 @@ sub_812EF20:
 	.balign 4, 0x00
 	.word unk_2024F90
 	thumb_func_end sub_812EF20
+// symdb: Renders a small text window's glyphs into VRAM via the text renderer and blits its tile map onto background block 3.
+// symdb: (r0 = text/source handle, passed through as r1 to renderTextGfx) -> r0 = destroyed; no
+// symdb: meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EF60.yaml
 	thumb_local_start
 sub_812EF60:
 	push {r4-r7,lr}

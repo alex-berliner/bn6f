@@ -300,6 +300,10 @@ byte_80A4BA4:
 	.byte 0xC, 0x0, 0x8, 0x0
 	thumb_func_end sub_80A4ACC
 
+// symdb: Thin wrapper that frees an overworld map object, forwarding its argument to FreeOverworldMapObject.
+// symdb: (r0 = overworld map object slot/index) -> r0 = whatever FreeOverworldMapObject returns; no flag
+// symdb: use of its own
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A4BD4.yaml
 	thumb_local_start
 sub_80A4BD4:
 	push {lr}
@@ -2184,6 +2188,11 @@ sub_80A5DE8:
 	.byte 0, 0
 	thumb_func_end sub_80A5DE8
 
+// symdb: Thin wrapper that updates an object's animation to face its target using two position pointers stored in the object struct.
+// symdb: (r5 = object pointer; reads [r5,#0x28] and [r5,#0x2c] as arguments to
+// symdb: sprite_updateAnimByAngleToTarget) -> tail-jumps to sprite_updateAnimByAngleToTarget; no own
+// symdb: return value logic.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5E00.yaml
 	thumb_local_start
 sub_80A5E00:
 	push {r4,lr}
@@ -5114,6 +5123,10 @@ byte_80A79C4:
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0x1F
 	thumb_func_end ow_objectBrightenToWhiteUpdate
 
+// symdb: Thin wrapper that frees an overworld map object, likely used as a cleanup/destructor callback.
+// symdb: (r0 = overworld map object pointer) -> r0 = FreeOverworldMapObject return value; flags clobbered
+// symdb: by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A79D4.yaml
 	thumb_local_start
 sub_80A79D4:
 	push {r4-r7,lr}
@@ -5585,6 +5598,10 @@ owMapObject_updateBeastSpEncounter_80A7CEA:
 	pop {r4-r7,pc}
 	thumb_func_end owMapObject_updateBeastSpEncounter_80A7CEA
 
+// symdb: Thin wrapper that releases a single overworld map object via FreeOverworldMapObject, likely used as a callback/function pointer.
+// symdb: (r0 = map object slot/pointer, passed through) -> r0 = result of FreeOverworldMapObject; r4-r7
+// symdb: preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CF6.yaml
 	thumb_local_start
 sub_80A7CF6:
 	push {r4-r7,lr}
@@ -6232,6 +6249,10 @@ loc_80A8294:
 	.balign 4, 0x00
 	thumb_func_end battleObject_updateSpriteAndMaybeReloadAnim_80A827C
 
+// symdb: Wrapper that releases an overworld map object via FreeOverworldMapObject, likely used as a destructor callback.
+// symdb: (r0 = overworld map object slot/pointer) -> r0 = FreeOverworldMapObject result; flags from
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A829C.yaml
 	thumb_local_start
 sub_80A829C:
 	push {lr}
@@ -9089,6 +9110,10 @@ loc_80A9746:
 	pop {r4,pc}
 	thumb_func_end sub_80A971C
 
+// symdb: Per-frame object state that fades the sprite's color to white via a gray color-shader ramp, then transitions to the next state.
+// symdb: (r5 = object struct) -> void; increments object field 0x24; on completion sets object byte 8 =
+// symdb: 0xC and calls the follow-up handler sub_80A96FC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A974C.yaml
 	thumb_local_start
 sub_80A974C:
 	push {lr}
@@ -10678,6 +10703,10 @@ off_80AA368:
 	.word byte_8088708
 	thumb_func_end sub_80AA322
 
+// symdb: Thin wrapper that frees an overworld map object, forwarding the argument to FreeOverworldMapObject.
+// symdb: (r0 = pointer/handle to overworld map object to delete) -> r0 = whatever FreeOverworldMapObject
+// symdb: returns; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA36C.yaml
 	thumb_local_start
 sub_80AA36C:
 	push {r4-r7,lr}
@@ -11734,7 +11763,7 @@ loc_80AAA28:
 	pop {r4,pc}
 	thumb_func_end battle_collectRewardRarityMask
 
-// symdb: Picks the reward enemy id: mode 0 = one GetPositiveSignedRNG % count over the caller's table; mode nonzero = filters the entries through battle_collectRewardRarityMask first, then rolls over the filtered count.
+// symdb: Picks the reward enemy id: mode 0 = one GetPositiveSignedRNG % count over the caller's table; mode nonzero = filters the entries through sub_80AAA1C first, then rolls over the filtered count.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAA3C.yaml
 	thumb_local_start
 sub_80AAA3C:

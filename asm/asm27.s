@@ -59,6 +59,9 @@ sub_8094720:
 	.balign 4, 0x00
 	thumb_func_end sub_8094720
 
+// symdb: Copies a 34-row x 100-halfword block into the overworld map tilemap buffer at an offset, then redraws the tilemap around the camera.
+// symdb: (r0 = source buffer of 34 rows x 0x64 halfwords) -> r0 = 0; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094738.yaml
 	thumb_local_start
 sub_8094738:
 	push {r4-r7,lr}

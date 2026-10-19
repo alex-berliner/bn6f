@@ -3042,6 +3042,10 @@ loc_81432EC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81432D8
 
+// symdb: Writes a new state byte into one of the eight Cybercrow crow records unless it is locked at state 3.
+// symdb: (r0 = crow record index, r1 = new state value) -> r0 = record pointer (side-effect only); no
+// symdb: meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81432FA.yaml
 	thumb_local_start
 sub_81432FA:
 	push {r4-r7,lr}
@@ -3814,6 +3818,10 @@ byte_8143C10:
 	.byte 0x78, 0x1E, 0x0, 0x0, 0x4C, 0x1D, 0x0, 0x0
 	thumb_func_end sub_8143BFC
 
+// symdb: Returns a map ID (0xD32 or 0xD33) looked up from the current Groundman minigame map index.
+// symdb: () -> r0 = halfword map ID from table dword_8143C2C indexed by GetGroundmanMinigameMapIndex;
+// symdb: flags from ldrh
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C18.yaml
 	thumb_local_start
 sub_8143C18:
 	push {r4-r7,lr}
@@ -4168,6 +4176,11 @@ groundmanMinigameGridDirBetween:
 	pop {r4-r7,pc}
 	thumb_func_end groundmanMinigameGridDirBetween
 
+// symdb: Looks up the Groundman minigame's per-map entry table and returns the list index of the first entry whose event flag is still unset and whose u16 field matches the given value.
+// symdb: (r0 = value to match against entry halfword, e.g. an id/position in the current minigame map) ->
+// symdb: r0 = 1 if a match found else 0, r1 = matching list index or 0xFF if none; flags clobbered by bl
+// symdb: calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EDC.yaml
 	thumb_func_start sub_8143EDC
 sub_8143EDC:
 	push {r4-r7,lr}

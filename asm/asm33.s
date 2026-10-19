@@ -7070,6 +7070,10 @@ off_81266DC:
 	.word byte_8124AE0
 	thumb_func_end battle_updateChipSprite_8126630
 
+// symdb: Cycles a per-entry counter through the group of entries sharing the current entry's code in the battle-menu list, playing the cursor-move sound when it advances.
+// symdb: (r5 = battle-menu work struct; r5+0x3C and r5+0x40 combine to an entry index) -> r0 = destroyed;
+// symdb: updates byte at dword_201FC20[idx*4+3]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81266E0.yaml
 	thumb_local_start
 sub_81266E0:
 	push {r4-r7,lr}
@@ -14053,6 +14057,10 @@ loc_8129DAC:
 	pop {r4,pc}
 	thumb_func_end sub_8129D78
 
+// symdb: Waits until every object pointer in the list at unk_20251A0 has its +7 flag cleared, then clears a marker bit on all entries, advances the caller's event state (running a chatbox line when leaving state 0x30), and fades the screen.
+// symdb: (r5 = event/object struct: count at +0x20, state at +3, flags at +0x1b, script offset at +0x13)
+// symdb: -> void; early-returns with screen untouched if any list entry has byte +7 nonzero
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129DC4.yaml
 	thumb_local_start
 sub_8129DC4:
 	push {r4-r7,lr}
@@ -14162,6 +14170,10 @@ locret_8129E78:
 	.balign 4, 0x00
 	thumb_func_end npc_talkIfFlagSet
 
+// symdb: Event trigger: if every object in the unk_20251A0 list is cleared, deactivate them all, run chatbox script 0x28 from the r5 event struct, and fade the screen.
+// symdb: (r0 unused, r5 = event/trigger struct) -> r0 = void; returns early (no script, no fade) if any
+// symdb: listed object has flag [obj+7] != 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E7C.yaml
 	thumb_local_start
 sub_8129E7C:
 	push {r4-r7,lr}

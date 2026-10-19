@@ -162,6 +162,10 @@ off_8130190:
 	.word unk_201F820
 	thumb_func_end t4_loadSceneBackground
 
+// symdb: Builds a queue of halfword text entries at word_2023FA0 from the text buffer unk_20018EC for the t4 overlay cutscene renderer.
+// symdb: () -> void; initializes word_2023FA0 entry queue (4 bytes per entry: halfword char code,
+// symdb: halfword 1) and clears [sub_8130404 result +0xC]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130194.yaml
 	thumb_local_start
 sub_8130194:
 	push {r4-r7,lr}
@@ -628,7 +632,7 @@ off_81304B8:
 	thumb_func_end sub_81304A4
 
 // symdb: Rebuilds (or clears) the 30-slot battle chip-pack buffer used by the t4 overlay scene, driven by a flag byte in the scene state.
-// symdb: (r0 = passed through to t4_getWork) -> r0 = state pointer from t4_getWork; returns after
+// symdb: (r0 = passed through to sub_8130404) -> r0 = state pointer from sub_8130404; returns after
 // symdb: clearing or refilling unk_2023FB0; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_refreshChipPackBuffer.yaml
 	thumb_func_start t4_refreshChipPackBuffer
@@ -875,7 +879,7 @@ dword_8130688:
 
 // symdb: Builds (or clears) a 0x60-byte record at unk_202708C: 0x20 bytes of text from the chatbox script pool followed by a 0x3C-byte selected-chip entry plus a halfword checksum.
 // symdb: () -> r0 = undefined; writes unk_202708C[0..0x60) and fields of the struct returned by
-// symdb: t4_getWork; no meaningful flags
+// symdb: sub_8130404; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_packChipEntryRecord.yaml
 	thumb_func_start battle_packChipEntryRecord
 battle_packChipEntryRecord:
@@ -2736,6 +2740,10 @@ off_81314E0:
 	.word dword_8129180
 	thumb_func_end sub_8131480
 
+// symdb: During cutscene scene setup, renders one of three sets of four glyphs from the text font into the text-layer VRAM tiles.
+// symdb: (r0 = unused/ignored) -> r0 = destroyed; calls sub_81312EC to get cutscene state, reads
+// symdb: state+0xC to select a glyph set.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81314E4.yaml
 	thumb_local_start
 sub_81314E4:
 	push {r4-r7,lr}
@@ -18118,6 +18126,10 @@ sub_81388EE:
 
 	pop {r4,r5,pc}
 	thumb_func_end sub_81388EE
+// symdb: Draws a scrolling 32x8 background-map band plus a fixed 14x6 tile patch from byte_2016A00 into BG tile block 1, positioned by a counter in the caller's struct.
+// symdb: (r5 = struct ptr; uses byte at r5+0xC as wrap-around position counter) -> r0 = void; no flags
+// symdb: used by callers likely
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138908.yaml
 	thumb_local_start
 sub_8138908:
 	push {r3-r5,lr}

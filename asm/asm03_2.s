@@ -2940,6 +2940,11 @@ dword_8047704:
 	.word 0x1E20
 	thumb_func_end drawCodedChipRow_8047664
 
+// symdb: Renders one chip-list row's text graphics: decompresses two text blocks for the row and uploads them to two consecutive VRAM tile blocks.
+// symdb: (r0 = row index (multiplied by 0x400 byte offset), r1 = entry index whose >>2 selects the glyph
+// symdb: chunk, r5 = list-state pointer) -> r0 = renderer result of second call; writes
+// symdb: eDecompBuffer2013A00/unk_2013C00 and VRAM 0x6008400/0x6008600; clobbers r0-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047708.yaml
 	thumb_local_start
 sub_8047708:
 	push {r0,r5,r7,lr}
@@ -5208,6 +5213,10 @@ loc_8049308:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80492F4
 
+// symdb: Attempts to jack in from the overworld: checks the destination network, sets it up, starts the jack-in dialogue/state, and reports success or failure.
+// symdb: (r5 = overworld/jack-in state struct; no r0-r3 args) -> r0 = 1 if jack-in proceeds, 0 if
+// symdb: blocked; plays a sound effect in both cases
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804930C.yaml
 	thumb_local_start
 sub_804930C:
 	push {r4-r7,lr}
@@ -5336,6 +5345,10 @@ loc_804940C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80493FE
 
+// symdb: One step of the wireless-connection state machine: on failure shows network text and sets phase 0x38, on cancel paths sets 0x3C, and on success initializes the wireless session and sets phase 0x44.
+// symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of sub_8049BC0; writes
+// symdb: next phase id into [r5+1]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049416.yaml
 	thumb_local_start
 sub_8049416:
 	push {r4-r7,lr}
@@ -6596,6 +6609,10 @@ off_8049D94:
 	.word word_2001800
 	thumb_func_end sub_8049D82
 
+// symdb: Thin wrapper that expands a text-script word-index table into per-byte 8-byte command records via sub_803BEC0.
+// symdb: (args passed through to sub_803BEC0: r0 = word-index table pointer, r1..r3 = as callee requires)
+// symdb: -> r0 = callee's return; flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049D98.yaml
 	thumb_func_start sub_8049D98
 sub_8049D98:
 	push {r4-r7,lr}
@@ -8997,6 +9014,10 @@ off_804AF1C:
 	.word TextScriptChipTrader86C580C
 	thumb_func_end sub_804AF10
 
+// symdb: Advances the PET menu cursor-spin one step/frame toward the chosen icon, updating the spin state and playing a tick sound while it is still turning.
+// symdb: (r0 = spin step code: 1-7 one direction, 8-14 the other; r5 = PET menu work struct) -> r0 =
+// symdb: sound id result; writes fields 0x1e, 0x20, 0x24, 0x44 of [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AF20.yaml
 	thumb_local_start
 sub_804AF20:
 	push {r4-r7,lr}

@@ -400,6 +400,9 @@ off_3005E5C:
 	.word dword_3001D60
 	thumb_func_end init_installCommIntrHandlers
 
+// symdb: Sets IME = 1 to globally enable interrupts, used during startup.
+// symdb: () -> void; writes 1 to IME (0x04000208) halfword
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005E60.yaml
 	thumb_func_start sub_3005E60
 sub_3005E60:
 	push {r4,lr}

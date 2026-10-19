@@ -933,6 +933,9 @@ byte_810E0CC:
 	.byte 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1
 	thumb_func_end sub_810DFD0
 
+// symdb: Releases up to four auxiliary objects/buffers attached to a battle object's extra-vars block, zeroing each slot.
+// symdb: (r5 = battle object) -> r0 = 0 preserved per slot; no flags meaningful on return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E0D4.yaml
 	thumb_local_start
 sub_810E0D4:
 	push {r4-r7,lr}
@@ -4008,6 +4011,11 @@ byte_810FAC4:
 	.byte 0xFF, 0xFF, 0x7, 0x6, 0x3, 0x4
 	thumb_func_end sub_810FAA0
 
+// symdb: Spawns the flying enemy's attack hitbox (collision region) using variant-selected parameters and the AI attack vars' damage.
+// symdb: (r5 = enemy object, r7 = oAIAttackVars) -> r0 = spawn result from object_spawnCollisionRegion;
+// symdb: passes variant table word in r4, damage word in r6, second table word in r7, InitFlag in r2, r3
+// symdb: = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810FACA.yaml
 	thumb_local_start
 sub_810FACA:
 	push {r4-r7,lr}
@@ -13985,6 +13993,10 @@ off_8114C00:
 	.word byte_8114C70
 	thumb_func_end battle_pickRandomPanelByAllianceParam
 
+// symdb: AI helper that picks a random panel two tiles to the left or right of the object and checks its flag state.
+// symdb: (r0 = battle object) -> r0 = result from panel picker (panel/flag-check result); flags from
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114C04.yaml
 	thumb_local_start
 sub_8114C04:
 	push {r4-r7,lr}
@@ -15554,6 +15566,10 @@ locret_8115928:
 	pop {pc}
 	thumb_func_end ai_sweepHighlightTargetPanel
 
+// symdb: Resolves an alliance-dependent panel-effect parameter entry and uses it to pick a random panel other than the object's current one.
+// symdb: (r0 = battle object, r1 = caller context/args) -> r0 = picked panel (x/y packed per sub_8015C94
+// symdb: convention)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811592A.yaml
 	thumb_local_start
 sub_811592A:
 	push {r4-r7,lr}
@@ -18819,6 +18835,9 @@ off_8117348:
 	.word unk_2032A04
 	thumb_func_end sub_81172D0
 
+// symdb: Trivial wrapper that invokes sprite_update (per-frame sprite/OAM update) and returns its result.
+// symdb: (args passed through to sprite_update) -> r0 = sprite_update result; flags from sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811734C.yaml
 	thumb_local_start
 sub_811734C:
 	push {lr}
@@ -19180,6 +19199,10 @@ sub_8117680:
 	pop {pc}
 	thumb_func_end sub_8117680
 
+// symdb: Thin wrapper that zeroes a sprite's scale-cycle counter byte and rebuilds it as unscalable.
+// symdb: (r0 = sprite resource/struct pointer) -> r0 = whatever
+// symdb: sprite_clearScaleCounterAndMakeUnscalable_804668A returns; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117688.yaml
 	thumb_local_start
 sub_8117688:
 	push {lr}
@@ -22499,7 +22522,7 @@ off_8118D80:
 
 // symdb: Initializes a type-0x23 sprite object from the GUI resource at unk_20222F0, configuring animation, priority, palette and a list-row position before a follow-up setup call.
 // symdb: (r5 = object struct ptr, r6 = context whose +0x20 halfword is a row/list index) -> r0 = 0 via
-// symdb: tail call to spawn_updateGuiSpriteEntry; object fields written
+// symdb: tail call to sub_8118DE0; object fields written
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawn_initGuiSpriteEntry.yaml
 	thumb_local_start
 spawn_initGuiSpriteEntry:
@@ -22723,6 +22746,9 @@ sub_8118F14:
 	pop {pc}
 	thumb_func_end sub_8118F14
 
+// symdb: One-line wrapper that clears a sprite's scale counter and rebuilds it as unscalable.
+// symdb: (r0 = sprite object) -> r0 = callee's return; no flag contract of its own
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118F1C.yaml
 	thumb_local_start
 sub_8118F1C:
 	push {lr}
@@ -27952,6 +27978,9 @@ jt_811B5DC:
 	.word loc_811B66C+1
 	.word sub_811B6B8+1
 
+// symdb: Thin tail-call wrapper that forwards its arguments to sprite_applyStateSpriteTransform.
+// symdb: (r0..r3 passthrough) -> returns sprite_applyStateSpriteTransform's result; flags set by callee.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B5F4.yaml
 	thumb_local_start
 sub_811B5F4:
 	push {lr}
@@ -28121,6 +28150,10 @@ locret_811B718:
 	.balign 4, 0x00
 	thumb_func_end sub_811B6E0
 
+// symdb: Pops one queued text entry for an object's number/text popup and loads its glyph into the matching text-buffer/VRAM slot via the text renderer.
+// symdb: (r0-r3 clobbered; r5 = object, r10 = toolkit) -> r0 = undefined; stores entry type to [r5,#0xE],
+// symdb: glyph param to toolkit->Unk200a220+8; early-returns if no queued entry in range
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B71C.yaml
 	thumb_local_start
 sub_811B71C:
 	push {r4-r7,lr}
@@ -28197,6 +28230,10 @@ byte_811B7B0:
 	.byte 0x6, 0x1, 0x6
 	thumb_func_end sub_811B71C
 
+// symdb: Draws one visible row of a text list via the toolkit text renderer, using a per-row entry from word_2023FA0.
+// symdb: (r0 unused, r5 = row struct with u8 rowIndex at +0x4) -> r0 = renderTextGfx result; touches
+// symdb: toolkit->Unk200a220->field8; no flag contract shown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B7D4.yaml
 	thumb_local_start
 sub_811B7D4:
 	push {r4-r7,lr}
@@ -38378,6 +38415,9 @@ word_8120896:
 	.hword 0x1E
 	thumb_func_end countEventFlagChips_81207F8
 
+// symdb: Counts the total copies the player owns of all chips belonging to a given chip-library category.
+// symdb: (r0 = library category index) -> r0 = total owned chip count for that category; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120898.yaml
 	thumb_local_start
 sub_8120898:
 	push {r4-r7,lr}

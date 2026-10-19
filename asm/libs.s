@@ -1810,6 +1810,9 @@ loc_8144D5E:
 	.balign 4, 0x00
 	thumb_func_end sub_8144D3C
 
+// symdb: Soft-resets the wireless adapter and clears the game's link state struct before tearing down the connection.
+// symdb: () -> r0 = result of rfu_REQBN_softReset_and_checkID (0x8001 = ok); flags clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D64.yaml
 	thumb_local_start
 sub_8144D64:
 	push {r4,lr}
@@ -2166,6 +2169,11 @@ loc_8144FC6:
 	bx r1
 	thumb_func_end sub_8144EF8
 
+// symdb: Child-side wireless connection request: validates the RFU state, finds the chosen parent slot in the scan list, and arms the connection request state or reports failure via the 0xF3 callback.
+// symdb: (r0 = target slot/pid from the scan list, r1 = value stored to eStruct200FE00+0x1A) -> r0 = 0 on
+// symdb: success, else failure reason 1/2/3; on failure fires the +0x40 callback with code 0xF3 and
+// symdb: clears eStruct200FE00+0x14/+0x16
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144FD0.yaml
 	thumb_local_start
 sub_8144FD0:
 	push {r4-r7,lr}
@@ -2291,6 +2299,9 @@ loc_81450A8:
 	.balign 4, 0x00
 	thumb_func_end sub_8144FD0
 
+// symdb: RFU teardown helper: clears per-slot flags for the given player-slot mask, zeroes those slots' state, force-disconnects any of them that are linked, and reports the result via the connection callback with event 0x33.
+// symdb: (r0 = u8 bitfield of player slots) -> r0 = callback result; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81450B4.yaml
 	thumb_local_start
 sub_81450B4:
 	push {r4-r7,lr}
@@ -2351,6 +2362,10 @@ off_814511C:
 	.word dword_2010CC0
 	thumb_func_end sub_81450B4
 
+// symdb: Advances the RFU link-connection state machine in eStruct200FE00, transitioning states and firing the connection callback with the appropriate reason code.
+// symdb: (r0 = bool/flag: nonzero -> abort path) -> void; updates eStruct200FE00 state bytes (+4/+5) and
+// symdb: may invoke the connection callback via rfu_fireConnCallbackAndClearState.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145120.yaml
 	thumb_local_start
 sub_8145120:
 	push {r4,r5,lr}
@@ -4309,6 +4324,10 @@ loc_8145FEA:
 	.balign 4, 0x00
 	thumb_func_end sub_8145DD8
 
+// symdb: RFU link-state watchdog: times out a pending-connection slot, then forces a disconnect and fires the connection callback with error 0x25.
+// symdb: (r0 = unused/ignored) -> r0 = undefined; saves/restores IME, mutates eStruct200FE00 state
+// symdb: fields, may call rfu_forceDisconnect and the connection callback
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145FFC.yaml
 	thumb_local_start
 sub_8145FFC:
 	push {r4-r6,lr}
@@ -5936,6 +5955,10 @@ loc_8146A68:
 	.byte 0, 0
 	thumb_func_end sub_8146A48
 
+// symdb: Zero-fills an RFU link-management structure and marks it active (first byte = 1) during wireless init.
+// symdb: (r0 = pointer to RFU struct to (re)initialize) -> r0 = garbage (popped into pc via pop {r0}); no
+// symdb: meaningful return, flags clobbered by CpuSet.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146A70.yaml
 	thumb_local_start
 sub_8146A70:
 	push {r4,lr}
@@ -6323,6 +6346,10 @@ loc_8146D90:
 	.balign 4, 0x00
 	thumb_func_end sub_8146D40
 
+// symdb: Scans the four wireless link slots for peers whose connection has ended (state 0x46/0x47/0x48), clears those slots, and when every tracked slot is finished resets the player's block in the shared wireless data buffer.
+// symdb: (r0 = work struct ptr: +0x01 status byte out, +0x0C buffer ptr, +0x14 byte size, r1 unused) ->
+// symdb: r0 = ?; destroys r-r7 saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146D98.yaml
 	thumb_func_start sub_8146D98
 sub_8146D98:
 	push {r4-r7,lr}
@@ -8686,6 +8713,10 @@ dword_8148018:
 	.word 0x1000020
 	thumb_func_end sub_8147F98
 
+// symdb: Dispatches a wireless link command/event byte to the matching RFU state-machine action for the wireless battle/trade session.
+// symdb: (r0 = command/event ID byte) -> r0 clobbered; updates link state word_200BC58 of eS200BC50,
+// symdb: sometimes calls sub_813D934 with a sub-state code; no return value.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814801C.yaml
 	thumb_local_start
 sub_814801C:
 	push {lr}

@@ -18301,7 +18301,7 @@ locret_800AF32:
 
 // symdb: Adds to the custom gauge each tick: normally 0x4000 via SetCustGauge, or an alliance-scaled amount when battle flag 0x40 is set
 // symdb: (r5 = battle object) -> r0 = gauge result path; calls SetCustGauge(0x4000) or
-// symdb: battle_addCappedCounter(alliance, 0x1555)
+// symdb: sub_802E032(alliance, 0x1555)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_fillCustGauge.yaml
 	thumb_func_start battle_fillCustGauge
 battle_fillCustGauge:

@@ -1189,6 +1189,9 @@ battle_getObjectAllianceTeam_800F49E:
 	mov pc, lr
 	thumb_func_end battle_getObjectAllianceTeam_800F49E
 
+// symdb: Returns a per-alliance pointer from a global table, selected by the battle object's Alliance field.
+// symdb: (r5 = battle object) -> r0 = dword_203F7E0[Alliance*4]; flags clobbered, r0/r1 scratch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F4A8.yaml
 	thumb_local_start
 sub_800F4A8:
 	ldr r1, off_800F4DC // =dword_203F7E0 
@@ -7785,6 +7788,9 @@ loc_801232C:
 	mov pc, lr
 	thumb_func_end sub_8012326
 
+// symdb: Wrapper that invokes the chip-parameter-writing routine with argument 3.
+// symdb: (no args) -> r0 = return value of somethingWriteChipParams_80126E4; no flags relevant
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801233C.yaml
 	thumb_local_start
 sub_801233C:
 	push {lr}
@@ -7809,6 +7815,10 @@ sub_8012350:
 	pop {pc}
 	thumb_func_end sub_8012350
 
+// symdb: Tiny wrapper that invokes the chip-params writer for chip ID 0xA2 (162), likely a hardcoded setup/test for one specific battle chip
+// symdb: () -> r0 = whatever somethingWriteChipParams_80126E4 returns; no flags touched by this stub
+// symdb: itself
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801235A.yaml
 	thumb_local_start
 sub_801235A:
 	push {lr}
@@ -7924,6 +7934,9 @@ sub_80123E6:
 	pop {pc}
 	thumb_func_end sub_80123E6
 
+// symdb: One-line wrapper that (re)writes the parameters of chip index 0x4E via the shared chip-param writer.
+// symdb: (no args) -> r0 = result of somethingWriteChipParams_80126E4; r1 untouched
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80123F0.yaml
 	thumb_local_start
 sub_80123F0:
 	push {lr}
@@ -7972,6 +7985,9 @@ sub_8012422:
 	pop {pc}
 	thumb_func_end sub_8012422
 
+// symdb: Thunk that invokes the chip-parameter writer with chip ID 0xA4 (164).
+// symdb: (no args; callee receives r0 = 0xA4) -> r0 = result of writeChipParams call; flags per callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801242C.yaml
 	thumb_local_start
 sub_801242C:
 	push {lr}
@@ -8048,6 +8064,9 @@ sub_8012484:
 	pop {pc}
 	thumb_func_end sub_8012484
 
+// symdb: Trivial wrapper that invokes the chip-parameters writer with the fixed chip ID 0x1E (30).
+// symdb: () -> void; r0 = 0x1E passed to the callee, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801248E.yaml
 	thumb_local_start
 sub_801248E:
 	push {lr}
@@ -8485,6 +8504,10 @@ loc_801273A:
 	pop {r4,r6,r7,pc}
 	thumb_func_end somethingWriteChipParams_80126E4
 
+// symdb: Scans a line of battlefield panel columns from the entity's side toward the opponent, returning 1 as soon as a panel whose flags match a side-specific mask pair is found (any of rows 3/2/1), else 0.
+// symdb: (no r0 args; r5 = entity, [r5+0x16] = side/alliance id) -> r0 = 1 if a matching panel column
+// symdb: found, else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801273E.yaml
 	thumb_local_start
 sub_801273E:
 	push {r4,r6,r7,lr}
@@ -12852,6 +12875,10 @@ ai_clearCounterHitChainFlag:
 	pop {pc}
 	thumb_func_end ai_clearCounterHitChainFlag
 
+// symdb: Clears the AI data's counter-hit chain flag to 0.
+// symdb: (r5 = battle object) -> writes 0 to halfword oAIData_CounterHitChainFlag of [r5 +
+// symdb: oBattleObject_AIDataPtr]; no return value, flags clobbered by mov
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014446.yaml
 	thumb_func_start sub_8014446
 sub_8014446:
 	ldr r3, [r5,#oBattleObject_AIDataPtr]
@@ -16396,6 +16423,10 @@ loc_8015DEC:
 	pop {r4,pc}
 	thumb_func_end panelFlagCheck_8015D80
 
+// symdb: Scans a 0x7F-terminated list of (x,y) panel coordinates, keeps the ones whose panel flags match two masks, and returns one of them chosen at random.
+// symdb: (r4 = ptr to byte-pair list {x,y}, 0x7F in x terminates; r2 = required-flags mask, r3 =
+// symdb: forbidden-flags mask) -> r0 = x (bits 0-2), r1 = y (bits 4-7); no flag clobber noted
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015DF0.yaml
 	thumb_local_start
 sub_8015DF0:
 	push {r4,lr}
@@ -23346,7 +23377,7 @@ locret_801A45A:
 	thumb_func_end battle_spawnHitEffectAtArm_801A42E
 
 // symdb: Handles a crouch/slide result of 0x40 in the object's collision flag set: flips the partner's alliance state, adds the player's churn-row column 8 counter, resets the object counter-timer, refreshes the chatbox window panel, and plays the "crouch" sound effect.
-// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: battle_addCappedCounter(0x1500),
+// symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects: sub_802E032(0x1500),
 // symdb: tableAddSaturatedByte_800AB46(...), PlaySoundEffect(SOUND_SELECT_86), sub_801E270 (window panel
 // symdb: update)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_handleCollisionCrouchSlideReset_801A45C.yaml
@@ -27777,6 +27808,10 @@ sub_801C368:
 	pop {pc}
 	thumb_func_end sub_801C368
 
+// symdb: Renders a value (0–100) as a right-aligned 3-digit number of 8x16 tiles into a graphics buffer, with leading blank tiles.
+// symdb: (r0 = value 0..100, r1 = dest tile buffer ptr) -> void; queues 3 GFX transfers of 0x40 bytes
+// symdb: each
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C3A4.yaml
 	thumb_local_start
 sub_801C3A4:
 	push {r4,r6,r7,lr}
@@ -28732,6 +28767,10 @@ sub_801CA28:
 	mov pc, lr
 	thumb_func_end sub_801CA28
 
+// symdb: Redraws a small 8x2 patch of tiles on the overworld background, selecting the tile row and tile graphic from a state byte in the caller's struct.
+// symdb: (r5 = struct ptr, set by caller: byte [r5] = state, byte [r5+0xB] = variant index) -> r0 =
+// symdb: destroyed; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801CA34.yaml
 	thumb_local_start
 sub_801CA34:
 	push {r4-r6,lr}
@@ -30368,6 +30407,10 @@ locret_801D618:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_queueCounterDigitGfx
 
+// symdb: Queues a single 32-byte (one 8x8 4bpp tile) graphics copy from a ROM tile table into VRAM, used to render one digit of the battle counter UI.
+// symdb: (r0 = tile index into table at 0x86E968C, r1 = VRAM destination pointer) -> queues 0x20-byte GFX
+// symdb: transfer via QueueEightWordAlignedGFXTransfer; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D61A.yaml
 	thumb_local_start
 sub_801D61A:
 	push {r1,lr}
@@ -33655,6 +33698,9 @@ sub_801EC84:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801EC84
 
+// symdb: Queues a 32-byte palette for copy into an IWRAM buffer and sets a flag word bit to trigger the actual upload.
+// symdb: () -> void; sets bit 0x400000 in the flag word at eStruct2035280+0x44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EC90.yaml
 	thumb_local_start
 sub_801EC90:
 	push {r4,r5,lr}

@@ -3406,6 +3406,11 @@ loc_803A584:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A558
 
+// symdb: Polling step for a task in r5: repeatedly returns 1 while a dispatcher is busy, and when it finishes, writes a byte into the task and calls a table-selected handler before ending.
+// symdb: (r5 = caller's task/state struct; r0.. passed through to dispatch) -> r0 = 1 to keep stepping, 0
+// symdb: when step completed; clobbers r4,r5? (r5 preserved as caller's), calls dispatch_803C620, table
+// symdb: handler, sub_8148214
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A58C.yaml
 	thumb_local_start
 sub_803A58C:
 	push {r4-r7,lr}
@@ -6041,6 +6046,10 @@ loc_803BBA0:
 	mov pc, lr
 	thumb_func_end sub_803BB94
 
+// symdb: Queues one OAM entry for the chatbox's blinking wait-cursor, cycling its tile through three animation frames on an 18-frame loop.
+// symdb: (r0 = visibility/done flag, r1 = base id/index, r2 = frame step amount, r3/r5 = cursor state
+// symdb: struct) -> r0 = next frame counter stored at [r5+7]; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BBA4.yaml
 	thumb_local_start
 sub_803BBA4:
 	push {r4-r7,lr}

@@ -897,6 +897,9 @@ locret_809D7F6:
 	pop {pc}
 	thumb_func_end owPlayerObject_clearStateUnk10_809D7D8
 
+// symdb: Thin wrapper that frees the overworld player object via FreeOWPlayerObject.
+// symdb: (no arguments used) -> r0 = return value of FreeOWPlayerObject; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7F8.yaml
 	thumb_local_start
 sub_809D7F8:
 	push {lr}

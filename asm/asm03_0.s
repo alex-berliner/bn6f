@@ -1687,6 +1687,10 @@ off_8027060:
 	.word sub_80271C2+1
 	thumb_func_end sub_8027044
 
+// symdb: Queues two GFX transfers (0x80 bytes of chip-indexed graphics to VRAM 0x60172C0 and 0x20 bytes from byte_872CF94 to a RAM buffer) based on active chip slot 11, then sets a state field.
+// symdb: (r0 unused, r5 = object/state struct) -> r0 = destroyed; queues GFX transfers, writes r5+0x40=0,
+// symdb: r5+0x44=chip*0x10+0x18, r5+2=4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802707C.yaml
 	thumb_local_start
 sub_802707C:
 	push {r4,lr}
@@ -10549,6 +10553,9 @@ sub_802AF0E:
 	pop {r5,pc}
 	thumb_func_end sub_802AF0E
 
+// symdb: Sets bit 0x80000 in a battle object's flags2 word, used by overworld chatbox-wait state machines.
+// symdb: (r0 = object ptr) -> r0 = set bits; no other return/flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF28.yaml
 	thumb_local_start
 sub_802AF28:
 	push {r5,lr}
@@ -15418,6 +15425,10 @@ off_802D300:
 	.byte 0, 0, 0, 0
 	thumb_func_end battleSettings_802D2B2
 
+// symdb: Zeroes a 16-byte block at offset 0xF0 of the battle object's AIData, resetting part of its AI state.
+// symdb: (r5 = battle object; no args in r0-r3) -> r0 clobbered (holds AIData+0xF0); no flags meaningful,
+// symdb: returns via mov pc, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D310.yaml
 	thumb_func_start sub_802D310
 sub_802D310:
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -15774,6 +15785,9 @@ locret_802D5A6:
 	pop {pc}
 	thumb_func_end sub_802D588
 
+// symdb: Reads a battle-object stat, buckets it into tier 0-9 (stat/100, clamped), and returns a random halfword from that tier's row of a 10-row lookup table.
+// symdb: (r0 = battle object) -> r0 = random halfword from the tier's table row; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D5A8.yaml
 	thumb_local_start
 sub_802D5A8:
 	push {r4,r6,lr}
@@ -15855,6 +15869,10 @@ locret_802D650:
 	mov pc, lr
 	thumb_func_end battleObject_incrementCollisionRegion_802D644
 
+// symdb: Returns a per-index byte from a small EWRAM table at 0x2000070, used when the battle checks a version-specific boss spawn.
+// symdb: (r0 = index into table) -> r0 = byte_2000070[index]; flags from LDRB (N/Z from value, C
+// symdb: unchanged)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D652.yaml
 	thumb_func_start sub_802D652
 sub_802D652:
 	ldr r1, off_802D694 // =byte_2000070
@@ -17006,7 +17024,7 @@ sub_802DF8C:
 	pop {r7,pc}
 	thumb_func_end sub_802DF8C
 
-// symdb: Allocates and zero-fills the per-alliance entry in the shared 0x1D0-byte entry pool for a battle object's alliance, and if battle flag 0x40 is set, initializes it as an active kind-3 entry anchored at the object's panel X and notifies battle_initAllianceEntryDefaults.
+// symdb: Allocates and zero-fills the per-alliance entry in the shared 0x1D0-byte entry pool for a battle object's alliance, and if battle flag 0x40 is set, initializes it as an active kind-3 entry anchored at the object's panel X and notifies sub_802E07C.
 // symdb: void battle_setupAllianceEntryKind3(BattleObject* obj /* r5 */); // no meaningful return value;
 // symdb: r4 ends up holding the new entry pointer per the readable C, though the contract lists r4 as
 // symdb: preserved
@@ -18815,6 +18833,9 @@ byte_802ED5C:
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x3
 	thumb_func_end battle_chargeShotSetup
 
+// symdb: Clears the current battle entity's attack-state fields and queues attack 0x33 on it, used from the charge-shot setup path.
+// symdb: (r6 = battle entity struct pointer, set by caller; no register args) -> r0 = 0, r1 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ED68.yaml
 	thumb_local_start
 sub_802ED68:
 	push {lr}

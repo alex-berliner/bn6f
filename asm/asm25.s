@@ -503,6 +503,10 @@ camera_snapToIndexedTarget:
 	pop {r5,pc}
 	thumb_func_end camera_snapToIndexedTarget
 
+// symdb: Snaps the camera to a per-map default position read from a table indexed by the current map number.
+// symdb: (r0 = 0 passed to camera_writeUnk03_14; reads gameState via r10) -> r0 = 0; sets camera x/y from
+// symdb: table, z = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FBEC.yaml
 	thumb_local_start
 sub_808FBEC:
 	push {r5,lr}
