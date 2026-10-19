@@ -5250,6 +5250,10 @@ locret_809CE10:
 	.balign 4, 0x00
 	thumb_func_end sub_809CDD4
 
+// symdb: Checks the link-battle state and partner slot; on success stores the partner's eCamera-related value into [r5+0x74] and returns 0, otherwise returns 1.
+// symdb: (uses caller's r5 as destination struct, r7/r12 saved around the call) -> r0 = 0 on success
+// symdb: (value stored) or 1 if link state is nonzero or slot 4 is active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CE14.yaml
 	thumb_local_start
 sub_809CE14:
 	push {r4-r7,lr}

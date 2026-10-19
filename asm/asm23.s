@@ -1252,6 +1252,9 @@ loc_80898F8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80898E8
 
+// symdb: If any actor on team 0x10 is still alive, triggers an AI action, loads a 30-frame value into AIData+0x18, and sets the AI state byte to 0x44; always returns 1.
+// symdb: (no meaningful args; r5 = AI/entity context set up by callee) -> r0 = 1; flags from tst r0,r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80898FC.yaml
 	thumb_local_start
 sub_80898FC:
 	push {r4-r7,lr}
@@ -1666,6 +1669,10 @@ loc_8089BF6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089BE4
 
+// symdb: AI step that, unless event flag 0x80 (of eFlags2009F38) is set, resets the AI object's state byte and starts a 0x1E-frame timer in AIData.
+// symdb: (r5 = AIData struct pointer, r0/r1 unused on entry) -> r0 = 1 (always); sets byte AIData+0x00 =
+// symdb: 0x1C, byte AIData+0x08 = 0, halfword AIData+0x18 = 0x1E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089BFA.yaml
 	thumb_local_start
 sub_8089BFA:
 	push {r4-r7,lr}

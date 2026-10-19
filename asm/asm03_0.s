@@ -1750,6 +1750,10 @@ locret_80270E8:
 	pop {pc}
 	thumb_func_end sub_80270D0
 
+// symdb: Per-tick handler that drains a field for 8 ticks, then fades the screen, plays SFX 0x91 and switches the entity's state to 0xC.
+// symdb: (r0-r4 = unused, r5 = entity struct: +0x40 tick counter, +0x44 value drained by 2/tick, +2
+// symdb: halfword state) -> r0 = clobbered; writes +0x40, +0x44, +2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80270EA.yaml
 	thumb_local_start
 sub_80270EA:
 	push {lr}
@@ -1791,6 +1795,10 @@ loc_802712E:
 	pop {pc}
 	thumb_func_end sub_8027118
 
+// symdb: Script/state step that starts a screen fade-out (mode 4, rate 0x20) if none is running, stores 20 into a context field, then calls the next handler.
+// symdb: (r5 = state/context struct, not passed in r0-r3) -> r0 = result of sub_80298D8; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027134.yaml
 	thumb_local_start
 sub_8027134:
 	push {lr}
@@ -2630,6 +2638,11 @@ loc_80276AA:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8027672
 
+// symdb: Tutorial battle state handler: when the tutorial reaches step 3 and no fade is active, displays chatbox script 0xA from the first-battle-tutorial text archive and advances the step to 4.
+// symdb: (r0 = unused/scratched, r5 = tutorial object ptr) -> r0 = chatbox_runScript return; touches
+// symdb: [r5+1] (state, 4 then 0x34), [r5+2] (timer/counter halfword, cleared), [r5+0xC] (step read),
+// symdb: [r5+0xD] (step, set to 4); flags from IsScreenFadeActive compare
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80276D6.yaml
 	thumb_local_start
 sub_80276D6:
 	push {lr}
@@ -10466,6 +10479,9 @@ loc_802AEA6:
 	pop {pc}
 	thumb_func_end sub_802AE84
 
+// symdb: Per-frame render for an object: picks a variant field based on an event flag, runs two sprite-setup calls, then queues an OAM entry.
+// symdb: (r5 = object pointer) -> void; uses r0 as scratch/arg
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AEB8.yaml
 	thumb_local_start
 sub_802AEB8:
 	push {lr}
@@ -11799,6 +11815,10 @@ dword_802B9B4:
 	.word 0x6009760
 	thumb_func_end chip_previewShowSelectedChip
 
+// symdb: State handler for the link/cross-net battle wait: if the linked partner isn't ready yet, transitions to a fallback state (0x18) with a screen fade.
+// symdb: (r5 = task/state struct, fields +1 byte and +2 halfword) -> void; reads
+// symdb: comm_checkCrossNetBattleReady_801E754 result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B9B8.yaml
 	thumb_local_start
 sub_802B9B8:
 	push {lr}
@@ -14658,7 +14678,7 @@ locret_802CEC6:
 	mov pc, lr
 	thumb_func_end battle_clearImpactSlot
 
-// symdb: Walks a fixed two-slot table at 0x2036720 and, for each slot whose entry pointer is set and whose "busy" halfword flag at +0x24 is clear, invokes a shared handler (battle_clearImpactSlot) with that entry's byte at +0x16.
+// symdb: Walks a fixed two-slot table at 0x2036720 and, for each slot whose entry pointer is set and whose "busy" halfword flag at +0x24 is clear, invokes a shared handler (sub_802CEA6) with that entry's byte at +0x16.
 // symdb: void sub_802CEC8(void); /* out: r4 = &unk_2036720[1] (base + 0x10) */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/runPendingHandlerForEntryPair_802CEC8.yaml
 	thumb_func_start runPendingHandlerForEntryPair_802CEC8
@@ -14897,6 +14917,9 @@ getTableEntryPtr32_802D064: // (a0: bool) -> * ?
 	.byte 0, 0
 	thumb_func_end getTableEntryPtr32_802D064
 
+// symdb: Resets one 0x20-byte record of the IWRAM table at 0x203C4A0 to its default state.
+// symdb: (r0 = entry index) -> r0 = 0 (also holds entry pointer before final pop); no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D070.yaml
 	thumb_func_start sub_802D070
 sub_802D070:
 	push {lr}
@@ -16431,6 +16454,10 @@ locret_802DB56:
 	pop {pc}
 	thumb_func_end battle_objectPanelEmergeStep
 
+// symdb: One-shot state handler: flashes the battle object white, plays animation 4 for 4 frames, then advances the object to state 8.
+// symdb: (r0 = unused/ignored, r7 = battle object struct) -> updates object fields [r7] (state/mode),
+// symdb: [r7+1] (state byte), [r7+0x10] (frame timer); returns nothing
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DB58.yaml
 	thumb_local_start
 sub_802DB58:
 	push {lr}
@@ -16790,6 +16817,10 @@ locret_802DE70:
 	.balign 4, 0x00
 	thumb_func_end battleObject_runAIScript_802DE5C
 
+// symdb: Performs one left-shift step of the selected battle-hand slot's chip data (removing its front entry) and flags the corresponding record for update.
+// symdb: (r0 = clobbers; r5 = battle/hand object with selected hand index at +0x16) -> r0 = clobbered;
+// symdb: sets flag byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DE74.yaml
 	thumb_local_start
 sub_802DE74:
 	push {r7,lr}
@@ -16823,6 +16854,10 @@ loc_802DEA0:
 	pop {r7,pc}
 	thumb_func_end sub_802DE74
 
+// symdb: Returns the chip ID of the card in the hand slot selected by a battle object, or 0xFFFF when the object's flags mark it as having none.
+// symdb: (r0 = battle object ptr for object_getFlag; r5 = object context: +0x16 slot index, +0x58->+0x19
+// symdb: flag byte) -> r0 = hand card halfword at slot+2 (chip ID) or 0xFFFF; flags clobbered.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DEAE.yaml
 	thumb_local_start
 sub_802DEAE:
 	push {r4,lr}
@@ -17051,6 +17086,11 @@ zeroFill_802E014:
 	pop {r4,pc}
 	thumb_func_end zeroFill_802E014
 
+// symdb: Adds an amount to a battle-entity's 16-bit counter at field 0x28, saturating at 0x4000.
+// symdb: (r0 = entry index in the 0x1D0-stride array at unk_2036120, r1 = amount to add) -> r0 = new
+// symdb: saturated counter value; flags from the cmp are clobbered by the final stores path (returns
+// symdb: updated value in r0).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E032.yaml
 	thumb_func_start sub_802E032
 sub_802E032:
 	push {lr}
@@ -17107,6 +17147,9 @@ getEntryPtr_2036120_1D0_802E070:
 	mov pc, lr
 	thumb_func_end getEntryPtr_2036120_1D0_802E070
 
+// symdb: Resets one 0x1D0-byte alliance-pool entry to its default state, zeroing status bytes and setting three word fields to -1.
+// symdb: (r0 = entry index into unk_2036120 pool) -> r0 = entry pointer; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E07C.yaml
 	thumb_local_start
 sub_802E07C:
 	push {lr}
@@ -18616,6 +18659,11 @@ sub_802EBD0:
 	pop {r6,pc}
 	thumb_func_end sub_802EBD0
 
+// symdb: Copies one NaviStats byte (offset 2) from the 203CB10 record into the navi stats record of the battle object at [r5+0x16], then calls a follow-up routine with [r5+0x58]+0xA0.
+// symdb: (r5 = battle object/work struct, r0 = its id byte at +0x16) -> byte at NaviStats+2 of the
+// symdb: object's (alliance-selected) record set from the 203CB10 record; r6 = [r5+0x58]+0xA0 passed to
+// symdb: sub_802ECFE.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EBE4.yaml
 	thumb_local_start
 sub_802EBE4:
 	push {r6,lr}

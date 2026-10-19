@@ -1227,6 +1227,10 @@ off_800F4E0:
 	.word dword_203F7E0
 	thumb_func_end sub_800F4B2
 
+// symdb: Checks whether the panel at the given battle-grid coordinates has flag 0x10 set in the panel-state table, returning 1/0.
+// symdb: (r0 = column (1-based), r1 = row (1-based)) -> r0 = 1 if panel valid and flag-mask 0x10 matches
+// symdb: in table at 0x3880080, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F4E4.yaml
 	thumb_local_start
 sub_800F4E4:
 	push {r6,r7,lr}
@@ -6794,6 +6798,10 @@ slashcrossBPwrAtk_init_8011CD6: // JP: 0x80122d2
 	pop {pc}
 	thumb_func_end slashcrossBPwrAtk_init_8011CD6
 
+// symdb: Initializes an AI attack's variables: Beast-Out-scaled damage, fixed extra damage, a difficulty tier read from NaviStats, and returns the attack ID 0x45.
+// symdb: (r7 = battle/AI object with oAIAttackVars fields) -> r0 = 0x45 (attack/anim ID); writes Damage,
+// symdb: ExtraDamage, AiDifficultyTier, InitFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011CF8.yaml
 	thumb_local_start
 sub_8011CF8:
 	push {lr}
@@ -7322,6 +7330,11 @@ sub_8012044:
 	pop {pc}
 	thumb_func_end sub_8012044
 
+// symdb: Sets up a Beast Out attack's parameters and computes its damage from the attacker's alliance-scaled beast power table entry.
+// symdb: (r0 unused/scratch; uses r5 = attacker battle object, r7 = AI attack vars) -> writes
+// symdb: oAIAttackVars_Damage (scaled beast power-Atk) and oAIAttackVars_ExtraDamage = 0x8A; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801206E.yaml
 	thumb_local_start
 sub_801206E:
 	push {lr}
@@ -8003,6 +8016,10 @@ sub_801245A:
 	pop {pc}
 	thumb_func_end sub_801245A
 
+// symdb: Boss-AI step: tries to steal a chip from the enemy (player) Navi; on success ends the attack with a short cooldown, otherwise resets difficulty tier and arms a long boost timer before the next attack.
+// symdb: (r7 = boss/attacker object) -> r0 = frames until next AI action (8 on steal, 0x1C on fail); r7
+// symdb: fields modified on failure
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012464.yaml
 	thumb_local_start
 sub_8012464:
 	push {lr}
@@ -13185,6 +13202,9 @@ sub_8014640:
 	pop {pc}
 	thumb_func_end sub_8014640
 
+// symdb: Sets the SuperArmor object flag and gives the current battle object a near-permanent (0xFFFF) invulnerability timer.
+// symdb: () -> void; no meaningful return, flags clobbered by bls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014650.yaml
 	thumb_local_start
 sub_8014650:
 	push {r7,lr}
@@ -13375,6 +13395,10 @@ loc_8014786:
 	pop {pc}
 	thumb_func_end sub_8014776
 
+// symdb: Gives the current battle object the SuperArmor flag and sets up its collision behaviour for the NoCustom+ case.
+// symdb: () -> void; calls object_setFlag1 with (1 << OBJECT_FLAGS_SUPERARMOR_BIT) on the current object,
+// symdb: then battle_setupNoCustomPlusObjectCollision
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801478C.yaml
 	thumb_local_start
 sub_801478C:
 	push {lr}
@@ -17942,6 +17966,9 @@ byte_8016A9C:
 	.word 0x4210422
 	thumb_func_end sub_8016A38
 
+// symdb: Each frame, picks one of 26 palette slots from a cycle table and applies it to the current object's sprite, producing a palette-cycling animation driven by the battle-state counter.
+// symdb: () -> r0 = void; reads battle state field Unk_40 as counter, writes object sprite palette index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016AD0.yaml
 	thumb_local_start
 sub_8016AD0:
 	push {lr}
@@ -23250,6 +23277,9 @@ locret_801A3FE:
 	pop {r7,pc}
 	thumb_func_end sub_801A3DA
 
+// symdb: Per-frame check for a battle object touching the player: guards against frozen/flagged objects, then marks the contact and sets contact state 3.
+// symdb: (r5 = battle object) -> void; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A400.yaml
 	thumb_local_start
 sub_801A400:
 	push {r7,lr}
@@ -23792,7 +23822,7 @@ locret_801A71E:
 // symdb: When a battle object receives collision event 0xF6, raises two of its navi battle stats (offsets 0x18 and 0x19) by 2 each, capped at 7, then runs a follow-up handler.
 // symdb: void sub_801A720(BattleObject* obj /* r5 */); preserves r4/r6/r7, clobbers r0-r3 and lr, and
 // symdb: leaves C/V set from the final comparison (the event-type cmp on the early-exit path, the cap
-// symdb: check or battle_applyPanelEventF6Status otherwise)
+// symdb: check or sub_801A77A otherwise)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_buffTwoStatsPlus2OnEventF6_801A720.yaml
 	thumb_local_start
 battle_buffTwoStatsPlus2OnEventF6_801A720:
@@ -29771,6 +29801,10 @@ off_801D1D4:
 	.word byte_2036840
 	thumb_func_end sub_801D12A
 
+// symdb: Counts down a one-byte timer at 0x2036857 and, when it hits zero, clears request-flag bit 16 and fires dispatch_801DACC with that mask.
+// symdb: (void) -> r0 = result of dispatch_801DACC; the counter decrement sets NZ for the branch, no LR
+// symdb: kept beyond tail pop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D1D8.yaml
 	thumb_local_start
 sub_801D1D8:
 	push {lr}
@@ -30076,6 +30110,10 @@ byte_801D410:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_801D3F8
 
+// symdb: Advances a two-digit base-6 frame counter in a battle object, frozen while the battle is paused or time-stopped.
+// symdb: (r5 = object/work struct with counter fields) -> r0 clobbered; no return value, flags not
+// symdb: meaningful to caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D450.yaml
 	thumb_local_start
 sub_801D450:
 	push {lr}
@@ -30213,6 +30251,10 @@ dword_801D544:
 	.word 0x100000
 	thumb_func_end sub_801D514
 
+// symdb: Decrements an object's one-byte countdown timer at +0x1B; on reaching zero it clears global flag bit 21 (0x00200000) and dispatches with that flag mask.
+// symdb: (r5 = structure with u8 countdown at +0x1B) -> r0 = 0x00200000 passed to dispatch; Z flag of the
+// symdb: decrement escapes via the bne
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D548.yaml
 	thumb_local_start
 sub_801D548:
 	push {lr}
@@ -31764,6 +31806,9 @@ sub_801E060:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801E060
 
+// symdb: Copies a fixed 6x2 tile run into background tile block 3 at tile (24,0) and flags the HUD for redraw.
+// symdb: () -> void; no return value, sets bit 0x800000 in eStruct2035280+0x44 via flagSetBits
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E07C.yaml
 	thumb_local_start
 sub_801E07C:
 	push {r4,r5,lr}
@@ -32284,6 +32329,9 @@ dword_801E3E0:
 	.word 0x100000
 	thumb_func_end sub_801E3C4
 
+// symdb: Copies an 8x2 patch of tiles from byte_801EF10 onto background tile block 3 at position (j=11,i=16), then sets flag bit 0x100000 in the eStruct at 0x2035280+0x44.
+// symdb: () -> void; ORs 0x100000 into word at eStruct2035280+0x44 (returned in r2 by callee)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E3E4.yaml
 	thumb_local_start
 sub_801E3E4:
 	push {r4,r5,lr}
@@ -33436,6 +33484,9 @@ sub_801EB50:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801EB50
 
+// symdb: Draws a fixed 30x2 tile strip (tile block 3) into the background map at (0,0x12) and sets the matching bit 18 in the area flags word, marking that region changed.
+// symdb: () -> r0 = updated flag word from flagSetBits; no meaningful return otherwise
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EB7C.yaml
 	thumb_local_start
 sub_801EB7C:
 	push {lr}

@@ -143,6 +143,9 @@ byte_8130124:
 	.word NULL
 	thumb_func_end sub_8130108
 
+// symdb: Copies a full 30x20-tile (whole-screen) background map from RAM into BG tile block 1 when an overlay cutscene is set up.
+// symdb: () -> void; no input args, all parameters hardcoded
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813017C.yaml
 	thumb_func_start sub_813017C
 sub_813017C:
 	push {r4-r7,lr}
@@ -301,6 +304,10 @@ dword_813028C:
 	.word 0xB860
 	thumb_func_end sub_8130250
 
+// symdb: Refills battle eStruct slot 0 from a fixed spawn table whenever slot 0 is currently unused.
+// symdb: (r0 = unused/0 passed through, r1 = unused) -> r0 = spawned eStruct or 0; flags NZ from slot-0
+// symdb: in-use byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130290.yaml
 	thumb_local_start
 sub_8130290:
 	push {r4-r7,lr}
@@ -320,6 +327,10 @@ off_81302AC:
 	.word byte_812F04C
 	thumb_func_end sub_8130290
 
+// symdb: Spawns the eStruct records from table byte_812F054 into eStruct slot 1 at x=0xB0 on the battle field, but only if slot 1 is currently free.
+// symdb: () -> r0 = spawn result/last record (from callee), void effect; flags set by
+// symdb: getStructFrom2008450 on slot-1 in-use byte (spawn skipped when set)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81302B0.yaml
 	thumb_local_start
 sub_81302B0:
 	push {r4-r7,lr}
@@ -504,6 +515,9 @@ off_81303FC:
 dword_8130400:
 	.word 0x140A00
 	thumb_func_end sub_8130370
+// symdb: Returns a pointer to the overlay's global work struct at 0x2037780.
+// symdb: () -> r0 = &unk_2037780; flags clobbered only by the return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130404.yaml
 	thumb_local_start
 sub_8130404:
 	ldr r0, off_8130408 // =unk_2037780 
@@ -2534,6 +2548,9 @@ dword_8131388:
 off_813138C:
 	.word dword_8129180
 	thumb_func_end init_cutsceneSceneState
+// symdb: Initialises four fixed EmotionData slots (type 0x1C, tag 0x09) from a static flags table as part of cutscene battle-scene setup.
+// symdb: () -> r0 = clobbered; fills EmotionData slots 0..3 of the 0x02008450 EWRAM array
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131390.yaml
 	thumb_local_start
 sub_8131390:
 	push {r4,lr}
@@ -2619,6 +2636,9 @@ byte_8131418:
 	.word NULL
 	thumb_func_end init_loadCutsceneSceneAssets
 
+// symdb: Copies a full 30x20 background tilemap from unk_2021DA0 into background tile block 1 during cutscene scene setup.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131440.yaml
 	thumb_local_start
 sub_8131440:
 	push {r4-r7,lr}
@@ -2781,6 +2801,9 @@ byte_8131560:
 byte_8131568:
 	.byte 0x9C, 0x0, 0xC8, 0x0, 0xB0, 0x0, 0x90, 0x0
 	thumb_func_end sub_81314E4
+// symdb: Copies a fixed 8x8 tile block of tile IDs into BG tile block 0 at tile position (0x11, 3), used by the eLink match object's update paths to redraw part of the background.
+// symdb: () -> void; no return value, no flag guarantees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131570.yaml
 	thumb_local_start
 sub_8131570:
 	push {r4-r7,lr}
@@ -3021,6 +3044,10 @@ loc_8131710:
 	.balign 4, 0x00
 	thumb_func_end sub_8131704
 
+// symdb: Writes one of three HP values (800/1000/1200) into both max-HP and current-HP fields of the navi currently selected on the PET
+// symdb: (entry point at 0x813171C/0x8131722/0x8131728 selects HP = 800/1000/1200; r0-r3 args unused) ->
+// symdb: r0 = ?; sets stats[0x40] and stats[0x42] to the chosen halfword
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813171C.yaml
 	thumb_local_start
 sub_813171C:
 	push {r4,lr}
@@ -3096,6 +3123,10 @@ dword_8131788:
 	.word 0xFEDC
 	thumb_func_end e_linkMatchObjectStateExit
 
+// symdb: State handler for the eLink match object: displays chatbox text script 0x67 from eTextScript201BA20 and advances the object to state 0xC with a fresh delay timer.
+// symdb: (r4 = caller context, r5 = link-match object state struct) -> r0 = 0 from chatbox call; struct
+// symdb: fields written
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813178C.yaml
 	thumb_local_start
 sub_813178C:
 	push {lr}
@@ -6941,6 +6972,9 @@ locret_813367A:
 	pop {pc}
 	thumb_func_end sub_8133648
 
+// symdb: Runs one of three canned text scripts from eTextScript2028A20 and plays the 'can't jack in' error sound, i.e. shows a connection-denied message.
+// symdb: (r0 = selector, 4..6) -> r0 = chatbox_runScript result; plays sound SOUND_CANT_JACK_IN
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813367C.yaml
 	thumb_local_start
 sub_813367C:
 	push {lr}
@@ -16064,6 +16098,10 @@ off_813795C:
 off_8137960:
 	.word sSubmenu
 	thumb_func_end battle_initRoundState
+// symdb: Per-frame update for a menu/prompt state machine: dispatches a handler chosen by the state byte in the r5 context, then ticks battle entities and sprites, always returning 0.
+// symdb: (r5 = context struct; state id = byte [r5,#2]) -> r0 = 0; updates entity records and sprites
+// symdb: each frame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137964.yaml
 	thumb_local_start
 sub_8137964:
 	push {lr}
@@ -16520,6 +16558,10 @@ sub_8137DA4:
 
 	pop {r4-r7,pc}
 	thumb_func_end sub_8137DA4
+// symdb: Clears a text work buffer, draws the message selected by the caller's text ID from table unk_201CF00 into it, and places it at a fixed screen position.
+// symdb: (r0-r3 = caller state; reads caller's r5 struct field +0x24 as a text/message ID) -> r0 = ?;
+// symdb: renders into unk_2017AE0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137DB4.yaml
 	thumb_local_start
 sub_8137DB4:
 	push {r4-r7,lr}
@@ -16765,6 +16807,10 @@ dword_8137F58:
 	.word 0x95999
 	thumb_func_end sub_8137F08
 
+// symdb: Clears a sprite/OAM work buffer and rebuilds it from a single character code looked up in a table, then finalizes it into OAM entries.
+// symdb: (r0-r4 undefined on entry, caller sets r5 = object/struct; reads [r5+0x24] as a 16-bit
+// symdb: char/index) -> r0 = undefined; buffer unk_2017C68 rebuilt
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137F5C.yaml
 	thumb_local_start
 sub_8137F5C:
 	push {r4-r7,lr}
@@ -17035,6 +17081,10 @@ off_813816C:
 	.word dword_81378A0
 	thumb_func_end sub_8138104
 
+// symdb: Time-attack result readout for the open submenu entry: takes the faster of two recorded times for that entry and prints it (min:sec.centis) via a chatbox script.
+// symdb: (r5 = submenu/list state: cursor at +0x24, list base at +0x20; r10 = toolkit) -> r0 = 0 if a
+// symdb: time was displayed, 1 if the time exceeded the 9:59.99 cap; clobbers r4-r7.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138170.yaml
 	thumb_local_start
 sub_8138170:
 	push {r4-r7,lr}

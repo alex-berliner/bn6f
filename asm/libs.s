@@ -4870,6 +4870,10 @@ off_81463CC:
 	.word dword_2010CB0
 	thumb_func_end sub_81462D8
 
+// symdb: Stores a caller-supplied value into the wireless-link work struct and registers the MSC callback that will receive it.
+// symdb: (r0 = arg stored in eStruct200FE00+0x44, passed on to the MSC callback) -> r0 = destroyed; no
+// symdb: return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81463D0.yaml
 	thumb_local_start
 sub_81463D0:
 	push {lr}
@@ -5014,7 +5018,7 @@ loc_81464AE:
 
 // symdb: Clears the link event flag in the rfu connection struct and queues rfu request 0x45 with argument 0, presumably to tear down the wireless link state.
 // symdb: (r0 = unused, clobbered) -> r0 = undefined; clears byte at eStruct200FE00+0x2 and side-effects
-// symdb: the rfu request queue via rfu_fireConnCallbackAndClearState
+// symdb: the rfu request queue via sub_81461B0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_reqEndConnection.yaml
 	thumb_local_start
 rfu_reqEndConnection:

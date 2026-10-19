@@ -4965,7 +4965,7 @@ loc_800E2F8:
 // symdb: (r0 = HP delta, r1 = flag meaning "skip the 0xBD special"; r5 = battle object pointer) -> r0 = 0
 // symdb: on default path, 1 when 0xBD special path was taken ; side effects: mutates HP on r5, spawns a
 // symdb: type-4 effect object, plays sound 0x8A, calls several
-// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/battle_clearImpactSlot with attacker panel coords + alliance
+// symdb: sub_80E37D2/sub_800BF16/sub_800ABC6/sub_802CEA6 with attacker panel coords + alliance
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_applyHPAndHandleSpecial_800E2FC.yaml
 	thumb_func_start battleObject_applyHPAndHandleSpecial_800E2FC
 battleObject_applyHPAndHandleSpecial_800E2FC:
@@ -5424,6 +5424,9 @@ dword_800E5F8:
 	.word 0x5040
 	thumb_func_end object_canMove
 
+// symdb: Returns 1 when the current battle object's first object-flag word has none of the bits in mask 0x1040 set, else 0.
+// symdb: () -> r0 = 1 if (object flag word & 0x1040) == 0, else 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E5FC.yaml
 	thumb_func_start sub_800E5FC
 sub_800E5FC:
 	push {r4,lr}

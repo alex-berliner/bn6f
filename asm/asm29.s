@@ -2374,6 +2374,10 @@ byte_80A5F67:
 	.byte 0x2
 	thumb_func_end sub_80A5F48
 
+// symdb: Spawns overworld map object 0x14 and plays the log-out sound effect, matching the jack-out/logout sequence.
+// symdb: (r5 = context struct; r1 = [r5,#0xc], r2 = [r5,#0x10], r3 = [r5,#0x14] as spawn params) -> r0 =
+// symdb: sound result; calls SpawnOverworldMapObject(r0=0x14,...) and PlaySoundEffect(0x76)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F68.yaml
 	thumb_local_start
 sub_80A5F68:
 	push {lr}
@@ -9487,6 +9491,10 @@ sub_80A9A2C:
 	pop {pc}
 	thumb_func_end sub_80A9A2C
 
+// symdb: Advances an object's sprite animation counter, and if the current frame's attribute has bit 7 set, writes 8 to a state byte before running the sprite update.
+// symdb: (r0 = unused on entry, r5 = object struct) -> r0 = value passed to sprite_update; no flags
+// symdb: relied on
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A76.yaml
 	thumb_local_start
 sub_80A9A76:
 	push {lr}
@@ -11702,6 +11710,10 @@ loc_80AAA18:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA910
 
+// symdb: Builds a 4-bit mask of which reward-entry category values (top 2 bits of each of the 20 halfwords) appear in an enemy's battle reward table row.
+// symdb: (r0 = reward table row index, passed to sub_80AAE98) -> r0 = bitmask, bit n set if some entry's
+// symdb: bits 14-15 equal n; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAA1C.yaml
 	thumb_local_start
 sub_80AAA1C:
 	push {r4,lr}

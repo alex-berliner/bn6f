@@ -6827,6 +6827,9 @@ sub_8126524:
 	.balign 4, 0x00
 	thumb_func_end sub_8126524
 
+// symdb: Queues the fixed animated OAM entry for the battle transition animation element.
+// symdb: () -> r0 = result of battle_queueAnimatedOamEntry; flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812653C.yaml
 	thumb_local_start
 sub_812653C:
 	push {r4-r7,lr}
@@ -7857,6 +7860,11 @@ loc_8126E9C:
 	.balign 4, 0x00
 	thumb_func_end sub_8126E88
 
+// symdb: Battle-object command handler that stalls the object while a screen fade is active, then advances to its next command.
+// symdb: (r5 = battle object ptr, set by dispatcher; no args in r0-r3) -> r0 = result of
+// symdb: battle_dispatchNextCmd_81272C4; object fields [r5+0xC] |= 0x2 and [r5+1] = 8 when a fade is
+// symdb: active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126EA4.yaml
 	thumb_local_start
 sub_8126EA4:
 	push {lr}
@@ -8934,6 +8942,10 @@ loc_81276DA:
 	pop {r4-r7,pc}
 	thumb_func_end battle_buildPetNaviList_8127638
 
+// symdb: Returns a word from the currently selected PET navi's data table, indexed by an entry in the toolkit battle struct minus a per-navi base.
+// symdb: () -> r0 = word from [ *[pt_8121200[navi]] + ([S2001c04+0x30] - byte_81211B4[navi])*4 ];
+// symdb: clobbers r1-r4, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81276E4.yaml
 	thumb_local_start
 sub_81276E4:
 	push {r4,lr}
@@ -14097,6 +14109,10 @@ off_8129E24:
 	.word unk_20251A0
 	thumb_func_end sub_8129DC4
 
+// symdb: Shows one of a handful of text-script dialogue lines chosen by an NPC object's state byte, unless the screen is fading.
+// symdb: (r0/r4? caller context, r5 = NPC/object pointer) -> r0 = script-run result (clobbered); writes
+// symdb: 0x1C to [r5+3]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E28.yaml
 	thumb_local_start
 sub_8129E28:
 	push {r4,lr}
@@ -14119,6 +14135,10 @@ byte_8129E48:
 	.byte 0x0, 0x50, 0x51, 0x52, 0x0, 0x53, 0x0, 0x0, 0x0, 0x30, 0x0, 0x0
 	thumb_func_end sub_8129E28
 
+// symdb: If chatbox event flag bit 8 is set and the object's state byte isn't 9, runs its chatbox line and clears a state bit.
+// symdb: (r5 = npc/object struct) -> r0 = void; flags from chatbox_mask_eFlags2009F38 used for the
+// symdb: initial beq
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129E54.yaml
 	thumb_local_start
 sub_8129E54:
 	push {lr}
@@ -15202,6 +15222,9 @@ locret_812A676:
 	.word eS200BC50
 	thumb_func_end sub_812A5F8
 
+// symdb: If the 0x200BC50 flag bit is clear, starts a screen fade (mode 12, speed 16) and writes state 0x10 to [r5+0xC]; otherwise does nothing.
+// symdb: () -> void; uses caller's r5 as a state struct, branches on the flag test's Z flag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A67C.yaml
 	thumb_local_start
 sub_812A67C:
 	push {lr}
@@ -17839,6 +17862,10 @@ locret_812B9F6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_812B97C
 
+// symdb: Link-comm state handler: checksums the received buffer at unk_2033C00, then matches the link partner's eLinkState fields against a table to set the next state.
+// symdb: (r5 = comm state-machine context: +0x34 payload size, +0x26 result flag, +0x10 state, +0x2
+// symdb: substate) -> writes [r5+0x26], [r5+0x10], [r5+2]; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B9F8.yaml
 	thumb_local_start
 sub_812B9F8:
 	push {r7,lr}

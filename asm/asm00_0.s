@@ -5068,6 +5068,10 @@ sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	pop {pc}
 	thumb_func_end sub_800232A
 
+// symdb: Animation/script callback that sets or clears a single event-work flag depending on the sign of the value stored in its parameter struct.
+// symdb: (r0 = pointer to a struct whose first u32 word is a signed flag id) -> r0 clobbered; calls
+// symdb: SetEventFlag/ClearEventFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002338.yaml
 	thumb_local_start
 sub_8002338: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}

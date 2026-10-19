@@ -1431,6 +1431,10 @@ pet_zeroStatSlotBuffer:
 	thumb_func_end pet_zeroStatSlotBuffer
 
 // () -> void
+// symdb: Grants a range of NaviCust programs to the player, reading which ones/quantities from a lookup table.
+// symdb: (no args) -> none; r0-r7 clobbered; calls GiveNaviCustPrograms(r0 = program id 0x94..0x148, r1 =
+// symdb: table byte, r2 = 9)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813C030.yaml
 	thumb_func_start sub_813C030
 sub_813C030:
 	push {r4-r7,lr}
@@ -3275,6 +3279,9 @@ sub_813CE1C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CE1C
 
+// symdb: Adds r4 to byte 0x18 of the selected PET navi's NaviStats record and then sets byte 0x16 to 3.
+// symdb: (r0, r1 unused) r4 = amount to add -> r0 = 0 (from SetCurPETNaviStatsByte); no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE26.yaml
 	thumb_local_start
 sub_813CE26:
 	push {lr}
@@ -3471,6 +3478,9 @@ sub_813CF3C:
 	.balign 4, 0x00
 	thumb_func_end sub_813CF3C
 
+// symdb: Adds a signed delta to the PET navi's NaviStats byte at offset 0x18, capping the result at 7.
+// symdb: (r0 = signed delta) -> void; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF4C.yaml
 	thumb_local_start
 sub_813CF4C:
 	push {r4,lr}
@@ -3490,6 +3500,9 @@ loc_813CF66:
 	pop {r4,pc}
 	thumb_func_end sub_813CF4C
 
+// symdb: Adds r0 to a byte field (offset 0x19) of the currently selected PET navi's NaviStats, clamping the result to a maximum of 7.
+// symdb: (r0 = amount to add) -> r0 = unchanged?; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF6C.yaml
 	thumb_local_start
 sub_813CF6C:
 	push {r4,lr}

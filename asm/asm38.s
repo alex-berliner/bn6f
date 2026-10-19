@@ -4193,6 +4193,10 @@ off_3007824:
 	.word byte_8019C34
 	thumb_func_end object_updateCollisionPanels_300777C
 
+// symdb: Frees (clears) the battle collision-index bits for every panel a battle object currently occupies, using its shape's panel-offset list and facing side.
+// symdb: (r0 = battle object struct ptr) -> r0 = last test-and-clear result from
+// symdb: object_testAndClearCollisionIndexBit; clobbers r4-r6, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007828.yaml
 	thumb_local_start
 sub_3007828:
 	push {r4-r6,lr}

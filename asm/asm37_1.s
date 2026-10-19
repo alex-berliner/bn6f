@@ -818,6 +818,9 @@ off_8142130:
 	.word unk_2000BE0
 	thumb_func_end sub_8142102
 
+// symdb: Resets the scenario-effect state block at 0x2000780 and sets story flag EVENT_740, returning 0.
+// symdb: () -> r0 = 0; zeroes 0x40 bytes at eScenarioEffectState2000780+8, sets event flag 740
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142134.yaml
 	thumb_func_start sub_8142134
 sub_8142134:
 	push {r4-r7,lr}
@@ -1450,6 +1453,9 @@ SoulWeaponsMaps:
 	.hword 0
 	thumb_func_end GetSoulWeaponsMapIndex
 
+// symdb: Counts how many of the soul-weapon flags unlocked for the current soul-weapons map entry are set.
+// symdb: () -> r0 = number of set flags in the soul-weapon flag range; flags clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814270A.yaml
 	thumb_local_start
 sub_814270A:
 	push {r4-r7,lr}
@@ -4135,6 +4141,10 @@ sub_8143EA4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143EA4
 
+// symdb: Returns an 8-way direction index pointing from one Groundman-minigame grid cell to another.
+// symdb: (r0 = packed grid coords of point A, r1 = packed grid coords of point B) -> r0 = direction 0-7
+// symdb: from A to B; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EB0.yaml
 	thumb_func_start sub_8143EB0
 sub_8143EB0:
 	push {r4-r7,lr}
@@ -4201,6 +4211,9 @@ sub_8143F1C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143F1C
 
+// symdb: Initializes the eStruct2001010 effect state: selects effect type 5 and clears its 0x40-byte data block.
+// symdb: () -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F20.yaml
 	thumb_local_start
 sub_8143F20:
 	push {r4-r7,lr}
