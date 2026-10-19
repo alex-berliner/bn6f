@@ -913,7 +913,7 @@ signed int sub_8003ACA()
 
 
 // 0x8003ad4
-int sub_8003AD4()
+int e_setFlag2001010Bit7()
 {
 	int result; // r0
 
@@ -6824,7 +6824,7 @@ int sub_80083E4()
     int v2; // r1
     int v3; // r2
 
-    result = sub_800A07C(*(v0 + 5));
+    result = getRecordFlagBit3(*(v0 + 5));
     if ( result )
     {
         PlaySoundEffect(159, v2, v3);
@@ -7118,7 +7118,7 @@ int sub_8008688()
 
     if ( !*(v0 + 3) )
     {
-        v2 = sub_800A84E();
+        v2 = battle_getPhase();
         dispatch_801DACC(8539203);
         flags_clearBits_eStruct2035280_801BED6(8539203);
         v3 = battle_getStateByte0d_800A7E2();
@@ -7433,7 +7433,7 @@ int sub_8008900()
     int v2; // r1
     int v3; // r2
 
-    result = sub_800A07C(*(v0 + 5));
+    result = getRecordFlagBit3(*(v0 + 5));
     if ( result )
     {
         PlaySoundEffect(159, v2, v3);
@@ -7576,7 +7576,7 @@ int battle_tickPreBattleInit_8008AA0()
 
     if ( !*(v0 + 3) )
     {
-        v2 = sub_800A84E();
+        v2 = battle_getPhase();
         dispatch_801DACC(19523);
         flags_clearBits_eStruct2035280_801BED6(19523);
         v3 = battle_getStateByte0d_800A7E2();
@@ -7891,7 +7891,7 @@ int sub_8008D18()
     int v2; // r1
     int v3; // r2
 
-    result = sub_800A07C(*(v0 + 5));
+    result = getRecordFlagBit3(*(v0 + 5));
     if ( result )
     {
         PlaySoundEffect(159, v2, v3);
@@ -8033,7 +8033,7 @@ int sub_8008EA0()
 
     if ( !*(v0 + 3) )
     {
-        v2 = sub_800A84E();
+        v2 = battle_getPhase();
         dispatch_801DACC(19523);
         flags_clearBits_eStruct2035280_801BED6(19523);
         v3 = battle_getStateByte0d_800A7E2();
@@ -8348,7 +8348,7 @@ int sub_8009118()
     int v2; // r1
     int v3; // r2
 
-    result = sub_800A07C(*(v0 + 5));
+    result = getRecordFlagBit3(*(v0 + 5));
     if ( result )
     {
         PlaySoundEffect(159, v2, v3);
@@ -9976,7 +9976,7 @@ int sub_8009DEC()
 
 
 // 0x8009e10
-int sub_8009E10()
+int battle_dispatchPhaseHandler()
 {
     int v0; // r5
 
@@ -10320,7 +10320,7 @@ signed int battle_checkFlowAdvanceFlags_800A046()
 
 
 // 0x800a07c
-signed int __fastcall sub_800A07C(int a1)
+signed int __fastcall getRecordFlagBit3(int a1)
 {
     __int16 v1; // r1
     signed int result; // r0
@@ -11283,7 +11283,7 @@ int __fastcall setTwoStructs_800A840(int a1)
 
 
 // 0x800a84e
-int sub_800A84E()
+int battle_getPhase()
 {
     int v0; // r10
 
@@ -11695,7 +11695,7 @@ void __fastcall clearWorkArea_2000FA0_800AB22(int unused, int unused_1, int a3, 
 
 
 // 0x800ab2e
-int __fastcall sub_800AB2E(int a1, int a2, char a3)
+int __fastcall setIndexedTableByte(int a1, int a2, char a3)
 {
     int result; // r0
 

@@ -52,9 +52,9 @@ sub_8045FC6:
 // symdb: (r0 = ptr to resource whose halfwords at 2*index are offsets to opcode streams, r1 = packed
 // symdb: (animFilePtrTableByteOffset<<16 | scriptIndex); r10 = toolkit) -> r0 = dword at 200A25C;
 // symdb: r8/r9/r12 preserved, r1 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8045FD0.yaml
-	thumb_func_start sub_8045FD0
-sub_8045FD0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_runAnimationScript.yaml
+	thumb_func_start sprite_runAnimationScript
+sprite_runAnimationScript:
 	push {lr}
 	push {r0-r3}
 	mov r0, #1
@@ -110,7 +110,7 @@ off_8046030:
 	.word dword_3006B84
 off_8046034:
 	.word byte_200A220
-	thumb_func_end sub_8045FD0
+	thumb_func_end sprite_runAnimationScript
 
 	thumb_local_start
 sub_8046038:
@@ -199,7 +199,7 @@ off_80460F4:
 	.word sub_3006F20+1
 	.word sub_3006F24+1
 	.word 0x0
-	.word sub_3006F48+1
+	.word get_variantOffsetPtr+1
 	.word sub_80463A0+1
 	.word 0x0
 	.word 0x0
@@ -4350,9 +4350,9 @@ dword_8048CC8:
 // symdb: Merges an 8-byte item/stock record into an indexed inventory-style list, stacking quantities up to 0xFF or filling the first empty slot.
 // symdb: (r0 = list index, r1 = pointer to 8-byte entry {id, count, halfword, byte, pad}) -> void; flags
 // symdb: not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048CCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_addItemStockEntry.yaml
 	thumb_local_start
-sub_8048CCC:
+shop_addItemStockEntry:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -4433,7 +4433,7 @@ loc_8048D4E:
 	mov r9, r5
 	mov r12, r6
 	pop {r4-r7,pc}
-	thumb_func_end sub_8048CCC
+	thumb_func_end shop_addItemStockEntry
 
 	thumb_local_start
 sub_8048D60:
@@ -4765,7 +4765,7 @@ sub_8048F88:
 	push {r4-r7,lr}
 	mov r0, #4
 	ldr r1, off_8048F94 // =byte_8048BE4
-	bl sub_8048CCC
+	bl shop_addItemStockEntry
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8048F94:
@@ -10032,7 +10032,7 @@ sub_804C144:
 loc_804C160:
 	cmp r0, #0
 	ble loc_804C19C
-	bl sub_804C244
+	bl battle_flashTickFrames
 loc_804C168:
 	bl applyScrollOffset_804C1D4
 	ldrb r6, [r5,#0x13]
@@ -10162,9 +10162,9 @@ locret_804C240:
 // symdb: Initializes and steps the frame counter for the battle screen-flash/background-fill effect driven by its caller.
 // symdb: (r5 = effect state object, r10 = toolkit; uses toolkit->oToolkit_Unk2009740_Ptr) -> r0 = void;
 // symdb: sets state fields 0x11/0x18 and struct bytes 0-3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C244.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_flashTickFrames.yaml
 	thumb_local_start
-sub_804C244:
+battle_flashTickFrames:
 	push {r4-r7,lr}
 	ldrb r6, [r5,#0x11]
 	cmp r6, #0
@@ -10210,7 +10210,7 @@ locret_804C292:
 	.balign 4, 0
 off_804C294:
 	.word 0x400
-	thumb_func_end sub_804C244
+	thumb_func_end battle_flashTickFrames
 
 // symdb: Copies OW navi sprite state (animation/palette/transform/coord shader) into unk_2000AC0 for chatbox rendering
 // symdb: (r5 = OWPlayerObject*, r10 = Toolkit*) -> r2 = RenderInfo/unk_2009740 derived pointer ; side

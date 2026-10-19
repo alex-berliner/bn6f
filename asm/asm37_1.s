@@ -691,16 +691,16 @@ battle_getAIDataPtr_8142068:
 
 // symdb: Resets the Cybeast spread-attack spawn coordinates in eStruct2001010 to a default/off-screen pair (0, 15).
 // symdb: (no args used) -> r0 = 0; flags clobbered by bl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142072.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beast_clearSpawnCoords.yaml
 	thumb_local_start
-sub_8142072:
+beast_clearSpawnCoords:
 	push {r4-r7,lr}
 	mov r0, #0
 	mov r1, #0xf
 	bl beast_setSpawnCoords
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142072
+	thumb_func_end beast_clearSpawnCoords
 
 // symdb: Looks up an index in a small 3-entry table (byte_81420A8) by matching against the current MapGroup, returning the table index or 0xff.
 // symdb: (r10 = ToolkitPtr, lr = return) -> r0 = index (0..n) or 0xff if no match/empty entry
@@ -884,16 +884,16 @@ sub_8142178:
 
 // symdb: Decrements by one the counter byte at offset 0x0E of the scenario-effect state structure when an overworld event finishes.
 // symdb: (no args used) -> r0 = decremented value; no flags returned (popped with pc)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142184.yaml
-	thumb_func_start sub_8142184
-sub_8142184:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_scenarioEffectDecrementCounter.yaml
+	thumb_func_start e_scenarioEffectDecrementCounter
+e_scenarioEffectDecrementCounter:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	ldrb r0, [r5,#0xe] // (byte_200078E - 0x2000780)
 	sub r0, #1
 	strb r0, [r5,#0xe] // (byte_200078E - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142184
+	thumb_func_end e_scenarioEffectDecrementCounter
 
 // symdb: Returns whether a given scenario effect slot is currently active.
 // symdb: (r0 = slot index 0..N) -> r0 = non-zero if the slot is active, zero otherwise ; sets nz/cv via
@@ -911,9 +911,9 @@ battle_checkScenarioEffectActive_8142190:
 
 // symdb: Returns nonzero (Z flag cleared) if any of the four state bytes at eScenarioEffectState+0x10..0x13 is set, else zero.
 // symdb: () -> r0 = sum of bytes [0x10..0x13] of eScenarioEffectState2000780; Z set iff all four are 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814219C.yaml
-	thumb_func_start sub_814219C
-sub_814219C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_scenarioEffectStateCountersAnySet.yaml
+	thumb_func_start e_scenarioEffectStateCountersAnySet
+e_scenarioEffectStateCountersAnySet:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	ldrb r0, [r5,#0x10] // (dword_2000790 - 0x2000780)
@@ -925,7 +925,7 @@ sub_814219C:
 	add r0, r0, r1
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814219C
+	thumb_func_end e_scenarioEffectStateCountersAnySet
 
 	thumb_func_start sub_81421B2
 sub_81421B2:
@@ -945,14 +945,14 @@ loc_81421C4:
 
 // symdb: Setter that stores a one-byte value into field 0xB of the scenario effect state struct at 0x2000780.
 // symdb: (r0 = byte value) -> r0 = unchanged (caller-saved only); no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81421C8.yaml
-	thumb_func_start sub_81421C8
-sub_81421C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setScenarioEffectStateB.yaml
+	thumb_func_start e_setScenarioEffectStateB
+e_setScenarioEffectStateB:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	strb r0, [r5,#0xb] // (byte_200078B - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81421C8
+	thumb_func_end e_setScenarioEffectStateB
 
 // symdb: Returns the byte at offset 0xB of the scenario/effect state (eScenarioEffectState2000780).
 // symdb: () -> r0 = byte at state + 0xB ; no side effects
@@ -1101,15 +1101,15 @@ byte_8142294:
 
 // symdb: Zeroes the dword at offset 0x10 of the scenario-effect state struct, resetting one scenario effect value.
 // symdb: () -> r0 = 0; writes 0 to eScenarioEffectState2000780+0x10
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81422B4.yaml
-	thumb_func_start sub_81422B4
-sub_81422B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_clearScenarioEffectValue.yaml
+	thumb_func_start e_clearScenarioEffectValue
+e_clearScenarioEffectValue:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r0, #0
 	str r0, [r5,#0x10] // (dword_2000790 - 0x2000780)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81422B4
+	thumb_func_end e_clearScenarioEffectValue
 
 // symdb: Returns 0 only when the current soul-weapon beast is unlocked and its required event flags are set; otherwise 1.
 // symdb: () -> r0 = bool (0 = beast available, 1 = unavailable) ; side effects: clobbers r0-r3,r4-r7
@@ -1733,7 +1733,7 @@ loc_81428F6:
 	ldr r3, [sp,#4]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	str r0, [sp,#8]
 	mov r0, r7
 	bl GetSoulWeaponCursorCameraCoords
@@ -1741,7 +1741,7 @@ loc_81428F6:
 	ldr r3, [sp,#4]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	ldr r1, [sp,#8]
 	cmp r0, r1
 	ble loc_814294C
@@ -2925,7 +2925,7 @@ loc_814325A:
 	ldr r3, [r7,#0xc]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	mov r1, #6
 	lsl r1, r1, #0x10
 	cmp r0, r1
@@ -2965,7 +2965,7 @@ loc_814329A:
 	ldr r1, [r5,#8]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	ldrb r1, [r5]
 	mov r2, #0xfa
 	lsl r2, r2, #0x10
@@ -4053,7 +4053,7 @@ loc_8143E0C:
 	ldr r3, [sp,#4]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	str r0, [sp,#8]
 	mov r0, r7
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
@@ -4061,7 +4061,7 @@ loc_8143E0C:
 	ldr r3, [sp,#4]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	ldr r1, [sp,#8]
 	cmp r0, r1
 	ble loc_8143E62

@@ -89,7 +89,7 @@ int ow_applySpawnEntry()
 
 
 // 0x8099dac
-int sub_8099DAC()
+int camera_followOverworldPlayer()
 {
     int v0; // r10
 
@@ -116,7 +116,7 @@ int __fastcall sub_8099FFC(int a1, int a2, int a3)
         v6 = gameState_getProtectedBugfrags_803D0F4();
     *(v3 + 112) = v6;
     sub_8003984();
-    sub_8003AD4();
+    e_setFlag2001010Bit7();
     return 0;
 }
 
@@ -916,7 +916,7 @@ int __fastcall sub_809A8E4(int a1, int a2, int a3)
     *(v3 + 6) = 0;
     *(v3 + 5) = 0;
     sub_8003984();
-    sub_8003AD4();
+    e_setFlag2001010Bit7();
     battle_resetEStructRecords_8046664();
     decompAndCopyData(byte_809A934);
     return 0;
@@ -1018,7 +1018,7 @@ int __fastcall sub_809AAB8(int a1, int a2, int a3)
 
     doPETEffect_8033fc0(0, a2, a3);
     sub_8003984();
-    sub_8003AD4();
+    e_setFlag2001010Bit7();
     chatbox_runScript(&eTextScript2033404, 10);
     battle_resetEStructRecords_8046664();
     result = 0;
@@ -1987,7 +1987,7 @@ int ow_applyCutsceneDirOffset()
     int v5; // r2
     int v6; // r4
 
-    sub_809E1BC();
+    ow_getPlayerPosition();
     v3 = &(*off_809C8CC[*(dword_2011CC0 + 12)])[8 * *(v0 + 4)];
     v4 = ((v1 >> 16) + *v3) << 16;
     v3 += 2;
@@ -2135,7 +2135,7 @@ int __fastcall sub_809CB68(int a1, int a2, int a3)
 
     doPETEffect_8033fc0(0, a2, a3);
     sub_8003984();
-    sub_8003AD4();
+    e_setFlag2001010Bit7();
     chatbox_runScript(&eTextScript2033404, 30);
     result = 0;
     *(v3 + 8) = 0;
@@ -2727,7 +2727,7 @@ int owPlayer_tickPerFrame_809D4DC()
 
 
 // 0x809d560
-signed int sub_809D560()
+signed int ow_setPlayerAnimByDirection()
 {
     int v0; // r5
     int v1; // r10
@@ -3815,7 +3815,7 @@ __int64 sub_809E1AE()
 
 
 // 0x809e1bc
-void sub_809E1BC()
+void ow_getPlayerPosition()
 {
     int v0; // r10
     _DWORD *v1; // r3
@@ -4182,7 +4182,7 @@ int resetStruct2000aa0State_809E3B2()
 
 
 // 0x809e3c4
-signed int __fastcall sub_809E3C4(int a1, int a2, int a3, int a4)
+signed int __fastcall req_setFourParams(int a1, int a2, int a3, int a4)
 {
     signed int result; // r0
 

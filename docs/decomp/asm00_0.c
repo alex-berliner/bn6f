@@ -139,7 +139,7 @@ int __fastcall sub_80006A2(signed int a1, int a2, int a3)
     v6 = a1;
     v7 = a2;
     sound_8000808(a1, a2, v4 * 4, m4a_SongNumStart);
-    sound_8000808(v5, v8, v9, sub_814EB1C);
+    sound_8000808(v5, v8, v9, sound_mplayStop);
     sound_8000808(v5, 255, 0, sub_814F9AC);
     sound_8000808(v6, v10, v11, sub_814E9F0);
     return sound_8000808(v5, v7, v12, sub_814EAF0);
@@ -1704,7 +1704,7 @@ __int64 __fastcall sub_80013AA(int a1, int a2, _DWORD *a3, int a4)
 
 
 // 0x80014d4
-int __fastcall sub_80014D4(int a1, int a2)
+int __fastcall calc_hypotFixed12(int a1, int a2)
 {
     __asm { SVC         8 }
     return ((a1 >> 12) * (a1 >> 12) + (a2 >> 12) * (a2 >> 12)) << 12;

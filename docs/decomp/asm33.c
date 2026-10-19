@@ -6241,7 +6241,7 @@ void __noreturn sub_8128CD8()
     *(v0 + 16) = -1;
     *(v0 + 16) = -1;
     if ( *(v0 + 30) )
-        sub_802B358(byte_201BDB8, eDecompBuffer2013A00);
+        battle_renderChipSelectNames(byte_201BDB8, eDecompBuffer2013A00);
     sub_8128F10();
 }
 
@@ -6291,7 +6291,7 @@ int sub_8128E2C()
     if ( menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
     {
         if ( *(v0 + 36) != *(v0 + 38) )
-            sub_802B358(byte_201BDB8, eDecompBuffer2013A00);
+            battle_renderChipSelectNames(byte_201BDB8, eDecompBuffer2013A00);
         if ( *(v0 + 32) != *(v0 + 34) )
         {
             sub_802B438(&eTextScript201BA00, byte_201BDB8);

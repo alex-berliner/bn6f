@@ -137,7 +137,7 @@ signed int sub_808964C()
     int v4; // r0
     int v5; // r0
 
-    v1 = sub_814219C();
+    v1 = e_scenarioEffectStateCountersAnySet();
     if ( v2 )
     {
         sub_809E2AE(4);
@@ -155,7 +155,7 @@ signed int sub_808964C()
         v5 = sub_809E2B8();
         sub_809E13C(byte_80896A8[v5]);
         battle_initBeastSpAIChipQueues();
-        sub_81421C8(0);
+        e_setScenarioEffectStateB(0);
         cutscene_startCameraScript();
         *v0 = 4;
     }
@@ -271,7 +271,7 @@ signed int __fastcall battleObject_scenarioEffectInputHandler_8089704(int a1, in
             v15 = v13 - 1;
             if ( (v15 < 0) ^ v14 )
                 v15 = 3;
-            sub_81421C8(v15);
+            e_setScenarioEffectStateB(v15);
             v5 = 1;
         }
         else if ( v12 & 0x80 )
@@ -280,7 +280,7 @@ signed int __fastcall battleObject_scenarioEffectInputHandler_8089704(int a1, in
             v16 = battle_getScenarioEffectStateField_81421D0() + 1;
             if ( v16 >= 4 )
                 v16 = 0;
-            sub_81421C8(v16);
+            e_setScenarioEffectStateB(v16);
             v5 = 1;
         }
     }
@@ -396,7 +396,7 @@ signed int battle_initBeastOutAiTurn_808983A()
     IsPaletteFadeActive();
     if ( !v2 )
     {
-        sub_8089D44();
+        battle_initAIChipQueueSlot3();
         *(v1 + 12) = battleScenarioEffect_isActive_814216E();
         ai_setAIDataUnk18_8089CB0(30);
         *v0 = 48;
@@ -688,8 +688,8 @@ signed int __fastcall battle_handleChipLockoutTransition_8089A60(int a1)
     {
         v5 = battle_getSoulWeaponBase_81427CE();
         ClearEventFlag(v5);
-        *(v2 + 16) = sub_814219C();
-        sub_81422B4();
+        *(v2 + 16) = e_scenarioEffectStateCountersAnySet();
+        e_clearScenarioEffectValue();
         SetEventFlagFromImmediate(7, 64);
         ClearEventFlagFromImmediate(2, 37);
         *(*(v3 + oToolkit_GameStatePtr) + oGameState_SavedByte) = 0;
@@ -918,7 +918,7 @@ signed int beastOverworldAi_decideTransformOrIdle_8089C16()
             sub_809E13C(v2);
             ai_setAIDataUnk18_8089CB0(30);
             battleScenarioEffect_isActive_814216E();
-            if ( !v3 && (sub_814219C(), v3) )
+            if ( !v3 && (e_scenarioEffectStateCountersAnySet(), v3) )
             {
                 *v0 = 124;
             }
@@ -1018,7 +1018,7 @@ char *camera_startCutsceneScript()
     sub_8036F98(byte_808948A);
     *(v0 + 19) = 1;
     ow_freeMapObjectTrio();
-    return sub_8089D44();
+    return battle_initAIChipQueueSlot3();
 }
 
 
@@ -1073,7 +1073,7 @@ char *battle_initBeastSpAIChipQueues()
 
 
 // 0x8089d44
-char *sub_8089D44()
+char *battle_initAIChipQueueSlot3()
 {
     sub_80468EC(0);
     return battleObject_initAIChipQueueSlot_80468C6(3, 0, 0);

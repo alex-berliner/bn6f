@@ -731,7 +731,7 @@ loc_808FD76:
 	lsl r2, r2, #0x10
 	ldrh r3, [r4,#6]
 	lsl r3, r3, #0x10
-	bl sub_809E3C4
+	bl req_setFourParams
 	mov r0, #0
 	pop {r4,r5,pc}
 	.balign 4, 0

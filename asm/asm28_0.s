@@ -759,7 +759,7 @@ byte_8099CEC:
 	cs_wait_screen_fade
 
 byte_8099D23:
-	cs_call_native_with_return_value ptr1=sub_8099DAC+1
+	cs_call_native_with_return_value ptr1=camera_followOverworldPlayer+1
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_EVENT_CUR_DIR_LOCKED
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_10C
 	cs_free_all_ow_npc_objects_if_different_map
@@ -831,9 +831,9 @@ off_8099DA8:
 
 // symdb: Cutscene-called native that points the camera's tracking struct at the overworld player object (value 1), presumably re-locking the camera onto the player.
 // symdb: (r0 unused on entry) -> r0 = 0; reads r10 toolkit, no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099DAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_followOverworldPlayer.yaml
 	thumb_local_start
-sub_8099DAC:
+camera_followOverworldPlayer:
 	push {r4-r7,lr}
 	mov r0, #1
 	mov r1, r10
@@ -987,7 +987,7 @@ cutscenescript_8099F7A:
 	.word 0x09A6ED4B, 0x01091C08, byte_8099F75, 0x09A4B94B, 0x01FF0208, 0x09A4ED4B, 0x043F3B08, 0x03FD554B
 	.byte 0x08
 	.byte 0x00
-	thumb_func_end sub_8099DAC
+	thumb_func_end camera_followOverworldPlayer
 
 	thumb_local_start
 sub_8099FFC:
@@ -1007,7 +1007,7 @@ loc_809A018:
 loc_809A01C:
 	str r0, [r5,#0x70]
 	bl sub_8003984
-	bl sub_8003AD4
+	bl e_setFlag2001010Bit7
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -2154,7 +2154,7 @@ loc_809A90A:
 	strh r2, [r5,#6]
 	strb r2, [r5,#5]
 	bl sub_8003984
-	bl sub_8003AD4
+	bl e_setFlag2001010Bit7
 	bl battle_resetEStructRecords_8046664 // () -> void
 	// initRefs
 	ldr r0, off_809A930 // =byte_809A934
@@ -2340,7 +2340,7 @@ sub_809AAB8:
 	mov r0, #0
 	bl doPETEffect_8033fc0
 	bl sub_8003984
-	bl sub_8003AD4
+	bl e_setFlag2001010Bit7
 	ldr r0, off_809AD78 // =eTextScript2033404 // TextScriptArchive
 	mov r1, #0xa
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
@@ -4588,7 +4588,7 @@ byte_809C884:
 	thumb_func_start ow_applyCutsceneDirOffset
 ow_applyCutsceneDirOffset:
 	push {r4-r7,lr}
-	bl sub_809E1BC
+	bl ow_getPlayerPosition
 	lsr r1, r1, #0x10
 	lsr r2, r2, #0x10
 	lsr r3, r3, #0x10
@@ -4907,7 +4907,7 @@ sub_809CB68:
 	mov r0, #0
 	bl doPETEffect_8033fc0
 	bl sub_8003984
-	bl sub_8003AD4
+	bl e_setFlag2001010Bit7
 	ldr r0, byte_809CEAC+4 // =0x4
 	mov r1, #0x1e
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()

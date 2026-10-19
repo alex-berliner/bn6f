@@ -165,9 +165,9 @@ loc_813B836:
 
 // symdb: Measures the empty margins (left/right/top/bottom) of the current AI entity's 7x7 byte grid mask and returns them as four values.
 // symdb: () -> r0 = left margin, r1 = right margin, r2 = top margin, r3 = bottom margin; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B84C.yaml
-	thumb_func_start sub_813B84C
-sub_813B84C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_getGridMargins.yaml
+	thumb_func_start ai_getGridMargins
+ai_getGridMargins:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	bl ai_dispatchFromGlobalByte
@@ -293,7 +293,7 @@ loc_813B908:
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_813B84C
+	thumb_func_end ai_getGridMargins
 
 	thumb_func_start sub_813B920
 sub_813B920:
@@ -341,9 +341,9 @@ off_813B94C:
 // symdb: Stamps a 7x7 AI-selected area pattern centered on a battle-grid tile, writing value+1 into grid cells where the pattern is nonzero.
 // symdb: (r0 = marker value, r1 = AI dispatch argument, r2 = center x, r3 = center y) -> r0 = dispatched
 // symdb: pattern pointer; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B950.yaml
-	thumb_func_start sub_813B950
-sub_813B950:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_stampAreaPattern.yaml
+	thumb_func_start ai_stampAreaPattern
+ai_stampAreaPattern:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	add r0, #1
@@ -397,7 +397,7 @@ loc_813B9A0:
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813B950
+	thumb_func_end ai_stampAreaPattern
 
 // symdb: Reads one byte from the toolkit's 0x200414c array at offset (r0 + r1*7) and returns its value/zero-flag through r0.
 // symdb: (r0 = item index, r1 = some other index/argument, r10 = toolkit ptr) -> r0 = byte at that offset
@@ -1300,9 +1300,9 @@ loc_813BF38:
 // symdb: Scans the 7x7 Navi Customizer grid and returns whether any occupied cell lies on the middle row within ±3 columns of the given column.
 // symdb: (r0 = unused/dispatch seed, r1 = column, r2 = row) -> r0 = 1 if a nonzero grid byte is found in
 // symdb: row 3 with column in [r1-3, r1+3], else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BF60.yaml
-	thumb_func_start sub_813BF60
-sub_813BF60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkRowOccupied.yaml
+	thumb_func_start navicust_checkRowOccupied
+navicust_checkRowOccupied:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp]
@@ -1350,14 +1350,14 @@ loc_813BFA6:
 	add sp, sp, #8
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_813BF60
+	thumb_func_end navicust_checkRowOccupied
 
 // symdb: NaviCust helper: checks whether the held part's occupied cells all land inside the valid 4x4 board area, returning 1 if any cell falls outside.
 // symdb: (r0 = ignored/part id already in global, r1 = placement x, r2 = placement y) -> r0 = 1 if any
 // symdb: occupied shape cell is outside the valid region, 0 if it fits; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BFB8.yaml
-	thumb_func_start sub_813BFB8
-sub_813BFB8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPieceFitsInBoard.yaml
+	thumb_func_start navicust_checkPieceFitsInBoard
+navicust_checkPieceFitsInBoard:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp]
@@ -1414,7 +1414,7 @@ loc_813C00C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_813BFB8
+	thumb_func_end navicust_checkPieceFitsInBoard
 
 	thumb_local_start
 sub_813C020:

@@ -169,7 +169,7 @@ sub_8089EBC:
 	bl calcAngle_800117C
 	strb r0, [r5, #1]
 	pop {r0-r1}
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	asr r0, r0, #0xd
 	strh r0, [r5, #0x18]
 	bl ow_applyBeastOutForm
@@ -182,7 +182,7 @@ sub_8089EBC:
 	ldr r1, [r3, #4]
 	ldr r2, [r3, #8]
 	ldr r3, [r3, #0xc]
-	bl sub_809E3C4
+	bl req_setFourParams
 	mov r0, #0x9c
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -343,7 +343,7 @@ sub_808A054:
 	bl calcAngle_800117C
 	strb r0, [r5, #1]
 	pop {r0-r1}
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	asr r0, r0, #0xd
 	strh r0, [r5, #0x18]
 	mov r0, #0x9d

@@ -9441,7 +9441,7 @@ int __fastcall sub_803BE30(int a1)
     v6 = v1[2];
     while ( *(v2 + 2) != 230 )
     {
-        sub_8045FD0(v2, 0, v3 + 0x2000, v6);
+        sprite_runAnimationScript(v2, 0, v3 + 0x2000, v6);
         v2 += 8;
         v3 += 128;
     }

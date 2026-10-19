@@ -23191,9 +23191,9 @@ dword_814EB18:
 
 // symdb: m4a music-player stop: kills every active track's sounding channel and resets the track state for one MusicPlayerInfo.
 // symdb: (r0 = MusicPlayerInfo* song) -> r0 = undefined; no flags used by callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EB1C.yaml
-	thumb_func_start sub_814EB1C
-sub_814EB1C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_mplayStop.yaml
+	thumb_func_start sound_mplayStop
+sound_mplayStop:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	mov r7, r0
@@ -23249,7 +23249,7 @@ loc_814EB76:
 	.balign 4, 0
 dword_814EB80:
 	.word 0x68736D53
-	thumb_func_end sub_814EB1C
+	thumb_func_end sound_mplayStop
 
 // symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
 // symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
@@ -23293,7 +23293,7 @@ cgbSoundInit_814EB84:
 	add r0, r6, #1
 	str r0, [r4]
 	ldr r1, off_814EC60 // =off_3005570 
-	ldr r0, off_814EC64 // =sub_814FBFC+1 
+	ldr r0, off_814EC64 // =t3_condScriptVmStep+1 
 	str r0, [r1,#0x20] // (off_3005590 - 0x3005570)
 	ldr r0, off_814EC68 // =battle_aiData_processStreamByte_814E7CC+1 
 	str r0, [r1,#0x44] // (off_30055B4 - 0x3005570)
@@ -23371,7 +23371,7 @@ dword_814EC5C:
 off_814EC60:
 	.word off_3005570
 off_814EC64:
-	.word sub_814FBFC+1
+	.word t3_condScriptVmStep+1
 off_814EC68:
 	.word battle_aiData_processStreamByte_814E7CC+1
 off_814EC6C:
@@ -25699,9 +25699,9 @@ dword_814FBF8:
 // symdb: Executes one instruction of a small conditional byte-code script: arithmetic on byte variables, or a comparison that on success dispatches a registered callback, on failure skips the embedded 4-byte target.
 // symdb: (r0 = vm context (var array ptr at +0x18), r1 = script state (PC at +0x40)) -> r0 =
 // symdb: callback/void result; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814FBFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_condScriptVmStep.yaml
 	thumb_local_start
-sub_814FBFC:
+t3_condScriptVmStep:
 	push {r4-r6,lr}
 	mov r4, r0
 	mov r6, r1
@@ -25881,7 +25881,7 @@ def_814FC28:
 	pop {r4-r6}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_814FBFC
+	thumb_func_end t3_condScriptVmStep
 
 	thumb_local_start
 sub_814FD54:

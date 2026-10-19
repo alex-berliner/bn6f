@@ -405,7 +405,7 @@ int __fastcall battle_getAIDataPtr_8142068(int a1)
 
 
 // 0x8142072
-int sub_8142072()
+int beast_clearSpawnCoords()
 {
     beast_setSpawnCoords(0, 15);
     return 0;
@@ -521,7 +521,7 @@ int sub_8142178()
 
 
 // 0x8142184
-int sub_8142184()
+int e_scenarioEffectDecrementCounter()
 {
     return byte_200078E-- - 1;
 }
@@ -535,7 +535,7 @@ int __fastcall battle_checkScenarioEffectActive_8142190(int a1)
 
 
 // 0x814219c
-int sub_814219C()
+int e_scenarioEffectStateCountersAnySet()
 {
     return dword_2000790 + BYTE1(dword_2000790) + BYTE2(dword_2000790) + HIBYTE(dword_2000790);
 }
@@ -556,7 +556,7 @@ signed int __fastcall sub_81421B2(int a1)
 
 
 // 0x81421c8
-int __fastcall sub_81421C8(int result)
+int __fastcall e_setScenarioEffectStateB(int result)
 {
     byte_200078B[0] = result;
     return result;
@@ -678,7 +678,7 @@ int __fastcall sub_814227A(int a1)
 
 
 // 0x81422b4
-int sub_81422B4()
+int e_clearScenarioEffectValue()
 {
     int result; // r0
 
@@ -1026,9 +1026,9 @@ unsigned int __fastcall sub_81428D4(int a1)
     v6 = sub_8142952(v1, v4, 1);
     v7 = sub_809E1AE();
     v8 = GetSoulWeaponCursorCameraCoords();
-    v10 = sub_80014D4(v8 - v7, v9 - HIDWORD(v7));
+    v10 = calc_hypotFixed12(v8 - v7, v9 - HIDWORD(v7));
     v11 = GetSoulWeaponCursorCameraCoords();
-    if ( sub_80014D4(v11 - v7, v12 - HIDWORD(v7)) > v10 )
+    if ( calc_hypotFixed12(v11 - v7, v12 - HIDWORD(v7)) > v10 )
         v6 = v5;
     return v6;
 }
@@ -1842,7 +1842,7 @@ int sub_8143248()
                 result = *v4;
                 if ( *v4 )
                 {
-                    result = sub_80014D4(*(v4 + 2) - *(v1 + 2), *(v4 + 3) - *(v1 + 3));
+                    result = calc_hypotFixed12(*(v4 + 2) - *(v1 + 2), *(v4 + 3) - *(v1 + 3));
                     if ( result < 393216 )
                         break;
                 }
@@ -1878,7 +1878,7 @@ int sub_8143294()
         result = *v2;
         if ( *v2 )
         {
-            v4 = sub_80014D4(
+            v4 = calc_hypotFixed12(
                          *(v2 + 3) - *(*(*(v0 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 32),
                          *(v2 + 2) - *(*(*(v0 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 28));
             v5 = *v2;
@@ -2525,9 +2525,9 @@ unsigned int __fastcall sub_8143DEA(int a1)
     v6 = sub_8143E68(v1, v4, 1);
     v7 = sub_809E1AE();
     v8 = ConvertGroundmanMinigameGridCoordsToMapCoords();
-    v10 = sub_80014D4(v8 - v7, v9 - HIDWORD(v7));
+    v10 = calc_hypotFixed12(v8 - v7, v9 - HIDWORD(v7));
     v11 = ConvertGroundmanMinigameGridCoordsToMapCoords();
-    if ( sub_80014D4(v11 - v7, v12 - HIDWORD(v7)) > v10 )
+    if ( calc_hypotFixed12(v11 - v7, v12 - HIDWORD(v7)) > v10 )
         v6 = v5;
     return v6;
 }

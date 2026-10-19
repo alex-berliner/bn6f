@@ -193,7 +193,7 @@ int sub_810DAAA()
 
 
 // 0x810dae4
-int sub_810DAE4()
+int ai_clearScriptId()
 {
     _BYTE *v0; // r6
     int result; // r0
@@ -446,14 +446,14 @@ int ai_finishAttackByElement()
         return (*(&off_810DE30 + *v2))();
     *(v0 + 16) = v3;
     *v1 = 8;
-    sub_810DEC4();
+    ai_attackResetState();
     v4 = sub_810E0D4();
     return (loc_801171C)(v4);
 }
 
 
 // 0x810de3c
-int sub_810DE3C()
+int ai_attackCharge()
 {
     int v0; // r5
     int v1; // r7
@@ -507,14 +507,14 @@ void ai_attackUpdate()
     if ( !v4 )
     {
         v0->currAnimation = 0;
-        sub_810DEC4();
+        ai_attackResetState();
         object_exitAttackState(v0);
     }
 }
 
 
 // 0x810dec4
-int sub_810DEC4()
+int ai_attackResetState()
 {
     int v0; // r5
     int v1; // r7
@@ -1545,7 +1545,7 @@ int ai_initAttackSweep()
     int result; // r0
 
     ++*(v1 + 116);
-    *(v3 + 40) = sub_810EB76;
+    *(v3 + 40) = battle_getObjPanelXy;
     *(v3 + 24) = byte_810E804[*(v0 + 22)];
     *(v3 + 3) = 2;
     *(v3 + 12) = 20;
@@ -1602,7 +1602,7 @@ unsigned int sub_810EB5C()
 
 
 // 0x810eb76
-void __fastcall __noreturn sub_810EB76(int a1, int a2, int a3)
+void __fastcall __noreturn battle_getObjPanelXy(int a1, int a2, int a3)
 {
     sub_810EB86(a1, a2, a3);
 }
@@ -2096,7 +2096,7 @@ int sub_810F376()
 
 
 // 0x810f3f8
-Battle *__fastcall sub_810F3F8(int a1, int a2, int a3, int a4)
+Battle *__fastcall battle_spawnObj71Extra(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     Battle *result; // r0
@@ -2135,7 +2135,7 @@ int battle_objectUpdateFreeOwnedPtrs()
 
 
 // 0x810f434
-int sub_810F434()
+int ai_dispatchStateScript()
 {
     unsigned __int8 *v0; // r6
 
@@ -2331,7 +2331,7 @@ int ai_diveToBackRowUpdate()
         }
         else
         {
-            sub_810FCA2();
+            ai_computeDiveDuration();
             *v1 = 16;
             result = 0;
             *(v1 + 1) = 0;
@@ -2696,7 +2696,7 @@ int __fastcall sub_810FC68(int result, int a2)
 
 
 // 0x810fca2
-int sub_810FCA2()
+int ai_computeDiveDuration()
 {
     int v0; // r5
     int result; // r0
@@ -3410,7 +3410,7 @@ signed int sub_811060A()
 
 
 // 0x8110714
-int sub_8110714()
+int ai_dispatchAttackHandlerByElement()
 {
     unsigned __int8 *v0; // r7
 
@@ -3570,7 +3570,7 @@ unsigned int sub_8110840()
 
 
 // 0x811088a
-int sub_811088A()
+int ai_runElementAttackUpdate()
 {
     int v0; // r5
     unsigned __int8 *v1; // r7
@@ -3580,7 +3580,7 @@ int sub_811088A()
     if ( v2 && v2 & 0xC000000 )
         object_clearCollisionRegion();
     (*(&off_81108B4 + *v1))();
-    return sub_8110D7C();
+    return battle_refreshCollisionRegionOnPanelChange();
 }
 
 
@@ -3783,7 +3783,7 @@ int sub_8110B16()
 
 
 // 0x8110b38
-int sub_8110B38()
+int ai_stepTimerCountdown()
 {
     int v0; // r5
     int v1; // r7
@@ -3974,7 +3974,7 @@ BOOL __noreturn ai_checkNextPanelFlags()
 
 
 // 0x8110d7c
-int sub_8110D7C()
+int battle_refreshCollisionRegionOnPanelChange()
 {
     unsigned __int8 *v0; // r5
     int result; // r0
@@ -5579,7 +5579,7 @@ LABEL_11:
     {
         *(v3 + 24) = 18;
         *(v3 + 40) = sub_81123EC;
-        sub_8112666();
+        ai_beginAttackB();
         goto LABEL_11;
     }
     result = *(v2 + 8) + 1;
@@ -5593,7 +5593,7 @@ LABEL_11:
             *(v3 + 24) = 5;
             *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
             *(v3 + 40) = ai_pickFilteredPanelOrRandom;
-            sub_8112666();
+            ai_beginAttackB();
             *v2 = 8;
             goto LABEL_11;
         }
@@ -5979,7 +5979,7 @@ int battle_ensureAuxObject54()
 
 
 // 0x8112666
-void sub_8112666()
+void ai_beginAttackB()
 {
     int v0; // r7
 
@@ -6269,7 +6269,7 @@ int sub_8112A1E()
 
 
 // 0x8112a4a
-int sub_8112A4A()
+int snakearm_dispatchScriptStep()
 {
     unsigned __int8 *v0; // r6
 
@@ -6360,7 +6360,7 @@ __int64 __noreturn sub_8112B06()
 
     object_reservePanel(*(v1 + 18), *(v1 + 19));
     sub_81096FA(*(v0 + 19), v2, v3, byte_8112B60);
-    v8 = sub_800D45C(v4, v5, v6, v7);
+    v8 = battle_collectAdjacentPanelsByFlags(v4, v5, v6, v7);
     if ( !v8 )
     {
         sub_81096FA(*(v0 + 19), v9, v10, byte_8112B60);
@@ -7193,7 +7193,7 @@ int sub_8113510()
 
 
 // 0x81135a4
-int sub_81135A4()
+int ai_restartAttackAnimOnLoop()
 {
     int v0; // r5
     _WORD *v1; // r7
@@ -7427,7 +7427,7 @@ int ai_sweepTimerTick()
 
 
 // 0x811393a
-int sub_811393A()
+int ai_attackHitTarget()
 {
     int v0; // r5
     int v1; // r7
@@ -9035,7 +9035,7 @@ int sub_8114DF2()
 
 
 // 0x8114e30
-int sub_8114E30()
+int battle_setStaminaDamageDisablerFromAiVersion()
 {
     int v0; // r5
     int result; // r0
@@ -9536,7 +9536,7 @@ int sub_811555C()
 
 
 // 0x811557c
-int sub_811557C()
+int ai_dispatchScriptState()
 {
     unsigned __int8 *v0; // r6
 
@@ -9816,7 +9816,7 @@ int sub_81158DC()
     *(v1 + 16) = result;
     if ( !result )
     {
-        sub_80B87F0(*(v1 + 40));
+        object_transitionToState4(*(v1 + 40));
         *(v0 + 16) = 0;
         *(v1 + 16) = *(v1 + 24);
         if ( object_getFlag() & 0x2000 )
@@ -10659,7 +10659,7 @@ signed int sub_811649E()
 
 
 // 0x81164ec
-int sub_81164EC()
+int ai_timerAttackSelect()
 {
     int v0; // r5
     int v1; // r6
@@ -10850,7 +10850,7 @@ int sub_81167D2()
     int result; // r0
     char v2; // r0
 
-    result = sub_8116834();
+    result = battle_conditionalRngRoll();
     if ( result != 4 )
     {
         GetPositiveSignedRNG();
@@ -10861,7 +10861,7 @@ int sub_81167D2()
 
 
 // 0x8116834
-signed int sub_8116834()
+signed int battle_conditionalRngRoll()
 {
     int v0; // r5
     signed int v1; // r7
@@ -10903,7 +10903,7 @@ signed int sub_8116834()
 
 
 // 0x8116878
-int __fastcall sub_8116878(int result)
+int __fastcall battle_decrementHp(int result)
 {
     int v1; // r1
 
@@ -12890,7 +12890,7 @@ signed int sub_8117F9C()
     if ( *(v0 + 10) )
     {
         sub_8118104();
-        sub_8118134();
+        submenu_renderEntryText();
         v2 = sub_81181DC();
         battleObject_setBeastOutPhaseAndSprite_81182A4(v2);
         *(v0 + 9) = 4;
@@ -12972,7 +12972,7 @@ int sub_8118030()
         *(v0 + 10) = 0;
         sSubmenu.unk_0D >>= 1;
         sub_8118104();
-        sub_8118134();
+        submenu_renderEntryText();
         result = sub_81181DC();
     }
     return result;
@@ -13011,14 +13011,14 @@ int sub_811805C()
 
 
 // 0x81180e0
-MenuControl *sub_81180E0()
+MenuControl *submenu_reset()
 {
     int v0; // r5
     MenuControl *result; // r0
 
     *(v0 + 10) = 0;
     sub_8118104();
-    sub_8118134();
+    submenu_renderEntryText();
     sub_81181DC();
     result = &sSubmenu;
     sSubmenu.unk_0C = 0;
@@ -13058,7 +13058,7 @@ signed int sub_8118104()
 
 
 // 0x8118134
-int sub_8118134()
+int submenu_renderEntryText()
 {
     int v0; // r5
     int v1; // r10
@@ -13342,7 +13342,7 @@ int sub_811847C()
     }
     v0[12] = v4;
     *v0 = v2;
-    sub_81186A8();
+    battle_beastOutScrollStep();
     battleObject_setPaletteFromOffsetTable_81185E4();
     return battleObject_updateBeastSpSlotMask_8118604();
 }
@@ -13376,7 +13376,7 @@ int battle_initBeastOutForm()
     v0[12] = 0;
     sub_8002C7A(10);
     sprite_zeroColorShader();
-    sub_81186A8();
+    battle_beastOutScrollStep();
     battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
@@ -13391,7 +13391,7 @@ int sub_81184EC()
     *v0 = 35;
     sub_8002C7A(10);
     sprite_zeroColorShader();
-    sub_81186A8();
+    battle_beastOutScrollStep();
     battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
@@ -13424,7 +13424,7 @@ int sub_8118510()
     else
     {
         v5 = 0;
-        sub_81186A8();
+        battle_beastOutScrollStep();
         if ( !v3 )
             v5 = 1;
         *(v1 + 13) = v5;
@@ -13470,7 +13470,7 @@ int sub_811857C()
     *v0 = v1;
     sub_8002C7A(10);
     sprite_zeroColorShader();
-    sub_81186A8();
+    battle_beastOutScrollStep();
     battleObject_setPaletteFromOffsetTable_81185E4();
     return sub_8118658();
 }
@@ -13596,7 +13596,7 @@ int sub_8118658()
 
 
 // 0x81186a8
-signed int sub_81186A8()
+signed int battle_beastOutScrollStep()
 {
     int v0; // r6
     unsigned int v1; // r0
@@ -15086,7 +15086,7 @@ void __noreturn sub_81199C0()
         *(v0 + 28) = 255;
         battleObject_beastSpAdvanceAndDrawTiles_8119A48();
     }
-    sub_81199E4();
+    renderTextPair();
 }
 
 
@@ -15098,7 +15098,7 @@ int sub_81199DC()
 
 
 // 0x81199e4
-int __noreturn sub_81199E4()
+int __noreturn renderTextPair()
 {
     int v0; // r5
     int v1; // r6

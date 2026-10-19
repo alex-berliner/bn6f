@@ -1101,7 +1101,7 @@ char *battle_beastOutInit_80A5AF8()
         battle_beastOutCheckUnlockFlag();
         TestEventFlagFromImmediate(5, 242);
         if ( !v5 )
-            sub_80A5FD0();
+            battle_loadBeastOutFormParams();
         *(v0 + 8) = 4;
         battle_beastOutTick_80A5B70();
     }
@@ -1604,7 +1604,7 @@ signed int battle_beastOutCheckUnlockFlag()
 
 
 // 0x80a5fd0
-signed int sub_80A5FD0()
+signed int battle_loadBeastOutFormParams()
 {
     int v0; // r5
     _DWORD *v1; // r6
@@ -1670,7 +1670,7 @@ void sub_80A6A34()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     *(v0 + 8) = 4;
-    sub_80A6E50();
+    sprite_setAnimPtrFromId();
     battleObject_runActionSubroutineDispatch_80A6A62();
 }
 
@@ -1917,7 +1917,7 @@ signed int __noreturn sub_80A6CFC()
 // 0x80a6d38
 signed int sub_80A6D38()
 {
-    sub_80A6E50();
+    sprite_setAnimPtrFromId();
     return 1;
 }
 
@@ -2073,7 +2073,7 @@ int battle_emptyReturnZero_80A6E4A()
 
 
 // 0x80a6e50
-char (*sub_80A6E50())[28]
+char (*sprite_setAnimPtrFromId())[28]
 {
     int v0; // r5
     int v1; // r6
@@ -3357,7 +3357,7 @@ signed int sub_80A7AE0()
     int v2; // r1
     int v3; // r4
 
-    sub_80A7B7A((v1 + 1));
+    readU32Unaligned((v1 + 1));
     v3 = v2;
     battle_getAIDataForEnemyIndex_8142050(*(v0 + 4));
     sub_80A7B9E(v3 - v1);
@@ -3420,7 +3420,7 @@ signed int battle_checkEnemyInAttackRangeAndTrigger_80A7B32()
 
 
 // 0x80a7b7a
-unsigned __int8 *__fastcall sub_80A7B7A(unsigned __int8 *result)
+unsigned __int8 *__fastcall readU32Unaligned(unsigned __int8 *result)
 {
     int v1; // r1
 
@@ -3795,7 +3795,7 @@ signed int __noreturn ow_animWaitStep()
     *(v0 + 36) = 30;
     v2 = 1;
     v3 = sub_809E2B8();
-    if ( sub_80A8038(v3) == *(v1 + 3) )
+    if ( ow_animVariantToAnimId(v3) == *(v1 + 3) )
         v2 = *(v1 + 2);
     v4 = *(v1 + 2) - v2;
     *(v1 + 2) = v4;
@@ -3902,7 +3902,7 @@ int ow_objectFinishEventAndFree()
     *(v1 + 6) = 0;
     v2 = sub_81427A4(*(v0 + 4));
     SetEventFlag(v2);
-    sub_8142184();
+    e_scenarioEffectDecrementCounter();
     SetEventFlag(*(v0 + 4) + 5712);
     return FreeOverworldMapObject();
 }
@@ -3930,7 +3930,7 @@ signed int __noreturn sub_80A7F78()
     sub_8142990();
     ow_getCursorMapTileIndex(*(v0 + 12), *(v0 + 16));
     v2 = getSoulWeaponCursorDir8();
-    v3 = sub_80A8038(v2);
+    v3 = ow_animVariantToAnimId(v2);
     *(v0 + 7) = v3;
     sprite_setAnimation(v0, v3);
     sprite_loadAnimationData(v0);
@@ -4032,7 +4032,7 @@ void sub_80A8020()
 
 
 // 0x80a8038
-int __fastcall sub_80A8038(int a1)
+int __fastcall ow_animVariantToAnimId(int a1)
 {
     return byte_80A8044[a1];
 }
@@ -5163,7 +5163,7 @@ int sub_80A8D42()
     unsigned __int8 v4; // vf
     int result; // r0
 
-    if ( sub_80014D4(
+    if ( calc_hypotFixed12(
                  *(v0 + 16) - *(*(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 32),
                  *(v0 + 12) - *(*(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 28)) >= 1310720 )
         return sub_8143204(*(v0 + 4));
@@ -6515,7 +6515,7 @@ void __noreturn eventFlagNpcUpdate_80A9C26()
     TestEventFlag(*v1);
     if ( !v2 )
     {
-        if ( sub_80A9CAE() )
+        if ( npc_isPlayerNearPos() )
         {
             if ( !*(sprite + 9) )
             {
@@ -6546,7 +6546,7 @@ int sub_80A9CA6()
 
 
 // 0x80a9cae
-signed int sub_80A9CAE()
+signed int npc_isPlayerNearPos()
 {
     _DWORD *v0; // r5
     int v1; // r2
@@ -6757,7 +6757,7 @@ signed int sub_80A9EB6()
 
 
 // 0x80a9ecc
-int sub_80A9ECC()
+int ow_logoutDispatchState()
 {
     int v0; // r5
 
@@ -6812,7 +6812,7 @@ int ow_releaseMapObject()
 
 
 // 0x80a9f58
-int sub_80A9F58()
+int ow_runObjectStateHandler()
 {
     int v0; // r5
 

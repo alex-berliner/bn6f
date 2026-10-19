@@ -144,7 +144,7 @@ int sub_813B830()
 
 
 // 0x813b84c
-__int64 __fastcall sub_813B84C(int a1)
+__int64 __fastcall ai_getGridMargins(int a1)
 {
     char *v1; // r7
     signed int v2; // r1
@@ -300,7 +300,7 @@ void __fastcall zeroFill_813B934()
 
 
 // 0x813b950
-int __fastcall sub_813B950(int a1, int a2, int a3, int a4)
+int __fastcall ai_stampAreaPattern(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // ST04_4
@@ -1035,7 +1035,7 @@ signed int eventFlag1720IsSet_813BF1C()
 
 
 // 0x813bf60
-signed int __fastcall sub_813BF60(int a1, int a2, int a3)
+signed int __fastcall navicust_checkRowOccupied(int a1, int a2, int a3)
 {
     int v3; // ST04_4
     int v4; // ST08_4
@@ -1076,7 +1076,7 @@ LABEL_10:
 
 
 // 0x813bfb8
-signed int __fastcall sub_813BFB8(int a1, int a2, int a3)
+signed int __fastcall navicust_checkPieceFitsInBoard(int a1, int a2, int a3)
 {
     int v3; // ST04_4
     int v4; // ST08_4

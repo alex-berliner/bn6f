@@ -11441,11 +11441,11 @@ off_81357E0:
 	.word sub_81358FC+1
 	.word sub_8135918+1
 	.word sub_8135938+1
-	.word sub_813594C+1
+	.word ow_objectStepSavePos+1
 	.word sub_8135968+1
 	.word sub_81359A0+1
 	.word sub_8135A10+1
-	.word sub_813594C+1
+	.word ow_objectStepSavePos+1
 	.word sub_8135A24+1
 	.word sub_81368D4+1
 	.word sub_8135A44+1
@@ -11622,9 +11622,9 @@ loc_8135944:
 
 // symdb: Saves an overworld object's current position into its previous-position fields, conditionally runs a follow-up step, and clears a counter byte.
 // symdb: (r0-r4 unused; r5 = object struct pointer, set by caller) -> r0 clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813594C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_objectStepSavePos.yaml
 	thumb_local_start
-sub_813594C:
+ow_objectStepSavePos:
 	push {lr}
 	ldrh r0, [r5,#0x28]
 	strh r0, [r5,#0x2a]
@@ -11633,13 +11633,13 @@ sub_813594C:
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
 	bne loc_8135960
-	bl sub_813612C
+	bl navicust_handlePlacementCursorInput
 loc_8135960:
 	mov r0, #0
 	strb r0, [r5,#0x13]
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813594C
+	thumb_func_end ow_objectStepSavePos
 
 	thumb_local_start
 sub_8135968:
@@ -12652,9 +12652,9 @@ off_8136128:
 // symdb: Navi Customizer part-placement screen: per-frame input handler that confirms/cancels, rotates the held part, and moves the board cursor.
 // symdb: (r0 = toolkit?, r5 = naviCust screen state struct) -> r0 = destroyed; updates cursor/rotation
 // symdb: fields and plays menu sounds
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813612C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handlePlacementCursorInput.yaml
 	thumb_local_start
-sub_813612C:
+navicust_handlePlacementCursorInput:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_JoypadPtr]
@@ -12772,7 +12772,7 @@ off_813620C:
 	.word byte_8136210
 byte_8136210:
 	.byte 0x6, 0x6, 0x7, 0x6, 0x7, 0x7, 0x0, 0x0
-	thumb_func_end sub_813612C
+	thumb_func_end navicust_handlePlacementCursorInput
 
 	thumb_local_start
 sub_8136218:
@@ -12780,7 +12780,7 @@ sub_8136218:
 	ldrh r0, [r5,#0x24]
 	ldrh r1, [r5,#0x20]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	mov r7, r0
 	ldrh r0, [r7]
 	mov r6, r0
@@ -12836,16 +12836,16 @@ sub_813627C:
 
 // symdb: Returns the address of an entry (index*4) in the BeastSP secret-code table at word_201DA80.
 // symdb: (r0 = entry index) -> r0 = pointer to code entry (word_201DA80 + index*4); flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136290.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_getCodeEntry.yaml
 	thumb_local_start
-sub_8136290:
+beastsp_getCodeEntry:
 	lsl r0, r0, #2
 	ldr r1, off_8136298 // =word_201DA80 
 	add r0, r0, r1
 	mov pc, lr
 off_8136298:
 	.word word_201DA80
-	thumb_func_end sub_8136290
+	thumb_func_end beastsp_getCodeEntry
 
 	thumb_local_start
 sub_813629C:
@@ -12917,10 +12917,10 @@ sub_8136318:
 	ldrh r0, [r5,#0x3a]
 	ldrh r1, [r5,#0x38]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B84C
+	bl ai_getGridMargins
 	sub r4, #6
 	mov r2, #3
 	sub r0, r2, r0
@@ -12937,10 +12937,10 @@ sub_813633C:
 	ldrh r0, [r5,#0x3a]
 	ldrh r1, [r5,#0x38]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B84C
+	bl ai_getGridMargins
 	mov r0, r2
 	mov r1, r3
 	sub r4, #6
@@ -12958,7 +12958,7 @@ sub_8136364:
 	ldrh r0, [r5,#0x3a]
 	ldrh r1, [r5,#0x38]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r0, [r0]
 	sub r0, #0x90
 	bl battleObject_getByIndex_813B780
@@ -12976,10 +12976,10 @@ sub_8136384:
 	ldrh r0, [r5,#0x3a]
 	ldrh r1, [r5,#0x38]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r0, [r0]
 	sub r0, #0x90
-	bl sub_813B84C
+	bl ai_getGridMargins
 	cmp r0, #3
 	bne loc_81363A6
 	cmp r1, #3
@@ -13079,15 +13079,15 @@ locret_813644C:
 
 // symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
 // symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
-// symdb: state struct) -> r0 = 0; flags from sub_81364BC choose valid vs invalid path
+// symdb: state struct) -> r0 = 0; flags from navicust_checkPartPlacement choose valid vs invalid path
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_confirmPartPlacement.yaml
 	thumb_local_start
 navicust_confirmPartPlacement:
 	push {lr}
-	bl sub_81364BC
+	bl navicust_checkPartPlacement
 	bne loc_81364B4
 	strh r0, [r5,#0x18]
-	bl sub_81364E8
+	bl navicust_installSelectedPart
 	ldrb r0, [r5,#0x10]
 	tst r0, r0
 	bne loc_8136492
@@ -13131,14 +13131,14 @@ locret_81364BA:
 // symdb: On the Navi Customizer board, looks up the part under the cursor/grid cell and validates it (via sub_813BAEC) as part of confirming the placement.
 // symdb: (r5 = naviCust screen state; r0/r1 unused) -> r0 = part id (cell id - 0x90, only if occupied),
 // symdb: flags Z/N set from validator result in r1 (NZ = invalid)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81364BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPartPlacement.yaml
 	thumb_local_start
-sub_81364BC:
+navicust_checkPartPlacement:
 	push {r7,lr}
 	ldrh r0, [r5,#0x3a]
 	ldrh r1, [r5,#0x38]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r1, [r0,#2]
 	tst r1, r1
 	beq locret_81364E4
@@ -13155,14 +13155,14 @@ sub_81364BC:
 locret_81364E4:
 	pop {r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81364BC
+	thumb_func_end navicust_checkPartPlacement
 
 // symdb: Navi Customizer: commits the currently selected program placement onto the customization board and refreshes the affected UI state.
 // symdb: (r0 = program/flag id used with flag base 0x2660; r5 = NaviCust screen-state struct) -> r0 =
 // symdb: undefined; sets [r5+0xc]=0x10, [r5+2]=8, saves cursor [r5+0x24]->[r5+0x3a], [r5+0x20]->[r5+0x38]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81364E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_installSelectedPart.yaml
 	thumb_local_start
-sub_81364E8:
+navicust_installSelectedPart:
 	push {r4,r7,lr}
 	mov r7, r0
 	mov r4, #0
@@ -13181,7 +13181,7 @@ loc_81364FC:
 	mov r1, r7
 	ldrh r2, [r5,#0x28]
 	ldrh r3, [r5,#0x2c]
-	bl sub_813B950
+	bl ai_stampAreaPattern
 	bl submenu_rebuildKeyItemList
 	mov r0, #0x10
 	strb r0, [r5,#0xc]
@@ -13195,7 +13195,7 @@ loc_81364FC:
 	.balign 4, 0
 dword_8136528:
 	.word 0x2660
-	thumb_func_end sub_81364E8
+	thumb_func_end navicust_installSelectedPart
 
 	thumb_local_start
 sub_813652C:
@@ -13583,7 +13583,7 @@ loc_81367D8:
 	ldrh r0, [r5,#0x24]
 	ldrh r1, [r5,#0x20]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r1, [r0]
 	sub r1, #0x90
 	strh r1, [r5,#0x1a]
@@ -13612,7 +13612,7 @@ beastsp_feedBoardCodeInput:
 	ldrh r0, [r5,#0x24]
 	ldrh r1, [r5,#0x20]
 	add r0, r0, r1
-	bl sub_8136290
+	bl beastsp_getCodeEntry
 	ldrh r0, [r0]
 	sub r0, #0x90
 	ldrb r1, [r5,#0x17]
@@ -13711,7 +13711,7 @@ off_81368E8:
 	.word sub_813691C+1
 	.word battle_beginInit+1
 	.word pet_naviHealCutsceneStep+1
-	.word sub_8136A0C+1
+	.word battle_beastOutTimerTick+1
 	.word sub_8136A74+1
 	.word e_waitChatboxThenFadeOut+1
 	.word sub_8136AE8+1
@@ -13844,9 +13844,9 @@ off_8136A08:
 // symdb: Counts down the Beast Out timer each tick and, when it expires, tears down the beast-out state (scales, e-struct effects, screen registers) back to normal form.
 // symdb: (r0 = unused/ignored; r5 = beast-out state object: +0x12 countdown, +0x13 flag, +0x3 next state;
 // symdb: r10 = toolkit) -> r0 = 0 written to r5+0x13; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136A0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTimerTick.yaml
 	thumb_local_start
-sub_8136A0C:
+battle_beastOutTimerTick:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_Unk2009740_Ptr]
@@ -13896,7 +13896,7 @@ loc_8136A6C:
 	strb r0, [r5,#0x13]
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8136A0C
+	thumb_func_end battle_beastOutTimerTick
 
 	thumb_local_start
 sub_8136A74:
@@ -13980,7 +13980,7 @@ loc_8136AFE:
 	mov r3, #0
 	strb r3, [r5,#0x13]
 	mov r0, #1
-	bl sub_8136B48
+	bl camera_subScrollOffset
 	bl sub_8136BE8
 	pop {pc}
 	.byte 0, 0
@@ -14021,9 +14021,9 @@ loc_8136B34:
 // symdb: Subtracts r0 from the scroll/offset halfword at +0x18 of the toolkit's RenderInfo, adjusting the render scroll by a delta.
 // symdb: (r0 = amount to subtract) -> r0 = new offset value; flags set by the final strh? no — flags from
 // symdb: sub remain
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136B48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_subScrollOffset.yaml
 	thumb_local_start
-sub_8136B48:
+camera_subScrollOffset:
 	push {r4-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_RenderInfoPtr]
@@ -14032,7 +14032,7 @@ sub_8136B48:
 	strh r1, [r2,#0x18]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8136B48
+	thumb_func_end camera_subScrollOffset
 
 	thumb_local_start
 sub_8136B58:
@@ -14398,7 +14398,7 @@ off_8136E2C:
 	.word sub_8136F40+1
 	.word navicust_runOnceDialog+1
 	.word sub_8136FA4+1
-	.word sub_8136FB8+1
+	.word navicust_runObjectDialogScript+1
 	.word sub_8137018+1
 	.word sub_8137028+1
 	.word sub_813709C+1
@@ -14562,16 +14562,16 @@ locret_8136FB6:
 // symdb: Per-frame dialog handler for a NaviCust-related overworld object: waits for a trigger, then runs NaviCust text script 0xA/0xB depending on an object field and updates the object state.
 // symdb: (r0 = unused/0 context, r7 = object struct, r5 = object state byte pointer via caller setup) ->
 // symdb: r0 = clobbered; sets [r5] = 0x1C when a dialog script is launched, 0x20 in the fallback path;
-// symdb: flags from sub_8137648 (beq on zero return = keep waiting)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136FB8.yaml
+// symdb: flags from navicust_testFlag (beq on zero return = keep waiting)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_runObjectDialogScript.yaml
 	thumb_local_start
-sub_8136FB8:
+navicust_runObjectDialogScript:
 	push {lr}
 	ldr r0, off_8137010 // =0x3f8 
 	bl sub_8137670
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_813700C
 	ldrb r0, [r7,#2]
 	cmp r0, #4
@@ -14610,7 +14610,7 @@ off_8137010:
 	.word 0x3F8
 dword_8137014:
 	.word 0x1
-	thumb_func_end sub_8136FB8
+	thumb_func_end navicust_runObjectDialogScript
 
 	thumb_local_start
 sub_8137018:
@@ -14637,12 +14637,12 @@ sub_8137028:
 	bne locret_813708E
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_813708E
 	ldr r0, off_8137098 // =0x34 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BFB8
+	bl navicust_checkPieceFitsInBoard
 	beq loc_813705A
 	mov r0, #0xd
 	bl RunTextScriptNaviCustDialog
@@ -14651,7 +14651,7 @@ loc_813705A:
 	ldr r0, off_8137098 // =0x34 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BF60
+	bl navicust_checkRowOccupied
 	bne loc_8137078
 	mov r0, #0xc
 	bl RunTextScriptNaviCustDialog
@@ -14741,7 +14741,7 @@ navicust_checkEquipDialogs:
 	bne locret_8137156
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_8137156
 	ldrb r0, [r7,#2]
 	cmp r0, #4
@@ -14855,7 +14855,7 @@ sub_81371B0:
 	bne locret_8137222
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_8137222
 	ldr r0, off_813722C // =0x8c 
 	ldr r1, [r7,#0x44]
@@ -14872,7 +14872,7 @@ loc_81371E2:
 	ldr r0, off_813722C // =0x8c 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BFB8
+	bl navicust_checkPieceFitsInBoard
 	beq loc_81371F6
 	mov r0, #0x18
 	bl RunTextScriptNaviCustDialog
@@ -14881,7 +14881,7 @@ loc_81371F6:
 	ldr r0, off_813722C // =0x8c 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BF60
+	bl navicust_checkRowOccupied
 	beq loc_8137214
 	mov r0, #0x16
 	bl RunTextScriptNaviCustDialog
@@ -14964,7 +14964,7 @@ sub_813726C:
 	bne locret_81372D8
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_81372D8
 	ldrb r0, [r7,#2]
 	cmp r0, #4
@@ -15106,7 +15106,7 @@ navicust_checkPiecePlacement:
 loc_8137388:
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_813748A
 	ldr r0, off_8137494 // =0x90 
 	ldr r1, [r7,#0x44]
@@ -15125,7 +15125,7 @@ loc_81373B2:
 	ldr r0, off_8137494 // =0x90 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BFB8
+	bl navicust_checkPieceFitsInBoard
 	beq loc_81373C6
 	mov r0, #0x22 
 	bl RunTextScriptNaviCustDialog
@@ -15134,7 +15134,7 @@ loc_81373C6:
 	ldr r0, off_8137494 // =0x90 
 	ldrh r1, [r7,#0x28]
 	ldrh r2, [r7,#0x2c]
-	bl sub_813BF60
+	bl navicust_checkRowOccupied
 	beq loc_81373E4
 	mov r0, #0x1f
 	bl RunTextScriptNaviCustDialog
@@ -15293,7 +15293,7 @@ navicust_dialogStateHandler:
 	bne locret_813751E
 	mov r0, #0
 	mov r1, #0xa
-	bl sub_8137648
+	bl navicust_testFlag
 	beq locret_813751E
 	ldrb r0, [r7,#2]
 	cmp r0, #4
@@ -15425,7 +15425,7 @@ sub_81375AC:
 	cmp r0, #0x30 
 	bne locret_81375C4
 	ldr r0, dword_81375C8 // =0x1 
-	bl sub_813768C
+	bl ow_forceKeyState
 	mov r0, #0x90
 	strb r0, [r5]
 locret_81375C4:
@@ -15494,7 +15494,7 @@ navicust_countBeastOutUses:
 	add r4, #1
 	mov r0, #2
 	mov r1, #8
-	bl sub_8137648
+	bl navicust_testFlag
 	beq loc_813762E
 	cmp r4, #0x20 
 	bge loc_8137632
@@ -15517,9 +15517,9 @@ loc_813763E:
 // symdb: Tests one bit of a NaviCust state struct's flag halfword, returning the result in the Z flag.
 // symdb: (r0 = flag index into byte_813765C mask table, r1 = offset added to caller's r5 struct base) ->
 // symdb: Z flag set if bit clear (tst result); r0 = mask, r1 = loaded halfword
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137648.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_testFlag.yaml
 	thumb_local_start
-sub_8137648:
+navicust_testFlag:
 	push {lr}
 	ldr r2, off_8137658 // =byte_813765C 
 	ldrh r0, [r2,r0]
@@ -15533,7 +15533,7 @@ off_8137658:
 byte_813765C:
 	.byte 0x1, 0x0, 0x2, 0x0, 0x4, 0x0, 0x8, 0x0, 0x20, 0x0, 0x10, 0x0, 0x40, 0x0
 	.byte 0x80, 0x0, 0x0, 0x2, 0x0, 0x1
-	thumb_func_end sub_8137648
+	thumb_func_end navicust_testFlag
 
 	thumb_local_start
 sub_8137670:
@@ -15555,9 +15555,9 @@ sub_8137670:
 
 // symdb: ORs a key bitmask into all three fields (held, just-pressed, repeat) of the toolkit's joypad state, injecting fake held buttons.
 // symdb: (r0 = key bitmask to force) -> r0 = clobbered; modifies toolkit joypad held/new/repeat halves
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813768C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_forceKeyState.yaml
 	thumb_local_start
-sub_813768C:
+ow_forceKeyState:
 	push {lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_JoypadPtr]
@@ -15572,7 +15572,7 @@ sub_813768C:
 	strh r1, [r2,#2]
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813768C
+	thumb_func_end ow_forceKeyState
 
 	thumb_local_start
 RunTextScriptNaviCustDialog:

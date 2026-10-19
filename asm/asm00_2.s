@@ -3497,14 +3497,14 @@ loc_8010432:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	add r3, sp, #0
-	bl sub_8010460
+	bl get_sqDistToPoint
 	cmp r7, #0
 	beq loc_8010452
 	push {r0}
 	ldrb r0, [r7,#oBattleObject_PanelX]
 	ldrb r1, [r7,#oBattleObject_PanelY]
 	add r3, sp, #4
-	bl sub_8010460
+	bl get_sqDistToPoint
 	pop {r1}
 	cmp r0, r1
 	ble loc_8010454
@@ -3522,9 +3522,9 @@ loc_8010454:
 // symdb: Returns the squared distance from a point (r0,r1) to a point stored in a struct passed in r3.
 // symdb: (r0 = x, r1 = y, r3 = pointer to struct {x, y} at +0/+4) -> r0 = (ref.x - x)^2 + (ref.y - y)^2;
 // symdb: flags from final add
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010460.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_sqDistToPoint.yaml
 	thumb_local_start
-sub_8010460:
+get_sqDistToPoint:
 	ldr r2, [r3]
 	sub r0, r2, r0
 	mov r2, r0
@@ -3535,7 +3535,7 @@ sub_8010460:
 	mul r1, r2
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_8010460
+	thumb_func_end get_sqDistToPoint
 
 	thumb_func_start sub_8010474
 sub_8010474:
@@ -5172,7 +5172,7 @@ off_80110F4:
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word sub_8011200+1
-	.word sub_8011236+1
+	.word object_freeRelatedObjectAndExtraVars+1
 	.word nullsub_43+1
 	.word sub_8011256+1
 	.word nullsub_43+1
@@ -5307,9 +5307,9 @@ locret_8011234:
 // symdb: Battle-object cleanup helper: deletes and nulls the object's RelatedObject2 pointer and its ExtraVars allocation.
 // symdb: (r5 = battle object) -> r0 = 0; clears oBattleObject_RelatedObject2Ptr and
 // symdb: oBattleObject_ExtraVars fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011236.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_freeRelatedObjectAndExtraVars.yaml
 	thumb_local_start
-sub_8011236:
+object_freeRelatedObjectAndExtraVars:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
@@ -5326,7 +5326,7 @@ loc_8011246:
 	str r0, [r5,#oBattleObject_ExtraVars]
 locret_8011254:
 	pop {pc}
-	thumb_func_end sub_8011236
+	thumb_func_end object_freeRelatedObjectAndExtraVars
 
 	thumb_local_start
 sub_8011256:
@@ -5500,7 +5500,7 @@ sub_8011362:
 	mov r3, #0xa
 	b loc_8011368
 
-// symdb: Spawns a t1 battle object (kind 0x47) packed with constant 0x0A0C and a caller halfword, links it to the calling battle object as RelatedObject2Ptr; the variant-0 entry additionally calls sub_80C46C0.
+// symdb: Spawns a t1 battle object (kind 0x47) packed with constant 0x0A0C and a caller halfword, links it to the calling battle object as RelatedObject2Ptr; the variant-0 entry additionally calls object_setFlag.
 // symdb: (r0, r1 = spawner args, r2 = halfword param, r3 = variant 0-5 set by entry point, r5 = battle
 // symdb: object) -> r0 = spawned object stored to [r5+oBattleObject_RelatedObject2Ptr]; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnRelatedObject2.yaml
@@ -5519,7 +5519,7 @@ loc_8011368:
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r6, #0
 	bne locret_8011382
-	bl sub_80C46C0
+	bl object_setFlag
 locret_8011382:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8011352
@@ -5588,7 +5588,7 @@ sub_801140E:
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #NULL
 	beq locret_801141E
-	bl sub_80C46B0
+	bl battle_setObjectStateActionPhase8
 	mov r0, #NULL
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 locret_801141E:
@@ -5676,7 +5676,7 @@ off_8011470:
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_80C46B6+1
+	.word battle_objectInvalidateAnimCopy+1
 	thumb_func_end sub_8011450
 
 // symdb: Empty stub that does nothing and immediately returns; kept as a no-op hook point by the game.
@@ -6241,7 +6241,7 @@ off_80117D4:
 	.word sub_8012228+1 // 0x43
 	.word sub_8012240+1 // 0x44
 	.word tomahawkmanBPwrAtk_init_8012258+1 // 0x45
-	.word sub_8012278+1 // 0x46
+	.word ai_setupAttackVars+1 // 0x46
 	.word sub_8012292+1 // 0x47
 	.word sub_80122AA+1 // 0x48
 	.word sub_80122C2+1 // 0x49
@@ -7602,9 +7602,9 @@ tomahawkmanBPwrAtk_init_8012258:
 // symdb: Initializes the AI attack-vars block for an attack (damage 10, extra damage 138, boost 6, timer 6) and returns state 9.
 // symdb: (r7 = entity AI attack-vars struct) -> r0 = 9 (state/phase code); fields Damage=10,
 // symdb: ExtraDamage=138, InitFlag=4, AttackBoost2=6, TimerOrCycles=6 written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012278.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupAttackVars.yaml
 	thumb_local_start
-sub_8012278:
+ai_setupAttackVars:
 	push {lr}
 	mov r0, #0xa
 	strh r0, [r7,#oAIAttackVars_Damage]
@@ -7618,7 +7618,7 @@ sub_8012278:
 	strb r0, [r7,#oAIAttackVars_TimerOrCycles]
 	mov r0, #9
 	pop {pc}
-	thumb_func_end sub_8012278
+	thumb_func_end ai_setupAttackVars
 
 	thumb_local_start
 sub_8012292:
@@ -12380,9 +12380,9 @@ off_80141C4:
 	.word 0x104
 	thumb_func_end SetBeastOutCounterTo3
 
-// symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers sub_801E0BC for the enemy-side network invert.
+// symdb: Initializes a player BattleObject's HP and MaxHP from NaviStats, optionally clamps MaxHP by a battle-effect flag, and conditionally triggers battle_syncHudShownHp for the enemy-side network invert.
 // symdb: (r5 = *BattleObject) -> (flags Z) ; side effects: writes [r5+0x24..0x27] (HP/MaxHP) and may call
-// symdb: sub_801E0BC
+// symdb: battle_syncHudShownHp
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initPlayerMaxHPFromStats_80141C8.yaml
 	thumb_local_start
 battleObject_initPlayerMaxHPFromStats_80141C8:
@@ -12402,7 +12402,7 @@ loc_80141E6:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
 	bne locret_80141F2
-	bl sub_801E0BC
+	bl battle_syncHudShownHp
 locret_80141F2:
 	pop {pc}
 	thumb_func_end battleObject_initPlayerMaxHPFromStats_80141C8
@@ -14043,7 +14043,7 @@ locret_8014CBE:
 
 // symdb: Per-tick AI attack update that cancels the Beast Out spam (atkvars Unk_10) once elapsed and tears down its state.
 // symdb: (r5 = ActorBattleObjectPtr, r6 = ?, r7 = ActorAIDataPtr, r10 = ToolkitPtr, lr = caller) -> r0 =
-// symdb: new Alliance value passed to sub_800AB2E ; side effects: edits ActorAIData->AttackVars offsets
+// symdb: new Alliance value passed to setIndexedTableByte ; side effects: edits ActorAIData->AttackVars offsets
 // symdb: 0x01 and 0x10, clears AIData bits 0x80 / 0x80000, AIData->Unk_44 bits 0x80008600, battle-state
 // symdb: flags 0x20, then calls object_exitAttackState
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackTickBeastSp_8014CC0.yaml
@@ -14065,7 +14065,7 @@ loc_8014CD0:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	mov r0, #0x80
 	bl ClearAIDataUnk0x48Flag
 	mov r0, #0x20 
@@ -14173,7 +14173,7 @@ loc_8014D82:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_8014DFC // =0x1cc 
@@ -14443,7 +14443,7 @@ loc_8014FBA:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_8015034 // =0x1cc 
@@ -14594,7 +14594,7 @@ loc_8015138:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	mov r0, #0x80
 	bl ClearAIDataUnk0x48Flag
 	ldr r0, dword_8015168 // =0x80000 
@@ -14723,7 +14723,7 @@ loc_80151E6:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #2
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	ldr r1, off_80152C0 // =0x1cc 
@@ -15136,7 +15136,7 @@ loc_80155DC:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	mov r1, #0xb
 	mov r2, #1
-	bl sub_800AB2E
+	bl setIndexedTableByte
 	mov r0, #0x80
 	bl ClearAIDataUnk0x48Flag
 	ldr r0, dword_801560C // =0x80000 
@@ -31673,16 +31673,16 @@ battle_eStruct2035280_postEvent_801E0A0:
 
 // symdb: Copies MegaMan's current HP into the battle HUD's displayed-HP field so the HP box shows the live value.
 // symdb: (no args) -> r0 = new shown HP; no flags set intentionally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E0BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_syncHudShownHp.yaml
 	thumb_local_start
-sub_801E0BC:
+battle_syncHudShownHp:
 	push {lr}
 	ldr r1, off_801E0D8 // =eStruct2035280
 	ldr r0, [r1,#0x48] // (dword_20352C8 - 0x2035280)
 	ldrh r0, [r0,#0x24]
 	strh r0, [r1,#0x24] // (word_20352A4 - 0x2035280)
 	pop {pc}
-	thumb_func_end sub_801E0BC
+	thumb_func_end battle_syncHudShownHp
 
 // symdb: Trivial setter that writes a halfword value into field 0x26 of the struct at 0x2035280.
 // symdb: void setStruct2035280Field26(u16 value /* r0 */)

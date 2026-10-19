@@ -23,7 +23,7 @@ void sub_8045FC6()
 
 
 // 0x8045fd0
-int __fastcall sub_8045FD0(int a1, unsigned int a2, int a3, int a4)
+int __fastcall sprite_runAnimationScript(int a1, unsigned int a2, int a3, int a4)
 {
     Toolkit *tk; // r10
     int v5; // ST1C_4
@@ -2131,7 +2131,7 @@ char *shop_copyItemTableToShopData_8048C98()
 
 
 // 0x8048ccc
-int __fastcall sub_8048CCC(int a1, unsigned __int8 *a2)
+int __fastcall shop_addItemStockEntry(int a1, unsigned __int8 *a2)
 {
     int v2; // r10
     unsigned __int8 *v3; // r6
@@ -2398,7 +2398,7 @@ int __fastcall sub_8048F68(int result)
 // 0x8048f88
 int sub_8048F88()
 {
-    return sub_8048CCC(4, byte_8048BE4);
+    return shop_addItemStockEntry(4, byte_8048BE4);
 }
 
 
@@ -5646,7 +5646,7 @@ void sub_804C144()
             v0[17] = 0;
             return;
         }
-        sub_804C244();
+        battle_flashTickFrames();
     }
     else
     {
@@ -5731,7 +5731,7 @@ int tickActionTimer_804C214()
 
 
 // 0x804c244
-int sub_804C244()
+int battle_flashTickFrames()
 {
     int v0; // r5
     int v1; // r10

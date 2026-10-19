@@ -416,7 +416,7 @@ int sub_808FD64()
         v2 = 3;
     else
         v2 = *(v1 + oGameState_MapNumber);
-    sub_809E3C4(
+    req_setFourParams(
         *&byte_808FD98[8 * v2] << 16,
         *&byte_808FD98[8 * v2 + 2] << 16,
         *&byte_808FD98[8 * v2 + 4] << 16,

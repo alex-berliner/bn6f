@@ -1803,7 +1803,7 @@ battle_beastOutInit_80A5AF8:
 	movflag EVENT_5F2
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80A5B64
-	bl sub_80A5FD0
+	bl battle_loadBeastOutFormParams
 loc_80A5B64:
 	mov r0, #4
 	strb r0, [r5,#8]
@@ -2422,9 +2422,9 @@ byte_80A5FB4:
 // symdb: Loads one Beast Out form's byte parameters from the IWRAM table byte_2000EC0 into the transformation struct and copies three table words into the battle object during Beast Out initialization.
 // symdb: (r5 = beast-out struct (index at +4), r6 = battle object) -> r0 = undefined; fills r5+0x24,
 // symdb: r5+6, r5+7, r6+0x88/0x8C/0x90
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5FD0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBeastOutFormParams.yaml
 	thumb_local_start
-sub_80A5FD0:
+battle_loadBeastOutFormParams:
 	push {r4-r7,lr}
 	ldr r7, off_80A604C // =byte_2000EC0 
 	mov r1, #0xa
@@ -2459,7 +2459,7 @@ loc_80A5FF2:
 	mov r0, #0x90
 	str r2, [r6,r0]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A5FD0
+	thumb_func_end battle_loadBeastOutFormParams
 
 // symdb: copies one AI data entry (HP/Element/Param1-3) from a BattleObject into an AIData scratch slot
 // symdb: (r5 = BattleObject*, r6 = AI scratch buffer in EWRAM) -> no return; side effect: writes 3 bytes
@@ -2917,7 +2917,7 @@ sub_80A6A34:
 	mov r0, #4
 	strb r0, [r5,#8]
 	mov r6, #0x24
-	bl sub_80A6E50
+	bl sprite_setAnimPtrFromId
 	bl battleObject_runActionSubroutineDispatch_80A6A62
 	pop {pc}
 	thumb_func_end sub_80A6A34
@@ -3290,7 +3290,7 @@ off_80A6D34:
 	thumb_local_start
 sub_80A6D38:
 	push {lr}
-	bl sub_80A6E50
+	bl sprite_setAnimPtrFromId
 	mov r0, #1
 	pop {pc}
 	thumb_func_end sub_80A6D38
@@ -3461,9 +3461,9 @@ battle_emptyReturnZero_80A6E4A:
 // symdb: Interpreter opcode handler (0x24/0x25) that resolves an id byte through a pointer table and stores the resulting pointer into the sprite work struct.
 // symdb: (r0 = id byte from struct, r1 = pointer table) -> r0 = pointer stored at [r5,r6]; flags
 // symdb: clobbered by cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setAnimPtrFromId.yaml
 	thumb_local_start
-sub_80A6E50:
+sprite_setAnimPtrFromId:
 	cmp r6, #0x24 
 	bne loc_80A6E5A
 	ldrb r0, [r5,#4]
@@ -3482,7 +3482,7 @@ off_80A6E68:
 	.word PtrTable_80A6050
 off_80A6E6C:
 	.word off_80A619C
-	thumb_func_end sub_80A6E50
+	thumb_func_end sprite_setAnimPtrFromId
 
 	thumb_local_start
 sub_80A6E70:
@@ -5257,7 +5257,7 @@ sub_80A7AD4:
 sub_80A7AE0:
 	push {r4-r7,lr}
 	add r0, r7, #1
-	bl sub_80A7B7A
+	bl readU32Unaligned
 	mov r4, r1
 	ldrb r0, [r5,#4]
 	bl battle_getAIDataForEnemyIndex_8142050
@@ -5339,9 +5339,9 @@ loc_80A7B76:
 // symdb: Reads a 32-bit little-endian value from a possibly unaligned address, byte by byte, returning it in r1.
 // symdb: (r0 = source address, need not be word-aligned) -> r1 = 32-bit value assembled from bytes
 // symdb: [r0..r0+3]; r0 preserved; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B7A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/readU32Unaligned.yaml
 	thumb_local_start
-sub_80A7B7A:
+readU32Unaligned:
 	ldrb r1, [r0]
 	ldrb r2, [r0,#1]
 	lsl r2, r2, #8
@@ -5353,7 +5353,7 @@ sub_80A7B7A:
 	lsl r2, r2, #0x18
 	orr r1, r2
 	mov pc, lr
-	thumb_func_end sub_80A7B7A
+	thumb_func_end readU32Unaligned
 
 	thumb_local_start
 sub_80A7B90:
@@ -5795,7 +5795,7 @@ ow_animWaitStep:
 	str r0, [r5,#0x24]
 	mov r6, #1
 	bl GetOWPlayerFacingDirection
-	bl sub_80A8038
+	bl ow_animVariantToAnimId
 	ldrb r1, [r7,#3]
 	cmp r0, r1
 	bne loc_80A7E90
@@ -5918,7 +5918,7 @@ ow_objectFinishEventAndFree:
 	bl sub_81427A4
 	mov r0, r0
 	bl SetEventFlag
-	bl sub_8142184
+	bl e_scenarioEffectDecrementCounter
 	ldr r0, dword_80A7F54 // =0x1650 
 	ldrb r1, [r5,#4]
 	add r0, r0, r1
@@ -5961,7 +5961,7 @@ sub_80A7F78:
 	bl ow_getCursorMapTileIndex
 	mov r1, r4
 	bl getSoulWeaponCursorDir8
-	bl sub_80A8038
+	bl ow_animVariantToAnimId
 	strb r0, [r5,#7]
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
@@ -6057,9 +6057,9 @@ off_80A8034:
 // symdb: Translates an overworld animation variant selector into an animation id via an 8-entry lookup table, returning 0xFF for invalid/none.
 // symdb: (r0 = variant selector index) -> r0 = animation id (0xFF if the selector is an even/half-invalid
 // symdb: entry); flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8038.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_animVariantToAnimId.yaml
 	thumb_local_start
-sub_80A8038:
+ow_animVariantToAnimId:
 	push {r4-r7,lr}
 	ldr r1, off_80A8040 // =byte_80A8044
 	ldrb r0, [r1,r0]
@@ -6128,7 +6128,7 @@ byte_80A81F0:
 	.byte 0xC6, 0xF, 0xC7, 0xF, 0xC8, 0xF, 0xC9, 0xF, 0xCA, 0xF
 	.byte 0xCB, 0xF, 0xCC, 0xF, 0xCD, 0xF, 0xCE, 0xF, 0xCF, 0xF
 	.byte 0xD0, 0xF, 0xD1, 0xF
-	thumb_func_end sub_80A8038
+	thumb_func_end ow_animVariantToAnimId
 
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
@@ -7661,7 +7661,7 @@ sub_80A8D42:
 	ldr r1, [r5,#0xc]
 	sub r0, r0, r2
 	sub r1, r1, r3
-	bl sub_80014D4
+	bl calc_hypotFixed12
 	ldr r1, dword_80A8D78 // =0x14 
 	lsl r1, r1, #0x10
 	cmp r0, r1
@@ -9633,7 +9633,7 @@ loc_80A9C54:
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq loc_80A9CA0
-	bl sub_80A9CAE
+	bl npc_isPlayerNearPos
 	tst r0, r0
 	beq loc_80A9C88
 	ldr r0, [r5,#0x24]
@@ -9675,9 +9675,9 @@ sub_80A9CA6:
 // symdb: (r5 = NPC/object struct: X +0xC, Y +0x10, Z +0x14) -> r0 = 1 if player within 16.0 units in X
 // symdb: and Y of object position (X offset -64.0, Y offset +64.0) and player Z == object Z + 64.0; else
 // symdb: r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9CAE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_isPlayerNearPos.yaml
 	thumb_local_start
-sub_80A9CAE:
+npc_isPlayerNearPos:
 	push {r4-r7,lr}
 	ldr r0, off_80A9CF8 // =eOWPlayerObject 
 	ldr r0, [r0,#0x24] // (dword_2009F64 - 0x2009f40)
@@ -9732,7 +9732,7 @@ dword_80A9D08:
 	.word 0x400000
 dword_80A9D0C:
 	.word 0x100000
-	thumb_func_end sub_80A9CAE
+	thumb_func_end npc_isPlayerNearPos
 
 	thumb_func_start sub_80A9D10
 sub_80A9D10:
@@ -9993,9 +9993,9 @@ off_80A9EC8:
 // symdb: Dispatches the logout sequence's current state (0=start effect, 1=middle step, 2=release map object) by tail-calling its handler.
 // symdb: (r5 = logout state-machine object; state byte at [r5,#8] selects handler) -> tail-jump to
 // symdb: handler; returns to this function's caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9ECC.yaml
-	thumb_func_start sub_80A9ECC
-sub_80A9ECC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_logoutDispatchState.yaml
+	thumb_func_start ow_logoutDispatchState
+ow_logoutDispatchState:
 	push {r4-r7,lr}
 	ldr r0, off_80A9EDC // =off_80A9EE0 
 	ldrb r1, [r5,#8]
@@ -10010,7 +10010,7 @@ off_80A9EE0:
 	.word ow_startLogoutEffect+1
 	.word sub_80A9F30+1
 	.word ow_releaseMapObject+1
-	thumb_func_end sub_80A9ECC
+	thumb_func_end ow_logoutDispatchState
 
 // symdb: Initializes an overworld object as a log-out effect: sets its state, fetches position values, loads sprite 0x1C with animation 0 and no shadow, plays the LOG_OUT sound, and advances its state machine.
 // symdb: (r5 = object/actor struct, set by caller/global) -> void; calls sub_809C890 which returns
@@ -10077,9 +10077,9 @@ ow_releaseMapObject:
 
 // symdb: Calls the overworld object's state handler selected by the object's state field.
 // symdb: (r5 = object struct) -> dispatches to handler via table lookup; r0 passes through as handler arg
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F58.yaml
-	thumb_func_start sub_80A9F58
-sub_80A9F58:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_runObjectStateHandler.yaml
+	thumb_func_start ow_runObjectStateHandler
+ow_runObjectStateHandler:
 	push {lr}
 	ldr r0, off_80A9F68 // =off_80A9F6C 
 	ldrb r1, [r5,#8]
@@ -10094,7 +10094,7 @@ off_80A9F6C:
 	.word ow_initObjectSprite+1
 	.word ow_updateApproachObject+1
 	.word sub_80A9FFC+1
-	thumb_func_end sub_80A9F58
+	thumb_func_end ow_runObjectStateHandler
 
 // symdb: Initializes an overworld object's sprite from fields in its struct: loads the sprite resource, sets animation, priority and palette, then advances the object's state.
 // symdb: () -> void; operates on the current object in r5, tail-calls sub_80A9FB8

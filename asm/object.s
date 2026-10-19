@@ -4047,9 +4047,9 @@ off_800D458:
 // symdb: Scans the 3x3 panels around a battle object and collects coordinates of panels whose status flags match a required/forbidden mask pair into a list, returning the count.
 // symdb: (r5 = battle object, r7 = output byte array, r2 = required panel-flag mask, r3 = forbidden
 // symdb: panel-flag mask) -> r0 = number of entries written to [r7]; each entry is (panelY<<4)|panelX
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D45C.yaml
-	thumb_func_start sub_800D45C
-sub_800D45C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectAdjacentPanelsByFlags.yaml
+	thumb_func_start battle_collectAdjacentPanelsByFlags
+battle_collectAdjacentPanelsByFlags:
 	push {r4,r6,lr}
 	mov r6, #0
 	mov r1, #3
@@ -4094,7 +4094,7 @@ dword_800D4A4:
 	.word 0x1800000
 dword_800D4A8:
 	.word 0x2800000
-	thumb_func_end sub_800D45C
+	thumb_func_end battle_collectAdjacentPanelsByFlags
 
 	thumb_local_start
 sub_800D4AC:

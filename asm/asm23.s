@@ -195,7 +195,7 @@ cutscenescript_8088E72:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_676
 	cs_init_minigame_effect byte1=0x00
 	cs_call_native_with_return_value ptr1=sub_814187C+1
-	cs_call_native_with_return_value ptr1=sub_8142072+1
+	cs_call_native_with_return_value ptr1=beast_clearSpawnCoords+1
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_play_music hword1=0xFFFF
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
@@ -858,7 +858,7 @@ jt_80895C0:
 	thumb_local_start
 sub_808964C:
 	push {r4-r7,lr}
-	bl sub_814219C
+	bl e_scenarioEffectStateCountersAnySet
 	bne loc_808966E
 	mov r0, #4
 	bl SetOWPlayerFacingDirection
@@ -882,7 +882,7 @@ loc_808966E:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	bl battle_initBeastSpAIChipQueues
 	mov r0, #0
-	bl sub_81421C8
+	bl e_setScenarioEffectStateB
 	bl cutscene_startCameraScript
 	mov r0, #4
 	strb r0, [r5]
@@ -956,7 +956,7 @@ loc_8089700:
 
 // symdb: Battle custom-screen handler that maps joypad (A/B/L/R) inputs over the active scenario-effect slot in the chip-select state, playing the appropriate cue and returning a non-zero code on a successful change.
 // symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;
-// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via sub_81421C8, and
+// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via e_setScenarioEffectStateB, and
 // symdb: reads scenario-effect active flag and sub_8142A84.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInputHandler_8089704.yaml
 	thumb_local_start
@@ -1007,7 +1007,7 @@ loc_8089756:
 	bge loc_8089764
 	mov r0, #3
 loc_8089764:
-	bl sub_81421C8
+	bl e_setScenarioEffectStateB
 	mov r4, #1
 	b loc_808978C
 loc_808976C:
@@ -1022,7 +1022,7 @@ loc_808976C:
 	blt loc_8089784
 	mov r0, #0
 loc_8089784:
-	bl sub_81421C8
+	bl e_setScenarioEffectStateB
 	mov r4, #1
 	b loc_808978C
 loc_808978C:
@@ -1139,7 +1139,7 @@ battle_initBeastOutAiTurn_808983A:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8089856
-	bl sub_8089D44
+	bl battle_initAIChipQueueSlot3
 	bl battleScenarioEffect_isActive_814216E
 	str r0, [r7,#0xc]
 	mov r0, #0x1e
@@ -1442,9 +1442,9 @@ battle_handleChipLockoutTransition_8089A60:
 	bl battle_getSoulWeaponBase_81427CE
 	mov r0, r0
 	bl ClearEventFlag // (u16 entryFlagBitfield) -> void
-	bl sub_814219C
+	bl e_scenarioEffectStateCountersAnySet
 	str r0, [r7,#0x10]
-	bl sub_81422B4
+	bl e_clearScenarioEffectValue
 	movflag EVENT_740
 	bl SetEventFlagFromImmediate
 	movflag EVENT_225
@@ -1712,7 +1712,7 @@ loc_8089C4A:
 	bl ai_setAIDataUnk18_8089CB0
 	bl battleScenarioEffect_isActive_814216E
 	beq loc_8089C6A
-	bl sub_814219C
+	bl e_scenarioEffectStateCountersAnySet
 	bne loc_8089C6A
 	mov r0, #0x7c 
 	strb r0, [r5]
@@ -1819,7 +1819,7 @@ camera_startCutsceneScript:
 	mov r0, #1
 	strb r0, [r5,#0x13]
 	bl ow_freeMapObjectTrio
-	bl sub_8089D44
+	bl battle_initAIChipQueueSlot3
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8089CF4:
@@ -1883,9 +1883,9 @@ battle_initBeastSpAIChipQueues:
 
 // symdb: Resets/initializes the AI chip-queue slot for battle actor slot 3 (called during beast-out battle setup).
 // symdb: () -> r0 = 0; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089D44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAIChipQueueSlot3.yaml
 	thumb_local_start
-sub_8089D44:
+battle_initAIChipQueueSlot3:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl sub_80468EC
@@ -1895,6 +1895,6 @@ sub_8089D44:
 	bl battleObject_initAIChipQueueSlot_80468C6
 	// <endpool> <endfile>
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089D44
+	thumb_func_end battle_initAIChipQueueSlot3
 
 /*For debugging purposes, connect comment at any range!*/

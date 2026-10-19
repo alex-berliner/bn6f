@@ -8191,7 +8191,7 @@ loc_8086E50::
 	bl sub_800060A
 loc_8086E60::
 	bl sub_8086F18
-	bl sub_8086F5C
+	bl spawn_spawnObjectSwarm
 	mov r0, #0
 locret_8086E6A::
 	pop {r5,pc}

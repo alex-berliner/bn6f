@@ -11767,7 +11767,7 @@ loc_8128D4A:
 	beq loc_8128D7C
 	ldr r0, off_8128DB0 // =byte_201BDB8
 	ldr r1, off_8128DB8 // =eDecompBuffer2013A00
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_8128DC4 // =eTextScript201BA00
 	ldr r1, off_8128DB0 // =byte_201BDB8
 	bl sub_802B438
@@ -11890,7 +11890,7 @@ sub_8128E2C:
 loc_8128E5C:
 	ldr r0, off_8128EC4 // =byte_201BDB8
 	ldr r1, off_8128EC8 // =eDecompBuffer2013A00
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 loc_8128E64:
 	ldr r0, off_8128ED0 // =eTextScript201BA00
 	ldr r1, off_8128EC4 // =byte_201BDB8

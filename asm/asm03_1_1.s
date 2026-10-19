@@ -6183,7 +6183,7 @@ loc_803BE4C:
 	mov r4, #1
 	mov r5, #1
 	ldr r6, off_803BEBC // =byte_86ACD60
-	bl sub_8045FD0
+	bl sprite_runAnimationScript
 	pop {r4-r7}
 	add r4, #8
 	add r6, #0x80

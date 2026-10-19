@@ -1408,7 +1408,7 @@ cutscenescript_809331E:
 	thumb_local_start
 sub_809332C::
 	push {r4-r7,lr}
-	bl sub_809E1BC
+	bl ow_getPlayerPosition
 	mov r0, #2
 	mov r4, #8
 	lsl r4, r4, #0x10

@@ -1727,9 +1727,9 @@ sub_8003ACA:
 
 // symdb: Sets bit 0x80 on the status byte at eStruct2001010, but only if that byte is currently nonzero
 // symdb: (no args) -> r0 = flag byte value; flags from tst/loret, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003AD4.yaml
-	thumb_func_start sub_8003AD4
-sub_8003AD4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setFlag2001010Bit7.yaml
+	thumb_func_start e_setFlag2001010Bit7
+e_setFlag2001010Bit7:
 	push {r4-r7,lr}
 	ldr r5, off_8003B40 // =eStruct2001010
 	mov r0, #1
@@ -1742,7 +1742,7 @@ sub_8003AD4:
 	strb r0, [r5]
 locret_8003AE8:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8003AD4
+	thumb_func_end e_setFlag2001010Bit7
 
 // symdb: Clears the "new event pending" bit (bit 7) of the flag byte at eStruct2001010 so the event no longer reads as fresh.
 // symdb: void event_ackNewFlagByte(void); // reads/writes the byte at eStruct2001010; returns r1 = 0x7f
@@ -3164,8 +3164,8 @@ OverworldMapObjectUpdateJumptable:
 	.word battle_dispatchObjectBehaviorStep_80A9B70+1
 	.word 0x0
 	.word sub_80A9D10+1
-	.word sub_80A9ECC+1
-	.word sub_80A9F58+1
+	.word ow_logoutDispatchState+1
+	.word ow_runObjectStateHandler+1
 	.word sub_80AA058+1
 	.word sub_80AA140+1
 	.word sub_80AA1E0+1
@@ -11486,7 +11486,7 @@ locret_80083E2:
 sub_80083E4:
 	push {lr}
 	ldrb r0, [r5,#5]
-	bl sub_800A07C
+	bl getRecordFlagBit3
 	tst r0, r0
 	beq locret_8008400
 	mov r0, #0x9f
@@ -11852,7 +11852,7 @@ sub_8008688:
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne .loc_80086DC
-	bl sub_800A84E
+	bl battle_getPhase
 	mov r6, r0
 	ldr r0, dword_800893C // =0x824c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -12201,7 +12201,7 @@ locret_80088FE:
 sub_8008900:
 	push {lr}
 	ldrb r0, [r5,#5]
-	bl sub_800A07C
+	bl getRecordFlagBit3
 	tst r0, r0
 	beq locret_800891C
 	mov r0, #0x9f
@@ -12415,7 +12415,7 @@ battle_tickPreBattleInit_8008AA0:
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008AF4
-	bl sub_800A84E
+	bl battle_getPhase
 	mov r6, r0
 	ldr r0, dword_8008D54 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -12772,7 +12772,7 @@ locret_8008D16:
 sub_8008D18:
 	push {lr}
 	ldrb r0, [r5,#5]
-	bl sub_800A07C
+	bl getRecordFlagBit3
 	tst r0, r0
 	beq locret_8008D34
 	mov r0, #0x9f
@@ -12975,7 +12975,7 @@ sub_8008EA0:
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_8008EF4
-	bl sub_800A84E
+	bl battle_getPhase
 	mov r6, r0
 	ldr r0, dword_8009150 // =0x4c43
 	bl dispatch_801DACC // (a0: flags32) -> ()
@@ -13328,7 +13328,7 @@ locret_8009116:
 sub_8009118:
 	push {lr}
 	ldrb r0, [r5,#5]
-	bl sub_800A07C
+	bl getRecordFlagBit3
 	tst r0, r0
 	beq locret_8009134
 	mov r0, #0x9f
@@ -15036,7 +15036,7 @@ off_8009CA4:
 off_8009CA8:
 	.word battle_initBattlePhase+1
 	.word sub_8009D78+1
-	.word sub_8009E10+1
+	.word battle_dispatchPhaseHandler+1
 	.word sub_8009E56+1
 	.word sub_8009EE2+1
 	.word battle_fadeOutPhase+1
@@ -15236,9 +15236,9 @@ locret_8009E0E:
 // symdb: State-machine step: reads the current phase byte from a battle-state struct and calls the matching handler function from a table.
 // symdb: (r5 = state struct with phase byte at oBattleState_StatePhase) -> calls handler table entry for
 // symdb: the phase; returns to caller when handler returns
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchPhaseHandler.yaml
 	thumb_local_start
-sub_8009E10:
+battle_dispatchPhaseHandler:
 	push {lr}
 	ldr r1, off_8009E20 // =off_8009E24
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -15252,7 +15252,7 @@ off_8009E20:
 off_8009E24:
 	.word RunTextScriptDustManUndernetTut_8009E2C+1
 	.word sub_8009E40+1
-	thumb_func_end sub_8009E10
+	thumb_func_end battle_dispatchPhaseHandler
 
 	thumb_local_start
 RunTextScriptDustManUndernetTut_8009E2C:
@@ -15640,9 +15640,9 @@ off_800A078:
 
 // symdb: Returns 1 if bit 3 of the flag halfword is set in record r0 of the 8-byte-record table at 0x2036820, else 0.
 // symdb: (r0 = record index into dword_2036820) -> r0 = 1 if bit 3 of halfword at record+4 is set, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A07C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRecordFlagBit3.yaml
 	thumb_local_start
-sub_800A07C:
+getRecordFlagBit3:
 	mov r2, #8
 	mul r0, r2
 	ldr r3, off_800A094 // =dword_2036820
@@ -15658,7 +15658,7 @@ locret_800A090:
 	.balign 4, 0
 off_800A094:
 	.word dword_2036820
-	thumb_func_end sub_800A07C
+	thumb_func_end getRecordFlagBit3
 
 // symdb: Is a time-stop effect freezing the battle (battle flags bit 2)?
 // symdb: () -> r0 = battle flags & 4 (nonzero: time stopped), r1 = 4, N/Z from r0
@@ -16981,14 +16981,14 @@ setTwoStructs_800A840:
 
 // symdb: Returns the current battle phase byte from the active battle state.
 // symdb: () -> r0 = oBattleState_BattlePhase of the current battle; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A84E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPhase.yaml
 	thumb_local_start
-sub_800A84E:
+battle_getPhase:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#oBattleState_BattlePhase]
 	mov pc, lr
-	thumb_func_end sub_800A84E
+	thumb_func_end battle_getPhase
 
 	thumb_func_start sub_800A856
 sub_800A856:
@@ -17567,16 +17567,16 @@ clearWorkArea_2000FA0_800AB22:
 // symdb: Writes one byte into a fixed table at byte_203EAE0 whose entries are 16 bytes each.
 // symdb: (r0 = entry index, r1 = byte offset within entry, r2 = value to store) -> void; no flags
 // symdb: meaningful (strb sets none)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800AB2E.yaml
-	thumb_func_start sub_800AB2E
-sub_800AB2E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/setIndexedTableByte.yaml
+	thumb_func_start setIndexedTableByte
+setIndexedTableByte:
 	mov r3, #0x10
 	mul r0, r3
 	ldr r3, off_800AC04 // =byte_203EAE0
 	add r3, r3, r0
 	strb r2, [r3,r1]
 	mov pc, lr
-	thumb_func_end sub_800AB2E
+	thumb_func_end setIndexedTableByte
 
 // symdb: Reads one byte out of a 16-bytes-per-row table at byte_203EAE0, given a row and column index.
 // symdb: u8 table_GetByte16Row_203EAE0(u32 row /*r0*/, u32 column /*r1*/); also returns the byte's table

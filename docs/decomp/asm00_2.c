@@ -2437,8 +2437,8 @@ int __fastcall battleObject_findClosestEnemyBattleObject_80103F8(int a1)
                 v7 = unpackVerActorTyAndAIIdx_800F29C(*(v6 + 40));
                 if ( v7 == 2 || !v7 || v7 == 1 )
                 {
-                    v9 = sub_8010460(*(v6 + 18), *(v6 + 19), v8, &v12);
-                    if ( !v5 || sub_8010460(*(v5 + 18), *(v5 + 19), v10, &v12) > v9 )
+                    v9 = get_sqDistToPoint(*(v6 + 18), *(v6 + 19), v8, &v12);
+                    if ( !v5 || get_sqDistToPoint(*(v5 + 18), *(v5 + 19), v10, &v12) > v9 )
                         v5 = v6;
                 }
             }
@@ -2452,7 +2452,7 @@ int __fastcall battleObject_findClosestEnemyBattleObject_80103F8(int a1)
 
 
 // 0x8010460
-int __fastcall sub_8010460(int a1, int a2, int a3, _DWORD *a4)
+int __fastcall get_sqDistToPoint(int a1, int a2, int a3, _DWORD *a4)
 {
     return (*a4 - a1) * (*a4 - a1) + (a4[1] - a2) * (a4[1] - a2);
 }
@@ -3544,7 +3544,7 @@ int sub_8011224()
 
 
 // 0x8011236
-int sub_8011236()
+int object_freeRelatedObjectAndExtraVars()
 {
     int v0; // r5
     int v1; // r0
@@ -3718,7 +3718,7 @@ int sub_801140E()
     result = *(v0 + 80);
     if ( result )
     {
-        sub_80C46B0(result);
+        battle_setObjectStateActionPhase8(result);
         result = 0;
         *(v0 + 80) = 0;
     }
@@ -5112,7 +5112,7 @@ signed int tomahawkmanBPwrAtk_init_8012258()
 
 
 // 0x8012278
-signed int sub_8012278()
+signed int ai_setupAttackVars()
 {
     int v0; // r7
 
@@ -8524,7 +8524,7 @@ int __fastcall battleObject_initPlayerMaxHPFromStats_80141C8(int a1)
         *(v1 + 36) = sub_8013790(v3, 64);
     result = battle_networkInvert(*(v1 + 22));
     if ( v5 )
-        result = sub_801E0BC();
+        result = battle_syncHudShownHp();
     return result;
 }
 
@@ -9753,7 +9753,7 @@ void battle_aiAttackTickBeastSp_8014CC0()
     *(v1 + 16) = v2;
     if ( (v2 < 0) ^ v3 )
     {
-        sub_800AB2E(v0->Alliance, 11, 1);
+        setIndexedTableByte(v0->Alliance, 11, 1);
         ClearAIDataUnk0x48Flag(128);
         battle_clearFlags(32);
         ClearAIDataUnk0x48Flag(0x80000);
@@ -9834,7 +9834,7 @@ int sub_8014D70()
             *(v6 + 32) = 54;
             *v6 |= 4u;
             v0->y += 12582912;
-            sub_800AB2E(v0->Alliance, 2, 1);
+            setIndexedTableByte(v0->Alliance, 2, 1);
             v7 = battle_ai_getActorInfo_801595E(v0->Alliance);
             v9 = byte_1CC;
             if ( v7 != 11 )
@@ -10049,7 +10049,7 @@ int sub_8014FA8()
             *(v6 + 32) = 54;
             *v6 |= 4u;
             v0->y += 12582912;
-            sub_800AB2E(v0->Alliance, 2, 1);
+            setIndexedTableByte(v0->Alliance, 2, 1);
             v7 = battle_ai_getActorInfo_801595E(v0->Alliance);
             v9 = byte_1CC;
             if ( v7 >= 18 )
@@ -10177,7 +10177,7 @@ void sub_8015128()
     *(v1 + 16) = v2;
     if ( (v2 < 0) ^ v3 )
     {
-        sub_800AB2E(v0->Alliance, 11, 1);
+        setIndexedTableByte(v0->Alliance, 11, 1);
         ClearAIDataUnk0x48Flag(128);
         ClearAIDataUnk0x48Flag(0x80000);
         battle_clearFlags(32);
@@ -10274,7 +10274,7 @@ int __fastcall sub_80151D4(int a1, int a2, int a3)
                 *(v15 + 32) = 69;
                 *v15 |= 4u;
                 v3->y += 12582912;
-                sub_800AB2E(v3->Alliance, 2, 1);
+                setIndexedTableByte(v3->Alliance, 2, 1);
                 v16 = battle_ai_getActorInfo_801595E(v3->Alliance);
                 v18 = byte_1CC;
                 if ( v16 != 23 )
@@ -10609,7 +10609,7 @@ void sub_80155CC()
     *(v1 + 16) = v2;
     if ( (v2 < 0) ^ v3 )
     {
-        sub_800AB2E(v0->Alliance, 11, 1);
+        setIndexedTableByte(v0->Alliance, 11, 1);
         ClearAIDataUnk0x48Flag(128);
         ClearAIDataUnk0x48Flag(0x80000);
         battle_clearFlags(32);
@@ -20945,7 +20945,7 @@ int __fastcall battle_eStruct2035280_postEvent_801E0A0(char a1, char a2)
 
 
 // 0x801e0bc
-int sub_801E0BC()
+int battle_syncHudShownHp()
 {
     int result; // r0
 

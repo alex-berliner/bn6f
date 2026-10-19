@@ -153,7 +153,7 @@ sub_3005CDA:
 	thumb_local_start
 sub_3005CF0:
 	push {lr}
-	bl sub_3005D24
+	bl dma0_processPendingRequest
 	pop {r0}
 	mov lr, r0
 	ldr r0, off_3005D04 // =dword_200A870
@@ -179,9 +179,9 @@ off_3005D20:
 // symdb: IWRAM vblank-style service routine that applies a queued DMA0/copy request from a work struct at 0x20081B0, or just disables DMA0 when the request tag is 0x80.
 // symdb: (void) -> void; reads request struct at byte_20081B0, programs DMA0 registers (SAD/DAD/CNT) and
 // symdb: performs a CpuSet word copy; no meaningful return value, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005D24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dma0_processPendingRequest.yaml
 	thumb_local_start
-sub_3005D24:
+dma0_processPendingRequest:
 	push {lr}
 	ldr r1, off_3005D68 // =byte_20081B0
 	ldrb r3, [r1]
@@ -226,7 +226,7 @@ dword_3005D70:
 	.word 0x80000000
 off_3005D74:
 	.word copyWordsWrapper+1
-	thumb_func_end sub_3005D24
+	thumb_func_end dma0_processPendingRequest
 
 // symdb: The sound engine's VCount interrupt callback: m4aSoundVSync, then m4aSoundMain.
 // symdb: (called by the interrupt dispatcher) -> call_m4aSoundVSync(); call_m4aSoundMain()
@@ -2122,9 +2122,9 @@ byte_30069A0::
 // symdb: In-place ascending shellsort of an array of 32-byte records, keyed by one signed 32-bit word chosen by index.
 // symdb: (r0 = array base, r1 = element count, r2 = key word index within each 32-byte element) -> r0 =
 // symdb: 0; array sorted ascending in place, no flags meaningful.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30069A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shellSortByKey.yaml
 	thumb_local_start
-sub_30069A8:
+shellSortByKey:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -2222,7 +2222,7 @@ loc_3006A40:
 	mov r10, r6
 	mov r12, r7
 	pop {r4-r7,pc}
-	thumb_func_end sub_30069A8
+	thumb_func_end shellSortByKey
 
 	thumb_local_start
 sub_3006A5E:
@@ -2339,7 +2339,7 @@ off_3006B18:
 	.word sub_3006F20+1
 	.word sub_3006F24+1
 	.word 0x0
-	.word sub_3006F48+1
+	.word get_variantOffsetPtr+1
 	.word chatbox_printNumber+1
 	.word 0x0
 	.word 0x0
@@ -2395,7 +2395,7 @@ loc_3006BBA:
 loc_3006BD2:
 	cmp r1, #0xe4
 	beq loc_3006BE4
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	add r0, #1
 	mov r7, r9
 	add r7, #1
@@ -2404,7 +2404,7 @@ loc_3006BD2:
 loc_3006BE4:
 	ldrb r1, [r0,#1]
 	add r1, #0xe4
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	add r0, #2
 	mov r7, r9
 	add r7, #1
@@ -2434,9 +2434,9 @@ off_3006C14:
 // symdb: Adds a value fetched from a global chatbox table to all 16 words of one 0x40-byte row and advances the caller's output pointer/loop counters.
 // symdb: (r6 = base table ptr, r1 = row index, r2 = dest row ptr; r4/r5 = loop counters) -> writes
 // symdb: r6+r1*64[i]+globalVal to r2[i] for i=0x3C..0; r2 += 0x40, r4++, r5++; r0/r6 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006C18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_addOffsetToRow.yaml
 	thumb_local_start
-sub_3006C18:
+chatbox_addOffsetToRow:
 	push {r0,r6,lr}
 	lsl r7, r1, #6
 	add r6, r6, r7
@@ -2454,7 +2454,7 @@ loc_3006C26:
 	add r4, #1
 	add r5, #1
 	pop {r0,r6,pc}
-	thumb_func_end sub_3006C18
+	thumb_func_end chatbox_addOffsetToRow
 
 	thumb_func_start sub_3006C38
 sub_3006C38:
@@ -2488,7 +2488,7 @@ loc_3006C62:
 	cmp r5, r8
 	bge loc_3006C6E
 	mov r1, #0
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	b loc_3006C62
 loc_3006C6E:
 	mov r3, #0
@@ -2506,7 +2506,7 @@ loc_3006C7C:
 	cmp r4, r8
 	bge loc_3006C88
 	mov r1, #0
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	b loc_3006C7C
 loc_3006C88:
 	mov r4, #0
@@ -2555,7 +2555,7 @@ loc_3006CB6:
 
 // symdb: Text-engine formatter that prints a 16-bit game value as a decimal number with width, alignment and zero/space padding.
 // symdb: (r0 = text-state struct: +1 = source selector, +2 = format flags) -> r0 = small code (pad-flag +
-// symdb: 3); digits emitted via sub_3006C18
+// symdb: 3); digits emitted via chatbox_addOffsetToRow
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_printNumber.yaml
 	thumb_local_start
 chatbox_printNumber:
@@ -2609,7 +2609,7 @@ loc_3006D20:
 	push {r1}
 	mov r1, #1
 	add r1, r1, r7
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	pop {r1}
 	mov r7, r9
 	add r7, #1
@@ -2622,7 +2622,7 @@ loc_3006D3E:
 	ble loc_3006D92
 	sub r3, #1
 	mov r1, r0
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	b loc_3006D3E
 loc_3006D4C:
 	sub r3, #0x80
@@ -2638,7 +2638,7 @@ loc_3006D5C:
 	ble loc_3006D70
 	sub r3, #1
 	mov r1, r0
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	mov r7, r9
 	add r7, #1
 	mov r9, r7
@@ -2654,7 +2654,7 @@ loc_3006D76:
 	push {r1}
 	mov r1, #1
 	add r1, r1, r7
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 	pop {r1}
 	mov r7, r9
 	add r7, #1
@@ -2774,7 +2774,7 @@ loc_3006E40:
 	tst r1, r1
 	beq loc_3006E5C
 loc_3006E58:
-	bl sub_3006C18
+	bl chatbox_addOffsetToRow
 loc_3006E5C:
 	mov r1, r3
 	pop {r7}
@@ -2911,9 +2911,9 @@ sub_3006F42:
 // symdb: Returns the input pointer advanced by a per-variant offset looked up from a small table, using a type byte in the structure as the index.
 // symdb: (r0 = pointer to struct whose byte at +0x01 selects a layout variant) -> r0 = r0 +
 // symdb: byte_3006F58[type]; r1 and r7 clobbered, flags set by the add
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006F48.yaml
-	thumb_func_start sub_3006F48
-sub_3006F48:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_variantOffsetPtr.yaml
+	thumb_func_start get_variantOffsetPtr
+get_variantOffsetPtr:
 	ldrb r7, [r0,#1]
 	ldr r1, off_3006F54 // =byte_3006F58
 	ldrb r1, [r7,r1]
@@ -2924,7 +2924,7 @@ off_3006F54:
 	.word byte_3006F58
 byte_3006F58:
 	.byte 0x3, 0x0, 0x0, 0x0
-	thumb_func_end sub_3006F48
+	thumb_func_end get_variantOffsetPtr
 
 	thumb_func_start sub_3006F5C
 sub_3006F5C:
@@ -3810,7 +3810,7 @@ loc_3007570:
 	beq loc_30075B8
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
-	bl sub_3007880
+	bl object_testAndClearCollisionIndexBit
 	ldr r0, [sp]
 	ldr r1, [sp,#4]
 	bl _object_updatePanelParameters
@@ -3833,7 +3833,7 @@ loc_30075C0:
 	mov r0, r6
 	mov r1, r7
 	mov r2, r5
-	bl sub_3007880
+	bl object_testAndClearCollisionIndexBit
 	beq loc_30075E8
 	mov r0, r6
 	mov r1, r7
@@ -3900,10 +3900,10 @@ loc_3007622:
 	str r0, [r6,#0x68]
 	mov r0, r5
 	mov r1, r6
-	bl sub_3007650
+	bl object_checkCollisionFlagsAndLinkPair
 	mov r0, r6
 	mov r1, r5
-	bl sub_3007650
+	bl object_checkCollisionFlagsAndLinkPair
 loc_3007646:
 	add r6, #0xa8
 	b loc_300761A
@@ -3917,9 +3917,9 @@ off_300764C:
 // symdb: For a pair of battle objects, checks that one's target collision flags match the other's self collision flags and, if so, records the collision link between them.
 // symdb: (r0 = object A collision/entity record, r1 = object B record) -> r0 = preserved via callee flow;
 // symdb: no meaningful return, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007650.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_checkCollisionFlagsAndLinkPair.yaml
 	thumb_local_start
-sub_3007650:
+object_checkCollisionFlagsAndLinkPair:
 	push {r6,r7,lr}
 	ldr r2, [r0,#oCollisionData_TargetCollisionTypeFlags]
 	ldr r3, [r1,#oCollisionData_SelfCollisionTypeFlags]
@@ -3933,7 +3933,7 @@ sub_3007650:
 	bl sub_3007692
 locret_300766A:
 	pop {r6,r7,pc}
-	thumb_func_end sub_3007650
+	thumb_func_end object_checkCollisionFlagsAndLinkPair
 
 	thumb_local_start
 // r0 - defending collision data
@@ -4216,7 +4216,7 @@ loc_3007840:
 	ldrb r2, [r5,#0xb]
 	add r1, r1, r2
 	mov r2, r5
-	bl sub_3007880
+	bl object_testAndClearCollisionIndexBit
 	add r4, #2
 	b loc_3007840
 locret_3007860:
@@ -4249,9 +4249,9 @@ off_300787C:
 // symdb: Test-and-clears an object's collision-occupancy bit in the battle collision index table, returning the old word and setting flags on whether the bit was set.
 // symdb: (r0 = word index in collision index table, r1 = group index (<<3), r2 = pointer to CollisionData
 // symdb: struct) -> r0 = old table word; Z flag set iff the object's CollisionIndexBit was already clear
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007880.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_testAndClearCollisionIndexBit.yaml
 	thumb_local_start
-sub_3007880:
+object_testAndClearCollisionIndexBit:
 	ldr r3, off_3007898 // =unk_2034F60
 	lsl r1, r1, #3
 	add r0, r0, r1
@@ -4288,7 +4288,7 @@ off_30078C0:
 	.word object_checkPanelParameters+1
 off_30078C4:
 	.word object_getAllianceDirection+1
-	thumb_func_end sub_3007880
+	thumb_func_end object_testAndClearCollisionIndexBit
 
 // symdb: Recomputes battle board panel parameters for every panel coordinate on the field grid.
 // symdb: () -> r0 = undefined; clobbers r4, r5

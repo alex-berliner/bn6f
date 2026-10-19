@@ -6851,7 +6851,7 @@ int sub_8135938()
 
 
 // 0x813594c
-int __fastcall sub_813594C(int a1, int a2, int a3)
+int __fastcall ow_objectStepSavePos(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -6859,7 +6859,7 @@ int __fastcall sub_813594C(int a1, int a2, int a3)
     *(v3 + 42) = *(v3 + 40);
     *(v3 + 46) = *(v3 + 44);
     if ( !*(v3 + 13) )
-        sub_813612C(*(v3 + 13), a2, a3);
+        navicust_handlePlacementCursorInput(*(v3 + 13), a2, a3);
     result = 0;
     *(v3 + 19) = 0;
     return result;
@@ -7534,7 +7534,7 @@ int sub_8136100()
 
 
 // 0x813612c
-int __fastcall sub_813612C(int a1, int a2, int a3)
+int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -7629,7 +7629,7 @@ int sub_8136218()
     int v6; // r1
     int v7; // r2
 
-    v1 = sub_8136290(*(v0 + 36) + *(v0 + 32));
+    v1 = beastsp_getCodeEntry(*(v0 + 36) + *(v0 + 32));
     v2 = *v1;
     sub_813629C(v2);
     if ( v5 )
@@ -7673,7 +7673,7 @@ signed int sub_813627C()
 
 
 // 0x8136290
-__int16 *__fastcall sub_8136290(int a1)
+__int16 *__fastcall beastsp_getCodeEntry(int a1)
 {
     return &word_201DA80[2 * a1];
 }
@@ -7730,8 +7730,8 @@ int sub_8136318()
     int v0; // r5
     __int16 *v1; // r0
 
-    v1 = sub_8136290(*(v0 + 58) + *(v0 + 56));
-    return 3 - sub_813B84C(*v1 - 144);
+    v1 = beastsp_getCodeEntry(*(v0 + 58) + *(v0 + 56));
+    return 3 - ai_getGridMargins(*v1 - 144);
 }
 
 
@@ -7742,8 +7742,8 @@ int sub_813633C()
     __int16 *v1; // r0
     int v2; // r2
 
-    v1 = sub_8136290(*(v0 + 58) + *(v0 + 56));
-    sub_813B84C(*v1 - 144);
+    v1 = beastsp_getCodeEntry(*(v0 + 58) + *(v0 + 56));
+    ai_getGridMargins(*v1 - 144);
     return 3 - v2;
 }
 
@@ -7755,7 +7755,7 @@ int sub_8136364()
     __int16 *v1; // r0
     int *v2; // r0
 
-    v1 = sub_8136290(*(v0 + 58) + *(v0 + 56));
+    v1 = beastsp_getCodeEntry(*(v0 + 58) + *(v0 + 56));
     v2 = battleObject_getByIndex_813B780(*v1 - 144);
     return CheckKeyItem(*(v2 + 3) + 79);
 }
@@ -7778,8 +7778,8 @@ int sub_8136384()
     int v11; // r1
     char *v12; // [sp+0h] [bp-18h]
 
-    v1 = sub_8136290(*(v0 + 58) + *(v0 + 56));
-    v2 = sub_813B84C(*v1 - 144);
+    v1 = beastsp_getCodeEntry(*(v0 + 58) + *(v0 + 56));
+    v2 = ai_getGridMargins(*v1 - 144);
     if ( v2 == 12884901891LL )
         v2 = 8589934594LL;
     if ( v3 == 3 && v4 == 3 )
@@ -7852,11 +7852,11 @@ int navicust_confirmPartPlacement()
     int v5; // r1
     int v6; // r2
 
-    v1 = sub_81364BC();
+    v1 = navicust_checkPartPlacement();
     if ( !v4 )
         return PlaySoundEffect(105, v2, v3);
     *(v0 + 24) = v1;
-    sub_81364E8(v1);
+    navicust_installSelectedPart(v1);
     if ( !*(v0 + 16) )
     {
         *(v0 + 2) = 4;
@@ -7877,13 +7877,13 @@ int navicust_confirmPartPlacement()
 
 
 // 0x81364bc
-__int16 *sub_81364BC()
+__int16 *navicust_checkPartPlacement()
 {
     int v0; // r5
     __int16 *result; // r0
     __int16 *v2; // r7
 
-    result = sub_8136290(*(v0 + 58) + *(v0 + 56));
+    result = beastsp_getCodeEntry(*(v0 + 58) + *(v0 + 56));
     if ( result[1] )
     {
         v2 = (*result - 144);
@@ -7895,7 +7895,7 @@ __int16 *sub_81364BC()
 
 
 // 0x81364e8
-int __fastcall sub_81364E8(int a1)
+int __fastcall navicust_installSelectedPart(int a1)
 {
     int v1; // r5
     int v2; // r7
@@ -7910,7 +7910,7 @@ int __fastcall sub_81364E8(int a1)
     v2 = a1;
     TestEventFlag(a1 + 9824);
     v3 = sub_813BA08(v2, *(v1 + 40), *(v1 + 44), *(v1 + 14));
-    v4 = sub_813B950(v3, v2, *(v1 + 40), *(v1 + 44));
+    v4 = ai_stampAreaPattern(v3, v2, *(v1 + 40), *(v1 + 44));
     submenu_rebuildKeyItemList(v4, v5, v6, v7);
     *(v1 + 12) = 16;
     *(v1 + 2) = 8;
@@ -8222,7 +8222,7 @@ void sub_81367C0()
     }
     if ( *(v0 + 2) == 4 )
     {
-        v2 = *sub_8136290(*(v0 + 36) + *(v0 + 32)) - 144;
+        v2 = *beastsp_getCodeEntry(*(v0 + 36) + *(v0 + 32)) - 144;
         *(v0 + 26) = v2;
     }
     *(v0 + 22) = *(v0 + 2);
@@ -8240,7 +8240,7 @@ int __fastcall beastsp_feedBoardCodeInput(int result)
 
     if ( result & 0x303 )
     {
-        v2 = sub_8136290(*(v1 + 36) + *(v1 + 32));
+        v2 = beastsp_getCodeEntry(*(v1 + 36) + *(v1 + 32));
         result = beastsp_checkSecretCode(*v2 - 144, *(v1 + 23));
         *(v1 + 23) = result;
     }
@@ -8360,7 +8360,7 @@ int pet_naviHealCutsceneStep()
 
 
 // 0x8136a0c
-int sub_8136A0C()
+int battle_beastOutTimerTick()
 {
     _BYTE *v0; // r5
     _DWORD *v1; // r10
@@ -8471,7 +8471,7 @@ unsigned int sub_8136AE8()
         v0[18] = 48;
     }
     v0[19] = 0;
-    sub_8136B48(1);
+    camera_subScrollOffset(1);
     return sub_8136BE8();
 }
 
@@ -8500,7 +8500,7 @@ int __fastcall sub_8136B10(__int16 a1)
 
 
 // 0x8136b48
-int __fastcall sub_8136B48(int result)
+int __fastcall camera_subScrollOffset(int result)
 {
     int v1; // r10
 
@@ -8767,7 +8767,7 @@ int sub_8136FA4()
 
 
 // 0x8136fb8
-int sub_8136FB8()
+int navicust_runObjectDialogScript()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -8776,7 +8776,7 @@ int sub_8136FB8()
     int v4; // r0
 
     sub_8137670(&dword_3F8);
-    result = sub_8137648(0, 10);
+    result = navicust_testFlag(0, 10);
     if ( !v3 )
     {
         result = *(v1 + 2);
@@ -8841,13 +8841,13 @@ int sub_8137028()
         result = *(v1 + 13);
         if ( !*(v1 + 13) )
         {
-            result = sub_8137648(0, 10);
+            result = navicust_testFlag(0, 10);
             if ( !v3 )
             {
-                sub_813BFB8(&dword_34, *(v1 + 40), *(v1 + 44));
+                navicust_checkPieceFitsInBoard(&dword_34, *(v1 + 40), *(v1 + 44));
                 if ( v3 )
                 {
-                    sub_813BF60(&dword_34, *(v1 + 40), *(v1 + 44));
+                    navicust_checkRowOccupied(&dword_34, *(v1 + 40), *(v1 + 44));
                     if ( !v3 )
                     {
                         *(v0 + 5) = *(v1 + 40);
@@ -8939,7 +8939,7 @@ int navicust_checkEquipDialogs()
     result = *(v1 + 13);
     if ( !*(v1 + 13) )
     {
-        result = sub_8137648(0, 10);
+        result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
             if ( *(v1 + 2) == 4 )
@@ -9047,7 +9047,7 @@ int sub_81371B0()
     result = *(v1 + 13);
     if ( !*(v1 + 13) )
     {
-        result = sub_8137648(0, 10);
+        result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
             sub_813BB68(&word_8C, *(v1 + 68), *(v1 + 40), *(v1 + 44));
@@ -9058,7 +9058,7 @@ int sub_81371B0()
                 *v0 = 68;
                 return result;
             }
-            sub_813BFB8(&word_8C, *(v1 + 40), *(v1 + 44));
+            navicust_checkPieceFitsInBoard(&word_8C, *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(24);
@@ -9068,7 +9068,7 @@ LABEL_9:
                 *v0 = 68;
                 return result;
             }
-            sub_813BF60(&word_8C, *(v1 + 40), *(v1 + 44));
+            navicust_checkRowOccupied(&word_8C, *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(22);
@@ -9148,7 +9148,7 @@ int sub_813726C()
     result = *(v1 + 13);
     if ( !*(v1 + 13) )
     {
-        result = sub_8137648(0, 10);
+        result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
             if ( *(v1 + 2) == 4 )
@@ -9266,7 +9266,7 @@ int navicust_checkPiecePlacement()
     result = *(v1 + 13);
     if ( !*(v1 + 13) )
     {
-        result = sub_8137648(0, 10);
+        result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
             sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44));
@@ -9278,7 +9278,7 @@ int navicust_checkPiecePlacement()
                 *v0 = 104;
                 return result;
             }
-            sub_813BFB8(&loc_90, *(v1 + 40), *(v1 + 44));
+            navicust_checkPieceFitsInBoard(&loc_90, *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(34);
@@ -9288,7 +9288,7 @@ LABEL_9:
                 *v0 = 104;
                 return result;
             }
-            sub_813BF60(&loc_90, *(v1 + 40), *(v1 + 44));
+            navicust_checkRowOccupied(&loc_90, *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(31);
@@ -9382,7 +9382,7 @@ int navicust_dialogStateHandler()
     result = *(v1 + 13);
     if ( !*(v1 + 13) )
     {
-        result = sub_8137648(0, 10);
+        result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
             if ( *(v1 + 2) == 4 )
@@ -9512,7 +9512,7 @@ signed int sub_81375AC()
         result = *(v1 + 3);
         if ( result == 48 )
         {
-            sub_813768C(1);
+            ow_forceKeyState(1);
             result = 144;
             *v0 = -112;
         }
@@ -9563,7 +9563,7 @@ signed int navicust_countBeastOutUses()
 
     v1 = 0;
     v2 = *(v0 + 3) + 1;
-    sub_8137648(2, 8);
+    navicust_testFlag(2, 8);
     if ( !v3 && v2 >= 32 || v2 > 79 )
     {
         v1 = 1;
@@ -9576,7 +9576,7 @@ signed int navicust_countBeastOutUses()
 
 
 // 0x8137648
-int __fastcall sub_8137648(int a1, int a2)
+int __fastcall navicust_testFlag(int a1, int a2)
 {
     int v2; // r5
     int result; // r0
@@ -9604,7 +9604,7 @@ int __fastcall sub_8137670(int result)
 
 
 // 0x813768c
-int __fastcall sub_813768C(int result)
+int __fastcall ow_forceKeyState(int result)
 {
     int v1; // r10
     _WORD *v2; // r2

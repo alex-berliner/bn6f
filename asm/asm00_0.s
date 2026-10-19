@@ -231,7 +231,7 @@ loc_80006B0:
 	ldr r3, off_8000884 // =m4a_SongNumStart+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	mov r0, r7
-	ldr r3, off_8000888 // =sub_814EB1C+1
+	ldr r3, off_8000888 // =sound_mplayStop+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	mov r0, r7
 	mov r1, #0xff
@@ -529,7 +529,7 @@ off_8000880:
 off_8000884:
 	.word m4a_SongNumStart+1 // (idx: u16) -> ()
 off_8000888:
-	.word sub_814EB1C+1
+	.word sound_mplayStop+1
 off_800088C:
 	.word sub_814F9AC+1
 off_8000890:
@@ -2750,9 +2750,9 @@ byte_80014BC:
 // symdb: computes sqrt(x²+y²) of a 2D vector in 20.12 fixed point via the BIOS Sqrt SWI
 // symdb: (r0 = x in 20.12 fixed, r1 = y in 20.12 fixed) -> r0 = sqrt(x²+y²) in 20.12 fixed; flags from
 // symdb: final lsl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80014D4.yaml
-	thumb_func_start sub_80014D4
-sub_80014D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/calc_hypotFixed12.yaml
+	thumb_func_start calc_hypotFixed12
+calc_hypotFixed12:
 	push {lr}
 	asr r0, r0, #0xc
 	mov r2, r0
@@ -2765,7 +2765,7 @@ sub_80014D4:
 	lsl r0, r0, #0xc
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80014D4
+	thumb_func_end calc_hypotFixed12
 
 /// Another function for copying words
 /// except it will do a backwards copy if

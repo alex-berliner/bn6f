@@ -6326,9 +6326,9 @@ int *sub_802A866()
     int *v0; // r0
     int *result; // r0
 
-    v0 = sub_802B298();
+    v0 = get_battleStatePtr();
     ZeroFillByWord(v0, 64);
-    result = sub_802B298();
+    result = get_battleStatePtr();
     *(result + 7) = 1;
     return result;
 }
@@ -6339,7 +6339,7 @@ int sub_802A87C()
 {
     int *v0; // r5
 
-    v0 = sub_802B298();
+    v0 = get_battleStatePtr();
     (*(&off_802A898 + *v0))();
     return *(v0 + 4);
 }
@@ -6366,7 +6366,7 @@ void __noreturn sub_802A8A4()
     *(v0 + 18) = 0;
     *(v0 + 16) = -1;
     *(v0 + 17) = -1;
-    sub_802B358(word_2031000, &decomp_2032000);
+    battle_renderChipSelectNames(word_2031000, &decomp_2032000);
 }
 
 
@@ -6412,7 +6412,7 @@ int sub_802A974()
 
 
 // 0x802a9b4
-int __fastcall sub_802A9B4(int a1, int a2, int a3)
+int __fastcall ow_scrollBg2LeftStepState(int a1, int a2, int a3)
 {
     _BYTE *v3; // r5
     int result; // r0
@@ -6476,17 +6476,17 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
                 v7 = *(v3 + 16);
                 if ( v7 != 255 )
                 {
-                    sub_802B5B0(v7);
+                    battle_subtractLookupValue(v7);
                     *(v3 + 16) = -1;
                 }
             }
             else
             {
-                sub_802B5B0(v6);
+                battle_subtractLookupValue(v6);
                 *(v3 + 17) = -1;
             }
             *(v3 + 2) = 0;
-            sub_802B358(word_2031000, &decomp_2032000);
+            battle_renderChipSelectNames(word_2031000, &decomp_2032000);
         }
         if ( (*(v3 + 16) == 255 || *(v3 + 17) == 255) && *(*(v4 + oToolkit_JoypadPtr) + 4) & 0x20 )
         {
@@ -6518,7 +6518,7 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
     else if ( menu_adjustCursorOrValue_811F7F8(*(*(v4 + oToolkit_JoypadPtr) + 4), 5u, 0, 0) )
     {
         if ( *(v3 + 36) != *(v3 + 38) )
-            sub_802B358(word_2031000, &decomp_2032000);
+            battle_renderChipSelectNames(word_2031000, &decomp_2032000);
         if ( *(v3 + 32) != *(v3 + 34) )
             sub_802B438(&unk_2030E60, word_2031000);
     }
@@ -6545,7 +6545,7 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
                         *(v3 + 18) += v17;
                         if ( v13 == 17 )
                             *(v3 + 2) = 4;
-                        sub_802B358(word_2031000, &decomp_2032000);
+                        battle_renderChipSelectNames(word_2031000, &decomp_2032000);
                     }
                 }
             }
@@ -6554,7 +6554,7 @@ int __fastcall sub_802A9D0(int a1, int a2, int a3)
     }
     else
     {
-        sub_802B560();
+        submenu_cancelEntryOnB();
     }
 LABEL_40:
     sub_802B15C(16);
@@ -7177,7 +7177,7 @@ int object_queueOamEntryFromBase()
 
 
 // 0x802b298
-int *sub_802B298()
+int *get_battleStatePtr()
 {
     return &eS20364C0;
 }
@@ -7209,7 +7209,7 @@ unsigned int __fastcall getEventFlagList(u8 *a1)
 
 
 // 0x802b358
-int __fastcall __noreturn sub_802B358(int a1, int a2)
+int __fastcall __noreturn battle_renderChipSelectNames(int a1, int a2)
 {
     int v2; // r5
     int v3; // r4
@@ -7392,7 +7392,7 @@ int __fastcall sub_802B51C(int result, int a2)
 
 
 // 0x802b560
-int sub_802B560()
+int submenu_cancelEntryOnB()
 {
     int v0; // r5
     int v1; // r10
@@ -7407,9 +7407,9 @@ int sub_802B560()
         if ( *(v0 + 17) != 255 || (v3 = 16, result = *(v0 + 16), result != 255) )
         {
             v4 = v3;
-            sub_802B5B0(*(v0 + v3));
+            battle_subtractLookupValue(*(v0 + v3));
             *(v0 + v4) = -1;
-            sub_802B358(word_2031000, &decomp_2032000);
+            battle_renderChipSelectNames(word_2031000, &decomp_2032000);
         }
     }
     return result;
@@ -7417,7 +7417,7 @@ int sub_802B560()
 
 
 // 0x802b5b0
-int __fastcall sub_802B5B0(int a1)
+int __fastcall battle_subtractLookupValue(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -7855,7 +7855,7 @@ int battle_chipSelectStep_802BDC0()
 
 
 // 0x802bdf0
-int sub_802BDF0()
+int object_dispatchByStep()
 {
     int v0; // r5
 
@@ -9939,7 +9939,7 @@ signed int __usercall sub_802D358@<R0>(Battle *obj@<R5>)
 
     if ( v1[2] <= 3 )
     {
-        v2 = sub_80E164A();
+        v2 = ai_getTargetObjectPos();
         ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486(v2, v3, obj->Alliance);
     }
     if ( getCurChipInBattleHand_8010004() == 0xFFFF || (v4 = sub_800FFE4(4), playerAI_tryExecuteAttackChip_800FB54(obj, v4) == 0xFFFF) )
@@ -10084,7 +10084,7 @@ signed int __fastcall sub_802D4F0(int a1, int a2, int a3)
     }
     if ( *(v4 + 4) <= 3 )
     {
-        v6 = sub_80E164A();
+        v6 = ai_getTargetObjectPos();
         ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486(v6, v7, *(v3 + 22));
     }
     *(v4 + 4) = 0;
@@ -10201,7 +10201,7 @@ int __fastcall sub_802D65E(int a1)
         if ( v3 )
         {
             if ( v1 != 13 && v1 != 10 )
-                result = sub_800AB2E(0, 10, v1);
+                result = setIndexedTableByte(0, 10, v1);
         }
     }
     return result;

@@ -26,7 +26,7 @@ int sub_8086F18()
 
 
 // 0x8086f5c
-int sub_8086F5C()
+int spawn_spawnObjectSwarm()
 {
     int v0; // r10
     int v1; // r6
@@ -187,7 +187,7 @@ LABEL_31:
     if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_MapGroup) == 129 )
         sub_800060A(35, 129, v12);
     sub_8086F18();
-    return sub_8086F5C();
+    return spawn_spawnObjectSwarm();
 }
 
 

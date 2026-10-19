@@ -2333,7 +2333,7 @@ int __fastcall object_getPanelRegion(int a1, int a2, int a3, int a4)
 
 
 // 0x800d45c
-int __fastcall sub_800D45C(int a1, int a2, int a3, int a4)
+int __fastcall battle_collectAdjacentPanelsByFlags(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6

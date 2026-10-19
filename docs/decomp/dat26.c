@@ -518,7 +518,7 @@ int sub_809332C()
     int v3; // r1
     int v4; // r2
 
-    sub_809E1BC();
+    ow_getPlayerPosition();
     SpawnOverworldMapObject(2, v0 + 0x80000, v1 + 0x80000, v2 + 2359296);
     PlaySoundEffect(165, v3, v4);
     return 0;

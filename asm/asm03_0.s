@@ -9613,11 +9613,11 @@ dword_802A862:
 	thumb_func_start sub_802A866
 sub_802A866:
 	push {lr}
-	bl sub_802B298
+	bl get_battleStatePtr
 	// size
 	mov r1, #0x40 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_802B298
+	bl get_battleStatePtr
 	mov r1, #1
 	strb r1, [r0,#7]
 	pop {pc}
@@ -9626,7 +9626,7 @@ sub_802A866:
 	thumb_func_start sub_802A87C
 sub_802A87C:
 	push {r5,lr}
-	bl sub_802B298
+	bl get_battleStatePtr
 	mov r5, r0
 	ldr r1, off_802A894 // =off_802A898 
 	ldrb r0, [r5]
@@ -9676,7 +9676,7 @@ sub_802A8A4:
 	strb r0, [r5,#0x11]
 	ldr r0, off_802A914 // =unk_2031000 
 	ldr r1, off_802A92C // =decomp_2032000 
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_802A930 // =unk_2030E60 
 	ldr r1, off_802A914 // =unk_2031000 
 	bl sub_802B438
@@ -9755,7 +9755,7 @@ sub_802A974:
 off_802A984:
 	.word off_802A988
 off_802A988:
-	.word sub_802A9B4+1
+	.word ow_scrollBg2LeftStepState+1
 	.word sub_802A9D0+1
 	.word sub_802ABD0+1
 	.word sub_802ABF4+1
@@ -9771,9 +9771,9 @@ off_802A988:
 // symdb: Runs the BG2 left-scroll animation once per frame and, when it finishes, advances a state machine to phase 4 and latches a flag byte.
 // symdb: (r0 = unused/scratch, r4/r5 = state struct ptr) -> r0 = callee return; writes state->+1 = 4,
 // symdb: state->+2 = (state->+0x10 != 0xFF); flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A9B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_scrollBg2LeftStepState.yaml
 	thumb_local_start
-sub_802A9B4:
+ow_scrollBg2LeftStepState:
 	push {lr}
 	bl ow_scrollBg2LeftWriteTiles
 	bne locret_802A9CC
@@ -9789,7 +9789,7 @@ loc_802A9CA:
 locret_802A9CC:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_802A9B4
+	thumb_func_end ow_scrollBg2LeftStepState
 
 	thumb_local_start
 sub_802A9D0:
@@ -9832,7 +9832,7 @@ loc_802AA0E:
 	ldrb r0, [r5,#0x11]
 	cmp r0, #0xff
 	beq loc_802AA2A
-	bl sub_802B5B0
+	bl battle_subtractLookupValue
 	mov r0, #0xff
 	strb r0, [r5,#0x11]
 	b loc_802AA38
@@ -9840,7 +9840,7 @@ loc_802AA2A:
 	ldrb r0, [r5,#0x10]
 	cmp r0, #0xff
 	beq loc_802AA38
-	bl sub_802B5B0
+	bl battle_subtractLookupValue
 	mov r0, #0xff
 	strb r0, [r5,#0x10]
 loc_802AA38:
@@ -9848,7 +9848,7 @@ loc_802AA38:
 	strb r0, [r5,#2]
 	ldr r0, off_802ABB4 // =unk_2031000 
 	ldr r1, off_802ABB8 // =decomp_2032000 
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
 	bl sub_802B438
@@ -9950,7 +9950,7 @@ loc_802AAE0:
 loc_802AB0E:
 	ldr r0, off_802ABB4 // =unk_2031000 
 	ldr r1, off_802ABB8 // =decomp_2032000 
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
 	bl sub_802B438
@@ -10007,7 +10007,7 @@ loc_802AB6C:
 loc_802AB7C:
 	ldr r0, off_802ABB4 // =unk_2031000 
 	ldr r1, off_802ABB8 // =decomp_2032000 
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
 	bl sub_802B438
@@ -10015,7 +10015,7 @@ loc_802AB7C:
 	bl PlaySoundEffect
 	b loc_802AB98
 loc_802AB94:
-	bl sub_802B560
+	bl submenu_cancelEntryOnB
 loc_802AB98:
 	mov r0, #0x10
 	bl sub_802B15C
@@ -10914,14 +10914,14 @@ dword_802B294:
 
 // symdb: Returns the pointer to the battle state struct S20364C0 (custom screen / hand / run-away outcome).
 // symdb: () -> r0 = &S20364C0; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B298.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_battleStatePtr.yaml
 	thumb_local_start
-sub_802B298:
+get_battleStatePtr:
 	ldr r0, off_802B29C // =eS20364C0 
 	mov pc, lr
 off_802B29C:
 	.word eS20364C0
-	thumb_func_end sub_802B298
+	thumb_func_end get_battleStatePtr
 
 // symdb: Builds a halfword list (0xFF-filled) of which of 27 event flags (0x197..0x1B4 range) are set, storing flag-base+1 IDs and returning the count.
 // symdb: (r0 = u16 out buffer[27]) -> r0 = number of set flags written; flags from cmp/blt loop
@@ -10982,9 +10982,9 @@ dword_802B354:
 // symdb: (r0 = halfword chip-ID list, 0xFFFF = empty slot; r1 = base of a 5-entry destination block; r5 =
 // symdb: battle-state struct preloaded by caller) -> renders via renderTextGfx_8045F8C into VRAM
 // symdb: 0x6008E00 + i*0x280; no return value used.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B358.yaml
-	thumb_func_start sub_802B358
-sub_802B358:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderChipSelectNames.yaml
+	thumb_func_start battle_renderChipSelectNames
+battle_renderChipSelectNames:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp,#4]
@@ -11076,7 +11076,7 @@ byte_802B3F8:
 	.byte 0x4F, 0x0, 0x55, 0x0, 0x5B, 0x0, 0x61, 0x0, 0x67, 0x0, 0x6D, 0x0, 0x73, 0x0
 	.byte 0x79, 0x0, 0x7F, 0x0, 0x85, 0x0, 0x8B, 0x0, 0x91, 0x0, 0x97, 0x0, 0x9D, 0x0
 	.byte 0xA3, 0x0, 0xA9, 0x0, 0xAF, 0x0, 0x1F, 0x0
-	thumb_func_end sub_802B358
+	thumb_func_end battle_renderChipSelectNames
 
 	thumb_func_start sub_802B438
 sub_802B438:
@@ -11248,9 +11248,9 @@ off_802B55C:
 
 // symdb: On B press, cancels/closes the currently open submenu entry (window slot), restoring the underlying screen and playing the exit sound.
 // symdb: (r5 = submenu work struct; r10 = toolkit) -> r0 = PlaySoundEffect return; reads joypad held
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B560.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_cancelEntryOnB.yaml
 	thumb_local_start
-sub_802B560:
+submenu_cancelEntryOnB:
 	push {lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -11269,13 +11269,13 @@ sub_802B560:
 loc_802B57E:
 	push {r1}
 	ldrb r0, [r5,r1]
-	bl sub_802B5B0
+	bl battle_subtractLookupValue
 	pop {r1}
 	mov r0, #0xff
 	strb r0, [r5,r1]
 	ldr r0, off_802B5A4 // =unk_2031000 
 	ldr r1, off_802B5A8 // =decomp_2032000 
-	bl sub_802B358
+	bl battle_renderChipSelectNames
 	ldr r0, off_802B5AC // =unk_2030E60 
 	ldr r1, off_802B5A4 // =unk_2031000 
 	bl sub_802B438
@@ -11290,14 +11290,14 @@ off_802B5A8:
 	.word decomp_2032000
 off_802B5AC:
 	.word unk_2030E60
-	thumb_func_end sub_802B560
+	thumb_func_end submenu_cancelEntryOnB
 
 // symdb: Looks up a value from a double-indexed table and subtracts it from a byte field at r5+0x12 of a struct.
 // symdb: (r0 = index into unk_2031000, r5 = struct pointer) -> r5+0x12 decremented by table byte; flags
 // symdb: from strb
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B5B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_subtractLookupValue.yaml
 	thumb_local_start
-sub_802B5B0:
+battle_subtractLookupValue:
 	lsl r0, r0, #1
 	ldr r1, off_802B5C8 // =unk_2031000 
 	ldrh r0, [r1,r0]
@@ -11314,7 +11314,7 @@ off_802B5C8:
 	.word unk_2031000
 off_802B5CC:
 	.word byte_802B5FC
-	thumb_func_end sub_802B5B0
+	thumb_func_end battle_subtractLookupValue
 
 	thumb_local_start
 sub_802B5D0:
@@ -12136,7 +12136,7 @@ battle_chipSelectStep_802BDC0:
 off_802BDD8:
 	.word off_802BDDC
 off_802BDDC:
-	.word sub_802BDF0+1
+	.word object_dispatchByStep+1
 	.word sub_802BE90+1
 	.word sub_802C280+1
 	.word sub_802C2D0+1
@@ -12146,9 +12146,9 @@ off_802BDDC:
 // symdb: Thunk that calls an object's per-step handler chosen by the step index stored at [r5+2].
 // symdb: (r5 = object ptr; step = byte [r5,#2]) -> jumps to table[step] with r0 = step, r1 = &jump table
 // symdb: base; returns handler's r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BDF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchByStep.yaml
 	thumb_local_start
-sub_802BDF0:
+object_dispatchByStep:
 	push {lr}
 	ldr r1, off_802BE00 // =off_802BE04 
 	ldrb r0, [r5,#2]
@@ -12162,7 +12162,7 @@ off_802BE00:
 off_802BE04:
 	.word objStepFinishSetState4_802BE0C+1
 	.word sub_802BE36+1
-	thumb_func_end sub_802BDF0
+	thumb_func_end object_dispatchByStep
 
 // symdb: Finalizes a state-machine step for the object in r5 — triggers call_sub_3005EBA with fixed arguments (0,0,3,0,6,2), resets the toolkit render-info frame counter, calls sub_801E0A0(0,0), then advances the object's state halfword at +2 to 4.
 // symdb: void sub_802BE0C(void); callers pass garbage in r0-r3 but r5 must hold the object pointer and
@@ -15398,7 +15398,7 @@ sub_802D358:
 	ldrh r0, [r6,#4]
 	cmp r0, #3
 	bgt loc_802D37A
-	bl sub_80E164A
+	bl ai_getTargetObjectPos
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	bl ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486
 	mov r4, r0
@@ -15614,7 +15614,7 @@ loc_802D504:
 	ldrh r0, [r6,#4]
 	cmp r0, #3
 	bgt loc_802D524
-	bl sub_80E164A
+	bl ai_getTargetObjectPos
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	bl ifPanelFlagSetFindBattleActorWithCollisionOnPanelXY_80E7486
 	mov r4, r0
@@ -15814,7 +15814,7 @@ sub_802D65E:
 	mov r0, #0
 	mov r1, #0xa
 	mov r2, r4
-	bl sub_800AB2E
+	bl setIndexedTableByte
 locret_802D68A:
 	pop {r4,pc}
 	.balign 4, 0

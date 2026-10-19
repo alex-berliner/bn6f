@@ -43,9 +43,9 @@ dword_8086F58:
 // symdb: Spawns a map-dependent number of copies of overworld object #0xA at (0,0), recording the count in a work struct.
 // symdb: () -> r0 = 0 always; spawns 0xA-objects via SpawnOverworldMapObject, count stored at
 // symdb: [off_8086D18]+0xB
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8086F5C.yaml
-	thumb_func_start sub_8086F5C
-sub_8086F5C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawn_spawnObjectSwarm.yaml
+	thumb_func_start spawn_spawnObjectSwarm
+spawn_spawnObjectSwarm:
 	push {r4-r7,lr}
 	ldr r5, off_8086FA0 // =off_8086D18 
 	ldr r5, [r5]
@@ -85,7 +85,7 @@ dword_8086F9C:
 	.word 0x3020202
 off_8086FA0:
 	.word off_8086D18
-	thumb_func_end sub_8086F5C
+	thumb_func_end spawn_spawnObjectSwarm
 
 	thumb_func_start sub_8086FA4
 sub_8086FA4:
@@ -241,7 +241,7 @@ loc_80870D8:
 	bl sub_800060A
 loc_80870E8:
 	bl sub_8086F18
-	bl sub_8086F5C
+	bl spawn_spawnObjectSwarm
 	b locret_80870F6
 loc_80870F2:
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()

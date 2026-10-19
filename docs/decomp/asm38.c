@@ -22,7 +22,7 @@ int *__fastcall sub_3005CF0(int a1)
 {
     int *result; // r0
 
-    sub_3005D24(a1);
+    dma0_processPendingRequest(a1);
     result = off_3005D04;
     ++*off_3005D04;
     return result;
@@ -30,7 +30,7 @@ int *__fastcall sub_3005CF0(int a1)
 
 
 // 0x3005d24
-int __fastcall sub_3005D24(int result)
+int __fastcall dma0_processPendingRequest(int result)
 {
     int v1; // r3
     int *v2; // r0
@@ -1130,7 +1130,7 @@ int __fastcall sprite_queueOamEntries(int result, int a2)
 
 
 // 0x30069a8
-int __fastcall sub_30069A8(int a1, int a2, int a3)
+int __fastcall shellSortByKey(int a1, int a2, int a3)
 {
     int v3; // r10
     int v4; // r8
@@ -1424,12 +1424,12 @@ int __fastcall sub_3006B94(unsigned __int8 *a1, int a2, int a3, int a4)
         {
             if ( v12 == 228 )
             {
-                sub_3006C18(a1, a1[1] + 228, a3);
+                chatbox_addOffsetToRow(a1, a1[1] + 228, a3);
                 a1 = (v14 + 2);
             }
             else
             {
-                sub_3006C18(a1, v12, a3);
+                chatbox_addOffsetToRow(a1, v12, a3);
                 a1 = (v13 + 1);
             }
             ++v10;
@@ -1446,7 +1446,7 @@ int __fastcall sub_3006B94(unsigned __int8 *a1, int a2, int a3, int a4)
 
 
 // 0x3006c18
-void __fastcall sub_3006C18(int a1, int a2, int a3)
+void __fastcall chatbox_addOffsetToRow(int a1, int a2, int a3)
 {
     int v3; // r6
     int v4; // r10
@@ -1497,7 +1497,7 @@ void __fastcall sub_3006C3C(int result, int a2, int a3)
     {
         v8 = *(v5 + 1);
         while ( v3 < v8 )
-            sub_3006C18(result, 0, a3);
+            chatbox_addOffsetToRow(result, 0, a3);
     }
 }
 
@@ -1511,7 +1511,7 @@ int __fastcall sub_3006C72(int a1, int a2, int a3)
 
     v5 = **(v4 + 56);
     while ( v3 < v5 )
-        sub_3006C18(a1, 0, a3);
+        chatbox_addOffsetToRow(a1, 0, a3);
     return a1 + 1;
 }
 
@@ -1591,7 +1591,7 @@ int __fastcall chatbox_printNumber(int a1, int a2, int a3)
         }
         while ( v18 > 0 )
         {
-            sub_3006C18(v19, v19, v10);
+            chatbox_addOffsetToRow(v19, v19, v10);
             ++v3;
         }
         v20 = 4 * (v8 - 1);
@@ -1600,7 +1600,7 @@ int __fastcall chatbox_printNumber(int a1, int a2, int a3)
         do
         {
             v22 = v20;
-            sub_3006C18(v21, ((v7 >> v20) & v21) + 1, v10);
+            chatbox_addOffsetToRow(v21, ((v7 >> v20) & v21) + 1, v10);
             ++v3;
             v20 = v22 - 4;
         }
@@ -1617,14 +1617,14 @@ int __fastcall chatbox_printNumber(int a1, int a2, int a3)
         do
         {
             v15 = v9;
-            sub_3006C18(v14, ((v7 >> v9) & v14) + 1, v10);
+            chatbox_addOffsetToRow(v14, ((v7 >> v9) & v14) + 1, v10);
             ++v3;
             v9 = v15 - 4;
         }
         while ( v15 >= 4 );
         v17 = v13;
         while ( v16 > 0 )
-            sub_3006C18(v17, v17, v10);
+            chatbox_addOffsetToRow(v17, v17, v10);
     }
     return v26 + 3;
 }
@@ -1689,7 +1689,7 @@ int __fastcall sub_3006E1C(int a1)
         v9 = v5;
         v6 = off_3006E78();
         if ( !(v4 & 0x10) || v6 )
-            sub_3006C18(16, v6, v7);
+            chatbox_addOffsetToRow(16, v6, v7);
         ++v1;
         v5 = v9 - 1;
     }
@@ -1761,7 +1761,7 @@ int __fastcall sub_3006F42(int a1)
 
 
 // 0x3006f48
-int __fastcall sub_3006F48(int a1)
+int __fastcall get_variantOffsetPtr(int a1)
 {
     return a1 + (*off_3006F54)[*(a1 + 1)];
 }
@@ -2178,7 +2178,7 @@ int _object_removeCollisionData()
             v9 = 1;
             do
             {
-                result = sub_3007880(v9, v8, v1);
+                result = object_testAndClearCollisionIndexBit(v9, v8, v1);
                 if ( !v7 )
                 {
                     _object_updatePanelParameters(v9, v8);
@@ -2206,7 +2206,7 @@ int _object_removeCollisionData()
             off_30078A0();
             if ( !v7 )
             {
-                sub_3007880(v10, v11, v6);
+                object_testAndClearCollisionIndexBit(v10, v11, v6);
                 _object_updatePanelParameters(v10, v11);
                 object_linkCollisionData(v10, v11, v1);
                 object_applyElementPanelRules_3007708(v10, v11, v1);
@@ -2254,8 +2254,8 @@ int __fastcall object_linkCollisionData(int a1, int a2, int a3)
                 {
                     *(v12 + 104) = result | v9;
                     *(v6 + 104) |= *(v12 + 68);
-                    sub_3007650(v12, v6);
-                    result = sub_3007650(v6, v12);
+                    object_checkCollisionFlagsAndLinkPair(v12, v6);
+                    result = object_checkCollisionFlagsAndLinkPair(v6, v12);
                 }
             }
             else if ( !v7 )
@@ -2270,7 +2270,7 @@ int __fastcall object_linkCollisionData(int a1, int a2, int a3)
 
 
 // 0x3007650
-int __fastcall sub_3007650(int result, int a2)
+int __fastcall object_checkCollisionFlagsAndLinkPair(int result, int a2)
 {
     int v2; // r6
     int v3; // r7
@@ -2469,7 +2469,7 @@ int __fastcall sub_3007828(unsigned __int8 *a1)
         result = *v2;
         if ( result == 127 )
             break;
-        sub_3007880(result * v3 + v1[10], v2[1] + v1[11], v1);
+        object_testAndClearCollisionIndexBit(result * v3 + v1[10], v2[1] + v1[11], v1);
         v2 += 2;
     }
     return result;
@@ -2488,7 +2488,7 @@ int __fastcall object_setPanelCollisionBit(int a1, int a2, int a3)
 
 
 // 0x3007880
-int __fastcall sub_3007880(int a1, int a2, int a3)
+int __fastcall object_testAndClearCollisionIndexBit(int a1, int a2, int a3)
 {
     int *v3; // r3
     int result; // r0

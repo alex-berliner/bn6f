@@ -506,7 +506,7 @@ locret_809D552:
 	pop {pc}
 	.balign 4, 0
 off_809D554:
-	.word sub_809D560+1
+	.word ow_setPlayerAnimByDirection+1
 	.word owPlayer_applyCountdownUpdate_809D5C4+1
 off_809D55C:
 	.word off_809D554
@@ -515,9 +515,9 @@ off_809D55C:
 // symdb: Sets the overworld player object's animation and action state for its current facing direction, choosing the source table from context (normal, internet navi, event flag, or active script routine).
 // symdb: (r5 = OW player object) -> writes oOWPlayerObject_AnimationSelect,
 // symdb: oOWPlayerObject_ActionSubState=4, oOWPlayerObject_Unk_38/3C; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D560.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setPlayerAnimByDirection.yaml
 	thumb_local_start
-sub_809D560:
+ow_setPlayerAnimByDirection:
 	push {lr}
 	mov r1, #0
 	ldr r7, off_809D714 // =eStruct2000aa0 
@@ -568,7 +568,7 @@ off_809D5B8:
 off_809D5BC:
 	.word byte_809CFBC
 	.word byte_809D0DC
-	thumb_func_end sub_809D560
+	thumb_func_end ow_setPlayerAnimByDirection
 
 // symdb: Per-tick handler that runs when the overworld player's countdown is still active: reads a Z-coordinate modifier (notably "shoes on a given Z layer"), gates a doubling case on event flag EVENT_1716, and slides the player by Unk_38/Unk_3c shifted by the chosen Z layer.
 // symdb: (r5 = OWPlayerObject*) -> void ; side effects: writes Unk_13, X, Y on the player object via r5
@@ -2341,9 +2341,9 @@ ReadOWPlayerObjectCoords:
 // symdb: Returns the overworld player object's three position coordinates (fields 0x1C, 0x20, 0x24) in r1-r3.
 // symdb: (no inputs; r0 ignored) -> r1 = player obj +0x1C (X), r2 = player obj +0x20 (Y), r3 = player obj
 // symdb: +0x24 (Z/height); clobbers r1-r3, preserves r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E1BC.yaml
-	thumb_func_start sub_809E1BC
-sub_809E1BC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getPlayerPosition.yaml
+	thumb_func_start ow_getPlayerPosition
+ow_getPlayerPosition:
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_GameStatePtr]
 	ldr r3, [r3,#oGameState_OverworldPlayerObjectPtr]
@@ -2351,7 +2351,7 @@ sub_809E1BC:
 	ldr r2, [r3,#0x20]
 	ldr r3, [r3,#0x24]
 	mov pc, lr
-	thumb_func_end sub_809E1BC
+	thumb_func_end ow_getPlayerPosition
 
 	thumb_local_start
 sub_809E1CA:
@@ -2801,9 +2801,9 @@ resetStruct2000aa0State_809E3B2:
 // symdb: Stores four pending parameters into the eStruct2000aa0 request block and raises its active/valid flag byte.
 // symdb: (r0 = param1, r1 = param2, r2 = param3, r3 = param4) -> r0 = 1 (clobbered); no flags meaningful
 // symdb: (returns via pop {pc})
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809E3C4.yaml
-	thumb_func_start sub_809E3C4
-sub_809E3C4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_setFourParams.yaml
+	thumb_func_start req_setFourParams
+req_setFourParams:
 	push {r4-r7,lr}
 	ldr r4, off_809E430 // =eStruct2000aa0 
 	str r0, [r4,#0xc] // (dword_2000AAC - 0x2000aa0)
@@ -2813,7 +2813,7 @@ sub_809E3C4:
 	mov r0, #1
 	strb r0, [r4,#0xb] // (byte_2000AAB - 0x2000aa0)
 	pop {r4-r7,pc}
-	thumb_func_end sub_809E3C4
+	thumb_func_end req_setFourParams
 
 // symdb: Overworld per-frame clamp: pushes the player object's X/Y coordinates out to the bounding box stored in eStruct2000aa0 when its enable flag is set.
 // symdb: void sub_809E3D6(u32 /* r10 */ in toolkit, LR: out); clobbers NZCV, r0, r1; preserves r4-r7.

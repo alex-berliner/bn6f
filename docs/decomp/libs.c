@@ -11156,7 +11156,7 @@ int __fastcall sub_814EAF0(int a1, __int16 a2)
 
 
 // 0x814eb1c
-int __fastcall sub_814EB1C(int a1)
+int __fastcall sound_mplayStop(int a1)
 {
     int v1; // r7
     int v2; // r5
@@ -11224,7 +11224,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
     if ( **byte_3007FF0 == 1752395091 )
     {
         **byte_3007FF0 = 1752395092;
-        off_3005590 = sub_814FBFC;
+        off_3005590 = t3_condScriptVmStep;
         off_30055B4 = battle_aiData_processStreamByte_814E7CC;
         off_30055BC = battle_aiData_readNextByteIntoVersion_814E7E0;
         off_30055E0 = sub_814FD54;
@@ -12444,7 +12444,7 @@ int __fastcall sub_814FB88(int a1, unsigned __int16 a2, unsigned __int8 a3)
 
 
 // 0x814fbfc
-int __fastcall sub_814FBFC(int a1, int a2)
+int __fastcall t3_condScriptVmStep(int a1, int a2)
 {
     int v2; // r4
     unsigned __int8 *v3; // r0
