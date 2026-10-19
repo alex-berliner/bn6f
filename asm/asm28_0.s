@@ -4551,6 +4551,10 @@ sub_809C7FC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809C7FC
 
+// symdb: Reads an index from an object field and sets the overworld player's fixed animation to a table-mapped animation id.
+// symdb: (r5 = context object, no args) -> r0 = 0; calls owPlayer_setS200ace0_fixedAnimationSelect with
+// symdb: mapped animation id
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C814.yaml
 	thumb_local_start
 sub_809C814:
 	push {r4-r7,lr}

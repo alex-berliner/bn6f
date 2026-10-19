@@ -2592,6 +2592,10 @@ byte_81313B0:
 	.byte 0x0, 0x8, 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0x2, 0x0
 	thumb_func_end init_cutsceneEmotionEntries
 
+// symdb: NPC/talk-event handler that saves the current state, switches the object to state 0x24, and opens a chatbox text script chosen by game context.
+// symdb: (no args; r5 = object/npc struct preloaded by caller) -> void; also may force screen fade to
+// symdb: mode 8, level 0x10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81313C0.yaml
 	thumb_local_start
 sub_81313C0:
 	push {lr}
@@ -7038,6 +7042,9 @@ byte_8133694:
 	.byte 0x1, 0x0, 0x0, 0x0, 0xE, 0x0, 0x0, 0x0, 0xF, 0x0, 0x0, 0x0
 	thumb_func_end chatbox_showCantJackInMsg
 
+// symdb: Cutscene/event step: if event flag bit 0x80 is clear, run text script 12 (once, guarded by a 0xFFFF sentinel) and advance the event state to 12.
+// symdb: () -> void; reads global event struct in r5, branches on chatbox flag-mask result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81336A0.yaml
 	thumb_local_start
 sub_81336A0:
 	push {lr}
@@ -7122,6 +7129,10 @@ dword_813373C:
 	.word 0xFFFF
 	thumb_func_end sub_81336C4
 
+// symdb: Cutscene/chatbox step that, unless event-flag bit 0x80 is set, performs sub_8134FE0, sets a state field to 0xC in the context struct, and runs text script 0x12.
+// symdb: (r5 = cutscene/chatbox context struct) -> r0 = script result; flags from flag test are consumed
+// symdb: internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133740.yaml
 	thumb_local_start
 sub_8133740:
 	push {lr}
@@ -13124,6 +13135,10 @@ sub_813633C:
 	.balign 4, 0x00
 	thumb_func_end sub_813633C
 
+// symdb: Resolves a battle object from an r5-struct-driven index and returns whether the player owns the key item linked to that object (id = obj byte3 + 0x4F).
+// symdb: (no r0 args; reads struct at r5 fields 0x38/0x3A) -> r0 = nonzero if CheckKeyItem(objId + 0x4F)
+// symdb: is set; flags from tst
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136364.yaml
 	thumb_local_start
 sub_8136364:
 	push {lr}
@@ -13738,6 +13753,10 @@ loc_81367AE:
 	.byte 0, 0
 	thumb_func_end navicust_boardCursorUp
 
+// symdb: If any of the 25 toolkit entries at oToolkit_Unk2004190 is flagged, advances the caller's object (r5) to state 0x30, plays SOUND_EXIT_SUBMENU, and runs text script 4 of eTextScript201D280.
+// symdb: (r0 = ignored; reads caller's r5 = object/base pointer) -> void; plays a sound effect, queues a
+// symdb: chatbox text script, and mutates [r5+#0x02], [r5+#0x16], possibly [r5+#0x1a]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81367C0.yaml
 	thumb_local_start
 sub_81367C0:
 	push {lr}
@@ -14074,6 +14093,10 @@ loc_8136A6C:
 	.balign 4, 0x00
 	thumb_func_end battle_beastOutTimerTick
 
+// symdb: Navi Customizer screen state handler: counts ~32 frames, optionally runs a text script once, then moves to state 0x2C and redraws the board.
+// symdb: (r0 = unused/overwritten, r5 = navi-cust screen state struct) -> r0 = 0; updates [r5+0x03] state
+// symdb: id, [r5+0x12] timer, [r5+0x13] flag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136A74.yaml
 	thumb_local_start
 sub_8136A74:
 	push {lr}
@@ -17840,6 +17863,9 @@ off_8138618:
 	.word sub_81386E4+1
 	thumb_func_end sub_8138600
 
+// symdb: Overworld script opcode: frees all current NPCs and spawns the NPC group selected by the opcode byte, loading its sprite resources and fading the screen.
+// symdb: (r3 = script pc, r5 = script context) -> r0 = 0 (continue); stores pc+2 to [r5,#0x1c]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138624.yaml
 	thumb_local_start
 sub_8138624:
 	push {r4,lr}

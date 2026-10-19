@@ -1101,6 +1101,10 @@ sub_8002CF6:
 	mov pc, lr
 	thumb_func_end sub_8002CF6
 
+// symdb: Long-call trampoline that forwards to sprite_projectAndCull unchanged.
+// symdb: (r0-r3 = args passed through to sprite_projectAndCull) -> r0 = whatever sprite_projectAndCull
+// symdb: returns; flags preserved from callee (pop does not clobber)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002D06.yaml
 	thumb_local_start
 sub_8002D06:
 	push {r5,lr}

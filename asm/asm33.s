@@ -482,6 +482,10 @@ chipFolder_init_812349C:
 	pop {pc}
 	thumb_func_end chipFolder_init_812349C
 
+// symdb: Entry-state handler for the chip folder screen: initializes its graphics/windows, prints the initial label set, then advances the screen state to 0x18.
+// symdb: (r0-r3 = state-dispatch args, r5 = screen work struct) -> r0 = 0x18 stored to r5+2; no return
+// symdb: value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81234DC.yaml
 	thumb_local_start
 sub_81234DC:
 	push {lr}
@@ -1560,6 +1564,10 @@ sub_8123D10:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8123D10
 
+// symdb: Fills the entry list for the chip folder screen, creating one list entry per count byte in the screen state and flagging the currently selected one.
+// symdb: (r5 = state struct whose +0xC holds the selected/current entry index; count read from
+// symdb: [S2001c04+5]) -> fills entries in the 0x58-byte array at 0x02008450; r0 result not used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123D24.yaml
 	thumb_local_start
 sub_8123D24:
 	push {r4-r7,lr}
@@ -4038,6 +4046,9 @@ locret_8125100:
 	.balign 4, 0x00
 	thumb_func_end battle_runUpdatesAndCheckFade_81250E0
 
+// symdb: Per-frame step of the battle-start transition: pumps all transition/animation workers each call and advances the phase state to 8 once the screen fade finishes.
+// symdb: () -> void; writes phase byte r5+0x1 = 8 when IsScreenFadeActive signals done; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125104.yaml
 	thumb_local_start
 sub_8125104:
 	push {lr}
@@ -10083,6 +10094,10 @@ locret_8127F8E:
 	pop {r4,pc}
 	thumb_func_end fieldEntityTileAnimTick_8127F54
 
+// symdb: Renders the current animation frame of a battle object (queues one OAM entry) and advances to the next animation-table entry when the frame timer expires.
+// symdb: (r0 = object ptr in r5, no args in r0-r3) -> queues one OAM entry; updates obj->0x0F (frame
+// symdb: row), obj->0x10 (frame timer)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127F90.yaml
 	thumb_local_start
 sub_8127F90:
 	push {r4,lr}

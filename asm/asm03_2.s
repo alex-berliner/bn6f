@@ -2087,6 +2087,10 @@ loc_8047062:
 	pop {pc}
 	thumb_func_end shop_stateStepWaitText
 
+// symdb: Shop buy-menu per-frame step: after the buy menu updates, if the active chatbox dialog finished, records the player's choice into a 0x2420-base event flag and chains the next script.
+// symdb: (r0 = unused, r5 = shop menu state struct from caller) -> r0 = 0; sets event flag 0x2420 +
+// symdb: dialog result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047066.yaml
 	thumb_local_start
 sub_8047066:
 	push {lr}
@@ -2116,6 +2120,10 @@ dword_8047098:
 	.word 0x2420
 	thumb_func_end sub_8047066
 
+// symdb: Performs the actual purchase in the chip shop: grants the selected chip to the pack (or reports failure), records it, shrinks the shop list, and plays the result message/sound.
+// symdb: (r5 = shop buy menu state, plus r0=8 flag test and scrambled-counter check) -> r0 = 0; touches
+// symdb: state at r5+0x00/0x04/0x0D/0x12/0x1C/0x20/0x24/0x28/0x2C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804709C.yaml
 	thumb_local_start
 sub_804709C:
 	push {lr}
@@ -8953,6 +8961,10 @@ off_804AE64:
 	.word unk_203486C
 	thumb_func_end ow_copyTiles8x17ToBg
 
+// symdb: Queues one OAM sprite for a battle object's current animation frame and advances the object's animation timer/frame every ~16 ticks.
+// symdb: (r5 = battle object: [r5+0x34] = sprite variant id, [r5+0x15] = anim state byte (low nibble =
+// symdb: frame row, high nibble = frame delay timer)) -> r0 = new anim state byte; clobbers r1-r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AE68.yaml
 	thumb_local_start
 sub_804AE68:
 	push {r4-r7,lr}

@@ -677,6 +677,9 @@ cutscenescript_80893E4:
 	cs_jump destination1=cutscenescript_80893E4
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Per-map entry routine: clears and respawns map objects, picks one of two setup variants via story flags, then sets story flag 7/0x40 and applies the SoulWeapons overworld state.
+// symdb: (void) -> r0 = 0; no flags meaningfully returned
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80893F4.yaml
 	thumb_local_start
 sub_80893F4:
 	push {r4-r7, lr}
@@ -1124,6 +1127,10 @@ loc_8089822:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8089808
 
+// symdb: Per-frame battle tick: when the chip-use lockout timer runs out, calls an unknown handler and writes state 0x2C to the battle work byte at r5.
+// symdb: () -> r0 = 1 always; r5 must already point to the battle-state struct; reads/writes
+// symdb: ChipLockoutTimer (AIData+0x18) via callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089826.yaml
 	thumb_local_start
 sub_8089826:
 	push {r4-r7,lr}
@@ -1276,6 +1283,9 @@ loc_8089918:
 	pop {r4-r7,pc}
 	thumb_func_end ai_setStateIfTeamAlive
 
+// symdb: Cutscene/object step that, after a short delay, makes the overworld player turn toward a fixed direction and play a fixed animation while a cutscene camera script runs.
+// symdb: (r5 = object/AIData struct) -> r0 = 1 (step continues/finished); no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808991C.yaml
 	thumb_local_start
 sub_808991C:
 	push {r4-r7,lr}

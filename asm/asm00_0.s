@@ -1935,6 +1935,10 @@ loc_8000FDC:
 	pop {r4-r7,pc}
 	thumb_func_end battle_resetStateIfMapChangedOrBattleEventFlag_8000FAC
 
+// symdb: For a consecutive range of event-flag IDs, posts a BBS message for each flag that is not yet set, unlocking any board posts the player hasn't received.
+// symdb: (r0 = first event flag id, r1 = number of flags) -> r0 = clobbered; loops from flag r0 while
+// symdb: count r1 > 0, decrementing after each
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000FE6.yaml
 	thumb_local_start
 sub_8000FE6:
 	push {r4-r7,lr}

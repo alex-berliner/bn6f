@@ -9514,6 +9514,10 @@ off_803D248:
 	.word 0xC0
 	thumb_func_end logoScreen_init_803D1FC
 
+// symdb: Logo-screen state handler: enables the display, starts the screen fade (skipping it if a skip flag is set), and arms a 180-frame wait before the next logo-screen state.
+// symdb: (r0 = *mut LogoScreenState in r5, caller-set) -> r0 = clobbered; writes LCD control, sets fade
+// symdb: (mode 8 or 0), stores timer 0xB4 at +4 and state 8 at +0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803D24C.yaml
 	thumb_local_start
 sub_803D24C: // (self: *mut LogoScreenState $r5) -> ()
 	push {lr}

@@ -1675,6 +1675,9 @@ dword_8027040:
 	.word 0x200000
 	thumb_func_end battle_runTutorialDialog_8026FC0
 
+// symdb: Per-frame update for the battle chip-select object: dispatches a state handler selected by the state byte at +2, then runs the chip-slot pulse animation and graphics-queue steps.
+// symdb: (r0 = self: * S20364C0) -> r0 = ?; flags from dispatched handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027044.yaml
 	thumb_local_start
 sub_8027044: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -1956,6 +1959,9 @@ sub_802721C:
 	pop {pc}
 	thumb_func_end sub_802721C
 
+// symdb: Per-frame tick for the battle Custom screen's shuffle animation: every 4th frame performs one shuffle step (or finishes the shuffle and flags the selected chip), advances the exit animation, and plays a tick sound.
+// symdb: () -> void; uses r5 = battle/custom-screen state struct; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802723A.yaml
 	thumb_local_start
 sub_802723A:
 	push {lr}
@@ -2435,6 +2441,10 @@ sub_802753E: // (self: * S20364C0 $r5) -> ()
 	mov pc, lr
 	thumb_func_end sub_802753E
 
+// symdb: Per-frame state-machine update for the battle chip-select object: dispatches a state handler, then runs the chip-slot pulse animation and queues its graphics block to VRAM/FIFO.
+// symdb: (self = r5 = *S20364C0, chip-select object) -> r0 = destroyedsucc; no meaningful return; called
+// symdb: for its side effects
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027548.yaml
 	thumb_local_start
 sub_8027548: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -5831,6 +5841,10 @@ loc_8028D5A: // endif
 	pop {pc}
 	thumb_func_end custMenuPressOK_8028D3A
 
+// symdb: Custom screen chip-selection handler: commits the chip under the cursor as the next of up to 5 selected chips, redraws its slot, and plays the select sound; bounces with an error sound if 5 chips are already selected.
+// symdb: (r4 = custom-screen state ptr, r5 = oS20364C0 cust-menu object) -> r0 = 0 if chip accepted, 1 if
+// symdb: selection full; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028D6C.yaml
 	thumb_local_start
 sub_8028D6C:
 	push {lr}
@@ -7030,6 +7044,11 @@ sub_8029514:
 	b loc_802952A
 	thumb_func_end sub_8029514
 
+// symdb: Scans the just-built selected-chip command queue for predefined chip-combination (e.g. Program Advance) patterns and, on a hit, runs the corresponding handler.
+// symdb: (r0 = 0xFFFF-terminated array of up to 5 packed halfword chip-command words, r1 = context passed
+// symdb: to sub_8029652) -> r0 = result of sub_802963C (nonzero) if a pattern matched/started, else 0;
+// symdb: clobbered r4-r7, sp buffer.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029520.yaml
 	thumb_local_start
 sub_8029520:
 	push {r4-r7,lr}
@@ -8078,6 +8097,10 @@ locret_8029BAA:
 	pop {pc}
 	thumb_func_end sub_8029B86
 
+// symdb: Checks the first-battle tutorial's per-step flag and returns a nonzero code (0xB/0xC) when the current step is in its expected state, else 0.
+// symdb: (r5 = first-battle tutorial task state; no args used) -> r0 = 0xB if step 1 flag==0, 0xC if step
+// symdb: 0/2 flag==1, else 0; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BAC.yaml
 	thumb_local_start
 sub_8029BAC:
 	push {lr}
@@ -8106,6 +8129,10 @@ locret_8029BD4:
 	pop {pc}
 	thumb_func_end sub_8029BAC
 
+// symdb: Returns the chatbox script ID for the current first-battle tutorial step: 0x27 when the state byte at [r5,#8] is 1, otherwise 0 (no text).
+// symdb: (r5 = tutorial state struct, no args) -> r0 = chatbox script id (0x27 if state==1, else 0);
+// symdb: flags clobbered by cmp/movs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BD6.yaml
 	thumb_local_start
 sub_8029BD6:
 	push {lr}
@@ -8120,6 +8147,10 @@ locret_8029BE4:
 	pop {pc}
 	thumb_func_end sub_8029BD6
 
+// symdb: Per-step checker for the first-battle tutorial that decides whether a tutorial text script should fire, returning 5 (run tutorial text entry) or 0 (don't).
+// symdb: (r0 = unused, r5 = battle-tutorial task struct) -> r0 = 0 if no text should play, 5 =
+// symdb: trigger/entry for TextScriptFirstBattleTutorials; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029BE6.yaml
 	thumb_local_start
 sub_8029BE6:
 	push {lr}
@@ -11592,6 +11623,10 @@ off_802B784:
 	.word sub_802B9D4+1
 	thumb_func_end sub_802B76C
 
+// symdb: Battle sub-effect step that fades the screen out (SetScreenFade 0x14,8), waits for the fade to finish, then dispatches a follow-up effect kind (0x24, or 0x34 if a flag byte is set) and advances its state machine.
+// symdb: (r5 = effect work struct: +1 state byte, +2 init byte/halfword counter, +7 variant byte, +0x10
+// symdb: word) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B7A0.yaml
 	thumb_local_start
 sub_802B7A0:
 	push {lr}
@@ -15568,6 +15603,10 @@ off_802D34C:
 	.word sub_802D3CA+1
 	thumb_func_end sub_802D322
 
+// symdb: Player-AI state step: if the target panel is clear of protected actors, fire the attack chip currently in hand and advance the AI state on success.
+// symdb: (r0-r6 context: r5 = own battle object, r6 = AI/state struct with u16 state at +0 and +4) -> r0
+// symdb: = 1 if an attack was executed, else 0; state fields updated
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D358.yaml
 	thumb_local_start
 sub_802D358:
 	push {r4,lr}
@@ -17322,6 +17361,11 @@ byte_802E0C4:
 	.byte 0xA, 0x28, 0x0, 0x0, 0x0
 	thumb_func_end sub_802E0A6
 
+// symdb: AI attack launcher: stashes three incoming attack parameters into the battle object's AI sub-struct, reads a NaviStats byte for the object's side, then starts attack 0x10 and steps the AI attack state machine once.
+// symdb: (r0,r1,r2 = three attack parameter bytes/values, r5 = battle object) -> void; r0-r2 preserved
+// symdb: across the stats call and stored at [obj+0xF8+0x16/0x17/0x18], AI state byte at +0xF8+0x3 set to
+// symdb: 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E0D4.yaml
 	thumb_local_start
 sub_802E0D4:
 	push {r7,lr}

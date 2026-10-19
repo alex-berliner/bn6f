@@ -14179,6 +14179,9 @@ byte_8114D64:
 	.byte 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0
 	thumb_func_end sub_8114D44
 
+// symdb: Flips the snakearm battle object's sprite direction so it faces the panel X stored at offset 0x62.
+// symdb: (r0 = battle object ptr) -> r0 = undefined; writes oBattleObject_DirectionFlip (0 or 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114D74.yaml
 	thumb_local_start
 sub_8114D74:
 	push {r4-r7,lr}
@@ -14992,6 +14995,9 @@ locret_8115430:
 	pop {pc}
 	thumb_func_end sub_8115404
 
+// symdb: 16-frame periodic tick for an AI attack state: counts down a timer and calls a helper each time it elapses.
+// symdb: (r7 = AI attack-state struct) -> void; timer field [r7+TimerOrCycles] decremented and reloaded
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115432.yaml
 	thumb_local_start
 sub_8115432:
 	push {lr}
@@ -16274,6 +16280,10 @@ locret_8115EF2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8115EDC
 
+// symdb: Battlesweep AI tick: every table-specified frames it hands control to AI script 4 for one tick, otherwise runs script 8, and while object flag 0xA000 is set it never switches and resets the timer.
+// symdb: (r4 = battle object, r5 = byte counter field at +0x6B, r6 = AI state block) -> r0 preserved-ish;
+// symdb: writes [r5+0x6B] counter and [r6+oAIState_ScriptId] = 4 or 8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115EF4.yaml
 	thumb_local_start
 sub_8115EF4:
 	push {r4-r7,lr}
@@ -17015,6 +17025,10 @@ byte_8116594:
 	.byte 0x0, 0x1, 0x2, 0x0, 0x1, 0x2, 0x0, 0x1, 0x2, 0x0, 0x1, 0x2, 0x0, 0x1, 0x2, 0x0
 	thumb_func_end ai_randomAttackPick
 
+// symdb: Zeroes a battle object's HP (deleting it) once its halfword field at +0x62 has counted down to or below the value in the field at +0x60.
+// symdb: (r5 = battle object pointer, preserved across call) -> writes 0 to oBattleObject_HP when
+// symdb: [r5+0x62] <= [r5+0x60]; flags from the cmp are clobbered, r0/r1 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81165A4.yaml
 	thumb_func_start sub_81165A4
 sub_81165A4:
 	mov r0, #0x60
@@ -22725,6 +22739,10 @@ sub_8118E78:
 	.balign 4, 0x00
 	thumb_func_end sub_8118E78
 
+// symdb: State-machine dispatcher for a battle object's beast-out handling, tail-calling one of three handlers chosen by the object's state byte and handing them the sSubmenu work area.
+// symdb: (r5 = battle object struct, dispatch index at [r5,#8]) -> tail-calls handler off_8118E98[index]
+// symdb: with r6 = &sSubmenu; no direct return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118E84.yaml
 	thumb_func_start sub_8118E84
 sub_8118E84:
 	push {lr}
@@ -34219,6 +34237,9 @@ off_811E8C0:
 	.word 0x290
 	thumb_func_end sub_811E87C
 
+// symdb: Sprite-object step that runs an unknown action, snaps the object's sprite to the fixed position (224, 62) and refreshes it.
+// symdb: (no args, operates on current sprite object) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E8C4.yaml
 	thumb_local_start
 sub_811E8C4:
 	push {lr}

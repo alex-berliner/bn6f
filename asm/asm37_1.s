@@ -1544,6 +1544,10 @@ byte_814279C:
 	.byte 0x7, 0xB, 0xC, 0xD, 0xE, 0x10, 0x14, 0x14
 	thumb_func_end sub_814278C
 
+// symdb: Computes an offset into a per-Beast-Out/Soul form data table: looks up the form's base offset and adds the given index to it.
+// symdb: (r0 = form/entry id, also passed to GetSoulWeaponsMapIndex) -> r0 =
+// symdb: baseOffset[GetSoulWeaponsMapIndex(id)] + id; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427A4.yaml
 	thumb_func_start sub_81427A4
 sub_81427A4:
 	push {r4-r7,lr}
@@ -2777,6 +2781,9 @@ dword_81430F0:
 	.word 0x96F096E
 	thumb_func_end ow_crowLessonGetTextId
 
+// symdb: Processes a table of BBS request completions: stores each entry's word into the per-request status array and sets the request's completion event flag.
+// symdb: (no args used) -> r0 = 0; calls SetEventFlag and reqBBS_setFlag; clobbers r0-r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81430F4.yaml
 	thumb_local_start
 sub_81430F4:
 	push {r4-r7,lr}

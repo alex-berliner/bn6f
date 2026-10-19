@@ -3705,6 +3705,10 @@ loc_30074B6:
 	pop {r4,pc}
 	thumb_func_end applyElecOnBubbleMultipler_30074a2
 
+// symdb: Checks whether an object's hit state should end; if so, clears the parent object's hit/flinch flags and returns true.
+// symdb: (r6 = object's collision-data struct, r7 = related object/struct) -> r0 = 1 if hit state ended
+// symdb: (and parent's hit flags cleared), else 0; flags clobbered by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_30074BA.yaml
 	thumb_local_start
 sub_30074BA:
 	push {r4,r5,lr}

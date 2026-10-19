@@ -10936,6 +10936,10 @@ off_814914C:
 	.word byte_20103E0
 	thumb_func_end rfu_readyUniSendIfFlagged
 
+// symdb: Per-wireless-packet receive bookkeeping: counts an incoming UNI data chunk and, once the expected chunk count is reached, flushes the assembled buffer and queues a 12-byte completion packet for sending.
+// symdb: (r0 = ? ignored) -> r0 = 1 if a chunk was processed / transfer completed, 0 if state is 0x8F or
+// symdb: nothing to do; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8149150.yaml
 	thumb_local_start
 sub_8149150:
 	push {r4-r6,lr}

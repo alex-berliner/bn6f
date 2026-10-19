@@ -1571,6 +1571,10 @@ sub_80A5954:
 	.balign 4, 0x00
 	thumb_func_end sub_80A5954
 
+// symdb: Wrapper that loads two fields off an r5-based struct and tail-calls the OW player facing-animation setter.
+// symdb: (r5 = struct base, args unused) -> r0 = [r5+0x24], r1 = [r5+0x28] passed to
+// symdb: owPlayer_setDirectionAnimFromOffset; returns its result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A596C.yaml
 	thumb_local_start
 sub_80A596C:
 	push {r4,lr}
@@ -3272,6 +3276,10 @@ loc_80A6CD0:
 	pop {pc}
 	thumb_func_end sub_80A6CA4
 
+// symdb: Reads a battle object from a linked list and copies its x/y(/z) halfword fields into a struct as 16.16 fixed-point values.
+// symdb: (r5 = destination struct + list base, r6 = list offset) -> r0 = 1; stores sign-extended
+// symdb: (field<<16) to [r5+0xC], [r5+0x10], [r5+0x14]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6CD4.yaml
 	thumb_local_start
 sub_80A6CD4:
 	push {lr}
@@ -3451,6 +3459,10 @@ sub_80A6DFC:
 	pop {pc}
 	thumb_func_end sub_80A6DFC
 
+// symdb: Fetches a battle object from the current list node, plays the sound effect whose ID is stored in its +2 halfword, then invokes sub_80A6E70 with 4.
+// symdb: (none read; list node context via r5/r6 from caller) -> r0 = 1; calls
+// symdb: PlaySoundEffect(object->seId) and sub_80A6E70(4)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6E0C.yaml
 	thumb_local_start
 sub_80A6E0C:
 	push {lr}
@@ -8879,6 +8891,10 @@ byte_80A9558:
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0x1F
 	thumb_func_end sub_80A94F8
 
+// symdb: Thin wrapper that frees the overworld map object passed in r0, likely used as a shared despawn/destructor step handler.
+// symdb: (r0 = overworld map object) -> r0 = FreeOverworldMapObject result; flags from
+// symdb: FreeOverworldMapObject
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9568.yaml
 	thumb_local_start
 sub_80A9568:
 	push {lr}

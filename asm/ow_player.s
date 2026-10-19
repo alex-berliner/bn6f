@@ -841,6 +841,10 @@ off_809D7A4:
 
 	thumb_local_start
 // chat triggered
+// symdb: Overworld player chat/inspect action: if no cutscene is running, face the NPC's direction and mark the interacted NPC as chat-triggered, entering chat substate 4.
+// symdb: (r5 = OW player object) -> r0 = undefined; sets NPC ChatTriggered and player ActionSubState, or
+// symdb: falls into clear-state path when a cutscene script is active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D7A8.yaml
 sub_809D7A8:
 	push {lr}
 	bl IsCutsceneScriptNonNull // () -> !zf

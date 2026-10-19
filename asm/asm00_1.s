@@ -5105,6 +5105,9 @@ locret_80056B4:
 	.balign 4, 0x00
 	thumb_func_end scenario_finalizeFrameOrRestart_8005642
 
+// symdb: Per-frame tick of the main game-state loop: runs scene dispatch, renders all sprites, and when a screen fade is active, tears everything down and jumps the main jumptable to scene 0x34.
+// symdb: (void) -> void; sets *(oToolkit_MainJumptableIndexPtr) = 0x34 when IsScreenFadeActive is true
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80056B8.yaml
 	thumb_local_start
 sub_80056B8: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5568,6 +5571,10 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end sub_8005A28
 
+// symdb: One-shot game state handler: sets two story event flags, starts a screen fade, delays 160 frames, then hands control to the overworld subsystem.
+// symdb: (r5 = * GameState, self) -> void; no return value, writes SubsystemIndex = 0x10 to schedule
+// symdb: overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A50.yaml
 	thumb_local_start
 sub_8005A50: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5740,6 +5747,9 @@ nullsub_8005B6A:
 	pop {r5,pc}
 	thumb_func_end nullsub_8005B6A
 
+// symdb: Per-frame overworld gate that runs the Select-button handler only when no cutscene, fade, busy state, or blocking flag is active.
+// symdb: () -> r0 = undefined; flags from last test; falls through to pop when any guard fails
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005B6E.yaml
 	thumb_local_start
 sub_8005B6E:
 	mov r5, r10
@@ -14467,6 +14477,10 @@ locret_80097A6:
 	pop {pc}
 	thumb_func_end battle_state4WaitLinkReady
 
+// symdb: Battle-state step handler: on first entry sets a 10-frame countdown, then when it expires switches the battle phase to 8.
+// symdb: (r0 = battle state ptr unused here; r5 = battle state object) -> r0 = clobbered status value;
+// symdb: flags from tst/sub
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80097A8.yaml
 	thumb_local_start
 sub_80097A8:
 	push {lr}
@@ -19143,6 +19157,9 @@ locret_800B482:
 	mov pc, lr
 	thumb_func_end battle_doBothTrackedIdsMatch_800B46C
 
+// symdb: Queues an outgoing battle link packet tagged 0xF1F1F1F1 carrying 60 bytes from byte_203F6D0, then requests battle mode 0x10.
+// symdb: () -> r0 = 1 (from battle_requestSetBattleMode); no flags used by caller visible
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B484.yaml
 	thumb_local_start
 sub_800B484:
 	push {r4,lr}

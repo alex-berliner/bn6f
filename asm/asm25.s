@@ -429,6 +429,9 @@ loc_808FB64:
 	pop {pc}
 	thumb_func_end sub_808FB4C
 
+// symdb: Attempts to move the overworld player down 4 tiles (into a pit/hole); if that would leave the area it instead plays a fall sound, locks input and resets related state, returning 0, otherwise returns 1 after the move.
+// symdb: () -> r0 = 1 if the player was moved down by 4, 0 if the fall-out sequence ran; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB68.yaml
 	thumb_local_start
 sub_808FB68:
 	push {lr}

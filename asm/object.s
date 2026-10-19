@@ -614,6 +614,10 @@ locret_800BCBC:
 	.byte 0, 0
 	thumb_func_end object_undimScreen
 
+// symdb: Battle-object state handler: on first run it may start a screen fade (only when the opposite alliance's counterpart object has kind 0 or 5), then keeps the object alive until the fade completes, and finally destroys it.
+// symdb: (r5 = battle object this; no args) -> void; sets [this+CurStateActionPhaseAndPhaseInitialized]
+// symdb: to CUR_STATE_DESTROY or 4 in the PhaseInitialized byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BCC0.yaml
 	thumb_func_start sub_800BCC0
 sub_800BCC0:
 	push {lr}

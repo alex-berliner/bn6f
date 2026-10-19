@@ -5535,6 +5535,10 @@ sub_801133A:
 	pop {pc}
 	thumb_func_end sub_801133A
 
+// symdb: Spawns battle object type 0x56 linked to an owner and stores the new object pointer into the owner's RelatedObject2Ptr field.
+// symdb: (r0, r1, r2 = value whose low half is packed with r0 into r4; r5 = owner battle object) -> r0 =
+// symdb: spawned object pointer; also written to [r5 + oBattleObject_RelatedObject2Ptr]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011344.yaml
 	thumb_local_start
 sub_8011344:
 	push {r4,lr}
@@ -5550,6 +5554,10 @@ sub_8011352:
 	mov r3, #2
 	b loc_8011368
 
+// symdb: Thin entry that invokes battle_spawnRelatedObject2 with its variant/size parameter fixed to 4 (sibling entries pass 6, 8, 10).
+// symdb: (r0, r1 = spawner args, r2 = halfword param, r5 = battle object) -> r0 = spawned object stored
+// symdb: to [r5+oBattleObject_RelatedObject2Ptr]; flags clobbered probable
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011356.yaml
 	thumb_local_start
 sub_8011356:
 	mov r3, #4
@@ -6078,6 +6086,10 @@ aiAttack_initVarsAndStart_80116AE:
 	pop {r4,r7,pc}
 	thumb_func_end aiAttack_initVarsAndStart_80116AE
 
+// symdb: Initializes and kicks off the player-object AI attack state machine with a given attack boost and duration.
+// symdb: (r0 = attack boost value, r1 = attack duration) -> r0 = result of first aiAttack state-machine
+// symdb: step; r5 = battle object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80116D8.yaml
 	thumb_func_start sub_80116D8
 sub_80116D8:
 	push {r7,lr}
@@ -6095,6 +6107,11 @@ sub_80116D8:
 	pop {r7,pc}
 	thumb_func_end sub_80116D8
 
+// symdb: Configures the player's AI-attack state struct with parameters, marks it active, and immediately steps the attack state machine once.
+// symdb: (r0/r1/r2 = three bytes stored at attackState+0x16/+0x17/+0x18, r3 = word stored at
+// symdb: attackState+0x2c; r5 = battle object whose +0x58 field holds the sub-struct) -> r0 = result of
+// symdb: the first aiAttack state-machine step
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80116F6.yaml
 	thumb_local_start
 sub_80116F6:
 	push {r7,lr}
@@ -7033,6 +7050,11 @@ battle_initBeastPwrAtkVars:
 	pop {pc}
 	thumb_func_end battle_initBeastPwrAtkVars
 
+// symdb: Initializes the AI attack-vars block for the Beast-SP charged attack: clears its state, sets damage from the beast-power formula, and returns a cycle/timer value.
+// symdb: (no args; entity AI struct in r7) -> r0 = 0x52 (value stored by caller, likely a
+// symdb: countdown/interval); sets InitFlag=0, ChargeCycles=2, ChargeReadyFlag=0, ChipUseDelay=0,
+// symdb: AttackBoost=0, ExtraDamage=0x9E, Damage=scaled base
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011E1C.yaml
 	thumb_local_start
 sub_8011E1C:
 	push {lr}
@@ -7654,6 +7676,10 @@ battle_setupBeastPwrAttackVars:
 	pop {pc}
 	thumb_func_end battle_setupBeastPwrAttackVars
 
+// symdb: Sets up one AI attack's damage numbers: damage from the beast-power table entry 0xE scaled by the attacker's alliance, plus fixed extra damage 0x8A.
+// symdb: (r0 = table index 0xE hardcoded; r5 = battle object read for Alliance byte, r7 = AI attack vars
+// symdb: struct) -> r0 = 9 (next AI step/state); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012210.yaml
 	thumb_local_start
 sub_8012210:
 	push {lr}
@@ -8011,6 +8037,9 @@ init_writeChipParams04e:
 	pop {pc}
 	thumb_func_end init_writeChipParams04e
 
+// symdb: Wrapper that writes the chip-parameter data for chip ID 0xCA (202).
+// symdb: (no args) -> r0 = return value of writeChipParams(0xCA); r1 unconstrained
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80123FA.yaml
 	thumb_local_start
 sub_80123FA:
 	push {lr}
@@ -8035,6 +8064,9 @@ sub_801240E:
 	pop {pc}
 	thumb_func_end sub_801240E
 
+// symdb: Wrapper that requests chip-parameter initialization for chip ID 0x4F.
+// symdb: (no args) -> r0 = return of chip-params writer; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012418.yaml
 	thumb_local_start
 sub_8012418:
 	push {lr}
@@ -8417,6 +8449,9 @@ sub_8012608:
 	pop {pc}
 	thumb_func_end sub_8012608
 
+// symdb: AI attack initializer that runs MegaMan's charge-shot init and then sets the AI difficulty tier to 1.
+// symdb: (r7 = AI attack vars struct) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012612.yaml
 	thumb_local_start
 sub_8012612:
 	push {lr}
@@ -9391,6 +9426,10 @@ loc_8012CAE:
 	pop {r4,pc}
 	thumb_func_end battle_getNaviTypeFamilyConstant_8012C7C
 
+// symdb: Beast-Out power-attack helper: finds opposing-side enemies matching two ID ranges, applies a 30-base damage hit scaled by the Beast-Out multiplier to each, then shakes the camera.
+// symdb: (r0 = battle object, in r5) -> r0 = destroyed; touches enemy list and camera struct, no return
+// symdb: value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012CB2.yaml
 	thumb_local_start
 sub_8012CB2:
 	push {r4,r6,r7,lr}
@@ -14583,6 +14622,9 @@ dword_8014F3C:
 	.word 0x80000
 	thumb_func_end object_aiAttackVarsExitState_8014F04
 
+// symdb: AI attack step that lands the attacking object on its reserved future panel, finalizing position and starting the next AI-attack substep
+// symdb: (r5 = battle object, r7 = oAIAttackVars) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014F40.yaml
 	thumb_local_start
 sub_8014F40:
 	push {r4,lr}
@@ -14629,6 +14671,10 @@ loc_8014F92:
 	.word 0x80111C40
 	thumb_func_end sub_8014F40
 
+// symdb: One step of an enemy AI attack routine: on first run it plays a charge sound, spawns a ground effect, lifts the enemy upward and sets the attack element; when the step timer expires it sets the hit element to finish the attack.
+// symdb: (r5 = battle object, r7 = its oAIAttackVars) -> void; triggers via AttackElement state (0 =
+// symdb: start attack, 4 = windup until HitElement set to 8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014FA8.yaml
 	thumb_local_start
 sub_8014FA8:
 	push {r4,r6,lr}
@@ -15180,6 +15226,10 @@ dword_8015448:
 	.word 0x80000
 	thumb_func_end ai_finishPanelEmerge
 
+// symdb: Per-frame update for one enemy AI attack phase: after a delay it spawns/places something at the object's panel, makes the object (and a related object) flash white, then ends the phase by setting the attack's hit element.
+// symdb: (r5 = battle object, r7 = oAIAttackVars of that object) -> void; updates oAIAttackVars fields,
+// symdb: no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801544C.yaml
 	thumb_local_start
 sub_801544C:
 	push {r4,r6,lr}
@@ -18171,6 +18221,9 @@ locret_8016B34:
 	pop {pc}
 	thumb_func_end battleObject_initAndRunAI_8016B02
 
+// symdb: Battle-object state handler: initializes a phase once (sound 0x18, reset collision), then waits for object flag 0x10000 to clear before committing the pending state action.
+// symdb: (r4/r5 = battle object ptr, no args) -> void; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016B36.yaml
 	thumb_func_start sub_8016B36
 sub_8016B36:
 	push {lr}
@@ -31944,6 +31997,9 @@ battle_setUnkFlags44_0x40_801E006:
 	pop {pc}
 	thumb_func_end battle_setUnkFlags44_0x40_801E006
 
+// symdb: Sets request bit 0x40 in the eStruct2035280 request dword and immediately dispatches pending requests.
+// symdb: (no args) -> r0 = return of dispatch_801DA48; sets bit 0x40 of dword_20352C0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E012.yaml
 	thumb_local_start
 sub_801E012:
 	push {r4,r6,r7,lr}
@@ -32477,6 +32533,9 @@ sub_801E35A:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801E35A
 
+// symdb: Copies an 8x2 block of background tiles to position (j=0xB, i=0) in tile block 3 from the table at byte_801EE78, then marks that section as drawn in eStruct2035280's flag word.
+// symdb: () -> void; sets bit 11 of the flag word at eStruct2035280+0x44 (returned in r2 by the callee)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E376.yaml
 	thumb_local_start
 sub_801E376:
 	push {r4,r5,lr}
@@ -32973,6 +33032,10 @@ loc_801E696:
 	pop {r4,r6,pc}
 	thumb_func_end sub_801E660
 
+// symdb: Alternate entry of the emotion-palette resolver: pre-processes the object's emotion byte, then resolves its emotion palette/effect index.
+// symdb: (r5 = battle object; reads [r5+0x48]+0x16 = emotion byte) -> r0 = emotion palette/effect index
+// symdb: (from shared resolver body); no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E69C.yaml
 	thumb_local_start
 sub_801E69C:
 	push {r4,r6,lr}
