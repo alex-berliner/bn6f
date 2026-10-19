@@ -2083,6 +2083,10 @@ off_809A864:
 	.word dword_86A5D60
 	thumb_func_end sub_809A80C
 
+// symdb: Maps the chatbox variable at +0x4C through a byte lookup table and clears +0x50, as setup before running the chip-trader result text script.
+// symdb: (none; reads r5 (task obj) and r10 (toolkit)) -> writes chatbox->0x4C = table[old value saved at
+// symdb: [r5,#0x88]], chatbox->0x50 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A868.yaml
 	thumb_local_start
 sub_809A868:
 	push {r4,lr}

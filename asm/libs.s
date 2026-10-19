@@ -5368,6 +5368,10 @@ off_81466C0:
 	.word byte_2010324
 	thumb_func_end sub_814665C
 
+// symdb: Returns the address of the 8-byte field (offset 0x15) of the 0x20-byte list record selected via the unk_2010330 index table, used as a copy destination by list-building callers.
+// symdb: (r0 = record index (byte)) -> r0 = dword_2010CC0 + 0x14 + unk_2010330[index]*0x20 + 0x15; no
+// symdb: flags set meaningfully
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81466C4.yaml
 	thumb_local_start
 sub_81466C4:
 	lsl r0, r0, #0x18
@@ -5687,6 +5691,9 @@ off_81468C4:
 	.word byte_2010290
 	thumb_func_end sub_81468BC
 
+// symdb: Returns a pointer to the 10-byte text-state record for a given text slot in the chatbox work table at 2010294.
+// symdb: (r0 = text slot id (byte)) -> r0 = &unk_2010294[id*10]; flags clobbered by the shifts
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81468C8.yaml
 	thumb_func_start sub_81468C8
 sub_81468C8:
 	mov r1, r0
@@ -5747,6 +5754,10 @@ off_8146914:
 	.word eStruct200FE00
 	thumb_func_end rfu_getConnectedPlayerCount
 
+// symdb: Returns a u16 per-slot count (likely connected-player count) from the RFU work struct, used by the caller to decide whether the wireless connection is complete.
+// symdb: (r0 = slot index (byte)) -> r0 = halfword at eStruct200FE00 + 0x34 + index*2; flags clobbered by
+// symdb: shift/compare not preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146918.yaml
 	thumb_func_start sub_8146918
 sub_8146918:
 	lsl r0, r0, #0x18
@@ -22880,6 +22891,9 @@ off_814E854:
 	thumb_func_end sub_814E7F4
 
 	bx lr
+// symdb: Resumes a stopped music player by clearing its stop flag (bit 31 of the MPlayInfo status word).
+// symdb: (r0 = *MPlayInfo) -> r0 = new status (callers ignore it); flags clobbered by the cmp.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E85C.yaml
 	.balign 4, 0x00
 	thumb_local_start
 sub_814E85C:

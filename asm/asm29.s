@@ -2172,6 +2172,10 @@ dword_80A5DE4:
 	.word 0x10000
 	thumb_func_end sub_80A5D80
 
+// symdb: Copies a 3-word target triple from the object struct (r6+0x7C..0x84) into the sprite animator's target fields (r5+0x28..0x30) before interpolation toward it.
+// symdb: (r5 = sprite/animator struct, r6 = object struct) -> stores [r6+0x7C,0x80,0x84] into
+// symdb: [r5+0x28,0x2C,0x30]; no return value, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5DE8.yaml
 	thumb_local_start
 sub_80A5DE8:
 	push {lr}
@@ -7589,6 +7593,10 @@ off_80A8C78:
 	.word math_sinTable
 	thumb_func_end sub_80A8C08
 
+// symdb: Converts an overworld object's facing-direction field into a sprite animation index (0-3) used with sprite_setAnimation/sprite_changeAnimation.
+// symdb: (r7 = object struct ptr; reads halfword [r7,#4]) -> r0 = animation index 0-3 from table
+// symdb: {2,3,0,1}; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8C7C.yaml
 	thumb_local_start
 sub_80A8C7C:
 	push {r4-r7,lr}
@@ -9484,6 +9492,10 @@ sub_80A9A04:
 	pop {pc}
 	thumb_func_end sub_80A9A04
 
+// symdb: Dispatches a sprite/animation object's state-machine step, calling the handler selected by the object's state field and returning its result.
+// symdb: (r5 = sprite/animation object; r0, r1 passed through) -> r0 = handler's return value; flags from
+// symdb: handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A0C.yaml
 	thumb_func_start sub_80A9A0C
 sub_80A9A0C:
 	push {lr}

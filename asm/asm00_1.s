@@ -3878,6 +3878,10 @@ loc_8004C8C:
 	pop {r0,r5-r7,pc}
 	thumb_func_end sub_8004C62
 
+// symdb: Accumulates one ASCII digit from a string into a running decimal number kept in r8 (r8 = r8*10 + digit).
+// symdb: (r0 = pointer to current ASCII digit char) -> r0 = same pointer; r8 = r8*10 + (*r0 - '0'); r3/r4
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004C90.yaml
 	thumb_local_start
 sub_8004C90:
 	ldr r2, [sp,#0x1c]
@@ -17166,6 +17170,10 @@ battle_getPhase:
 	mov pc, lr
 	thumb_func_end battle_getPhase
 
+// symdb: Builds a 2-bit mask from battle-state bytes 0x12/0x13 (bit set when the byte is 0), which the caller remaps into a battle-result code stored in a table entry.
+// symdb: () -> r0 = 2-bit mask: bit0 = (battleState[0x12]==0), bit1 = (battleState[0x13]==0); no flags
+// symdb: set meaningfully
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A856.yaml
 	thumb_func_start sub_800A856
 sub_800A856:
 	mov r0, #0

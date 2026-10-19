@@ -4762,6 +4762,10 @@ off_8048F64:
 	.word 0x140
 	thumb_func_end packShopChipLists_8048DF8
 
+// symdb: Scans a null-terminated halfword list at word_8048BE0 for a given ID and returns nonzero if it is present, which the caller uses to pick an alternate chatbox script.
+// symdb: (r0 = id to search for) -> r0 = 1 if found in list, 0 if not; flags set by tst/cmp (result uses
+// symdb: eq only)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048F68.yaml
 	thumb_local_start
 sub_8048F68:
 	push {r0-r2,lr}
@@ -6613,6 +6617,10 @@ sub_8049D7C:
 	mov pc, lr
 	thumb_func_end sub_8049D7C
 
+// symdb: Returns three pointers into the IWRAM work buffer at 0x2001800 (base+0, base+8, base+0x28) for the caller to use as a parallel set of state/counter slots.
+// symdb: () -> r0 = word_2001800+0x8, r1 = word_2001800+0x28, r2 = word_2001800+0; no flags meaningfully
+// symdb: set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049D82.yaml
 	thumb_func_start sub_8049D82
 sub_8049D82:
 	push {r4-r7,lr}
@@ -6659,6 +6667,10 @@ off_8049DC0:
 	.word unk_2001828
 	thumb_func_end sub_8049DA0
 
+// symdb: Converts two 0-terminated byte-index strings into character-code text buffers for chatbox display.
+// symdb: (r0 = src string 1, r1 = dest buffer 1, r2 = src string 2, r3 = dest buffer 2) -> void; clobbers
+// symdb: r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049DC4.yaml
 	thumb_func_start sub_8049DC4
 sub_8049DC4:
 	push {r4-r7,lr}
@@ -8794,6 +8806,10 @@ off_804AD94:
 	.word unk_202A3E0
 	thumb_func_end sub_804AD60
 
+// symdb: Ticks a two-stage frame countdown in a struct: decrements field +0x2A, rolling over to field +0x2E once it is exhausted
+// symdb: (r5 = struct pointer, set by caller) -> r0 destroyed; decrements [r5+0x2A] then [r5+0x2E], each
+// symdb: only while positive; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AD98.yaml
 	thumb_local_start
 sub_804AD98:
 	push {r0-r2,lr}

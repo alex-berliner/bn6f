@@ -125,6 +125,10 @@ loc_813B802:
 	.balign 4, 0x00
 	thumb_func_end sub_813B7FC
 
+// symdb: Copies a 49-byte 7x7 grid from [r7] to [r4] in reversed order (180-degree flip).
+// symdb: (r4 = dest buffer (49 bytes), r7 = source cursor) -> writes 49 bytes to r4; r7 advanced past
+// symdb: source; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B818.yaml
 	thumb_local_start
 sub_813B818:
 	push {r5,r6,lr}
@@ -4512,6 +4516,9 @@ locret_813D94A:
 	pop {pc}
 	thumb_func_end rfu_setLinkCommand
 
+// symdb: Returns 1 if the stored current link command (eS200BC50) differs from r0, so callers only resend via rfu_setLinkCommand when it changed.
+// symdb: (r0 = link command value) -> r0 = 1 if stored command != r0, else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D94C.yaml
 	thumb_func_start sub_813D94C
 sub_813D94C:
 	push {lr}
@@ -4567,6 +4574,9 @@ off_813D988:
 	.word eS200BC50
 	thumb_func_end rfu_setStateEnded
 
+// symdb: Ends the current RFU wireless session and marks the wireless work struct with a post-end state.
+// symdb: () -> r0 = 4 (clobbered); touches eStruct200BC30 field 0xE
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D98C.yaml
 	thumb_func_start sub_813D98C
 sub_813D98C:
 	push {lr}

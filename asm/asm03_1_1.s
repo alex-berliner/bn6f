@@ -628,6 +628,10 @@ off_8038D78:
 	.word 0xC0
 	thumb_func_end battle_scrollLayersTick
 
+// symdb: Per-frame countdown for an object: when its timer hits zero it switches the object to state 0x14, reloads the timer with 0x2E, and calls a follow-up routine.
+// symdb: (r5 = object/state struct) -> r0 = result of sub_8039024; flags from that call only on timer
+// symdb: expiry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038D7C.yaml
 	thumb_local_start
 sub_8038D7C:
 	push {lr}
@@ -1194,6 +1198,9 @@ off_8039194:
 	.word unk_2018A00
 	thumb_func_end sub_8039180
 
+// symdb: Per-frame tick for the t3 scene: subtracts 9 from the u16 at RenderInfo+0x14 each frame it runs.
+// symdb: () -> void; no args, no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039198.yaml
 	thumb_local_start
 sub_8039198:
 	push {lr}
@@ -1599,6 +1606,10 @@ locret_80397BA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039734
 
+// symdb: Per-frame draw routine for a small menu: renders two 3-digit numbers and a cursor/icon positioned by the selection index in the work struct.
+// symdb: (r5 = pointer to menu state struct, implicit) -> void; reads struct fields at +4 (selection
+// symdb: index) and +6 (last drawn index)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80397BC.yaml
 	thumb_local_start
 sub_80397BC:
 	push {r4-r7,lr}
@@ -6524,6 +6535,10 @@ off_803C014:
 	.word off_803C208
 	thumb_func_end sub_803BFE8
 
+// symdb: Searches a table of 8-byte records for the record whose halfword field at +2 equals the given key and returns its index (0xFF if the 0xE6-terminated list ends without a match).
+// symdb: (r0 = pointer to first 8-byte record, r1 = 16-bit key) -> r0 = matching record index, or 0xFF if
+// symdb: none; no flag use visible
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C018.yaml
 	thumb_local_start
 sub_803C018:
 	mov r3, #0
@@ -7102,6 +7117,10 @@ initStateBlock_803C352:
 	pop {r4-r7,pc}
 	thumb_func_end initStateBlock_803C352
 
+// symdb: Reads two halfword counters at word_2006770+4/+6, clamps each to at most 999, and returns them for 3-digit sprite display
+// symdb: () -> r0 = counter A (word_2006774, clamped <=999), r1 = counter B (word_2006776, clamped
+// symdb: <=999); no flags relevant
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C398.yaml
 	thumb_local_start
 sub_803C398:
 	ldr r3, off_803C430 // =word_2006770
@@ -9934,6 +9953,9 @@ off_803DD88:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803DD60
 
+// symdb: Resets the eLinkState struct to fixed starting values for the link/communication state machine
+// symdb: () -> void; writes eLinkState bytes 0 and 1 = 8, halfword 0xC = 0x10, byte 8 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DD8C.yaml
 	thumb_local_start
 sub_803DD8C:
 	push {r7,lr}
@@ -10282,6 +10304,10 @@ off_803DFA4:
 	.word eTimerEnable200F460
 	thumb_func_end battle_updateLinkState_803DEB4
 
+// symdb: Condenses the connection-bitmap bits of the RFU link status word at eLinkState+0x48 into an 8-bit mask of connected link slots
+// symdb: (r0 = 32-bit RFU status word, e.g. [eLinkState+0x48]) -> r0 = bitmask: bits 24..30 of input ->
+// symdb: bits 0..6, input bit 8 -> bit 7; flags preserved-ish, r4-r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DFAC.yaml
 	thumb_local_start
 sub_803DFAC:
 	push {r4-r7,lr}
@@ -13797,6 +13823,10 @@ byte_803F5FC:
 	.byte 0x32, 0x1, 0x33, 0x1, 0x0, 0x0
 	thumb_func_end sub_803F5B0
 
+// symdb: Writes one halfword into an 8-byte (4-halfword) record of a table, letting callers fill one record a halfword at a time.
+// symdb: (r0 = halfword value, r1 = halfword index 0..3 within record, r2 = record index) -> r0 = value
+// symdb: stored at tableBase[r2*8 + r1*2]; no return value, flags clobbered by pop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F618.yaml
 	thumb_func_start sub_803F618
 sub_803F618:
 	push {r0-r7,lr}

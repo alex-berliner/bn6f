@@ -638,7 +638,7 @@ loc_812EF1A:
 	thumb_func_end sub_812EEEC
 
 // symdb: Draws the text window for the currently selected entry of an on-screen menu: looks the entry's window id up in a table, blits it to BG, and stores a value back into the menu state.
-// symdb: (args passed through to submenu_getStatePtr) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7
+// symdb: (args passed through to sub_812ED2C) -> r0 = value stored to [r5,#0x30]; clobbers r4-r7
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_renderSelectedWindow.yaml
 	thumb_func_start submenu_renderSelectedWindow
 submenu_renderSelectedWindow:

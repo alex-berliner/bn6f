@@ -10111,6 +10111,10 @@ off_802ABCC:
 	.word unk_2030E60
 	thumb_func_end sub_802A9D0
 
+// symdb: Overworld state-machine step that advances the BG2 wipe transition and, once it finishes, loads the next state and a table parameter.
+// symdb: (r5 = overworld state struct) -> r0 = clobbered; returns with callee's flags (EQ = wipe
+// symdb: finished); writes r5+1=0x0C, r5+2=r5+3=0, r5+7=table byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ABD0.yaml
 	thumb_local_start
 sub_802ABD0:
 	push {lr}
@@ -10403,6 +10407,10 @@ locret_802ADF8:
 	.balign 4, 0x00
 	thumb_func_end sub_802AD84
 
+// symdb: Per-frame tick for an object's wait state: counts down a timer and, when it expires, switches the object to state 12 with substate/param 4 and runs the next-state handler.
+// symdb: (no args; r5 = object/state struct) -> r0 = callee result of sub_802AF0E when timer expires;
+// symdb: flags from the decrement
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ADFC.yaml
 	thumb_local_start
 sub_802ADFC:
 	push {lr}
@@ -14423,6 +14431,10 @@ locret_802CC8A:
 	pop {pc}
 	thumb_func_end sub_802CC50
 
+// symdb: state-machine tick for an object: runs its setup once, waits 30 frames, then switches the object to mode 8
+// symdb: (r5 = object/state struct pointer, no register args) -> void; sets [r5+2] state byte, [r5+5]
+// symdb: frame timer, and [r5] mode word
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802CC8C.yaml
 	thumb_local_start
 sub_802CC8C:
 	push {lr}
@@ -21964,6 +21976,9 @@ locret_8030192:
 	pop {r4-r7,pc}
 	thumb_func_end camera_applyScrollToBgLayers_8030158
 
+// symdb: adds the camera's scroll delta since it was last saved to the render info's BG scroll offsets
+// symdb: (r5 = camera struct) -> void; updates RenderInfo BGScrollXOffset/BGScrollY
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030194.yaml
 	thumb_local_start
 sub_8030194:
 	ldrh r1, [r5,#oCamera_ScrollX]
@@ -21995,6 +22010,9 @@ camera_writeUnk03_14_80301b2:
 	mov pc, lr
 	thumb_func_end camera_writeUnk03_14_80301b2
 
+// symdb: Makes the overworld camera track the player object by storing a pointer into its position data and setting the camera's mode byte.
+// symdb: () -> void; no return value, r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80301BC.yaml
 	thumb_func_start sub_80301BC
 sub_80301BC:
 	mov r2, r10
@@ -22260,6 +22278,9 @@ render_ClearScrollOffsets_8030336:
 	mov pc, lr
 	thumb_func_end render_ClearScrollOffsets_8030336
 
+// symdb: copies the camera's scroll position into the render info's BG scroll offsets, wrapping both to the 512-pixel background period
+// symdb: () -> void; reads r10 toolkit, writes oRenderInfo_BGScrollXOffset and oRenderInfo_BGScrollY
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803035E.yaml
 	thumb_local_start
 sub_803035E:
 	mov r7, r10
@@ -22792,6 +22813,10 @@ sub_8030646:
 	mov pc, lr
 	thumb_func_end sub_8030646
 
+// symdb: Stores one halfword tile entry into row/column of BG tilemap block 1 in the toolkit's iBGTileIdBlocks.
+// symdb: (r0 = unused, r1 = tile id halfword, r3 = column index, r4 = row index) -> r0 = clobbered
+// symdb: (untouched); flags untouched
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803065A.yaml
 	thumb_local_start
 sub_803065A:
 	mov r2, #1

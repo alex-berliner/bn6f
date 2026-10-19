@@ -1038,6 +1038,9 @@ dword_8142220:
 	.word 0x1E140A00
 	thumb_func_end sub_8142204
 
+// symdb: Pops the most recent entry off the scenario-effect state's LIFO stack (0-based count at +0x28, entries at +0x2C), returning it, or 0 if the stack is empty.
+// symdb: () -> r0 = popped entry (0 if empty); flags from tst on r0 (Z set when empty)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142224.yaml
 	thumb_func_start sub_8142224
 sub_8142224:
 	push {r4-r7,lr}
@@ -4347,6 +4350,9 @@ sub_8143F72:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143F72
 
+// symdb: Ticks down a countdown counter in eStruct2001010 while a fade is active in a specific subsystem, unless a flag byte blocks it.
+// symdb: () -> r0 = undefined; no flags relied on; reads caller's r5 as a structure pointer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143F7C.yaml
 	thumb_local_start
 sub_8143F7C:
 	push {r4-r7,lr}
@@ -4377,6 +4383,10 @@ sub_8143F90:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143F90
 
+// symdb: Initializes fields at +0x14/+0x18/+0x1C of the state struct eStruct2001010 before the caller enters state 0xC.
+// symdb: () -> r0 = 0; writes dword_2001024 = 0, dword_2001028 = 0, dword_200102C = 0x2000; clobbers
+// symdb: r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143FAA.yaml
 	thumb_func_start sub_8143FAA
 sub_8143FAA:
 	push {r4-r7,lr}

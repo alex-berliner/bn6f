@@ -2808,6 +2808,10 @@ off_3006E78:
 	.word chatbox_8040D5C+1
 	thumb_func_end sub_3006E1C
 
+// symdb: Dispatches an animation-related handler selected by a byte in the argument struct, currently routing both cases to sprite_queueAnimData.
+// symdb: (r0 = pointer to struct whose byte at +1 is the selector) -> calls table handler with r0
+// symdb: unchanged; r0 result is that of the callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006E7C.yaml
 	thumb_local_start
 sub_3006E7C:
 	push {r3,r7,lr}

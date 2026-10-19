@@ -15252,6 +15252,10 @@ locret_8115652:
 	pop {pc}
 	thumb_func_end ai_selectAttack
 
+// symdb: Counts up a frame counter and, after 60 frames, resets an AI state's script ID to 0.
+// symdb: (r5 = object/struct holding u16 timer at +0x6C, r6 = AI state struct) -> void; flags from cmp
+// symdb: r1,#0x3C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8115654.yaml
 	thumb_local_start
 sub_8115654:
 	push {lr}
@@ -18768,6 +18772,9 @@ sub_81172A6:
 	.byte 0, 0
 	thumb_func_end sub_81172A6
 
+// symdb: Calls one of three sprite handlers selected by a state/type byte in the object struct at r5+8.
+// symdb: (r5 = sprite/object struct) -> calls table[r5+8] handler; no direct return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81172B0.yaml
 	thumb_func_start sub_81172B0
 sub_81172B0:
 	push {lr}
@@ -18888,6 +18895,10 @@ byte_81173EC:
 	.byte 0x0, 0x0, 0x0, 0xF, 0x0, 0xD, 0x0, 0x93, 0x0, 0xC, 0x0
 	thumb_func_end sub_8117354
 
+// symdb: Runs a variant-object's per-state handler, dispatching on the object's state byte to its init, update, or teardown routine.
+// symdb: (r5 = object struct, r1 = [r5,#8] state index used internally) -> r0 = handler's return; calls
+// symdb: handler as Thumb via mov lr,pc / bx
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117404.yaml
 	thumb_func_start sub_8117404
 sub_8117404:
 	push {lr}
@@ -31961,6 +31972,9 @@ dword_811D6C8:
 	.word 0xFFFFFFFF
 	thumb_func_end sub_811D69C
 
+// symdb: adds an object's velocity (8.8 fixed point) to its x/y position fields
+// symdb: (r5 = object struct from getStructFrom2008450) -> void; r0-r2 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D6CC.yaml
 	thumb_local_start
 sub_811D6CC:
 	ldr r0, [r5,#0x18]
@@ -33535,6 +33549,10 @@ sub_811E40C:
 	.word eScenarioEffectState2000780
 	thumb_func_end sub_811E40C
 
+// symdb: Calls one of three handler routines selected by the mode byte at [r5,#8], passing that mode as r1.
+// symdb: (r5 = object whose +8 byte selects handler) -> tail-call to handler(r1 = mode, r5 preserved); r0
+// symdb: = whatever the handler returns
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E418.yaml
 	thumb_func_start sub_811E418
 sub_811E418:
 	push {lr}

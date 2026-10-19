@@ -1159,6 +1159,10 @@ loc_800F482:
 	pop {pc}
 	thumb_func_end battle_checkEmergeDirectionFlip
 
+// symdb: Returns 1 unless the given battle object ID is one of four special IDs (0xD3, 0xDA, 0xE9, 0xEA), which callers treat as excluded.
+// symdb: (r0 = object ID, likely the battle object field at +0x28) -> r0 = 1 if ID not in {0xD3, 0xDA,
+// symdb: 0xE9, 0xEA}, else 0; no flags used by callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F486.yaml
 	thumb_func_start sub_800F486
 sub_800F486:
 	cmp r0, #0xd3
@@ -7154,6 +7158,9 @@ sub_8011ED0:
 	pop {pc}
 	thumb_func_end sub_8011ED0
 
+// symdb: resets an AI attack-variables block (r7) to default values and returns a fixed status code
+// symdb: (r7 = pointer to oAIAttackVars struct) -> r0 = 0x42; r7 fields overwritten with defaults
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011EF0.yaml
 	thumb_local_start
 sub_8011EF0:
 	push {lr}
@@ -9489,6 +9496,9 @@ sub_8012D64:
 	pop {pc}
 	thumb_func_end sub_8012D64
 
+// symdb: runs three compare/swap passes over entries 0-2 of a small list, likely to (re)sort it after the caller shifts bytes
+// symdb: () -> r0 = undefined; calls sub_8012D8C(idx, idx) with (0,1),(0,2),(1,2)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D70.yaml
 	thumb_local_start
 sub_8012D70:
 	push {lr}
@@ -20639,6 +20649,10 @@ locret_8017E24:
 	pop {pc}
 	thumb_func_end sub_8017E0A
 
+// symdb: Dispatches a battle object's move-sub-state handler by jumping through a table indexed by oBattleObject_MoveSubState
+// symdb: (r5 = battle object) -> tail-calls handler from off_8017E38[substate]; returns to sub_8017E26's
+// symdb: caller via handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017E26.yaml
 	thumb_func_start sub_8017E26
 sub_8017E26:
 	push {lr}
@@ -31855,6 +31869,9 @@ dword_801DFCC:
 	.word 0x4000
 	thumb_func_end sub_801DFB8
 
+// symdb: Subtracts r0 from the halfword at +0x20 of the battle HUD struct, clamping at zero (probable shown-HP damage display).
+// symdb: (r0 = amount to subtract) -> r0 = destroyed; writes halfword at eStruct2035280+0x20
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DFD0.yaml
 	thumb_local_start
 sub_801DFD0:
 	push {lr}

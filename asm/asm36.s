@@ -17555,6 +17555,10 @@ off_8138444:
 	.word sub_81385AC+1
 	thumb_func_end sub_813842C
 
+// symdb: Processes the next animation frame of an object: copies the frame's parameters into the object's 0x200a220 struct, queues its tile/sheet upload to VRAM, and advances the animation pointer and frame counter.
+// symdb: (r3 = ptr to current animation frame entry, r5 = object struct) -> r0 = 0; r5+0xd = (frame
+// symdb: counter + 1) & 0xF, r5+0x18 = frame ptr + 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138478.yaml
 	thumb_local_start
 sub_8138478:
 	push {lr}
