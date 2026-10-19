@@ -2983,6 +2983,10 @@ locret_812471A:
 	pop {r4,pc}
 	thumb_func_end sub_81246D8
 
+// symdb: Runs one of two chatbox text scripts (7 with an argument, or 8) depending on the result of a check, and updates the caller task's state bytes accordingly.
+// symdb: (r0 = byte argument, saved to [r5,#0x10]) -> none; r5 = task/object with state bytes at +2/+3,
+// symdb: r10 = toolkit
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812471C.yaml
 	thumb_local_start
 sub_812471C:
 	push {r4,r7,lr}
@@ -6477,6 +6481,11 @@ loc_812631A:
 	.balign 4, 0x00
 	thumb_func_end sub_812626C
 
+// symdb: Renders up to 5 chip-name strings from a list of chip-code entries into tilemap buffers, zero-filling empty slots.
+// symdb: (r0:r1 = array of 4-byte entries {halfword char code, halfword param}; r2 = dest tilemap buffer;
+// symdb: r3, r4 = decoder words (r3|0x200<<... and r4<<12|0x200 pushed as stack args); r5 = zero-fill
+// symdb: flag) -> r0 = decode result of last entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126334.yaml
 	thumb_local_start
 sub_8126334:
 	push {r4-r7,lr}
@@ -9058,6 +9067,10 @@ off_8127784:
 	.word unk_2024394
 	thumb_func_end sub_8127760
 
+// symdb: Drains pending glyph entries from the chatbox text queue, rendering each glyph chunk into VRAM and caching special entries' data in the chat context.
+// symdb: (r5 = chatbox text state, queue read ptr at +0x24 / write ptr at +0x26; r10 = chat context) ->
+// symdb: r0 clobbered; consumes up to 4 8-byte entries from queue at byte_201D74C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127788.yaml
 	thumb_local_start
 sub_8127788:
 	push {r4-r7,lr}
@@ -10644,6 +10657,10 @@ sub_8128354:
 	mov pc, lr
 	thumb_func_end sub_8128354
 
+// symdb: Scans a stored list of event-flag IDs from the end backwards for the highest one that is set, and writes the found index split into two fields of the caller's struct.
+// symdb: (r0 = unused, r5 = result struct: u16 count at +0x1e, results to +0x20/+0x24) -> r0 = clobbered;
+// symdb: ZF from last TestEventFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812835C.yaml
 	thumb_local_start
 sub_812835C:
 	push {lr}
@@ -12024,6 +12041,9 @@ sub_8128F04:
 	.byte 0, 0
 	thumb_func_end sub_8128F04
 
+// symdb: Fills BG tile blocks 3 and 2 with tilemap entries from eReader-scene tilemap buffers to build the scene's background layers.
+// symdb: () -> r0 = destroyed; r1-r5 clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128F10.yaml
 	thumb_local_start
 sub_8128F10:
 	push {r4-r7,lr}

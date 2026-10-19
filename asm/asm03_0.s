@@ -433,6 +433,10 @@ sub_802671C:
 	pop {pc}
 	thumb_func_end sub_802671C
 
+// symdb: Runs a tile checker on all eight tiles adjacent to a battle object and reports whether any of them passes.
+// symdb: (r0 = battle object pointer, passed through to checker) -> r0 = nonzero if the checker succeeded
+// symdb: on at least one adjacent tile, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026726.yaml
 	thumb_local_start
 sub_8026726:
 	push {lr}
@@ -10678,6 +10682,10 @@ loc_802AFAE:
 	pop {r4-r7,pc}
 	thumb_func_end ow_scrollBg2LeftWriteTiles
 
+// symdb: Advances a horizontal BG2 wipe transition: blanks background columns one by one while scrolling BG2, until the scroll reaches 120px.
+// symdb: (r0 unused/r5 = effect state struct) -> r0 = new BG2 scroll X; Z set iff scroll == 0x78 (wipe
+// symdb: finished)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AFD4.yaml
 	thumb_local_start
 sub_802AFD4:
 	push {r4-r7,lr}
@@ -18371,6 +18379,10 @@ sub_802E896:
 	pop {pc}
 	thumb_func_end sub_802E896
 
+// symdb: Scans a 0x170-byte weight table within one record and returns the offset of the highest-weight entry, breaking ties randomly via the secondary RNG.
+// symdb: (r0 = index of 0x170-byte record at unk_203A0A0) -> r0 = byte offset (0..0x16F) of winning
+// symdb: entry, or 0xFFFF if all bytes are 0; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E8A4.yaml
 	thumb_local_start
 sub_802E8A4:
 	push {r6,r7,lr}
@@ -18910,6 +18922,9 @@ battle_startAttack33:
 	pop {pc}
 	thumb_func_end battle_startAttack33
 
+// symdb: Battle-side setup routine that initializes an entity's action state and arms attack 0x2b with a counter bump.
+// symdb: (implicit r6 = battle entity/object work struct) -> r0 = 1, r1 = 0; no flags returned
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802ED8A.yaml
 	thumb_local_start
 sub_802ED8A:
 	push {lr}
@@ -19938,6 +19953,10 @@ loc_802F268:
 	pop {r4,r6,r7,pc}
 	thumb_func_end addMail_802f238
 
+// symdb: Removes an event id from the active-event list and clears its event flag pair (id and id+0x80).
+// symdb: (r0 = event flag id (>= 0x1CA0), relative id = r0-0x1CA0) -> r0 = preserved id; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F270.yaml
 	thumb_local_start
 sub_802F270:
 	push {r4,r6,r7,lr}

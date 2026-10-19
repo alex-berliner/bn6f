@@ -583,6 +583,9 @@ clearActiveEventFlag:
 byte_808FC74:
 	.word 0x0BED0BEC, 0x00000BEE
 
+// symdb: Clears a story/event flag whose id is looked up from a table using a byte from the context at r10.
+// symdb: () -> r0 = 0; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FC7C.yaml
 	thumb_local_start
 sub_808FC7C:
 	push {r5, lr}
@@ -611,6 +614,9 @@ loc_808FC92:
 byte_808FCA8:
 	.word 0x0BFE0BFD, 0x0FFE0BFF
 
+// symdb: Sets the story event flag that corresponds to the player's current scenario/chapter.
+// symdb: (no args) -> r0 = 0; flags from SetEventFlag call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FCB0.yaml
 	thumb_local_start
 sub_808FCB0:
 	push {r4-r7, lr}

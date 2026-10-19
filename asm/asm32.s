@@ -1128,6 +1128,10 @@ loc_810E25C:
 	pop {pc}
 	thumb_func_end sub_810E1F0
 
+// symdb: When the current animation reaches its end-flagged frame, switches the object's animation based on two state flags and resets its AI script id.
+// symdb: (r0 = battle object? also in r5, r6 = AI/script state struct) -> r0 = clobbered; writes object
+// symdb: fields 0x64/0x65/0x66, oBattleObject_CurAnim, and r6 oAIState_ScriptId
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E262.yaml
 	thumb_local_start
 sub_810E262:
 	push {lr}
@@ -28941,6 +28945,9 @@ off_811BCCC:
 	.word unk_201F294
 	thumb_func_end sub_811BC68
 
+// symdb: Selects one of the text engine's three glyph buffers by a window-id byte and has the text-gfx renderer copy that window's glyphs into its VRAM tile slot, then marks the window loaded.
+// symdb: (r5 = text-window struct, [r5+5] = window id) -> r0 = 0; writes [r5+8] = 8; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BCD8.yaml
 	thumb_local_start
 sub_811BCD8:
 	push {r4-r7,lr}
@@ -29800,6 +29807,10 @@ off_811C420:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0
 	thumb_func_end sub_811C2A8
 
+// symdb: Sets a sprite's position to a fixed base (176, 64) plus a per-index (x,y) offset pair looked up from the table at byte_811C460.
+// symdb: (r0 = index into offset table) -> calls sprite_setCoordinates with r0 = 0xB0 + tbl[2*idx], r1 =
+// symdb: 0x40 + tbl[2*idx+1]; r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C440.yaml
 	thumb_local_start
 sub_811C440:
 	push {lr}
@@ -30105,6 +30116,10 @@ byte_811C718:
 	.byte 0x9, 0x0, 0x20, 0x1, 0x20, 0x0, 0xF6, 0xF4, 0x5C, 0x3, 0xD, 0x0
 	thumb_func_end sub_811C654
 
+// symdb: Returns whether a sprite's position lies inside the screen area padded by 32 px on every side.
+// symdb: (r0 = sprite/object pointer) -> r0 = 1 if x in [-32,272] and y in [-32,192], else 0; r0-r3
+// symdb: clobbered, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C754.yaml
 	thumb_local_start
 sub_811C754:
 	push {lr}
@@ -30798,6 +30813,10 @@ locret_811CDF2:
 	pop {pc}
 	thumb_func_end sub_811CDC8
 
+// symdb: Every-16-frame countdown tick that plays two sound effects and updates the object's state fields when the timer expires.
+// symdb: (r0 unused on entry; r5 = object/state struct) -> void; modifies [r5+0x0] bit1, [r5+0x5],
+// symdb: [r5+0x9], [r5+0xC]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CDF4.yaml
 	thumb_local_start
 sub_811CDF4:
 	push {lr}
@@ -30995,6 +31014,10 @@ byte_811CF58:
 	.byte 0xF4, 0x0, 0xB7, 0x0, 0xB8, 0x0, 0xBF, 0x1, 0xFF, 0x0, 0x0, 0x0
 	thumb_func_end sub_811CF44
 
+// symdb: Advances a per-object color fade: brightens the sprite's gray color-shader by 2 levels per call while counting down a duration, resetting when it expires.
+// symdb: (r5 = object/sprite block, r0-r3 scratch) -> updates [r5+0x8], [r5+0xc], [r5+0xe]; calls
+// symdb: sprite_setColorShader with r0 = packed RGB
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CF64.yaml
 	thumb_local_start
 sub_811CF64:
 	push {lr}
@@ -31106,6 +31129,10 @@ off_811D01C:
 	.word 0x194
 	thumb_func_end sub_811CFEC
 
+// symdb: Object update step that flashes the sprite white for a counted number of bursts, then switches to a post-flash state with a 60-frame timer.
+// symdb: (r0 = ignored/unused, r5 = object/sprite block) -> r0 = clobbered by call; updates [r5+0xC]
+// symdb: timer, [r5+0xE] flash counter, [r5+9] state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D020.yaml
 	thumb_local_start
 sub_811D020:
 	push {lr}
@@ -32714,6 +32741,10 @@ byte_811DE54:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_811DC88
 
+// symdb: Sets a sprite's position to a fixed base (176,64) plus an (x,y) pair looked up from a static table by index — a cursor/highlight position for a vertical list.
+// symdb: (r0 = entry index into table at 0x811DE94) -> r0 = result of sprite_setCoordinates; sets sprite
+// symdb: x = 0xB0 + table[index*2], y = 0x40 + table[index*2+1]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DE74.yaml
 	thumb_local_start
 sub_811DE74:
 	push {lr}
@@ -34147,6 +34178,10 @@ sub_811E8D8:
 	pop {pc}
 	thumb_func_end sub_811E8D8
 
+// symdb: Sets the BIOS sound bias from a state getter's upper half and stores a matching fade/brightness step from a lookup table into the current object's sprite field 0x2c.
+// symdb: () -> r0 = value stored to sprite field 0x2c via sprite_setUnk0x2c; calls SWI 6
+// symdb: SoundBias(r0>>16, r1=8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E8E0.yaml
 	thumb_local_start
 sub_811E8E0:
 	push {r4-r7,lr}
@@ -34307,6 +34342,10 @@ sub_811EA20:
 	pop {pc}
 	thumb_func_end sub_811EA20
 
+// symdb: Computes a bitmask from the decimal digits of two values and writes it into a sprite struct's field 0x2c.
+// symdb: (uses r0/r1 returned by sub_8143D4C, no own args seen) -> r0 = mask passed to sprite_setUnk0x2c;
+// symdb: clobbers r0-r3, r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811EA28.yaml
 	thumb_local_start
 sub_811EA28:
 	push {r4-r7,lr}

@@ -631,6 +631,9 @@ byte_8089344:
 	.byte 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_8089280
 
+// symdb: Queues one hard-coded OAM entry (a fixed screen sprite/overlay) selected by index from a table.
+// symdb: (r0 = entry index) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089370.yaml
 	thumb_local_start
 sub_8089370:
 	push {r4-r7,lr}

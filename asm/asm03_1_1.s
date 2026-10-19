@@ -559,6 +559,10 @@ off_8038CF0:
 	.word 0xC0
 	thumb_func_end sub_8038C78
 
+// symdb: Per-frame tick of the battle-exit transition: scrolls all three BG layers until the wipe finishes, then resets the battle scene records and advances the state machine.
+// symdb: (r5 = state struct: +2 state byte, +4 timer halfword, +6 cycle counter byte, +8 scroll offset
+// symdb: word) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038CF4.yaml
 	thumb_local_start
 sub_8038CF4:
 	push {lr}
@@ -835,6 +839,10 @@ off_8038ED8:
 	.word byte_8038A84
 	thumb_func_end sub_8038EAC
 
+// symdb: Scene-state updater that waits for any button press, then starts a screen fade and moves to the next state.
+// symdb: (r5 = t3 state struct: +0 = state byte, +4 = frame countdown, r10 = toolkit) -> void; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038EDC.yaml
 	thumb_local_start
 sub_8038EDC:
 	push {lr}
@@ -1048,6 +1056,10 @@ sub_8039074:
 	.balign 4, 0x00
 	thumb_func_end sub_8039074
 
+// symdb: Registers two EmotionData slots (indices 4 and 5, type 0x3A) in the global emotion array, using per-index flag words from two data tables.
+// symdb: (r0 = entry index 0..4) -> r0 = clobbered; writes two entries into the 0x58-byte EWRAM
+// symdb: EmotionData array at 0x02008450
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039084.yaml
 	thumb_local_start
 sub_8039084:
 	push {r4,lr}
@@ -2586,6 +2598,9 @@ sub_8039F62:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039F62
 
+// symdb: Requests main-loop jumptable state 0x1C, deferring the call of sub_8039570 as that state's argument/callback.
+// symdb: (no arguments) -> r0 = status from t1_setMainState1cWithArg; clobbers r4-r7 per ABI
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039F6A.yaml
 	thumb_local_start
 sub_8039F6A:
 	push {r4-r7,lr}
@@ -5634,6 +5649,10 @@ off_803B87C:
 	.word byte_2027200
 	thumb_func_end sub_803B814
 
+// symdb: Draws two 3-digit decimal numbers (from sub_803C398's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
+// symdb: () -> void; internally r0/r1 = two values from sub_803C398, each converted to packed BCD; no
+// symdb: meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B880.yaml
 	thumb_local_start
 sub_803B880:
 	push {r4-r7,lr}
@@ -6729,6 +6748,10 @@ sub_803C150:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C150
 
+// symdb: Expands a 0-terminated byte-index string into halfword character codes via table unk_2026A00, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
+// symdb: (r0 = byte-index string (0-terminated), r1 = dest buffer, r2 = max halfword count, r3 = fill
+// symdb: halfword value) -> r0 = preserved; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C168.yaml
 	thumb_func_start sub_803C168
 sub_803C168:
 	push {r4-r7,lr}
@@ -7378,6 +7401,9 @@ sub_803C564:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C564
 
+// symdb: Wrapper that clears bit 1 (mask 0x2) of the status/flag word at 0x200BC5C via clearStatusBits.
+// symdb: () -> r0 = undefined (clobbered); clears mask 0x2 in the status word at 0x200BC5C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C570.yaml
 	thumb_local_start
 sub_803C570:
 	push {r4-r7,lr}
@@ -7871,6 +7897,9 @@ loc_803C8AC:
 	.balign 4, 0x00
 	thumb_func_end sub_803C888
 
+// symdb: Per-frame wireless link manager tick: cleans up disconnected link slots and runs a state step of the 0x200AF80 link-state machine.
+// symdb: () -> r0 = sub_803C90C return; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C8B4.yaml
 	thumb_local_start
 sub_803C8B4:
 	push {r4,lr}
@@ -8263,6 +8292,10 @@ loc_803CB3C:
 	.balign 4, 0x00
 	thumb_func_end sub_803CB24
 
+// symdb: After the chatbox finishes printing, polls for the dismiss key (R/L); when pressed it re-arms the chatbox status bit and reports the message was acknowledged.
+// symdb: () -> r0 = 1 if the dismiss key was pressed this frame, else 0; clobbers r4, r7, calls
+// symdb: clearStatusBits/sub_803CB00 with mask 0x200 on the status word at 0x200BC5C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CB44.yaml
 	thumb_local_start
 sub_803CB44:
 	push {r4,r7,lr}
@@ -9942,6 +9975,9 @@ off_803DE20:
 	.word eLinkState // eLinkState
 	thumb_func_end sub_803DDEC
 
+// symdb: Returns 1 while a link/RFU communication is still in progress, 0 once it has finished, gating the battle state machine's advance to state 4.
+// symdb: () -> r0 = 1 if link traffic is active (or timed out), 0 if idle; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DE24.yaml
 	thumb_func_start sub_803DE24
 sub_803DE24:
 	push {r4,r7,lr}
@@ -12864,6 +12900,10 @@ loc_803F0C2:
 	.word 0xFE
 	thumb_func_end sub_803F0A4
 
+// symdb: Enqueues a 24-byte entry (two 12-byte blocks) into an 8-slot 0x40-byte ring buffer at byte_200BC70, overwriting the oldest slot.
+// symdb: (r0 = src of first 12 bytes, r1 = src of second 12 bytes) -> r0 = CopyWords result/entry
+// symdb: pointer; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F0E8.yaml
 	thumb_local_start
 sub_803F0E8:
 	push {r4-r7,lr}

@@ -3068,6 +3068,9 @@ sub_813CD10:
 	pop {pc}
 	thumb_func_end sub_813CD10
 
+// symdb: Runs a setup step then clears byte 0x13 of the currently selected navi's NaviStats record.
+// symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by sub_813CD3E
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD14.yaml
 	thumb_local_start
 sub_813CD14:
 	push {lr}
@@ -3123,6 +3126,9 @@ sub_813CD58:
 	pop {pc}
 	thumb_func_end sub_813CD58
 
+// symdb: Writes the value 4 into byte 0x63 of the currently selected PET navi's NaviStats record.
+// symdb: () -> void; no return value, no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD5C.yaml
 	thumb_local_start
 sub_813CD5C:
 	push {lr}
@@ -4541,6 +4547,9 @@ off_813D974:
 	.word eS200BC50
 	thumb_func_end zeroFill_813D960
 
+// symdb: RFU helper that records state value 9 in the wireless work struct and invokes the lower RFU state routine with 0.
+// symdb: () -> r0 = return of sub_813D934(0); no other side effects visible
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D978.yaml
 	thumb_func_start sub_813D978
 sub_813D978:
 	push {lr}

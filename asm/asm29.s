@@ -4019,6 +4019,10 @@ locret_80A7204:
 	.balign 4, 0x00
 	thumb_func_end object_timerCountdownPlaySfx
 
+// symdb: Copies a per-index Beast Out SP enemy stat entry from table byte_2000EC0 into fields of the battle object pointed to by r5.
+// symdb: (r5 = battle object struct, uses object's index byte at r5+4) -> fills r5+0x05, r5+0x06,
+// symdb: r5+0x0C, r5+0x10, r5+0x34; no return value, clobbered flags/registers only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7208.yaml
 	thumb_local_start
 sub_80A7208:
 	push {r4-r7,lr}
@@ -12266,6 +12270,10 @@ loc_80AAD4E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AAD04
 
+// symdb: Counts owned/registered chips by the byte value at chip-data offset 5 into a caller-provided halfword counter array.
+// symdb: (r0 = u16 counter array (>=6 halfwords), r1 unused) -> r0 = array filled with per-value counts;
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAD70.yaml
 	thumb_local_start
 sub_80AAD70:
 	push {r4,r6,r7,lr}

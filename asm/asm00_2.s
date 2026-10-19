@@ -5955,6 +5955,10 @@ locret_801164A:
 	pop {r4,pc}
 	thumb_func_end object_applyDamage
 
+// symdb: 16-bit linear interpolation of an (x,y) point toward a target by fraction r6/r7, used to step objects along curved flight paths
+// symdb: (r0 = x0, r1 = y0, r2 = x1, r3 = y1, r6 = numerator, r7 = denominator) -> r0 = x0 +
+// symdb: (x1-x0)*r6/r7, r1 = y0 + (y1-y0)*r6/r7; flags from the last Div
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801164C.yaml
 	thumb_func_start sub_801164C
 sub_801164C:
 	push {lr}
@@ -8835,6 +8839,10 @@ loc_8012952:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80128FC
 
+// symdb: Sliding 3-frame key-history buffer that reports when two specific buttons (mask 0x22) have both been pressed within the window, used by the charge-attack step.
+// symdb: (r0 = state struct: +0 done flag, +1 slot idx, +2 frame timer, +4/+6/+8 key history halfwords;
+// symdb: r1 = current key input) -> r0 = 1 if both keys seen within 3 frames, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012956.yaml
 	thumb_func_start sub_8012956
 sub_8012956:
 	ldrb r3, [r0]
@@ -11666,6 +11674,9 @@ loc_8013B6E:
 	pop {r4,r6,r7,pc}
 	thumb_func_end init_8013B64
 
+// symdb: Initializes a 0x64-byte Navi stats structure for a given Navi ID, resetting it to defaults and copying that Navi's per-Navi base values from lookup tables.
+// symdb: (r0 = stats struct (0x64 bytes), r1 = navi ID) -> r0 = void (clobbered); no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013BDA.yaml
 	thumb_local_start
 sub_8013BDA:
 	push {r4,r6,r7,lr}
@@ -20308,7 +20319,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / battle_applyHitElementEffect /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -27873,6 +27884,10 @@ dword_801C364:
 	.word 0xB0B0B0B
 	thumb_func_end chatbox_uploadFrameTileGFX_801C304
 
+// symdb: Renders two right-aligned 3-digit counters (one per slot 0/1) for the current battle side into VRAM tile buffers and records them in work-RAM digit buffers.
+// symdb: () -> void; reads oToolkit_BattleStatePtr and battleState+oBattleState_PlayerSide, no return
+// symdb: value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C368.yaml
 	thumb_local_start
 sub_801C368:
 	push {lr}
@@ -30220,6 +30235,10 @@ off_801D3F4:
 	.word TextScript86F0300
 	thumb_func_end sub_801D344
 
+// symdb: Queues repeated 0x40-byte transfers of zeros from a static buffer, clearing consecutive blocks of palette/GFX memory.
+// symdb: (r0 = unused on entry, r1 = destination address, r3 = block count) -> r0/r1 clobbered; queues
+// symdb: count x 64-byte zero fills, dest advanced 0x40 per block
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D3F8.yaml
 	thumb_local_start
 sub_801D3F8:
 	push {r0-r4,lr}

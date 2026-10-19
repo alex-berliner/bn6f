@@ -1584,6 +1584,10 @@ dword_8144BEC:
 	.word 0xFF7C
 	thumb_func_end libStopAndReloadTimer3If_eTimerEnable200F460
 
+// symdb: Part of the SIO link state machine: enables Timer 3 (the multiplayer clock timer) while the comm session requests it, and disables/clears that request once a state counter reaches 8.
+// symdb: () -> void; no arguments, operates on the comm struct eTimerEnable200F460 and Timer3Control; no
+// symdb: return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144BF0.yaml
 	thumb_local_start
 sub_8144BF0:
 	push {lr}
@@ -2989,6 +2993,10 @@ off_81455E4:
 	.word dword_2010CC0
 	thumb_func_end sub_81453F0
 
+// symdb: Advances a small state machine in the eStruct200FE00 object, computing wrapped halfword counters via mod 140 and moving through states 5/6 → 1 → 2/3 → 4.
+// symdb: (r0 = integer operand for the mod-140 wrap calculation) -> r0 = 0 (clobbered); writes state byte
+// symdb: +0x7, config bytes +0x6/+0x4 and counter halfwords +0x1A/+0x1C of eStruct200FE00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81455E8.yaml
 	thumb_local_start
 sub_81455E8:
 	push {r4,lr}
@@ -4960,6 +4968,10 @@ off_8146434:
 	.word InterruptMasterEnableRegister
 	thumb_func_end sub_81463F4
 
+// symdb: Writes a requested RFU connection-state halfword, or if a connection is active, forces state 6 and fires the connection callback with reason 0xF3.
+// symdb: (r0 = new state halfword) -> r0 = 0 if stored, 6 if connection was active; flags clobbered by
+// symdb: call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146438.yaml
 	thumb_local_start
 sub_8146438:
 	push {lr}
@@ -5594,6 +5606,10 @@ off_8146850:
 	.word byte_2010288
 	thumb_func_end sub_8146808
 
+// symdb: Zero-fills two parallel 8-entry tables (16-byte and 8-byte entries), likely resetting per-entity state before a battle or scene.
+// symdb: () -> r0 = clobbered; clears unk_20098B0[0..7] (0x10 bytes each) and unk_2009750[0..7] (8 bytes
+// symdb: each)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146854.yaml
 	thumb_local_start
 sub_8146854:
 	push {r4-r6,lr}
@@ -6204,6 +6220,10 @@ loc_8146C92:
 	.balign 4, 0x00
 	thumb_func_end sub_8146C60
 
+// symdb: Step of the wireless (RFU) state machine: when the peer slot reports a disconnect-related message (0x26/0x27), frees the RFU slot and advances the state.
+// symdb: (r0 = state-machine struct ptr) -> r0 = undefined; writes state byte to [r0] and [r0+2], calls
+// symdb: rfu_clearSlot(4, slotIndex)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146C9C.yaml
 	thumb_local_start
 sub_8146C9C:
 	push {r4,lr}
@@ -8013,6 +8033,10 @@ dword_8147A80:
 	.word 0x20102ED
 	thumb_func_end sub_814794C
 
+// symdb: Checks one wireless link slot for a disconnect state (0x26/0x27), releases the RFU slot and updates the connection/error flags.
+// symdb: () -> void; reads slot id byte_2010328, global flag byte_201028C (bit1 = link active), link
+// symdb: array dword_2010CB0; writes byte_201028C, error byte_2010340, eS200BC50+8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147A84.yaml
 	thumb_local_start
 sub_8147A84:
 	push {r4,r5,lr}
@@ -8722,7 +8746,7 @@ dword_8148018:
 
 // symdb: Dispatches a wireless link command/event byte to the matching RFU state-machine action for the wireless battle/trade session.
 // symdb: (r0 = command/event ID byte) -> r0 clobbered; updates link state word_200BC58 of eS200BC50,
-// symdb: sometimes calls rfu_setLinkCommand with a sub-state code; no return value.
+// symdb: sometimes calls sub_813D934 with a sub-state code; no return value.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_handleLinkCommand.yaml
 	thumb_local_start
 rfu_handleLinkCommand:
@@ -22999,6 +23023,9 @@ off_814E94C:
 	.word sound_MusicTable
 	thumb_func_end m4a_SongNumStart
 
+// symdb: Starts playing the given song ID unless it is already playing, in which case it leaves the current playback alone.
+// symdb: (r0 = song ID (u16, low halfword used)) -> r0 = clobbered; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E950.yaml
 	thumb_local_start
 sub_814E950:
 	push {lr}
@@ -23042,6 +23069,9 @@ loc_814E998:
 	bx r0
 	thumb_func_end sub_814E950
 
+// symdb: Plays the BGM with the given music id: restarts it if a different song is loaded, resumes/restarts it if stopped, or runs a special path when its status is negative.
+// symdb: (r0 = music id) -> r0 = void; clobbers r1-r3, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E99C.yaml
 	thumb_local_start
 sub_814E99C:
 	push {lr}
@@ -23808,6 +23838,9 @@ off_814EEBC:
 	.word SoundPWMControl+1
 	thumb_func_end sound_setM4AControl_814EE2C
 
+// symdb: Tears down wireless connection state: marks each child slot for disconnect via the RFU dispatch pointer and clears per-slot status bytes, guarded against re-entry by a magic word.
+// symdb: () -> void; no arguments, no return value (r0 clobbered)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EEC0.yaml
 	thumb_local_start
 sub_814EEC0:
 	push {r4-r7,lr}

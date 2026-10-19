@@ -2099,6 +2099,10 @@ sub_809A868:
 	.balign 4, 0x00
 	thumb_func_end sub_809A868
 
+// symdb: Returns the Bug Frag cost (10/20/30/50 frags) for the currently selected trade option in the Bug Frag trader menu.
+// symdb: (r0 = ignored, r5 = trader menu context struct) -> r0 = frag cost byte for option [r5+0x88];
+// symdb: clobbers r0-r1, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A880.yaml
 	thumb_local_start
 sub_809A880:
 	push {lr}

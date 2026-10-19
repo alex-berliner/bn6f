@@ -975,6 +975,10 @@ off_8130724:
 	.word byte_20065C0
 	thumb_func_end sub_81306F0
 
+// symdb: Records each pick of a two-part code-entry NPC puzzle and, once the sequence is full, checksums both halves to decide success or a fail dialog.
+// symdb: (r0 = struct with the two picked values at +8/+0x18; r5 = puzzle state, count at +0x3C, limit at
+// symdb: +0x34) -> r0 = destroyed by call; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130728.yaml
 	thumb_func_start sub_8130728
 sub_8130728:
 	push {r4-r7,lr}
@@ -5360,6 +5364,10 @@ off_8132978:
 	.word unk_2026C10
 	thumb_func_end sub_81328D0
 
+// symdb: Copies a 30x14-tile GUI image (eGuiSprite2022AA0) into background tile block 1 at tile (0,0).
+// symdb: () -> void; calls CopyBackgroundTiles(0, 0, tileBlock=1, tile_ids=eGuiSprite2022AA0, j=0x1e,
+// symdb: i=0x14)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132980.yaml
 	thumb_local_start
 sub_8132980:
 	push {r4-r7,lr}
@@ -10727,6 +10735,11 @@ off_81351BC:
 	.word word_202A020
 	thumb_func_end sub_8135184
 
+// symdb: Counts how many chips in the folder have the Mega-class (bit 5) flag set in their chip data record, for folder-limit validation.
+// symdb: (r5 = pointer to folder header whose halfword at +0x1E is the chip count; folder entries at
+// symdb: word_202A020, 0x20 bytes each) -> r0 = number of entries whose chip ID (halfword at entry+0x1C
+// symdb: >> 1) has bit 5 set in ChipData byte 9; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81351C0.yaml
 	thumb_local_start
 sub_81351C0:
 	push {r4-r7,lr}
@@ -11391,6 +11404,10 @@ off_8135618:
 	.word word_202A020
 	thumb_func_end registerBattleStartScript_81355EC
 
+// symdb: Tiny getter returning byte 0x02 of the sSubmenu state struct (likely a selection/state index) for the beast-SP text-sequence handlers.
+// symdb: () -> r0 = sSubmenu.unk_02 (byte, zero-extended); no flags set meaningfully (ldrb does not set
+// symdb: flags).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813561C.yaml
 	thumb_local_start
 sub_813561C:
 	ldr r0, off_8135624 // =sSubmenu 
@@ -12580,6 +12597,10 @@ off_8135F94:
 	.word unk_201F4F0
 	thumb_func_end chatbox_runScript_803FD9C_on_eTextScript201D280
 
+// symdb: Loads a two-byte parameter pair for the selected NaviCust board cell from a 3-type x 4-state lookup table into the cell state struct.
+// symdb: (r5 = selected-cell state struct) -> r0 = second byte; writes halfwords [r5+0x28] and [r5+0x2c]
+// symdb: from table entry byte_8135FC4[[r5+0xf]*8 + [r5+0x20]*2]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135FA4.yaml
 	thumb_local_start
 sub_8135FA4:
 	push {lr}
@@ -16528,6 +16549,10 @@ off_8137D48:
 off_8137D4C:
 	.word unk_201CF00
 	thumb_func_end sub_8137D20
+// symdb: Renders up to 7 navi-chip name strings (via text-script lookup) into two tile-index buffers, 8 tiles per name.
+// symdb: (r0 = base index multiplier, r1 = array base, r2/r3 = u16 tile-out buffers, r3<<12|0x200 on
+// symdb: stack = param for callee) -> void; r0-r5 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137D50.yaml
 	thumb_local_start
 sub_8137D50:
 	push {r4-r7,lr}
@@ -17398,6 +17423,9 @@ off_813837C:
 	.word sub_8138700+1
 	thumb_func_end game_runModeHandlersAndFrameTick
 
+// symdb: Counts down a frame timer on some object; when it hits zero, writes fixed screen-scroll values into the toolkit RenderInfo and triggers a screen fade, then moves the object to its next state.
+// symdb: (r5 = object: u16 timer at +4, u8 state at +1) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813838C.yaml
 	thumb_local_start
 sub_813838C:
 	push {lr}
@@ -17545,6 +17573,10 @@ sub_8138478:
 	mov r0, #0
 	pop {pc}
 	thumb_func_end sub_8138478
+// symdb: Queues a 0x600-byte tile/graphics chunk upload from the decomp buffer into VRAM at a per-object slot's offset.
+// symdb: (r0 = unused by this routine; r5 = caller-set object struct whose byte at +0xD is the VRAM slot
+// symdb: index) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81384AC.yaml
 	thumb_local_start
 sub_81384AC:
 	push {r3-r7,lr}

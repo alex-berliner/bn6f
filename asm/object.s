@@ -910,6 +910,10 @@ locret_800BED8:
 	pop {pc}
 	thumb_func_end sub_800BE2C
 
+// symdb: Boolean battle check: true only if this object's alliance slot is unused (or owned by it) in state 0/3 while the opposite alliance slot is in state 2 with a zero counter.
+// symdb: (r0 = ? ignored; r5 = battle object, reads oBattleObject_Alliance) -> r0 = 1 if condition met
+// symdb: else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BEDA.yaml
 	thumb_func_start sub_800BEDA
 sub_800BEDA:
 	push {lr}
@@ -3651,6 +3655,10 @@ loc_800D18A:
 	pop {r6,r7,pc}
 	thumb_func_end sub_800D15A
 
+// symdb: Scans three successive rows with the filtered panel-row search and returns the smallest (or, in practice, largest) matching row index.
+// symdb: (r0 = object/handle passed to the row scan, r2/r3 = filter params passed through) -> r0 =
+// symdb: extreme matching row (0 if no row matched); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D190.yaml
 	thumb_local_start
 sub_800D190:
 	push {r4,lr}
@@ -4344,6 +4352,10 @@ locret_800D634:
 	pop {r4,pc}
 	thumb_func_end object_checkPanelTypeMatchesValue_800D618
 
+// symdb: Checks that a battlefield panel-group and its two adjacent groups (index-1 and index+1) are all still of the given alliance, returning 0 if intact and 1 if any is not.
+// symdb: (r0 = panel-group index, r1 = alliance value) -> r0 = 0 if all three groups match, 1 otherwise;
+// symdb: flags clobbered by BL
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D636.yaml
 	thumb_local_start
 sub_800D636:
 	push {r4,r5,r7,lr}
@@ -5611,7 +5623,7 @@ loc_800E72C:
 // symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several
 // symdb: CollisionData status timers, clears/raises ObjectFlags1/ObjectFlags2 bits, sets CurAction=4/6/7,
 // symdb: resets CurPhaseAndPhaseInitialized and Unk_5c snapshot, conditionally calls sub_80E09EE /
-// symdb: sub_80E4B34 / battle_spawnLinkedType4.
+// symdb: sub_80E4B34 / sub_80E9BDC.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickStatusEffectTimers_800E730.yaml
 	thumb_func_start object_tickStatusEffectTimers_800E730
 object_tickStatusEffectTimers_800E730:

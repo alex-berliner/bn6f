@@ -582,6 +582,10 @@ UpdateBattleObjectLinkedList:
 
 	thumb_local_start
 // unused
+// symdb: Inserts a battle object at the front of the global battle-objects linked list (right after the list head).
+// symdb: (r5 = address of the object's oBattleObject_LinkedList field) -> r0 = pointer to the start of
+// symdb: that object; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003440.yaml
 sub_8003440:
 	mov r0, #oBattleObject_LinkedList_Size
 	sub r0, r5, r0
@@ -1602,6 +1606,9 @@ Is_eScenarioEffectState2000780_Initialized:
 	mov pc, lr
 	thumb_func_end Is_eScenarioEffectState2000780_Initialized
 
+// symdb: Returns 1 if the scenario effect state is initialized and its ID byte equals the requested ID, else 0.
+// symdb: (r0 = scenario effect ID byte) -> r0 = 1 if state initialized && byte_2000781 == r0, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80039D4.yaml
 	thumb_func_start sub_80039D4
 sub_80039D4:
 	push {r4-r7,lr}
@@ -3679,6 +3686,10 @@ byte_8004B14:
 	.byte 0x62, 0x0
 	thumb_func_end sub_80049FC
 
+// symdb: Renders an encoded tile stream (byte_2006848) into the BG map as a run of tile writes, then resets the stream pointer.
+// symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *dword_2006C48, writes
+// symdb: tiles via bgmap_WriteTileIdAtBlock_800187C, resets cursor to buffer start
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004B28.yaml
 	thumb_local_start
 sub_8004B28:
 	push {r4-r7,lr}
@@ -10979,6 +10990,9 @@ locret_8007FD0:
 	pop {pc}
 	thumb_func_end battle_pauseAndFadeOut
 
+// symdb: Requests the battle engine to switch to battle state 8 (resetting the phase counter), unless a global flag in the 0x200BC50 IWRAM struct is set.
+// symdb: (r5 = *BattleState) -> void; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007FD2.yaml
 	thumb_local_start
 sub_8007FD2:
 	push {lr}
@@ -19589,6 +19603,10 @@ sub_800B75A:
 	mov pc, lr
 	thumb_func_end sub_800B75A
 
+// symdb: Deletes one entry from a battle hand slot by shifting the slot's data left by 2 bytes until the 0xFFFF end marker is reached.
+// symdb: (r0 = battle hand slot index (for getBattleHandAddr), r1 = halfword entry index within the slot)
+// symdb: -> void; no return value, flags clobbered.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B762.yaml
 	thumb_local_start
 sub_800B762:
 	push {r4,r6,lr}

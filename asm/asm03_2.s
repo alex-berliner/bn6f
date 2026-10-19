@@ -116,6 +116,10 @@ off_8046034:
 	.word byte_200A220
 	thumb_func_end sprite_runAnimationScript
 
+// symdb: Draws a W×H grid of 16x16-px sprite metatiles, one OAM entry per tile, using tile descriptors from a static table.
+// symdb: (r0 = tile descriptor index, r2 = columns, r3 = rows, r4 = start x, r5 = start y — non-ABI use
+// symdb: of r4/r5) -> r0 = destroyed; queues OAM entries
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8046038.yaml
 	thumb_local_start
 sub_8046038:
 	push {r6,r7,lr}
@@ -10481,6 +10485,9 @@ locret_804C3C2:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804C3BC
 
+// symdb: Draws a fixed 12x6 tile window (tile data at byte_86A13F0) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
+// symdb: () -> r0 = destroyed; sets bit 0x800 of toolkit->RenderInfo->field0 (halfword)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C3C4.yaml
 	thumb_local_start
 sub_804C3C4:
 	push {r4-r7,lr}
@@ -10865,6 +10872,10 @@ dword_804C6B4:
 	.word 0x10000E02
 	thumb_func_end sub_804C694
 
+// symdb: Emits one 4-byte packet (0x48,0x37 + two data bytes) into the toolkit scratch struct, stepping through 64 two-byte records of the selected table before resetting and zero-filling.
+// symdb: (r0 = array of pointers to 2-byte record tables; uses r5 struct: +0xC table selector byte, +0x18
+// symdb: record counter, +0xD state byte) -> r0 = void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C6C4.yaml
 	thumb_local_start
 sub_804C6C4:
 	push {r4-r7,lr}

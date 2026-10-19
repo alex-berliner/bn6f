@@ -543,6 +543,10 @@ word_8081368:
 	.hword 0x0, 0x0
 	thumb_func_end sub_8081308
 
+// symdb: Reads a byte property from a background data table selected by a background id (>=0x80), returning 7 if the id has no table.
+// symdb: (r0 = byte/property index into the selected data array, r1 = background id) -> r0 = data byte,
+// symdb: or 7 if id < 0x80 or the table entry is null; flags clobbered by tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808137C.yaml
 	thumb_local_start
 sub_808137C:
 	push {r4-r7,lr}

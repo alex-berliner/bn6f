@@ -3977,6 +3977,9 @@ dword_8143D48:
 	.word 0x16F1
 	thumb_func_end sub_8143CC8
 
+// symdb: Counts how many event flags in a dynamic list are currently set, returning the set count (r0) and total list size (r1).
+// symdb: () -> r0 = number of set flags, r1 = total number of flags in the list; Z set if count is 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143D4C.yaml
 	thumb_func_start sub_8143D4C
 sub_8143D4C:
 	push {r4-r7,lr}
