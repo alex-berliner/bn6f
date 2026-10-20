@@ -6941,6 +6941,11 @@ locret_8133534:
 	.word byte_8133174
 	thumb_func_end beastsp_handleInputAndScripts
 
+// symdb: Battle-side mode dispatcher that calls one of four per-mode handlers (submenu input, spawn-panel confirm, or two local routines) selected by [r5+0x68].
+// symdb: void battle_dispatchModeHandler_8133540(void); // in: r4 (passed through), r5 = object pointer,
+// symdb: r10 (passed through), lr = return; out: r5, r8-r12 as left by the selected handler; clobbers
+// symdb: r0-r3, r6, r7, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133540.yaml
 	thumb_local_start
 sub_8133540:
 	push {lr}
@@ -9208,6 +9213,10 @@ battle_spawnFixedArgEffect_wrapper_81345E8:
 	pop {r4-r7,pc}
 	thumb_func_end battle_spawnFixedArgEffect_wrapper_81345E8
 
+// symdb: Parameterless battle-effect update wrapper that invokes battleObject_updateShieldOrStatusEffect_813468C with one fixed argument set (0x5A, 32x32 tile dims, 19, the byte_81331F4 table, flag 0x40000000), forwarding the caller's r5 as the object/state pointer.
+// symdb: void sub_81345FC(r5 = object/state pointer passed through to the callee); returns the callee's
+// symdb: r0-r3 and NZCV flags to the caller verbatim; r4-r7 preserved, lr clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81345FC.yaml
 	thumb_local_start
 sub_81345FC:
 	push {r4-r7,lr}
@@ -13863,6 +13872,9 @@ loc_8136768:
 	pop {r4-r7,pc}
 	thumb_func_end battle_removeObjectTagFromList
 
+// symdb: Copies an 8-byte block from the work/save buffer at 0x2000090 into the battle work area at 0x2022B70.
+// symdb: void sub_813676C(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813676C.yaml
 	thumb_local_start
 sub_813676C:
 	push {lr}
@@ -13874,6 +13886,9 @@ sub_813676C:
 	.balign 4, 0x00
 	thumb_func_end sub_813676C
 
+// symdb: Copies 8 bytes from the battle state buffer at 0x2022B70 into the work buffer at 0x2000090.
+// symdb: void sub_813677C(void)
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813677C.yaml
 	thumb_local_start
 sub_813677C:
 	push {lr}
@@ -14828,6 +14843,9 @@ off_8136EC8:
   .word NULL
 	thumb_func_end battleObject_runBeastSpFunction_8136DE0
 
+// symdb: Counts 20 frames in the object's current phase, then switches its state byte to 4 to end the phase.
+// symdb: void sub_8136EE4(u8 *obj /* r5 */); no return value; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8136EE4.yaml
 	thumb_local_start
 sub_8136EE4:
 	push {lr}
@@ -15110,6 +15128,10 @@ locret_81370C2:
 	pop {pc}
 	thumb_func_end beastOutDialogDelayStep
 
+// symdb: Stores state byte 0x30 at *r5, but only while chatbox flag eFlags2009F38 bit 0x80 is still clear.
+// symdb: void sub_81370C4(u8* dest /* r5 */)  // reads no other inputs, returns nothing, no flags read
+// symdb: back
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81370C4.yaml
 	thumb_local_start
 sub_81370C4:
 	push {lr}
@@ -15228,6 +15250,9 @@ locret_813719E:
 	pop {pc}
 	thumb_func_end sub_8137170
 
+// symdb: Tests chatbox eFlags bit 0x80 and writes 0x40 to a caller-supplied byte only when that flag is clear.
+// symdb: void chatbox_store40IfFlag80Clear_81371A0(u8* dest /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81371A0.yaml
 	thumb_local_start
 sub_81371A0:
 	push {lr}
@@ -15341,6 +15366,9 @@ locret_813725A:
 	pop {pc}
 	thumb_func_end navicust_delayedDialogTimer
 
+// symdb: If chatbox flag 0x80 is not set, writes the state code 0x50 into a caller-supplied object byte.
+// symdb: void sub_813725C(u8* obj /* r5 */); clobbers r0 and NZ flags, preserves r1; no return value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813725C.yaml
 	thumb_local_start
 sub_813725C:
 	push {lr}
@@ -15476,6 +15504,9 @@ locret_8137366:
 	pop {pc}
 	thumb_func_end sub_8137334
 
+// symdb: If chatbox flag 0x80 in eFlags2009F38 is clear, resets the byte counter at *r5 to 100.
+// symdb: void sub_8137368(u8* counter /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8137368.yaml
 	thumb_local_start
 sub_8137368:
 	push {lr}
