@@ -770,7 +770,7 @@ signed int __fastcall battle_tickChipLockoutLockoutAndAttack_8089B2E(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v3 )
     {
-        chatbox_8045EDC(2, *(v2 + 16));
+        chatbox_storeWord_8045EDC(2, *(v2 + 16));
         ai_runChatScript(17);
         ai_setAIDataUnk18_8089CB0(30);
         *v1 = 112;

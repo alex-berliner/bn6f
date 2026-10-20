@@ -7311,9 +7311,9 @@ locret_8042EE6:
 // symdb: Compares a chatbox text-table entry (selected by index) byte-for-byte against a buffer stored at +0x4C of a record, returning 1 on full match and 0 on the first mismatch.
 // symdb: u32 chatbox_entryMatchesBuffer(u32 entryIndex, s32 byteCount, u32 recordBase); // r0=entryIndex,
 // symdb: r1=byteCount, r5=recordBase -> r0=1/0; clobbers flags only
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042EE8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_entryMatchesBuffer_8042EE8.yaml
 	thumb_local_start
-chatbox_8042EE8:
+chatbox_entryMatchesBuffer_8042EE8:
 	push {r1-r7,lr}
 	lsl r0, r0, #3
 	ldr r2, off_8042F0C // =byte_8045CCC
@@ -7338,7 +7338,7 @@ locret_8042F0A:
 	.balign 4, 0
 off_8042F0C:
 	.word byte_8045CCC
-	thumb_func_end chatbox_8042EE8
+	thumb_func_end chatbox_entryMatchesBuffer_8042EE8
 
 	thumb_local_start
 chatbox_8042F10:
@@ -8344,7 +8344,7 @@ loc_804362C:
 	mov r1, #0x80
 	ldr r1, [r5,r1]
 	sub r1, #1
-	bl chatbox_8042EE8
+	bl chatbox_entryMatchesBuffer_8042EE8
 	tst r0, r0
 	beq loc_8043672
 	b loc_8043664
@@ -10760,9 +10760,9 @@ off_8045ED8:
 // symdb: Writes one 32-bit value into the active chatbox's word buffer at a given slot index.
 // symdb: void chatbox_storeWord(u32 slot, u32 value, Toolkit *toolkit); // r0=slot index, r1=value,
 // symdb: r10=toolkit; returns r5 unchanged (caller artifact)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8045EDC.yaml
-	thumb_func_start chatbox_8045EDC
-chatbox_8045EDC:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_storeWord_8045EDC.yaml
+	thumb_func_start chatbox_storeWord_8045EDC
+chatbox_storeWord_8045EDC:
 	push {r2-r7,lr}
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_ChatboxPtr]
@@ -10771,7 +10771,7 @@ chatbox_8045EDC:
 	add r3, r3, r0
 	str r1, [r2,r3]
 	pop {r2-r7,pc}
-	thumb_func_end chatbox_8045EDC
+	thumb_func_end chatbox_storeWord_8045EDC
 
 	thumb_func_start chatbox_8045EEC
 chatbox_8045EEC:

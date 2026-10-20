@@ -3814,7 +3814,7 @@ signed int chatbox_8042EC8()
 
 
 // 0x8042ee8
-signed int __fastcall chatbox_8042EE8(int a1, int a2)
+signed int __fastcall chatbox_entryMatchesBuffer_8042EE8(int a1, int a2)
 {
     int v2; // r5
     char *v3; // r2
@@ -4507,7 +4507,7 @@ LABEL_7:
         *(v1 + 12) = 0;
         *(v1 + 120) = 4;
         chatbox_set_eFlags2009F38(32);
-        if ( chatbox_8042EE8(*(v0 + 5), *(v1 + 128) - 1) )
+        if ( chatbox_entryMatchesBuffer_8042EE8(*(v0 + 5), *(v1 + 128) - 1) )
             PlaySoundEffect(*(v1 + 110), 110, v27);
     }
     chatbox_clearFlags_3e(17);
@@ -4904,7 +4904,7 @@ int __fastcall chatbox_8045ED0(int a1)
 
 
 // 0x8045edc
-int __fastcall chatbox_8045EDC(int a1, int a2)
+int __fastcall chatbox_storeWord_8045EDC(int a1, int a2)
 {
     int v2; // r10
     int result; // r0

@@ -1576,7 +1576,7 @@ loc_8089B2A:
 
 // symdb: AI handler that locks the chip queue and queues a PwrAtk chip when the chip lockout timer is active.
 // symdb: (r5 = AIData*, r7 = ?, r10 = Toolkit*) -> r0 = 1 ; side effects: writes AIData[0x18]=0x70, calls
-// symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
+// symdb: chatbox_storeWord_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockoutLockoutAndAttack_8089B2E.yaml
 	thumb_local_start
 battle_tickChipLockoutLockoutAndAttack_8089B2E:
@@ -1585,7 +1585,7 @@ battle_tickChipLockoutLockoutAndAttack_8089B2E:
 	beq loc_8089B50
 	mov r0, #2
 	ldr r1, [r7,#0x10]
-	bl chatbox_8045EDC
+	bl chatbox_storeWord_8045EDC
 	mov r0, #0x11
 	bl ai_runChatScript
 	mov r0, #0x1e
