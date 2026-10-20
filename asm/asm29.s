@@ -7310,6 +7310,10 @@ sub_80A8980:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8980
 
+// symdb: Handles a disappearing overworld object: if bit 0x10000 in the sprite-status word at +0x28 is set, clears its shadow, sets state byte [+8]=8, plays a variant sound (0x73 or 0xA4 chosen by [+5]), and persistently sets the event flag from [+4] (with sub_81433E4(1) called in the second variant).
+// symdb: (r0 = object struct in r5 convention, fields used) -> r0 = SetEventFlag result; side effects:
+// symdb: state byte [+8]=8, shadow cleared, sound played, event flag [+4] set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8988.yaml
 	thumb_local_start
 sub_80A8988:
 	push {r4-r7,lr}
@@ -7546,6 +7550,9 @@ off_80A8B40:
 	.word sub_80A8C08+1
 	thumb_func_end sub_80A8B2C
 
+// symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from sub_80A8D02(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
+// symdb: (r4/r5 = object record) -> void; also calls sprite_update on the object every frame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8B4C.yaml
 	thumb_local_start
 sub_80A8B4C:
 	push {r4-r7,lr}

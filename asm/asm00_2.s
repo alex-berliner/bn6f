@@ -167,6 +167,11 @@ locret_800EE96:
 	pop {r5-r7,pc}
 	thumb_func_end battle_getEnemyChipAttackParams
 
+// symdb: After spawning the chip-use effect (with sound 0x8D when applicable), look up the chip's data, optionally skip on bit 0x80 of +0x16, then subtract an element-indexed halfword value from the actor's +0x28 counter, clamping to 0.
+// symdb: (r5 = battle object ptr (Alliance read), r6 = user/attack record: chip ID at +0x34, counter at
+// symdb: +0x28) -> r0 clobbered; writes halfword table value to word_200F3C4-indexed scratch and clamps
+// symdb: [r6,#0x28] down by it; no meaningful return.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EE98.yaml
 	thumb_local_start
 sub_800EE98:
 	push {r0-r4,lr}
@@ -1777,6 +1782,10 @@ locret_800F8CC:
 	pop {r4,r5,pc}
 	thumb_func_end sub_800F8B0
 
+// symdb: Per-frame destroy-state step for a battle object: returns 2 if bit 0x40000 is clear, otherwise runs a 20-frame blink timer that clears the visible bit on odd-half frames and returns 1 when the timer expires, else 0.
+// symdb: (r0 = object status/flags word, r5 = battle object pointer, not saved) -> r0 = 2 if bit 0x40000
+// symdb: clear, 0 while counting down, 1 when timer expired; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F8CE.yaml
 	thumb_func_start sub_800F8CE
 sub_800F8CE:
 	push {r4,lr}
@@ -3648,6 +3657,9 @@ loc_80104B6:
 	pop {r4,r7,pc}
 	thumb_func_end battle_onHit
 
+// symdb: Triggers a battle object's forward panel movement by computing the target pixel coordinate one panel ahead in its facing direction and invoking the per-step mover sub_80E1D7A, then plays sound effect 0x90.
+// symdb: (r5 = battle object pointer) -> void; corrupts r0-r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80104E0.yaml
 	thumb_func_start sub_80104E0
 sub_80104E0:
 	push {r4,r7,lr}
@@ -4500,6 +4512,10 @@ byte_8010B54:
 	.byte 0x0, 0x64, 0x0
 	thumb_func_end sub_8010AE4
 
+// symdb: Returns a ramp value: if battle flag 0x40 is set, returns (entry at unk_2036120[r1])[0x28] + 0x1500; otherwise maps the actor's TotalDamageTaken (r0) >>7 through piecewise-linear segments (≤0x40: 10+22*t/64; ≤0x70: 32+96*(t-64)/48; <0x80: 128+128*(t-112)/15), or 0xa as fallback. r1 is the unk_2036120 record index, r0 is the actor pointer.
+// symdb: (r0 = actor index/param, r1 = index into the 0x1D0-stride array at 2036120) -> r0 = computed
+// symdb: value; r1 clobbered by BIOS Div.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010B78.yaml
 	thumb_local_start
 sub_8010B78:
 	push {lr}
@@ -4710,6 +4726,10 @@ byte_8010CB8:
 	.byte 0x0, 0x24, 0x0, 0x0, 0x0, 0x26, 0x0, 0x0, 0x0, 0x28, 0x0, 0x0
 	thumb_func_end getChipScaleOrRaw
 
+// symdb: Returns the halfword at chip record +0x1A if < 1001, otherwise indexes the lookup table at byte_8020E54 (22-byte entries) using (value-1001) and reads the halfword at +0xA within that entry.
+// symdb: (r0 = chip ID) -> r0 = halfword index (raw chip data field +0x1A if < 1001, else table
+// symdb: byte_8020E54 entry [(field-1001)] halfword at +0xA); flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010CE0.yaml
 	thumb_func_start sub_8010CE0
 sub_8010CE0:
 	push {r4,lr}
@@ -7481,6 +7501,10 @@ battle_setBeastOutAttackDamage:
 	pop {pc}
 	thumb_func_end battle_setBeastOutAttackDamage
 
+// symdb: AI attack setup for Beast Out: writes chip 0x49 params via loc_80126EA, reads alliance from r5+oBattleObject_Alliance, scales the beast power-Atk base entry via battle_beastPwrAtk_addScaledBaseFromIndex_8010D04 (with r0=0x14), stores the result in oAIAttackVars_Damage and 0x94 in oAIAttackVars_ExtraDamage at r7.
+// symdb: (r0 unused on entry; r5 = battle object, r7 = AI attack vars struct) -> r0 preserved from the
+// symdb: chip-param call; stores damage to oAIAttackVars_Damage and 0x94 to oAIAttackVars_ExtraDamage
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801208A.yaml
 	thumb_local_start
 sub_801208A:
 	push {lr}
@@ -9626,6 +9650,10 @@ sortThreeEntries:
 	pop {pc}
 	thumb_func_end sortThreeEntries
 
+// symdb: Moves a battle panel reservation from the r7[r0] entry to the r7[r1] entry by claiming the panel for the destination, storing sub_8012DB8's result byte into the destination slot, and releasing the source's claim; returns early if source and destination bytes already differ.
+// symdb: (r0 = source index into r7 table, r1 = destination index into r7 table) -> r0 = result of
+// symdb: sub_8012DB8 written to [r7+dest]; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D8C.yaml
 	thumb_local_start
 sub_8012D8C:
 	push {r4,r6,lr}
@@ -13226,7 +13254,7 @@ off_80144BC:
 
 // symdb: Runs the start-of-turn "open" processing for a battle object — clears its chip-hand buffer, resets AI state, handles the control-inverting status effect against the opposing player, and rebuilds the object's collision/panel setup.
 // symdb: void battle_beginTurnOpenProcess(BattleObject* obj /*r5*/, u32 fullPath /*r7*/) — r5 = battle
-// symdb: object to process on entry; second entry battle_beginTurnOpenSetup is the same routine with r7 forced to 1;
+// symdb: object to process on entry; second entry sub_80144CA is the same routine with r7 forced to 1;
 // symdb: returns nothing meaningful (r0-r3, flags clobbered, callee-saved r4/r7 restored)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_beginTurnOpenProcess_80144C0.yaml
 	thumb_func_start battle_beginTurnOpenProcess_80144C0
@@ -16847,6 +16875,10 @@ _GetRandomRelativePanelFiltered:
 	pop {r4,r6,pc}
 	thumb_func_end _GetRandomRelativePanelFiltered
 
+// symdb: Battle AI helper: collects all matching panels except the object's own, finds the column nearest to the object, then returns a randomly chosen row in that column.
+// symdb: (r5 = battle object; reads [r5+0x13] own column, [r5+0x16] variant id) -> r0 = packed panel
+// symdb: coord (column in high nibble, row&7 in low bits); r4/r6/r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015EC6.yaml
 	thumb_local_start
 sub_8015EC6:
 	push {r4,r6,r7,lr}
@@ -18239,6 +18271,10 @@ off_8016A34:
 	.word 0x2000
 	thumb_func_end handleRenderBlindForSpecificObjectsMaybe_80169BE
 
+// symdb: For the current battle object's navi sprite, picks a halfword from a 26-entry RGB555 color ramp (alternate ramp when form id == 0x18) indexed by (battleState_Unk_40 mod 26), and stores it via sprite_setColorShader to produce a cycling shader effect.
+// symdb: (r0 = form/variant id; 0x18 selects the alternate shader table) -> r0 = chosen shader id given
+// symdb: to sprite_setColorShader; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016A38.yaml
 	thumb_local_start
 sub_8016A38:
 	push {r4,lr}
@@ -19294,6 +19330,9 @@ off_80171C0:
 	.word sub_8017274+1
 	thumb_func_end sub_80171A6
 
+// symdb: Chains battleObject_destroy_80170E4 (tears down a battle object, clearing collision/charges/chips/AI/sprite and dispatching destroy events) with musicGameState_8000784 (switches sound driver music state and marks BGM as off). A no-arg, no-return thunk.
+// symdb: () -> void; no arguments used, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80171CC.yaml
 	thumb_local_start
 sub_80171CC:
 	push {lr}
@@ -19381,6 +19420,11 @@ locret_8017272:
 	pop {r4,r7,pc}
 	thumb_func_end battle_whiteFlashVanishHandler
 
+// symdb: Object step: if no screen fade is active, writes CUR_STATE_DESTROY to terminate the object; otherwise, if bit 2 of the fade state is set, forces the sprite palette white, presumably to blend with an in-progress white-out fade.
+// symdb: (r0 = fade state bitfield from IsScreenFadeActive, r5 = battle object) -> writes
+// symdb: r5->curStateActionPhase (oBattleObject_CurStateActionPhaseAndPhaseInitialized) =
+// symdb: CUR_STATE_DESTROY, or forces sprite palette white; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017274.yaml
 	thumb_local_start
 sub_8017274:
 	push {r4,lr}
@@ -32725,6 +32769,10 @@ off_801E394:
 	.word byte_801EE78
 	thumb_func_end ow_drawBgTilesSetDrawnFlag
 
+// symdb: Publishes the fixed TextScript86F0374 graphic to VRAM at 0x6009560 via renderTextGfx_8045F8C using the caller's +3 byte, then sets request bit 0x800 on eStruct2035280 and dispatches it.
+// symdb: (r0 = state struct; +3 passed to renderer) -> r0 = clobbered; sets request bit 0x800 and
+// symdb: dispatches it
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E398.yaml
 	thumb_func_start sub_801E398
 sub_801E398:
 	push {r4-r7,lr}
@@ -32856,6 +32904,10 @@ sub_801E468:
 	pop {pc}
 	thumb_func_end sub_801E468
 
+// symdb: Sets the HUD variant (0..2) in eStruct2035280+0xB, queues the matching GFX transfer list, marks the HUD dirty (0x3F at +0x0), and dispatches bit 0x1000.
+// symdb: (r0 = variant index 0..2) -> r0 = dispatch_801DA48(0x1000) result; touches eStruct2035280 bytes
+// symdb: +0xB and +0x0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E474.yaml
 	thumb_func_start sub_801E474
 sub_801E474:
 	push {lr}

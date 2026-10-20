@@ -2135,6 +2135,10 @@ loc_800C80E:
 	pop {r4-r7,pc}
 	thumb_func_end battle_updatePanels_800C746
 
+// symdb: Iterates panels 1..N selected by a bitmask in r1 (bit 0 ignored), writes the r2 state byte to each panel's state field at +3 and 0x5A to its timer at +0x10, then refreshes panel parameters via object_updatePanelParameters.
+// symdb: (r0 = battle context, r1 = bitmask of panel indices (bit n = panel n, bit 0 ignored), r2 = state
+// symdb: byte) -> r0 = destroyed; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C81E.yaml
 	thumb_local_start
 sub_800C81E:
 	push {r4-r7,lr}
@@ -3635,6 +3639,10 @@ loc_800D154:
 	pop {r6,r7,pc}
 	thumb_func_end sub_800D120
 
+// symdb: Walks rows of a column from a starting row by step r4, tracking the last row whose panel passes object_checkPanelParameters, and returns the original column (with last matching row) unless only the start row ever matched, in which case it returns 0.
+// symdb: (r0 = column, r1 = start row, r4 = row step [not saved by this func]) -> r0 = column if some
+// symdb: later row matched else 0, r1 = last matching row; flags clobbered by tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D15A.yaml
 	thumb_func_start sub_800D15A
 sub_800D15A:
 	push {r6,r7,lr}
@@ -3730,6 +3738,10 @@ loc_800D1EC:
 	pop {r4,pc}
 	thumb_func_end object_findExtremeMatchingRow
 
+// symdb: Scans rows 1-3 of the battle grid inward from the far column (chosen via two facing args), and writes one byte per row to the caller-provided r7 buffer for the first panel whose byte[3] equals r0 and whose flags pass object_checkPanelParameters, returning the count.
+// symdb: (r0 = facingA/value, r1 = facingB, r2 = flag mask set, r3 = flag mask clear; r7 = output byte
+// symdb: buffer) -> r0 = number of panels written; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D1F0.yaml
 	thumb_local_start
 sub_800D1F0:
 	push {r6,lr}
@@ -3798,6 +3810,11 @@ loc_800D25C:
 	pop {r6,pc}
 	thumb_func_end sub_800D1F0
 
+// symdb: For three depth levels (1-3), walks each panel-row coordinate from the object's start column by -flip until the panel type matches, then by +flip past remaining panels, calling object_checkPanelParameters to verify flag masks and storing up to three packed (coord|depth<<4) bytes.
+// symdb: (r0 = panel-type value to match (also arg to object_getFlipDirection), r1 = facing flag for
+// symdb: flip, r2/r3 = panel flag masks; r5 = object (byte 0x12 = start coord), r7 = output byte array)
+// symdb: -> r0 = number of coordinates written
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D270.yaml
 	thumb_local_start
 sub_800D270:
 	push {r6,lr}

@@ -6560,6 +6560,10 @@ off_8146E8C:
 	.word unk_2010230
 	thumb_func_end sub_8146E78
 
+// symdb: Resets RFU receive state for up to 4 connection slots: clears queue globals, rebuilds the active-slot bitmask from dword_2010CC0+2, zeroes per-slot/recv state, then for each active slot calls rfu_clearSlot(0xC) and rfu_setRecvBuffer(0x20, slot, r1[slot], size).
+// symdb: (r0 = buffer cleared with size>>1 halfwords, r1 = array[4] of recv buffer pointers, r2 = buffer
+// symdb: size in bytes) -> r0 = 0; sets error bit 0x80 in word_200BC58 if buffer setup fails
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E90.yaml
 	thumb_local_start
 sub_8146E90:
 	push {r4-r7,lr}
@@ -7506,6 +7510,10 @@ sub_81475B8:
 	bx r0
 off_81475D0:
 	.word dword_814FE94
+// symdb: Per-frame update for the RFU wireless state machine: spin-waits on a busy flag, optionally issues rfu_REQ_disconnect, then dispatches on the 16-bit state at eS200BC50+8 across cases 1/3/4/9/0xB/0x22/0x34/0x40 to drive rfu_clearAllSlot, sub_8144EF8, sub_8145120, sub_813D934, etc.
+// symdb: (r0 = context/handle passed through to sub_8144EF8, saved in r5) -> r0 = none; updates state
+// symdb: word [eS200BC50+8], flags byte_2010368/byte_2010340/byte_2010284
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81475D4.yaml
 	thumb_func_start sub_81475D4
 sub_81475D4:
 	push {r4,r5,lr}
@@ -9425,6 +9433,9 @@ def_814825A:
 	.byte 0, 0
 	thumb_func_end sub_8148234
 
+// symdb: Initializes RFU link state for a multiplayer data transfer: clears per-player/transfer work buffers (CpuSet fill), resets RFU structs, zeroes link-state globals and per-player entries, sets ready/active flags, registers send/receive handlers, configures per-player recv buffers/slots from the connected-player bitmap, then invokes rfu_UNI_setSendData and rfu_UNI_readySendData, writing 0x30 to a timeout word.
+// symdb: () -> r0 = 0 on success, 1 if rfu_UNI_setSendData failed; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148540.yaml
 	thumb_func_start sub_8148540
 sub_8148540:
 	push {r4-r7,lr}

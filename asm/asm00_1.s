@@ -19323,6 +19323,10 @@ locret_800B50C:
 	pop {pc}
 	thumb_func_end sub_800B4CE
 
+// symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from byte_203F5A4 when GetBattleEffects has bit 0x8 set.
+// symdb: () -> void; reads byte_203F4A4 (and byte_203F5A4), writes entry+0x44 (word) and entry+0xE (byte)
+// symdb: of unk_2036120 records 0/1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B50E.yaml
 	thumb_local_start
 sub_800B50E:
 	push {lr}
@@ -19694,6 +19698,9 @@ locret_800B732:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_800B6F2
 
+// symdb: Sums 12 halfwords from word_2000FA0 and returns a tier: 0 if sum > 10800, 1 if sum > 7200, else 2.
+// symdb: () -> r0 = 0 if sum > 10800, 1 if sum > 7200, else 2; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B734.yaml
 	thumb_func_start sub_800B734
 sub_800B734:
 	ldr r0, off_800B86C // =word_2000FA0

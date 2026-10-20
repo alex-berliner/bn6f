@@ -3190,6 +3190,9 @@ off_8143398:
 	.word byte_2000D20
 	thumb_func_end sub_8143314
 
+// symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs sub_81433D2(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
+// symdb: () -> r0 = 0 (success); no flags relied on by caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814339C.yaml
 	thumb_local_start
 sub_814339C:
 	push {r4-r7,lr}
@@ -3939,6 +3942,10 @@ sub_8143C30:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143C30
 
+// symdb: Looks up the Groundman minigame result map index, swaps the overworld NPC spawn list to one of two hardcoded lists via npc_freeAllObjectsThenSpawnObjectsFromList, then sets event flag 1721.
+// symdb: () -> r0 = undefined; sets EVENT_1721, replaces overworld NPC list via
+// symdb: npc_freeAllObjectsThenSpawnObjectsFromList
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C62.yaml
 	thumb_local_start
 sub_8143C62:
 	push {r4-r7,lr}
@@ -3958,6 +3965,9 @@ off_8143C80:
 	.word off_8073650
 	thumb_func_end sub_8143C62
 
+// symdb: Saves current GroundMan minigame progress for the active map index: sets the BBS request flag (0x7 of event byte 0x17) and EVENT_1BB, then walks the map's 8-byte entry table at off_8143D0C, copying each entry's +4 32-bit value into unk_2011EA0[id*4] and setting event flag 0x16F0+id for each nonzero entry, returning 0.
+// symdb: (no meaningful args) -> r0 = 0; sets EVENT_1BB and event flags 0x16F0+item
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C88.yaml
 	thumb_local_start
 sub_8143C88:
 	push {r4-r7,lr}
@@ -3991,6 +4001,9 @@ loc_8143CC4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143C88
 
+// symdb: Clears BBS flag, event flag 0x1BB, then for the selected groundman minigame map table, zeros per-slot records at unk_2011EA0+index*4 and clears event flags 0x16F0+index for each nonzero entry.
+// symdb: () -> r0 = 0; no flags relevant
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143CC8.yaml
 	thumb_local_start
 sub_8143CC8:
 	push {r4-r7,lr}
@@ -4532,6 +4545,9 @@ byte_8144040:
 	.byte 0x1B, 0x35, 0x4A, 0x5A, 0x64, 0x0, 0x0, 0x0
 	thumb_func_end sub_8144010
 
+// symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sub_811E744 step, and a fade+subsystem-4 cleanup before the common tail.
+// symdb: () -> r0 = 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144048.yaml
 	thumb_func_start sub_8144048
 sub_8144048:
 	push {r4-r7,lr}

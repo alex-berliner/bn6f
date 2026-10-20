@@ -134,7 +134,7 @@ sound_dispatchTask_8000630:
 	pop {pc}
 	thumb_func_end sound_dispatchTask_8000630
 
-// symdb: Looks up a sound handler by sound id in a table and hands it, with its arguments, to the sound dispatcher sound_8000808 via the shared callback battle_smashApplyState.
+// symdb: Looks up a sound handler by sound id in a table and hands it, with its arguments, to the sound dispatcher sound_8000808 via the shared callback sub_814F9AC.
 // symdb: void sound_dispatchSoundRequest(u8 idx /* r0 */, u32 a1 /* r1 */, u32 a2 /* r2 */); returns
 // symdb: caller's r10 in r3, passes c/v through from sound_8000808
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchSoundRequest_8000642.yaml

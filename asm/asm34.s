@@ -274,6 +274,10 @@ off_812D568:
 	.word byte_812C268
 	thumb_func_end sub_812D54C
 
+// symdb: Spawns a group of up to four eStruct records from a 0xFF-terminated (id,slot,param) table, links each spawned record to the first one via a back-pointer at offset 0x14, and gives each one the same sprite position via sprite_setCoordinates.
+// symdb: (r0 = 0xFF-terminated (id,slot,param) spawn table, r1 = first eStructArr2008450 slot index (loop
+// symdb: covers r1..r1+2), r2 = pointer passed on to sprite_setCoordinates) -> void; no return value.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D56C.yaml
 	thumb_local_start
 sub_812D56C:
 	push {r4-r7,lr}
@@ -438,6 +442,10 @@ dword_812D68C:
 	.word 0x40000000
 	thumb_func_end sub_812D668
 
+// symdb: Per-frame input handler for a menu screen: calls sub_812D6F8 to get the menu state, and when its [r7+0x28] flag is set, adjusts a cursor via menu_adjustCursorOrValue_811F7F8, then sets state [r7+0x26]=8 (or |=1 of [r7+0x1b]) on B or A-with-condition, or state 4 on A otherwise, playing SFX 0x81/0x83.
+// symdb: (r0/r5 = menu state struct) -> void; writes state word [r5+0x26] = 4 or 8 and flag byte
+// symdb: [r5+0x1b] |= 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D690.yaml
 	thumb_func_start sub_812D690
 sub_812D690:
 	push {r4-r7,lr}
@@ -605,6 +613,10 @@ copyBgTilesToBlock0:
 off_812D7A0:
 	.word unk_20227A0
 	thumb_func_end copyBgTilesToBlock0
+// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling sub_812D5A0.
+// symdb: (no args; uses r10 toolkit's s2001c04 battle-work pointer and the entry returned by sub_812D6F8)
+// symdb: -> r0 = 1 if A was newly pressed this frame, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D7A4.yaml
 	thumb_local_start
 sub_812D7A4:
 	push {r4-r7,lr}
@@ -780,6 +792,9 @@ locret_812D8C6:
 	pop {pc}
 	thumb_func_end t4_transitionToTextState1C
 
+// symdb: Refills the BG tile buffer, reinitializes the battle-overlay eStruct record array, then redraws a full 30x20 screen of tile IDs from the snapshot at dword_201E420 and reapplies the saved layer/scroll parameter to the overlay helpers.
+// symdb: () -> void; no return value, r5 (caller's scene pointer) preserved via r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D8C8.yaml
 	thumb_func_start sub_812D8C8
 sub_812D8C8:
 	push {r4-r7,lr}
@@ -1009,6 +1024,10 @@ npc_runDialog41:
 	pop {pc}
 	thumb_func_end npc_runDialog41
 
+// symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> sub_803C754 on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
+// symdb: (r0 = unused/clobbered, r5 = *state struct (callee-saved)) -> r0 = return of sub_8120AB8; flags
+// symdb: from bl/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA60.yaml
 	thumb_func_start sub_812DA60
 sub_812DA60:
 	push {r0,lr}

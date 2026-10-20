@@ -19,6 +19,10 @@ off_812EAC0:
 	.word unk_201EE20
 	thumb_func_end CopyBackgroundTiles812EAAC
 
+// symdb: Builds a list of (keyItem, remainingPresses) pairs at word_2023FA0 for key items 0x91..0x14B whose presses weren't already claimed in the toolkit's 0x31-entry 8-byte/entry table, skipping pairs whose battle object has byte[3]==0; updates the scroll/entry-count fields of the struct from sub_812ED2C.
+// symdb: () -> void; writes a pair list at word_2023FA0 and cursor fields [r5+0x1e/0x20/0x24] of the
+// symdb: struct returned by sub_812ED2C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EAC4.yaml
 	thumb_func_start sub_812EAC4
 sub_812EAC4:
 	push {r4-r7,lr}
@@ -181,6 +185,11 @@ off_812EBD4:
 	.word byte_812DACC
 	thumb_func_end sub_812EBB8
 
+// symdb: Spawns eStruct records (type 9) from a 0xFF-terminated (id,slot,param) table, then if the indexed record is in use sets its sprite y to 0x34 when the caller-supplied r2 equals 0x44, else 0x44; x is passed through from the stack.
+// symdb: (r0 = 0xFF-terminated (id,slot,param) spawn table, r1 = eStruct index into eStructArr2008450, r2
+// symdb: = reference coordinate (0x44 or other)) -> r0 = clobbered; sets the struct's x/y via
+// symdb: sprite_setCoordinates
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EBD8.yaml
 	thumb_local_start
 sub_812EBD8:
 	push {r4-r7,lr}
@@ -436,6 +445,9 @@ locret_812ED90:
 	.balign 4, 0x00
 	thumb_func_end sub_812ED58
 
+// symdb: Reloads the full-screen map background tilemap from unk_201E920 into tile block 1, zeroes the BG tile buffer, resets the battle-overlay scene record array, and invokes several overlay helpers using a value read from the caller's r5 struct.
+// symdb: () -> void; caller's r5 preserved via r7 round-trip
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ED94.yaml
 	thumb_func_start sub_812ED94
 sub_812ED94:
 	push {r4-r7,lr}

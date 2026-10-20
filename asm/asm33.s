@@ -104,6 +104,10 @@ sub_8123200:
 	thumb_func_end sub_8123200
 	.balign 4, 0
 
+// symdb: Commits the accumulated updates from the scratch struct at word_200DCF0 into the NaviStats record of the currently selected PET navi: adds halfword/byte deltas to stats 0x42/1/2/3/0xB/0xA (clamped to 0xFFFF/4/4/4/10/8) and, when nonzero, one-shots flag halfwords +0x0C/+0x0E/+0x10/+0x12/+0x14 into stat bytes 7/0x1C/0x1B/0x23/7.
+// symdb: (void) -> void; reads scratch struct at word_200DCF0, writes via SetCurPETNaviStats* on the
+// symdb: current navi
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8123208.yaml
 	thumb_func_start sub_8123208
 sub_8123208:
 	push {r4-r7,lr}
@@ -3944,6 +3948,10 @@ loc_8125034:
 	pop {pc}
 	thumb_func_end sub_8124FE0
 
+// symdb: Per-frame chip-send transition tick: reinitialises the chip-sprite slot buffer, increments the frame counter (capped at 0x6A, then sets state byte to 0x24), sets r5+0x70=0xFF, pumps battle_runTransition, writes halfword pairs (kind 4 then kind 7) into three sprite structs with counter/state-gated values, and calls sub_81267F0.
+// symdb: (r5 = battle-transition state struct, implicitly set by caller) -> r0 = destroyed; r5+0x70 =
+// symdb: 0xFF, r5+0x74 counter incremented (capped at 0x6A, then state byte r5+2 = 0x24)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812503C.yaml
 	thumb_local_start
 sub_812503C:
 	push {lr}
@@ -4187,6 +4195,10 @@ loc_81251EC:
 	pop {pc}
 	thumb_func_end sub_8125198
 
+// symdb: Per-frame battle-intro step: initialises chip-sprite slot buffer (r0=1), increments the intro frame counter at r5+0x74 (saturating at 0x7C and switching r5+2 to 0x18), forces r5+0x70=0xFF, pumps battle transition/arena tiles/sub_8126184, then sets halfword pair +0xC/+0xE on three pooled sprite structs with values (4,y) and (7,y), ending with sub_81267F0.
+// symdb: (r5 = battle-scene state struct) -> r0 clobbered; sets r5+0x70 = 0xFF, increments r5+0x74
+// symdb: (saturating at 0x7C), sets state byte r5+2 = 0x18 when counter reaches 0x7C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81251F4.yaml
 	thumb_local_start
 sub_81251F4:
 	push {lr}
@@ -11264,6 +11276,10 @@ loc_81288B0:
 	.balign 4, 0x00
 	thumb_func_end menu_gridCursorScreenUpdate
 
+// symdb: When no screen fade is active, commits the caller's 0x80-byte chatbox text buffer (r5) to unk_2037780, clears it, seeds it with 0x30, and pings the chatbox via chatbox_8040818.
+// symdb: (r5 = 0x80-byte text buffer, set by caller) -> r0 = clobbered; copies buffer to unk_2037780,
+// symdb: zeroes it, sets [r5] = 0x30
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81288BC.yaml
 	thumb_local_start
 sub_81288BC:
 	push {r7,lr}
@@ -12070,6 +12086,10 @@ off_8128ED0:
 	.word eTextScript201BA00
 	thumb_func_end sub_8128E2C
 
+// symdb: Copies 128 bytes from unk_2037780 into the chatbox buffer pointed to by r5, sets its header bytes to 0x14 0x00 0x00, and opens the message via chatbox_8040818, skipping while a screen fade is active.
+// symdb: (r5 = pointer to chatbox/text entry struct, set by caller) -> r0 = ?; only side effects on r5
+// symdb: struct and chatbox state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128ED4.yaml
 	thumb_local_start
 sub_8128ED4:
 	push {lr}
@@ -13619,6 +13639,11 @@ sub_8129A20:
 	pop {pc}
 	thumb_func_end sub_8129A20
 
+// symdb: Per-tick handler that advances chip-deal animations, allocates the next chip entry while a slot is free, and once three chips are dealt writes state 0x14 to the record, triggers entity animation 3, and starts the screen fade.
+// symdb: (r0 = [r5,#0x1d] record/object id; r5 = battle record) -> void; r1 out of the advance call =
+// symdb: slot-free flag, r2 = count of dealt chips; writes state 0x14 to [r5,#3] and starts a screen fade
+// symdb: when count reaches 3.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129A28.yaml
 	thumb_local_start
 sub_8129A28:
 	push {lr}
@@ -14114,6 +14139,10 @@ locret_8129D76:
 	pop {pc}
 	thumb_func_end sub_8129D58
 
+// symdb: Loops [r5+0x20] times calling sub_812B218 to allocate pooled resources per slot, then transitions the state byte at [r5+3] (0x2c→0x30, 0x20→0x24, else→0x14), selects animation 4/5/7 based on [r5+2] and calls sprite_setEntityAnimation(r0,0), ORs 0x10 into flags at [r5+0x1b], and starts SetScreenFade(8,0x10).
+// symdb: (r5 = entity/record pointer, fields: +0x02 anim selector, +0x03 state byte, +0x1b flags, +0x20
+// symdb: resource count) -> r0 destroyed; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129D78.yaml
 	thumb_local_start
 sub_8129D78:
 	push {r4,lr}
@@ -14556,6 +14585,10 @@ locret_812A056:
 	pop {pc}
 	thumb_func_end object_timerDialogueUpdate
 
+// symdb: State-machine step that draws the scene, prepares EWRAM link buffers, calls rfu_initLinkSession, and on failure fades the screen and sets substate 0x10 (index 8) or 0x0C, zeroing [r5+3] and [r5+0x24]; on success advances to state 0x34.
+// symdb: (r5 = link object struct: +1 state byte, +2/+3 substate bytes, +0x24 halfword) -> r0 = rfu
+// symdb: result; sets next state fields in [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A058.yaml
 	thumb_local_start
 sub_812A058:
 	push {r4,lr}
@@ -15154,6 +15187,10 @@ off_812A4F4:
 	.word sub_812A540+1
 	thumb_func_end sub_812A4DC
 
+// symdb: Initializes companion-link mode: calls sub_813D90C(1) and sub_8147F98, configures camera via sub_803DCE8(0xC,3,2,0), tags eLinkState with 'ER2B'/0x2000 via sub_803DCD8, dispatches through sub_81322E8, zero-fills a 0x100 buffer, writes state id 4 and sub-state 0 on the owning struct, and finishes via sub_803CB00(1).
+// symdb: (r0..r3 ignored/scratch, r5 = owning state struct) -> r0 = sub_803CB00 return; no flags
+// symdb: guarantee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A4FC.yaml
 	thumb_local_start
 sub_812A4FC:
 	push {lr}
@@ -16105,6 +16142,10 @@ sub_812AC14:
 	b loc_812AC2A
 	thumb_func_end sub_812AC14
 
+// symdb: One step of the link-cable communication state machine: polls the comm mode/dispatcher and, once the exchange finishes, optionally resets the link hardware (mode==0 only) and marks the task state byte [r5+2] as 4 (done).
+// symdb: (r5 = *S200BC50 state struct, r4/r7 clobbered) -> r0 = result of last helper; sets state byte
+// symdb: [r5+3] (or [r5+2]) to 4 when finished
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AC1A.yaml
 	thumb_local_start
 sub_812AC1A:
 	push {r4-r7,lr}
@@ -16383,6 +16424,10 @@ off_812AE30:
 	.word battle_initSceneFromFade+1
 	thumb_func_end sub_812ADFC
 
+// symdb: Tests eFlags2009F38 bits 0x80 then 0x8; if neither is set, or if the offset byte of the 0x200BC30 record is 0, calls sub_8132614 to advance the menu-choice handler; otherwise writes 8/0 into r5+2/r5+3 and triggers SetScreenFade(0xC, 0x10).
+// symdb: (r4/r5 = state record pointer) -> r0 = 0 or sub_8132614/SetScreenFade result; writes r5+2, r5+3
+// symdb: when fading
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AE3C.yaml
 	thumb_local_start
 sub_812AE3C:
 	push {lr}
@@ -17508,6 +17553,10 @@ JumpTable812B5F4:
 	.word sub_812B758+1
 	thumb_func_end e_beastLinkGateFrameHandler
 
+// symdb: Scene-step helper: snapshots the current PET navi into [r5+0x1a], resets it to the default (0) if story flag 0x163 is unset, copies [r5+0x2a] to [r5+0x44], and if the two bytes are below 0xC0/0x16 respectively, calls sub_812B768 and advances the phase byte [r5+0x02] to 4.
+// symdb: (r5 = scene/game-state context struct) -> r0 = 0 or sub_812B768 result; sets [r5+0x1a],
+// symdb: [r5+0x44], [r5+0x02]; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B608.yaml
 	thumb_local_start
 sub_812B608:
 	push {r4-r7,lr}
@@ -17818,6 +17867,10 @@ off_812B858:
 	.word sub_812C07C+1
 	thumb_func_end sub_812B80C
 
+// symdb: Per-frame step of the battle custom-screen state machine: conditionally calls sub_803C604, dispatches one of seven state handlers from a thumb tail-call table, ticks battle_runFrameUpdate(0x12), and refreshes the chip-cursor OAM/tile.
+// symdb: (r0 = unused/jump-offset seed, r5 = screen-state struct: +2 = state id, +3 = substate) -> r0 =
+// symdb: result of battle_runFrameUpdate(0x12); no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B874.yaml
 	thumb_local_start
 sub_812B874:
 	push {lr}
@@ -18711,6 +18764,10 @@ off_812BF80:
 	.word sub_812BFAC+1
 	thumb_func_end sub_812BF6C
 
+// symdb: Event-script step gated on IsScreenFadeActive: zero-fills unk_2037780 (0x80 bytes), calls chatbox_8040818, sets story flag EVENT_1711, and writes 4 to [r5+3].
+// symdb: (r5 = event/step state struct) -> void; sets EVENT_1711 via SetEventFlagFromImmediate, returns
+// symdb: with no flags defined
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BF88.yaml
 	thumb_local_start
 sub_812BF88:
 	push {lr}
@@ -18784,6 +18841,10 @@ off_812C008:
 	.word sub_812C034+1
 	thumb_func_end sub_812BFF4
 
+// symdb: Waits for the screen fade to finish, then zero-fills unk_2037780, calls chatbox_8040818, sets story flag EVENT_1710, and advances the caller's state byte at [r5,#3] to 4.
+// symdb: (r5 = event/task object whose byte at +3 is the state/phase counter) -> void; flags clobbered by
+// symdb: calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C010.yaml
 	thumb_local_start
 sub_812C010:
 	push {lr}

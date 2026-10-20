@@ -996,6 +996,10 @@ cutscenescript_8099F7A:
 	.byte 0x00
 	thumb_func_end camera_followOverworldPlayer
 
+// symdb: Event-script helper: queues PET effect 0, calls event_playPetEffectAndReloadGfx and stores its r1 byte into [r5+4] and [r5+8], then if that byte is 0x32 stores sub_802D15E's value else stores the Protected BugFrags counter at [r5+0x70], and finally sets a flag bit on eStruct2001010.
+// symdb: (caller must pre-set r5 = event/dialog struct; r0 ignored, forced to 0) -> r0 = 0; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099FFC.yaml
 	thumb_local_start
 sub_8099FFC:
 	push {r4-r7,lr}
@@ -1427,6 +1431,9 @@ initRefs_809A344:
 	.word NULL
 	thumb_func_end sub_809A334
 
+// symdb: Draws the BugFrag trader's result screen: stashes a caller value into toolkit state, copies a 9x5 tile block from byte_86C54D4 and a 7x2 tile block from byte_8099E5C into BG tile block 0 at column r0/row 0 and column r0+1/row 2, then renders the ChipTrader text script (TextScriptChipTrader86C580C) into VRAM at 0x600D400.
+// symdb: (r0 = column/offset j for first tile copy) -> void; stores [r5+0x70] into toolkit->unk200a220+8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A360.yaml
 	thumb_local_start
 sub_809A360:
 	push {r4-r7,lr}

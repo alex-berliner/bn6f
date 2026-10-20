@@ -398,6 +398,9 @@ off_808FB08:
 	.word byte_81435FC
 	thumb_func_end sub_808FA8C
 
+// symdb: Tears down an overworld event: clears EVENT_BE4 and EVENT_BE5 flags, resets the player/Navi palette index, clears the player's interaction-locked flag, and zeroes the event-state byte at struct +0x1C; returns 0.
+// symdb: () -> r0 = 0; clobbers r0-r1, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB18.yaml
 	thumb_local_start
 sub_808FB18:
 	push {lr}

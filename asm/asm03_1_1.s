@@ -1743,6 +1743,10 @@ off_8039884:
 	.word byte_80393A4
 	thumb_func_end init_objBg2DisplayMode
 
+// symdb: Object state step that, when Select is pressed or sub_80398DC reports ready, calls SetScreenFade(4,0xFF), plays SE 0xD7, and writes 8 to the object's state byte at r5+2.
+// symdb: (r10 = toolkit, r4/r5 = object struct) -> void; exits with flags from sub_80398DC's return (or
+// symdb: the key test), and writes state byte [r5+2] = 8 on transition
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039888.yaml
 	thumb_local_start
 sub_8039888:
 	push {r4-r7,lr}
@@ -2047,6 +2051,10 @@ off_8039AB4:
 	.word byte_8039390
 	thumb_func_end battle_initScene
 
+// symdb: State-machine step that initializes the rfu link session: on success, triggers a fade and script 0x13 and sets [r5+1]=0x10; on failure, sets [r5+1]=8; then calls sub_803A1B0.
+// symdb: (no args; r5 = per-menu state struct set by caller) -> r0 = return of sub_803A1B0; writes state
+// symdb: byte at [r5+1] (0x10 or 8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039AB8.yaml
 	thumb_local_start
 sub_8039AB8:
 	push {r4-r7,lr}
@@ -2091,6 +2099,10 @@ loc_8039B04:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039AE4
 
+// symdb: Initializes the RFU link work area, then calls rfu_initLinkSession; on failure cleans up, fades the screen to script 0x13, and sets phase [r5,#1]=0x10; on success fades to script 0x0A and sets phase [r5,#1]=0x18.
+// symdb: (r0-r3 unused, state object in a register preserved across the call, likely r5) -> void; sets
+// symdb: phase byte [r5,#1] = 0x18 on success, 0x10 on failure
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039B0A.yaml
 	thumb_local_start
 sub_8039B0A:
 	push {r4-r7,lr}
@@ -2180,6 +2192,10 @@ loc_8039BBA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039B98
 
+// symdb: Per-frame object state step: skip if not ready, consume a use counter; if B pressed play effect 0x68 and store state 0x68; else if chatbox flag bit 0x8 is on and chatbox is active, close it, set a 0x1E timer, wait on sub_813D638, then run network text phase 0xB and store state 0x20.
+// symdb: (r0 = unused, r5 = object ptr) -> r0 = result of sub_803A1B0; sets [r5+1] to 0x68 or 0x20; flags
+// symdb: from sub_803A558/sub_803BB80/sub_813D638 tests
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039BC0.yaml
 	thumb_local_start
 sub_8039BC0:
 	push {r4-r7,lr}
@@ -2476,6 +2492,11 @@ loc_8039E26:
 	pop {r4-r7,pc}
 	thumb_func_end battle_transitionToStart
 
+// symdb: Wireless-connect state handler: gates on an event flag, initializes the wireless adapter for a new link session, and displays the success or failure message while setting the next state.
+// symdb: (r5 = network state/work struct, set by caller) -> r0 = 0 after sub_803A104; writes next state
+// symdb: byte to [r5+1] (0x10 success / 0x18 failure); flags used internally from rfu_initLinkSession's
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039E2C.yaml
 	thumb_local_start
 sub_8039E2C:
 	push {r4-r7,lr}
@@ -2944,6 +2965,9 @@ loc_803A194:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_waitStepUpdateEntities
 
+// symdb: Per-frame battle tick: calls sub_803A214 once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
+// symdb: (r5 = battle/global state struct) -> r0 = clobbered; returns early if gate sub_803A2A4 returns 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A1B0.yaml
 	thumb_func_start sub_803A1B0
 sub_803A1B0:
 	push {r4-r7,lr}
@@ -8727,6 +8751,9 @@ dword_803CD3C:
 	.word 0x1F40
 	thumb_func_end start_initBattleScene
 
+// symdb: If no screen fade is active, runs the comm-error text script (index 0xA) and writes 8 as a byte to [r5] (a state field in the caller's context).
+// symdb: (r0 unused on entry; r5 -> error object/context) -> r0 clobbered; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CD40.yaml
 	thumb_local_start
 sub_803CD40:
 	push {r4-r7,lr}
@@ -8746,6 +8773,9 @@ sub_803CD54:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803CD54
 
+// symdb: Clears VRAM and zeroes the BG tile ID block buffer as part of a graphics reset.
+// symdb: () -> (); no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CD58.yaml
 	thumb_local_start
 sub_803CD58:
 	push {r4-r7,lr}

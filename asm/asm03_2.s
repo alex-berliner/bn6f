@@ -5157,6 +5157,10 @@ loc_8049218:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491FC
 
+// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
+// symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =
+// symdb: sub_803A1B0 result; updates [r5+1] = 0x20 on trigger
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804921E.yaml
 	thumb_local_start
 sub_804921E:
 	push {r4-r7,lr}
@@ -5505,6 +5509,10 @@ sub_80494D6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80494D6
 
+// symdb: Per-frame handler for a submenu page: on the 0x10 key press it clears that key flag and writes 0x44 to [r5+1]; otherwise it may play SOUND_EXIT_SUBMENU, picks one of three text script IDs (0xF/0x10/0x11) based on 0x80/0x20/none inputs, dispatches via sub_803BB2C, and writes 0x40 to [r5+1] before tail calls.
+// symdb: (r0 = unused/0x10 sentinel, r5 = menu state struct) -> stores next-state byte at [r5+1] (0x40 or
+// symdb: 0x44); no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80494DE.yaml
 	thumb_local_start
 sub_80494DE:
 	push {r4-r7,lr}
@@ -6415,6 +6423,9 @@ byte_8049AD8:
 	.word NULL
 	thumb_func_end copyData_8049AAC
 
+// symdb: Loops four slots; per active slot, copies a 0x20-word palette block into an IWRAM buffer, DMA-copies a 0x200-byte icon tile set from eTextScript202BA04 into VRAM 0x6016E00+slot*0x200, queues an OAM sprite with the per-slot base 0x40110020+slot*0x20, and records layout data via sub_8132A50.
+// symdb: () -> void; no return value, loops slots 0-3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049BC0.yaml
 	thumb_func_start sub_8049BC0
 sub_8049BC0:
 	push {r4-r7,lr}
@@ -7669,6 +7680,9 @@ off_804A4D0:
 	.word eS200AC80
 	thumb_func_end e_giveChipStep
 
+// symdb: If chatbox/cutscene flags 0x80 and 0x20 are both set, then either advance sub_804AF20 with [r5+0x1e] while the chatbox is still busy, or set mode 0x10 and call SetScreenFade(0xC, 0x10) when the chatbox is idle, before tail-calling sub_804AA58.
+// symdb: () -> r0 = 0 always; reads/writes state struct at r5, may start a screen fade via SetScreenFade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A4D4.yaml
 	thumb_local_start
 sub_804A4D4:
 	push {lr}
@@ -8196,6 +8210,10 @@ off_804A8F0:
 	.word 0x200
 	thumb_func_end menuCopyBackgroundTiles_804A7C0
 
+// symdb: Renders the chip-select screen's fighter-name row and chip-icon row into background tile block 2, the icon column extent being capped at 7 by a clamped global.
+// symdb: (object ptr left in r5 by caller; r0 = [r5+0x24] halfword param read internally) -> r0
+// symdb: clobbered; draws into tile block 2 via CopyBackgroundTiles
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A8F4.yaml
 	thumb_local_start
 sub_804A8F4:
 	push {r4-r7,lr}
@@ -8565,6 +8583,11 @@ loc_804AB5A:
 	.balign 4, 0x00
 	thumb_func_end sub_804AB4C
 
+// symdb: Menu A-button handler: either copies the highlighted entry from the navicust/extra list (word_202A020) into a slot indexed by +0x28 in unk_202A3E0, or copies an entry from a different source list into the first empty slot of word_202A020, decrementing its embedded remaining-count; when the target count at eS200AC80+0x30 is reached it calls sub_804AF10(2 or 8), sets the state byte to 0xC, and resets +0x3C to 0x7FFF.
+// symdb: (r0 = menu-state struct, used as r5: +0x44 list id, +0x46 entry index, +0x28 staged count,
+// symdb: +0x1e/+0x24 counters, +0x2a/+0x2e offsets, +0x3c timer, +0x44/+0x48 anim words) -> r0 = 0; sets
+// symdb: struct state byte +0x00 = 0xC on completion
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AB6C.yaml
 	thumb_local_start
 sub_804AB6C:
 	push {r4-r7,lr}
@@ -9209,6 +9232,9 @@ dword_804AFB4:
 	.word 0xFFFFFFD8
 	thumb_func_end sub_804AF84
 
+// symdb: Initializes and renders the current folder-name strip on the chip trader submenu background by expanding the folder name into the tile-index buffer at unk_2034814 and blitting it to BG map block 2.
+// symdb: () -> void; no return value, r0-r4 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AFB8.yaml
 	thumb_local_start
 sub_804AFB8:
 	push {r4-r7,lr}
@@ -9887,6 +9913,10 @@ off_804BF14:
 	.word off_804B048
 	thumb_func_end chipTraderRedrawChance_804BEEC
 
+// symdb: Given a chip ID, locates it in the chip-code table, partitions its codes into owned vs unowned via GetChipCountOfCode, and weighted-randomly picks one code index/byte favoring unowned codes.
+// symdb: (r0 = chip ID to look up, r1 = unused, r2 = chip-code table pointer, r5 = work buffer) -> r0 =
+// symdb: original chip ID (restored from stack), r1 = chosen code index; trashes r2-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BF18.yaml
 	thumb_local_start
 sub_804BF18:
 	push {r0,r5,lr}
