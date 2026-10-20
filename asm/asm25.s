@@ -667,9 +667,10 @@ sub_808FCE4:
 	pop {pc}
 	thumb_func_end sub_808FCE4
 
-// symdb: Starts the player's Beast Out overworld strike: records the facing-derived hit direction and a 15-frame counter in the player's beast-attack struct and plays the hit sound.
-// symdb: (no args) -> r0 = 0; clobbers r0-r1, r5, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startBeastOutHit.yaml
+// symdb: Kicks off the overworld "Beast Out knocked back by a hit" reaction on the player, setting a hit direction and a 15-frame timer and playing the hit sound.
+// symdb: void ow_startBeastOutHit(u32 r2_soundArg2); returns r0 = 0 (NZ cleared by the movs), r2 pass-
+// symdb: through to PlaySoundEffect, c/v from PlaySoundEffect
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_startBeastOutHit.yaml
 	thumb_local_start
 ow_startBeastOutHit:
 	push {r5,lr}

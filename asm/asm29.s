@@ -5200,10 +5200,10 @@ ow_freeObjectWrapper:
 	pop {r4-r7,pc}
 	thumb_func_end ow_freeObjectWrapper
 
-// symdb: Sets an entity's sprite animation and initializes a linear move of param-scaled ±8 px toward the entity's facing direction over a param-length duration.
-// symdb: (r5 = entity/base struct, r6 = sprite/motion slot, r7 = params: [1]=anim id, [2]=duration
-// symdb: divisor, [3]=distance scalar) -> r0 = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_startFacingStep.yaml
+// symdb: Begins a facing/step motion for a battle object — sets the facing-direction animation, computes the step's target offset from a direction table scaled by the step length, and seeds the step's duration timer via BIOS division.
+// symdb: void object_startFacingStep(sprite r5, object r6, step r7) -> returns r0 = 1 with NZ flags set
+// symdb: from it; also returns r5, r6 (preserved/rewritten from inputs); clobbers r0-r3, lr, C/V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_startFacingStep.yaml
 	thumb_local_start
 object_startFacingStep:
 	push {r4-r7,lr}
@@ -6420,10 +6420,10 @@ off_80A8314:
 	.word byte_80A81F0
 	thumb_func_end battleObject_checkSetPriorityByEventFlag_80A82DC
 
-// symdb: When EVENT_9D6 is set, toggles a per-map event-flag pair: tests the first halfword via TestEventFlag, calling SetEventFlag on the second if clear or ClearEventFlag if set; returns early if EVENT_9D6 is not set.
-// symdb: (r5 = map object/entry struct, [r5+4] = id index; r10 = game toolkit pointer) -> r0 = destroyed;
-// symdb: no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_swapMapEventFlags.yaml
+// symdb: Swaps a pair of overworld map event flags (sets one iff the other is clear), gated on flag EVENT_9D6, used to toggle a map's event state.
+// symdb: (u32* workObj@r5, u32 toolkit@r10) -> u32 workObj@r5 (returned unchanged); clobbers r0-r3, lr,
+// symdb: flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_swapMapEventFlags.yaml
 	thumb_local_start
 ow_swapMapEventFlags:
 	push {r4-r7,lr}
@@ -6597,9 +6597,10 @@ loc_80A8478:
 	.balign 4, 0x00
 	thumb_func_end npc_updateGuarded
 
-// symdb: After a cutscene has advanced past a marker and a per-object countdown hits zero, resets the jack-out lock, clears three event flags and a BBS flag, and frees the overworld object (NPC) itself.
-// symdb: (r0 = unused/0 at call, r5 = overworld object struct) -> void; flags not meaningfully set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_cleanupNpcAfterCutscene.yaml
+// symdb: After a cutscene's script returns to its start, counts down a short delay on an overworld NPC map object, then clears the scene's event flags and frees the object.
+// symdb: void ow_cleanupNpcAfterCutscene(r5 npc, r10 ctx); caller-facing r2/r3/r4 are callee garbage, r5
+// symdb: preserved on the early-return paths, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_cleanupNpcAfterCutscene.yaml
 	thumb_local_start
 ow_cleanupNpcAfterCutscene:
 	push {lr}
@@ -6661,10 +6662,10 @@ off_80A84F8:
 	.word math_sinTable
 	thumb_func_end ow_computePointFromPlayerAngle
 
-// symdb: Returns a random fade/brightness amount chosen from an 8-entry ramp table, for a screen or sprite fade effect.
-// symdb: () -> r0 = byte from byte_80A8510[0..7] (one of 0x00,0x1F,0x3F,0x7F,0x9F,0xBF,0xDF,0xFF); flags
-// symdb: not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRandomFadeLevel.yaml
+// symdb: Returns one of eight pre-set fade/blend intensity levels (0x00..0xFF) chosen at random.
+// symdb: (void) -> u8 fadeLevel in r0; clobbers r1-r3, lr, flags; calls reqBBS_81409D0(8) for the RNG
+// symdb: draw
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getRandomFadeLevel.yaml
 	thumb_local_start
 getRandomFadeLevel:
 	push {lr}
@@ -6840,10 +6841,10 @@ loc_80A8608:
 	pop {r4-r7,pc}
 	thumb_func_end npc_stepTowardTargetPos
 
-// symdb: NPC-side trigger: once story flag 1717 is set, sets event flag 9D9 and switches the object's state when the player walks within 8 units of it.
-// symdb: (r5 = object, fields +0xc/+0x10 = its X/Y) -> void; sets EVENT_9D9 and rewrites object state
-// symdb: bytes on trigger
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_playerProximityEventTrigger.yaml
+// symdb: Overworld NPC proximity trigger - when the player walks into the NPC's event box (and the "player advanced forward" story flag is still clear), sets the NPC talk event flag and arms the NPC for its talk script.
+// symdb: void npc_playerProximityEventTrigger(NpcObject* r5 /* npc object */, u32 r10 /* event-flag bank
+// symdb: base */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_playerProximityEventTrigger.yaml
 	thumb_local_start
 npc_playerProximityEventTrigger:
 	push {r4,lr}
@@ -6871,10 +6872,9 @@ locret_80A8640:
 	.balign 4, 0x00
 	thumb_func_end npc_playerProximityEventTrigger
 
-// symdb: Converts two 26.8 fixed-point source positions (likely the camera) into integer halfwords stored into the NPC actor's screen-offset fields, anchoring the actor to the viewport.
-// symdb: (r5 = source struct with fixed-point fields at +0xC and +0x10, r6 = destination actor struct) ->
-// symdb: stores halfwords at r6+0x16 and r6+0x18; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_syncScreenPosToCamera.yaml
+// symdb: Copies an NPC's fixed-point screen position (dropping the fractional bits) into its integer on-screen x/y coordinates.
+// symdb: void npc_syncScreenPosToCamera(r5 sourceObj, r6 destObj) /* no return value, no flags read */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_syncScreenPosToCamera.yaml
 	thumb_local_start
 npc_syncScreenPosToCamera:
 	push {r4,lr}
@@ -7970,9 +7970,10 @@ byte_80A8E20:
 	.byte 0x3, 0x0, 0x0, 0x80, 0x1, 0x0, 0x28, 0x0, 0x78, 0x0, 0x7E, 0xFF, 0x58, 0x1
 	thumb_func_end sub_80A8DF0
 
-// symdb: Mr. Weather comp tornado (map object type 0x1A): update, dispatching on state +8 (0 init, 4 active, 8 caught, 0xC free when its animation ends).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
+// symdb: State dispatcher for the Mr. Weather comp tornado map object (type 0x1A): tail-calls the handler selected by the object's state byte (init / active / caught / free-when-animation-ends).
+// symdb: void weatherTornadoDispatcher(mapObject in r5, context in r10); r6 = &eWeatherCompState;
+// symdb: clobbers r0,r1,r2-r5,r6,r7,r8-r12,NZCV; tail-call — handler's registers (r2-r5, r8-r12) are the
+// symdb: observed outputs
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_80A8E74.yaml
 	thumb_func_start owMapObject_weatherTornado_80A8E74
 owMapObject_weatherTornado_80A8E74:
@@ -8189,10 +8190,10 @@ sub_80A8FFC:
 	pop {pc}
 	thumb_func_end sub_80A8FFC
 
-// symdb: Tornado: draws a direction +5 = random(8) (0..7), moved on by one (7 -> 0) if equal to the last one (eWeatherCompState + 0x31 + i); +0x28 += 1.
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_pickDirection_80A9004.yaml
+// symdb: Picks a new random blowing direction (0-7) for a tornado weather map object, avoiding a repeat of the previous direction.
+// symdb: void owMapObject_weatherTornado_pickNewDirection(u8* obj /*r5*/, u8* weatherState /*r6*/) — no
+// symdb: return value, N/Z/C/V clobbered; preserves r6/r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_pickDirection_80A9004.yaml
 	thumb_local_start
 owMapObject_weatherTornado_pickDirection_80A9004:
 	push {lr}
@@ -8282,10 +8283,10 @@ loc_80A9086:
 	pop {r4,pc}
 	thumb_func_end owMapObject_weatherTornado_step_80A9038
 
-// symdb: Tornado: loads its parameters from owMapObject_weatherTornado_getParams_80A916C's entry: speed +0x2C (word 0), +0x30 = speed/2, move period +0x26 (+4), pause length +0x27 (+6), moves per pause +7 (+0xC).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadParams_80A908C.yaml
+// symdb: Loads the current weather-tornado parameters (countdown timer, half-timer, and two/three config bytes) from the weather param block into an overworld map object.
+// symdb: void owMapObject_weatherTornado_loadParams_80A908C(r5=object, r10=weather state /* passed
+// symdb: through to getParams */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadParams_80A908C.yaml
 	thumb_local_start
 owMapObject_weatherTornado_loadParams_80A908C:
 	push {r7,lr}
@@ -8307,10 +8308,9 @@ owMapObject_weatherTornado_loadParams_80A908C:
 	.byte 0, 0
 	thumb_func_end owMapObject_weatherTornado_loadParams_80A908C
 
-// symdb: Tornado: home position X/Y from its parameter entry (+8/+0xA, pixels -> s16.16), Z = 0x40.
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadHome_80A90B0.yaml
+// symdb: Initializes a weather-tornado overworld object's home position and initial counter from its map params.
+// symdb: void owMapObject_weatherTornado_loadHome_80A90B0(mapObject r5, ctx r10)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_loadHome_80A90B0.yaml
 	thumb_local_start
 owMapObject_weatherTornado_loadHome_80A90B0:
 	push {r7,lr}
@@ -8328,10 +8328,10 @@ owMapObject_weatherTornado_loadHome_80A90B0:
 	pop {r7,pc}
 	thumb_func_end owMapObject_weatherTornado_loadHome_80A90B0
 
-// symdb: Tornado: blocked if the coordinate trigger at its position is 0xC0 (returns 1, Z clear).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isBlocked_80A90CC.yaml
+// symdb: Returns whether the tile 0xC bytes past an overworld object's coordinate is occupied by a tornado (coordinate-trigger value 0xC0), signaling a blocked move.
+// symdb: int owMapObject_weatherTornado_isBlocked(coordBase /*r5*/, pass /*r10*/) -> r0 = 0|1, NZ set
+// symdb: from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isBlocked_80A90CC.yaml
 	thumb_local_start
 owMapObject_weatherTornado_isBlocked_80A90CC:
 	push {r4,lr}
@@ -8411,10 +8411,10 @@ loc_80A9132:
 	.byte 0, 0
 	thumb_func_end owMapObject_weatherTornado_repickDirection_80A90E4
 
-// symdb: Tornado: pause due when moves since the last pause (+0x28) >= +7; then resets +0x28 (returns 1, Z clear).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isPauseDue_80A9150.yaml
+// symdb: Checks a tornado overworld map object's pause countdown, resetting it and signaling the caller when it has reached its threshold.
+// symdb: u32 owMapObject_weatherTornado_isPauseDue_80A9150(MapObject* obj /* r5 */); sets NZ flags from
+// symdb: r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_isPauseDue_80A9150.yaml
 	thumb_local_start
 owMapObject_weatherTornado_isPauseDue_80A9150:
 	push {lr}
@@ -8434,10 +8434,10 @@ loc_80A9164:
 	.balign 4, 0x00
 	thumb_func_end owMapObject_weatherTornado_isPauseDue_80A9150
 
-// symdb: Tornado: its 16-byte parameter entry, from off_80A9194[map number, or 3 for map group 0x85] + 16 * instance (+4).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_getParams_80A916C.yaml
+// symdb: Returns the address of the 0x10-byte weather-tornado parameter record for the tornado instance stored in the given overworld map object, selected by current map.
+// symdb: u32 *owMapObject_weatherTornado_getParams_80A916C(owMapObject *obj /*r5*/, Toolkit *toolkit
+// symdb: /*r10*/); // r0 out; clobbers r1-r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_getParams_80A916C.yaml
 	thumb_local_start
 owMapObject_weatherTornado_getParams_80A916C:
 	push {lr}
@@ -8469,10 +8469,10 @@ off_80A9194:
 	.word byte_8143704
 	thumb_func_end owMapObject_weatherTornado_getParams_80A916C
 
-// symdb: Tornado: while flag 0xBE4 is set, sets flag 0xBE6 when MegaMan is within 0x14 px (sub_80011D6).
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_checkHitPlayer_80A91A4.yaml
+// symdb: Per-frame check for a tornado weather map object - if tornado weather (EVENT_BE4) is active and the player stands inside the tornado's box, sets EVENT_BE6 ("player caught by tornado").
+// symdb: void Next(owMapObject* tornado /* r5 */); /* r10 = overworld state base read by callees; no
+// symdb: return value, flags clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_checkHitPlayer_80A91A4.yaml
 	thumb_local_start
 owMapObject_weatherTornado_checkHitPlayer_80A91A4:
 	push {r4,lr}
@@ -8517,10 +8517,11 @@ byte_80A91EC:
 	.byte 0xE9, 0xB, 0xEA, 0xB, 0xEB, 0xB, 0x0, 0x0
 	thumb_func_end owMapObject_weatherTornado_isCaught_80A91D4
 
-// symdb: Tornado: sprite priority 1 while flag 0xBE6 is set, else from the layer at its position.
-// symdb: r5 = the map object, r6 = eWeatherCompState (set by owMapObject_weatherTornado_80A8E74), r10 =
-// symdb: toolkit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_setPriority_80A91F4.yaml
+// symdb: Sets the sprite priority of the overworld tornado weather object, forcing overlay priority 1 once the BE6 event flag is set and otherwise letting the generic layer-effect code pick the priority.
+// symdb: void owMapObject_weatherTornado_setPriority_80A91F4(owMapObject* obj /*r5*/, u32 context
+// symdb: /*r10*/); // calls only, no meaningful return; on the layer-effect path r0 (priority) and r5
+// symdb: (object) are left set by applyLayerEffectToOWObject for the callee sprite_setPriority
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_weatherTornado_setPriority_80A91F4.yaml
 	thumb_local_start
 owMapObject_weatherTornado_setPriority_80A91F4:
 	push {lr}
@@ -8998,10 +8999,10 @@ byte_80A9558:
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0x1F
 	thumb_func_end object_fadeSpriteToWhiteStep
 
-// symdb: Thin wrapper that frees the overworld map object passed in r0, likely used as a shared despawn/destructor step handler.
-// symdb: (r0 = overworld map object) -> r0 = FreeOverworldMapObject result; flags from
-// symdb: FreeOverworldMapObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_freeThunk.yaml
+// symdb: Tail-call thunk that frees the overworld map object whose pointer is passed in r5.
+// symdb: void owMapObject_freeThunk(void /* r5 = overworld map object pointer */); returns whatever
+// symdb: FreeOverworldMapObject leaves in r0-r3 and the nzcv flags; r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_freeThunk.yaml
 	thumb_local_start
 owMapObject_freeThunk:
 	push {lr}
@@ -9077,10 +9078,10 @@ off_80A95E8:
 	.word 0x1A4
 	thumb_func_end object_mrWeatherProximityTrigger_80A95A8
 
-// symdb: For an overworld NPC object (r5), reads the player Z and sets the sprite's OAM priority to 3 if the player is below it, otherwise calls the standard layer resolver and applies the resulting priority.
-// symdb: (r5 = overworld NPC object ptr) -> ; side effects: updates sprite OAM priority at
-// symdb: object+r5->Unk_14..r5+0x12 area
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owMapObject_updateLayerPriorityForPlayerZ_80A95EC.yaml
+// symdb: Refreshes an overworld map object's sprite draw priority based on which map layer the player is currently standing on.
+// symdb: void owMapObject_updateSpritePriorityByPlayerLayer(mapObject* obj /* r5 */); uses r10 as ambient
+// symdb: context for the callees; r0-r3 and flags clobbered, r4-r9 and r12 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owMapObject_updateLayerPriorityForPlayerZ_80A95EC.yaml
 	thumb_local_start
 owMapObject_updateLayerPriorityForPlayerZ_80A95EC:
 	push {r4,lr}
@@ -10029,10 +10030,10 @@ ow_initSpriteObject:
 	pop {r4-r7,pc}
 	thumb_func_end ow_initSpriteObject
 
-// symdb: Per-frame update for an overworld sprite object: dispatches to its type's handler via jump table, then runs sprite_update.
-// symdb: (r5 = overworld object struct, byte at +9 = type id) -> jumps to handler from off_80A9DA4, then
-// symdb: bl sprite_update; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spriteObjectUpdate.yaml
+// symdb: Per-frame update for one overworld sprite object — dispatches to a state handler selected by the object's state byte, then advances its sprite animation.
+// symdb: void ow_spriteObjectUpdate(r2 param, r5 object /* r10, lr also live in */); callers see r2 r3 r8
+// symdb: r9 r10 r11 r12 back; nz c v clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_spriteObjectUpdate.yaml
 	thumb_local_start
 ow_spriteObjectUpdate:
 	push {r4-r7,lr}
@@ -10065,10 +10066,10 @@ sub_80A9DB8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9DB8
 
-// symdb: Per-frame update for a battle object: counts frames in field 0x24 and on thresholds changes state, animation, shadow and plays an SFX.
-// symdb: (r5 = object base, no args) -> void; fields [r5+0x24] counter, [r5+0] state, [r5+4] flag, [r5+9]
-// symdb: value written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timerStateTick.yaml
+// symdb: Per-frame tick for an object in a timed waiting state; after a 30-frame wait it switches to animation 1, drops its shadow, plays SFX 0x123 and moves to state 4.
+// symdb: void object_waitThenActivateTick(Object *obj /* r5 */)  // preserved in r5; r10 passes through
+// symdb: unless PlaySoundEffect runs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_timerStateTick.yaml
 	thumb_local_start
 object_timerStateTick:
 	push {r4-r7,lr}
@@ -10309,10 +10310,10 @@ loc_80A9F44:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A9F30
 
-// symdb: Thin wrapper that frees an overworld map object, likely used as a cleanup/destructor callback.
-// symdb: (r0 = overworld map object to free) -> r0 = FreeOverworldMapObject result; flags from
-// symdb: FreeOverworldMapObject
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_releaseMapObject.yaml
+// symdb: Thin overworld wrapper that releases a map object slot by forwarding the object pointer in r5 to FreeOverworldMapObject.
+// symdb: void ow_releaseMapObject(void) // in: r5 = map object pointer; out: r2, r3 = values left by
+// symdb: FreeOverworldMapObject (callers read only these); clobbers r0, r1, lr, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_releaseMapObject.yaml
 	thumb_local_start
 ow_releaseMapObject:
 	push {r4-r7,lr}
@@ -11539,10 +11540,10 @@ loc_80AA7A8:
 	pop {r4,pc}
 	thumb_func_end tryEvent214LuckyRoll_80AA78C
 
-// symdb: Returns 1 if story/event flag 215 is set, else 0.
-// symdb: () -> r0 = 1 if EVENT_215 set else 0; Z flag from TestEventFlagFromImmediate is clobbered,
-// symdb: returns via pop {r4,pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_eventFlag215AsBool.yaml
+// symdb: Reads the event flag EVENT_215 (bank 0xD6, index 0x00) from the event flag table and returns it as a 0/1 boolean.
+// symdb: bool get_eventFlag215AsBool(void); // in: none (r10/lr per lifter are incidental), out: r0 = 1
+// symdb: if EVENT_215 is set, else 0; r4 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/get_eventFlag215AsBool.yaml
 	thumb_local_start
 get_eventFlag215AsBool:
 	push {r4,lr}
@@ -11556,9 +11557,10 @@ loc_80AA7BC:
 	pop {r4,pc}
 	thumb_func_end get_eventFlag215AsBool
 
-// symdb: Returns 1 if story/event flag EVENT_216 is set, else 0.
-// symdb: () -> r0 = 0 or 1 (EVENT_216 flag state as int)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/isEventFlag216Set.yaml
+// symdb: Returns in r0 whether story/event flag 216 (bank 2, index 0x16) is currently set.
+// symdb: void isEventFlag216Set(void) -> r0 = 1 if flag set else 0; r4 preserved (passed through); Z
+// symdb: clear when the flag is set on return (from TestEventFlagFromImmediate)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/isEventFlag216Set.yaml
 	thumb_local_start
 isEventFlag216Set:
 	push {r4,lr}

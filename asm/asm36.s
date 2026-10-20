@@ -13894,10 +13894,10 @@ off_8136798:
 	.word unk_2022B70
 off_813679C:
 	.word unk_2000090
-// symdb: Board-screen cursor action: moves the Navi Customizer cursor/list up (with wrap/clamp), stores the new position fields, sets a state byte, and plays the menu-select sound.
-// symdb: (r5 = board-screen state object) -> r0 = sound-effect id passed on; writes halfwords [r5+0x24]
-// symdb: and [r5+0x20], byte [r5+0xc]; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_boardCursorUp.yaml
+// symdb: Moves the Navicust screen's board cursor one row up (4 slots back), clamping at the top row, plays the menu-select sound.
+// symdb: void navicust_boardCursorUp(u32 r2 /* passthrough arg to PlaySoundEffect */, u32 r5 /* board
+// symdb: state struct */); // outputs: r5/r10 survive via PlaySoundEffect; flags NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_boardCursorUp.yaml
 	thumb_local_start
 navicust_boardCursorUp:
 	push {lr}

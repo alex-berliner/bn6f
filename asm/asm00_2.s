@@ -1467,6 +1467,10 @@ locret_800F654:
 	pop {pc}
 	thumb_func_end setFieldBattleObject_800F614
 
+// symdb: Scans the current battle state's six-slot BattleObjectList and nulls every slot still pointing at the given battle object.
+// symdb: void battle_clearObjectFromObjectList_800F656(u32 object /*r5*/, Toolkit *toolkit /*r10*/); //
+// symdb: returns r1=6 (loop count), r2=last slot value read, C/V set by cmp 6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearEntryOfBattleStateBattleObjectList_800F656.yaml
 	thumb_func_start clearEntryOfBattleStateBattleObjectList_800F656
 clearEntryOfBattleStateBattleObjectList_800F656:
 	mov r0, r10
@@ -5435,10 +5439,10 @@ locret_8011234:
 	pop {pc}
 	thumb_func_end sub_8011224
 
-// symdb: Battle-object cleanup helper: deletes and nulls the object's RelatedObject2 pointer and its ExtraVars allocation.
-// symdb: (r5 = battle object) -> r0 = 0; clears oBattleObject_RelatedObject2Ptr and
-// symdb: oBattleObject_ExtraVars fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_freeRelatedObjectAndExtraVars.yaml
+// symdb: Clears a battle object's related-object pointer and extra-vars pointer, asking battle_objectSetStateActionPhase8 to tear each of them down first.
+// symdb: u32 object_freeRelatedObjectAndExtraVars(Object* r5 object); /* in: r5=object, lr=return; out:
+// symdb: r1=last callee's r1 (or incoming r1 if nothing freed), lr preserved; clobbers r0, NZ flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_freeRelatedObjectAndExtraVars.yaml
 	thumb_local_start
 object_freeRelatedObjectAndExtraVars:
 	push {lr}
@@ -13453,6 +13457,9 @@ nullsub_55:
 	mov pc, lr
 	thumb_func_end nullsub_55
 
+// symdb: Empty placeholder routine that does nothing and returns immediately.
+// symdb: void nullsub_56(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_56.yaml
 	thumb_local_start
 nullsub_56:
 	mov pc, lr
@@ -14774,11 +14781,10 @@ dword_8014F00:
 	.word 0x30E00
 	thumb_func_end battle_ai_attackVars_step3_8014E08
 
-// symdb: Countdown-then-exit routine for an AI attack-vars state, clearing AI/battle flags and tearing the object out of its attack state.
-// symdb: (r7 = BattleObject*, r6 = related object?, r5 = related object?, r10 = toolkit) -> side effects
-// symdb: only (no value returned to callers); clears AI flag 0x80 and the AI Unk_44 flag 0x80000000,
-// symdb: clears battle-state flag 0x20, and exits the object's attack state via object_exitAttackState.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_aiAttackVarsExitState_8014F04.yaml
+// symdb: Ticks an AI object's attack step timer and, once it expires, clears the AI's pending attack flags and returns the object to its normal state machine.
+// symdb: void object_aiAttackVarsExitState_8014F04(u32 ai_data /*r5*/, BattleObject* object /*r6*/,
+// symdb: AIAttackVars* vars /*r7*/); // r10 = battle context, passed through to battle_clearFlags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_aiAttackVarsExitState_8014F04.yaml
 	thumb_local_start
 object_aiAttackVarsExitState_8014F04:
 	push {r4,lr}

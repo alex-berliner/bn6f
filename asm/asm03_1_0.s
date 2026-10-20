@@ -458,6 +458,9 @@ battle_queueBattleIntroOam: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end battle_queueBattleIntroOam
 
+// symdb: Empty stub that does nothing but return immediately.
+// symdb: void noop_8033B08(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/noop_8033B08.yaml
 	thumb_local_start
 noop_8033B08: // (self: * S2011E30 $r5) -> ()
 	push {lr}
@@ -3117,6 +3120,10 @@ off_8035350:
 	.word byte_8037694
 	thumb_func_end initGameProgressBuffer_803532c
 
+// symdb: Copies one byte of game-progress data from the save buffer (selected by index in r0) into the live GameState's GameProgress field.
+// symdb: void loadGameProgressFromGameProgressBuffer(int slot /* r0 */, Toolkit* toolkit /* r10 */);
+// symdb: reads gameProgressBuffer_20010f0[slot], writes gameState->GameProgress
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadGameProgressFromGameProgressBuffer_8035354.yaml
 	thumb_func_start loadGameProgressFromGameProgressBuffer_8035354
 loadGameProgressFromGameProgressBuffer_8035354:
 	push {r4-r7,lr}

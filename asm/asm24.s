@@ -1395,10 +1395,9 @@ off_808CC80:
 	.word byte_808C930
 	thumb_func_end battle_pickBattleStateInitPtr_808CC34
 
-// symdb: Reads the overworld player object's X/Y position and stores it twice into the caller's work structure (as current and duplicate/previous coords).
-// symdb: (r0 = unused, r5 = target work struct) -> r0 destroyed; stores halfword X at +0x16/+0x1a and Y
-// symdb: at +0x18/+0x1c; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_storePlayerPosDup.yaml
+// symdb: Reads the player's overworld position and stores it (as integer halves) into both position pairs of the object at r5.
+// symdb: void ow_storePlayerPosDup(void* obj /*r5*/, coordsSource /*r10*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_storePlayerPosDup.yaml
 	thumb_local_start
 ow_storePlayerPosDup:
 	push {lr}
@@ -1483,10 +1482,10 @@ loc_808CCFC:
 	.balign 4, 0x00
 	thumb_func_end sub_808CCAC
 
-// symdb: Polls the on-touch BBS request and caches its id if it falls in the 0xC0..0xCC range.
-// symdb: () -> r0 = bool (1 if the touch request id was accepted and stored, 0 otherwise) ; side effects:
-// symdb: stores the request id byte at *(dword_808CA44+5) when in range
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_pollTouchTrigger_808CD04.yaml
+// symdb: Polls the touch-trigger handler and, if the reported touch id is in the range 0xC0..0xCC, records it in the BBS work area's trigger byte and reports success.
+// symdb: u32 reqBBS_pollTouchTrigger_808CD04(void); // r0 in: none used; r0 out: 1 if a trigger id was
+// symdb: recorded else 0; NZ set from r0; r10 passed through untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_pollTouchTrigger_808CD04.yaml
 	thumb_local_start
 reqBBS_pollTouchTrigger_808CD04:
 	push {r4-r7,lr}

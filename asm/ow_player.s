@@ -2364,10 +2364,10 @@ ReadOWPlayerObjectCoords:
 	mov pc, lr
 	thumb_func_end ReadOWPlayerObjectCoords
 
-// symdb: Returns the overworld player object's three position coordinates (fields 0x1C, 0x20, 0x24) in r1-r3.
-// symdb: (no inputs; r0 ignored) -> r1 = player obj +0x1C (X), r2 = player obj +0x20 (Y), r3 = player obj
-// symdb: +0x24 (Z/height); clobbers r1-r3, preserves r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getPlayerPosition.yaml
+// symdb: Returns the overworld player object's X/Y/Z position from the current game state.
+// symdb: void ow_getPlayerPosition(void* toolkit /* r10 */, out int* x /* r1 */, out int* y /* r2 */, out
+// symdb: int* z /* r3 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_getPlayerPosition.yaml
 	thumb_func_start ow_getPlayerPosition
 ow_getPlayerPosition:
 	mov r3, r10
@@ -3005,6 +3005,10 @@ owPlayer_writeS200aec0_Unk20_809e496:
 	.pool
 	thumb_func_end owPlayer_writeS200aec0_Unk20_809e496
 
+// symdb: Sets the alpha (blend/transparency) level of the overworld player sprite to the value passed in r0.
+// symdb: void owPlayer_setAlpha_809e4a0(u32 alpha /* r0 */); // r10 = toolkit; clobbers r0-r1, r2-r3, r7,
+// symdb: flags; preserves r5 (restored from stack)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setAlpha_8002c7a_809e4a0.yaml
 	thumb_func_start owPlayer_setAlpha_8002c7a_809e4a0
 owPlayer_setAlpha_8002c7a_809e4a0:
 	push {r5,lr}

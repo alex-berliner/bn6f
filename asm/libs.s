@@ -24257,10 +24257,9 @@ off_814F088:
 	.word DMA2Control
 	thumb_func_end m4aSoundVSync
 
-// symdb: m4a sound-engine helper that initialises a MusicPlayerInfo with its track array, resets each track, and links the player into the engine's MPlayMain dispatch chain.
-// symdb: (r0 = MusicPlayerInfo*, r1 = Track array pointer, r2 = u8 track count, clamped to <=0x10) -> r0
-// symdb: = clobbered; sets player status/ident, track count, and engine link fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mplay_initPlayer.yaml
+// symdb: Links a music player into the M4A sound driver, initialising its track slots and registering it as the driver's active player.
+// symdb: void mplay_initPlayer(MPlayPlayer *player /*r0*/, void *trackBase /*r1*/, u8 trackCount /*r2*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/mplay_initPlayer.yaml
 	thumb_local_start
 mplay_initPlayer:
 	push {r4-r7,lr}
@@ -25605,10 +25604,11 @@ loc_814F978:
 	bx r0
 	thumb_func_end CgbSound
 
-// symdb: Sets a strength value on an object tagged with the 'Smsh' magic and recomputes its scaled product field.
-// symdb: (r0 = object ptr with magic 'Smsh' (0x68736D53) at +0x34, r1 = 8-bit factor) -> r0 clobbered
-// symdb: (popped into pc path); stores factor at +0x1E and factor*base>>8 at +0x20; flags from cmp/mul
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setSmashFactor.yaml
+// symdb: Applies a 16-bit "smash" value to a battle object flagged 'Smsh', storing the value and a fixed-point (value * rate >> 8) result in the object.
+// symdb: void object_setSmashFactor(BattleObject* obj /*r0*/, u16 value /*r1*/); extra register outputs
+// symdb: callers rely on: r2 = obj, r3 = kind word from +0x34, r1 = masked value on the non-smash path
+// symdb: but the rate from +0x1C on the smash path; clobbers r0 and nzcv.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setSmashFactor.yaml
 	thumb_func_start object_setSmashFactor
 object_setSmashFactor:
 	push {lr}

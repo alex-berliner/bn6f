@@ -2642,6 +2642,9 @@ navicust_NCP_Poem:
 	.byte 0, 0
 	thumb_func_end navicust_NCP_Poem
 
+// symdb: NaviCust "SlipRunner" program hook — turns the SlipRunner effect on by setting a flag byte in the current PET's navi stats.
+// symdb: void navicust_NCP_SlipRunr(void); // hidden arg in r10, forwarded to SetCurPETNaviStatsByte
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_NCP_SlipRunr.yaml
 	thumb_local_start
 navicust_NCP_SlipRunr:
 	push {lr}
@@ -2922,6 +2925,9 @@ off_813CBA0:
 	.word 0x12C
 	thumb_func_end navicust_NCP_HPPlus300
 
+// symdb: Navicust program "HP+400" effect — adds 400 to the player's current max-HP bonus.
+// symdb: void navicust_NCP_HPPlus400(r10 toolkit) — no return value; r10 input only, r0-r2 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_NCP_HPPlus400.yaml
 	thumb_local_start
 navicust_NCP_HPPlus400:
 	push {lr}

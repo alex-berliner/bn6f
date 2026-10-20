@@ -3636,6 +3636,9 @@ nullsub_35:
 	mov pc, lr
 	thumb_func_end nullsub_35
 
+// symdb: Empty stub that just returns to the caller; a placeholder for a removed or unused hook.
+// symdb: void nullsub_36(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/nullsub_36.yaml
 	thumb_func_start nullsub_36
 nullsub_36:
 	mov pc, lr

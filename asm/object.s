@@ -5563,10 +5563,11 @@ byte_800E660:
 	.byte 0x80, 0x0, 0x88, 0x7
 	thumb_func_end playerObjectMovingToPanelValidityRelated_800E618
 
-// symdb: Picks panel-state mask/anti-mask pair for an object's alliance and tests whether the panel at (col,row) of a battle grid matches that pair, returning 1/0.
-// symdb: (r0 = panelColumn, r1 = panelRow, r5 = BattleObject*) -> r0 = 1 if panel matches the alliance
-// symdb: pair, 0 otherwise ; r2/r3/r4-r7 callee-saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_checkEnemyOrAllyPanel_800E680.yaml
+// symdb: Validates a panel position for a battle object and forwards it to object_checkPanelParameters with the panel-kind/attribute pair selected from a small table by the object's alliance and whether its own panel is solid.
+// symdb: u32 object_checkPanelKindByAlliance_800E680(u32 x /*r0*/, u32 y /*r1*/, r5 = battleObject*);
+// symdb: returns r0 from object_checkPanelParameters (0 immediately if (x,y) is not a valid panel);
+// symdb: clobbers r1, r2, r3, NZCV; r4 preserved, r6/r7 used as scratch and restored.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_checkEnemyOrAllyPanel_800E680.yaml
 	thumb_func_start object_checkEnemyOrAllyPanel_800E680
 object_checkEnemyOrAllyPanel_800E680:
 	push {r6,r7,lr}

@@ -5503,10 +5503,10 @@ startInMapWarpCutscene_80059D0: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end startInMapWarpCutscene_80059D0
 
-// symdb: Clears story flag EVENT_1703 and launches the 'OnMapEnterAfterJackOut' cutscene with param 0, triggered when re-entering a map after jack-out.
-// symdb: (r5 = GameState* self, passed via fixed register per calling convention) -> r0 = undefined; no
-// symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_startJackOutMapEnterCutscene.yaml
+// symdb: Clears the jack-out event flag (0x1703) and starts the "on map enter after jack-out" cutscene.
+// symdb: void ow_startJackOutMapEnterCutscene(void); // callers pass only lr (and r10); no meaningful
+// symdb: register inputs, no outputs
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_startJackOutMapEnterCutscene.yaml
 	thumb_local_start
 ow_startJackOutMapEnterCutscene: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -5584,10 +5584,9 @@ start_setEventsAndFade: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end start_setEventsAndFade
 
-// symdb: One-shot game state handler: sets two story event flags, starts a screen fade, delays 160 frames, then hands control to the overworld subsystem.
-// symdb: (r5 = * GameState, self) -> void; no return value, writes SubsystemIndex = 0x10 to schedule
-// symdb: overworld_owMap_renderAndTickSubsystems_800536E via cbGameState_80050EC
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameState_fadeToOverworldAfterEvent.yaml
+// symdb: Wraps up an in-map event/cutscene: sets the post-event event flags, starts a screen fade, then hands control back to the overworld map subsystem.
+// symdb: void gameState_fadeToOverworldAfterEvent(GameState *self /*r5*/, u32 flagBank /*r10*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gameState_fadeToOverworldAfterEvent.yaml
 	thumb_local_start
 gameState_fadeToOverworldAfterEvent: // (self: * GameState $r5) -> ()
 	push {lr}

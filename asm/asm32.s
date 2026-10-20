@@ -35615,10 +35615,9 @@ off_811EF9C:
 	.word NULL
 	thumb_func_end sub_811EF8C
 
-// symdb: Refreshes the overworld HUD tile graphics for the current area name, also caching the current PET navi's id and two HP-related stats.
-// symdb: () -> r0 undefined; writes toolkit Unk200a220 struct fields +8/+0xC, builds gfx in unk_200BEA0,
-// symdb: repacks into VRAM 0x06015000
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_renderMapNameHudGfx.yaml
+// symdb: Overworld map-name HUD update — refreshes the cached PET navi stats, renders the current area's name as 9 glyphs, and queues the tiles to VRAM.
+// symdb: void ow_renderMapNameHudGfx(u32 r10 /* toolkit ptr */, u32 lr /* return addr */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_renderMapNameHudGfx.yaml
 	thumb_local_start
 ow_renderMapNameHudGfx:
 	push {r4-r7,lr}

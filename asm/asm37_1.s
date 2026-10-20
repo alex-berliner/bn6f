@@ -996,6 +996,9 @@ battleObject_scenarioEffectStateAddr_81421D8:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_scenarioEffectStateAddr_81421D8
 
+// symdb: Trivial getter that returns the u32 stored at offset 0x18 of the global scenario effect state struct.
+// symdb: void -> u32 (r0 = value at EWRAM 0x2000798; r4-r7 preserved despite being pushed)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getField0x18OfScenarioEffectState2000780_81421e0.yaml
 	thumb_func_start getField0x18OfScenarioEffectState2000780_81421e0
 getField0x18OfScenarioEffectState2000780_81421e0:
 	push {r4-r7,lr}
@@ -2273,9 +2276,10 @@ battleObject_emptyStub_8142C90:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_emptyStub_8142C90
 
-// symdb: Queues a 0x420-byte VRAM DMA of Beast+ special-scenario tile graphics from ROM into BG VRAM.
-// symdb: () -> r0 = queued transfer (src dword_8619730, dest 0x6006C00, size 0x420); no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_queueBeastSpGfx.yaml
+// symdb: Queues a VRAM DMA transfer that uploads the Beast-Out SP sprite graphics into the BG/tile area at VRAM 0x6006C00.
+// symdb: void init_queueBeastSpGfx(void); passes callee outputs through: returns r4 and r7 as left by
+// symdb: QueueEightWordAlignedGFXTransfer; clobbers r0-r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_queueBeastSpGfx.yaml
 	thumb_func_start init_queueBeastSpGfx
 init_queueBeastSpGfx:
 	push {lr}
@@ -2478,9 +2482,9 @@ locret_8142DE4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142DA0
 
-// symdb: Returns a per-area halfword constant (from a 4-entry table) selected by the current overworld map area, with map group 0x85 forced to entry 3.
-// symdb: () -> r0 = halfword from byte_8142E0C[2*areaIndex]; no flags meaningfully used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getAreaMapTilesOffset.yaml
+// symdb: Returns the halfword tile offset (from a 4-entry lookup table) used to draw the current area's overworld map, forcing entry 3 for the Sky Area map group.
+// symdb: u32 ow_getAreaMapTilesOffset(u32 toolkit /* r10 */); -> r0 = tile offset halfword
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_getAreaMapTilesOffset.yaml
 	thumb_local_start
 ow_getAreaMapTilesOffset:
 	push {lr}

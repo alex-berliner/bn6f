@@ -7308,6 +7308,10 @@ locret_8042EE6:
 	pop {r1-r7,pc}
 	thumb_func_end chatbox_8042EC8
 
+// symdb: Compares a chatbox text-table entry (selected by index) byte-for-byte against a buffer stored at +0x4C of a record, returning 1 on full match and 0 on the first mismatch.
+// symdb: u32 chatbox_entryMatchesBuffer(u32 entryIndex, s32 byteCount, u32 recordBase); // r0=entryIndex,
+// symdb: r1=byteCount, r5=recordBase -> r0=1/0; clobbers flags only
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042EE8.yaml
 	thumb_local_start
 chatbox_8042EE8:
 	push {r1-r7,lr}
@@ -10753,6 +10757,10 @@ off_8045ED8:
 	.word byte_8043CA4
 	thumb_func_end chatbox_8045ED0
 
+// symdb: Writes one 32-bit value into the active chatbox's word buffer at a given slot index.
+// symdb: void chatbox_storeWord(u32 slot, u32 value, Toolkit *toolkit); // r0=slot index, r1=value,
+// symdb: r10=toolkit; returns r5 unchanged (caller artifact)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8045EDC.yaml
 	thumb_func_start chatbox_8045EDC
 chatbox_8045EDC:
 	push {r2-r7,lr}

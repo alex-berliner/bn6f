@@ -2731,6 +2731,11 @@ off_8036F6C:
 	.word CutsceneScriptAskJackOut_80988E4 // CutsceneScript
 	thumb_func_end cutscene_checkOriginalCutsceneScriptPos_8036F58
 
+// symdb: Returns CUTSCENE_SCRIPT_UNK_MAGIC_SCRIPT_VALUE_0x1 if the given script position equals the cutscene state's saved "original" script position, else 0; also outputs the loaded original position.
+// symdb: u32 cutscene_isOriginalScriptPos_8036F70(u32 scriptPos /* r0 */,
+// symdb: u32 *posOut /* r1 */,                                           u32 *flagOut /* r2 */,
+// symdb: struct Toolkit *toolkit /* r10 */); // returns nz/c/v in flags, returns r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_checkOriginalCutsceneScriptPos_8036F70.yaml
 	thumb_func_start cutscene_checkOriginalCutsceneScriptPos_8036F70
 cutscene_checkOriginalCutsceneScriptPos_8036F70:
 	mov r1, r10

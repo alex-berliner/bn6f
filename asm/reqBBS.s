@@ -3204,6 +3204,10 @@ off_813FDA4:
 	.word eReqBBSGui
 	thumb_func_end reqBBS_813FD14
 
+// symdb: Scene load/init for the BBS request board — clears VRAM/palette buffers and decompresses the board's tiles, palettes, and text script from the reference table before the board state is set up.
+// symdb: void reqBBS_813FDA8(void) /* r5 preserved end-to-end, returned as the caller's r5; clobbers
+// symdb: r0-r3, lr, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_813FDA8.yaml
 	thumb_local_start
 reqBBS_813FDA8:
 	push {r5,lr}
@@ -3829,6 +3833,11 @@ off_81403A4:
 	.word 0x3C0
 	thumb_func_end reqBBS_8140358
 
+// symdb: BBS menu request handler that starts a screen fade, sets the caller's menu-state byte to 8 (leaving/transition), and plays the "unselect" sound.
+// symdb: u32 bbs_menu_beginFadeOut_81403A8(u32 unusedR2, u8* menuStatePtr); // in: r2 (arg, unused), r5
+// symdb: (pointer to menu state byte), lr; out: r10 (whatever PlaySoundEffect leaves there); clobbers
+// symdb: r0-r3, lr, NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81403A8.yaml
 	thumb_local_start
 reqBBS_81403A8:
 	push {lr}
@@ -4156,6 +4165,10 @@ off_81405E4:
 	.word dword_86B7AE0
 	thumb_func_end reqBBS_81405C0
 
+// symdb: Draws the bulletin-board (BBS) background by copying a fixed 8x2 block of tiles from a table into tile block 32x32
+// symdb: void drawBbsBackground_81405E8(r10 context, lr return_address); reads r4/r5 to preserve them;
+// symdb: returns r5 unchanged (callers read r5 back but it is untouched)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81405E8.yaml
 	thumb_local_start
 reqBBS_81405E8:
 	push {r4-r7,lr}
@@ -4176,6 +4189,9 @@ off_81405FC:
 	.word byte_813F32C
 	thumb_func_end reqBBS_81405E8
 
+// symdb: No-op stub among the bulletin-board "request" handlers; accepts a request number and returns immediately without doing anything.
+// symdb: void reqBBS_noopStub_8140600(void); /* preserves r4-r7, no outputs of its own */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_8140600.yaml
 	thumb_local_start
 reqBBS_8140600:
 	push {r4-r7,lr}
@@ -4410,6 +4426,10 @@ off_8140794:
 	thumb_func_end reqBBS_81406FC
 
 // () -> u8
+// symdb: Returns the player's request-BBS rank, read from the request-BBS GUI work area's rank byte.
+// symdb: u8 reqBBS_getRequestBBSRank(void) — no register inputs; returns u8 rank in r0 (r1 incidentally
+// symdb: left as 0xE, r4-r7 preserved)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_getRequestBBSRank.yaml
 	thumb_func_start reqBBS_getRequestBBSRank
 reqBBS_getRequestBBSRank:
 	push {r4-r7,lr}
@@ -4581,6 +4601,10 @@ locret_814089C:
 	.byte 0, 0
 	thumb_func_end reqBBS_8140884
 
+// symdb: Marks a BBS (request board) request as accepted/completed by setting its event flag.
+// symdb: u32 reqBBS_setRequestFlag(u32 requestIndex /* r0 */, u32 flagBase /* r10 */); returns r5 (pass-
+// symdb: through)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81408A0.yaml
 	thumb_local_start
 reqBBS_81408A0:
 	push {r4-r7,lr}
@@ -4595,6 +4619,11 @@ off_81408B0:
 	.word reqBBS_textualPointers
 	thumb_func_end reqBBS_81408A0
 
+// symdb: Marks a BBS (bulletin-board) request as read/completed by setting the event flag whose index the caller passes, offset by the request-text table's base value.
+// symdb: void reqBBS_setRequestReadFlag(u32 r0 flagIndex); inputs r0 = request flag index, r10 must be
+// symdb: valid (required by SetEventFlag); outputs none meaningful (r3 is whatever SetEventFlag left in
+// symdb: it), r4-r7 preserved, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81408B4.yaml
 	thumb_func_start reqBBS_81408B4
 reqBBS_81408B4:
 	push {r4-r7,lr}
@@ -4609,6 +4638,10 @@ off_81408C4:
 	.word reqBBS_textualPointers
 	thumb_func_end reqBBS_81408B4
 
+// symdb: Returns the e-Request ID of the entry currently selected on the e-Reader-style BBS board, combining cursor position and page offset.
+// symdb: u32 reqBBS_getSelectedEntryId_81408C8(void* board_state /* r5 */); returns entry ID in r0, r5
+// symdb: passed through unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81408C8.yaml
 	thumb_local_start
 reqBBS_81408C8:
 	push {r4-r7,lr}
@@ -4623,6 +4656,10 @@ off_81408D8:
 	.word reqBBS_eRequestEntriesIDs
 	thumb_func_end reqBBS_81408C8
 
+// symdb: BBS GUI helper that computes a byte from r5 via reqBBS_81408C8 and stores it at eReqBBSGui+0xF.
+// symdb: void reqBBS_81408DC(u32 arg /* r5 */); // returns nothing; calls reqBBS_81408C8(arg) and stores
+// symdb: its r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81408DC.yaml
 	thumb_local_start
 reqBBS_81408DC:
 	push {r4-r7,lr}
@@ -4696,6 +4733,10 @@ off_8140970:
 	.word 0x110
 	thumb_func_end reqBBS_81408F0
 
+// symdb: Reads the state byte stored at offset 0x0F of the BBS request board GUI object and returns it.
+// symdb: u8 reqBBS_getState_8140974(void) // in: lr only; out: r0 = eReqBBSGui[0x0F], r5 = passthrough
+// symdb: unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_8140974.yaml
 	thumb_func_start reqBBS_8140974
 reqBBS_8140974:
 	push {r4-r7,lr}
@@ -4785,6 +4826,10 @@ reqBBS_81409E4:
 	pop {pc}
 	thumb_func_end reqBBS_81409E4
 
+// symdb: Returns the current game state's coord-interaction value (u8), used as a condition for the BBS/quest request it gates.
+// symdb: u32 reqBBS_getCoordInteractionValue_81409F4(u32 toolkitR10); // r10 = toolkit ptr, returns u8
+// symdb: zero-extended in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81409F4.yaml
 	thumb_func_start reqBBS_81409F4
 reqBBS_81409F4:
 	push {lr}
@@ -4809,6 +4854,11 @@ reqBBS_setFlag_e17b0f7_8140A00:
 	pop {pc}
 	thumb_func_end reqBBS_setFlag_e17b0f7_8140A00
 
+// symdb: Completes a bulletin-board (BBS) request by clearing its event flag and marking the request's state slot as resolved in the save work area.
+// symdb: void reqBBS_finishRequest(Toolkit* toolkit /* r10 */) -> r1 = as left by
+// symdb: ClearEventFlagFromImmediate, r3 = 0x12, c/v as left by ClearEventFlagFromImmediate; r4/r5
+// symdb: preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_clearFlag_8140A0C.yaml
 	thumb_func_start reqBBS_clearFlag_8140A0C
 reqBBS_clearFlag_8140A0C:
 	push {r4,r5,lr}

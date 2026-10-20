@@ -3124,10 +3124,10 @@ dword_809B0D4:
 	.word 0x48020000
 	thumb_func_end ow_beastTransformStep
 
-// symdb: Overworld object behavior: decrements a per-entity timer at +0x1a each tick and, when the gating condition holds (state==2 with timer<=0, or state!=2 but variant==2 with timer>0), increments a counter at +0x18 and calls SpawnOverworldMapObject every 8th tick with id 0xB and r4 = 0x48000001 | (variant<<16). Always returns 1.
-// symdb: (r0 = ? unused, r5 = behavior struct: +6 state, +7 variant id, +0x18 spawn counter, +0x1a timer)
-// symdb: -> r0 = 1 always; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_periodicObjectSpawner.yaml
+// symdb: Per-tick handler for an overworld object that counts down a lifetime timer and, while armed, spawns a map object every 8th tick via SpawnOverworldMapObject.
+// symdb: void ow_periodicObjectSpawner(r5=object, r10=toolkit); always returns r0=1 with NZ set from it;
+// symdb: r2/r3/r4/r7 may be clobbered on the spawn path, r4-r7 are preserved by the push/pop
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_periodicObjectSpawner.yaml
 	thumb_local_start
 ow_periodicObjectSpawner:
 	push {r4-r7,lr}
@@ -4613,10 +4613,10 @@ sub_809C7FC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809C7FC
 
-// symdb: Reads an index from an object field and sets the overworld player's fixed animation to a table-mapped animation id.
-// symdb: (r5 = context object, no args) -> r0 = 0; calls owPlayer_setS200ace0_fixedAnimationSelect with
-// symdb: mapped animation id
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_setFixedAnimationFromLookup.yaml
+// symdb: Reads the player's overworld state index and applies the matching fixed animation id from a small lookup table.
+// symdb: void owPlayer_setFixedAnimationFromLookup(r5 player, r10 context) -> r0 = 0 (Z set, N clear), r3
+// symdb: = callee's r3, r4/r5/r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_setFixedAnimationFromLookup.yaml
 	thumb_local_start
 owPlayer_setFixedAnimationFromLookup:
 	push {r4-r7,lr}
@@ -4684,10 +4684,12 @@ byte_809C884:
 	.byte 0x1, 0x1, 0x1, 0x3, 0x3, 0x3, 0x5, 0x5, 0x5, 0x7, 0x7, 0x7
 	thumb_func_end sub_809C870
 
-// symdb: Adds a cutscene-direction-dependent positional offset (32/64/96 pixels along one axis) to three coordinate values when initializing an overworld object.
-// symdb: (r0 = scratch, r1/r2/r3 = base coords (high halves), r5 = object struct) -> r0 = 0, r1/r2/r3 =
-// symdb: coords + offset; clobbers r4-r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_applyCutsceneDirOffset.yaml
+// symdb: Computes a position next to the player for a cutscene actor by adding a per-facing-direction offset (selected from a table by the cutscene state's direction byte and an actor slot byte) to the player's tile coordinates.
+// symdb: u32 ow_getPlayerPosPlusFacingOffset(u32 actor /* r5, byte +4 used */); /* r10: overworld
+// symdb: context, passed through to ow_getPlayerPosition;    returns r1 = (playerX + offX) << 16, r2 =
+// symdb: (playerY + offY) << 16,    r3 = (playerZ + offZ) << 16, r5 = actor unchanged, r0 = 0;
+// symdb: clobbers r0, flags, lr; preserves r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_applyCutsceneDirOffset.yaml
 	thumb_func_start ow_applyCutsceneDirOffset
 ow_applyCutsceneDirOffset:
 	push {r4-r7,lr}
@@ -4755,9 +4757,10 @@ off_809C950:
 	.word eCutsceneState
 	thumb_func_end sub_809C940
 
-// symdb: Sets one story/event flag whose ID is read from a field of a context structure.
-// symdb: (r5 = context struct pointer; no args in r0-r3) -> r0 = 0; clobbers r0-r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setEventFlagFromStruct.yaml
+// symdb: Sets the event flag whose id is stored in an object's state block (object+0x70 -> state+0x10).
+// symdb: void e_setEventFlagFromStateBlock(void) — object pointer in r5, context in r10; clobbers r0-r1,
+// symdb: r3, C/V; sets N/Z from 0 (Z set); preserves r4, r5, r6, r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/e_setEventFlagFromStruct.yaml
 	thumb_local_start
 e_setEventFlagFromStruct:
 	push {r4-r7,lr}
