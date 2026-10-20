@@ -1415,7 +1415,7 @@ loc_8130A62:
 	tst r3, r3
 	bne loc_8130B08
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_8130AB2
 	bl sub_81318B0
@@ -1893,7 +1893,7 @@ loc_8130E24:
 	tst r3, r3
 	bne loc_8130E98
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_8130E70
 	mov r1, #0x28 
@@ -4194,7 +4194,7 @@ locret_8132100:
 	.balign 4, 0x00
 	thumb_func_end sub_81320AC
 
-// symdb: RFU session setup/restart: bails on flag bits 8 (stores 0xC at +0xC) or on sub_803C330 pending (after error step); otherwise if flag 0x10 is set, runs the mode dispatcher, then either re-initializes the wireless session (adapter present) or tears down via sub_8147B24, finally spinning one counter tick and calling two RFU cleanup routines.
+// symdb: RFU session setup/restart: bails on flag bits 8 (stores 0xC at +0xC) or on sub_803C330 pending (after error step); otherwise if flag 0x10 is set, runs the mode dispatcher, then either re-initializes the wireless session (adapter present) or tears down via rfu_initCommStateCall, finally spinning one counter tick and calling two RFU cleanup routines.
 // symdb: (r0 = selector passed to sub_803CB18 checks, r5 = eS200BC50 state struct) -> r0 = destroyed;
 // symdb: writes state bytes at eS200BC50+0xC and +0x3
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initOrRestartSession.yaml
@@ -4226,7 +4226,7 @@ loc_8132126:
 	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_8132148
-	bl sub_8147B24
+	bl rfu_initCommStateCall
 	b loc_813214C
 loc_8132148:
 	bl rfu_initWirelessSession
@@ -4723,9 +4723,9 @@ off_813242C:
 // symdb: (r0 = pointer to two consecutive 16-byte state records, state halfword at +8 in each) -> r0 =
 // symdb: 0xFF if both states <= 2, else 1..4 ranking the two states (8 beats 4); calls sub_803DD60 to
 // symdb: pick which record is checked first
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132430.yaml
-	thumb_func_start sub_8132430
-sub_8132430:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_compareLinkStates.yaml
+	thumb_func_start e_compareLinkStates
+e_compareLinkStates:
 	push {r4-r7,lr}
 	mov r7, #0xff
 	mov r4, r0
@@ -4793,7 +4793,7 @@ loc_8132498:
 loc_81324A4:
 	mov r0, r7
 	pop {r4-r7,pc}
-	thumb_func_end sub_8132430
+	thumb_func_end e_compareLinkStates
 
 	thumb_func_start sub_81324A8
 sub_81324A8:

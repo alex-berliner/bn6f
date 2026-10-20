@@ -518,7 +518,7 @@ loc_80891E6:
 loc_80891EC:
 	add sp, sp, #0xc
 loc_80891EE:
-	bl sub_8089280
+	bl sprite_runFrameAlternatingLists
 	b loc_80891FE
 loc_80891F4:
 	mov r0, #SOUND_EXIT_SUBMENU
@@ -587,9 +587,9 @@ off_808927C:
 
 // symdb: Selects one of two structurally identical script command tables based on (frame & 0x1F) < 8, runs it via scriptListRun_8001158, then always runs a fixed third table — driving a frame-gated, blink-like sprite animation.
 // symdb: () -> void; r0-r2 scratch, no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089280.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_runFrameAlternatingLists.yaml
 	thumb_local_start
-sub_8089280:
+sprite_runFrameAlternatingLists:
 	push {r4-r7,lr}
 	ldr r0, off_80892A0 // =byte_80892A4
 	mov r1, r10
@@ -632,7 +632,7 @@ byte_8089344:
 	.byte 0x68, 0xD2, 0x0, 0x0, 0x88, 0x40, 0x14, 0x40, 0x70, 0xD2
 	.byte 0x0, 0x0, 0x88, 0x40, 0x34, 0x40, 0x74, 0xD2, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_8089280
+	thumb_func_end sprite_runFrameAlternatingLists
 
 // symdb: Queues one hard-coded OAM entry (a fixed screen sprite/overlay) selected by index from a table.
 // symdb: (r0 = entry index) -> r0 = clobbered; no meaningful return

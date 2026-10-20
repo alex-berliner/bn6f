@@ -148,7 +148,7 @@ void sub_812DBE0()
                             break;
                         if ( *(v7 + 10) > 33100 || *(v7 + 26) > 33100 )
                             goto LABEL_34;
-                        v11 = sub_8132430(v7);
+                        v11 = e_compareLinkStates(v7);
                         if ( v11 <= 2 )
                         {
                             sub_812F014();
@@ -349,7 +349,7 @@ void sub_812DDE8()
                     {
                         if ( !v9 )
                         {
-                            v11 = sub_8132430(v7);
+                            v11 = e_compareLinkStates(v7);
                             if ( v11 > 2 )
                             {
                                 if ( v11 != 255 )
@@ -521,7 +521,7 @@ void sub_812DFAC()
                     {
                         if ( !v12 )
                         {
-                            v14 = sub_8132430(v10);
+                            v14 = e_compareLinkStates(v10);
                             if ( sub_803DD60(v14) )
                                 v10 += 16;
                             if ( *(v10 + 10) == 65244 )
@@ -796,7 +796,7 @@ void sub_812E280()
                             v11 = v7;
                             if ( *(v7 + 10) == 65243 && (v11 = v7 + 16, *(v7 + 26) == 65243) )
                             {
-                                if ( sub_8132430(v7) == 4 )
+                                if ( e_compareLinkStates(v7) == 4 )
                                 {
                                     *(v0 + 2) = 24;
                                     *(v0 + 20) = 0;
@@ -890,7 +890,7 @@ void sub_812E370()
                             v11 = v7;
                             if ( *(v7 + 10) == 65243 && (v11 = v7 + 16, *(v7 + 26) == 65243) )
                             {
-                                if ( sub_8132430(v7) == 4 )
+                                if ( e_compareLinkStates(v7) == 4 )
                                 {
                                     *(v0 + 2) = 24;
                                     *(v0 + 20) = 0;

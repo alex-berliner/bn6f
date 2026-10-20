@@ -786,7 +786,7 @@ cutscenescript_809506F:
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x07
 	cs_ow_player_coord_special byte1=0x00 byte2=0xFF byte3=0x01 signedhword4=0x03C0 signedhword6=-0x0140 signedhword8=0x0600
 	cs_make_ow_player_visible
-	cs_call_native_with_return_value ptr1=sub_80950D4+1
+	cs_call_native_with_return_value ptr1=copyOamEntryToHeader+1
 	cs_call_native_with_return_value ptr1=sub_80950B8+1
 	cs_pause byte1=0xFF byte2=0x0F
 	cs_warp_cmd_8038040_2 byte1=0x81 byte2=0x00 ptr3=NULL
@@ -826,15 +826,15 @@ sub_80950C8:
 
 // symdb: Likely a thin wrapper around copyOamEntry_80AA004 that copies a 16-byte OAM/template row from byte_80AA01C into the chip/PET header buffer at byte_2001130, selected by the low nybble of r0; the full 166-instruction body is unknown so additional behavior cannot be confirmed.
 // symdb: (r0 = entry selector/index, low nybble) -> r0 = 0 after the copy; other flags unknown
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80950D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyOamEntryToHeader.yaml
 	thumb_local_start
-sub_80950D4:
+copyOamEntryToHeader:
 	push {lr}
 	mov r0, #0
 	bl copyOamEntry_80AA004
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_80950D4
+	thumb_func_end copyOamEntryToHeader
 
 cutscenescript_80950E0:
 	cs_lock_player_for_non_npc_dialogue_809e0b0

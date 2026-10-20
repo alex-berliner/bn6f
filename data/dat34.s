@@ -203,7 +203,7 @@ loc_812DC3C::
 	cmp r1, r2
 	bgt loc_812DCDC
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812DCA4
 	bl sub_812F014
@@ -470,7 +470,7 @@ loc_812DE70::
 	tst r3, r3
 	bne loc_812DEC2
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812DEB2
 	push {r0}
@@ -694,7 +694,7 @@ loc_812E018::
 	tst r3, r3
 	bne loc_812E080
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	bl sub_803DD60
 	tst r0, r0
 	beq loc_812E046
@@ -1077,7 +1077,7 @@ loc_812E306::
 	b loc_812E35E
 loc_812E342::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812E35E
 	mov r0, #0x18
@@ -1190,7 +1190,7 @@ loc_812E3F6::
 	b loc_812E43A
 loc_812E41E::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812E43A
 	mov r0, #0x18

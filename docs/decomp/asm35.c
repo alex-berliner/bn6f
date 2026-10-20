@@ -268,7 +268,7 @@ void sub_812EDE4()
 // 0x812edfc
 int __fastcall sub_812EDFC(int a1, int a2)
 {
-    return sub_8120280(a1, 4 * a2, *(&off_812EE18 + a2));
+    return t3_renderIndexedText(a1, 4 * a2, *(&off_812EE18 + a2));
 }
 
 

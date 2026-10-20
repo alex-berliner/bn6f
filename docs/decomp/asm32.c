@@ -6519,7 +6519,7 @@ void sub_8112D60()
 
 
 // 0x8112d84
-char *sub_8112D84()
+char *object_blinkPanelHighlight()
 {
     int v0; // r7
     char *result; // r0
@@ -13416,7 +13416,7 @@ int battle_beastOutTransformUpdate()
     if ( *(v1 + 2) == 40 )
     {
         v4 = 0;
-        sub_8118794();
+        battle_beastOutTransformAdvanceTimers();
         if ( !v3 )
             v4 = 1;
         *(v1 + 13) = v4;
@@ -13673,7 +13673,7 @@ signed int sub_8118744()
 
 
 // 0x8118794
-signed int sub_8118794()
+signed int battle_beastOutTransformAdvanceTimers()
 {
     unsigned int v0; // r0
     unsigned int v1; // r7
@@ -16347,7 +16347,7 @@ void __noreturn sub_811A998()
     sprite_setPallete(0);
     sprite_setPriority_8002E14(2);
     slotList_storeHalfwordAndClearField_800306C(0);
-    sub_811AB14();
+    sprite_setSubEntryPaletteBankFromTable();
     sprite_setSubRecordFieldA_8003060(4);
     sprite_setCoordinates(*&byte_811A9F8[4 * *(v0 + 5)], *&byte_811A9F8[4 * *(v0 + 5) + 2]);
     *(v0 + 8) = 4;
@@ -16423,7 +16423,7 @@ int sub_811AB0C()
 
 
 // 0x811ab14
-int sub_811AB14()
+int sprite_setSubEntryPaletteBankFromTable()
 {
     int v0; // r5
 
@@ -16799,7 +16799,7 @@ int __fastcall sprite_unscaleEntryIfBusy(int a1)
 
 
 // 0x811b028
-void __noreturn sub_811B028()
+void __noreturn sprite_drawMarkerForObject()
 {
     int v0; // r5
     int v1; // r0
@@ -16859,7 +16859,7 @@ int sub_811B14C()
 
 
 // 0x811b194
-void __noreturn sub_811B194()
+void __noreturn sprite_forwardVariantValueAtOffset()
 {
     int v0; // r5
     int v1; // r0
@@ -18308,7 +18308,7 @@ int sub_811C4E8()
 
 
 // 0x811c508
-void sub_811C508()
+void sprite_initToCenter()
 {
     _BYTE *v0; // r5
 
@@ -18740,7 +18740,7 @@ int sub_811CC74()
 
 
 // 0x811cc94
-void sub_811CC94()
+void object_initVariant()
 {
     _BYTE *v0; // r5
 
@@ -18751,12 +18751,12 @@ void sub_811CC94()
     v0[18] = 0;
     v0[12] = 0;
     (*(&off_811CCD0 + v0[4]))();
-    sub_811CD08();
+    object_runStateHandler();
 }
 
 
 // 0x811cd08
-void sub_811CD08()
+void object_runStateHandler()
 {
     int v0; // r5
 
@@ -19576,7 +19576,7 @@ int __noreturn object_spawnCenteredSprite()
 
 
 // 0x811d634
-int __fastcall sub_811D634(int a1, int a2, int a3)
+int __fastcall object_updatePosition(int a1, int a2, int a3)
 {
     int result; // r0
     char v4; // zf
@@ -19615,7 +19615,7 @@ int __fastcall sub_811D66C(int a1, int a2)
 
 
 // 0x811d69c
-int __fastcall sub_811D69C(int a1, int a2)
+int __fastcall e_setEntryField14Signed(int a1, int a2)
 {
     int v2; // r6
     int result; // r0
@@ -20024,7 +20024,7 @@ int __fastcall sprite_setCursorPosFromCoordTable(int a1)
 
 
 // 0x811df0c
-int __fastcall sub_811DF0C(int a1)
+int __fastcall e_setStructEntryActive(int a1)
 {
     int result; // r0
     _BYTE *v2; // r1
@@ -22780,7 +22780,7 @@ LABEL_8:
 
 
 // 0x8120228
-int __fastcall sub_8120228(int a1, int a2, _WORD *a3)
+int __fastcall chatbox_expandStringById(int a1, int a2, _WORD *a3)
 {
     unsigned int v3; // r4
     char *v4; // r0
@@ -22801,7 +22801,7 @@ int __fastcall sub_8120228(int a1, int a2, _WORD *a3)
 
 
 // 0x8120280
-int __fastcall sub_8120280(int a1, int a2, _WORD *a3)
+int __fastcall t3_renderIndexedText(int a1, int a2, _WORD *a3)
 {
     int v3; // r4
 
@@ -23754,7 +23754,7 @@ signed int sub_8120B54()
     notZero_eByte200AD04();
     if ( v0 )
         return 255;
-    if ( sub_803F674() >= 2 && !(sub_802D246() & 8) )
+    if ( rfu_countPlayersByStatus() >= 2 && !(sub_802D246() & 8) )
     {
         sub_8144D30();
         return 255;

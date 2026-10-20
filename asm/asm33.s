@@ -2842,7 +2842,7 @@ off_812460C:
 	.word chatbox_textShowNextPage+1
 	.word npc_runBeastOutDialog+1
 	.word npc_showTextByStoryFlag+1
-	.word sub_81246D8+1
+	.word t4_runConditionalChatboxScript+1
 	.word npc_conditionalChat+1
 	thumb_func_end sub_81245D4
 
@@ -2962,9 +2962,9 @@ locret_81246D4:
 // symdb: Stores r0 into [r5,#0x10] and (in some branches) into chatbox+0x4C, then picks a chatbox script (7, 0xB, or 0xD) from archive 201C100 based on the S2001c04 gamestate fields at offsets 0x28 and 0x1C, updating [r5,#2]/[r5,#3] state bytes as it advances a small state machine.
 // symdb: (r0 = byte value (text param/speaker id), r5 = state struct, r10 = toolkit) -> void; runs a
 // symdb: chatbox script and updates [r5,#2]/[r5,#3] state bytes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81246D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_runConditionalChatboxScript.yaml
 	thumb_local_start
-sub_81246D8:
+t4_runConditionalChatboxScript:
 	push {r4,lr}
 	strb r0, [r5,#0x10]
 	mov r4, r10
@@ -3001,7 +3001,7 @@ loc_8124712:
 	strb r0, [r5,#2]
 locret_812471A:
 	pop {r4,pc}
-	thumb_func_end sub_81246D8
+	thumb_func_end t4_runConditionalChatboxScript
 
 // symdb: Runs one of two chatbox text scripts (7 with an argument, or 8) depending on the result of a check, and updates the caller task's state bytes accordingly.
 // symdb: (r0 = byte argument, saved to [r5,#0x10]) -> none; r5 = task/object with state bytes at +2/+3,
@@ -12067,7 +12067,7 @@ loc_8128E64:
 	mov r0, #0
 	bl e_resetEntryStatus
 	mov r0, #1
-	bl sub_811DF0C
+	bl e_setStructEntryActive
 	b loc_8128EB8
 loc_8128E92:
 	mov r1, #0
@@ -13514,7 +13514,7 @@ off_8129930:
 	.word sub_81299B0+1
 	.word sub_8129A20+1
 	.word battle_dealChipsOnFadeIn+1
-	.word sub_8129A54+1
+	.word t1_waitObjectsDoneThenChatbox+1
 	thumb_func_end sub_8129918
 
 // symdb: Reads a slot/ability index from a struct, performs two related helper calls on it, and on a result of 3 marks the struct's state as 4 and invokes a request handler.
@@ -13687,9 +13687,9 @@ locret_8129A52:
 // symdb: (r4 = &unk_20251A0 [3-pointer slot array], r5 = script/chatbox context struct) -> r0 = last
 // symdb: value written to r5[0x1b] on success, or the slot flag byte when bailing early; no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129A54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_waitObjectsDoneThenChatbox.yaml
 	thumb_local_start
-sub_8129A54:
+t1_waitObjectsDoneThenChatbox:
 	push {lr}
 	mov r6, #0
 	ldr r4, off_8129A94 // =unk_20251A0 
@@ -13727,7 +13727,7 @@ locret_8129A92:
 	.balign 4, 0
 off_8129A94:
 	.word unk_20251A0
-	thumb_func_end sub_8129A54
+	thumb_func_end t1_waitObjectsDoneThenChatbox
 
 // symdb: One step of the opponent's battle-menu state machine; dispatches on a phase byte to a per-phase AI handler, then runs a shared follow-up with command 0x12.
 // symdb: void battle_aiStep_8129A98(u32 r4, u32 r5, u32 r6, u32 r7, u32 r10); /* returns r5, r8, r9, r10,
@@ -15368,7 +15368,7 @@ loc_812A628:
 	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A648
-	bl sub_8147B24
+	bl rfu_initCommStateCall
 	mov r0, #0x10
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -15474,7 +15474,7 @@ off_812A6F4:
 	.word byte_8129150
 	thumb_func_end initScreenSceneAndFadeIn
 
-// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
+// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls rfu_initCommStateCall; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
 // symdb: (r5 = link connection state struct, set by caller) -> r0 = clobbered; updates struct fields +0x1
 // symdb: (state=0x10), +0x2 (sub-state=0), +0x28 (retry count), +0xC (state=0x18 in alternate branch)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryInitSessionStateStep.yaml
@@ -15488,7 +15488,7 @@ rfu_tryInitSessionStateStep:
 	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A722
-	bl sub_8147B24
+	bl rfu_initCommStateCall
 	mov r0, #0x10
 	strb r0, [r5,#1]
 	mov r0, #0
@@ -15873,7 +15873,7 @@ loc_812A9DA:
 	bne loc_812AA14
 	movflag EVENT_1722_BEAST_LINK_GATE_RELATED
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_803F674
+	bl rfu_countPlayersByStatus
 	cmp r1, #2
 	bne loc_812AA04
 	movflag EVENT_1722_BEAST_LINK_GATE_RELATED
@@ -16069,7 +16069,7 @@ loc_812AB5C:
 	tst r3, r3
 	bne loc_812ABC8
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812ABA4
 	mov r1, #0x38 
@@ -18206,7 +18206,7 @@ loc_812BAA6:
 	tst r3, r3
 	bne loc_812BADE
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812BAC8
 	mov r1, #0xc

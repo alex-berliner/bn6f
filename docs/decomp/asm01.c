@@ -75,7 +75,7 @@ void battle_updateCustomGauge_801FE6C()
         else
         {
             eStruct203F7D8[1] = v0;
-            if ( v0 == 2 && sub_802D246() & 8 && (sub_8144D04(0) != 1 || sub_8144D04(3u) != 1) )
+            if ( v0 == 2 && sub_802D246() & 8 && (battle_getTimerEnableFlag(0) != 1 || battle_getTimerEnableFlag(3u) != 1) )
                 eStruct203F7D8[1] = 4;
         }
     }

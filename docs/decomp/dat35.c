@@ -195,7 +195,7 @@ void __noreturn sub_812F190()
 				{
 					if ( *(v7 + 10) > 32771 || *(v7 + 26) > 32771 )
 						goto LABEL_31;
-					v11 = sub_8132430(v7);
+					v11 = e_compareLinkStates(v7);
 					if ( v11 <= 2 )
 					{
 						sub_8130864();
@@ -402,7 +402,7 @@ void sub_812F390()
 					{
 						if ( v9 )
 							break;
-						v11 = sub_8132430(v7);
+						v11 = e_compareLinkStates(v7);
 						if ( v11 <= 2 )
 						{
 							v12 = v11;
@@ -564,7 +564,7 @@ void sub_812F530()
 					{
 						if ( !v12 )
 						{
-							v14 = sub_8132430(v10);
+							v14 = e_compareLinkStates(v10);
 							if ( v14 == 4 )
 							{
 								camera_beginLinkPan();
@@ -960,7 +960,7 @@ void sub_812F920()
                             v11 = v7;
                             if ( *(v7 + 10) == 65243 && (v11 = v7 + 16, *(v7 + 26) == 65243) )
                             {
-                                if ( sub_8132430(v7) == 4 )
+                                if ( e_compareLinkStates(v7) == 4 )
                                 {
                                     *(v0 + 2) = 24;
                                     *(v0 + 20) = 0;
@@ -1057,7 +1057,7 @@ void __fastcall __noreturn sub_812FA0C(int a1)
                             v12 = v8;
                             if ( *(v8 + 10) == 65243 && (v12 = v8 + 16, *(v8 + 26) == 65243) )
                             {
-                                if ( sub_8132430(v8) == 4 )
+                                if ( e_compareLinkStates(v8) == 4 )
                                 {
                                     *(v1 + 2) = 24;
                                     *(v1 + 20) = 0;

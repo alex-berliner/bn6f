@@ -770,7 +770,7 @@ void __noreturn e_linkMatchObjectUpdate()
 			while ( v6 <= v8 );
 			if ( !v9 )
 			{
-				v11 = sub_8132430(v7);
+				v11 = e_compareLinkStates(v7);
 				if ( v11 > 2 )
 				{
 					if ( v11 == 255 )
@@ -1160,7 +1160,7 @@ void sub_8130DD0()
 					{
 	                    if ( v9 )
                             goto LABEL_21;
-                        v11 = sub_8132430(v7);
+                        v11 = e_compareLinkStates(v7);
                         if ( v11 > 2 )
                         {
                             if ( v11 == 4 )
@@ -2496,7 +2496,7 @@ LABEL_2:
         if ( rfu_shouldRestartWirelessLink() )
             rfu_initWirelessSession();
         else
-            sub_8147B24();
+            rfu_initCommStateCall();
     }
 LABEL_9:
     v6 = sub_813D5D0();
@@ -2723,7 +2723,7 @@ LABEL_7:
 
 
 // 0x8132430
-signed int __fastcall sub_8132430(int a1)
+signed int __fastcall e_compareLinkStates(int a1)
 {
     signed int v1; // r7
     int v2; // r4

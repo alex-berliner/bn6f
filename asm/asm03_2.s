@@ -5251,7 +5251,7 @@ loc_80492C2:
 	mov lr, pc
 	bx r0
 loc_80492D4:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -5302,7 +5302,7 @@ ow_attemptJackIn:
 	pop {r2,r3}
 	ldr r0, off_8049358 // =byte_202AB00 
 	ldr r1, off_804935C // =byte_202AF00 
-	bl sub_803C2AA
+	bl ow_saveJackInState
 	mov r0, #0xc
 	bl sub_803BB2C
 	mov r0, #0x28 
@@ -5360,7 +5360,7 @@ loc_80493A6:
 	strb r0, [r5,#1]
 	b loc_80493B2
 loc_80493B2:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049360
@@ -5396,7 +5396,7 @@ loc_80493EE:
 	strb r0, [r5,#1]
 	b loc_80493F4
 loc_80493F4:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end rfu_linkMenuStateStep
@@ -5410,7 +5410,7 @@ sub_80493FE:
 	mov r0, #0x24 
 	strb r0, [r5,#1]
 loc_804940C:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_80493FE
@@ -5422,7 +5422,7 @@ loc_804940C:
 	thumb_local_start
 rfu_wirelessConnectStep:
 	push {r4-r7,lr}
-	bl sub_8049680
+	bl rfu_dispatchRequest
 	beq loc_8049432
 	bl rfu_isNotConnected
 	tst r0, r0
@@ -5454,7 +5454,7 @@ loc_8049450:
 	mov r0, #0x44 
 	strb r0, [r5,#1]
 loc_8049464:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end rfu_wirelessConnectStep
@@ -5493,7 +5493,7 @@ loc_80494B6:
 	mov r0, #0x18
 	strb r0, [r5,#1]
 loc_80494C0:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_804946E
@@ -5501,7 +5501,7 @@ loc_80494C0:
 	thumb_local_start
 sub_80494CA:
 	push {r4-r7,lr}
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_80494CA
@@ -5549,7 +5549,7 @@ loc_8049516:
 	mov r0, #0x44 
 	strb r0, [r5,#1]
 loc_8049522:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end submenu_selectNetworkScript
@@ -5586,7 +5586,7 @@ loc_804956E:
 	mov r0, #0x18
 	strb r0, [r5,#1]
 loc_8049578:
-	bl sub_803A104
+	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_804952C
@@ -5743,9 +5743,9 @@ dword_804967C:
 // symdb: Pops the next RFU/wireless request id, invokes its handler from dword_80496EC[id*8] while storing a state byte at [r5+1], and returns whether a request was dispatched.
 // symdb: (r0/r1 = scratch, r5 = context struct ptr) -> r0 = 1 if a request was dispatched else 0; flags
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049680.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_dispatchRequest.yaml
 	thumb_local_start
-sub_8049680:
+rfu_dispatchRequest:
 	push {r4-r7,lr}
 	bl dispatch_803C620 // () -> (u32?, bool)
 	mov r4, r0
@@ -5769,7 +5769,7 @@ loc_80496AC:
 	bl sub_8148224
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049680
+	thumb_func_end rfu_dispatchRequest
 
 	thumb_local_start
 sub_80496B4:
@@ -7670,7 +7670,7 @@ e_giveChipStep:
 	bl event_ackNewFlagByte_8003AEA
 	b loc_804A4CC
 loc_804A4AA:
-	bl sub_804A970
+	bl req_takeOrderedChips
 	bl chipTraderRollReward
 	strh r0, [r7,#0x4] // (word_200AC84 - 0x200ac80)
 	strh r1, [r7,#0x6] // (word_200AC86 - 0x200ac80)
@@ -8303,9 +8303,9 @@ off_804A96C:
 // symdb: Drains a player's chip pack by iterating over a request table: for each entry it takes the chip id from the low 7 bits of word at entry+0x1c, derives the amount via arithmetic shift of the upper halfword, calls TakeChips to remove that many, then logs the surrendered chip id via sub_8048D60 with code 9.
 // symdb: (r5 = request record with count at +0x1e) -> r0 = last TakeChips/sub_8048D60 result; loops
 // symdb: [r5+0x1e] times over table at word_202A020
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A970.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_takeOrderedChips.yaml
 	thumb_local_start
-sub_804A970:
+req_takeOrderedChips:
 	push {r4-r7,lr}
 	ldr r7, off_804A99C // =word_202A020 
 	ldrh r6, [r5,#0x1e]
@@ -8329,7 +8329,7 @@ loc_804A978:
 	.balign 4, 0
 off_804A99C:
 	.word word_202A020
-	thumb_func_end sub_804A970
+	thumb_func_end req_takeOrderedChips
 
 	thumb_local_start
 sub_804A9A0:
@@ -8446,7 +8446,7 @@ sub_804AA58:
 	mov r1, #0x1c
 	mov r2, #0x28 
 	mov r3, #0x2e 
-	bl sub_804AA74
+	bl object_queueOamEntryPacked
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_804AA70:
@@ -8456,9 +8456,9 @@ dword_804AA70:
 // symdb: Thin wrapper that packs two halfwords into r0 (hi<<16 | lo), then forwards attribute/table parameters as halfword loads at byte offsets r2 and r3 from an object pointer in r5 to object_computeAndQueueOamEntry_811FA98, with fixed r1=0x20002, r4=7, r6=0xC24C, r7=0x64.
 // symdb: (r0 = two halfwords packed as (hi<<16)|lo, r1..r3 = indices/params, r5 = object struct pointer)
 // symdb: -> queues one OAM entry via object_computeAndQueueOamEntry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AA74.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_queueOamEntryPacked.yaml
 	thumb_local_start
-sub_804AA74:
+object_queueOamEntryPacked:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r1, [sp]
@@ -8483,7 +8483,7 @@ dword_804AA9C:
 	.word 0x20002
 dword_804AAA0:
 	.word 0xC24C
-	thumb_func_end sub_804AA74
+	thumb_func_end object_queueOamEntryPacked
 
 // symdb: Handles the B (cancel) button in a menu, backing out to the previous screen with a sound and fade.
 // symdb: (r0 = scratch, r5 = menu state struct) -> r0 = clobbered; may set state byte 8 and trigger
@@ -8661,7 +8661,7 @@ loc_804ABC0:
 	mov r1, #0x20 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	ldrh r0, [r5,#0x1e]
-	bl sub_804ACC8
+	bl stampRecordCounts
 	strb r0, [r5,#0x17]
 	ldr r0, off_804ACC4 // =eS200AC80 
 	ldr r0, [r0,#0x30] // (dword_200ACB0 - 0x200ac80)
@@ -8714,7 +8714,7 @@ loc_804AC1E:
 	mov r2, #0x20 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	ldrh r0, [r5,#0x1e]
-	bl sub_804ACC8
+	bl stampRecordCounts
 	strb r0, [r5,#0x17]
 	mov r0, r7
 	add r0, #0x20 
@@ -8747,7 +8747,7 @@ loc_804AC60:
 	mov r2, #0x20 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	ldrh r0, [r5,#0x1e]
-	bl sub_804ACC8
+	bl stampRecordCounts
 	strb r0, [r5,#0x17]
 	bl sub_804ADD0
 loc_804AC84:
@@ -8790,9 +8790,9 @@ off_804ACC4:
 
 // symdb: Tallies how many 0x20-byte records at word_202A020 share each halfword ID into a 30-slot {id,count} table, then writes the duplicate count into each record's upper halfword at +0x16, keyed by the halfword already present at +0x14.
 // symdb: (r0 = record count) -> r0 = number of records with a nonzero ID field; no flags defined
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804ACC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/stampRecordCounts.yaml
 	thumb_local_start
-sub_804ACC8:
+stampRecordCounts:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	mov r1, #0
@@ -8877,7 +8877,7 @@ off_804AD58:
 	.word 0x78
 off_804AD5C:
 	.word word_202A020
-	thumb_func_end sub_804ACC8
+	thumb_func_end stampRecordCounts
 
 	thumb_local_start
 sub_804AD60:
@@ -9115,9 +9115,9 @@ off_804AEC0:
 // symdb: Queues a denial text string into the chatbox (when flag), maps a reason code to a chatbox ID and calls sub_804AF10, plays SOUND_CANT_JACK_IN, backs up the overworld object's prior state byte (+3) into +0xD and sets its state to 8.
 // symdb: (r0 = show-message flag, r1 = text pointer, r2 = reason code, r5 = object ptr) -> r0 = result of
 // symdb: sub_804AF10; destroys r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AEC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_handleJackInDenied.yaml
 	thumb_local_start
-sub_804AEC4:
+ow_handleJackInDenied:
 	push {r4,lr}
 	tst r0, r0
 	bne loc_804AEE6
@@ -9160,7 +9160,7 @@ loc_804AEFC:
 	mov r0, #8
 	strb r0, [r5,#2]
 	pop {r4,pc}
-	thumb_func_end sub_804AEC4
+	thumb_func_end ow_handleJackInDenied
 
 	thumb_local_start
 sub_804AF10:
@@ -10810,7 +10810,7 @@ off_804C520:
 	.word off_804C524
 off_804C524:
 	.word sub_804C53C+1
-	.word sub_804C5C0+1
+	.word drawFullscreenBackgroundTiles+1
 	thumb_func_end sub_804C510
 
 	thumb_local_start
@@ -10857,7 +10857,7 @@ sub_804C53C:
 loc_804C57C:
 	mov r0, #4
 	strb r0, [r5,#0x10]
-	bl sub_804C5C0
+	bl drawFullscreenBackgroundTiles
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C588:
@@ -10889,9 +10889,9 @@ off_804C5BC:
 // symdb: Sets the 0x800 bit in RenderInfo, calls a hook from a 2-entry table indexed by state byte +0xC, then a second hook from a 3-entry table indexed by +0xD, then copies a 32x32 tilemap (from a 2-entry table also indexed by +0xC) into BG block 3.
 // symdb: (r0 = object/state pointer, fields +0xC and +0xD select variants) -> r0 = clobbered; sets 0x800
 // symdb: bit in toolkit RenderInfo word
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C5C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/drawFullscreenBackgroundTiles.yaml
 	thumb_local_start
-sub_804C5C0:
+drawFullscreenBackgroundTiles:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r4, [r4,#oToolkit_RenderInfoPtr]
@@ -10938,7 +10938,7 @@ off_804C614:
 	.word sub_804C694+1
 dword_804C620:
 	.word 0x800
-	thumb_func_end sub_804C5C0
+	thumb_func_end drawFullscreenBackgroundTiles
 
 	thumb_local_start
 sub_804C624:
@@ -11346,7 +11346,7 @@ off_804CACC:
 	.word off_804CAD0
 off_804CAD0:
 	.word sub_804CB0C+1
-	.word sub_804CB64+1
+	.word t3_showFullScreenBackground+1
 	.word nullsub_804CBA0+1
 off_804CADC:
 	.word byte_804C860
@@ -11406,7 +11406,7 @@ sub_804CB0C:
 	bx r1
 	mov r0, #4
 	strb r0, [r5,#0x10]
-	bl sub_804CB64
+	bl t3_showFullScreenBackground
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804CB48:
@@ -11425,12 +11425,12 @@ off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
-// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
+// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls ow_updateMarkerProj, then stores state 8 at r5+0x10.
 // symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;
 // symdb: writes RenderInfo flags and struct byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CB64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_showFullScreenBackground.yaml
 	thumb_local_start
-sub_804CB64:
+t3_showFullScreenBackground:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -11447,7 +11447,7 @@ sub_804CB64:
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r5}
-	ldr r0, off_804CB98 // =sub_8006990+1 
+	ldr r0, off_804CB98 // =ow_updateMarkerProj+1 
 	mov lr, pc
 	bx r0
 	beq locret_804CB92
@@ -11459,10 +11459,10 @@ locret_804CB92:
 off_804CB94:
 	.word byte_86A34E0
 off_804CB98:
-	.word sub_8006990+1
+	.word ow_updateMarkerProj+1
 dword_804CB9C:
 	.word 0x2800
-	thumb_func_end sub_804CB64
+	thumb_func_end t3_showFullScreenBackground
 
 	thumb_local_start
 nullsub_804CBA0:

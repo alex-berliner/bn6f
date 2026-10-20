@@ -260,7 +260,7 @@ loc_812F1E2::
 	cmp r1, r2
 	bgt loc_812F284
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812F24C
 	bl sub_8130864
@@ -520,7 +520,7 @@ loc_812F40E::
 	tst r3, r3
 	bne loc_812F466
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812F456
 	push {r0}
@@ -729,7 +729,7 @@ loc_812F594::
 	tst r3, r3
 	bne loc_812F622
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812F5C2
 	bl camera_beginLinkPan
@@ -1261,7 +1261,7 @@ loc_812F9A6::
 	b loc_812F9FA
 loc_812F9DE::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812F9FA
 	mov r0, #0x18
@@ -1376,7 +1376,7 @@ loc_812FA9A::
 	b loc_812FADE
 loc_812FAC2::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812FADE
 	mov r0, #0x18

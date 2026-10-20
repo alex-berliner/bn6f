@@ -913,7 +913,7 @@ off_8026AA4:
 	// 0x40
 	.word battleObject_chipSelectUpdate+1 // (self: * S20364C0 $r5) -> ()
 	// 0x44
-	.word sub_80275EC+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObjectStep+1 // (self: * S20364C0 $r5) -> ()
 	// 0x48
 	.word battleObject_chipSelectAnimTick_802770C+1 // (self: * S20364C0 $r5) -> ()
 	// 0x4C
@@ -2580,9 +2580,9 @@ locret_80275EA:
 // symdb: Per-frame step for a battle object: dispatches to a state handler selected by the object's state byte from a 5-entry Thumb table, then ticks the chip-select pulse animation on the same self pointer.
 // symdb: (r0 unused; r5 = self *S20364C0) -> r0 = whatever the state handler leaves; calls handler then
 // symdb: anim tick, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80275EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObjectStep.yaml
 	thumb_local_start
-sub_80275EC: // (self: * S20364C0 $r5) -> ()
+battleObjectStep: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027600 // =off_8027604 
 	ldrb r0, [r5,#2]
@@ -2600,7 +2600,7 @@ off_8027604:
 	.word objectWaitFramesThenSetStateC+1
 	.word sub_8027672+1
 	.word battle_runFirstTutorialChatboxStep+1
-	thumb_func_end sub_80275EC
+	thumb_func_end battleObjectStep
 
 	thumb_local_start
 sub_8027618:
@@ -4548,9 +4548,9 @@ locret_802833E:
 // symdb: Queues a 0x180-byte graphics transfer from an indexed buffer into the battle gfx queue, advancing the destination cursor by 0x180.
 // symdb: (r0 = dest cursor (*mut, set up by caller), r1 = cursor copy, r4 = object whose byte at +7
 // symdb: selects the chunk) -> r0 = source pointer; r1 advanced by 0x180
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028340.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueIndexedGfxChunk.yaml
 	thumb_local_start
-sub_8028340:
+battle_queueIndexedGfxChunk:
 	push {lr}
 	ldr r0, off_8028360 // =dword_86E4D9C 
 	ldr r2, off_8028364 // =0x180 
@@ -4583,7 +4583,7 @@ off_8028370:
 	.word nullsub_14+1
 	.word battle_queueChipIconGfx+1
 	.word battle_queueChipIconGfx+1
-	.word sub_8028340+1
+	.word battle_queueIndexedGfxChunk+1
 	.word nullsub_14+1
 	.word battle_endActionSetup_8028310+1
 	.word battle_loadGfxChunkBySelector_8028320+1
@@ -4595,7 +4595,7 @@ off_80283A8:
 	.word 0x300
 dword_80283AC:
 	.word 0x1FF
-	thumb_func_end sub_8028340
+	thumb_func_end battle_queueIndexedGfxChunk
 
 // symdb: Runs a companion setup routine (sub_80283C8) and then loads a 15x6-tile background screen from the tile map at unk_2035186 into 32x32 tile block 3.
 // symdb: void sub_80283B0(void) — takes no meaningful inputs (r4/r5/r10 are caller state it must
@@ -11739,7 +11739,7 @@ off_802B780:
 	.word off_802B784
 off_802B784:
 	.word battle_subEffectFadeOutDispatch+1
-	.word sub_802B7E0+1
+	.word comm_waitCrossNetReady+1
 	.word chipAnimFolderCycle+1
 	.word sub_802B8E0+1
 	.word chip_previewShowSelectedChip+1
@@ -11789,9 +11789,9 @@ locret_802B7DE:
 // symdb: Per-frame handler that, once per battle, calls comm_checkCrossNetBattleReady and latches the result, then waits 20 frames (counter at +0x10) before setting owner state (+1) to 8 and clearing the ready halfword (+2) and dword (+0xc).
 // symdb: (r5 = task/state struct: +1 state byte, +2 ready flag byte, +0xc dword cleared, +0x10 frame
 // symdb: counter) -> r0 clobbered; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B7E0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/comm_waitCrossNetReady.yaml
 	thumb_local_start
-sub_802B7E0:
+comm_waitCrossNetReady:
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0
@@ -11816,7 +11816,7 @@ loc_802B808:
 	str r0, [r5,#0x10]
 locret_802B80A:
 	pop {pc}
-	thumb_func_end sub_802B7E0
+	thumb_func_end comm_waitCrossNetReady
 
 // symdb: Per-frame step of the chip-folder cycling animation: every 8 frames it renders the next row's chip name into the name-glyph buffers, updates the BG tilemap row, plays a scroll blip, and ends the animation when all rows are shown.
 // symdb: (r5 = animation state struct) -> r0 = clobbered; state struct updated, SFX may play
@@ -14694,18 +14694,18 @@ off_802CCB4:
 	.word object_spawnChipObject+1 // 0xf
 	.word sub_80E4288+1 // 0x10
 	.word sub_80E4164+1 // 0x11
-	.word sub_80E76D4+1 // 0x12
+	.word battle_spawnType5FObject+1 // 0x12
 	.word sub_80E7600+1 // 0x13
 	.word spawnBattleTrapMaybe_80E353E+1 // 0x14
 	.word sub_80E7008+1 // 0x15
-	.word sub_80E7FBA+1 // 0x16
-	.word sub_80E70A6+1 // 0x17
+	.word battle_spawnType4Init+1 // 0x16
+	.word battle_spawnObject59+1 // 0x17
 	.word battle_spawnObj5bWithChipFields+1 // 0x18
 	.word sub_80E24B8+1 // 0x19
 	.word sub_80E49A2+1 // 0x1a
-	.word sub_80E64E8+1 // 0x1b
+	.word object_spawnType50Init+1 // 0x1b
 	.word sub_80E7CA8+1 // 0x1c
-	.word sub_80E7F16+1 // 0x1d
+	.word object_spawnBattleChip+1 // 0x1d
 	.word spawnDblHeroSetupObject_80E8058+1 // 0x1e
 	.word sub_80E81B4+1 // 0x1f
 	.word object_spawnType76WithFields+1 // 0x20
@@ -14717,24 +14717,24 @@ off_802CCB4:
 	.word sub_80E979C+1 // 0x26
 	.word 0x0 // 0x27
 	.word 0x0 // 0x28
-	.word sub_80E92EE+1 // 0x29
+	.word spawn_objectKind7eFromSource+1 // 0x29
 off_802CD5C:
 	.word sub_80C0DD8+1
 	.word sub_80C2A4C+1
-	.word sub_80B921A+1
-	.word sub_80B9432+1
+	.word spawnType7BattleObject+1
+	.word object_spawnKind8Attached+1
 	.word sub_80BA1B0+1
 	.word sub_80BB7F6+1
 	.word sub_80BBAC6+1
-	.word sub_80B9750+1
+	.word object_spawnType9WithProps+1
 	.word object_spawnType10Linked+1
 	.word sub_80B9F0E+1
-	.word sub_80BBDE8+1
+	.word battle_setupSpawnedType17Object+1
 	.word sub_80BC0DA+1
 	.word battle_spawnType6Object+1
 	.word sub_80B9B6E+1
-	.word sub_80BA660+1
-	.word sub_80BA920+1
+	.word battle_spawnType14Object+1
+	.word spawn_battleObjectF+1
 	.word sub_80BAE16+1
 	.word sub_80B84EC+1
 	.word NULL
@@ -14743,7 +14743,7 @@ off_802CD5C:
 	.word sub_80BE3E8+1
 	.word battle_spawnType23ObjectWithProps+1
 	.word sub_80EA11C+1
-	.word sub_80BFCD0+1
+	.word battle_spawnChildObjectAtPanel+1
 	.word spawnType1Object_0x24_80BF6AE+1
 	.word spawnBassChipObject_80C3B30+1
 	.word sub_80C3E98+1
@@ -15722,12 +15722,12 @@ battle_clearAIDataStateBlock:
 	mov pc, lr
 	thumb_func_end battle_clearAIDataStateBlock
 
-// symdb: Per-frame tick for the player battle object's custom AI state: lazily initializes AIDataPtr+0xF0 (sets flag, halfword=8), reads state id, jumps via a 3-entry Thumb table (sub_802D358/sub_802D3A8/sub_802D3CA) with r6 holding the state block; r7 is computed as AIDataPtr+0xA0 and preserved across the call.
+// symdb: Per-frame tick for the player battle object's custom AI state: lazily initializes AIDataPtr+0xF0 (sets flag, halfword=8), reads state id, jumps via a 3-entry Thumb table (sub_802D358/battle_aiPickRandomRowObject/sub_802D3CA) with r6 holding the state block; r7 is computed as AIDataPtr+0xA0 and preserved across the call.
 // symdb: (r5 = battle object, reads oBattleObject_AIDataPtr) -> r0 = state id passed to handler; r1 =
 // symdb: pointer to state block (AIDataPtr+0xF0) for handlers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D322.yaml
-	thumb_func_start sub_802D322
-sub_802D322:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tickPlayerCustomState.yaml
+	thumb_func_start ai_tickPlayerCustomState
+ai_tickPlayerCustomState:
 	push {r4,r6,r7,lr}
 	ldr r6, [r5,#oBattleObject_AIDataPtr]
 	sub r6, #0xf
@@ -15753,9 +15753,9 @@ off_802D348:
 	.word off_802D34C
 off_802D34C:
 	.word playerAI_stepTryAttackChipOnTarget+1
-	.word sub_802D3A8+1
+	.word battle_aiPickRandomRowObject+1
 	.word ai_pickTargetPanelAndStartAttack+1
-	thumb_func_end sub_802D322
+	thumb_func_end ai_tickPlayerCustomState
 
 // symdb: Player-AI state step: if the target panel is clear of protected actors, fire the attack chip currently in hand and advance the AI state on success.
 // symdb: (r0-r6 context: r5 = own battle object, r6 = AI/state struct with u16 state at +0 and +4) -> r0
@@ -15806,9 +15806,9 @@ locret_802D3A6:
 // symdb: AI step that loops (up to 3 attempts) calling a row-object picker using the actor's PanelY and returns 0 to retry or 2 after resetting the attempt counter.
 // symdb: (r0 = unused, r5 = battle object, r6 = AI work struct) -> r0 = 0 if an object was picked, 2 if
 // symdb: the attempts were exhausted; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D3A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiPickRandomRowObject.yaml
 	thumb_local_start
-sub_802D3A8:
+battle_aiPickRandomRowObject:
 	push {lr}
 	mov r0, #8
 	strh r0, [r6]
@@ -15828,7 +15828,7 @@ loc_802D3C6:
 	mov r0, #0
 locret_802D3C8:
 	pop {pc}
-	thumb_func_end sub_802D3A8
+	thumb_func_end battle_aiPickRandomRowObject
 
 // symdb: AI step that picks a panel from an alliance-dependent param table (selected by object flag bit 0x10), stores sub_802D430's low-byte return into TargetPanelX/Y, clears TargetObjectPtr/ScratchVar, starts AI attack type 5 via aiAttack_initVarsAndStart_80116AE(5,8,2), increments the AI step counter, and returns 3.
 // symdb: (r0 = battle object ptr) -> r0 = 3 (next AI state); uses r6 = AI state struct, r7 = AI attack
@@ -15976,7 +15976,7 @@ off_802D4E0:
 	.word off_802D4E4
 off_802D4E4:
 	.word sub_802D4F0+1
-	.word sub_802D588+1
+	.word ai_tryPickRowObject+1
 	.word ai_pickTargetPanelAndStartAttack+1
 	thumb_func_end sub_802D4C6
 
@@ -16063,9 +16063,9 @@ locret_802D586:
 // symdb: Battle-AI step: picks a random object in the row matching the actor's PanelY; if none picked or a halfword retry counter at [r6,#6] underflows, writes state 8 to [r6] and returns 0; otherwise returns 2 to keep trying.
 // symdb: (r5 = battle object whose PanelY selects the row, r6 = AI state/work struct) -> r0 = next AI
 // symdb: state (2 to continue picking, 0 when done/failed); no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D588.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tryPickRowObject.yaml
 	thumb_local_start
-sub_802D588:
+ai_tryPickRowObject:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PanelY]
 	bl battle_pickRandomRowObjectFields_810971A
@@ -16083,7 +16083,7 @@ loc_802D5A0:
 	mov r0, #0
 locret_802D5A6:
 	pop {pc}
-	thumb_func_end sub_802D588
+	thumb_func_end ai_tryPickRowObject
 
 // symdb: Reads a battle-object stat, buckets it into tier 0-9 (stat/100, clamped), and returns a random halfword from that tier's row of a 10-row lookup table.
 // symdb: (r0 = battle object) -> r0 = random halfword from the tier's table row; flags clobbered by calls
@@ -16670,7 +16670,7 @@ battle_initNaviObjectFromStats:
 	bl sub_801E0D0
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 	ldrb r0, [r5,#oBattleObject_Alliance]
-	bl sub_80108FC
+	bl battle_processChipRangeInHand
 	bl battle_clearCollisionData
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
@@ -16880,7 +16880,7 @@ sub_802DB80:
 	bl sub_801E0D0
 	bl battleRefreshTrackedObjectArmPos_801DBD4
 	ldrb r0, [r5,#0x16]
-	bl sub_80108FC
+	bl battle_processChipRangeInHand
 	bl battle_clearCollisionData
 	bl battle_setObjectInvisible
 	ldrb r0, [r5,#0x14]

@@ -67,7 +67,7 @@ signed int __fastcall sub_808917C(int a1, int a2, int a3)
             sprite_queueIndexedOamEntry(v7);
         SetCameraXYZ(v14, v15, v16);
 LABEL_12:
-        sub_8089280();
+        sprite_runFrameAlternatingLists();
     }
     return 1;
 }
@@ -98,7 +98,7 @@ int __fastcall submenu_loadSelectedEntryGfx(int a1)
 
 
 // 0x8089280
-int sub_8089280()
+int sprite_runFrameAlternatingLists()
 {
     int v0; // r10
     char *v1; // r0

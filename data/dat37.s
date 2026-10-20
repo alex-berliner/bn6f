@@ -46111,7 +46111,7 @@ off_81C0418::
 	.word ply_fine+1
 	.word ply_fine+1
 	.word ply_fine+1
-	.word sub_814E15C+1
+	.word battle_setScriptByteToObj1D+1
 	.word battleObject_updateChipCharge_814E168+1
 	.word battleObject_runUpdateRoutineAndAdvancePCNextStep_814E17C+1
 	.word loadNextQueuedParams_814E190+1

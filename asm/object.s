@@ -5300,7 +5300,7 @@ off_800E4B0:
 	.word sub_800E4C0+1
 	.word battle_getHitModifierOffsets_800E548+1
 	.word object_getDirDelta+1
-	.word sub_800E500+1
+	.word battle_getPanelSlideDelta+1
 	thumb_func_end battle_dispatchObjectContactHandler_800E498
 
 	thumb_local_start
@@ -5339,9 +5339,9 @@ byte_800E4E8:
 // symdb: Returns the slide delta (dx, dy, speed) for a battle object's panel when its panel type is 9-12, otherwise returns (0,0,0).
 // symdb: (r5 = battle object) -> r0 = dx (signed byte), r1 = dy (signed byte), r2 = third table byte
 // symdb: (always 1); flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E500.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPanelSlideDelta.yaml
 	thumb_local_start
-sub_800E500:
+battle_getPanelSlideDelta:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -5374,7 +5374,7 @@ off_800E534:
 	.word byte_800E538
 byte_800E538:
 	.byte 0x0, 0xFF, 0x1, 0x0, 0x0, 0x1, 0x1, 0x0, 0xFF, 0x0, 0x1, 0x0, 0x1, 0x0, 0x1, 0x0
-	thumb_func_end sub_800E500
+	thumb_func_end battle_getPanelSlideDelta
 
 // symdb: Computes knockback direction multiplier and X/Y offset from a hit object's collision-data hit-modifier byte and the enemy's facing direction.
 // symdb: void battle_getHitModifierOffsets(u32 r4_in, BattleObject *r5, u32 r6_in, void *lr); /* out: r0

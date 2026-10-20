@@ -107,11 +107,11 @@ battle_updateCustomGauge_801FE6C:
 	pop {r5}
 	beq locret_801FEE6
 	mov r0, #0
-	bl sub_8144D04
+	bl battle_getTimerEnableFlag
 	cmp r0, #1
 	bne loc_801FEB0
 	mov r0, #3
-	bl sub_8144D04
+	bl battle_getTimerEnableFlag
 	cmp r0, #1
 	beq locret_801FEE6
 loc_801FEB0:

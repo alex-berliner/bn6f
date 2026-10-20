@@ -7122,7 +7122,7 @@ loc_80063D6:
 	add r3, #0x13
 	ldr r4, [r5,#0x14]
 	bl sub_8002378
-	bl sub_8006414
+	bl sprite_loadPalettes
 	pop {r4-r7,pc}
 loc_800640E:
 	bl sub_8006444
@@ -7132,9 +7132,9 @@ loc_800640E:
 // symdb: Loads two palette records (selected by [r5+0x18]/[r5+0x1C] indices) from arrays at [r5+0x10]/[r5+0x14] into software palette slots [r5+0xC]+0x14 (2 entries) and [r5+0xC]+0x15 (4 entries).
 // symdb: (r5 = sprite resource struct: [0x10]/[0x14] palette array ptrs, [0x18]/[0x1C] entry indices,
 // symdb: [0xC] base slot; r6 = arg passed to palette filler) -> void; r0-r3 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006414.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadPalettes.yaml
 	thumb_local_start
-sub_8006414:
+sprite_loadPalettes:
 	push {r4-r7,lr}
 	ldr r4, [r5,#0x10]
 	ldrh r0, [r5,#0x18]
@@ -7157,7 +7157,7 @@ sub_8006414:
 	add r3, #0x15
 	bl sub_8002378
 	pop {r4-r7,pc}
-	thumb_func_end sub_8006414
+	thumb_func_end sprite_loadPalettes
 
 	thumb_local_start
 sub_8006444:
@@ -7171,7 +7171,7 @@ sub_8006444:
 	orr r1, r2
 	orr r1, r3
 	mov r6, r1
-	bl sub_8006414
+	bl sprite_loadPalettes
 	pop {r6,pc}
 loc_800645E:
 	ldr r0, off_8006478 // =eScreenFade 
@@ -7589,9 +7589,9 @@ off_800698C:
 
 // symdb: Per-frame coroutine that projects an overworld point to screen, conditionally queues its OAM marker when visible, fills an Unk2009740 buffer, advances two fixed-point animation fields clamped to per-axis targets, and returns 1 when the progress byte reaches 0xFF.
 // symdb: () -> r0 = 1 when anim field 0x20096A4 reaches 0xFF, else 0; clobbers r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006990.yaml
-	thumb_func_start sub_8006990
-sub_8006990:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateMarkerProj.yaml
+	thumb_func_start ow_updateMarkerProj
+ow_updateMarkerProj:
 	push {r4-r7,lr}
 	mov r4, r8
 	mov r5, r9
@@ -7701,7 +7701,7 @@ dword_8006A54:
 	.word 0xFFFF1FFF
 off_8006A58:
 	.word sub_8003694+1
-	thumb_func_end sub_8006990
+	thumb_func_end ow_updateMarkerProj
 
 	thumb_func_start sub_8006A5C
 sub_8006A5C:
@@ -11533,7 +11533,7 @@ off_8008358:
 	.word off_800835C
 off_800835C:
 	.word object_wait60FramesThenDispatchEvent+1
-	.word sub_800838A+1
+	.word battle_showDamageTotalsPrompt+1
 	thumb_func_end sub_800834A
 
 // symdb: Per-frame object update that initializes a 60-frame timer on first run, then dispatches object event 0x800 and sets state 4 when the timer expires.
@@ -11568,9 +11568,9 @@ locret_8008388:
 // symdb: (r5 = state/controller object: +0 next-state word, +3 substate byte; r10 = toolkit) -> none;
 // symdb: advances oBattleState_PhaseStepIndex or oBattleState_CustGaugeChargeLevel and picks next state
 // symdb: via [r5].
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800838A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_showDamageTotalsPrompt.yaml
 	thumb_local_start
-sub_800838A:
+battle_showDamageTotalsPrompt:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -11616,7 +11616,7 @@ loc_80083DE:
 	str r0, [r5]
 locret_80083E2:
 	pop {pc}
-	thumb_func_end sub_800838A
+	thumb_func_end battle_showDamageTotalsPrompt
 
 	thumb_local_start
 sub_80083E4:
@@ -19283,14 +19283,14 @@ battle_initLoopbackLinkPackets:
 	thumb_func_end battle_initLoopbackLinkPackets
 
 // symdb: Writes a 0xA9B8C7D6-tagged two-word packet into the outgoing battle link buffer and requests battle mode 3.
-// symdb: (r0 = passed to sub_800B4CE, r1 = second payload word) -> r0 = 1 from
+// symdb: (r0 = passed to battle_findActorSlotOffset, r1 = second payload word) -> r0 = 1 from
 // symdb: battle_requestSetBattleMode; r4 consumed as first payload word
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_linkSendTaggedPacketMode3.yaml
 	thumb_local_start
 battle_linkSendTaggedPacketMode3:
 	push {r4,r5,lr}
 	mov r5, r1
-	bl sub_800B4CE
+	bl battle_findActorSlotOffset
 	ldr r0, dword_800B680 // =0xa9b8c7d6
 	ldr r1, off_800B684 // =dword_203CBE0
 	str r0, [r1]
@@ -19306,9 +19306,9 @@ battle_linkSendTaggedPacketMode3:
 // symdb: (r0 = actor pointer) -> r0 = offset of the matching slot in BattleState (relative to
 // symdb: oBattleState_AliveOpponentActors / oBattleState_BattleObjectList), or 0 if not found; flags
 // symdb: clobbered by bl.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B4CE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findActorSlotOffset.yaml
 	thumb_local_start
-sub_800B4CE:
+battle_findActorSlotOffset:
 	push {lr}
 	mov r4, r0
 	mov r0, r10
@@ -19346,7 +19346,7 @@ loc_800B50A:
 	mov r4, #0
 locret_800B50C:
 	pop {pc}
-	thumb_func_end sub_800B4CE
+	thumb_func_end battle_findActorSlotOffset
 
 // symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from byte_203F5A4 when GetBattleEffects has bit 0x8 set.
 // symdb: () -> void; reads byte_203F4A4 (and byte_203F5A4), writes entry+0x44 (word) and entry+0xE (byte)

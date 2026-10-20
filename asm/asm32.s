@@ -10410,9 +10410,9 @@ locret_8112D82:
 // symdb: Blinking panel highlight: increments a halfword counter at object+0x12 and, when bit 2 is clear, calls object_highlightPanel with the panel coordinates stored at object+0x16 (x) and object+0x17 (y).
 // symdb: (r0 unused incoming; r7 = object pointer) -> r0 = panel flag byte value from highlightPanel;
 // symdb: flags from tst/bl
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8112D84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_blinkPanelHighlight.yaml
 	thumb_local_start
-sub_8112D84:
+object_blinkPanelHighlight:
 	push {lr}
 	ldrh r0, [r7,#0x12]
 	add r0, #1
@@ -10425,7 +10425,7 @@ sub_8112D84:
 	bl object_highlightPanel
 locret_8112D9A:
 	pop {pc}
-	thumb_func_end sub_8112D84
+	thumb_func_end object_blinkPanelHighlight
 
 // symdb: Dispatches an AI attack handler selected by the current hit element byte, using a 4-entry jump table to element- or form-specific handlers (including battle_initBeastOutAttack_8112E34).
 // symdb: (r0 = attack vars element index read from [r7+oAIAttackVars_HitElement]; r7 = battle/AI attack
@@ -21708,7 +21708,7 @@ loc_811851E:
 	cmp r0, #0x28
 	bne loc_8118538
 	mov r4, #0
-	bl sub_8118794
+	bl battle_beastOutTransformAdvanceTimers
 	beq loc_8118534
 	mov r4, #1
 loc_8118534:
@@ -22072,9 +22072,9 @@ loc_811878A:
 // symdb: Advances the two frame timers (0xB6 and 0x2F) of the beast-out transform effect toward their targets via sub_8118320, and returns the count of timers that reached it (0-2) with flags set by a final cmp against #2.
 // symdb: (r0 = unused/0) -> r0 = count (0-2) of timers that reached their target; flags clobbered by
 // symdb: calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118794.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTransformAdvanceTimers.yaml
 	thumb_local_start
-sub_8118794:
+battle_beastOutTransformAdvanceTimers:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	mov r0, #0
@@ -22110,7 +22110,7 @@ loc_81187D2:
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8118794
+	thumb_func_end battle_beastOutTransformAdvanceTimers
 
 	thumb_local_start
 sub_81187DC:
@@ -26854,7 +26854,7 @@ sub_811A998:
 	bl sprite_setPriority_8002E14
 	ldr r0, dword_811A9EC // =0x0
 	bl slotList_storeHalfwordAndClearField_800306C
-	bl sub_811AB14
+	bl sprite_setSubEntryPaletteBankFromTable
 	mov r0, #4
 	bl sprite_setSubRecordFieldA_8003060
 	ldr r2, off_811A9F4 // =byte_811A9F8
@@ -26900,7 +26900,7 @@ sub_811AA14:
 	bl sprite_setAnimation // (u8 a1) -> void
 	bl sprite_loadAnimationData // () -> void
 	bl sprite_noShadow // () -> void
-	bl sub_811AB14
+	bl sprite_setSubEntryPaletteBankFromTable
 loc_811AA3A:
 	bl sprite_update
 	pop {pc}
@@ -27007,9 +27007,9 @@ sub_811AB0C:
 // symdb: Looks up a pointer from a byte-indexed table using the entity's byte at +4 as offset and tail-calls sprite_setSubEntryPaletteBank_800304A with that pointer in r0 and the raw offset byte in r1 to set a sub-entry's palette bank.
 // symdb: (r0 = unused on entry, r5 = entity object) -> r0 = result of sprite_setSubEntryPaletteBank; no
 // symdb: flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811AB14.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setSubEntryPaletteBankFromTable.yaml
 	thumb_local_start
-sub_811AB14:
+sprite_setSubEntryPaletteBankFromTable:
 	push {lr}
 	ldr r0, off_811AB24 // =off_811AB28
 	ldrb r1, [r5,#4]
@@ -27021,7 +27021,7 @@ off_811AB24:
 	.word off_811AB28
 off_811AB28:
 	.word 0x100
-	thumb_func_end sub_811AB14
+	thumb_func_end sprite_setSubEntryPaletteBankFromTable
 
 	push {r4,r5,lr}
 	mov r4, #0
@@ -27399,9 +27399,9 @@ sprite_updateGui68:
 	beq locret_811ADEC
 	bl sub_811B104
 	bl sub_811B14C
-	bl sub_811B194
+	bl sprite_forwardVariantValueAtOffset
 	bl sub_811B098
-	bl sub_811B028
+	bl sprite_drawMarkerForObject
 locret_811ADEC:
 	pop {pc}
 	.byte 0, 0
@@ -27685,9 +27685,9 @@ locret_811B026:
 // symdb: Draws a small marker at a fixed offset from a sprite's position, with the graphic and palette chosen by a per-object index.
 // symdb: (r0 unused, r5 = object struct -> uses [r5,#3] as selector) -> r0 = sub_8132A50 result; no flags
 // symdb: of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B028.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawMarkerForObject.yaml
 	thumb_local_start
-sub_811B028:
+sprite_drawMarkerForObject:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	ldr r0, off_811B070 // =off_811B074
@@ -27741,7 +27741,7 @@ off_811B090:
 	.word dword_811B094
 dword_811B094:
 	.word 0x605
-	thumb_func_end sub_811B028
+	thumb_func_end sprite_drawMarkerForObject
 
 	thumb_local_start
 sub_811B098:
@@ -27876,9 +27876,9 @@ word_811B190:
 // symdb: Loads the sprite's screen coordinates via sprite_getCoordinates, adds the signed halfword pair from word_811B1E8 (-0x5C, -0x0E), indexes byte_811B1D0 and byte_811B1DC by the caller's variant byte (assumed in r5), reads a halfword through the resulting EWRAM pointer, and tail-calls sub_8132A14(x+dx, y+dy, 0, value).
 // symdb: (r0-r3 = call clobbered; r5 = object/sprite work pointer) -> r0 = sub_8132A14 result; r0 =
 // symdb: x+offset, r1 = y+offset, r2 = 0, r3 = halfword from table on entry to sub_8132A14
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B194.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_forwardVariantValueAtOffset.yaml
 	thumb_local_start
-sub_811B194:
+sprite_forwardVariantValueAtOffset:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	bl sprite_getCoordinates
@@ -27918,7 +27918,7 @@ off_811B1E4:
 word_811B1E8:
 	.hword 0xFFA4
 	.byte 0xF2, 0xFF
-	thumb_func_end sub_811B194
+	thumb_func_end sprite_forwardVariantValueAtOffset
 
 // symdb: Dispatcher that calls the current state handler of the battle object in r5, selected by the state byte at +8 via a three-entry jump table.
 // symdb: void battle_runObjectStateHandler(void /* r5 = battle object */); tail-calls handler(r0 =
@@ -30365,7 +30365,7 @@ sub_811C4E8:
 off_811C4F8:
 	.word off_811C4FC
 off_811C4FC:
-	.word sub_811C508+1
+	.word sprite_initToCenter+1
 	.word sub_811C52C+1
 	.word sub_811C53C+1
 	thumb_func_end sub_811C4E8
@@ -30373,9 +30373,9 @@ off_811C4FC:
 // symdb: Initializes/resets a sprite-bearing object: sets byte [r5] to 1 and [r5+8] to 4, calls sprite_setCoordinates with (0x80, 0x80) to recenter the sprite, re-asserts 4 at [r5+8], clears two counter bytes at [r5+0x12]/[r5+0x13], and tails into sub_811C52C.
 // symdb: (r5 = object/sprite struct pointer, fixed register) -> r0 clobbered; struct bytes 0x0, 0x8,
 // symdb: 0x12, 0x13 written; sprite position set to 0x80,0x80
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C508.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initToCenter.yaml
 	thumb_local_start
-sub_811C508:
+sprite_initToCenter:
 	push {r4,lr}
 	mov r4, #1
 	strb r4, [r5]
@@ -30392,7 +30392,7 @@ sub_811C508:
 	bl sub_811C52C
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811C508
+	thumb_func_end sprite_initToCenter
 
 	thumb_local_start
 sub_811C52C:
@@ -31146,16 +31146,16 @@ sub_811CC74:
 off_811CC84:
 	.word off_811CC88
 off_811CC88:
-	.word sub_811CC94+1
-	.word sub_811CD08+1
+	.word object_initVariant+1
+	.word object_runStateHandler+1
 	.word sub_811D2E0+1
 	thumb_func_end sub_811CC74
 
-// symdb: Initializes an object struct (pointer in r5) by setting active/flags, positioning its sprite at (-8,128), clearing fields, and dispatching to a per-variant setup routine selected by a struct field, then calls sub_811CD08.
-// symdb: (r5 = object struct pointer; r0/r1 unused) -> r0 = return of sub_811CD08; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CC94.yaml
+// symdb: Initializes an object struct (pointer in r5) by setting active/flags, positioning its sprite at (-8,128), clearing fields, and dispatching to a per-variant setup routine selected by a struct field, then calls object_runStateHandler.
+// symdb: (r5 = object struct pointer; r0/r1 unused) -> r0 = return of object_runStateHandler; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initVariant.yaml
 	thumb_local_start
-sub_811CC94:
+object_initVariant:
 	push {r4,lr}
 	mov r4, #1
 	strb r4, [r5]
@@ -31175,7 +31175,7 @@ sub_811CC94:
 	ldr r0, [r1,r0]
 	mov lr, pc
 	bx r0
-	bl sub_811CD08
+	bl object_runStateHandler
 	pop {r4,pc}
 	.balign 4, 0
 byte_811CCC4:
@@ -31197,14 +31197,14 @@ off_811CCD0:
 	.word sprite_spawnEffect+1
 	.word sub_811DAF0+1
 	.word sub_811DB7C+1
-	thumb_func_end sub_811CC94
+	thumb_func_end object_initVariant
 
 // symdb: Dispatches to one of 14 Thumb state handlers indexed by byte [r5,#4] (×4, table at 0x811CD28), then calls sprite_update on the object's sprite unless byte [r5,#7] is nonzero.
 // symdb: (r5 = object struct) -> r0 = result of handler (0 keeps sprite_update running); clobbers r0-r3,
 // symdb: lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CD08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_runStateHandler.yaml
 	thumb_local_start
-sub_811CD08:
+object_runStateHandler:
 	push {lr}
 	ldr r0, off_811CD24 // =off_811CD28
 	ldrb r1, [r5,#4]
@@ -31236,7 +31236,7 @@ off_811CD28:
 	.word sub_811D2C4+1
 	.word object_waitTimerGotoState23+1
 	.word sub_811D1B8+1
-	thumb_func_end sub_811CD08
+	thumb_func_end object_runStateHandler
 
 	thumb_local_start
 sub_811CD60:
@@ -32411,9 +32411,9 @@ off_811D630:
 // symdb: Given x, y, and an index into the 0x58-byte object array at eStructArr2008450, if the entry is in use, writes x/y into the object's struct via sub_811D6CC and then syncs the object's sprite position via object_syncSpritePosition.
 // symdb: (r0 = x/halfword, r1 = y/halfword, r2 = object index) -> r0 = struct pointer or undefined if
 // symdb: unused; flags set from the entry's in-use byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D634.yaml
-	thumb_func_start sub_811D634
-sub_811D634:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updatePosition.yaml
+	thumb_func_start object_updatePosition
+object_updatePosition:
 	push {r5,lr}
 	sub sp, sp, #8
 	str r0, [sp]
@@ -32432,7 +32432,7 @@ loc_811D64E:
 byte_811D658:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x80, 0xFF, 0x0, 0x0, 0x80, 0x0, 0x0, 0x0, 0x80
 	.byte 0x0, 0x0, 0x0, 0x80, 0xFF, 0x0, 0x0
-	thumb_func_end sub_811D634
+	thumb_func_end object_updatePosition
 
 	thumb_func_start sub_811D66C
 sub_811D66C:
@@ -32466,9 +32466,9 @@ dword_811D698:
 // symdb: Stores a signed halfword at entry[r1]->field14 of the 0x58-byte struct array at 2008450, negating the magnitude for any nonzero index. No-op if the entry is free.
 // symdb: (r0 = magnitude value, r1 = entry index into eStructArr2008450) -> r0 clobbered by BIOS Div;
 // symdb: writes struct->field14 halfword; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D69C.yaml
-	thumb_func_start sub_811D69C
-sub_811D69C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setEntryField14Signed.yaml
+	thumb_func_start e_setEntryField14Signed
+e_setEntryField14Signed:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r0, [sp]
@@ -32494,7 +32494,7 @@ loc_811D6C2:
 	.balign 4, 0
 dword_811D6C8:
 	.word 0xFFFFFFFF
-	thumb_func_end sub_811D69C
+	thumb_func_end e_setEntryField14Signed
 
 // symdb: adds an object's velocity (8.8 fixed point) to its x/y position fields
 // symdb: (r5 = object struct from getStructFrom2008450) -> void; r0-r2 clobbered
@@ -33328,9 +33328,9 @@ byte_811DE94:
 // symdb: For entry `r0` of the 0x58-byte struct array at eStruct2008450, if its status byte is already non-zero (in use), writes 1 to that byte; otherwise no-op.
 // symdb: (r0 = index into eStructArr2008450) -> no meaningful return; NZ flags come from the entry's in-
 // symdb: use byte via getStructFrom2008450
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811DF0C.yaml
-	thumb_func_start sub_811DF0C
-sub_811DF0C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setStructEntryActive.yaml
+	thumb_func_start e_setStructEntryActive
+e_setStructEntryActive:
 	push {lr}
 	bl getStructFrom2008450
 	beq locret_811DF18
@@ -33339,7 +33339,7 @@ sub_811DF0C:
 locret_811DF18:
 	pop {pc}
 	.byte 0x0, 0x0
-	thumb_func_end sub_811DF0C
+	thumb_func_end e_setStructEntryActive
 
 // symdb: weather composition dispatcher that reads eWeatherCompState and jumps to one of three weather composition handlers, passing a BattleObject* derived from r5 in r0 and a byte from the object at r5+8 in r1
 // symdb: (r0 = ???, r5 = BattleObject*) -> r0 = ???, r1 = ??? ; branches via r0-derived function pointer;
@@ -38124,9 +38124,9 @@ off_8120224:
 // symdb: (r0 = unused/scratch, r1 = unused, r2 = dest u16[8] array 1, r3 = tile attr (bank bits, <<12),
 // symdb: r4 = text id ((bank<<8)|index, 0 = default script entry 0x31)) -> r0 = from sub_81202B4; expands
 // symdb: up to 8 chars
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120228.yaml
-	thumb_func_start sub_8120228
-sub_8120228:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_expandStringById.yaml
+	thumb_func_start chatbox_expandStringById
+chatbox_expandStringById:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	ldr r6, dword_812027C // =0x200
@@ -38171,14 +38171,14 @@ off_8120278:
 	.word eTextScript201BA20
 dword_812027C:
 	.word 0x200
-	thumb_func_end sub_8120228
+	thumb_func_end chatbox_expandStringById
 
 // symdb: Dispatcher that picks a text script from table TextScript873EA50 by index and tail-calls sub_81202B4 to expand it into tile indices, with a tile base packed as ((param<<12)|0x200).
 // symdb: (r0..r2 = ?, r3 = tile-offset param, r4 = script index into table) -> writes tile indices to the
 // symdb: two u16 arrays at r2 and r2+0x10; r0/r1 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120280.yaml
-	thumb_func_start sub_8120280
-sub_8120280:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_renderIndexedText.yaml
+	thumb_func_start t3_renderIndexedText
+t3_renderIndexedText:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	ldr r6, dword_81202B0 // =0x200
@@ -38205,7 +38205,7 @@ off_81202AC:
 	.word TextScript873EA50
 dword_81202B0:
 	.word 0x200
-	thumb_func_end sub_8120280
+	thumb_func_end t3_renderIndexedText
 
 // symdb: Expand a text string into pairs of font tile indices (two u16 arrays), offset by a base tile.
 // symdb: (r0 = string, r2/r3 = left/right tile arrays, r4 = base tile, r5 = slots) -> bytes < 0xE4
@@ -39577,7 +39577,7 @@ sub_8120B54:
 	push {r4-r7,lr}
 	bl notZero_eByte200AD04
 	beq loc_8120BA2
-	bl sub_803F674
+	bl rfu_countPlayersByStatus
 	cmp r0, #2
 	blt loc_8120B74
 	bl GetBattleEffects // () -> int

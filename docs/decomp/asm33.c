@@ -1419,7 +1419,7 @@ void __fastcall npc_showTextByStoryFlag(char a1)
 
 
 // 0x81246d8
-void __fastcall sub_81246D8(char a1)
+void __fastcall t4_runConditionalChatboxScript(char a1)
 {
     _BYTE *v1; // r5
     int v2; // r10
@@ -7327,7 +7327,7 @@ int battle_dealChipsOnFadeIn()
 
 
 // 0x8129a54
-signed int sub_8129A54()
+signed int t1_waitObjectsDoneThenChatbox()
 {
     int v0; // r5
     signed int v1; // r6
@@ -8582,7 +8582,7 @@ LABEL_9:
             }
             else
             {
-                sub_8147B24();
+                rfu_initCommStateCall();
                 *(v0 + 1) = 16;
                 *(v0 + 2) = 0;
                 *(v0 + 40) = 0;
@@ -8689,7 +8689,7 @@ void *rfu_tryInitSessionStateStep()
         }
         else
         {
-            sub_8147B24();
+            rfu_initCommStateCall();
             *(v0 + 1) = 16;
             *(v0 + 2) = 0;
             *(v0 + 40) = 0;
@@ -8963,7 +8963,7 @@ LABEL_15:
             if ( !eStruct200BC30_getJumpOffset00() )
             {
                 ClearEventFlagFromImmediate(23, 34);
-                v13 = sub_803F674();
+                v13 = rfu_countPlayersByStatus();
                 if ( HIDWORD(v13) == 2 )
                 {
                     SetEventFlagFromImmediate(23, 34);
@@ -9100,7 +9100,7 @@ LABEL_31:
                 {
                     if ( !v9 )
                     {
-                        v10 = sub_8132430(v7);
+                        v10 = e_compareLinkStates(v7);
                         if ( v10 > 2 )
                         {
                             if ( v10 != 255 && v10 == 4 )
@@ -10345,7 +10345,7 @@ int link_verifyChecksumAndMatchPartner()
                 {
                     if ( !v9 )
                     {
-                        result = sub_8132430(v7);
+                        result = e_compareLinkStates(v7);
                         if ( result > 2 )
                         {
                             if ( result != 255 && result == 4 )

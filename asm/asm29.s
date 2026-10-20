@@ -1474,7 +1474,7 @@ sub_80A58AC:
 	str r1, [r5,#0x28]
 	str r2, [r5,#0x2c]
 	ldr r0, dword_80A58DC // =0x10000 
-	bl sub_80A58F4
+	bl camera_stepTowardsTarget
 	cmp r0, #1
 	beq locret_80A58D8
 	mov r0, #0
@@ -1504,9 +1504,9 @@ sub_80A58E0:
 // symdb: Steps a camera struct's x ([r5+0xc]→[r5+0x24]) and y ([r5+0x10]→[r5+0x28]) toward their targets by at most the given step, recomputing a derived z/screen value via checkZCoordModifiers_8031612 and storing it at [r5+0x14] and [r5+0x20]; returns 1 if any coordinate moved, else 0.
 // symdb: (r0 = max step amount, r5 = camera/position struct from caller) -> r0 = 1 if any coordinate
 // symdb: changed this call, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A58F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_stepTowardsTarget.yaml
 	thumb_local_start
-sub_80A58F4:
+camera_stepTowardsTarget:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r2, r0
@@ -1561,7 +1561,7 @@ loc_80A594E:
 	mov r0, r4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A58F4
+	thumb_func_end camera_stepTowardsTarget
 
 	thumb_local_start
 sub_80A5954:
@@ -2311,9 +2311,9 @@ e_setFlagFromIndexTable:
 // symdb: Reads an index byte from [r5+4], uses it to select one of four 32-bit flag entries from byte_80A5EB8 (0x1641-0x1644), and passes the selected word to ClearEventFlag to clear that flag.
 // symdb: (no register args; r5 = context object, [r5+4] = variant index 0-3) -> r0 = result of
 // symdb: ClearEventFlag; no other outputs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5EA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearFlagFromTable.yaml
 	thumb_local_start
-sub_80A5EA0:
+clearFlagFromTable:
 	push {r4,lr}
 	ldrb r0, [r5,#4]
 	lsl r0, r0, #2
@@ -2328,7 +2328,7 @@ off_80A5EB4:
 byte_80A5EB8:
 	.byte 0x41, 0x16, 0x0, 0x0, 0x42, 0x16, 0x0, 0x0, 0x43, 0x16, 0x0
 	.byte 0x0, 0x44, 0x16, 0x0, 0x0
-	thumb_func_end sub_80A5EA0
+	thumb_func_end clearFlagFromTable
 
 	thumb_local_start
 sub_80A5EC8:
@@ -2375,7 +2375,7 @@ loc_80A5F12:
 	strb r0, [r6,#5]
 	mov r0, #1
 	strb r0, [r5,#7]
-	bl sub_80A5EA0
+	bl clearFlagFromTable
 loc_80A5F3C:
 	bl battle_beastOutGetMapEntry
 	mov r4, r0
@@ -7558,7 +7558,7 @@ off_80A8B40:
 	.word sub_80A8C08+1
 	thumb_func_end sub_80A8B2C
 
-// symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from sub_80A8D02(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
+// symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from ow_stepAngleTowardTarget(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
 // symdb: (r4/r5 = object record) -> void; also calls sprite_update on the object every frame
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_cybercrowOrbitUpdate.yaml
 	thumb_local_start
@@ -7570,7 +7570,7 @@ object_cybercrowOrbitUpdate:
 	bl sub_80A8D42
 	bl sub_80A8CCC
 	ldr r0, dword_80A8BB8 // =0x85 
-	bl sub_80A8D02
+	bl ow_stepAngleTowardTarget
 	lsr r0, r0, #8
 	mov r1, #0xff
 	and r0, r1
@@ -7598,7 +7598,7 @@ object_cybercrowOrbitUpdate:
 	bl ow_refreshObjectSpritePriority
 	bl sprite_dirToAnimIndex
 	bl sprite_changeAnimation
-	bl sub_80A8D7C
+	bl ow_enqueueObjectInteractionArea
 loc_80A8BA8:
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -7618,7 +7618,7 @@ sub_80A8BBC:
 	bne loc_80A8BFC
 	bl npc_triggerCutscene
 	ldr r0, off_80A8C04 // =0x400 
-	bl sub_80A8D02
+	bl ow_stepAngleTowardTarget
 	ldr r0, off_80A8C04 // =0x400 
 	lsl r1, r1, #8
 	cmp r1, #0
@@ -7637,7 +7637,7 @@ loc_80A8BEC:
 	bl ow_refreshObjectSpritePriority
 	bl sprite_dirToAnimIndex
 	bl sprite_changeAnimation
-	bl sub_80A8D7C
+	bl ow_enqueueObjectInteractionArea
 loc_80A8BFC:
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -7798,9 +7798,9 @@ locret_80A8D00:
 // symdb: Rotates the u16 angle at [r7+4] toward the direction from the overworld player to the target object at r5 by at most r0 units per call, clamping the signed delta and adding it back without overshoot.
 // symdb: (r0 = max angular step, r5 = target object [x=+0x10, y=+0xc], r7 = struct with u16 angle at +4)
 // symdb: -> r0 = clamped signed delta; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8D02.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_stepAngleTowardTarget.yaml
 	thumb_local_start
-sub_80A8D02:
+ow_stepAngleTowardTarget:
 	push {r4-r7,lr}
 	mov r4, r0
 	mov r0, r10
@@ -7835,7 +7835,7 @@ loc_80A8D3A:
 	add r0, r0, r1
 	strh r0, [r7,#4]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A8D02
+	thumb_func_end ow_stepAngleTowardTarget
 
 	thumb_local_start
 sub_80A8D42:
@@ -7874,9 +7874,9 @@ dword_80A8D78:
 // symdb: Appends an overworld interaction area for an OW object using its stored x/y with z lowered by 0x140000 and kind 0x808, then writes 0 to the address formed from the 0x10000 flag constant.
 // symdb: (r5 = OW object struct pointer, carried in) -> r0 = 0; flags from
 // symdb: createOWObjectInteractionArea_80037ac
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8D7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_enqueueObjectInteractionArea.yaml
 	thumb_local_start
-sub_80A8D7C:
+ow_enqueueObjectInteractionArea:
 	push {r4-r7,lr}
 	push {r4-r7}
 	mov r6, #0x24 
@@ -7897,7 +7897,7 @@ sub_80A8D7C:
 	pop {r4-r7,pc}
 	.balign 4, 0
 	.pool // 80A8DA4
-	thumb_func_end sub_80A8D7C
+	thumb_func_end ow_enqueueObjectInteractionArea
 
 // symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs sub_8143204 and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
 // symdb: (r0..r3 = unused; r5 = Cybercrow/NPC state struct) -> r0 = clobbered; only acts when player may

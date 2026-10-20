@@ -3077,7 +3077,7 @@ sub_801012C:
 	ldr r0, [r4,r7]
 	tst r0, r0
 	bne locret_8010160
-	bl sub_80E4D8A
+	bl object_spawnChildOfEntity
 	str r0, [r4,r7]
 	b locret_8010160
 loc_8010152:
@@ -3807,7 +3807,7 @@ loc_80105BE:
 	beq loc_80105D2
 	mov r0, #0x47 
 	bl object_setAttack0
-	bl sub_80EE90C
+	bl ai_chipAttackDispatch
 	b loc_80105EE
 loc_80105D2:
 	ldr r2, off_80108F8 // =0x400 
@@ -4241,9 +4241,9 @@ off_80108F8:
 
 // symdb: Scans a battle hand slot's halfword card list from its starting index, and for every card whose ID is in 0x190..0x19A calls sub_801092C with the slot index; terminates on 0xFFFF, advancing the list cursor by 1 on non-matching entries and relying on the callee to mutate the entry otherwise.
 // symdb: (r0 = hand slot index for getBattleHandAddr) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80108FC.yaml
-	thumb_func_start sub_80108FC
-sub_80108FC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processChipRangeInHand.yaml
+	thumb_func_start battle_processChipRangeInHand
+battle_processChipRangeInHand:
 	push {r4,r6,r7,lr}
 	bl getBattleHandAddr_8010018
 	b loc_8010906
@@ -4270,7 +4270,7 @@ loc_8010926:
 	b loc_801090A
 locret_801092A:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80108FC
+	thumb_func_end battle_processChipRangeInHand
 
 	thumb_local_start
 sub_801092C:
@@ -6371,7 +6371,7 @@ off_80117D4:
 	.word nullsub_44+1 // 0x18
 	.word sub_8011D74+1 // 0x19
 	.word sub_8011D9C+1 // 0x1a
-	.word sub_8011DBC+1 // 0x1b
+	.word ai_setupBeastPwrAtkVars+1 // 0x1b
 	.word battle_aiAtkInitBeastOutVars+1 // 0x1c
 	.word battle_initBeastPwrAtkVars+1 // 0x1d
 	.word ai_beastSpAtkInit+1 // 0x1e
@@ -6384,7 +6384,7 @@ off_80117D4:
 	.word battle_resetAIAttackVars+1 // 0x25
 	.word sub_8011F10+1 // 0x26
 	.word sub_8011F44+1 // 0x27
-	.word sub_8011F64+1 // 0x28
+	.word ai_initBeastPowerAtkVars+1 // 0x28
 	.word nullsub_44+1 // 0x29
 	.word ai_setChipUseDelay+1 // 0x2a
 	.word ai_megamanChargeShotBPrepAttack+1 // 0x2b
@@ -7072,9 +7072,9 @@ sub_8011D9C:
 // symdb: Initializes an AI attack-vars struct for a Beast-Out power attack: clears ChargeReadyFlag, ChipUseDelay, and AttackBoost; sets ExtraDamage=0x9E; computes Damage via battle_beastPwrAtk_addScaledBase(base=0x32, mult=0x14); sets InitFlag=4; returns 0x4E.
 // symdb: (no args; uses r7 = AI attack vars struct) -> r0 = 0x4E (next state/step); writes oAIAttackVars
 // symdb: fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011DBC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupBeastPwrAtkVars.yaml
 	thumb_local_start
-sub_8011DBC:
+ai_setupBeastPwrAtkVars:
 	push {lr}
 	mov r0, #0
 	strb r0, [r7,#oAIAttackVars_ChargeReadyFlag]
@@ -7090,7 +7090,7 @@ sub_8011DBC:
 	strb r0, [r7,#oAIAttackVars_InitFlag]
 	mov r0, #0x4e 
 	pop {pc}
-	thumb_func_end sub_8011DBC
+	thumb_func_end ai_setupBeastPwrAtkVars
 
 // symdb: Initializes the AI attack-vars block for a BeastOut-style attack: resets charge/delay/boost, sets extra damage, and computes the base damage from a scaled BeastOut value.
 // symdb: (r0 unused; r7 = AI attack vars struct) -> writes oAIAttackVars_* fields; r0 = 0x4F on return
@@ -7343,9 +7343,9 @@ sub_8011F44:
 // symdb: (r0 = base damage 0x32, r1 = multiplier 0xA, r7 = AI attack vars struct) -> writes
 // symdb: oAIAttackVars_Damage/ExtraDamage/InitFlag/ChargeReadyFlag/AttackBoost/ChipUseDelay; r0 = 0x57
 // symdb: (returned state/next value)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011F64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_initBeastPowerAtkVars.yaml
 	thumb_local_start
-sub_8011F64:
+ai_initBeastPowerAtkVars:
 	push {lr}
 	mov r0, #0x32 
 	mov r1, #0xa
@@ -7361,7 +7361,7 @@ sub_8011F64:
 	strb r0, [r7,#oAIAttackVars_ChipUseDelay]
 	mov r0, #0x57 
 	pop {pc}
-	thumb_func_end sub_8011F64
+	thumb_func_end ai_initBeastPowerAtkVars
 
 // symdb: Sets the AI attack-state chip-use delay counter to 40 and returns 0x58 to the caller
 // symdb: (r7 = pointer to AI attack vars struct, no other args) -> r0 = 0x58; flags from the mov (no
@@ -17344,7 +17344,7 @@ RunSpawnAnimationMaybe_8016380:
 
 loc_8016390:
 
-	bl sub_80164A0
+	bl object_spawnAnimPhaseDispatch
 locret_8016394:
 	pop {pc}
 	thumb_func_end RunSpawnAnimationMaybe_8016380
@@ -17523,9 +17523,9 @@ locret_801649E:
 // symdb: Dispatches a battle object's spawn-animation step to one of three handlers chosen by its current phase byte, via a tail call through the off_80164B4 table.
 // symdb: (r5 = battle object pointer, implicit) -> tail-jumps to phase handler; r0-r3 may be clobbered by
 // symdb: handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80164A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_spawnAnimPhaseDispatch.yaml
 	thumb_local_start
-sub_80164A0:
+object_spawnAnimPhaseDispatch:
 	push {lr}
 	ldr r1, off_80164B0 // =off_80164B4 
 	ldrb r0, [r5,#oBattleObject_CurPhase]
@@ -17540,7 +17540,7 @@ off_80164B4:
 	.word battle_initBurrowedPhase+1
 	.word sub_8016520+1
 	.word battle_resetObjectToIdle+1
-	thumb_func_end sub_80164A0
+	thumb_func_end object_spawnAnimPhaseDispatch
 
 // symdb: Initializes a battle object's burrowed state: clears bit 1 of its flags, reserves its current panel via FuturePanel fields, drops it from collision, plays SE 0x94, arms timers 0x14/0x1E, applies a full-bright white shader, gives it 0xFFFF invulnerable time, spawns a small effect from its +0x34 position data, and sets CurPhase and PhaseInitialized to 4.
 // symdb: (r5 = battle object header, implied) -> r0 = 0 (phase value stored); no meaningful return
@@ -30951,7 +30951,7 @@ loc_801D688:
 	bl projectObjectToScreen_800362C
 	cmp r2, #0
 	beq locret_801D6C8
-	bl sub_801D6D8
+	bl battle_applyNaviStatsXYOffset
 	mov r2, #0xff
 	add r2, r2, r2
 	add r2, #1
@@ -30987,9 +30987,9 @@ dword_801D6D4:
 // symdb: Adjusts an (x,y) coordinate pair by a per-entry offset selected from a small table using byte 0x16 of the battle NaviStats record.
 // symdb: (r0 = base X, r1 = base Y; r5 = battle-side struct whose +0x48 points at NaviStats) -> r0 = X +
 // symdb: 2*stat + tableX, r1 = Y + tableY; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D6D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyNaviStatsXYOffset.yaml
 	thumb_local_start
-sub_801D6D8:
+battle_applyNaviStatsXYOffset:
 	push {lr}
 	push {r0,r1}
 	ldr r0, [r5,#0x48]
@@ -31018,7 +31018,7 @@ dword_801D700:
 	.word 0xB1F7BAFB
 	.word 0xC4FAC4FC
 	.hword 0xB3F7
-	thumb_func_end sub_801D6D8
+	thumb_func_end battle_applyNaviStatsXYOffset
 
 	thumb_local_start
 sub_801D71A:

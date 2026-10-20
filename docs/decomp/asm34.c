@@ -468,7 +468,7 @@ void battle_spawnEStructsFromTablePair()
 // 0x812d934
 int __fastcall sub_812D934(int a1, int a2)
 {
-	return sub_8120228(a1, 4 * a2, *(&off_812D94C + a2));
+	return chatbox_expandStringById(a1, 4 * a2, *(&off_812D94C + a2));
 }
 
 

@@ -660,7 +660,7 @@ void sprite_makeScalable()
 
 
 // 0x8002d20
-signed int sub_8002D20()
+signed int battle_assignActorSlotToSprite()
 {
     int v0; // r5
     signed int v1; // r0

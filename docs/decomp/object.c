@@ -2956,7 +2956,7 @@ int __fastcall battle_dispatchObjectContactHandler_800E498(int a1)
 
 
 // 0x800e500
-int __noreturn sub_800E500()
+int __noreturn battle_getPanelSlideDelta()
 {
     int v0; // r5
     char *v1; // r0

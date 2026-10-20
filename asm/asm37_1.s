@@ -4107,9 +4107,9 @@ loc_8143D68:
 // symdb: Converts a world position into a flat grid cell index for the Groundman minigame: adds the map's grid offsets (returned in r0/r1), shifts the saved input right by 5 to convert pixels to 32-px cells, recenters by adding 0x80, then returns x_cell + y_cell * 256.
 // symdb: (r0 = x pos, r1 = y pos) -> r0 = grid cell index (x_tile + y_tile*256); flags clobbered by
 // symdb: mul/mult-cycle
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143D7A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/groundmanMinigamePosToGridIndex.yaml
 	thumb_local_start
-sub_8143D7A:
+groundmanMinigamePosToGridIndex:
 	push {r4-r7,lr}
 	push {r0,r1}
 	bl GetGroundmanMinigameGridOffsetsForMap
@@ -4127,7 +4127,7 @@ sub_8143D7A:
 	mul r1, r5
 	add r0, r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143D7A
+	thumb_func_end groundmanMinigamePosToGridIndex
 
 	thumb_local_start
 // get the map coordinate grid offsets of the current map
@@ -4273,7 +4273,7 @@ byte_8143E94:
 sub_8143EA4:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
-	bl sub_8143D7A
+	bl groundmanMinigamePosToGridIndex
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143EA4
 

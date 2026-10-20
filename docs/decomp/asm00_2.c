@@ -2023,7 +2023,7 @@ Battle *__fastcall sub_801012C(int a1)
         result = *(v2 + 80);
         if ( !result )
         {
-            result = sub_80E4D8A(0, 2, v3, v4);
+            result = object_spawnChildOfEntity(0, 2, v3, v4);
             *(v2 + 80) = result;
         }
     }
@@ -2626,7 +2626,7 @@ int __fastcall ai_useChipAttack(int a1, char a2, char a3)
     if ( v12 & byte_200 )
     {
         object_setAttack0();
-        result = sub_80EE90C();
+        result = ai_chipAttackDispatch();
     }
     else if ( v12 & &byte_400 )
     {
@@ -2869,7 +2869,7 @@ int __fastcall battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(i
 
 
 // 0x80108fc
-int __fastcall sub_80108FC(int a1)
+int __fastcall battle_processChipRangeInHand(int a1)
 {
     char *v1; // r7
     int v2; // r4
@@ -4535,7 +4535,7 @@ signed int sub_8011D9C()
 
 
 // 0x8011dbc
-signed int sub_8011DBC()
+signed int ai_setupBeastPwrAtkVars()
 {
     int v0; // r7
 
@@ -4736,7 +4736,7 @@ signed int sub_8011F44()
 
 
 // 0x8011f64
-signed int sub_8011F64()
+signed int ai_initBeastPowerAtkVars()
 {
     int v0; // r7
 
@@ -11831,7 +11831,7 @@ int __usercall RunSpawnAnimationMaybe_8016380@<R0>(Battle *obj@<R5>)
     int result; // r0
 
     if ( obj->ai->unk_02 )
-        result = sub_80164A0(obj);
+        result = object_spawnAnimPhaseDispatch(obj);
     else
         result = battle_object_runPhaseHandler_8016396();
     return result;
@@ -11961,7 +11961,7 @@ unsigned int battle_objectIntroEntryAndActedSetup_8016460()
 
 
 // 0x80164a0
-int __usercall sub_80164A0@<R0>(Battle *obj@<R5>)
+int __usercall object_spawnAnimPhaseDispatch@<R0>(Battle *obj@<R5>)
 {
     return (*(&off_80164B4 + obj->currPhase))();
 }
@@ -20213,7 +20213,7 @@ char *battle_drawHandEmptySlotMarker()
             result = projectObjectToScreen_800362C((*(v0 + 72) + 52));
             if ( v4 )
             {
-                v5 = sub_801D6D8(result, v3);
+                v5 = battle_applyNaviStatsXYOffset(result, v3);
                 v7 = ((v5 & 0x1FF) << 16) + v6 + 1073758208;
                 sprite_queueOamEntryThunk_802FE28(v7, 51124, 2, 0);
                 result = sprite_queueOamEntryThunk_802FE28(v7 + 9, 51128, 2, 0);
@@ -20225,7 +20225,7 @@ char *battle_drawHandEmptySlotMarker()
 
 
 // 0x801d6d8
-int __fastcall sub_801D6D8(int a1, int a2)
+int __fastcall battle_applyNaviStatsXYOffset(int a1, int a2)
 {
     int v2; // r5
     int v3; // ST00_4

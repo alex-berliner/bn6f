@@ -512,7 +512,7 @@ sub_812EDFC:
 	ldr r2, off_812EE14 // =off_812EE18 
 	ldr r2, [r2,r1]
 	mov r3, #0xa
-	bl sub_8120280
+	bl t3_renderIndexedText
 	pop {r4,pc}
 	.balign 4, 0
 off_812EE14:

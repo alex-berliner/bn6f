@@ -2445,9 +2445,9 @@ loc_800126A:
 // symdb: Given a start {x,y} struct and target x/y plus speed params, returns step count in r0 with per-step x/y increments in r1/r2 via signed division with half-rounding.
 // symdb: (r0 = ptr to {x,y} start struct, r1 = target x, r2 = target y, r3 = param A, r4 = param B) -> r0
 // symdb: = step count, r1 = dx/steps, r2 = dy/steps; clobbers r3, r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001288.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_calcStepDeltas.yaml
 	thumb_local_start
-sub_8001288:
+object_calcStepDeltas:
 	push {lr}
 	ldr r7, [r0]
 	sub r1, r1, r7
@@ -2477,7 +2477,7 @@ loc_80012A4:
 	mov r1, r0
 	pop {r0,r2}
 	pop {pc}
-	thumb_func_end sub_8001288
+	thumb_func_end object_calcStepDeltas
 
 	thumb_local_start
 sub_80012C6:

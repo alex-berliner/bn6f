@@ -206,7 +206,7 @@ loc_812C418::
 	cmp r1, r2
 	bgt loc_812C4B8
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812C480
 	bl rfu_finishCommScreenStep
@@ -490,7 +490,7 @@ loc_812C672::
 	tst r3, r3
 	bne loc_812C6C8
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812C6B8
 	push {r0}
@@ -715,7 +715,7 @@ loc_812C818::
 	tst r3, r3
 	bne loc_812C880
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	bl sub_803DD60
 	tst r0, r0
 	beq loc_812C846
@@ -1099,7 +1099,7 @@ loc_812CB0A::
 	b loc_812CB62
 loc_812CB46::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812CB62
 	mov r0, #0x18
@@ -1212,7 +1212,7 @@ loc_812CBFA::
 	b loc_812CC3E
 loc_812CC22::
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #4
 	bne loc_812CC3E
 	mov r0, #0x18
@@ -1633,7 +1633,7 @@ loc_812CF46::
 	tst r3, r3
 	bne loc_812CFB2
 	mov r0, r4
-	bl sub_8132430
+	bl e_compareLinkStates
 	cmp r0, #2
 	bgt loc_812CF9E
 	push {r0}

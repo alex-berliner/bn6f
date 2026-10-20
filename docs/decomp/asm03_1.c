@@ -5257,7 +5257,7 @@ int sub_8038674()
 
 
 // 0x803868c
-int sub_803868C()
+int battle_waitTimerThenAdvanceState()
 {
     int v0; // r5
     int v1; // r10
@@ -5456,9 +5456,9 @@ int sub_8038C10()
     sub_811D66C(v1, 0);
     sub_811D66C(v2, 1);
     v3 = sub_811D66C(v2, 2);
-    v5 = sub_811D634(v3, v4, 0);
-    v7 = sub_811D634(v5, v6, 1);
-    sub_811D634(v7, v8, 2);
+    v5 = object_updatePosition(v3, v4, 0);
+    v7 = object_updatePosition(v5, v6, 1);
+    object_updatePosition(v7, v8, 2);
     v11 = *(v0 + 4);
     if ( v11 == 9 )
     {
@@ -5510,12 +5510,12 @@ int sub_8038C78()
         *(v0 + 8) = v2;
     }
     v3 = v2;
-    sub_811D69C(v2, 0);
-    sub_811D69C(v3, 1);
-    v4 = sub_811D69C(v3, 2);
-    v6 = sub_811D634(v4, v5, 0);
-    v8 = sub_811D634(v6, v7, 1);
-    sub_811D634(v8, v9, 2);
+    e_setEntryField14Signed(v2, 0);
+    e_setEntryField14Signed(v3, 1);
+    v4 = e_setEntryField14Signed(v3, 2);
+    v6 = object_updatePosition(v4, v5, 0);
+    v8 = object_updatePosition(v6, v7, 1);
+    object_updatePosition(v8, v9, 2);
     result = *(v0 + 4) - 1;
     *(v0 + 4) = result;
     if ( !result )
@@ -5560,12 +5560,12 @@ int battle_scrollLayersTick()
         *(v0 + 8) = v2;
     }
     v3 = v2;
-    sub_811D69C(v2, 0);
-    sub_811D69C(v3, 1);
-    v4 = sub_811D69C(v3, 2);
-    v6 = sub_811D634(v4, v5, 0);
-    v8 = sub_811D634(v6, v7, 1);
-    sub_811D634(v8, v9, 2);
+    e_setEntryField14Signed(v2, 0);
+    e_setEntryField14Signed(v3, 1);
+    v4 = e_setEntryField14Signed(v3, 2);
+    v6 = object_updatePosition(v4, v5, 0);
+    v8 = object_updatePosition(v6, v7, 1);
+    object_updatePosition(v8, v9, 2);
     result = *(v0 + 4) - 1;
     *(v0 + 4) = result;
     if ( !result )
@@ -5713,7 +5713,7 @@ int sub_8038E5C()
     *(v0 + 4) = result;
     if ( !result )
     {
-        sub_80390F8();
+        battle_setupEmotionWindowEntries();
         *(v0 + 4) = &dword_2C + 1;
         result = 48;
         *(v0 + 2) = 48;
@@ -5878,7 +5878,7 @@ char *battle_initEmotionEntriesType3A()
 
 
 // 0x80390f8
-char *sub_80390F8()
+char *battle_setupEmotionWindowEntries()
 {
     signed int v0; // r4
     char *result; // r0
@@ -6418,7 +6418,7 @@ int sub_80399CE()
 
     (*(&JumpTable80399E8 + *(v0 + 1)))();
     sub_803CB78();
-    return sub_803C530();
+    return sprite_tryLoadGFXAnim();
 }
 
 
@@ -6585,7 +6585,7 @@ int __fastcall object_chatboxStep(int a1)
     int v2; // r10
     char v3; // zf
 
-    sub_803A558(a1);
+    t3_runStateHandler(a1);
     if ( v3 )
     {
         sub_803BB80();
@@ -6650,7 +6650,7 @@ int object_advanceNetDialogue()
     signed int v5; // r0
 
     v1 = rfu_orFlags(1);
-    sub_803A558(v1);
+    t3_runStateHandler(v1);
     if ( v4 )
     {
         rfu_testStatusFlags();
@@ -6673,7 +6673,7 @@ int object_advanceNetDialogue()
             }
         }
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     return clearStatusBits(1);
 }
 
@@ -6720,7 +6720,7 @@ signed int __fastcall sub_8039CB4(int a1)
         LODWORD(v5) = sub_803C440(v4);
         v6 = v5;
         sub_803C150(v5, __PAIR__(byte_202AF00, HIDWORD(v5)));
-        sub_803C2AA(byte_202AB00, byte_202AF00, v6, SHIDWORD(v6));
+        ow_saveJackInState(byte_202AB00, byte_202AF00, v6, SHIDWORD(v6));
         sub_803BB2C(12);
         v1[1] = 40;
         PlaySoundEffect(103, v7, v8);
@@ -6740,7 +6740,7 @@ int __fastcall sub_8039D08(int a1)
     int v5; // r0
     char v6; // ST00_1
 
-    sub_803A558(a1);
+    t3_runStateHandler(a1);
     if ( v2 )
     {
         chatbox_mask_eFlags2009F38(8);
@@ -6763,7 +6763,7 @@ int __fastcall sub_8039D08(int a1)
             }
         }
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -6773,7 +6773,7 @@ int __fastcall sub_8039D66(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_803A558(a1);
+    t3_runStateHandler(a1);
     if ( v2 )
     {
         rfu_testStatusFlags();
@@ -6792,7 +6792,7 @@ int __fastcall sub_8039D66(int a1)
             }
         }
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -6802,14 +6802,14 @@ int __fastcall sub_8039D9A(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_803A558(a1);
+    t3_runStateHandler(a1);
     if ( v2 )
     {
         chatbox_mask_eFlags2009F38(128);
         if ( v2 )
             *(v1 + 1) = 36;
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -6824,7 +6824,7 @@ int __fastcall battle_transitionToStart(int a1)
     int v6; // r1
     int v7; // r2
 
-    sub_803A558(a1);
+    t3_runStateHandler(a1);
     if ( !v2 )
     {
         if ( !rfu_isNotConnected() )
@@ -6833,14 +6833,14 @@ int __fastcall battle_transitionToStart(int a1)
             sub_803BB2C(15);
             *(v1 + 1) = 56;
         }
-        return sub_803A104();
+        return rfu_drawConnectedPlayerEntries();
     }
     rfu_testStatusFlags();
     if ( !v2 )
     {
 LABEL_8:
         *(v1 + 1) = 72;
-        return sub_803A104();
+        return rfu_drawConnectedPlayerEntries();
     }
     sub_803C330();
     if ( !v2 )
@@ -6855,13 +6855,13 @@ LABEL_8:
         clearStatusBits(256);
         sub_8146CFC();
         init_tableEntry(0);
-        sub_8147B24();
+        rfu_initCommStateCall();
         v3 = engine_setScreeneffect(44, 16);
         musicGameState_8000784(v3, v4, v5);
         PlaySoundEffect(120, v6, v7);
         *(v1 + 1) = 60;
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -6895,7 +6895,7 @@ int __fastcall start_wirelessLinkSession(int a1)
             }
         }
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -6925,7 +6925,7 @@ int __fastcall battle_runBattleBootState(int a1)
         v6 = getBattleSettingsFromList0(0);
         initBattleStructsAndVram_80071D4(v6, v7, v8, v9);
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -7058,13 +7058,13 @@ int __fastcall sub_8039F78(int a1)
         clearStatusBits(256);
         sub_8146CFC();
         init_tableEntry(0);
-        sub_8147B24();
+        rfu_initCommStateCall();
         v6 = engine_setScreeneffect(44, 16);
         musicGameState_8000784(v6, v7, v8);
         PlaySoundEffect(120, v9, v10);
         *(v1 + 1) = 60;
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -7094,7 +7094,7 @@ int sub_8039FEC()
             *(v0 + 1) = 16;
         }
     }
-    return sub_803A104();
+    return rfu_drawConnectedPlayerEntries();
 }
 
 
@@ -7228,7 +7228,7 @@ int sub_803A0EE()
 
 
 // 0x803a104
-int sub_803A104()
+int rfu_drawConnectedPlayerEntries()
 {
     int v0; // r5
     int result; // r0
@@ -7409,7 +7409,7 @@ int __noreturn chatbox_screenWipeStep()
     sub_803B91C(6);
     call_sub_3005EBA(0, 0, 2, 0);
     call_sub_3005EBA(0, 0, 3, 0);
-    sub_803A422();
+    drawSplitStripScroll();
     v0[25] = 0;
     v0[27] = 0;
     v0[26] = 15;
@@ -7436,7 +7436,7 @@ int object_timerTransition()
         PlaySoundEffect(183, v3, v4);
         *(v0 + 2) = 12;
     }
-    sub_803A422();
+    drawSplitStripScroll();
     return 0;
 }
 
@@ -7462,7 +7462,7 @@ int sub_803A3C4()
         LoadGFXAnim(byte_8039350);
         *(v0 + 2) = 16;
     }
-    sub_803A422();
+    drawSplitStripScroll();
     return 0;
 }
 
@@ -7470,13 +7470,13 @@ int sub_803A3C4()
 // 0x803a410
 void __noreturn sub_803A410()
 {
-    sub_803A422();
+    drawSplitStripScroll();
     sub_803A470();
 }
 
 
 // 0x803a422
-int sub_803A422()
+int drawSplitStripScroll()
 {
     int v0; // r5
     int v1; // r7
@@ -7572,7 +7572,7 @@ signed int __fastcall sub_803A524(int a1)
 
 
 // 0x803a558
-signed int __fastcall sub_803A558(int a1)
+signed int __fastcall t3_runStateHandler(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -9032,7 +9032,7 @@ void __fastcall sub_803B522(signed int a1, int a2, int a3, int a4)
 
 
 // 0x803b63c
-int __fastcall sub_803B63C(int a1, int a2, int a3, int a4)
+int __fastcall t4DrawTableEntry(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r10
@@ -9917,7 +9917,7 @@ int sub_803C2A0()
 
 
 // 0x803c2aa
-int __fastcall sub_803C2AA(int a1, int a2, int a3, int a4)
+int __fastcall ow_saveJackInState(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r6
@@ -10219,7 +10219,7 @@ signed int rfu_isStatus100Set()
 
 
 // 0x803c530
-signed int sub_803C530()
+signed int sprite_tryLoadGFXAnim()
 {
     signed int v0; // r4
     char v1; // zf
@@ -10305,7 +10305,7 @@ int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
 // 0x803c604
 void sub_803C604()
 {
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -10577,7 +10577,7 @@ signed __int64 __fastcall rfu_updateLinkManager(int a1, int a2, int a3, int a4)
 
 
 // 0x803c8e8
-int __fastcall sub_803C8E8(int a1, int a2, int a3, int a4)
+int __fastcall rfu_linkDispatch(int a1, int a2, int a3, int a4)
 {
     int result; // r0
 
@@ -12092,7 +12092,7 @@ signed int __fastcall sub_803E018(int a1)
     if ( v2 & 0x80 )
         return 8;
     v3 = 2;
-    v4 = sub_803E7A4(4);
+    v4 = link_getSlotHalfwordByMode(4);
     if ( !HIDWORD(v4) )
         t3_debounceInputValue(v4);
     return v3;
@@ -12461,7 +12461,7 @@ signed int sub_803E428()
     v4 = 0;
     while ( 1 )
     {
-        v5 = sub_8144D04(v3);
+        v5 = battle_getTimerEnableFlag(v3);
         if ( v5 == 1 )
             ++v4;
         if ( !v5 )
@@ -12841,12 +12841,12 @@ LABEL_7:
 // 0x803e78c
 void __fastcall sub_803E78C(int a1)
 {
-    sub_8144D04(a1 - 1);
+    battle_getTimerEnableFlag(a1 - 1);
 }
 
 
 // 0x803e7a4
-signed __int64 __fastcall sub_803E7A4(int a1)
+signed __int64 __fastcall link_getSlotHalfwordByMode(int a1)
 {
     int v1; // r7
     int v2; // r0
@@ -13323,7 +13323,7 @@ signed int sub_803EB04()
 
     result = battle_updateLinkState_803DEB4();
     if ( result == 2 )
-        result = sub_803ED1C(2);
+        result = e_dispatchStateHandler(2);
     return result;
 }
 
@@ -13480,7 +13480,7 @@ signed int sub_803EC1C()
         rfu_getRecvQueueFillState();
         *sub_803EF7C() = 254;
         v2 = sub_803EF7C();
-        sub_803F00C(v2, 0x10u);
+        copyIntoRingSlot(v2, 0x10u);
     }
     return 1;
 }
@@ -13526,7 +13526,7 @@ signed int sub_803EC54()
                 v2 |= 0x10u;
 LABEL_20:
                 v13 = sub_803EF7C();
-                sub_803F00C(v13, 0x10u);
+                copyIntoRingSlot(v13, 0x10u);
                 return v2;
             }
         }
@@ -13571,12 +13571,12 @@ int __fastcall sub_803ECFC(int a1)
 
     *sub_803EF7C() = 254;
     v1 = sub_803EF7C();
-    return sub_803F00C(v1, 0x10u);
+    return copyIntoRingSlot(v1, 0x10u);
 }
 
 
 // 0x803ed1c
-signed int __fastcall sub_803ED1C(signed int a1)
+signed int __fastcall e_dispatchStateHandler(signed int a1)
 {
     signed int v1; // r7
     int v2; // r0
@@ -13620,7 +13620,7 @@ signed int sub_803ED4C()
     v1 = 0;
     while ( 1 )
     {
-        v2 = sub_8144D04(v0);
+        v2 = battle_getTimerEnableFlag(v0);
         if ( v2 == 1 )
             ++v1;
         if ( !v2 )
@@ -13863,7 +13863,7 @@ int sub_803F004()
 
 
 // 0x803f00c
-signed int __fastcall sub_803F00C(int a1, unsigned int a2)
+signed int __fastcall copyIntoRingSlot(int a1, unsigned int a2)
 {
     char v2; // r4
     signed int result; // r0
@@ -13921,7 +13921,7 @@ char *sub_803F090()
 
 
 // 0x803f0a4
-int __fastcall sub_803F0A4(_BYTE *a1, unsigned int a2, int a3, int a4)
+int __fastcall copyAdvanceAnimTileFrame(_BYTE *a1, unsigned int a2, int a3, int a4)
 {
     unsigned int v4; // r6
     int v5; // r5
@@ -14181,19 +14181,19 @@ int __fastcall sub_803F334(int a1, unsigned int a2)
         if ( v4 & 0x1C )
         {
             sub_803F26C(v2);
-            result = sub_803F0A4(v2, v3, &unk_200AC30, word_200A010);
+            result = copyAdvanceAnimTileFrame(v2, v3, &unk_200AC30, word_200A010);
         }
         else
         {
             if ( v4 & 3 )
                 e_setFlagBits(2);
-            result = sub_803F0A4(v2, v3, &unk_200AC30, word_200A010);
+            result = copyAdvanceAnimTileFrame(v2, v3, &unk_200AC30, word_200A010);
         }
     }
     else
     {
-        sub_803F0A4(v2, v3, &byte_200AC20, byte_200BC70);
-        sub_803F0A4(v2, v3, &unk_200AC30, word_200A010);
+        copyAdvanceAnimTileFrame(v2, v3, &byte_200AC20, byte_200BC70);
+        copyAdvanceAnimTileFrame(v2, v3, &unk_200AC30, word_200A010);
         result = testAndClearWorkFlag();
     }
     return result;
@@ -14379,7 +14379,7 @@ signed int battle_getLinkStateCode_803F560()
             v3 = 0;
             do
             {
-                if ( sub_8144D04(v3) == 2 && (v3 == 1 || v3 == 3) )
+                if ( battle_getTimerEnableFlag(v3) == 2 && (v3 == 1 || v3 == 3) )
                     v1 = 0;
                 ++v0;
                 ++v3;
@@ -14467,7 +14467,7 @@ int sub_803F664()
 
 
 // 0x803f674
-__int64 sub_803F674()
+__int64 rfu_countPlayersByStatus()
 {
     unsigned int v0; // r6
     __int64 v1; // r4
@@ -14478,7 +14478,7 @@ __int64 sub_803F674()
     v1 = 0LL;
     for ( i = 0; i != v0; ++i )
     {
-        v3 = sub_8144D04(i);
+        v3 = battle_getTimerEnableFlag(i);
         if ( v3 == 2 )
         {
             ++HIDWORD(v1);

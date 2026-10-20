@@ -1746,9 +1746,9 @@ off_8144D00:
 
 // symdb: Returns the byte at offset 0x2A + index within the engine timer-enable struct eTimerEnable200F460, used by link-battle state code to gate timer behavior.
 // symdb: (r0 = index (byte)) -> r0 = byte at eTimerEnable200F460 + 0x2A + index; flags set by final LDRB
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D04.yaml
-	thumb_func_start sub_8144D04
-sub_8144D04:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getTimerEnableFlag.yaml
+	thumb_func_start battle_getTimerEnableFlag
+battle_getTimerEnableFlag:
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
 	ldr r1, off_8144D14 // =eTimerEnable200F460 
@@ -1759,7 +1759,7 @@ sub_8144D04:
 	.balign 4, 0x00
 off_8144D14:
 	.word eTimerEnable200F460
-	thumb_func_end sub_8144D04
+	thumb_func_end battle_getTimerEnableFlag
 
 	thumb_func_start sub_8144D18
 sub_8144D18:
@@ -1865,9 +1865,9 @@ off_8144DAC:
 // symdb: Wireless link action: transmits a 0/1 state flag to the peer via rfu_REQ_sendData, either clearing a pending byte and sending 0 (when a session-level flag in dword_2010CC0 is set) or sending 0/1 derived from eStruct200FE00 byte 0x2.
 // symdb: (r0 = link command/event byte) -> r0 = result of rfu_REQ_sendData(r0 = 0/1 flag, r1 = inherited,
 // symdb: r2 = 0/1); flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144DB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_sendLinkState.yaml
 	thumb_local_start
-sub_8144DB0:
+rfu_sendLinkState:
 	push {lr}
 	lsl r0, r0, #0x18
 	lsr r2, r0, #0x18
@@ -1901,7 +1901,7 @@ loc_8144DE0:
 	.balign 4, 0x00
 off_8144DEC:
 	.word eStruct200FE00
-	thumb_func_end sub_8144DB0
+	thumb_func_end rfu_sendLinkState
 
 // symdb: Initializes the wireless adapter's REQ request-management state, filling its work struct and installing the MSC/REQ callbacks.
 // symdb: (r0 = nonzero param, likely retry/count; r1 = second param) -> r0 = 0 on success, 4 if r0 == 0;
@@ -1984,7 +1984,7 @@ dword_8144E6C:
 sub_8144E70:
 	push {r4,lr}
 	mov r4, r0
-	bl sub_8144EA4
+	bl rfu_clearConnState
 	ldr r1, off_8144EA0 // =eStruct200FE00 
 	mov r2, #1
 	strb r2, [r1,#0x4] // (byte_200FE04 - 0x200fe00)
@@ -2012,9 +2012,9 @@ off_8144EA0:
 
 // symdb: Clears the RFU link-connection state struct eStruct200FE00, resetting connection state fields and slot tables.
 // symdb: () -> void; clobbers r0-r5, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144EA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearConnState.yaml
 	thumb_local_start
-sub_8144EA4:
+rfu_clearConnState:
 	push {r4,r5,lr}
 	ldr r2, off_8144EE8 // =eStruct200FE00 
 	mov r0, #0
@@ -2052,7 +2052,7 @@ loc_8144ECC:
 	.balign 4, 0x00
 off_8144EE8:
 	.word eStruct200FE00
-	thumb_func_end sub_8144EA4
+	thumb_func_end rfu_clearConnState
 
 	thumb_func_start eStruct200FE00_setUnk04To15h
 eStruct200FE00_setUnk04To15h:
@@ -2390,7 +2390,7 @@ rfu_updateConnState:
 	mov r5, r1
 	cmp r0, #0
 	beq loc_8145140
-	bl sub_8144EA4
+	bl rfu_clearConnState
 	mov r0, #0x17
 	strb r0, [r5,#0x4] // (byte_200FE04 - 0x200fe00)
 	b loc_814520A
@@ -6752,7 +6752,7 @@ loc_8146FD0:
 	ldr r0, off_8147014 // =byte_2010368 
 	strb r1, [r0]
 	mov r0, #1
-	bl sub_8144DB0
+	bl rfu_sendLinkState
 loc_8146FE4:
 	mov r0, r8
 	mov r1, r6
@@ -7564,7 +7564,7 @@ loc_81475FC:
 	ldr r0, off_8147630 // =byte_2010368 
 	strb r1, [r0]
 	mov r0, #1
-	bl sub_8144DB0
+	bl rfu_sendLinkState
 loc_8147610:
 	bl sub_8147834
 	bl rfu_pollSlotDisconnect
@@ -8190,9 +8190,9 @@ off_8147B20:
 
 // symdb: Parameter-less wrapper that loads byte_2010390 and unk_20103A0 as r0/r1, sets r2=0xC, and tail-calls rfu_initCommState, returning its result.
 // symdb: (no args) -> r0 = return value of rfu_initCommState; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147B24.yaml
-	thumb_func_start sub_8147B24
-sub_8147B24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initCommStateCall.yaml
+	thumb_func_start rfu_initCommStateCall
+rfu_initCommStateCall:
 	push {lr}
 	ldr r0, off_8147B34 // =byte_2010390 
 	ldr r1, off_8147B38 // =unk_20103A0 
@@ -8205,7 +8205,7 @@ off_8147B34:
 	.word byte_2010390
 off_8147B38:
 	.word unk_20103A0
-	thumb_func_end sub_8147B24
+	thumb_func_end rfu_initCommStateCall
 
 	thumb_func_start sub_8147B3C
 sub_8147B3C:
@@ -8915,7 +8915,7 @@ loc_81480B2:
 	b loc_8148200
 loc_81480B4:
 	mov r0, #1
-	bl sub_8144DB0
+	bl rfu_sendLinkState
 	b loc_8148200
 loc_81480BC:
 	ldr r0, off_81480C8 // =byte_2010324 
@@ -9952,7 +9952,7 @@ loc_81488B4:
 	mov r2, #0x40 
 	bl rfu_UNI_changeAndReadySendData
 	mov r0, #1
-	bl sub_8144DB0
+	bl rfu_sendLinkState
 	b loc_8148920
 	.balign 4, 0
 off_81488F4:
@@ -10948,8 +10948,8 @@ off_8149128:
 	.word eS200BC50
 	thumb_func_end sub_8148FC0
 
-// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via sub_8144DB0(1).
-// symdb: () -> r0 = result of sub_8144DB0(1); no meaningful input
+// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via rfu_sendLinkState(1).
+// symdb: () -> r0 = result of rfu_sendLinkState(1); no meaningful input
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_readyUniSendIfFlagged.yaml
 	thumb_local_start
 rfu_readyUniSendIfFlagged:
@@ -10963,7 +10963,7 @@ rfu_readyUniSendIfFlagged:
 	bl rfu_UNI_readySendData
 loc_8149140:
 	mov r0, #1
-	bl sub_8144DB0
+	bl rfu_sendLinkState
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -21810,15 +21810,15 @@ loc_814E14E:
 // symdb: Thunk that fetches the next script opcode byte via battleObject_runUpdateRoutineAndAdvancePC_814E0D0 and stores it as a single byte into the battle object at offset 0x1D, returning through its own saved lr.
 // symdb: (r0 = battle object ptr?, r1 = battle object ptr) -> r0 = script byte written; no meaningful
 // symdb: return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E15C.yaml
-	thumb_func_start sub_814E15C
-sub_814E15C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setScriptByteToObj1D.yaml
+	thumb_func_start battle_setScriptByteToObj1D
+battle_setScriptByteToObj1D:
 	mov r12, lr
 	bl battleObject_runUpdateRoutineAndAdvancePC_814E0D0
 	strb r3, [r1,#0x1d]
 	bx r12
 	.balign 4, 0x00
-	thumb_func_end sub_814E15C
+	thumb_func_end battle_setScriptByteToObj1D
 
 // symdb: Advances the buster/chip-charge frame on a battle object and stores a damage-scaled value
 // symdb: (r0 = BattleObject*, r1 = ?) -> r0 = BattleObject* ; side effects: writes halfwords to

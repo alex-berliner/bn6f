@@ -4018,12 +4018,12 @@ int __fastcall sub_80063C0(int a1)
     sub_8002378(*(v1 + 8), v6, *(v1 + 24), *(v1 + 12) + 18);
     v8 = *(v1 + 20);
     sub_8002378(*(v1 + 8), v6, *(v1 + 28), *(v1 + 12) + 19);
-    return sub_8006414();
+    return sprite_loadPalettes();
 }
 
 
 // 0x8006414
-int sub_8006414()
+int sprite_loadPalettes()
 {
     int v0; // r5
     int v1; // r6
@@ -4043,7 +4043,7 @@ int __fastcall sub_8006444(int a1, signed int a2)
     int v2; // r5
 
     if ( a2 >= 16 )
-        return sub_8006414();
+        return sprite_loadPalettes();
     screenFade_InitFadeBlock_800634C(v2 - byte_200A440);
     engine_setScreeneffect(100, 255);
     return sub_800647C();
@@ -4220,7 +4220,7 @@ signed int __fastcall chatbox_initWindowReqAndEnqueue(int *a1, int a2, int a3, i
 
 
 // 0x8006990
-BOOL sub_8006990()
+BOOL ow_updateMarkerProj()
 {
     int v0; // r10
     int v1; // r6
@@ -6771,7 +6771,7 @@ int object_wait60FramesThenDispatchEvent()
 
 
 // 0x800838a
-int sub_800838A()
+int battle_showDamageTotalsPrompt()
 {
     int v0; // r5
     int v1; // r10
@@ -12551,7 +12551,7 @@ int __fastcall battle_linkSendTaggedPacketMode3(int a1, int a2)
     int v3; // r5
 
     v3 = a2;
-    sub_800B4CE(a1);
+    battle_findActorSlotOffset(a1);
     dword_203CBE0[0] = -1447508010;
     dword_203CBE4 = v2;
     *byte_203CBE8 = v3;
@@ -12560,7 +12560,7 @@ int __fastcall battle_linkSendTaggedPacketMode3(int a1, int a2)
 
 
 // 0x800b4ce
-int __fastcall sub_800B4CE(int a1)
+int __fastcall battle_findActorSlotOffset(int a1)
 {
     int v1; // r10
     int v2; // r4

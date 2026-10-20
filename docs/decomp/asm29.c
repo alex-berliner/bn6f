@@ -837,7 +837,7 @@ int sub_80A58AC()
     v0[9] = *(v1 + 136);
     v0[10] = v2;
     v0[11] = v3;
-    result = sub_80A58F4(0x10000);
+    result = camera_stepTowardsTarget(0x10000);
     if ( result != 1 )
     {
         *(v1 + 7) = 0;
@@ -861,7 +861,7 @@ void sub_80A58E0()
 
 
 // 0x80a58f4
-signed int __fastcall sub_80A58F4(int a1)
+signed int __fastcall camera_stepTowardsTarget(int a1)
 {
     int v1; // r5
     signed int v2; // r4
@@ -1492,7 +1492,7 @@ unsigned int e_setFlagFromIndexTable()
 
 
 // 0x80a5ea0
-unsigned int sub_80A5EA0()
+unsigned int clearFlagFromTable()
 {
     int v0; // r5
 
@@ -1544,7 +1544,7 @@ LABEL_11:
         *(v0 + 11) = 0;
         *(v1 + 5) = 0;
         *(v0 + 7) = 1;
-        sub_80A5EA0();
+        clearFlagFromTable();
         goto LABEL_11;
     }
     return result;
@@ -4971,7 +4971,7 @@ void __noreturn object_cybercrowOrbitUpdate()
         npc_triggerCutscene();
         sub_80A8D42();
         sub_80A8CCC();
-        v2 = 2 * (sub_80A8D02(133) >> 8);
+        v2 = 2 * (ow_stepAngleTowardTarget(133) >> 8);
         v3 = *&math_sinTable[v2] << 8;
         *(v0 + 12) -= *&math_cosTable[v2] << 8;
         *(v0 + 16) -= v3;
@@ -4980,7 +4980,7 @@ void __noreturn object_cybercrowOrbitUpdate()
         ow_refreshObjectSpritePriority();
         v5 = sprite_dirToAnimIndex();
         sprite_changeAnimation(v5);
-        sub_80A8D7C();
+        ow_enqueueObjectInteractionArea();
     }
     sprite_update(v0);
 }
@@ -5000,7 +5000,7 @@ void __noreturn sub_80A8BBC()
     if ( v2 )
     {
         npc_triggerCutscene();
-        sub_80A8D02(&byte_400);
+        ow_stepAngleTowardTarget(&byte_400);
         v4 = v3 << 8;
         if ( v4 < 0 )
             v4 = -v4;
@@ -5013,7 +5013,7 @@ void __noreturn sub_80A8BBC()
         ow_refreshObjectSpritePriority();
         v5 = sprite_dirToAnimIndex();
         sprite_changeAnimation(v5);
-        sub_80A8D7C();
+        ow_enqueueObjectInteractionArea();
     }
     sprite_update(v0);
 }
@@ -5125,7 +5125,7 @@ int sub_80A8CCC()
 
 
 // 0x80a8d02
-int __fastcall sub_80A8D02(int a1)
+int __fastcall ow_stepAngleTowardTarget(int a1)
 {
     int v1; // r5
     int v2; // r7
@@ -5181,7 +5181,7 @@ int sub_80A8D42()
 
 
 // 0x80a8d7c
-int sub_80A8D7C()
+int ow_enqueueObjectInteractionArea()
 {
     int *v0; // r5
     int result; // r0

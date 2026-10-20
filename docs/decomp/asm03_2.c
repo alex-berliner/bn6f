@@ -2725,7 +2725,7 @@ void sub_8049290()
                 (dword_80492E4[v4])();
         }
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2772,7 +2772,7 @@ signed int __fastcall ow_attemptJackIn(int a1)
         LODWORD(v5) = sub_803C440(v4);
         v6 = v5;
         sub_803C150(v5, __PAIR__(byte_202AF00, HIDWORD(v5)));
-        sub_803C2AA(byte_202AB00, byte_202AF00, v6, SHIDWORD(v6));
+        ow_saveJackInState(byte_202AB00, byte_202AF00, v6, SHIDWORD(v6));
         sub_803BB2C(12);
         v1[1] = 40;
         PlaySoundEffect(129, v7, v8);
@@ -2811,7 +2811,7 @@ void sub_8049360()
             v0[1] = 44;
         }
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2843,7 +2843,7 @@ LABEL_9:
     if ( !v1 )
         *(v0 + 1) = 68;
 LABEL_10:
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2857,7 +2857,7 @@ void sub_80493FE()
     chatbox_mask_eFlags2009F38(128);
     if ( v1 )
         *(v0 + 1) = 36;
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2868,7 +2868,7 @@ void rfu_wirelessConnectStep()
     int v0; // r5
     char v1; // zf
 
-    sub_8049680();
+    rfu_dispatchRequest();
     if ( !v1 )
     {
         if ( !rfu_isNotConnected() )
@@ -2900,7 +2900,7 @@ LABEL_8:
         *(v0 + 1) = 68;
     }
 LABEL_11:
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2937,7 +2937,7 @@ void sub_804946E()
             }
         }
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2945,7 +2945,7 @@ void sub_804946E()
 // 0x80494ca
 void sub_80494CA()
 {
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -2991,7 +2991,7 @@ void submenu_selectNetworkScript()
         clearStatusBits(256);
         *(v0 + 1) = 68;
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -3024,7 +3024,7 @@ void sub_804952C()
             *(v0 + 1) = 16;
         }
     }
-    sub_803A104();
+    rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
 }
 
@@ -3192,7 +3192,7 @@ signed int sub_804964C()
 
 
 // 0x8049680
-signed int sub_8049680()
+signed int rfu_dispatchRequest()
 {
     int v0; // r5
     int v1; // r0
@@ -4483,7 +4483,7 @@ void __noreturn battle_drawChipSelectNameAndIconRows()
 
 
 // 0x804a970
-int sub_804A970()
+int req_takeOrderedChips()
 {
     int v0; // r5
     __int16 *v1; // r7
@@ -4559,12 +4559,12 @@ int __fastcall sub_804A9F0(int a1, int a2, int a3, int a4)
 // 0x804aa58
 int sub_804AA58()
 {
-    return sub_804AA74(146, 28, 40, 46);
+    return object_queueOamEntryPacked(146, 28, 40, 46);
 }
 
 
 // 0x804aa74
-int __fastcall sub_804AA74(int a1, int a2, int a3, int a4)
+int __fastcall object_queueOamEntryPacked(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -4720,7 +4720,7 @@ int submenu_stageEntry()
                 ++*(v0 + 40);
             }
             ZeroFillByEightWords(v4, 32);
-            *(v0 + 23) = sub_804ACC8(*(v0 + 30), v6, v7, v8);
+            *(v0 + 23) = stampRecordCounts(*(v0 + 30), v6, v7, v8);
             v9 = *(v0 + 30);
             sub_804ADD0();
         }
@@ -4753,13 +4753,13 @@ int submenu_stageEntry()
             {
                 *(v10 + 20) = (v14 << 16) | *(v10 + 20) & 0xFFFF;
                 CopyByEightWords(v10, word_202A020 + v1, 0x20u);
-                *(v0 + 23) = sub_804ACC8(*(v0 + 30), v23, v24, v25);
+                *(v0 + 23) = stampRecordCounts(*(v0 + 30), v23, v24, v25);
                 sub_804ADD0();
             }
             else
             {
                 CopyByEightWords(v10, word_202A020 + v1, 0x20u);
-                *(v0 + 23) = sub_804ACC8(*(v0 + 30), v15, v16, v17);
+                *(v0 + 23) = stampRecordCounts(*(v0 + 30), v15, v16, v17);
                 v18 = v10 + 32;
                 v19 = v10;
                 v20 = *(v0 + 46) + *(v0 + 42);
@@ -4796,7 +4796,7 @@ LABEL_11:
 
 
 // 0x804acc8
-int __fastcall sub_804ACC8(int a1, int a2, int a3, int a4)
+int __fastcall stampRecordCounts(int a1, int a2, int a3, int a4)
 {
     __int16 *v4; // r7
     __int16 *v5; // r5
@@ -5023,7 +5023,7 @@ int battleObject_queueAnimFrame()
 
 
 // 0x804aec4
-signed int __fastcall sub_804AEC4(int a1, int a2, int a3)
+signed int __fastcall ow_handleJackInDenied(int a1, int a2, int a3)
 {
     _BYTE *v3; // r5
     int v4; // r10
@@ -5998,12 +5998,12 @@ void sub_804C53C()
         LoadGFXAnim(&dword_804C4E0);
     }
     *(v0 + 16) = 4;
-    sub_804C5C0();
+    drawFullscreenBackgroundTiles();
 }
 
 
 // 0x804c5c0
-void sub_804C5C0()
+void drawFullscreenBackgroundTiles()
 {
     int v0; // r5
     int v1; // r10
@@ -6285,12 +6285,12 @@ int sub_804CB0C()
     v3[12] = 0;
     chatbox_initWindowReqAndEnqueue(v1, chatbox_initWindowReqAndEnqueue, v4, v5);
     *(v0 + 16) = 4;
-    return sub_804CB64();
+    return t3_showFullScreenBackground();
 }
 
 
 // 0x804cb64
-signed int sub_804CB64()
+signed int t3_showFullScreenBackground()
 {
     int v0; // r10
     signed int result; // r0
@@ -6299,7 +6299,7 @@ signed int sub_804CB64()
 
     **(v0 + oToolkit_RenderInfoPtr) |= 0x2800u;
     CopyBackgroundTiles(0, 0, 3, byte_86A34E0, 30, dword_14);
-    result = sub_8006990();
+    result = ow_updateMarkerProj();
     if ( !v2 )
     {
         result = 8;

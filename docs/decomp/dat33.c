@@ -145,7 +145,7 @@ int sub_812C3BC()
                             break;
                         if ( *(v7 + 10) > 46432 || *(v7 + 26) > 46432 )
                             goto LABEL_34;
-                        v11 = sub_8132430(v7);
+                        v11 = e_compareLinkStates(v7);
                         if ( v11 <= 2 )
                         {
                             rfu_finishCommScreenStep();
@@ -365,7 +365,7 @@ void sub_812C5D0()
                     {
                         if ( !v9 )
                         {
-                            v11 = sub_8132430(v7);
+                            v11 = e_compareLinkStates(v7);
                             if ( v11 > 2 )
                             {
                                 if ( v11 != 255 )
@@ -530,7 +530,7 @@ int sub_812C7B4()
                     {
                         if ( !v10 )
                         {
-                            v12 = sub_8132430(v8);
+                            v12 = e_compareLinkStates(v8);
                             result = sub_803DD60(v12);
                             if ( result )
                                 v8 += 16;
@@ -804,7 +804,7 @@ int sub_812CA84()
                             v9 = v5;
                             if ( *(v5 + 10) == 65243 && (v9 = v5 + 16, *(v5 + 26) == 65243) )
                             {
-                                result = sub_8132430(v5);
+                                result = e_compareLinkStates(v5);
                                 if ( result == 4 )
                                 {
                                     *(v0 + 2) = 24;
@@ -896,7 +896,7 @@ int sub_812CB74()
                             v9 = v5;
                             if ( *(v5 + 10) == 65243 && (v9 = v5 + 16, *(v5 + 26) == 65243) )
                             {
-                                result = sub_8132430(v5);
+                                result = e_compareLinkStates(v5);
                                 if ( result == 4 )
                                 {
                                     *(v0 + 2) = 24;
@@ -1282,7 +1282,7 @@ LABEL_23:
                     {
                         if ( v9 )
                             goto LABEL_23;
-                        v11 = sub_8132430(v7);
+                        v11 = e_compareLinkStates(v7);
                         if ( v11 <= 2 )
                         {
                             v12 = v11;

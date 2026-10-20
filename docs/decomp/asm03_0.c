@@ -1617,7 +1617,7 @@ int state_waitFadeEndThenAdvance()
 
 
 // 0x80275ec
-int sub_80275EC()
+int battleObjectStep()
 {
     int v0; // r5
 
@@ -2908,7 +2908,7 @@ void __fastcall battle_loadGfxChunkBySelector_8028320(int a1, int a2, int a3)
 
 
 // 0x8028340
-int sub_8028340()
+int battle_queueIndexedGfxChunk()
 {
     int v0; // r4
 
@@ -7559,7 +7559,7 @@ int battle_subEffectFadeOutDispatch()
 
 
 // 0x802b7e0
-int sub_802B7E0()
+int comm_waitCrossNetReady()
 {
     int v0; // r5
     int result; // r0
@@ -9912,7 +9912,7 @@ _DWORD *battle_clearAIDataStateBlock()
 
 
 // 0x802d322
-int __usercall sub_802D322@<R0>(Battle *obj@<R5>)
+int __usercall ai_tickPlayerCustomState@<R0>(Battle *obj@<R5>)
 {
     u8 *v1; // r6
     u8 *v2; // r7
@@ -9958,7 +9958,7 @@ signed int __usercall playerAI_stepTryAttackChipOnTarget@<R0>(Battle *obj@<R5>)
 
 
 // 0x802d3a8
-signed int __fastcall sub_802D3A8(int a1, int a2, int a3)
+signed int __fastcall battle_aiPickRandomRowObject(int a1, int a2, int a3)
 {
     int v3; // r5
     _WORD *v4; // r6
@@ -10105,7 +10105,7 @@ signed int __fastcall sub_802D4F0(int a1, int a2, int a3)
 
 
 // 0x802d588
-signed int __fastcall __noreturn sub_802D588(int a1, int a2, int a3)
+signed int __fastcall __noreturn ai_tryPickRowObject(int a1, int a2, int a3)
 {
     int v3; // r5
     _WORD *v4; // r6
@@ -10555,7 +10555,7 @@ signed int __noreturn battle_initNaviObjectFromStats()
     v0->maxHP = sub_8013790(v16, 66);
     sub_801E0D0(1);
     battleRefreshTrackedObjectArmPos_801DBD4();
-    sub_80108FC(v0->Alliance);
+    battle_processChipRangeInHand(v0->Alliance);
     battle_clearCollisionData();
     v17 = object_clearFlag(GameEntryPoint);
     battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
@@ -10748,7 +10748,7 @@ signed int __noreturn sub_802DB80()
     v0->maxHP = sub_8013790(v16, 66);
     sub_801E0D0(1);
     battleRefreshTrackedObjectArmPos_801DBD4();
-    sub_80108FC(v0->Alliance);
+    battle_processChipRangeInHand(v0->Alliance);
     battle_clearCollisionData();
     battle_setObjectInvisible();
     object_removePanelReserve(v0->futurePanelX, v0->futurePanelY);

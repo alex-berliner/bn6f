@@ -691,7 +691,7 @@ int __fastcall sub_8144CF8(int result)
 
 
 // 0x8144d04
-int __fastcall sub_8144D04(unsigned __int8 a1)
+int __fastcall battle_getTimerEnableFlag(unsigned __int8 a1)
 {
     return byte_200F48A[a1];
 }
@@ -753,7 +753,7 @@ int rfu_softResetLinkState()
 
 
 // 0x8144db0
-int __fastcall sub_8144DB0(unsigned __int8 a1)
+int __fastcall rfu_sendLinkState(unsigned __int8 a1)
 {
     char v1; // r2
     int v3; // [sp+0h] [bp-4h]
@@ -816,7 +816,7 @@ int __fastcall sub_8144E70(int a1)
     int v3; // [sp+4h] [bp-4h]
 
     v1 = a1;
-    sub_8144EA4();
+    rfu_clearConnState();
     byte_200FE04 = 1;
     byte_200FE05 = 2;
     dword_200FE3C = v1;
@@ -830,7 +830,7 @@ int __fastcall sub_8144E70(int a1)
 
 
 // 0x8144ea4
-int sub_8144EA4()
+int rfu_clearConnState()
 {
     unsigned int v0; // r3
     int v2; // [sp+8h] [bp-4h]
@@ -1052,7 +1052,7 @@ int __fastcall rfu_updateConnState(int a1)
     byte_200FE07 = 0;
     if ( a1 << 24 )
     {
-        sub_8144EA4();
+        rfu_clearConnState();
         byte_200FE04 = 23;
     }
     else
@@ -3098,7 +3098,7 @@ int __fastcall sub_8146F90(int a1, int a2, int a3)
         if ( *dword_2010CC0 == 1 )
         {
             byte_2010368 = 1;
-            sub_8144DB0(1u);
+            rfu_sendLinkState(1u);
         }
         sub_81472F8(&unk_200AF80, v3, v5);
         sub_814713C(&unk_200AF80, v4);
@@ -3472,7 +3472,7 @@ int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
     if ( *dword_2010CC0 == 1 )
     {
         byte_2010368 = 1;
-        sub_8144DB0(1u);
+        rfu_sendLinkState(1u);
     }
     sub_8147834();
     rfu_pollSlotDisconnect();
@@ -3666,7 +3666,7 @@ int rfu_pollSlotDisconnect()
 
 
 // 0x8147b24
-int sub_8147B24()
+int rfu_initCommStateCall()
 {
     int v1; // [sp+0h] [bp-4h]
 
@@ -4026,7 +4026,7 @@ LABEL_48:
     }
     if ( a1 == 80 )
     {
-        sub_8144DB0(1u);
+        rfu_sendLinkState(1u);
         return v2;
     }
     if ( a1 > 80 )
@@ -4436,7 +4436,7 @@ int sub_8148884()
         else
         {
             rfu_UNI_changeAndReadySendData(byte_2010328, &byte_20101E0, 0x40u);
-            sub_8144DB0(1u);
+            rfu_sendLinkState(1u);
         }
     }
     switch ( word_200BC58 )
@@ -4810,7 +4810,7 @@ int rfu_readyUniSendIfFlagged()
 
     if ( rfu_uniProcessRecvChunk() << 24 )
         rfu_UNI_readySendData(byte_20103E0);
-    sub_8144DB0(1u);
+    rfu_sendLinkState(1u);
     return v1;
 }
 
@@ -10062,7 +10062,7 @@ int __fastcall sub_814E12C(int a1, int a2)
 
 
 // 0x814e15c
-int __fastcall sub_814E15C(int a1, int a2)
+int __fastcall battle_setScriptByteToObj1D(int a1, int a2)
 {
     int v2; // r1
     char v3; // r3

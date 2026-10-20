@@ -870,7 +870,7 @@ sub_812D934:
 	ldr r2, off_812D948 // =off_812D94C 
 	ldr r2, [r2,r1]
 	mov r3, #0xa
-	bl sub_8120228
+	bl chatbox_expandStringById
 	pop {r4,pc}
 	.balign 4, 0
 off_812D948:

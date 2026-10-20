@@ -1515,7 +1515,7 @@ unsigned int __fastcall battle_calcTargetApproach(_DWORD *vect, int x, int y, in
 
 
 // 0x8001288
-int __fastcall sub_8001288(_DWORD *a1, int a2, int a3, int a4)
+int __fastcall object_calcStepDeltas(_DWORD *a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r0

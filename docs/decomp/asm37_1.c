@@ -2465,7 +2465,7 @@ int countSetEventFlags()
 
 
 // 0x8143d7a
-int __fastcall sub_8143D7A(int a1, int a2)
+int __fastcall groundmanMinigamePosToGridIndex(int a1, int a2)
 {
     int v2; // ST00_4
     int v3; // ST04_4
@@ -2546,7 +2546,7 @@ int sub_8143EA4()
     __int64 v0; // r0
 
     v0 = sub_809E1AE();
-    return sub_8143D7A(v0, SHIDWORD(v0));
+    return groundmanMinigamePosToGridIndex(v0, SHIDWORD(v0));
 }
 
 

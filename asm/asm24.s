@@ -1077,7 +1077,7 @@ loc_808C9F8:
 	ldr r2, [sp, #8]
 loc_808C9FE:
 	bl SetCameraXYZ
-	bl sub_8089280
+	bl sprite_runFrameAlternatingLists
 	mov r0, #1
 	add sp, #0xc
 	pop {r1}
