@@ -33524,9 +33524,10 @@ dword_811DFFC:
 	.word 0x3F800000
 	thumb_func_end battle_rosterIconSetShade
 
-// symdb: One-shot switch of an object's sprite to animation 1 (no shadow), guarded by a byte so it only runs the first frame it's reached.
-// symdb: (r5 = object pointer, set by caller) -> void; no flags relevant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_playAltAnimationOnce.yaml
+// symdb: Starts an object's alternate (one-shot) animation exactly once, guarding with a started counter at sprite+0x09.
+// symdb: void sprite_playAltAnimationOnce(sprite* r5) // in: r5 = sprite/object struct; out: r5 =
+// symdb: (possibly reallocated) sprite pointer
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_playAltAnimationOnce.yaml
 	thumb_local_start
 sprite_playAltAnimationOnce:
 	push {lr}

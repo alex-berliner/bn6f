@@ -86,6 +86,11 @@ cutscenescript_8098CC9:
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Loads one Cross System entry's fixed fields (selected by an index in the work area) into the work area, and writes the entry's partner-character id into the partner state block when one is defined.
+// symdb: u32 sub_8098CCC(void* work /* r5 */, void* state /* r10 */); returns 0 in r0, partner-state
+// symdb: pointer in r2, flags NZ from the final mov r0,#0; clobbers r0-r2, c, v; lr returned to via mov
+// symdb: pc,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8098CCC.yaml
 	thumb_local_start
 sub_8098CCC:
 	ldrb r1, [r5, #4]
@@ -2802,6 +2807,10 @@ cutscenescript_809AD80:
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: A one-shot exit handler that delegates to pet_returnToPetMenu to leave the current PET screen back at the PET menu, then always reports 0 in r0.
+// symdb: u32 sub_809ADA8(void)  // r4-r7, r9-r12 passed through to the callee; returns 0 in r0 with NZ
+// symdb: set from it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809ADA8.yaml
 	thumb_local_start
 sub_809ADA8:
 	push {r4-r7,lr}
@@ -4598,6 +4607,10 @@ off_809C7F8:
 	.word byte_20065E0
 	thumb_func_end camera_restartWithScriptHead
 
+// symdb: Per-frame overworld player-object callback that pushes the player's three coordinate words through the shared copy-to-next/write-back coordinate helper.
+// symdb: void sub_809C7FC(u32 player /*r5*/, u32 r10, u32 lr); returns r0=0 (clobber, callers ignore),
+// symdb: leaves r2-r4,r5,r7 as the callee helper's leftovers, sets flags NZ from 0; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C7FC.yaml
 	thumb_local_start
 sub_809C7FC:
 	push {r4-r7,lr}
@@ -4635,6 +4648,11 @@ dword_809C82C:
 	.word 0x7050301
 	thumb_func_end owPlayer_setFixedAnimationFromLookup
 
+// symdb: Looks up one byte from a fixed 4x4 step/sequence table using two selector bytes in an object's state block and stores it into the work object at +0x5.
+// symdb: void sub_809C830(void); /* in: r5 = work object; out: [r5+5] = table byte, r2 = selected table
+// symdb: word, r3 = state pointer, NZ from 'mov r0,#0' (Z set, C clobbered), r0/r1 scratch, r4-r7
+// symdb: preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C830.yaml
 	thumb_local_start
 sub_809C830:
 	push {r4-r7,lr}
@@ -4743,6 +4761,10 @@ off_809C93C:
 	.word eCutsceneState
 	thumb_func_end ow_applyCutsceneDirOffset
 
+// symdb: Clears every event flag listed in the cutscene state's entry flag bitfield via ClearEventFlag.
+// symdb: (void) -> void; callers pass r10 (consumed by ClearEventFlag) and lr; the function preserves and
+// symdb: returns r5 to callers (r5 is both an input the caller expects back and the sole register output)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C940.yaml
 	thumb_func_start sub_809C940
 sub_809C940:
 	push {r4-r7,lr}

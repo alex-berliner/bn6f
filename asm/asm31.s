@@ -821,6 +821,10 @@ locret_80B87A4:
 	pop {pc}
 	thumb_func_end battle_spawnType2LinkedChild
 
+// symdb: Writes the constant 8 into offset +0x8 of the object/struct passed in r0 (a state or ID field reset to 8).
+// symdb: void sub_80B87A6(u32 *obj) /* r0 = object pointer; returns value 8 in r1; sets N/Z flags from 8
+// symdb: */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80B87A6.yaml
 	thumb_func_start sub_80B87A6
 sub_80B87A6:
 	mov r1, #8
@@ -1173,6 +1177,10 @@ locret_80B8A08:
 	pop {pc}
 	thumb_func_end battle_spawnLinkedType1Obj3
 
+// symdb: Sets a battle object's current state-action phase to 8 (also marking the phase as initialized), silently doing nothing if the object pointer is null.
+// symdb: void battle_setObjectPhase8_80B8A0A(BattleObject* obj)  // in: r0 = battle object pointer (may
+// symdb: be NULL); out: none; flags clobbered (nz)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80B8A0A.yaml
 	thumb_func_start sub_80B8A0A
 sub_80B8A0A:
 	tst r0, r0
@@ -1653,6 +1661,10 @@ loc_80B8E54:
 	pop {pc}
 	thumb_func_end spawn_t1_0x5_tempAttackObject_80B8E30
 
+// symdb: Resets a battle object's current state-action phase counter, marking the object's current phase as not yet initialized; silently does nothing for a NULL object.
+// symdb: void sub_80B8E58(BattleObject *obj)  /* in: r0 = battle object (may be NULL); out: nz flags and
+// symdb: r1 are side effects of the original (r1=8 and Z clear when obj != NULL), callers ignore them */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80B8E58.yaml
 	thumb_local_start
 sub_80B8E58:
 	tst r0, r0
@@ -28669,6 +28681,10 @@ object_setFlag:
 	mov pc, lr
 	thumb_func_end object_setFlag
 
+// symdb: Stores 1 into a battle object's 13th extra variable (ExtraVars+0xC), likely a per-turn "has acted"/reset flag.
+// symdb: void battle_setObjectExtraFlagC_80C46C6(BattleObject *obj) // r0 = battle object; no outputs,
+// symdb: flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C46C6.yaml
 	thumb_local_start
 sub_80C46C6:
 	mov r1, #1
@@ -30827,6 +30843,10 @@ locret_80C579C:
 	pop {r4,r6,r7,pc}
 	thumb_func_end object_bombFuseUpdate
 
+// symdb: Spawns a type-5 battle object and initializes it from a source object, setting its element to 4 and linking it to a related object
+// symdb: u32 spawnType5FromSource(r1..r4 spawnParams, r5 sourceObject, r6 damageValue, r7 relatedObject)
+// symdb: -> r1 elemOrError, r2 spawnerOut, r5 sourceObject
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C579E.yaml
 	thumb_func_start sub_80C579E
 sub_80C579E:
 	push {lr}
@@ -36119,6 +36139,11 @@ locret_80C7D4E:
 	pop {pc}
 	thumb_func_end sub_80C7D08
 
+// symdb: Spawns a battle object of type 0x1C (a thunderbolt effect) on a panel and initializes its position, element, damage and alliance from the caller's data.
+// symdb: u32 spawnThunderboltObject(u32 panelX, u32 panelY, u32 element, u32 spawnArg3, u32 spawnArg4,
+// symdb: BattleObject* sourceObject, u32 damage); returns r0 = new object pointer (0 if the object pool
+// symdb: was full); flags NZ from the pointer/flag value, C/V always clear
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnThunderboltObject_80C7D50.yaml
 	thumb_local_start
 spawnThunderboltObject_80C7D50:
 	push {lr}
@@ -39193,6 +39218,11 @@ locret_80C92F2:
 	pop {pc}
 	thumb_func_end sub_80C92CC
 
+// symdb: Highlights up to two panels adjacent to a battle object and spawns a timed, element-carrying collision region on each, hitting panels next to the actor (offsets picked from a per-alliance table by object id).
+// symdb: panelHitRegions(u32 object_id /*r0*/, u32 timer /*r1*/, BattleObject* obj /*r5*/,
+// symdb: u32 r6_in, u32 r7_in) -> BattleObject* r2 (last spawned region, or garbage when panels invalid),
+// symdb: r4 (= timer due to a stack-slot quirk), r5, r6, r7 preserved; clobbers r0-r3, lr, flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80C92F4.yaml
 	thumb_local_start
 sub_80C92F4:
 	push {r4,r6,r7,lr}
@@ -44783,6 +44813,10 @@ locret_80CBAF0:
 	pop {pc}
 	thumb_func_end spawn_battleObjectAttached
 
+// symdb: Clears the halfword counter/timer field at offset 0x24 of a battle object.
+// symdb: void sub_80CBAF2(u32 object /* r0 */); preserves and effectively "returns" the incoming r5
+// symdb: value; flags clobbered (N/Z)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80CBAF2.yaml
 	thumb_func_start sub_80CBAF2
 sub_80CBAF2:
 	push {r5,lr}

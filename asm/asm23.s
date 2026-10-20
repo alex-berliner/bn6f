@@ -1048,6 +1048,10 @@ loc_808978C:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_scenarioEffectInputHandler_8089704
 
+// symdb: Fetches a scenario-effect state value, launches an AI chat script two entries into it, then marks the returned state object with the phase byte 0x14 and reports success.
+// symdb: int sub_8089792(u8 *state /* r5 */, u32 ctx /* r10 */); // returns r0 = 1; r2/r3 leak through
+// symdb: from the chat-script call; NZCV clobbered; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8089792.yaml
 	thumb_local_start
 sub_8089792:
 	push {r4-r7,lr}
@@ -1210,6 +1214,10 @@ loc_8089898:
 	pop {r4-r7,pc}
 	thumb_func_end battle_tickBeastSp_808985A
 
+// symdb: If a battle-side check passes, runs chat-script kind 7 for the object in r5 and then writes state byte 0x38 to it, always returning 1.
+// symdb: int sub_808989C(u32 r5 /* object ptr */, u32 r10 /* context */); returns r0 = 1; r2/r3 (and r1)
+// symdb: come through from the kind-7 chat-script call when it runs; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808989C.yaml
 	thumb_local_start
 sub_808989C:
 	push {r4-r7,lr}
@@ -1576,7 +1584,7 @@ loc_8089B2A:
 
 // symdb: AI handler that locks the chip queue and queues a PwrAtk chip when the chip lockout timer is active.
 // symdb: (r5 = AIData*, r7 = ?, r10 = Toolkit*) -> r0 = 1 ; side effects: writes AIData[0x18]=0x70, calls
-// symdb: chatbox_storeWord_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
+// symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockoutLockoutAndAttack_8089B2E.yaml
 	thumb_local_start
 battle_tickChipLockoutLockoutAndAttack_8089B2E:

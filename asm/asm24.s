@@ -1257,6 +1257,11 @@ off_808CB9C:
 	.word dword_808CA44
 	thumb_func_end pet_tryStartRandomEncounterStep_808CB0C
 
+// symdb: Spawns the initial batch of overworld map objects, with the count depending on the current map (12 in map group 0x85, 9 elsewhere with a nonzero MapNumber, otherwise 7).
+// symdb: void sub_808CBA0(r10 toolkit); takes the toolkit pointer in r10, reads GameState via
+// symdb: oToolkit_GameStatePtr; returns nothing meaningful — r2 holds whatever the last
+// symdb: SpawnOverworldMapObject call left behind; r4-r7 reach the caller exactly as they arrived
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CBA0.yaml
 	thumb_local_start
 sub_808CBA0:
 	push {r4-r7,lr}
@@ -1751,6 +1756,10 @@ loc_808CF4C:
 	pop {r4-r7,pc}
 	thumb_func_end ai_testMapGroupEventFlag
 
+// symdb: For the current map group's AI/story mode, sets the mode's paired event flag if its check flag isn't already set.
+// symdb: void sub_808CF50(r10 /* map group / AI-mode context */, lr); returns r7 unchanged (restored from
+// symdb: stack); clobbers r0, r1, r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CF50.yaml
 	thumb_local_start
 sub_808CF50:
 	push {r4-r7,lr}
@@ -2018,6 +2027,10 @@ byte_808D105:
 	.byte 0x84, 0x0, 0x0
 	thumb_func_end ai_isPosInModeArea
 
+// symdb: Fetches the current overworld tile template, stamps it onto the map with template index 0, and refreshes the derived map/tilemap state.
+// symdb: void sub_808D108(void); // reads r10 (context/map pointer passed through to callees), trashes
+// symdb: r0-r3 and flags, r4-r9/r12 pass through from the callees and are preserved for callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808D108.yaml
 	thumb_local_start
 sub_808D108:
 	push {r4-r6,lr}
@@ -2153,6 +2166,10 @@ unk_808D24C:
 	.word 0x04000101, 0x00000000, 0x00000000, 0x00000000
 	thumb_func_end sub_808D11C
 
+// symdb: Pure glue routine that runs the worker at sub_8048F88 once and then sets r0 to 0 (Z set, N clear) before returning.
+// symdb: void sub_808D25C(void) // in: r10 (forwarded to the worker); out: flags N/Z from 0,
+// symdb: r2/r3/r4/r5/r7/r8/r9/r12 pass through from the worker
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808D25C.yaml
 	thumb_local_start
 sub_808D25C:
 	push {lr}

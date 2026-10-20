@@ -382,6 +382,10 @@ loc_808718E:
 	.balign 4, 0x00
 	thumb_func_end battle_beastSpRefreshAIDataFromBattleObject_8087184
 
+// symdb: Reads the caller object's current state index, looks up an event-flag id in a small table, and returns whether that flag is set via the N/Z flags.
+// symdb: bool check(r5 objectPtr, r10 unused) — tail result is the N/Z flags left by TestEventFlag (Z
+// symdb: clear = flag set); clobbers r0, r1, r3, lr, C and V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80871C0.yaml
 	thumb_local_start
 sub_80871C0:
 	push {lr}

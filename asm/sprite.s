@@ -1326,6 +1326,10 @@ loc_8002DFE:
 	mov pc, lr
 	thumb_func_end sprite_getFrameParameters
 
+// symdb: Selects one of up to 16 sub-entries of an object via the high nibble of byte +2 and tests that sub-entry's bit 3 (hidden/disabled-style attribute), returning its address and the masked flag.
+// symdb: u32 checkSubEntryHiddenFlag(void) /* in: r5 = object ptr, lr = return addr; out: r3 = sub-entry
+// symdb: ptr, r0 = (entry[+3] & 0x08), NZ flags from r0; clobbers r0-r3, C, V */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8002E04.yaml
 	thumb_func_start sub_8002E04
 sub_8002E04:
 	ldrb r3, [r5,#2]

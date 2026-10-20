@@ -859,6 +859,10 @@ locret_800F2EE:
 	pop {pc}
 	thumb_func_end battleObject_refreshSpriteAndArm_800F2C6
 
+// symdb: AI trampoline that redirects processing from an AI data block to the battle object it belongs to, then tail-calls sub_800F2FC.
+// symdb: void sub_800F2F0(u32 selfObject /* r5 = battle object whose AI is running */); returns
+// symdb: sub_800F2FC's results in r3/r4/r5, r5 passed through
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800F2F0.yaml
 	thumb_local_start
 sub_800F2F0:
 	push {lr}
@@ -5155,6 +5159,11 @@ battle_spawnObject56AtYOffset:
 	pop {r4,pc}
 	thumb_func_end battle_spawnObject56AtYOffset
 
+// symdb: Spawns the two companion battle objects (kind 0x14 slot 6 and kind 0x28 slot 7) attached to a battle object and stores their pointers in the owner's RelatedObject2Ptr and ExtraVars fields.
+// symdb: battle_spawnOwnerHelperPair_8010FD8(u32 r1 spawn_arg, u32 r2 parent_tag, u32 r3 spawn_arg, u32
+// symdb: r5 owner) -> u32 r0 (second spawned object pointer, the value stored in owner->ExtraVars);
+// symdb: r3/r5/r6/r7 left as the last spawn leaves them; r4 preserved; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8010FD8.yaml
 	thumb_local_start
 sub_8010FD8:
 	push {r4,lr}
@@ -5371,6 +5380,10 @@ locret_80111DA:
 	pop {pc}
 	thumb_func_end sub_80111CA
 
+// symdb: Detaches a battle object's secondary linked object, running that object's cleanup routine and clearing the link pointer.
+// symdb: void sub_80111DC(u32 battleObject /* r5 */); — returns r1 (left over from sub_80C4204's return
+// symdb: when the link was non-null), clobbers r0 and NZ flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80111DC.yaml
 	thumb_local_start
 sub_80111DC:
 	push {lr}
@@ -5397,6 +5410,10 @@ locret_80111FE:
 	pop {pc}
 	thumb_func_end sub_80111EE
 
+// symdb: Clears a battle object's RelatedObject2 link, sending the linked object to cleanup state 8 first if one was set.
+// symdb: u32 battle_releaseRelatedObject2_8011200(battle_object *obj /* r5 */, u32 r1_passthrough) -> u32
+// symdb: (r1 out from cleanup call, or passthrough)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011200.yaml
 	thumb_local_start
 sub_8011200:
 	push {lr}
@@ -5560,6 +5577,10 @@ sub_8011308:
 	pop {pc}
 	thumb_func_end sub_8011308
 
+// symdb: Trampoline that tail-calls the battle "spawn obj 56 / store related object" helper with the constant argument 0x105.
+// symdb: void sub_8011312(u32 r1, u32 r2, u32 r3, u32 r5) — pass-through call; all r0-r7 and NZCV results
+// symdb: are whatever the callee (sub_8011344) leaves behind
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8011312.yaml
 	thumb_local_start
 sub_8011312:
 	push {lr}
@@ -5584,6 +5605,11 @@ sub_8011326:
 	pop {pc}
 	thumb_func_end sub_8011326
 
+// symdb: One-line battle-side stub that spawns a related object with fixed object id 0x10E, forwarding the caller's other arguments unchanged.
+// symdb: void sub_8011330(u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg5 /*r5*/); // tail-
+// symdb: jumps into battle_spawnObj56StoreRelatedObject2(0x10E, arg1, arg2, arg3, arg5); results in r4-r7
+// symdb: as left by the callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011330.yaml
 	thumb_local_start
 sub_8011330:
 	push {lr}
@@ -5677,6 +5703,10 @@ locret_8011382:
 	thumb_func_end sub_8011362
 	thumb_func_end battle_spawnRelatedObject2
 
+// symdb: Jumps to one of 27 per-type "detach related object" handlers selected by the type index in r0, running it with the caller's register context (notably the object pointer in r5) intact.
+// symdb: void battle_dispatchDetachRelatedObject(u32 type_index /*r0*/, void* ctx /*r5*/); returns
+// symdb: whatever the selected handler leaves in r4-r12 (tail-bridged to the caller)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011384.yaml
 	thumb_func_start sub_8011384
 sub_8011384:
 	push {lr}
@@ -5730,6 +5760,11 @@ locret_801140C:
 	pop {pc}
 	thumb_func_end sub_80113FC
 
+// symdb: Runs the action-phase-8 step on a battle object's related object (if any) and then clears the RelatedObject2Ptr link.
+// symdb: void battle_releaseRelatedObject2_801140E(BattleObject* self /* r5 */) — inputs r5, lr; outputs
+// symdb: c (set), v (clear), r1 (callee's result, or caller's r1 untouched if no link); preserves lr via
+// symdb: pop {pc}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801140E.yaml
 	thumb_local_start
 sub_801140E:
 	push {lr}
@@ -6848,6 +6883,10 @@ sub_8011C38:
 	pop {pc}
 	thumb_func_end sub_8011C38
 
+// symdb: Initializes the AI attack-vars block for the SpoutCross beast-power attack, storing its computed damage and parameters and returning the attack id 0x25.
+// symdb: int spoutcrossBPwrAtk_init(r7 vars /*oAIAttackVars*/, r5 powerLevel, r10 unused) -> r0 attack id
+// symdb: (0x25), r5 updated power level; clobbers r1-r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spoutcrossBPwrAtk_init_8011C5E.yaml
 	thumb_local_start
 spoutcrossBPwrAtk_init_8011C5E: // spoutcross CS initialize? // JP: 801225e
 	push {lr}
@@ -14593,6 +14632,10 @@ loc_8014D5A:
 	.word 0x80111C40
 	thumb_func_end ai_relocateToFuturePanel
 
+// symdb: Per-actor AI attack step handler that counts a charge timer down, then on expiry fires the attack (charge-up sound, effect spawn, lift, attack cry, camera shake) and arms the hit phase.
+// symdb: void battle_aiAttackFireStep(u32 r2 soundArg, battle_object_t *r5 obj, ai_attack_vars_t *r7
+// symdb: attackVars, u32 r10 passthrough); // outputs r5/r10 as left by callees; N/Z/C/V clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8014D70.yaml
 	thumb_local_start
 sub_8014D70:
 	push {r4,r6,lr}
@@ -16045,6 +16088,9 @@ sub_8015940:
 	pop {r5,pc}
 	thumb_func_end sub_8015940
 
+// symdb: Writes three argument bytes into the work buffer at byte_203CED0 (offsets 0, 1 and 3) as some kind of request/parameter record.
+// symdb: void storeRequestBytes_8015952(u8 a, u8 b, u8 c)  // r0, r1, r2 in; nothing returned
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8015952.yaml
 	thumb_func_start sub_8015952
 sub_8015952:
 	push {r4,lr}
@@ -16070,6 +16116,10 @@ battle_ai_getActorInfo_801595E:
 	mov pc, lr
 	thumb_func_end battle_ai_getActorInfo_801595E
 
+// symdb: If a non-null AI object pointer is passed, clears the 0x4000 flag in its AI data; otherwise does nothing.
+// symdb: int battle_clearAIFlag4000(AIObject* object); // r0 = object ptr; returns r3 (side effect of
+// symdb: callee), r5 preserved; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801596E.yaml
 	thumb_local_start
 sub_801596E:
 	push {r5,lr}
@@ -16383,6 +16433,10 @@ callPossiblyGetBattleEmotion_8015B54: // (alliance: u8) -> (res0: enum8?, transf
 	pop {pc}
 	thumb_func_end callPossiblyGetBattleEmotion_8015B54
 
+// symdb: Pure tail-call thunk that forwards r0 to battle_getPlayerEmotionPriority (sub_8015BA8) and returns its results unchanged.
+// symdb: battle_getPlayerEmotionPriorityThunk_8015B5C(u32 r0) -> r0,r1,r2,r3,r4,r6 passthrough of
+// symdb: sub_8015BA8's outputs; r10 passed-through unused by this stub
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8015B5C.yaml
 	thumb_func_start sub_8015B5C
 sub_8015B5C:
 	push {lr}
@@ -18649,6 +18703,10 @@ object_genericDestroy:
 	pop {pc}
 	thumb_func_end object_genericDestroy
 
+// symdb: Bare tail-call wrapper that releases a battle object's memory, forwarding the object pointer in r5 straight to object_freeMemory.
+// symdb: void sub_8016C9C(u32 object /* r5 */); tail-calls object_freeMemory, so r0-r3 and the nzcv flags
+// symdb: on return are whatever object_freeMemory leaves; r5 is preserved through the callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8016C9C.yaml
 	thumb_func_start sub_8016C9C
 sub_8016C9C:
 	push {lr}
@@ -28021,6 +28079,10 @@ loc_801C1C8:
 	pop {r4,r6,pc}
 	thumb_func_end battleObject_updateHPMeters_801C168
 
+// symdb: Eases a value toward a target by 1/8 of the remaining gap plus 2, clamping at the target, while setting a state/counter pair in the object at r4
+// symdb: int easeStepTowardTarget(int value /*r0*/, int target /*r1*/, void *work /*r4*/); returns the
+// symdb: adjusted value in r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801C1D0.yaml
 	thumb_local_start
 sub_801C1D0:
 	mov r2, #2
@@ -32536,6 +32598,10 @@ sub_801E138:
 	pop {pc}
 	thumb_func_end sub_801E138
 
+// symdb: Sets flag bit group 0x200 (bit 9) in the battle-state flag structure at 0x2035280 and returns.
+// symdb: void sub_801E144(void); // in: lr only; out: r0 = 0x200, r1/r2 = whatever
+// symdb: flagSetBits_eStruct2035280_801BEB8 leaves, lr = caller return; clobbers N/Z
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801E144.yaml
 	thumb_local_start
 sub_801E144:
 	push {lr}

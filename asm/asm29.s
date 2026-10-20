@@ -1490,6 +1490,10 @@ dword_80A58DC:
 	.word 0x10000
 	thumb_func_end sub_80A58AC
 
+// symdb: Setup prologue shared with the routine at loc_80A58FA - runs three init steps (counter reset, overworld player direction-anim setup) then branches into the shared body, which pops this function's saved frame to return to its caller.
+// symdb: u32 sub_80A58E0(r4 counter_in, r5 arg5, r6 arg6, r7 arg7, r10 arg10); returns result in r0, with
+// symdb: r5/r6 and r8-r12 also live on exit per the caller contract; flags clobbered (nzcv)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A58E0.yaml
 	thumb_local_start
 sub_80A58E0:
 	push {r4-r7,lr}
@@ -3553,6 +3557,10 @@ off_80A6E6C:
 	.word off_80A619C
 	thumb_func_end sprite_setAnimPtrFromId
 
+// symdb: Adds an addend to a 32-bit word located at base+offset, returning the previous value in r1.
+// symdb: u32 addToWordAt(u32 addend /*r0*/, u32* base /*r5*/, u32 offset /*r6*/); returns old value in
+// symdb: r1, C/V set by the ADD
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A6E70.yaml
 	thumb_local_start
 sub_80A6E70:
 	ldr r1, [r5,r6]
@@ -4875,6 +4883,10 @@ off_80A77A4:
 	.word byte_2000EC0
 	thumb_func_end battle_beastsp_setAITemplateStats_80A775C
 
+// symdb: Tail-dispatches an overworld object's per-type routine (setup sprite / type handler / free map object) based on the type byte at object+8.
+// symdb: void sub_80A77A8(u32 object /* r5 */); outputs r2-r5 and r8-r12 as returned by the dispatched
+// symdb: handler; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A77A8.yaml
 	thumb_func_start sub_80A77A8
 sub_80A77A8:
 	push {lr}
@@ -4920,6 +4932,10 @@ sprite_setupObjectSprite:
 	pop {pc}
 	thumb_func_end sprite_setupObjectSprite
 
+// symdb: Ticks one sprite's animation, setting its event byte (sprite+8) to 8 when the current animation cycle reaches its final frame.
+// symdb: void sub_80A77FC(u32 sprite /* r5 */); returns r2,r3,r4,r5 as left by sprite_update; flags nzcv
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A77FC.yaml
 	thumb_local_start
 sub_80A77FC:
 	push {lr}
@@ -5472,12 +5488,19 @@ getSignedHalfword:
 	mov pc, lr
 	thumb_func_end getSignedHalfword
 
+// symdb: One-byte setter helper — stores the byte in r0 to the address held in r6 and returns.
+// symdb: void sub_80A7B9E(u8 value /* r0 */, void* dest /* r6 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A7B9E.yaml
 	thumb_local_start
 sub_80A7B9E:
 	strb r0, [r6]
 	mov pc, lr
 	thumb_func_end sub_80A7B9E
 
+// symdb: Tiny helper that adds r0 to the byte pointed to by r6 and writes the low byte back.
+// symdb: void addToByteAtR6(u32 addend /* r0 */, u8* ptr /* r6 */); /* r1 = full 32-bit sum, flags set by
+// symdb: ADDS r1,r1,r0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A7BA2.yaml
 	thumb_local_start
 sub_80A7BA2:
 	ldrb r1, [r6]
@@ -6007,6 +6030,10 @@ object_playAnimAndState:
 	pop {r4-r7,pc}
 	thumb_func_end object_playAnimAndState
 
+// symdb: Reads the sprite's current frame parameters and, if the frame's 0x80 flag bit is set, writes 8 into the sprite's palette/render byte at offset 9.
+// symdb: void sub_80A7F14(r5 sprite_obj); (calls sprite_getFrameParameters(sprite_obj) -> r0 frame
+// symdb: params)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A7F14.yaml
 	thumb_local_start
 sub_80A7F14:
 	push {r4-r7,lr}
@@ -6161,6 +6188,10 @@ sprite_restartAnimation:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_restartAnimation
 
+// symdb: Reads a form index from a work struct and applies the matching sprite palette via sprite_setPalette.
+// symdb: void sub_80A8020(r5 = sprite/draw work pointer, r7 = struct with form index byte at +2); r5 and
+// symdb: r7 pass through unchanged, flags and r0/r1/r3 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A8020.yaml
 	thumb_local_start
 sub_80A8020:
 	push {r4-r7,lr}
@@ -6347,6 +6378,10 @@ deleteOverworldMapObject:
 	pop {pc}
 	thumb_func_end deleteOverworldMapObject
 
+// symdb: Returns a pointer into a per-map data table (8-byte records) for the current map area, offset by the caller object's byte at +4.
+// symdb: u32 getMapAreaDataTableEntry_80A82A4(void *obj /*r5*/, void *toolkit /*r10*/); // returns r0 =
+// symdb: base + 8*obj[4], no flags defined
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A82A4.yaml
 	thumb_local_start
 sub_80A82A4:
 	push {lr}
@@ -6736,6 +6771,10 @@ locret_80A8568:
 	.balign 4, 0x00
 	thumb_func_end sprite_setAnimFromArgs
 
+// symdb: Subtracts 4.0 (4<<16, fixed-point) from a 32-bit counter field at [r5+0x14] of a struct pointed to by r5, storing the raw result but reporting success (Z set) once it has reached zero or below.
+// symdb: u32 sub_80A856C(void *obj /* r5 */); inputs: r5 (object ptr), lr; outputs: NZ flags only (r0
+// symdb: clobbered); no other registers preserved or read
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A856C.yaml
 	thumb_local_start
 sub_80A856C:
 	push {lr}
@@ -7006,6 +7045,10 @@ loc_80A871E:
 	.balign 4, 0x00
 	thumb_func_end beastSP_initOrUpdate_80A86B4
 
+// symdb: Reads a type index from an object at r5+8 and tail-calls that type's handler from a small jump table, passing the handler address, the type byte and r10 straight through.
+// symdb: void sub_80A8728(void *obj /* r5 */, u32 r10); // lr = return; outputs r2,r3,r4?? no:
+// symdb: r2,r3,r8-r12 pass through from the handler, r4-r7 preserved via push/pop, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A8728.yaml
 	thumb_func_start sub_80A8728
 sub_80A8728:
 	push {r4-r7,lr}
@@ -8637,8 +8680,10 @@ owMapObject_weatherTornado_restoreState_80A9268:
 	pop {r4,pc}
 	thumb_func_end owMapObject_weatherTornado_restoreState_80A9268
 
-// symdb: Mr. Weather comp map object type 0x1B, probably part of MegaMan's rainbow-orb trail: fades to white and sets flag 0xBE7 after a tornado hit (0xBE6), frees itself on 0xBE4.
-// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_80A92B8.yaml
+// symdb: Dispatches a battle object to one of four weather-comparison state handlers based on its state byte at +8.
+// symdb: void sub_80A92B8(r5=object, r10=passthrough); outputs r2,r3,r4,r5,r8,r9,r10,r11,r12 come from
+// symdb: the chosen handler; clobbers r0,r1,r6,r7,lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A92B8.yaml
 	thumb_func_start sub_80A92B8
 sub_80A92B8:
 	push {lr}
@@ -8661,10 +8706,10 @@ off_80A92DC:
 	.word eWeatherCompState
 	thumb_func_end sub_80A92B8
 
-// symdb: Initializes the hard-coded BeastSP (Beast Out) sprite state: loads a fixed sprite resource, applies animation/shadow/priority/palette settings, and resets animation counters.
-// symdb: (implicit r4 = object/context, r5 = sprite state struct, r6 = object base) -> void; sprite slot
-// symdb: byte [r5]=3, animation, priority, palette and counters configured
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initBeastSp.yaml
+// symdb: Initialises the Beast Out sprite for an entity — loads its graphics, sets animation/priority/palette, resets animation counters, then runs a Beast Out specific setup helper.
+// symdb: void sprite_initBeastSp(r5=sprite state ptr, r6=owning object ptr, r10=context passed through);
+// symdb: leaves r2/r3/r8-r12 set by sub_80A931C for the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_initBeastSp.yaml
 	thumb_local_start
 sprite_initBeastSp:
 	push {r4-r7,lr}
@@ -8692,8 +8737,10 @@ sprite_initBeastSp:
 	pop {r4-r7,pc}
 	thumb_func_end sprite_initBeastSp
 
-// symdb: Mr. Weather comp map object (type 0x1B rainbow-orb) state 4: flag 0xBE6 -> priority 3, state 8, sound 0x6B and the fade sub_80A9360; flag 0xBE4 -> state 0xC (sub_80A93D0); otherwise bob via sub_80A93D8 + sub_80A93E8.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A931C.yaml
+// symdb: Per-frame update for a boss actor that branches on story flags EVENT_BE6/EVENT_BE4 to pick a hit reaction, an alternate state, or idle behaviour, then updates the sprite.
+// symdb: void sub_80A931C(u32 obj /*r5*/, u32 context /*r10*/); clobbers r0-r3, r8-r12, nzcv; preserves
+// symdb: r4-r7; outputs r2-r5, r8-r12 are callee leftovers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A931C.yaml
 	thumb_local_start
 sub_80A931C:
 	push {r4-r7,lr}
@@ -8783,6 +8830,10 @@ byte_80A93C0:
 	.byte 0x1A, 0x1C, 0x1E, 0x1F, 0xFF
 	thumb_func_end sub_80A937C
 
+// symdb: Tail-call trampoline that frees the overworld map object whose handle is passed in r5, forwarding all callee results untouched.
+// symdb: void sub_80A93D0(r5=mapObject) — tail call; returns whatever FreeOverworldMapObject leaves in
+// symdb: r0-r3, r5 and the n/z/c/v flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A93D0.yaml
 	thumb_local_start
 sub_80A93D0:
 	push {lr}
@@ -8790,6 +8841,9 @@ sub_80A93D0:
 	pop {pc}
 	thumb_func_end sub_80A93D0
 
+// symdb: Trivial sprite helper that writes the fixed value 0xE000000 into the sprite record's field 0x2C for the object passed in r5.
+// symdb: void sub_80A93D8(r5 = object/sprite state pointer) -> void
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A93D8.yaml
 	thumb_local_start
 sub_80A93D8:
 	push {lr}
@@ -8847,8 +8901,10 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
+// symdb: Dispatcher for the Mr. Weather overworld map object; runs the per-state handler selected by the object's state byte.
+// symdb: void sub_80A9430(r5=weather map object, r10=pass-through arg); caller-visible outputs are
+// symdb: whatever the selected handler leaves in r2-r5/r8-r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
 	push {lr}
@@ -9010,6 +9066,9 @@ owMapObject_freeThunk:
 	pop {pc}
 	thumb_func_end owMapObject_freeThunk
 
+// symdb: Returns a pointer into one of four per-map 8-byte-row data tables, selecting the row indexed by a byte in the caller's object struct.
+// symdb: u8* map_getPerMapTableRowPtr(struct SomeObj* obj /*r5*/, struct Toolkit* toolkit /*r10*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9570.yaml
 	thumb_local_start
 sub_80A9570:
 	push {lr}
@@ -9104,8 +9163,9 @@ locret_80A9610:
 	.balign 4, 0x00
 	thumb_func_end owMapObject_updateLayerPriorityForPlayerZ_80A95EC
 
-// symdb: Mr. Weather comp: sets the object's per-instance event flag — SetEventFlag(byte_80A9648[[r5+4]]), i.e. flag 0x0BF4 + instance index.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9614.yaml
+// symdb: Sets the event flag corresponding to the player's current menu selection, looked up from a fixed table of flag IDs.
+// symdb: void sub_80A9614(void)  // r5 = work area, r10 = flag context forwarded to SetEventFlag
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9614.yaml
 	thumb_local_start
 sub_80A9614:
 	push {r4,lr}
@@ -9969,6 +10029,11 @@ dword_80A9D0C:
 	.word 0x100000
 	thumb_func_end npc_isPlayerNearPos
 
+// symdb: Dispatcher that runs the per-state routine (init / update / sub_80A9DB8) for an overworld sprite object, selected by the object's state byte.
+// symdb: void sub_80A9D10(r2 arg, r5 object, r10 arg); passes r2/r5/r10 through to the selected routine;
+// symdb: results come back in r2 r3 r4 r5 r8 r9 r10 r11 r12 per the callee's own contract (r4/r5 restored
+// symdb: here); clobbers r0 r1 lr and nzcv flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9D10.yaml
 	thumb_func_start sub_80A9D10
 sub_80A9D10:
 	push {r4-r7,lr}
@@ -10218,6 +10283,10 @@ locret_80A9EB4:
 	pop {r4-r7,pc}
 	thumb_func_end e_decelRiseUpdate
 
+// symdb: Marks the cutscene state as active by writing 1 to the flag byte at eCutsceneState+8.
+// symdb: void sub_80A9EB6(void) /* sets byte at eCutsceneState+8 = 1; r5 nominally "read back" but
+// symdb: unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9EB6.yaml
 	thumb_local_start
 sub_80A9EB6:
 	push {r4-r7,lr}
@@ -10288,10 +10357,10 @@ ow_startLogoutEffect:
 	pop {r4-r7,pc}
 	thumb_func_end ow_startLogoutEffect
 
-// symdb: Per-frame update for the log-out effect object: on a flagged animation frame it advances the object's state to 8, then updates the sprite.
-// symdb: (r0 = object ptr? sprite args for frame params) -> void; sets [r5,#8]=8 when frame attribute bit
-// symdb: 0x80 set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9F30.yaml
+// symdb: Per-frame sprite tick for an object at r5 that reads the current frame's parameters, marks the object's +8 state byte with 8 when frame bit 0x80 is set, then advances the sprite animator.
+// symdb: void sub_80A9F30(r5 = object pointer); returns r2/r3 as left by sprite_update, preserves r4-r8
+// symdb: and r5 pointer, clobbers flags (nzcv), r0, r1, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A9F30.yaml
 	thumb_local_start
 sub_80A9F30:
 	push {r4-r7,lr}
@@ -11503,9 +11572,10 @@ loc_80AA774:
 	pop {r4,pc}
 	thumb_func_end isEventFlag212Set_80AA764
 
-// symdb: Battle-settings entry condition 4 (dispatchGameHandlerByIndex_80AA6A4): true while EVENT_213 is set.
-// symdb: () -> r0 = 1 if EVENT_213 is set, else 0; r4 restored
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA778.yaml
+// symdb: Returns 1 if event flag EVENT_213 (bank 2, index 0x13) is set, else 0.
+// symdb: u32 isEventFlag213Set_80AA778(void) -> r0 = 1 if EVENT_213 set, 0 if clear; no inputs (r10 in
+// symdb: the contract is unused by the code)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA778.yaml
 	thumb_local_start
 sub_80AA778:
 	push {r4,lr}

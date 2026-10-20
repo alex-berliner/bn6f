@@ -272,6 +272,10 @@ dword_808FA34:
 	.word 0x10000
 	thumb_func_end owPlayer_stepTowardTarget
 
+// symdb: Turns the overworld player sprite toward the map's target position by picking the walk animation matching the angle octant to that target.
+// symdb: void sub_808FA38(void)  // in: r10 (context/base), lr; out: r4, r5 returned unchanged; clobbers
+// symdb: r0-r3, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FA38.yaml
 	thumb_local_start
 sub_808FA38:
 	push {r4,r5,lr}
@@ -307,6 +311,10 @@ byte_808FA74:
 	.byte 0xB, 0xB, 0x9, 0xF, 0xD, 0x0, 0x0, 0x0
 	thumb_func_end sub_808FA38
 
+// symdb: Pure tail-call thunk that pushes the r4-r7/lr frame, sets r0 = 0, and branches to loc_808FA90, whose pop {r4-r7,pc} returns straight to this function's caller.
+// symdb: void sub_808FA7C(void); // entered with r4-r7/r10/lr live, tail-calls loc_808FA90 with r0=0;
+// symdb: r4-r7 come back restored via the callee's pop
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FA7C.yaml
 	thumb_local_start
 sub_808FA7C:
 	push {r4-r7,lr}
@@ -738,6 +746,10 @@ off_808FD60:
 	.word off_808F5D4
 	thumb_func_end sub_808FD1C
 
+// symdb: Looks up a four-parameter entry for the current map and enqueues it via req_setFourParams, likely weather/ambient-effect parameters.
+// symdb: void sub_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
+// symdb: r0-r1, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FD64.yaml
 	thumb_local_start
 sub_808FD64:
 	push {r4,r5,lr}
@@ -859,6 +871,9 @@ loc_808FE4E:
 	.balign 4, 0x00
 	thumb_func_end ow_initBus
 
+// symdb: Zeroes a 0x80-byte work area whose address is stored in dword_808FDBC, then returns 0.
+// symdb: void sub_808FE64(void) // reads lr only; sets r0=0 on return but callers ignore it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FE64.yaml
 	thumb_local_start
 sub_808FE64:
 	push {lr}
@@ -1039,9 +1054,10 @@ locret_808FF6C:
 	.byte 0, 0
 	thumb_func_end battleObject_togglePlayerAllyLockout_808FF44
 
-// symdb: Spawns seven overworld-map objects of type 0x1C with all-zero position/params, in a counted loop.
-// symdb: (no args) -> r0 = last SpawnOverworldMapObject result; clobbers r4 (loop counter)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnSevenOverworldMapObjects.yaml
+// symdb: Spawns seven copies of overworld map object type 0x1C, each at position (0,0,0), returning the last spawn's r2 result.
+// symdb: void spawnSevenMapObjectsType1C_808FF70(void); /* in: lr only; out: r2 = r2 result of the final
+// symdb: SpawnOverworldMapObject call; clobbers r0-r3, lr, flags; preserves r4-r6 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnSevenOverworldMapObjects.yaml
 	thumb_local_start
 spawnSevenOverworldMapObjects:
 	push {r4,lr}
@@ -1060,8 +1076,10 @@ loc_808FF74:
 	pop {r4,pc}
 	thumb_func_end spawnSevenOverworldMapObjects
 
-// symdb: Mr. Weather comp predicate: returns 1 iff the word at eWeatherCompState + 0x20 is 0 (0 otherwise).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF8C.yaml
+// symdb: Tests whether field 0x20 of the object pointer in r5 is zero and returns the answer in the Z flag (Z clear = field is zero).
+// symdb: bool checkField20Zero(void* obj /* r5 */); returns via flags: Z set when [r5+0x20] != 0, Z clear
+// symdb: when [r5+0x20] == 0; clobbers r0, r1 and V/C (unconditionally, per the lifter's caller analysis)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FF8C.yaml
 	thumb_local_start
 sub_808FF8C:
 	push {lr}
@@ -1100,6 +1118,10 @@ ow_spawnMapObject1b:
 	.byte 0, 0
 	thumb_func_end ow_spawnMapObject1b
 
+// symdb: Looks up an 8-byte entry in a per-area data table chosen by the current map group, indexed by the caller's object field at +0xE, and returns the entry's two halfwords and two bytes.
+// symdb: int getAreaTableEntry(u32 obj /* r5 */, u32 toolkit /* r10 */) -> r0 = entry.half0 << 16, r1 =
+// symdb: entry.half1 << 16, r2 = entry.byte4, r3 = entry.byte6; clobbers N/Z/C/V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FFC0.yaml
 	thumb_local_start
 sub_808FFC0:
 	push {r4,lr}
@@ -1180,10 +1202,10 @@ loc_8090034:
 	.balign 4, 0x00
 	thumb_func_end weatherComp_checkTrigger60_8090020
 
-// symdb: Event-script side effect: once event flag BE4 is set, runs an unknown effect with arg 4, sets the GameState control byte to 3, and marks BBS request flag 0x7 in event byte 0x17.
-// symdb: () -> void; calls TestEventFlagFromImmediate(EVENT_BE4) and only proceeds when the flag is set
-// symdb: (Z clear), clobbers r4/lr per ABI
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809003C.yaml
+// symdb: Once the BE4 story-event flag is set, plays the mailbox sound, switches the game state to substate 3, and raises a BBS request flag; otherwise does nothing.
+// symdb: void sub_809003C(void)   // reads r10/lr per contract, r3 out (callee residue), r4 preserved,
+// symdb: flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809003C.yaml
 	thumb_local_start
 sub_809003C:
 	push {r4,lr}
@@ -1553,8 +1575,10 @@ off_80902D8:
 	.word off_808FDB8
 	thumb_func_end weatherComp_isTornadoInRing_809022C
 
-// symdb: Mr. Weather comp: tests a per-map event flag and returns whether it is set — flag 0x0BE1 + MapNumber, or 0x0FD2 when the map group is 0x85 (undernet?). Table byte_8090300 = { 0x0BE1, 0x0BE2, 0x0BE3, 0x0FD2 }.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80902DC.yaml
+// symdb: Tests the per-map event flag for the map the player is currently in and returns the result via the Z flag.
+// symdb: (r10 toolkit) -> zf (Z clear when the selected event flag is set; nz, r1, r3 also reflect
+// symdb: TestEventFlag's return); preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80902DC.yaml
 	thumb_local_start
 sub_80902DC:
 	push {r4-r7,lr}
