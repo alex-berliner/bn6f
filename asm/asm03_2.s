@@ -1945,7 +1945,7 @@ loc_8046F42:
 	ldr r7, [r5,#0x20]
 	ldrh r0, [r7,#2]
 	ldrb r1, [r7,#4]
-	bl sub_8047384
+	bl chatbox_processPurchaseIfNotOwned
 	bne loc_8047000
 	mov r2, #1
 	bl GiveChips
@@ -1969,7 +1969,7 @@ loc_8046F84:
 	bne loc_8046FA2
 	ldrh r0, [r7,#2]
 	mov r1, #0xff
-	bl sub_8047384
+	bl chatbox_processPurchaseIfNotOwned
 	bne loc_8047000
 	mov r1, #1
 	bl GiveItem
@@ -1981,7 +1981,7 @@ loc_8046F84:
 loc_8046FA2:
 	ldrh r0, [r7,#2]
 	ldrb r1, [r7,#4]
-	bl sub_8047384
+	bl chatbox_processPurchaseIfNotOwned
 	bne loc_8047000
 	add r0, #0x90
 	mov r2, #1
@@ -2137,7 +2137,7 @@ shopBuyMenu_confirmPurchase:
 	ldr r7, [r5,#0x20]
 	ldrh r0, [r7,#2]
 	ldrb r1, [r7,#4]
-	bl sub_8047384
+	bl chatbox_processPurchaseIfNotOwned
 	bne loc_804710A
 	mov r2, #1
 	bl GiveChips
@@ -2211,7 +2211,7 @@ shopBuyMenu_updateFrame_8047134:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	bl dispatchStateHandler_81179AE
-	bl sub_80473E6
+	bl battle_clearMatchedQueue
 	bne loc_8047174
 	ldrh r0, [r5,#0xe]
 	tst r0, r0
@@ -2468,9 +2468,9 @@ checkScrambledCounter_8047366:
 // symdb: Shop-purchase confirm handler: looks up the highlighted item ID in array A; if absent OR if its +4 byte is absent in table B, zeroes a 0x80-byte work record, clears a shop-state halfword, sets [chatbox_ctx+0xE]=1, returns 1; only when found in both tables returns 0 unchanged.
 // symdb: (r0 = lookup array A (8-byte records), r1 = lookup table B) -> r0 = 1 if item was new and reset
 // symdb: was performed, 0 if item was found in both tables; sets [chatbox_ctx+0xE] = 1 on success
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047384.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_processPurchaseIfNotOwned.yaml
 	thumb_local_start
-sub_8047384:
+chatbox_processPurchaseIfNotOwned:
 	push {r0,r1,r4-r7,lr}
 	mov r2, r8
 	mov r3, r9
@@ -2522,14 +2522,14 @@ loc_80473DC:
 	mov r8, r2
 	mov r9, r3
 	pop {r0,r1,r4-r7,pc}
-	thumb_func_end sub_8047384
+	thumb_func_end chatbox_processPurchaseIfNotOwned
 
 // symdb: If state at [r5+0x1c]!=2, scans 8-byte-stride queue entries at byte_2019A00 for [r7+0xc] entries; for live entries uses findRecordWithHalfwordAtOffset2 and battleFindEntryByFieldByte to compare +2 and +4 fields against a reference array; on a match, ZeroFills 0x80 bytes at byte_2019A00, stores 0 to halfword at 0x2011C22, and returns 1, else 0.
 // symdb: (r5 = owner struct; [r5+0x1c] -> {+0 state, +8 array base, +0xc entry count}) -> r0 = 1 if a
 // symdb: matching entry was found and the queue cleared, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80473E6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearMatchedQueue.yaml
 	thumb_local_start
-sub_80473E6:
+battle_clearMatchedQueue:
 	push {r4-r7,lr}
 	ldr r7, [r5,#0x1c]
 	ldr r0, [r7]
@@ -2577,7 +2577,7 @@ loc_8047436:
 loc_8047438:
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_80473E6
+	thumb_func_end battle_clearMatchedQueue
 
 // symdb: Scans an array of 8-byte records and sets the Z flag if any record's halfword at offset +2 equals a given value, telling the caller whether a match was found.
 // symdb: int findRecordWithHalfwordAtOffset2(u16 target /*r0*/, void* records /*r7*/, int count /*r4*/);
@@ -3376,7 +3376,7 @@ loc_80479AC:
 	ldrb r1, [r5,#5]
 	tst r1, r1
 	bne loc_8047988
-	bl sub_8047A96
+	bl battleMenu_showChipInfo
 	b loc_8047A64
 loc_80479C4:
 	mov r7, r10
@@ -3501,9 +3501,9 @@ menu_showDialogOnUnselect_8047A80:
 // symdb: On confirmation in the battle-menu chip browser, looks up the selected entry's 8-byte record and runs the matching chatbox description script (with event-flag-dependent variants); passes halfword+2 as text-id, byte+4, and CDC-scaled halfword+6 to chatbox_setTextParams.
 // symdb: (r5 = battle-menu state struct: u8 cursor@0x14, u16 page@0x18, mode-ptr@0x1C,
 // symdb: TextScriptArchive*@0x24) -> none; selects script index in r7 and plays a sound effect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047A96.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleMenu_showChipInfo.yaml
 	thumb_local_start
-sub_8047A96:
+battleMenu_showChipInfo:
 	push {r4-r7,lr}
 	ldr r7, off_8047B7C // =byte_2019A00 
 	ldrh r0, [r5,#0x14]
@@ -3624,7 +3624,7 @@ dword_8047B80:
 	.word 0x1E20
 dword_8047B84:
 	.word 0x2420
-	thumb_func_end sub_8047A96
+	thumb_func_end battleMenu_showChipInfo
 
 // symdb: Builds the filtered, deduplicated list of purchasable items for the active shop context (regular shop or PET-navi shop) into the shared display buffer at 0x2019A00 and returns the valid slot count.
 // symdb: u32 shop_buildFilteredList_8047B88(u32 modeData /* r0 */, u32 modeContext /* r5, deref at +0x1c
@@ -11363,7 +11363,7 @@ nullsub_804CBA0:
 	pop {r4-r7,pc}
 	thumb_func_end nullsub_804CBA0
 
-// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `sub_804CBDC` or `sub_804CC8E`.
+// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `beastSp_startTransformSequence` or `sub_804CC8E`.
 // symdb: (r0 = ptr to a 2-entry fnptr table stored alongside `off_804CBB8`, r1 = u8 dispatch key) -> r0 =
 // symdb: return value forwarded from the chosen handler ; side effects: none in this stub itself; the
 // symdb: dispatched handler runs in r5/r10/lr-saved context.
@@ -11381,7 +11381,7 @@ battleObject_dispatchBeastOutAction_804CBA4:
 off_804CBB4:
 	.word off_804CBB8
 off_804CBB8:
-	.word sub_804CBDC+1
+	.word beastSp_startTransformSequence+1
 	.word beastSp_spawnIndexDispatcher_804CC8E+1
 	thumb_func_end battleObject_dispatchBeastOutAction_804CBA4
 
@@ -11409,9 +11409,9 @@ dword_804CBD8:
 // symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→sub_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
 // symdb: (r5 = battle/AIData struct (reads Unk_0c, writes Unk_0x10), r10 = toolkit) -> void; no return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CBDC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_startTransformSequence.yaml
 	thumb_local_start
-sub_804CBDC:
+beastSp_startTransformSequence:
 	push {r4-r7,lr}
 	ldr r0, off_804CC24 // =byte_86A39B0 
 	ldr r1, dword_804CC28 // =0x600cfe0 
@@ -11464,7 +11464,7 @@ off_804CC40:
 	.word sub_804CC6E+1
 	.word sub_804CC7E+1
 	.word sub_804CC7E+1
-	thumb_func_end sub_804CBDC
+	thumb_func_end beastSp_startTransformSequence
 
 	thumb_local_start
 sub_804CC58:

@@ -10942,7 +10942,7 @@ int m4aSoundInit()
     int v4; // [sp+Ch] [bp-4h]
 
     SWI_CpuSet((&SoundMainRAM & 0xFFFFFFFE), byte_3005700, Timer0Counter_Reload);
-    sub_814ECC8(iSoundInfo);
+    soundInit(iSoundInfo);
     cgbSoundInit_814EB84(iCgbChannels);
     sound_setM4AControl_814EE2C(9696256);
     v0 = &gMPlayTable;
@@ -11270,7 +11270,7 @@ int __fastcall mplay_trackHandler_814ECB4(int a1)
 
 
 // 0x814ecc8
-int __fastcall sub_814ECC8(_DWORD *a1)
+int __fastcall soundInit(_DWORD *a1)
 {
     _DWORD *v1; // r5
     int v3; // [sp+0h] [bp-10h]

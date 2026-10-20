@@ -177,7 +177,7 @@ signed int palette_InitTransferState_80027D4()
 
 
 // 0x80027e4
-signed int sub_80027E4()
+signed int battle_initSpriteProjection()
 {
     signed int result; // r0
 

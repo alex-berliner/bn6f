@@ -3599,9 +3599,9 @@ battle_startObjectInvisible:
 // symdb: Battle hit-received handler: if target is invincible, accumulates (Damage+SubStepIndex) into a per-alliance/per-AttackBoost2 halfword tally in unk_2036120 records and plays SFX 0x157; otherwise spawns a 0x300000 impact effect at the object's panel offset 4px toward the enemy via sub_80E1D7A and plays SFX 0x90.
 // symdb: (r5 = battle object ptr, not passed in r0) -> void; reads oBattleObject_AIDataPtr, Alliance,
 // symdb: PanelX/Y; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010488.yaml
-	thumb_func_start sub_8010488
-sub_8010488:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_onHit.yaml
+	thumb_func_start battle_onHit
+battle_onHit:
 	push {r4,r7,lr}
 	ldr r7, [r5,#oBattleObject_AIDataPtr]
 	add r7, #oAIData_AttackVars
@@ -3641,7 +3641,7 @@ loc_80104B6:
 	mov r0, #0x90
 	bl PlaySoundEffect
 	pop {r4,r7,pc}
-	thumb_func_end sub_8010488
+	thumb_func_end battle_onHit
 
 	thumb_func_start sub_80104E0
 sub_80104E0:
@@ -10801,9 +10801,9 @@ loc_80135DE:
 
 // symdb: Zero-fills the 0x64-byte in-battle chip-select/custom-screen state block, writes hardcoded defaults (chip count/hand fields, sentinel bytes, and 0x99/0x1F markers), stamps the three parallel HP halfwords from GetNaviStatsHword(1, 0x42), and marks the chip-slot arrays empty with 0xFF.
 // symdb: (r0 = *state block (within the per-battle buffer)) -> r0 = *same block; flags clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80135E8.yaml
-	thumb_func_start sub_80135E8
-sub_80135E8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipSelectState.yaml
+	thumb_func_start battle_initChipSelectState
+battle_initChipSelectState:
 	push {r4,lr}
 	mov r4, r0
 	// memBlock
@@ -10883,7 +10883,7 @@ loc_8013678:
 	cmp r1, #0x5b 
 	ble loc_8013678
 	pop {r4,pc}
-	thumb_func_end sub_80135E8
+	thumb_func_end battle_initChipSelectState
 
 // (int idx) -> void*
 // symdb: Returns the address of a navi's entry in the battle navi stats table for a given navi index.
@@ -27452,7 +27452,7 @@ off_801BF88:
 	.word battle_renderHpOverlays_801C202+1
 	.word sub_801C416+1
 	.word battle_drawTimerTiles_801C4E4+1
-	.word sub_801C576+1
+	.word battle_drawGaugeOverlay+1
 	.word battle_drawSelectedChipNameAndDamage_801C6EE+1
 	.word chatbox_drawHPNumber_801C906+1
 	.word nullsub_58+1
@@ -28325,9 +28325,9 @@ locret_801C574:
 
 // symdb: Redraws the on-screen battle gauge strip on the BG map each frame: when the gauge value at [r5+0x20] is below 0x4000 it draws a 0x10-wide base tile strip then a filled segment of up to 3 tiles; once the value reaches 0x4000 it instead increments an animation counter at [r5] (wrapped at 0x70) and uses (counter%7)&3 to pick one of four full-gauge flash tiles at 0x9232. Skips drawing when battle_IsBattleEnding_800A97A reports end-of-battle.
 // symdb: (r5 = gauge state struct ptr, set by caller) -> r0 = clobbered; draws BG tiles
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801C576.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawGaugeOverlay.yaml
 	thumb_local_start
-sub_801C576:
+battle_drawGaugeOverlay:
 	push {r4-r6,lr}
 	bl battle_IsBattleEnding_800A97A
 	cmp r0, #0
@@ -28390,7 +28390,7 @@ loc_801C5DA:
 	bl bgmap_WriteTileIdAtBlock_800187C
 locret_801C5F2:
 	pop {r4-r6,pc}
-	thumb_func_end sub_801C576
+	thumb_func_end battle_drawGaugeOverlay
 
 // symdb: Plays a "counter hit" SFX from a small lookup table when the AIData's Anger/Timer tier increases between ticks, but only if battle flag 0x40 is set.
 // symdb: (r5 = AIData*, r10 = Toolkit*, lr) -> no meaningful r0 return; side effects:

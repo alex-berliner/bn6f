@@ -740,13 +740,13 @@ int soulWeapons_apply_8142510()
     result = TestEventFlag(v1);
     if ( !v3 )
     {
-        sub_814278C();
+        getSoulWeaponsMapParam();
         v4 = 1;
         TestEventFlagFromImmediate(7, 64);
         if ( !v3 )
         {
             v4 = 0;
-            sub_8142734();
+            clearSoulWeaponsMapState();
         }
         scenario_setEffectState0E(0);
         v5 = *(&off_814230C + GetSoulWeaponsMapIndex());
@@ -873,7 +873,7 @@ int getSoulWeaponsUnlockedCount()
     char v4; // zf
 
     v0 = *&byte_8142774[2 * GetSoulWeaponsMapIndex()];
-    v1 = sub_814278C();
+    v1 = getSoulWeaponsMapParam();
     v2 = 0;
     while ( 1 )
     {
@@ -889,7 +889,7 @@ int getSoulWeaponsUnlockedCount()
 
 
 // 0x8142734
-int sub_8142734()
+int clearSoulWeaponsMapState()
 {
     int v0; // r7
     int i; // r4
@@ -899,7 +899,7 @@ int sub_8142734()
     char v5; // zf
 
     v0 = *&byte_8142774[2 * GetSoulWeaponsMapIndex()];
-    for ( i = sub_814278C(); ; ClearEventFlag(v0 + i) )
+    for ( i = getSoulWeaponsMapParam(); ; ClearEventFlag(v0 + i) )
     {
         v2 = __OFSUB__(i--, 1);
         if ( (i < 0) ^ v2 )
@@ -915,7 +915,7 @@ int sub_8142734()
 
 
 // 0x814278c
-int sub_814278C()
+int getSoulWeaponsMapParam()
 {
     return byte_814279C[GetSoulWeaponsMapIndex()];
 }
@@ -1003,7 +1003,7 @@ char *__fastcall battleObject_getByIndex_81428C2(int a1)
 
 
 // 0x81428d4
-unsigned int __fastcall sub_81428D4(int a1)
+unsigned int __fastcall selectSoulWeaponCursorDir(int a1)
 {
     int v1; // r4
     int v2; // r0

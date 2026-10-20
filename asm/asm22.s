@@ -238,7 +238,7 @@ loc_80870D8:
 	cmp r1, #0x81
 	bne loc_80870E8
 	mov r0, #0x23 
-	bl sub_800060A
+	bl sound_queueSfxWithVolume
 loc_80870E8:
 	bl sub_8086F18
 	bl spawn_spawnObjectSwarm
@@ -269,9 +269,9 @@ off_8087114:
 
 // symdb: Starts a beast-SP cutscene by comparing a stored byte (r5 field 0xC) against a normalized counter (r5 field 6, with values >=0x32 reduced by 0x28) and dispatching StartCutscene with one of two scripts: byte_80868C8+0x20 on match, otherwise byte_8086678+0x20.
 // symdb: (r5 = *BeastSpState) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808711C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastSpStartCutscene.yaml
 	thumb_local_start
-sub_808711C:
+battle_beastSpStartCutscene:
 	push {lr}
 	ldr r0, off_8087138 // =byte_80868C8+32 
 	ldrb r1, [r5,#0xc]
@@ -291,7 +291,7 @@ off_8087138:
 	.word byte_80868C8+0x20
 off_808713C:
 	.word byte_8086678+0x20
-	thumb_func_end sub_808711C
+	thumb_func_end battle_beastSpStartCutscene
 
 // symdb: Returns AIData.PanelY (offset 0x13) of the BattleObject pointed to by the Toolkit's current actor slot
 // symdb: () -> r0 = u8 PanelY

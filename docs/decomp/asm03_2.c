@@ -1073,7 +1073,7 @@ void __noreturn shopBuyMenu_updateFrame_8047134()
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
     v0 = dispatchStateHandler_81179AE();
-    sub_80473E6(v0, v1, v2);
+    battle_clearMatchedQueue(v0, v1, v2);
     if ( v5 && !*(v6 + 14) )
     {
         if ( !*(v6 + 13) )
@@ -1140,7 +1140,7 @@ void checkScrambledCounter_8047366()
 
 
 // 0x8047384
-void __fastcall sub_8047384(int a1, int a2)
+void __fastcall chatbox_processPurchaseIfNotOwned(int a1, int a2)
 {
     int v2; // r5
     int v3; // r9
@@ -1182,7 +1182,7 @@ LABEL_5:
 
 
 // 0x80473e6
-signed int __fastcall sub_80473E6(int a1, int a2, int a3)
+signed int __fastcall battle_clearMatchedQueue(int a1, int a2, int a3)
 {
     int v3; // r5
     _DWORD *v4; // r7
@@ -1575,7 +1575,7 @@ LABEL_7:
         v7 = *(v3 + 5);
         if ( !*(v3 + 5) )
         {
-            sub_8047A96();
+            battleMenu_showChipInfo();
             goto LABEL_37;
         }
         goto LABEL_7;
@@ -1661,7 +1661,7 @@ int menu_showDialogOnUnselect_8047A80()
 
 
 // 0x8047a96
-void sub_8047A96()
+void battleMenu_showChipInfo()
 {
     int v0; // r5
     char *v1; // r7
@@ -6339,7 +6339,7 @@ void __fastcall clear_renderBlendEffect(int a1, int a2, int a3, int a4)
 
 
 // 0x804cbdc
-int sub_804CBDC()
+int beastSp_startTransformSequence()
 {
     int v0; // r5
     int v1; // r10

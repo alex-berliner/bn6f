@@ -4435,7 +4435,7 @@ int __fastcall petNavi_perFrameUpdate_81339BC(int a1)
         zeroFill_e2002230();
         timer_setNoTimeout_8137700();
         sub_81206C4(&unk_202A3E0);
-        sub_8120740(*(v1 + 12));
+        pack_reAddChipsFromFolders(*(v1 + 12));
         sub_81206F8(word_202A020, *(v1 + 12));
         if ( !*(v1 + 2) )
         {
@@ -5701,7 +5701,7 @@ int sub_8134ADC()
     {
         if ( v10 != 2 )
             v10 = 0;
-        sub_81351F4(v10, v8, v9, v11);
+        folder_chipMoveError(v10, v8, v9, v11);
     }
     *(v0 + 60) = 0x7FFF;
     *(v0 + 68) = 0;
@@ -5838,7 +5838,7 @@ int folder_moveChipEntry()
                 {
                     if ( v16 != 2 )
                         v16 = 0;
-                    sub_81351F4(v16, v17, v18, v19);
+                    folder_chipMoveError(v16, v17, v18, v19);
                 }
             }
             else
@@ -6209,7 +6209,7 @@ int getFolderMegaChipCount()
 
 
 // 0x81351f4
-signed int __fastcall sub_81351F4(int a1, int a2, int a3, int a4)
+signed int __fastcall folder_chipMoveError(int a1, int a2, int a3, int a4)
 {
     _BYTE *v4; // r5
     int v5; // r10
@@ -6698,7 +6698,7 @@ void __fastcall __noreturn battle_initNaviCustomizerScene_81356F4(int a1, int a2
     v12 = CheckKeyItem(113);
     *(v4 + 15) = v12;
     *(v4 + 68) = getIndexedDataTable_813B9E0(v12);
-    sub_8135B94();
+    battle_loadNaviCustomizerGfx();
 }
 
 
@@ -6773,7 +6773,7 @@ int navicust_handleBoardInput()
         JoypadKeyPressed();
         if ( !v2 )
         {
-            sub_8136218();
+            navicust_handleBoardConfirm();
             goto LABEL_20;
         }
         if ( *(*(v1 + oToolkit_JoypadPtr) + 2) & 0x20 )
@@ -6985,7 +6985,7 @@ int sub_8135A24()
 
 
 // 0x8135a44
-int sub_8135A44()
+int submenu_updateScroll()
 {
     int v0; // r5
     int result; // r0
@@ -7146,7 +7146,7 @@ int battle_beastSpExitOrFinishBattle_8135B54()
 
 
 // 0x8135b94
-void __noreturn sub_8135B94()
+void __noreturn battle_loadNaviCustomizerGfx()
 {
     int v0; // r6
     int v1; // r7
@@ -7201,7 +7201,7 @@ int __fastcall submenu_rebuildKeyItemList(int a1, int a2, int a3, int a4)
 
     ZeroFillByWord(word_201DA80, 4 * &loc_BC);
     if ( *v4 == 40 )
-        sub_8135E6C();
+        battle_collectKeyItemSurplus();
     else
         battle_collectKeyItemCounts();
     *(v4 + 30) = 0;
@@ -7279,7 +7279,7 @@ int *battle_collectKeyItemCounts()
 
 
 // 0x8135e6c
-unsigned __int16 *sub_8135E6C()
+unsigned __int16 *battle_collectKeyItemSurplus()
 {
     _WORD *v0; // r6
     signed int v1; // r4
@@ -7618,7 +7618,7 @@ int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
 
 
 // 0x8136218
-int sub_8136218()
+int navicust_handleBoardConfirm()
 {
     int v0; // r5
     __int16 *v1; // r7
@@ -8623,7 +8623,7 @@ int battle_refreshPETNaviStats_8136C24()
 
 
 // 0x8136d8c
-_BYTE *sub_8136D8C()
+_BYTE *pet_returnToPetMenu()
 {
     int v0; // r10
     int v1; // r0
@@ -8710,7 +8710,7 @@ signed int sub_8136EF8()
 
 
 // 0x8136f0c
-int sub_8136F0C()
+int navicust_advanceBeastEventDialog()
 {
     int result; // r0
     char v1; // zf

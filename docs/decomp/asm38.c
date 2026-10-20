@@ -404,14 +404,14 @@ void __fastcall sprite_ensureGfxResident(int result)
     }
     if ( (*(v2 + 21) & 0xF0) < 240 && !(*(v2 + 3) & 0x10) )
     {
-        sub_3006108();
+        sprite_acquireObjPaletteSlot();
         *(v2 + 21) = *(v2 + 21) & 0xF | 16 * v15;
     }
 }
 
 
 // 0x3006108
-void sub_3006108()
+void sprite_acquireObjPaletteSlot()
 {
     int v0; // r5
     int v1; // r1
@@ -1768,7 +1768,7 @@ int __fastcall get_variantOffsetPtr(int a1)
 
 
 // 0x3006f8c
-signed int __fastcall sub_3006F8C(int a1, int a2)
+signed int __fastcall chatbox_blitGlyph(int a1, int a2)
 {
     int v2; // r5
     unsigned int v3; // r6
@@ -1936,7 +1936,7 @@ int __fastcall chatbox_drawCustomBoxTiles_30070B4(int a1)
 
 
 // 0x3007218
-signed int __fastcall sub_3007218(int a1, int a2)
+signed int __fastcall battle_processCollisionHit(int a1, int a2)
 {
     int v2; // r6
     int v3; // r7
@@ -2279,7 +2279,7 @@ int __fastcall object_checkCollisionFlagsAndLinkPair(int result, int a2)
     {
         v2 = result;
         v3 = a2;
-        sub_3007218(result, a2);
+        battle_processCollisionHit(result, a2);
         result = sub_3007692(v2, v3);
     }
     return result;
@@ -2555,7 +2555,7 @@ char *__fastcall _object_updatePanelParameters(int a1, int a2)
             v9 = 128;
         v10 = result;
         v11 = v8 | v9;
-        result = sub_3007978(v2, v3);
+        result = object_orHighCollisionFlagsForMaskedEntities(v2, v3);
         *(v10 + 5) = v11 | result;
     }
     return result;
@@ -2576,7 +2576,7 @@ char *__fastcall _object_getPanelDataOffset(int a1, int a2)
 
 
 // 0x3007978
-int __fastcall sub_3007978(int a1, int a2)
+int __fastcall object_orHighCollisionFlagsForMaskedEntities(int a1, int a2)
 {
     int v2; // r10
     int v3; // r2

@@ -7502,7 +7502,7 @@ petNavi_perFrameUpdate_81339BC:
 	ldr r0, off_8133A40 // =unk_202A3E0 
 	bl sub_81206C4
 	ldrb r0, [r5,#0xc]
-	bl sub_8120740
+	bl pack_reAddChipsFromFolders
 	ldr r0, off_8133A3C // =word_202A020 
 	ldrb r1, [r5,#0xc]
 	bl sub_81206F8
@@ -9901,7 +9901,7 @@ loc_8134B2A:
 	beq loc_8134B6E
 	mov r0, #0
 loc_8134B6E:
-	bl sub_81351F4
+	bl folder_chipMoveError
 	b loc_8134CDE
 loc_8134B74:
 	mov r0, #SOUND_MENU_SELECT
@@ -10192,7 +10192,7 @@ loc_8134DAC:
 	beq loc_8134DC2
 	mov r0, #0
 loc_8134DC2:
-	bl sub_81351F4
+	bl folder_chipMoveError
 	b loc_8134E80
 loc_8134DC8:
 	mov r0, #SOUND_MENU_SELECT
@@ -10810,9 +10810,9 @@ off_81351F0:
 // symdb: In the folder/pack editor, displays the appropriate error text script for a rejected chip move, plays the error buzzer, and resets the editor cursor state by copying [r5+3] to [r5+0xD] and writing 8 to [r5+2].
 // symdb: (r0 = nonzero flag, r1 = value stored to chatbox+0x4C, r2 = error code, r3 = index into script-
 // symdb: id table byte_813523C, r5 = editor state struct) -> r0 = clobbered; runs text script and sound
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81351F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folder_chipMoveError.yaml
 	thumb_local_start
-sub_81351F4:
+folder_chipMoveError:
 	push {r4,lr}
 	tst r0, r0
 	bne loc_813520E
@@ -10854,7 +10854,7 @@ off_8135238:
 	.word byte_813523C
 byte_813523C:
 	.byte 0x1C, 0x1D, 0x1E, 0x1F, 0x20, 0x0, 0x0, 0x0
-	thumb_func_end sub_81351F4
+	thumb_func_end folder_chipMoveError
 
 // symdb: Decrements a two-stage frame timer on a per-tick basis, ticking the primary counter at +0x2A first and falling through to the secondary counter at +0x2E once it expires.
 // symdb: void tickDualTimer_8135244(void *timerObj) /* r5 in; r0-r2 preserved */
@@ -11506,7 +11506,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: then runs battle_loadNaviCustomizerGfx / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -11577,7 +11577,7 @@ battle_initNaviCustomizerScene_81356F4:
 	strb r0, [r5,#0xf]
 	bl getIndexedDataTable_813B9E0
 	str r0, [r5,#0x44]
-	bl sub_8135B94
+	bl battle_loadNaviCustomizerGfx
 
 	bl sub_813BAA8
 	bl sub_813676C
@@ -11629,7 +11629,7 @@ off_81357E0:
 	.word ow_objectStepSavePos+1
 	.word sub_8135A24+1
 	.word sub_81368D4+1
-	.word sub_8135A44+1
+	.word submenu_updateScroll+1
 	.word t4_waitChatboxThenFadeScene+1
 	.word sub_8135B38+1
 	thumb_func_end beastsp_dispatchHandler_81357C4
@@ -11696,7 +11696,7 @@ loc_8135888:
 	mov r0, #JOYPAD_A
 	bl IsButtonPressed
 	beq loc_8135896
-	bl sub_8136218
+	bl navicust_handleBoardConfirm
 	b loc_81358EE
 loc_8135896:
 	mov r0, r10
@@ -11943,9 +11943,9 @@ loc_8135A3E:
 // symdb: Per-frame scroll/refresh of a submenu work struct: bails out if chatbox bits 0x80 or 0x20 are set, or if chatbox_GetState_8045F4C is nonzero (returning after copying r5+0x16 into r5+2 and one chatbox_8040818 call); otherwise clears r5+0xc/0x10, rebuilds the 25 oToolkit_Unk2004190 entries, then clamps the 4-row scroll window around the target index from r5+0x1a.
 // symdb: (r0 = unused; r5 = menu work struct preloaded by caller) -> updates struct fields (2, c, 10, 20,
 // symdb: 24) and calls state-machine helpers; flags set by final cmp used by locret branch only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135A44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateScroll.yaml
 	thumb_local_start
-sub_8135A44:
+submenu_updateScroll:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -12025,7 +12025,7 @@ loc_8135AF0:
 locret_8135AF2:
 	pop {r4-r7,pc}
 	.word 0x120
-	thumb_func_end sub_8135A44
+	thumb_func_end submenu_updateScroll
 
 // symdb: Cutscene-style step that waits for the chatbox to become inactive, then sets a scene state, triggers a screen fade, and advances before pumping the chatbox handler.
 // symdb: (r0 = unused, r5 = per-scene state struct pointer) -> r0 = clobbered; sets [r5+1] = 8, [r5+2] =
@@ -12117,9 +12117,9 @@ locret_8135B90:
 // symdb: Loads the Navi Customizer scene's palettes, tiles and BG maps: resolves a 3-entry key/pointer table into unk_20096E0 for decompAndCopyData, copies a second hard-coded table into VRAM/buffers, block-copies 0x100 bytes, then blits three BG tilemaps (r5 = scene struct, byte[r5+0xf] selects a variant tilemap).
 // symdb: (r0 = pointer to a scene-state struct; byte [r0+0xf] selects a graphics variant) -> r0 =
 // symdb: clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135B94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadNaviCustomizerGfx.yaml
 	thumb_local_start
-sub_8135B94:
+battle_loadNaviCustomizerGfx:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r5, [sp]
@@ -12318,7 +12318,7 @@ off_8135D80:
 	.word unk_201C380
 	.word byte_201C780
 	.word unk_201CB80
-	thumb_func_end sub_8135B94
+	thumb_func_end battle_loadNaviCustomizerGfx
 // symdb: Grants key item 0x14C to the player, called when the Navi Customizer battle scene initializes.
 // symdb: () -> r0 = destroyed (callee return); grants key item 0x14C via
 // symdb: keyItems_RemoveFromInventoryAndGive_803CDF8(r0=0x14C, r1=1)
@@ -12351,7 +12351,7 @@ submenu_rebuildKeyItemList:
 	ldrb r0, [r5]
 	cmp r0, #0x28 
 	bne loc_8135DB6
-	bl sub_8135E6C
+	bl battle_collectKeyItemSurplus
 	b loc_8135DBA
 loc_8135DB6:
 	bl battle_collectKeyItemCounts
@@ -12468,9 +12468,9 @@ loc_8135E5E:
 // symdb: Scans a 4-entry ID table and, for each ID, subtracts the number of toolkit-array references (entries whose first halfword + 0x90 matches the ID) from CheckKeyItem(id); if a surplus remains and the battle-object descriptor's byte 3 is nonzero, appends a {id, surplus} 4-byte record to the caller-provided buffer.
 // symdb: (r6 = output buffer pointer) -> r0 = clobbered; writes 4-byte {id:halfword, count:halfword}
 // symdb: records into buffer, advancing past the last one written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135E6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectKeyItemSurplus.yaml
 	thumb_local_start
-sub_8135E6C:
+battle_collectKeyItemSurplus:
 	push {r4,r5,r7,lr}
 	sub sp, sp, #8
 	str r6, [sp]
@@ -12533,7 +12533,7 @@ off_8135EDC:
 	.word 0x11C
 	.word 0x120
 	.word 0x14C
-	thumb_func_end sub_8135E6C
+	thumb_func_end battle_collectKeyItemSurplus
 
 	thumb_local_start
 sub_8135EEC:
@@ -12984,9 +12984,9 @@ byte_8136210:
 // symdb: Navi Customizer board 'confirm' handler: adds cursor halfwords at r5+0x24/+0x20 to index into the board via sub_8136290; if sub_813629C returns 0 it calls battle_resetEStructRecords_8046664 then plays SOUND_CANT_JACK_IN; if the cell ID is 0x14C it stores state 0x2C, plays SOUND_SELECT_82 and dispatches to sub_813686C/sub_813677C; else if cell's +2 word is nonzero it stores state 0x10, calls sub_813660C(1), redraws the board and plays SOUND_MENU_SELECT (pick-up).
 // symdb: () -> void; reads cursor coords from context r5 at +0x20/+0x24, writes state byte [r5+2], plays
 // symdb: a sound ID in r0 via PlaySoundEffect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136218.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardConfirm.yaml
 	thumb_local_start
-sub_8136218:
+navicust_handleBoardConfirm:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x24]
 	ldrh r1, [r5,#0x20]
@@ -13031,7 +13031,7 @@ locret_8136274:
 	.balign 4, 0
 off_8136278:
 	.word 0x14C
-	thumb_func_end sub_8136218
+	thumb_func_end navicust_handleBoardConfirm
 
 // symdb: Cancel/exit action for the Navi Customizer board screen: clears the text box, plays the unselect sound, and sets the screen state to 0x34.
 // symdb: (r0-r3 unused) -> void; r5 = board context struct, byte [r5,#2] = new screen/state code
@@ -14539,9 +14539,9 @@ battle_refreshPETNaviStats_8136C24:
 
 // symdb: Ends the Beast+ scenario: sets completion event flags, zeroes its 16-byte work area, loads scenario assets, then resets game state to 0x28 and restores the PET menu.
 // symdb: () -> void; sets flags via SetEventFlagFromImmediate, clobbers r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136D8C.yaml
-	thumb_func_start sub_8136D8C
-sub_8136D8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_returnToPetMenu.yaml
+	thumb_func_start pet_returnToPetMenu
+pet_returnToPetMenu:
 	push {r4-r7,lr}
 	movflag EVENT_F4
 	bl SetEventFlagFromImmediate
@@ -14563,7 +14563,7 @@ sub_8136D8C:
 	.balign 4, 0x00
 	.word 0x11C
 	.word 0x120
-	thumb_func_end sub_8136D8C
+	thumb_func_end pet_returnToPetMenu
 
 	thumb_local_start
 sub_8136DC8:
@@ -14627,7 +14627,7 @@ off_8136E28:
 off_8136E2C:
 	.word sub_8136EE4+1
 	.word sub_8136EF8+1
-	.word sub_8136F0C+1
+	.word navicust_advanceBeastEventDialog+1
 	.word sub_8136F40+1
 	.word navicust_runOnceDialog+1
 	.word sub_8136FA4+1
@@ -14706,9 +14706,9 @@ sub_8136EF8:
 // symdb: If EVENT_EE is set, prepares dialog resources (sub_81375F4/618), and when bit 8 of eFlags2009F38 is set, clears dialog state, runs NaviCust text script slot 1, and writes 0xC into the caller's state byte [r5].
 // symdb: (r5 = pointer to dialog/state byte) -> none; sets [r5] = 0xC when the dialog starts; clobbers
 // symdb: r0-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136F0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_advanceBeastEventDialog.yaml
 	thumb_local_start
-sub_8136F0C:
+navicust_advanceBeastEventDialog:
 	push {lr}
 	movflag EVENT_EE
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -14729,7 +14729,7 @@ sub_8136F0C:
 locret_8136F3C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_8136F0C
+	thumb_func_end navicust_advanceBeastEventDialog
 
 	thumb_local_start
 sub_8136F40:

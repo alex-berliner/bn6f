@@ -2999,7 +2999,7 @@ loc_8027922:
 	str r0, [r5,#0x40]
 	cmp r0, #5
 	ble loc_8027940
-	bl sub_80279FC
+	bl initBackgroundTilemap
 	bl battle_customScreen_clearSelection_80279C8
 	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #4
@@ -3113,9 +3113,9 @@ loc_80279E6:
 
 // symdb: Initializes a 15x20 background tilemap in unk_2035000 by copying a base grid from byte_86E64B4, stamping rectangle entries from byte_8027B2C via sub_8027CCC, and uploading the result to BG tile block 3.
 // symdb: () -> void; no args, writes tilemap VRAM via callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80279FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initBackgroundTilemap.yaml
 	thumb_local_start
-sub_80279FC:
+initBackgroundTilemap:
 	push {lr}
 	ldr r0, off_8027A48 // =byte_86E64B4 
 	ldr r1, off_8027B24 // =unk_2035000 
@@ -3164,7 +3164,7 @@ off_8027A50:
 	.word byte_8027B2C
 dword_8027A54:
 	.word 0xFFF
-	thumb_func_end sub_80279FC
+	thumb_func_end initBackgroundTilemap
 
 	thumb_local_start
 sub_8027A58: // (self: * S20364C0 $r5) -> ()
@@ -3184,7 +3184,7 @@ off_8027A74:
 	.word sub_8027A84+1
 	.word screenFadeWaitStep+1
 	.word battle_customScreenConfirmSelectedChip+1
-	.word sub_8027ADE+1
+	.word battle_tickTutorialCustomScreen+1
 	thumb_func_end sub_8027A58
 
 	thumb_local_start
@@ -3233,7 +3233,7 @@ battle_customScreenConfirmSelectedChip:
 	bl SetScreenFade // (int a1, int a2) -> void
 	ldrb r0, [r5,#0x1a]
 	bl sub_802A088
-	bl sub_80279FC
+	bl initBackgroundTilemap
 	bl battle_customScreen_clearSelection_80279C8
 	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #0x92
@@ -3247,14 +3247,14 @@ locret_8027ADC:
 // symdb: Per-frame tick for a tutorial's Custom Screen phase: gates on fade, ticks chip-picker GFX helpers, sets state=4, and at step 6 queues chatbox_runScript with the TextScriptFirstBattleTutorials archive (index out-of-range suggests caller pre-loads r5 or the step check is gated).
 // symdb: (r0 = scratch/ignored, r5 = tutorial state struct: +0x01 state byte, +0x02 timer halfword, +0x0C
 // symdb: step counter, +0x0D substate) -> r0 = clobbered; updates state fields in r5 struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027ADE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickTutorialCustomScreen.yaml
 	thumb_local_start
-sub_8027ADE:
+battle_tickTutorialCustomScreen:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	cmp r0, #0
 	bne locret_8027B1A
-	bl sub_80279FC
+	bl initBackgroundTilemap
 	bl battle_customScreen_clearSelection_80279C8
 	bl battleObject_runCustomScreenChipPickerEffect_8028476
 	mov r0, #4
@@ -3377,7 +3377,7 @@ byte_8027CC7:
 	.byte 0x3
 dword_8027CC8:
 	.word 0x3
-	thumb_func_end sub_8027ADE
+	thumb_func_end battle_tickTutorialCustomScreen
 
 // symdb: Stamps a width×height rectangle of running u16 tile indices into the 0x02035000 grid buffer at the given starting cell, optionally numbering down columns rather than across rows, and returns the next index after the block.
 // symdb: in: r0 column, r1 row, r2 firstTile, r3 width, r4 height, r5 numberingOrder (1 = column-wise);
@@ -9880,7 +9880,7 @@ off_802A984:
 	.word off_802A988
 off_802A988:
 	.word ow_scrollBg2LeftStepState+1
-	.word sub_802A9D0+1
+	.word battlePickTwoGridItems+1
 	.word ow_bg2WipeTransitionStep+1
 	.word sub_802ABF4+1
 	.word sub_802AD84+1
@@ -9917,9 +9917,9 @@ locret_802A9CC:
 
 // symdb: Battle submenu letting the player select up to two items from a grid under a 0x32 budget: A picks a cell (id from unk_2031000, weight from byte_802B5FC, total tracked at [r5+0x12]) into slot [r5+0x10] then [r5+0x11]; B clears the most recent slot; 0x100 inspects (state 0x18, sound 0x9c); 0x200 confirms (state 0x1c, text script 0).
 // symdb: (r5 = menu state struct, r10 = toolkit) -> void; drives sounds, text script and screen rebuilds
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A9D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battlePickTwoGridItems.yaml
 	thumb_local_start
-sub_802A9D0:
+battlePickTwoGridItems:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x24]
 	strh r0, [r5,#0x26]
@@ -10170,7 +10170,7 @@ off_802ABC8:
 	.word 0x200
 off_802ABCC:
 	.word unk_2030E60
-	thumb_func_end sub_802A9D0
+	thumb_func_end battlePickTwoGridItems
 
 // symdb: Overworld state-machine step that advances the BG2 wipe transition and, once it finishes, loads the next state and a table parameter.
 // symdb: (r5 = overworld state struct) -> r0 = clobbered; returns with callee's flags (EQ = wipe
@@ -12581,7 +12581,7 @@ off_802BF5C:
 off_802BF60:
 	.word setupChipListVisual_802BF6C+1
 	.word battle_chipSelectAnimTileStep+1
-	.word sub_802C0A4+1
+	.word submenu_dispatchPendingSelection+1
 	thumb_func_end dispatchBattleObjectBehavior_802BF4C
 
 // symdb: Refills and shuffles the 42-slot chip pool, then queues tile+palette image transfers for a chip or soul preview based on the packed id stored in the caller struct.
@@ -12762,9 +12762,9 @@ off_802C0A0:
 // symdb: (r5 = menu state struct; no register args) -> r0 clobbered by calls; updates struct: [r5+0xb]
 // symdb: counter, [r5+0x10] pending ID cleared to 0xFFFF path via [r5+2]=0, [r5+2]/[r5+3] state for group
 // symdb: 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C0A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchPendingSelection.yaml
 	thumb_local_start
-sub_802C0A4:
+submenu_dispatchPendingSelection:
 	push {lr}
 	ldrb r0, [r5,#0xb]
 	sub r0, #1
@@ -12867,7 +12867,7 @@ dword_802C168:
 	.word 0xFFFFFFFF
 dword_802C16C:
 	.word 0x136
-	thumb_func_end sub_802C0A4
+	thumb_func_end submenu_dispatchPendingSelection
 
 	thumb_local_start
 sub_802C170:
@@ -26085,7 +26085,7 @@ jt_8031B10:
 	.word sub_8031C5A+1 // 0x13
 	.word sub_8031C5A+1 // 0x14
 	.word sub_8031C5A+1 // 0x15
-	.word sub_8031C64+1 // 0x16
+	.word battle_getCursorBlinkIfTargetOnNegativeSide+1 // 0x16
 	.word chatbox_renderBattleCursorStep_8031C7C+1 // 0x17
 	.word battle_aiStorySub3_8031C94+1 // 0x18
 	.word sub_8031CAC+1 // 0x19
@@ -26266,9 +26266,9 @@ sub_8031C5A:
 // symdb: Returns the battle textbox cursor blink state byte only when the entity's position relative to a doubled target reference lies on the negative side of the half-plane test; returns 0 otherwise.
 // symdb: (r0 = entity/target descriptor for calcRelPosToTarget) -> r0 = blink-state byte if the point
 // symdb: test passes, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C64.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getCursorBlinkIfTargetOnNegativeSide.yaml
 	thumb_local_start
-sub_8031C64:
+battle_getCursorBlinkIfTargetOnNegativeSide:
 	push {lr}
 	bl battle_calcRelPosToTarget_803172E
 	mov r2, #2
@@ -26278,7 +26278,7 @@ sub_8031C64:
 	bl math_pointCrossHalfPlaneTest_8031594
 	bl chatbox_getCursorBlinkState_8031B7C
 	pop {pc}
-	thumb_func_end sub_8031C64
+	thumb_func_end battle_getCursorBlinkIfTargetOnNegativeSide
 
 // symdb: Advances the battle textbox cursor blink animation and reads back its visible/on state.
 // symdb: (r0 = AIData pointer 0x02009f5c) -> r0 = 2 ; side effects: writes to scratch buffer via

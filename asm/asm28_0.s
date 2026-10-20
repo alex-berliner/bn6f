@@ -2324,7 +2324,7 @@ byte_809AA34:
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
-	cs_call_native_with_return_value ptr1=sub_809AAB8+1
+	cs_call_native_with_return_value ptr1=pet_endState+1
 
 cutscenescript_809AA44:
 	cs_call_native_with_return_value ptr1=chatbox_stepScriptAdvance+1
@@ -2332,7 +2332,7 @@ cutscenescript_809AA44:
 
 cutscenescript_809AA50:
 	cs_wait_chatbox byte1=0x80
-	cs_call_native_with_return_value ptr1=sub_809AD4C+1
+	cs_call_native_with_return_value ptr1=clearBeastOutState+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_call_native_with_return_value ptr1=chatbox_uncompMapTextArchives_803FD54+1
 	cs_end_for_map_reload_maybe_8037c64
@@ -2354,9 +2354,9 @@ byte_809AA87:
 	cs_call_native_with_return_value ptr1=sub_809ACA4+1
 	cs_call_native_with_return_value ptr1=chatbox_animateWindowOpen+1
 	cs_pause byte1=0xFF byte2=0x01
-	cs_call_native_with_return_value ptr1=sub_809AD0C+1
+	cs_call_native_with_return_value ptr1=sprite_updateSlideInCutscene+1
 	cs_chatbox_cmd_8037a70
-	cs_call_native_with_return_value ptr1=sub_809AD4C+1
+	cs_call_native_with_return_value ptr1=clearBeastOutState+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_call_native_with_return_value ptr1=chatbox_uncompMapTextArchives_803FD54+1
 	cs_end_for_map_reload_maybe_8037c64
@@ -2368,9 +2368,9 @@ byte_809AA87:
 
 // symdb: Generic end-of-state cleanup: clears the PET effect, runs two sub_ helpers, reloads text script index 0xA via chatbox_runScript, re-initializes battle-overlay scene records, and clears a flag at [r5+8].
 // symdb: (r5 = state struct ptr from caller) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AAB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_endState.yaml
 	thumb_local_start
-sub_809AAB8:
+pet_endState:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl doPETEffect_8033fc0
@@ -2384,7 +2384,7 @@ sub_809AAB8:
 	strb r0, [r5,#8]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809AAB8
+	thumb_func_end pet_endState
 
 // symdb: Cutscene step that checks the chatbox-active flag and either queues follow-up script 0xC from the 0x2033404 archive (advancing a controller state) or re-queues script 0xB while the chatbox is busy.
 // symdb: (r0 unused, r5 = controller/task struct) -> r0 = 0 when a script was run, 1 when the chatbox
@@ -2706,9 +2706,9 @@ loc_809AD00:
 // symdb: Per-frame cutscene step: when EVENT_F5 is set, decrements a byte counter at [r5,#4] and slides a 3-id sprite group leftward, then unconditionally ticks entity handlers and eStruct sprite pipeline, returning 1 if chatbox flag bit 0x80 is set.
 // symdb: (r5 = struct with u8 position counter at +4) -> r0 = 1 if chatbox flag 0x80 set else 0; flags
 // symdb: destroyed by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AD0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_updateSlideInCutscene.yaml
 	thumb_local_start
-sub_809AD0C:
+sprite_updateSlideInCutscene:
 	push {r4-r7,lr}
 	movflag EVENT_F5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -2739,13 +2739,13 @@ loc_809AD44:
 	.balign 4, 0
 dword_809AD48:
 	.word 0xFFFFFFD0
-	thumb_func_end sub_809AD0C
+	thumb_func_end sprite_updateSlideInCutscene
 
 // symdb: Tears down the Beast Out scenario: clears EVENT_F5/1725, queues PET effect 1, reinitializes and deactivates the scenario effect state, zeroes the event work struct, and acks the new-flag byte.
 // symdb: () -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AD4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearBeastOutState.yaml
 	thumb_local_start
-sub_809AD4C:
+clearBeastOutState:
 	push {r4-r7,lr}
 	movflag EVENT_F5
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -2760,7 +2760,7 @@ sub_809AD4C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
-	thumb_func_end sub_809AD4C
+	thumb_func_end clearBeastOutState
 off_809AD78:
 	.word eTextScript2033404 // TextScriptArchive
 off_809AD7C:
@@ -2786,7 +2786,7 @@ cutscenescript_809AD80:
 	thumb_local_start
 sub_809ADA8:
 	push {r4-r7,lr}
-	bl sub_8136D8C
+	bl pet_returnToPetMenu
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -2972,7 +2972,7 @@ byte_809AFEC:
 	cs_cutscene_end
 
 cutscenescript_809AFFE:
-	cs_call_native_with_return_value ptr1=sub_809B054+1
+	cs_call_native_with_return_value ptr1=ow_beastTransformStep+1
 	cs_cutscene_end
 
 byte_809B004:
@@ -3029,9 +3029,9 @@ dword_809B050:
 // symdb: Overworld Beast transform step: from the player's charge timer (>=60 → state 2 else 3) decides the target beast form, early-outs with r0=1 if already there (state 2 also requires work+0x10 cleared), otherwise plays the form's sound (0xE1/0xE2), sets/clears the OW player Navi palette index (0 vs 4), and SpawnOverworldMapObject(0x48020000) at the player's position with object id 0xB, returning 0.
 // symdb: (r0 unused, r5 = beast-out work struct, r10+0x3c = engine struct) -> r0 = 1 if already in the
 // symdb: requested state, 0 after spawning the transform object; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B054.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_beastTransformStep.yaml
 	thumb_local_start
-sub_809B054:
+ow_beastTransformStep:
 	push {r4-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#0x3c]
@@ -3099,7 +3099,7 @@ loc_809B0C4:
 	.balign 4, 0
 dword_809B0D4:
 	.word 0x48020000
-	thumb_func_end sub_809B054
+	thumb_func_end ow_beastTransformStep
 
 	thumb_local_start
 sub_809B0D8:
@@ -3759,7 +3759,7 @@ unk_809BBE9::
 	cs_make_ow_player_invisible
 	cs_disable_ow_player_wall_collision_809e254
 	cs_clear_ow_player_interaction_locked_809e23c
-	cs_call_native_with_return_value ptr1=sub_809BDB8+1
+	cs_call_native_with_return_value ptr1=ow_warpTableSpawnAndTeleport+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x00 destination3=byte_809BC8B
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809BC8B
 	cs_jump_if_var_equal byte1=0x08 byte2=0x02 destination3=byte_809BC8B
@@ -3893,9 +3893,9 @@ end_cutscenescript_809BDB6:
 // symdb: Overworld warp handler: matches player grid position against byte_809BE6C table (or forces index 3 via EVENT_128); for index < 0x10 builds a 0x14-byte spawn request at r5+0x70 from byte_809BA30, calls SpawnOverworldMapObject, sets/clears event flags, and writes camera (r0=1,r1=request); regardless of index, copies player-state+0x24/+0x28/+0x2c into coordinates via owPlayer_indirectlySetPlayerCoordsMaybe.
 // symdb: (r0 = unused/result flag input, r5 = overworld controller struct, r10+0x3c = overworld/player
 // symdb: state struct) -> r0 = 0; sets/clears event flags, writes camera field
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BDB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_warpTableSpawnAndTeleport.yaml
 	thumb_local_start
-sub_809BDB8:
+ow_warpTableSpawnAndTeleport:
 	push {r4-r7,lr}
 	movflag EVENT_128
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -3989,7 +3989,7 @@ byte_809BE6C:
 	.byte 0x4, 0x0, 0x3, 0x0, 0x4, 0x0, 0x5, 0x0, 0x4, 0x0, 0x0, 0x0, 0x4, 0x0, 0x1, 0x0, 0x5
 	.byte 0x0, 0x3, 0x0, 0x5, 0x0, 0x4, 0x0, 0x5, 0x0, 0x0, 0x0, 0x5, 0x0, 0x1, 0x0, 0x0, 0x0
 	.byte 0x3, 0x0, 0x0, 0x0, 0x4, 0x0, 0x0, 0x0, 0x5, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	thumb_func_end sub_809BDB8
+	thumb_func_end ow_warpTableSpawnAndTeleport
 
 	thumb_local_start
 sub_809BEC0:

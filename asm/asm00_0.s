@@ -85,9 +85,9 @@ locret_8000608:
 
 // symdb: Loads byte_2010B90 into r1 (substituting 0xFF when unset), sets r3 to a callback thunk (sound_8000822+1), and tail-calls sound_8000808 to append the r0 SFX to the request queue at dword_200A490.
 // symdb: (r0 = sound/SSEQ id for sound_8000808, r1 = ignored, overwritten) -> none; r1 = clamped volume
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800060A.yaml
-	thumb_func_start sub_800060A
-sub_800060A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_queueSfxWithVolume.yaml
+	thumb_func_start sound_queueSfxWithVolume
+sound_queueSfxWithVolume:
 	push {r1-r7,lr}
 	ldr r1, off_8000864 // =byte_2010B90
 	ldrb r1, [r1]
@@ -98,7 +98,7 @@ loc_8000616:
 	ldr r3, off_8000868 // =sound_8000822+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r1-r7,pc}
-	thumb_func_end sub_800060A
+	thumb_func_end sound_queueSfxWithVolume
 
 // () -> void
 // symdb: Thin wrapper/trampoline that dispatches a call into the m4a sound driver via sound_8000808, passing a routine pointer taken from the song-table area and shielding r10 from being clobbered.

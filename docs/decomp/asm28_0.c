@@ -1011,7 +1011,7 @@ int __fastcall sub_809AA04(int a1, int a2, int a3, int a4)
 
 
 // 0x809aab8
-int __fastcall sub_809AAB8(int a1, int a2, int a3)
+int __fastcall pet_endState(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -1251,7 +1251,7 @@ signed int chatbox_animateWindowOpen()
 
 
 // 0x809ad0c
-signed int sub_809AD0C()
+signed int sprite_updateSlideInCutscene()
 {
     int v0; // r5
     char v1; // zf
@@ -1278,7 +1278,7 @@ signed int sub_809AD0C()
 
 
 // 0x809ad4c
-int sub_809AD4C()
+int clearBeastOutState()
 {
     int v0; // r1
     int v1; // r2
@@ -1297,7 +1297,7 @@ int sub_809AD4C()
 // 0x809ada8
 int sub_809ADA8()
 {
-    sub_8136D8C();
+    pet_returnToPetMenu();
     return 0;
 }
 
@@ -1388,7 +1388,7 @@ int sub_809B00C()
 
 
 // 0x809b054
-signed int sub_809B054()
+signed int ow_beastTransformStep()
 {
     unsigned __int8 *v0; // r5
     int v1; // r10
@@ -1743,7 +1743,7 @@ __int64 battle_loadBeastSpDmg_809BA14()
 
 
 // 0x809bdb8
-int sub_809BDB8()
+int ow_warpTableSpawnAndTeleport()
 {
     int v0; // r5
     int v1; // r10

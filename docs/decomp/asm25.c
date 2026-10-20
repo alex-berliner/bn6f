@@ -21,7 +21,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
             v1 = sub_808FA8C();
             byte_2000312 = v2 + 1;
         }
-        sub_808F9C4(v1);
+        owPlayer_stepTowardTarget(v1);
         if ( v3 )
         {
             byte_2000312 = 0;
@@ -34,7 +34,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
     }
     else
     {
-        sub_808F9C4(v1);
+        owPlayer_stepTowardTarget(v1);
         if ( v3 )
         {
             owPlayer_enableWallCollision_809e248();
@@ -89,7 +89,7 @@ signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
     }
     if ( v1 <= 1 )
     {
-        a1 = sub_808F9C4(a1);
+        a1 = owPlayer_stepTowardTarget(a1);
         if ( !v2 )
             return 1;
         byte_2000312 = ++v1;
@@ -99,9 +99,9 @@ signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
         sub_808FA84();
         sub_809E2FC();
         ow_spawnMapObject1b();
-        sub_808F990();
+        ow_seatPlayerForBusRide();
     }
-    sub_808F9C4(a1);
+    owPlayer_stepTowardTarget(a1);
     if ( v2 )
     {
         owPlayer_enableWallCollision_809e248();
@@ -118,7 +118,7 @@ signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
 
 
 // 0x808f990
-void __noreturn sub_808F990()
+void __noreturn ow_seatPlayerForBusRide()
 {
     int v0; // r10
     Battle *v1; // r5
@@ -136,7 +136,7 @@ void __noreturn sub_808F990()
 
 
 // 0x808f9c4
-signed int __fastcall sub_808F9C4(int a1)
+signed int __fastcall owPlayer_stepTowardTarget(int a1)
 {
     signed int v1; // r4
     __int64 v2; // r6
@@ -266,7 +266,7 @@ void __noreturn sub_808FB18()
     v0 = ClearEventFlagFromImmediate(11, 229);
     ow_spawnObject1BAtPlayer(v0);
     sub_809E2FC();
-    sub_808F990();
+    ow_seatPlayerForBusRide();
 }
 
 

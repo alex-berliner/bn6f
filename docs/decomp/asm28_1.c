@@ -430,7 +430,7 @@ void clearMysteryDataEventFlags_809FB04()
                         break;
                     if ( v3 != 5 )
                     {
-                        v4 = sub_809FB4C(v3, *(v2 + 1), *(v2 + 2), *(v2 + 1));
+                        v4 = getMysteryDataRewards(v3, *(v2 + 1), *(v2 + 2), *(v2 + 1));
                         sub_809FACE(*(v2 + 1), v4, v5);
                         ClearEventFlag(*(v2 + 1));
                     }
@@ -444,7 +444,7 @@ void clearMysteryDataEventFlags_809FB04()
 
 
 // 0x809fb4c
-int __fastcall sub_809FB4C(int a1, _BYTE *a2, _BYTE *a3, unsigned int a4)
+int __fastcall getMysteryDataRewards(int a1, _BYTE *a2, _BYTE *a3, unsigned int a4)
 {
     int v4; // r5
     _BYTE *v5; // r6
@@ -526,7 +526,7 @@ int __fastcall mysteryData_resolveMapGroupEntry_809FBF2(int a1, int a2)
 
 
 // 0x809fc1c
-int __fastcall sub_809FC1C(int a1)
+int __fastcall mysteryData_registerNpcVisit(int a1)
 {
     int v1; // r10
     int v2; // r6

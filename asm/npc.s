@@ -2062,7 +2062,7 @@ NPCCommand_init_mystery_data:
 	bl ReadNPCScriptHalfword // (u8 bitfield_arr[2]) -> u16
 	mov r1, #oOverworldNPCObject_Chatbox_90
 	str r0, [r5,r1]
-	bl sub_809FC1C
+	bl mysteryData_registerNpcVisit
 	tst r0, r0
 	beq .mysteryDataCollected
 	ldr r4, off_809F0E0 // =byte_809F0E4
@@ -2071,7 +2071,7 @@ NPCCommand_init_mystery_data:
 
 	mov r4, #0x40
 	// multiplying a flag?
-	// r1 is modified in sub_809FC1C (mystery data function)
+	// r1 is modified in mysteryData_registerNpcVisit (mystery data function)
 	// seems to get its value from a field that's always 0
 	mul r4, r1
 	ldr r1, [r5,#oOverworldNPCObject_UnkFlags_60]

@@ -186,13 +186,13 @@ LABEL_15:
             if ( v6 == 228 )
             {
                 v8 = cb->unk_7C;
-                sub_3006F8C(0, v1[1] + 228);
+                chatbox_blitGlyph(0, v1[1] + 228);
                 v1 += 2;
             }
             else
             {
                 v7 = cb->unk_7C;
-                sub_3006F8C(v5, v6);
+                chatbox_blitGlyph(v5, v6);
                 ++v1;
             }
             chatbox_8040C44();
@@ -265,14 +265,14 @@ signed int chatbox_interpreteAndDrawDialogChar_1()
             if ( v3 == 228 )
             {
                 v5 = cb->unk_7C;
-                sub_3006F8C(0, v1[1] + 228);
+                chatbox_blitGlyph(0, v1[1] + 228);
                 chatbox_advanceNextState_8040C9C();
                 v1 += 2;
             }
             else
             {
                 v4 = cb->unk_7C;
-                sub_3006F8C(0, v3);
+                chatbox_blitGlyph(0, v3);
                 chatbox_advanceNextState_8040C9C();
                 ++v1;
             }

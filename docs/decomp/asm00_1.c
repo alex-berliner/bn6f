@@ -3117,7 +3117,7 @@ void *start_cutsceneWithFlagSwap()
 
 
 // 0x8005a28
-signed int sub_8005A28()
+signed int start_setEventsAndFade()
 {
     int v0; // r5
     signed int result; // r0
@@ -5133,7 +5133,7 @@ char *__fastcall __noreturn initBattleStructsAndVram_80071D4(int a1, int a2, int
     resetAllGraphicsState_8005F40(1, v7, v8, v9);
     sub_8005F78();
     if ( sub_802D234() == 1 )
-        sub_80027E4();
+        battle_initSpriteProjection();
     else
         palette_InitTransferState_80027D4();
     set_flags32_20093A4(1);
@@ -6872,7 +6872,7 @@ int sub_800840C()
 
 
 // 0x8008452
-int __fastcall sub_8008452(int a1)
+int __fastcall battle_stepIntroPhase(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -8968,7 +8968,7 @@ int sub_800961C()
 
 
 // 0x8009658
-unsigned int sub_8009658()
+unsigned int battle_startBattleIntro()
 {
     int v0; // r5
     int v1; // r0
@@ -10015,7 +10015,7 @@ int sub_8009E40()
 
 
 // 0x8009e56
-void __fastcall sub_8009E56(int a1, int a2, int a3, int a4)
+void __fastcall battle_resolveBattleOutcome(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -12375,7 +12375,7 @@ int battle_initBattleStateBuffer_800B144()
                 sub_8013554(&byte_203CBE8[4], v2, v3, v4);
                 break;
             case 9:
-                sub_80135E8(&byte_203CBE8[4], v2, v3, v4);
+                battle_initChipSelectState(&byte_203CBE8[4], v2, v3, v4);
                 break;
             default:
                 v5 = getPETNaviSelect();

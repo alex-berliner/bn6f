@@ -237,7 +237,7 @@ clearMysteryDataEventFlags_809FB04:
 	ldr r1, [r7,#oMysteryDataEntry_PlacementsPtr]
 	ldr r2, [r7,#oMysteryDataEntry_ContentsPtr]
 	ldrh r3, [r7,#oMysteryDataEntry_EventFlag]
-	bl sub_809FB4C
+	bl getMysteryDataRewards
 	mov r2, r1
 	mov r1, r0
 	ldrh r0, [r7,#oMysteryDataEntry_EventFlag]
@@ -261,9 +261,9 @@ clearMysteryDataEventFlags_809FB04:
 // symdb: Returns the two reward indices for a Mystery Data pickup: BLUE/PURPLE rotate the per-type counter at sub_809FADE by +1 (clamped to len-1) when its event flag is clear, else reuse the stored counters; UNK_2/UNK_4 return 0 (or len-1).
 // symdb: (r0 = mystery data type id, r1 = reward table A (8-byte entries), r2 = reward table B, r3 =
 // symdb: event flag id) -> r0 = index into table A, r1 = index into table B; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FB4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getMysteryDataRewards.yaml
 	thumb_local_start
-sub_809FB4C:
+getMysteryDataRewards:
 	push {r4-r7,lr}
 	mov r5, r3
 	mov r6, r1
@@ -364,7 +364,7 @@ sub_809FB4C:
 	ldrb r1, [r0,#1]
 	ldrb r0, [r0]
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FB4C
+	thumb_func_end getMysteryDataRewards
 
 // symdb: Resolves the per-map-group entry pointer for a mystery-data group table, returning the base pointer unchanged for all non-mystery-data group ids.
 // symdb: u32* mysteryData_resolveMapGroupEntry_809FBF2(u32 groupId /*r0*/, u32* tableBase /*r1*/)
@@ -397,9 +397,9 @@ InternetMysteryDataMapGroupEntries_p1:
 // symdb: Looks up the current map's mystery-data table entry for the given NPC id and, on match, indexes its sub-tables via the NPC's work-buffer state bytes before calling sub_809FE36 to bump the matching counter; returns zeros/0xFF padding when no entry matches.
 // symdb: (r0 = npc id / work-buffer offset) -> r0..r3 = entry data forwarded through sub_809FE36, or r0 =
 // symdb: 0 and r1..r3 = 0xFF when no entry matches; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FC1C.yaml
-	thumb_func_start sub_809FC1C
-sub_809FC1C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mysteryData_registerNpcVisit.yaml
+	thumb_func_start mysteryData_registerNpcVisit
+mysteryData_registerNpcVisit:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r10
@@ -465,7 +465,7 @@ loc_809FC8C:
 	mov r3, #0xff
 locret_809FC94:
 	pop {r4-r7,pc}
-	thumb_func_end sub_809FC1C
+	thumb_func_end mysteryData_registerNpcVisit
 
 // symdb: Look up mystery-data output (four bytes + C/V flags) for a Navi ID, using the current map's mystery-data table and the current PET Navi's "special" stat to pick between a direct entry and a cyclic gold-scan fallback.
 // symdb: void mysteryData_lookupForNavi_809FC96(u32 r0_naviId, struct GameToolkit* r10_toolkit); /*

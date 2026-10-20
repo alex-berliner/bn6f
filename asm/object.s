@@ -1287,9 +1287,9 @@ drawPanelUnderStrip_800C100:
 // symdb: Writes a 5x1 strip of blank (tile id 0) tiles into BG tile block 2 at the mirrored panel position for the current side, clearing one row of a battle panel slot during the panel animation update.
 // symdb: (r0 = panel column/frame index into byte_800C182, r1 = row index) -> r0 clobbered by call; no
 // symdb: return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C138.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_erasePanelRow.yaml
 	thumb_local_start
-sub_800C138:
+battle_erasePanelRow:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r6, r10
@@ -1331,7 +1331,7 @@ byte_800C178:
 byte_800C182:
 	.byte 0xFB, 0x0, 0x5, 0xA, 0xF, 0x14, 0x19, 0x1E, 0x1E, 0x19
 	.byte 0x14, 0xF, 0xA, 0x5, 0x0, 0xFB
-	thumb_func_end sub_800C138
+	thumb_func_end battle_erasePanelRow
 
 // symdb: steps the animated panel tile sets, copying each due frame into IWRAM
 // symdb: static void advance_panel_animations(void); adapter: no inputs, out r2 and r3 only
@@ -1856,7 +1856,7 @@ loc_800C648:
 	ldrb r1, [r7,#0xb]
 	add r1, #1
 	ldrb r2, [r7,#7]
-	bl sub_800C138
+	bl battle_erasePanelRow
 	b loc_800C672
 loc_800C662:
 	ldrb r0, [r7,#0xc]
@@ -5044,9 +5044,9 @@ locret_800E35E:
 // symdb: (r0 = value passed through to object_addHP / scratch, r1 = mode flag) -> r0 = 0 on the normal
 // symdb: path, 1 on the 0xBD path; r5 holds the acting battle object (Alliance/PanelX/PanelY/+0x34 fields
 // symdb: read)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E360.yaml
-	thumb_func_start sub_800E360
-sub_800E360:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyHPRecovery.yaml
+	thumb_func_start battle_applyHPRecovery
+battle_applyHPRecovery:
 	push {r4,r6,r7,lr}
 	mov r6, r0
 	tst r1, r1
@@ -5090,7 +5090,7 @@ loc_800E38E:
 	mov r0, #1
 locret_800E3BC:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_800E360
+	thumb_func_end battle_applyHPRecovery
 
 // symdb: Sums a battle object's five per-panel collision damage values into its FinalDamage field and returns that total plus the sixth panel damage value.
 // symdb: (r5 = battle object, r4 = preserved scratch) -> r0 = u16 FinalDamage (sum of PanelDamage1..5),

@@ -1249,13 +1249,13 @@ soulWeapons_apply_8142510:
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq locret_81425FC
-	bl sub_814278C
+	bl getSoulWeaponsMapParam
 	mov r6, #1
 	movflag EVENT_740
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_814253E
 	mov r6, #0
-	bl sub_8142734
+	bl clearSoulWeaponsMapState
 loc_814253E:
 	mov r0, #0
 	bl scenario_setEffectState0E
@@ -1476,7 +1476,7 @@ getSoulWeaponsUnlockedCount:
 	ldr r7, off_8142770 // =byte_8142774 
 	lsl r0, r0, #1
 	ldrh r7, [r7,r0]
-	bl sub_814278C
+	bl getSoulWeaponsMapParam
 	mov r4, r0
 	mov r6, #0
 loc_814271E:
@@ -1493,17 +1493,17 @@ loc_8142730:
 	pop {r4-r7,pc}
 	thumb_func_end getSoulWeaponsUnlockedCount
 
-// symdb: Clears the per-map Soul/Beast event-flag block via sub_814278C's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from sub_81427F2 is still set.
+// symdb: Clears the per-map Soul/Beast event-flag block via getSoulWeaponsMapParam's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from sub_81427F2 is still set.
 // symdb: (r0 = current map id) -> void; ZF from final TestEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142734.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearSoulWeaponsMapState.yaml
 	thumb_local_start
-sub_8142734:
+clearSoulWeaponsMapState:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex
 	ldr r7, off_8142770 // =byte_8142774 
 	lsl r0, r0, #1
 	ldrh r7, [r7,r0]
-	bl sub_814278C
+	bl getSoulWeaponsMapParam
 	mov r4, r0
 loc_8142746:
 	sub r4, #1
@@ -1531,14 +1531,14 @@ byte_8142774:
 	.byte 0x50, 0x7, 0x64, 0x7, 0x78, 0x7, 0x8C, 0x7, 0xA0, 0x7, 0xB4
 	.byte 0x7, 0xC8, 0x7, 0xDC, 0x7, 0x0, 0x0, 0x0, 0x0, 0xA0, 0x0
 	.byte 0x0, 0x0
-	thumb_func_end sub_8142734
+	thumb_func_end clearSoulWeaponsMapState
 
 // symdb: Returns a per-map parameter byte (0x7,0xB,0xC,0xD,0xE,0x10,0x14,0x14) for the current SoulWeapons map, using GetSoulWeaponsMapIndex as the lookup index.
 // symdb: (takes args passed through to GetSoulWeaponsMapIndex, likely r0 = map or weapon id) -> r0 =
 // symdb: byte_814279C[index]; flags from the ldrb
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814278C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponsMapParam.yaml
 	thumb_local_start
-sub_814278C:
+getSoulWeaponsMapParam:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex
 	ldr r7, off_8142798 // =byte_814279C 
@@ -1549,7 +1549,7 @@ off_8142798:
 	.word byte_814279C
 byte_814279C:
 	.byte 0x7, 0xB, 0xC, 0xD, 0xE, 0x10, 0x14, 0x14
-	thumb_func_end sub_814278C
+	thumb_func_end getSoulWeaponsMapParam
 
 // symdb: Computes an offset into a per-Beast-Out/Soul form data table: looks up the form's base offset and adds the given index to it.
 // symdb: (r0 = form/entry id, also passed to GetSoulWeaponsMapIndex) -> r0 =
@@ -1730,9 +1730,9 @@ off_81428D0:
 // symdb: Returns the chosen 8-way direction index for the soul-weapon/beast cursor: if the player's facing has bit0 set, returns the result of sub_8142952(state, facing, 1) directly; otherwise compares the two neighbour directions (facing-1 and facing+1) by their camera-distance from the player and returns the index whose cursor is farther away.
 // symdb: (r0 = cursor state from sub_8142990? passed implicitly) -> r0 = chosen direction index (0-7); no
 // symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81428D4.yaml
-	thumb_func_start sub_81428D4
-sub_81428D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/selectSoulWeaponCursorDir.yaml
+	thumb_func_start selectSoulWeaponCursorDir
+selectSoulWeaponCursorDir:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
 	bl sub_8142990
@@ -1788,7 +1788,7 @@ loc_814294C:
 	mov r0, r7
 	add sp, sp, #0x10
 	pop {r4-r7,pc}
-	thumb_func_end sub_81428D4
+	thumb_func_end selectSoulWeaponCursorDir
 
 // symdb: Offsets a packed (x | y<<8) coordinate pair by a cardinal-direction step taken from a table, scaled by r2, and returns the repacked halfword.
 // symdb: (r0 = packed coords, x in low byte / y in high byte; r1 = direction entry index; r2 = step

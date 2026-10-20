@@ -20,7 +20,7 @@ weatherComp_putPlayerBack_808F810:
 loc_808F830:
 	cmp r4, #1
 	bgt loc_808F86C
-	bl sub_808F9C4
+	bl owPlayer_stepTowardTarget
 	bne loc_808F8A6
 	bl owPlayer_enableWallCollision_809e248
 	add r4, #1
@@ -47,7 +47,7 @@ loc_808F86C:
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
 loc_808F878:
-	bl sub_808F9C4
+	bl owPlayer_stepTowardTarget
 	bne loc_808F8A6
 	mov r4, #0
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
@@ -138,7 +138,7 @@ busStation_runBusMoveSequence_controller_808F900:
 loc_808F92C:
 	cmp r4, #1
 	bgt loc_808F93A
-	bl sub_808F9C4
+	bl owPlayer_stepTowardTarget
 	bne loc_808F98A
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
@@ -148,12 +148,12 @@ loc_808F93A:
 	bl sub_808FA84
 	bl ZeroOWPlayerNaviPaletteIndex
 	bl ow_spawnMapObject1b
-	bl sub_808F990
+	bl ow_seatPlayerForBusRide
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
 	b loc_808F98A
 loc_808F954:
-	bl sub_808F9C4
+	bl owPlayer_stepTowardTarget
 	bne loc_808F98A
 	bl owPlayer_enableWallCollision_809e248
 	mov r4, #0
@@ -181,9 +181,9 @@ loc_808F98A:
 
 // symdb: Part of the bus-boarding sequence: locks player input and swaps the overworld player's sprite to the seated/riding pose used while the bus moves.
 // symdb: () -> r0 = 0; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F990.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_seatPlayerForBusRide.yaml
 	thumb_local_start
-sub_808F990:
+ow_seatPlayerForBusRide:
 	push {r5,lr}
 	bl owPlayer_setInteractionLocked_809e230
 	bl sub_809E304
@@ -202,13 +202,13 @@ sub_808F990:
 	bl sprite_update
 	mov r0, #0
 	pop {r5,pc}
-	thumb_func_end sub_808F990
+	thumb_func_end ow_seatPlayerForBusRide
 
 // symdb: Steps the overworld player one 0x10000 unit per axis toward the target coords stored in the state struct (loaded via off_808F5D4), clamping to the target when within one step, writes the new (X, Y, Z=0x400000) coords, and returns 1 if any axis moved this frame or 0 if already on target.
 // symdb: (void) -> r0 = 1 if the player moved this call, 0 if already at target; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F9C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_stepTowardTarget.yaml
 	thumb_local_start
-sub_808F9C4:
+owPlayer_stepTowardTarget:
 	push {r4-r7,lr}
 	ldr r5, off_808FB48 // =off_808F5D4 
 	ldr r5, [r5]
@@ -271,7 +271,7 @@ loc_808FA22:
 	.balign 4, 0
 dword_808FA34:
 	.word 0x10000
-	thumb_func_end sub_808F9C4
+	thumb_func_end owPlayer_stepTowardTarget
 
 	thumb_local_start
 sub_808FA38:
@@ -407,7 +407,7 @@ sub_808FB18:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	bl ow_spawnObject1BAtPlayer
 	bl ZeroOWPlayerNaviPaletteIndex
-	bl sub_808F990
+	bl ow_seatPlayerForBusRide
 	bl owPlayer_clearInteractionLocked_809e23c
 	ldr r1, off_808FB48 // =off_808F5D4 
 	ldr r1, [r1]

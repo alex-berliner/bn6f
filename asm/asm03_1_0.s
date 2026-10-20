@@ -327,7 +327,7 @@ JumpTable8033A1C:
 	.word callback_noop_8033A7C+1 // (self: *const S2011E30 $r5) -> ()
 	.word battle_initBattleStartOverlay_8033A80+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInRealWorld_8033A96+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033AB0+1 // (self: * S2011E30 $r5) -> ()
+	.word battle_runStartAnimFrame+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_resetState_8033AC4+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_stepBattleStartOverlay+1 // (self: * S2011E30 $r5) -> ()
 	.word battle_queueBattleIntroOam+1 // (self: * S2011E30 $r5) -> ()
@@ -400,9 +400,9 @@ onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 // symdb: Per-frame dispatcher called once per battle-start animation tick: queues one OAM entry, conditionally draws the battle-start overlay, and advances the chip-slot gfx/spin SFX.
 // symdb: (r0 = self object, passed through to callees; r1 = frame-index/0 flag per callee) -> r0 = last
 // symdb: callee's return; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033AB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runStartAnimFrame.yaml
 	thumb_local_start
-sub_8033AB0: // (self: * S2011E30 $r5) -> ()
+battle_runStartAnimFrame: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	mov r0, #0
 	bl sprite_queueOamByFrameIndex_8033B80
@@ -410,7 +410,7 @@ sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	bl battle_drawBattleStartOverlay_8033F80
 	bl updateChipSlotGfx_8033C68
 	pop {pc}
-	thumb_func_end sub_8033AB0
+	thumb_func_end battle_runStartAnimFrame
 
 // symdb: Runs the four battle-state (re)initialization routines in order, resetting the battle work area pointed to by r5.
 // symdb: void battle_resetState(struct S2011E30 *self /* r5 */);  /* clobbers r0-r3, flags; preserves

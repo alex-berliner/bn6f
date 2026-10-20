@@ -814,7 +814,7 @@ loc_30060BE:
 	mov r2, #0x10
 	tst r1, r2
 	bne locret_30060E2
-	bl sub_3006108
+	bl sprite_acquireObjPaletteSlot
 	ldrb r1, [r5,#oObjectSprite_OamAttributes]
 	mov r2, #0xf0
 	bic r1, r2
@@ -841,9 +841,9 @@ off_3006104:
 // symdb: Returns the OBJ palette slot index for an object's 16-color palette (applying its color shader first) by matching the byte_3001550 cache; if no match it falls back to sub_3006428 and either marks the sprite dirty or installs the palette in a new slot.
 // symdb: (r5 = object sprite struct; r0 ignored) -> r0 = palette slot index (0xF if all 15 slots are in
 // symdb: use); sets object byte[3] |= 0x10 when a reload is needed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006108.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_acquireObjPaletteSlot.yaml
 	thumb_local_start
-sub_3006108:
+sprite_acquireObjPaletteSlot:
 	push {lr}
 	ldr r0, [r5,#0x1c]
 	ldr r0, [r0,#4]
@@ -933,7 +933,7 @@ off_30061A0:
 	.word dword_200F340
 off_30061A4:
 	.word byte_3001550
-	thumb_func_end sub_3006108
+	thumb_func_end sprite_acquireObjPaletteSlot
 
 	thumb_local_start
 sub_30061A8:
@@ -2990,9 +2990,9 @@ byte_3006F84:
 // symdb: Blits a 12xN 4bpp dialog-font glyph (sourced from byte_86ACD60 + idx*0x60, width from byte_8043CA4) into the chatbox scanline buffer in unk_200BEA0 at the current bit offset, OR-ing a per-chatbox color base from dword_3006B84, then advances the chatbox's tile-buffer-offset field and a 5x-scaled offset by the glyph width.
 // symdb: (r1 = glyph/char index, r5 = chatbox struct, r6 = pen position as bit offset (pixelX*4)) -> r0
 // symdb: clobbered; updates [r5+oChatbox_TileBufferOffset] += width and [r5+oChatbox_Unk_7C] += width*5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006F8C.yaml
-	thumb_func_start sub_3006F8C
-sub_3006F8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_blitGlyph.yaml
+	thumb_func_start chatbox_blitGlyph
+chatbox_blitGlyph:
 	push {r1,r4-r7,lr}
 	mov r7, r8
 	mov r2, r9
@@ -3080,7 +3080,7 @@ off_3007030:
 	.word dword_3006B84
 off_3007034:
 	.word 0x1D0
-	thumb_func_end sub_3006F8C
+	thumb_func_end chatbox_blitGlyph
 
 // symdb: Blits one chatbox text-line tile strip (3 u32 words = 12 tiles) from a per-line ROM template into a destination slot table, masked to `0x3FF` tiles and right-rotated by an amount derived from the line byte width.
 // symdb: (r1 = line index, r6 = packed tile range/width metadata, r8 = dest slot base?, r12 = current) ->
@@ -3346,9 +3346,9 @@ off_300720C:
 // symdb: Applies one collision hit: gates on time-stop and type-flag compatibility, then accumulates damage, element multipliers, status, and hit modifiers into the target's CollisionData; no meaningful return value.
 // symdb: (r0 = target oCollisionData, r1 = attacker oCollisionData) -> r0 = heat-on-grass extra damage
 // symdb: for caller to add; flags from early-exit tst/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007218.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processCollisionHit.yaml
 	thumb_local_start
-sub_3007218:
+battle_processCollisionHit:
 	push {r4,r6,r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -3637,7 +3637,7 @@ loc_300740A:
 	str r2, [r6,r3]
 locret_3007430:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_3007218
+	thumb_func_end battle_processCollisionHit
 
 	thumb_local_start
 // r0 - defending element
@@ -3966,7 +3966,7 @@ object_checkCollisionFlagsAndLinkPair:
 	beq locret_300766A
 	mov r6, r0
 	mov r7, r1
-	bl sub_3007218
+	bl battle_processCollisionHit
 	mov r0, r6
 	mov r1, r7
 	bl sub_3007692
@@ -4382,7 +4382,7 @@ loc_300790A:
 	mov r6, r1
 	mov r0, r4
 	mov r1, r5
-	bl sub_3007978
+	bl object_orHighCollisionFlagsForMaskedEntities
 	orr r6, r0
 	str r6, [r7,#oPanelData_Flags]
 locret_300791C:
@@ -4430,9 +4430,9 @@ off_3007974:
 // symdb: (r0 = word index (0..7) within a 32-byte entry of unk_2034F60, r1 = entry index) -> r0 = OR of
 // symdb: (oCollisionData_SelfCollisionTypeFlags >> 16) over all flagged entities; clobbers r1-r3, no
 // symdb: flags meaningful.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007978.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_orHighCollisionFlagsForMaskedEntities.yaml
 	thumb_local_start
-sub_3007978:
+object_orHighCollisionFlagsForMaskedEntities:
 	lsl r1, r1, #3
 	add r0, r0, r1
 	lsl r0, r0, #2
@@ -4459,7 +4459,7 @@ locret_300799C:
 	.balign 4, 0
 off_30079A0:
 	.word unk_2034F60
-	thumb_func_end sub_3007978
+	thumb_func_end object_orHighCollisionFlagsForMaskedEntities
 
 	thumb_func_start _object_setPanelType
 _object_setPanelType:

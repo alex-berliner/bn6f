@@ -5882,7 +5882,7 @@ off_803BA60:
 	.word word_2006770
 	thumb_func_end sub_803BA28
 
-// symdb: Thin wrapper around sub_803BA84 that forwards a constant (0x30, 0x50, 0x20, 0x10) argument tuple.
+// symdb: Thin wrapper around chatbox_copyScriptExpandEndMarkers that forwards a constant (0x30, 0x50, 0x20, 0x10) argument tuple.
 // symdb: void sub_803BA64(void);  // r5 in; r1,r2,r3,r5 out; r0,lr,nzcv clobbered; r4,r6,r7 preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803BA64.yaml
 	thumb_func_start sub_803BA64
@@ -5892,7 +5892,7 @@ sub_803BA64:
 	mov r1, #0x50
 	mov r2, #0x20
 	mov r3, #0x10
-	bl sub_803BA84
+	bl chatbox_copyScriptExpandEndMarkers
 	pop {r4-r7,pc}
 	thumb_func_end sub_803BA64
 
@@ -5907,16 +5907,16 @@ sub_803BA74:
 	mov r1, #0xb0
 	mov r2, #0x20
 	mov r3, #0x11
-	bl sub_803BA84
+	bl chatbox_copyScriptExpandEndMarkers
 	pop {r4-r7,pc}
 	thumb_func_end sub_803BA74
 
 // symdb: Copies a 2-byte-aligned block of chatbox script from src to dest, then scans backward from the first 0xE6 opcode, expanding each 0xE5 entry into the two-byte pair 0xB2 0xE5, bounded by a count byte in the buffer.
 // symdb: (r0 = src offset, r1 = dest offset, r2 = byte count, r3 = index of count byte in buffer, r5 =
 // symdb: script buffer base) -> void; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BA84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_copyScriptExpandEndMarkers.yaml
 	thumb_local_start
-sub_803BA84:
+chatbox_copyScriptExpandEndMarkers:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp]
@@ -5968,7 +5968,7 @@ loc_803BAC8:
 loc_803BADE:
 	add sp, sp, #8
 	pop {r4-r7,pc}
-	thumb_func_end sub_803BA84
+	thumb_func_end chatbox_copyScriptExpandEndMarkers
 
 // symdb: Advances a battle object's animation-phase counter (byte 0x13) and, during the low phase window [0,0x1F], rewrites the targeted sprite record to either an active {0x25, 0xE6} or idle {0x9F, 0xE5} two-byte state.
 // symdb: u32 animStep_803BAE2(u32 table_index /* r0 */, void *obj /* r5 */);     // r1 out: 0x3F when

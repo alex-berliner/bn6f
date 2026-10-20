@@ -3213,7 +3213,7 @@ signed int startScreen_runJumpTable_813DA94()
 
 
 // 0x813dac0
-void sub_813DAC0()
+void rfu_tryInitLink()
 {
     crt0_start_800027C();
 }

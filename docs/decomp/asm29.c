@@ -3091,7 +3091,7 @@ int battleObject_dispatchOnSubtype_80A781C()
 
 
 // 0x80a783c
-void __noreturn sub_80A783C()
+void __noreturn sprite_setupBeastOutFalzar()
 {
     int v0; // r5
     u8 v1; // r0
@@ -3599,7 +3599,7 @@ int battleObject_dispatchCurAction_80A7C84()
 
 
 // 0x80a7ca4
-void __noreturn sub_80A7CA4()
+void __noreturn spawnBeastSpEncounterObject()
 {
     int v0; // r5
 
@@ -3858,7 +3858,7 @@ int battleObject_aiBeastOutStage_80A7EDA()
 
 
 // 0x80a7ef8
-signed int __noreturn sub_80A7EF8()
+signed int __noreturn object_playAnimAndState()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -4048,7 +4048,7 @@ int battle_dispatchCustomJumptableByIndex_80A8208()
 
 
 // 0x80a822c
-void __noreturn sub_80A822C()
+void __noreturn battleObject_setupBeastSprite()
 {
     int v0; // r5
     u8 v1; // r0
@@ -4056,7 +4056,7 @@ void __noreturn sub_80A822C()
 
     *v0 = 3;
     sprite_load(v0, 128, 28, 86);
-    sub_80A8324();
+    ow_swapMapEventFlags();
     v1 = battleObject_checkSetPriorityByEventFlag_80A82DC();
     *(v0 + 5) = v1;
     sprite_setAnimation(v0, v1);
@@ -4140,7 +4140,7 @@ signed int battleObject_checkSetPriorityByEventFlag_80A82DC()
 
 
 // 0x80a8324
-unsigned int sub_80A8324()
+unsigned int ow_swapMapEventFlags()
 {
     int v0; // r5
     int v1; // r10
@@ -4185,7 +4185,7 @@ int sub_80A8394()
 
 
 // 0x80a83b8
-void __noreturn sub_80A83B8()
+void __noreturn ow_initBeastEventActor()
 {
     int v0; // r5
     int v1; // r6
@@ -4196,7 +4196,7 @@ void __noreturn sub_80A83B8()
     *v0 = 3;
     sprite_load(v0, 128, 28, 82);
     sub_80A84C4();
-    sub_80A8548();
+    sprite_setAnimFromArgs();
     sprite_setAnimation(v0, *(v0 + 4));
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
@@ -4346,7 +4346,7 @@ int __fastcall sub_80A8518(int a1, int a2)
 
 
 // 0x80a8548
-int sub_80A8548()
+int sprite_setAnimFromArgs()
 {
     int v0; // r5
     int v1; // r6
@@ -4410,7 +4410,7 @@ int sub_80A85B4()
     int v8; // r1
 
     v2 = 0;
-    sub_80A8548();
+    sprite_setAnimFromArgs();
     v3 = sub_80A8580();
     v4 = *(v0 + 12);
     v5 = *(v1 + 26) << 16;
@@ -5949,7 +5949,7 @@ void __noreturn object_mrWeatherStep_80A94DC()
 
 
 // 0x80a94f8
-void __noreturn sub_80A94F8()
+void __noreturn object_fadeSpriteToWhiteStep()
 {
     int v0; // r5
     int v1; // r3
@@ -6662,7 +6662,7 @@ int object_timerStateTick()
 
 
 // 0x80a9dfe
-int __fastcall sub_80A9DFE(int a1, int a2, int a3)
+int __fastcall beastsp_updateMotion(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r1

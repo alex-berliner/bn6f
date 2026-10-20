@@ -87,7 +87,7 @@ void __noreturn onUpdateInRealWorld_8033A96()
 
 
 // 0x8033ab0
-void __noreturn sub_8033AB0()
+void __noreturn battle_runStartAnimFrame()
 {
     sprite_queueOamByFrameIndex_8033B80(0);
 }
@@ -9192,19 +9192,19 @@ int sub_803BA28()
 // 0x803ba64
 int sub_803BA64()
 {
-    return sub_803BA84(48, 80, 32, 16);
+    return chatbox_copyScriptExpandEndMarkers(48, 80, 32, 16);
 }
 
 
 // 0x803ba74
 int sub_803BA74()
 {
-    return sub_803BA84(144, 176, 32, 17);
+    return chatbox_copyScriptExpandEndMarkers(144, 176, 32, 17);
 }
 
 
 // 0x803ba84
-signed int __fastcall sub_803BA84(int a1, int a2, int a3, int a4)
+signed int __fastcall chatbox_copyScriptExpandEndMarkers(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int i; // r4

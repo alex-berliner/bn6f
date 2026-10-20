@@ -457,7 +457,7 @@ loc_803FF9E:
 	cmp r1, #0xe4
 	beq ifTwoByteChar_803FFB4
 		ldr r6, [r5,#oChatbox_Unk_7C] // ChatBoxPropreties.unk_7C
-		ldr r3, off_8040038 // =sub_3006F8C+1
+		ldr r3, off_8040038 // =chatbox_blitGlyph+1
 
 		mov lr, pc
 		bx r3
@@ -471,7 +471,7 @@ ifTwoByteChar_803FFB4:
 		add r1, #0xe4
 		mov r0, #0
 		ldr r6, [r5,#oChatbox_Unk_7C]
-		ldr r3, off_8040038 // =sub_3006F8C+1
+		ldr r3, off_8040038 // =chatbox_blitGlyph+1
 		
 		mov lr, pc
 		bx r3
@@ -540,7 +540,7 @@ off_8040030:
 off_8040034:
 	.word chatbox_drawCustomBoxTiles_30070B4+1
 off_8040038:
-	.word sub_3006F8C+1
+	.word chatbox_blitGlyph+1
 	.word byte_8040040
 byte_8040040:
 	.byte 0x0, 0xB, 0x4D, 0x25, 0x44, 0x2A, 0x0, 0x0
@@ -585,7 +585,7 @@ loc_8040088:
 	beq loc_80400A4
 	mov r0, #0
 	ldr r6, [r5,#oChatbox_Unk_7C]
-	ldr r3, off_8040138 // =sub_3006F8C+1
+	ldr r3, off_8040138 // =chatbox_blitGlyph+1
 	mov lr, pc
 	bx r3
 	bl chatbox_advanceNextState_8040C9C
@@ -596,7 +596,7 @@ loc_80400A4:
 	add r1, #0xe4
 	mov r0, #0
 	ldr r6, [r5,#oChatbox_Unk_7C]
-	ldr r3, off_8040138 // =sub_3006F8C+1
+	ldr r3, off_8040138 // =chatbox_blitGlyph+1
 	mov lr, pc
 	bx r3
 	bl chatbox_advanceNextState_8040C9C
@@ -661,7 +661,7 @@ Flags8040130:
 off_8040134:
 	.word chatbox_drawCustomBoxTiles_30070B4+1
 off_8040138:
-	.word sub_3006F8C+1
+	.word chatbox_blitGlyph+1
 	.word byte_8040140
 byte_8040140:
 	.byte 0x0, 0xB, 0x4D, 0x25, 0x44, 0x2A, 0x0, 0x0

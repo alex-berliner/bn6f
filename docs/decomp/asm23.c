@@ -128,7 +128,7 @@ int battleObject_runUpdateJumpTable_80895A8()
 
 
 // 0x808964c
-signed int sub_808964C()
+signed int owPlayer_beastOutFacingStep()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -148,7 +148,7 @@ signed int sub_808964C()
     }
     else
     {
-        sub_81428D4(v1);
+        selectSoulWeaponCursorDir(v1);
         sub_8142990();
         v4 = getSoulWeaponCursorDir8();
         sub_809E2AE(v4);

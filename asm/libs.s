@@ -22981,7 +22981,7 @@ m4aSoundInit:
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 
 	ldr r0, off_814E900 // =iSoundInfo 
-	bl sub_814ECC8
+	bl soundInit
 	ldr r0, off_814E904 // =iCgbChannels 
 	bl cgbSoundInit_814EB84
 	ldr r0, dword_814E908 // =0x93f400 
@@ -23614,9 +23614,9 @@ off_814ECC4:
 // symdb: Initialises the single m4a music player struct at the pointer in r0: zeroes it, resets/rearms DMA1/DMA2 against ChannelA/B FIFOs from offsets +0x350/+0x980, enables PSG (NR52, NR50, NR51, SOUNDBIAS bit6), installs ply_note/nullsub_23 handlers and the CGB channel-default table via sub_814E09C, kicks the PCM rate with SampleFreqSet(0x40000), then stamps the 'Smsh' (0x68736D53) magic at struct[0].
 // symdb: (r0 = pointer to ~4016-byte music player struct) -> r0 = undefined; configures DMA1/DMA2,
 // symdb: NR52/NR50/NR51, SOUNDBIAS and the player struct in place
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814ECC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/soundInit.yaml
 	thumb_local_start
-sub_814ECC8:
+soundInit:
 	push {r4,r5,lr}
 	sub sp, sp, #4
 	mov r5, r0
@@ -23741,7 +23741,7 @@ off_814EDB8:
 	.word off_3005570
 dword_814EDBC:
 	.word 0x68736D53
-	thumb_func_end sub_814ECC8
+	thumb_func_end soundInit
 
 // symdb: m4a's SampleFreqSet: turns a sound id's rate group into pcmDmaPeriod, pcmFreq and divFreq and restarts the PCM DMA.
 // symdb: static VsyncOnRegisters sample_freq_set(u32 sound_id) (runs sound_vsync_off inside and returns

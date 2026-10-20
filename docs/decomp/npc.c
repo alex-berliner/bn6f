@@ -1162,7 +1162,7 @@ int NPCCommand_init_mystery_data()
     *(v0 + 96) |= 0xC02u;
     v2 = ReadNPCScriptHalfword((v1 + 1));
     *(v0 + 144) = v2;
-    v3 = sub_809FC1C(v2);
+    v3 = mysteryData_registerNpcVisit(v2);
     if ( v3 )
     {
         *(v0 + 22) = byte_809F0E4[v3];

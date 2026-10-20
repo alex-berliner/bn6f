@@ -70,7 +70,7 @@ int __fastcall sub_8086DF8(int a1, int a2, int a3, int a4)
                 SetEventFlagFromImmediate(5, 229);
         }
         if ( *(*(v4 + 60) + 4) == 129 )
-            sub_800060A(35, 129, v7);
+            sound_queueSfxWithVolume(35, 129, v7);
         sub_8086F18();
         spawn_spawnObjectSwarm();
         result = 0;

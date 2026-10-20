@@ -185,14 +185,14 @@ void *startScreen_runBeastCutscene_8086FD8()
     }
 LABEL_31:
     if ( *(*(v1 + oToolkit_GameStatePtr) + oGameState_MapGroup) == 129 )
-        sub_800060A(35, 129, v12);
+        sound_queueSfxWithVolume(35, 129, v12);
     sub_8086F18();
     return spawn_spawnObjectSwarm();
 }
 
 
 // 0x808711c
-void *__fastcall sub_808711C(int a1, int a2, int a3, int a4)
+void *__fastcall battle_beastSpStartCutscene(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     char *v5; // r0

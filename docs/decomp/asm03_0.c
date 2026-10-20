@@ -1948,7 +1948,7 @@ int __fastcall battle_customScreenChipUseAnimStep(int a1, int a2, int a3)
     *(v3 + 64) = v5;
     if ( v5 > 5 )
     {
-        sub_80279FC();
+        initBackgroundTilemap();
         battle_customScreen_clearSelection_80279C8(v6);
         battleObject_runCustomScreenChipPickerEffect_8028476();
         *(v3 + 1) = 4;
@@ -2044,7 +2044,7 @@ int __fastcall battle_customScreen_clearSelection_80279C8(int a1)
 
 
 // 0x80279fc
-void sub_80279FC()
+void initBackgroundTilemap()
 {
     signed __int16 v0; // r2
     unsigned __int8 *v1; // r6
@@ -2123,7 +2123,7 @@ int battle_customScreenConfirmSelectedChip()
     {
         engine_setScreeneffect(0, 32);
         sub_802A088(*(v0 + 26));
-        sub_80279FC();
+        initBackgroundTilemap();
         battle_customScreen_clearSelection_80279C8(v2);
         battleObject_runCustomScreenChipPickerEffect_8028476();
         PlaySoundEffect(146, v3, v4);
@@ -2135,7 +2135,7 @@ int battle_customScreenConfirmSelectedChip()
 
 
 // 0x8027ade
-int sub_8027ADE()
+int battle_tickTutorialCustomScreen()
 {
     int v0; // r5
     int result; // r0
@@ -2144,7 +2144,7 @@ int sub_8027ADE()
     result = IsPaletteFadeActive();
     if ( !result )
     {
-        sub_80279FC();
+        initBackgroundTilemap();
         battle_customScreen_clearSelection_80279C8(v2);
         battleObject_runCustomScreenChipPickerEffect_8028476();
         *(v0 + 1) = 4;
@@ -6434,7 +6434,7 @@ int __fastcall ow_scrollBg2LeftStepState(int a1, int a2, int a3)
 
 
 // 0x802a9d0
-int __fastcall sub_802A9D0(int a1, int a2, int a3)
+int __fastcall battlePickTwoGridItems(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -8118,7 +8118,7 @@ int battle_chipSelectAnimTileStep()
 
 
 // 0x802c0a4
-int sub_802C0A4()
+int submenu_dispatchPendingSelection()
 {
     int v0; // r5
     int result; // r0
@@ -16301,7 +16301,7 @@ int sub_8031C5A()
 
 
 // 0x8031c64
-int __fastcall sub_8031C64(_DWORD *a1)
+int __fastcall battle_getCursorBlinkIfTargetOnNegativeSide(_DWORD *a1)
 {
     int *v1; // r0
     int v2; // r1

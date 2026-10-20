@@ -3724,7 +3724,7 @@ sprite_stage2InitBattleState_8124E7C:
 	ldrh r0, [r5,#0x2c]
 	strh r0, [r5,#0x2e]
 	mov r0, #0x14
-	bl sub_8125678
+	bl sprite_stage2SubmenuHandleInput
 	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
 	bl sub_8126524
@@ -3985,7 +3985,7 @@ loc_8125080:
 loc_8125090:
 	mov r2, #7
 	bl sprite_setStructHalfwordPairOnThree_8117084
-	bl sub_81267F0
+	bl battle_queueFixedOverlayOam
 	pop {pc}
 	thumb_func_end sub_812503C
 
@@ -4020,7 +4020,7 @@ loc_81250CE:
 	bl sub_8126554
 	bl sub_812674C
 	bl sprite_queueBattleOamEntry
-	bl sub_81267F0
+	bl battle_queueFixedOverlayOam
 	pop {pc}
 	thumb_func_end battle_runIntro_812508C_812509C
 
@@ -4116,7 +4116,7 @@ battle_transitionTick_8125170:
 	bl battle_runTransition_8125444
 	bl sub_8126114
 	bl sub_8126554
-	bl sub_81267F0
+	bl battle_queueFixedOverlayOam
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8125194
 	mov r0, #8
@@ -4224,7 +4224,7 @@ loc_8125238:
 loc_8125248:
 	mov r2, #7
 	bl sprite_setStructHalfwordPairOnThree_8117084
-	bl sub_81267F0
+	bl battle_queueFixedOverlayOam
 	pop {pc}
 	thumb_func_end sub_81251F4
 
@@ -4736,9 +4736,9 @@ off_8125674:
 // symdb: Per-frame input handler for a battle-sprite submenu: Start/B records selection 0x3C and triggers exit+fade, Right writes state 0x48 or 0x1c based on [r5+0x64], Left writes 0x14 (all play SFX 0x7A); Up/Down delegate to sub_8125820 after swapping in [r5+0x60] as the cursor field at [r5+0x26].
 // symdb: (r0 = context/r5 struct ptr, uses toolkit joypad via r10) -> r0 = clobbered; sets state byte
 // symdb: [r5+2], plays SFX 0x7A, or exits menu
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125678.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_stage2SubmenuHandleInput.yaml
 	thumb_local_start
-sub_8125678:
+sprite_stage2SubmenuHandleInput:
 	push {r4-r7,lr}
 	mov r8, r0
 	mov r7, r10
@@ -4812,7 +4812,7 @@ locret_81256FC:
 	.balign 4, 0
 off_8125700:
 	.word 0x300
-	thumb_func_end sub_8125678
+	thumb_func_end sprite_stage2SubmenuHandleInput
 
 // symdb: Per-frame input handler for a submenu screen: B/START exit with fade, Left/Right switch a mode byte, Up/Down move a 7-row list cursor.
 // symdb: (r0 = state ptr in r8, r5 = state ptr) -> void; writes state fields, plays SFX, may start fade
@@ -5729,7 +5729,7 @@ battle_drawCustFolderSlots_8125D10:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x70 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0xa0
 	add r0, #0x11
@@ -5800,7 +5800,7 @@ submenu_redrawFolderScreen:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x70 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x83
 	add r0, #6
@@ -5838,7 +5838,7 @@ loc_8125E10:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x83
 	add r0, #3
@@ -5909,7 +5909,7 @@ bg_drawArenaTiles_8125E78:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x70 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x71 
 	add r0, #6
@@ -5947,7 +5947,7 @@ loc_8125EF4:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x71 
 	add r0, #3
@@ -6015,7 +6015,7 @@ sub_8125F5C:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5f 
 	add r0, #6
@@ -6053,7 +6053,7 @@ loc_8125FD8:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5f 
 	add r0, #3
@@ -6116,7 +6116,7 @@ battle_drawChipSelectScreen:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4d 
 	add r0, #6
@@ -6154,7 +6154,7 @@ loc_81260AC:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4d 
 	add r0, #3
@@ -6224,7 +6224,7 @@ sub_8126114:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4d 
 	add r0, #6
@@ -6241,7 +6241,7 @@ loc_8126160:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x4c 
 	add r0, #1
@@ -6280,7 +6280,7 @@ sub_8126184:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5f 
 	add r0, #6
@@ -6297,7 +6297,7 @@ loc_81261D0:
 	mov r3, #0xa
 	mov r4, #0xb
 	mov r5, #0x71 
-	bl sub_812626C
+	bl submenu_drawChipNameTiles
 	ldr r0, [r7,#0x74]
 	sub r0, #0x5e 
 	add r0, #1
@@ -6391,9 +6391,9 @@ bg_drawTileStrip3Wide:
 // symdb: (r0 = entry index, r1 = entry-table base (4 bytes/entry: u16 chip code+id, u8 color flag at +2),
 // symdb: r2 = tilemap dest strip, r3 = palette A, r4 = palette B, r5 = (entryCount<<4 | clearMode)) ->
 // symdb: writes 8 halfword tilemap entries per strip per entry; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812626C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_drawChipNameTiles.yaml
 	thumb_local_start
-sub_812626C:
+submenu_drawChipNameTiles:
 	push {r4-r7,lr}
 	mov r6, r8
 	mov r7, r9
@@ -6499,7 +6499,7 @@ loc_812631A:
 	mov r9, r7
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812626C
+	thumb_func_end submenu_drawChipNameTiles
 
 // symdb: Renders up to 5 chip-name strings from a list of chip-code entries into tilemap buffers, zero-filling empty slots.
 // symdb: (r0:r1 = array of 4-byte entries {halfword char code, halfword param}; r2 = dest tilemap buffer;
@@ -7264,9 +7264,9 @@ dword_81267EC:
 // symdb: If [r5+0x3a] is non-zero, queues one fixed animated overlay OAM entry (r0=0x43, r1=0xe, r2=0, r3=0x11, r4=byte_8124A98, r6=0x40000000, r7=byte_8124A9E) via battle_queueAnimatedOamEntry; otherwise returns immediately.
 // symdb: (r5 = battle object, flag at [r5+0x3a]) -> none; queues an OAM entry via
 // symdb: battle_queueAnimatedOamEntry when flag != 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81267F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueFixedOverlayOam.yaml
 	thumb_local_start
-sub_81267F0:
+battle_queueFixedOverlayOam:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x3a]
 	tst r0, r0
@@ -7288,7 +7288,7 @@ dword_8126810:
 	.word 0x40000000
 off_8126814:
 	.word byte_8124A9E
-	thumb_func_end sub_81267F0
+	thumb_func_end battle_queueFixedOverlayOam
 
 // symdb: Initialises a small buffer at oToolkit_Unk200f3a0 (chip-sprite slot staging area) for an idle chip-frame sprite: writes fixed tile-index/palette bytes, picks left/right slot positions from the linked battle object's Unk_3a, then writes the final frame-and-duration slots (id 0x2F, y=0x58).
 // symdb: (r0 = stageBuffer base ptr OR 0 to default, r5 = linked BattleObject, r10 = Toolkit) -> r0 =
@@ -7785,7 +7785,7 @@ off_8126DBC:
 off_8126DC0:
 	.word chatbox_fadeGuardThenRunState_8126DF8+1
 	.word battle_cursorMoveAndDispatchNext_8126E10+1
-	.word sub_8126E88+1
+	.word battle_markSuspendDuringFade+1
 	.word battle_cmdWaitForScreenFade+1
 	.word submenu_stepSlideToSelection+1
 	.word sub_8126F40+1
@@ -7841,7 +7841,7 @@ loc_8126E28:
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8126E68
 loc_8126E36:
-	bl sub_8127264
+	bl battle_menuOpenScreenFade
 	bne loc_8126E80
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -7883,9 +7883,9 @@ loc_8126E80:
 // symdb: Battle-object command step that, if a screen fade is active, marks the object suspended (sets [r5+1]=8 and ORs 1 into [r5+0xC]) and then queues the next command via battle_dispatchNextCmd_81272C4.
 // symdb: (r5 = battle object) -> void; calls battle_dispatchNextCmd_81272C4 to continue the object's
 // symdb: command queue.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126E88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_markSuspendDuringFade.yaml
 	thumb_local_start
-sub_8126E88:
+battle_markSuspendDuringFade:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8126E9C
@@ -7899,7 +7899,7 @@ loc_8126E9C:
 	bl battle_dispatchNextCmd_81272C4
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8126E88
+	thumb_func_end battle_markSuspendDuringFade
 
 // symdb: Battle-object command handler that stalls the object while a screen fade is active, then advances to its next command.
 // symdb: (r5 = battle object ptr, set by dispatcher; no args in r0-r3) -> r0 = result of
@@ -8356,9 +8356,9 @@ off_81271C8:
 // symdb: Only proceeds when chatbox flag bit 0x20 is SET (cutscene/chatbox context active); otherwise returns 0. Builds a 2-bit mask from EVENT_F2/F7, resolves a target (non-default PET navi → 0xc; both flags set with default navi → chatbox_GetState+1; else r7 as-is), calls SetScreenFade(12,12), and writes 8 or 0xc to [r5+2], returning 1.
 // symdb: (r5 = menu/task work struct; writes screen id to [r5+2]) -> r0 = 1 if a screen change was
 // symdb: started, 0 if suppressed by chatbox flag 0x20; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127264.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_menuOpenScreenFade.yaml
 	thumb_local_start
-sub_8127264:
+battle_menuOpenScreenFade:
 	push {r4-r7,lr}
 	mov r4, #0
 	mov r0, #0x20 
@@ -8405,7 +8405,7 @@ loc_81272BE:
 	mov r0, r4
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8127264
+	thumb_func_end battle_menuOpenScreenFade
 
 // symdb: Queues the next battle-object command for the object being updated, choosing between CMD_A and CMD_B based on the object's state bytes.
 // symdb: void battle_dispatchNextCmd_81272C4(u32 obj_ptr /*r5*/); clobbers r0-r3,r6-r7,nzcv; preserves
@@ -9510,8 +9510,8 @@ battle_sceneReset_8127A1C:
 	strb r0, [r1,#0x1] // (byte_2000FE1 - 0x2000fe0)
 	bl battle_fieldLockApply
 	bl palette_fillBufferWithFadeByte_8128260
-	bl sub_8127E9C
-	bl sub_8128008
+	bl npc_runFlagConditionalText
+	bl npc_renderEntryRows
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	bl sub_81281E0
 	bl battle_checkSubFlags_8128280
@@ -9595,7 +9595,7 @@ loc_8127B2A:
 	tst r0, r0
 	beq loc_8127B22
 	bl sub_8128318
-	bl sub_8128008
+	bl npc_renderEntryRows
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
@@ -9627,7 +9627,7 @@ loc_8127B72:
 	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq locret_8127B8E
-	bl sub_8128008
+	bl npc_renderEntryRows
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 locret_8127B8E:
 	pop {pc}
@@ -9663,7 +9663,7 @@ chatbox_completeCutsceneStep:
 	add r0, r0, r4
 	mov r0, r0
 	bl SetEventFlag
-	bl sub_8128008
+	bl npc_renderEntryRows
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	mov r4, #4
 	strb r4, [r5,#2]
@@ -9715,7 +9715,7 @@ loc_8127C1E:
 	strb r0, [r2,#0x1] // (byte_2000FE1 - 0x2000fe0)
 loc_8127C26:
 	bl battle_fieldLockApply
-	bl sub_8128008
+	bl npc_renderEntryRows
 	bl bg_ReloadBackgroundRegion_5_3_81281C0
 	b loc_8127C46
 loc_8127C34:
@@ -9969,9 +9969,9 @@ off_8127E18:
 // symdb: Picks one of three chatbox text variants (0/1/2) for an NPC: uses variant 2 if the object's story-flag index at +0x1E is zero, otherwise counts matching story flag pairs via sub_8127EF4 and compares the count to [GameState+0x78] (when +0xD bit0 set) or GameState+0x13 byte (equal → variant 1, else variant 0), then dispatches via chatbox_runVariantScript and clears object byte +0x02.
 // symdb: (r5 = ow/NPC object, r10 = toolkit) -> r0 = 0; runs chatbox variant 0/1/2 on the object and
 // symdb: clears object+0x02
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127E9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_runFlagConditionalText.yaml
 	thumb_local_start
-sub_8127E9C:
+npc_runFlagConditionalText:
 	push {r4,lr}
 	ldrh r0, [r5,#0x1e]
 	tst r0, r0
@@ -10003,7 +10003,7 @@ loc_8127EC8:
 	mov r0, #0
 	strb r0, [r5,#2]
 	pop {r4,pc}
-	thumb_func_end sub_8127E9C
+	thumb_func_end npc_runFlagConditionalText
 
 // symdb: Runs a chatbox text script from a fixed archive, switching to an alternate variant (index +10) when bit 0 of a context flag byte is set.
 // symdb: void chatbox_runVariantScript_8127ED4(u32 scriptIdx /*r0*/, /*r5 = context object, [r5+0xD] =
@@ -10204,9 +10204,9 @@ dword_8128004:
 // symdb: Renders up to four NPC entry-selection rows (row gfx, secondary gfx, and a text-script name) into BG tile VRAM from per-row buffers, clamped to 4 rows.
 // symdb: (r5 = state struct: u16 count at +0x1e (clamped <=4), u16 first-row index at +0x24; r0 = 0x201
 // symdb: flag mask for the table build) -> r0 = clobbered; renders 4 rows max
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128008.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_renderEntryRows.yaml
 	thumb_local_start
-sub_8128008:
+npc_renderEntryRows:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	ldr r0, off_81280B0 // =0x201 
@@ -10314,7 +10314,7 @@ dword_81280D4:
 	.word 0x6004560
 off_81280D8:
 	.word 0x5C0
-	thumb_func_end sub_8128008
+	thumb_func_end npc_renderEntryRows
 
 // symdb: Initializes the NPC entry-event table at unk_2026700 (zero-fills 0x170 bytes) and stamps sequential 16-bit event numbers into each NPC's two u16 arrays, using three sub-runs with flag masks 0x7000, 0x9000, and 0x7000, with per-entry event/flag derived from npc_checkEntryEventFlagOrHidden.
 // symdb: void buildNpcEntryEventTable_81280DC(u32 start_event /* r0 */, u32 count /* r1 */);   // out: r2
@@ -12528,7 +12528,7 @@ off_81292BC:
 	.word battle_initFullCutscene_81292D8+1
 	.word battle_submenuInputUpdate_812933C+1
 	.word scene_runFadePopTick_8129400+1
-	.word sub_8129454+1
+	.word menu_yesNoPromptUpdate+1
 	.word battle_updateEntitiesAndStartFadeOut+1
 	.word sub_812954C+1
 	.word battle_frameUpdateAndStopRfuAfterFade+1
@@ -12731,9 +12731,9 @@ dword_8129450:
 // symdb: Per-frame update for a yes/no-style eStruct menu prompt, gated on IsScreenFadeActive: moves the 3-state cursor (0↔1 left/right, 2 up/down with >>1 shift), shows the chosen option's text via chatbox_runScript from table 0x5C5D5D, and on A/B sets state bytes and fades the screen.
 // symdb: (r0-r4 = scratch; r5 = menu state struct, r10 = toolkit) -> void; writes state bytes
 // symdb: r5+0x01/0x02/0x03, cursor r5+0x0D and mirror r5+0x21, eStruct jump offset, screen fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129454.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_yesNoPromptUpdate.yaml
 	thumb_local_start
-sub_8129454:
+menu_yesNoPromptUpdate:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8129514
@@ -12834,7 +12834,7 @@ off_8129524:
 	.word dword_8129528
 dword_8129528:
 	.word 0x5C5D5D
-	thumb_func_end sub_8129454
+	thumb_func_end menu_yesNoPromptUpdate
 
 // symdb: Battle-frame tick: updates all entities and sprites, then when no screen fade is running kicks off a fade-out and marks the battle state 0xC.
 // symdb: (no args; r5 = battle state struct) -> r0 = SetScreenFade result/void; flags from

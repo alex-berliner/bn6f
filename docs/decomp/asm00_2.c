@@ -2473,7 +2473,7 @@ int battle_startObjectInvisible()
 
 
 // 0x8010488
-int sub_8010488()
+int battle_onHit()
 {
     int v0; // r5
     int v1; // r7
@@ -7174,7 +7174,7 @@ signed int __fastcall sub_8013554(int a1, int a2, int a3, int a4)
 
 
 // 0x80135e8
-signed int __fastcall sub_80135E8(int a1, int a2, int a3, int a4)
+signed int __fastcall battle_initChipSelectState(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     __int16 v5; // r0
@@ -18882,7 +18882,7 @@ int __fastcall battle_drawTimerTiles_801C4E4(int a1)
 
 
 // 0x801c576
-void __fastcall sub_801C576(int a1)
+void __fastcall battle_drawGaugeOverlay(int a1)
 {
     unsigned __int8 *v1; // r5
     unsigned int v2; // r6

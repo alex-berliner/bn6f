@@ -58,7 +58,7 @@ int __fastcall music_80005F2(int a1, int a2, int a3)
 
 
 // 0x800060a
-int __fastcall sub_800060A(int a1, int a2, int a3)
+int __fastcall sound_queueSfxWithVolume(int a1, int a2, int a3)
 {
     int v3; // r1
 

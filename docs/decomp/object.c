@@ -310,7 +310,7 @@ void __fastcall __noreturn drawPanelUnderStrip_800C100(int a1, int a2, int a3)
 
 
 // 0x800c138
-void __fastcall __noreturn sub_800C138(int a1, int a2)
+void __fastcall __noreturn battle_erasePanelRow(int a1, int a2)
 {
     int v2; // r10
 
@@ -551,7 +551,7 @@ int updateBattlePanels_800C5E0()
             {
                 drawPanel_800C01C(v2, v3, 255, 0);
                 v7 = v0[7];
-                sub_800C138(v0[10], v0[11] + 1);
+                battle_erasePanelRow(v0[10], v0[11] + 1);
             }
             if ( v0[13] )
             {
@@ -2788,7 +2788,7 @@ signed int __usercall battleObject_applyHPAndHandleSpecial_800E2FC@<R0>(Battle *
 
 
 // 0x800e360
-signed int __fastcall sub_800E360(int a1, int a2)
+signed int __fastcall battle_applyHPRecovery(int a1, int a2)
 {
     Battle *v2; // r5
     int v3; // r6

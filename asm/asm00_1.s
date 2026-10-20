@@ -5396,7 +5396,7 @@ JumpTable8005948:
   // underground warp
 	.word start_cutsceneWithFlagSwap+1 // (self: * GameState $r5) -> ()
   // todo check this one with sound. like 0x0, but has a delay + plays a hardcoded sound
-	.word sub_8005A28+1 // (self: * GameState $r5) -> ()
+	.word start_setEventsAndFade+1 // (self: * GameState $r5) -> ()
   // same as above, but with a different delay
 	.word gameState_fadeToOverworldAfterEvent+1 // (self: * GameState $r5) -> ()
 	thumb_func_end owMap_checkWarpTrigger_80058D0
@@ -5548,9 +5548,9 @@ start_cutsceneWithFlagSwap: // (self: * GameState $r5) -> ()
 // symdb: GameState one-shot handler that sets EVENT_1703 and EVENT_1738, triggers a screen fade via SetScreenFade(0xc,0x10), ticks the countdown-timer table, writes 0x3c to FrameCountdown, and sets byte 0x10 into SubsystemIndex to hand off to another subsystem.
 // symdb: (r5 = * GameState) -> void; sets EVENT_1703 and EVENT_1738, starts fade, reprograms
 // symdb: r5.FrameCountdown and r5.SubsystemIndex
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_setEventsAndFade.yaml
 	thumb_local_start
-sub_8005A28: // (self: * GameState $r5) -> ()
+start_setEventsAndFade: // (self: * GameState $r5) -> ()
 	push {lr}
 
 	movflag EVENT_1703
@@ -5573,7 +5573,7 @@ sub_8005A28: // (self: * GameState $r5) -> ()
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
 	pop {pc}
-	thumb_func_end sub_8005A28
+	thumb_func_end start_setEventsAndFade
 
 // symdb: One-shot game state handler: sets two story event flags, starts a screen fade, delays 160 frames, then hands control to the overworld subsystem.
 // symdb: (r5 = * GameState, self) -> void; no return value, writes SubsystemIndex = 0x10 to schedule
@@ -8982,7 +8982,7 @@ loc_8007208:
 
 	b loc_8007236
 loc_8007232:
-	bl sub_80027E4
+	bl battle_initSpriteProjection
 
 loc_8007236:
 	mov r0, #1
@@ -11097,7 +11097,7 @@ off_8008038:
 	.word sub_80082DC+1
 	.word sub_800834A+1
 	.word sub_80083E4+1
-	.word sub_8008452+1
+	.word battle_stepIntroPhase+1
 	.word battle_objAdvanceStateTimer_8008492+1
 off_8008060:
 	.word dword_203CA70
@@ -11640,9 +11640,9 @@ locret_8008450:
 // symdb: (r0-r3 = scratch/call context, r5 = phase-state struct: word +0 = next phase id, byte +3 = init-
 // symdb: done flag) -> r0 = result of sub_802D6C4 (nonzero = phase still running) or 0x24 (next phase id
 // symdb: written to [r5]) when the phase ends
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008452.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepIntroPhase.yaml
 	thumb_local_start
-sub_8008452:
+battle_stepIntroPhase:
 	push {lr}
 	bl GetBattleMode
 	cmp r0, #5
@@ -11671,7 +11671,7 @@ loc_800848C:
 	str r0, [r5]
 locret_8008490:
 	pop {pc}
-	thumb_func_end sub_8008452
+	thumb_func_end battle_stepIntroPhase
 
 // symdb: State-machine step for a battle object pointed to by r5, choosing between starting a timed state 4 and jumping to state 6 based on battle mode 5, battle flag 0x40 and a check in sub_801483C.
 // symdb: void sub_8008492(void); /* in: r5 = battle object/work struct ptr; out: none (r0 holds 4/6 or
@@ -14276,7 +14276,7 @@ sub_800961C:
 off_800962C:
 	.word off_8009630
 off_8009630:
-	.word sub_8009658+1
+	.word battle_startBattleIntro+1
 	.word sub_8009734+1
 	.word battle_stateWaitFinishPhase+1
 	.word sub_800980E+1
@@ -14291,9 +14291,9 @@ off_8009630:
 // symdb: Battle-state phase-4 handler: init spawns a type-4 object and enemy objects, pauses, applies navi stats, plays encounter BGM; subsequent frames run sub_80096E0 then poll bit 2 of unk5c and dispatch the intro-finished transition to the next state.
 // symdb: (r5 = battle state) -> updates oBattleState_SubPhaseInitFlag, State4EventCount, StatePhase,
 // symdb: Index_01; r0 = 0/1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009658.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startBattleIntro.yaml
 	thumb_local_start
-sub_8009658:
+battle_startBattleIntro:
 	push {r4,r6,r7,lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14358,7 +14358,7 @@ loc_80096D8:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80096DE:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_8009658
+	thumb_func_end battle_startBattleIntro
 
 // symdb: Battle state handler that requests and dispatches battle state 0x404, sets up the scene frame, and zeroes the custom gauge at battle start.
 // symdb: () -> r0 clobbered; requests+dispatches state 0x404, sets custom gauge to 0
@@ -15241,7 +15241,7 @@ off_8009CA8:
 	.word battle_initBattlePhase+1
 	.word sub_8009D78+1
 	.word battle_dispatchPhaseHandler+1
-	.word sub_8009E56+1
+	.word battle_resolveBattleOutcome+1
 	.word sub_8009EE2+1
 	.word battle_fadeOutPhase+1
 	.word NULL
@@ -15489,9 +15489,9 @@ locret_8009E54:
 // symdb: Battle-state handler that, after the hand-validation helper returns a nonzero outcome code (1/2/7), records that result and busting-level category, writes BattlePhase to eStruct fields, gates phase-2 completion on battle-effect bits 0x8/0x2/0x400, then sets Index_01 (0x14 or 0) and clears StatePhaseAndInitFlag to advance the state machine.
 // symdb: (r5 = current battle state object) -> void; sets battle state fields BattlePhase->result byte,
 // symdb: BustingLevelCategory, Index_01, StatePhaseAndInitFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E56.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resolveBattleOutcome.yaml
 	thumb_local_start
-sub_8009E56:
+battle_resolveBattleOutcome:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15554,7 +15554,7 @@ loc_8009EDA:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009EE0:
 	pop {r4,pc}
-	thumb_func_end sub_8009E56
+	thumb_func_end battle_resolveBattleOutcome
 
 	thumb_local_start
 sub_8009EE2:
@@ -18819,7 +18819,7 @@ loc_800B1DC:
 loc_800B1E6:
 	mov r0, #0xc
 	add r0, r0, r4
-	bl sub_80135E8
+	bl battle_initChipSelectState
 	b loc_800B242
 loc_800B1F0:
 	mov r0, #0

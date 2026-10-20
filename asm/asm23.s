@@ -828,7 +828,7 @@ loc_80895B8:
 off_80895BC:
 	.word jt_80895C0
 jt_80895C0:
-	.word sub_808964C+1
+	.word owPlayer_beastOutFacingStep+1
 	.word sub_80896B0+1
 	.word sub_80896C4+1
 	.word battle_scenarioEffectInputStep+1
@@ -868,9 +868,9 @@ jt_80895C0:
 // symdb: Overworld Beast-Out step: sets player facing then plays the matching fixed animation (facing value as id on the zero path, table-indexed 0x29–0x2C on the nonzero path), clears AIData+0x18 or runs a sub-chain, and writes the next state byte (0x74 or 4) into [r5].
 // symdb: (r0 = arg passed to sub_814219C, r5 = caller object whose first byte is the next state) -> r0 =
 // symdb: 1 always; flags from sub_814219C branch
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808964C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_beastOutFacingStep.yaml
 	thumb_local_start
-sub_808964C:
+owPlayer_beastOutFacingStep:
 	push {r4-r7,lr}
 	bl e_scenarioEffectStateCountersAnySet
 	bne loc_808966E
@@ -884,7 +884,7 @@ sub_808964C:
 	strb r0, [r5]
 	b loc_80896A0
 loc_808966E:
-	bl sub_81428D4
+	bl selectSoulWeaponCursorDir
 	mov r4, r0
 	bl sub_8142990
 	mov r1, r4
@@ -908,7 +908,7 @@ off_80896A4:
 	.word byte_80896A8
 byte_80896A8:
 	.byte 0xFF, 0x29, 0xFF, 0x2A, 0xFF, 0x2B, 0xFF, 0x2C
-	thumb_func_end sub_808964C
+	thumb_func_end owPlayer_beastOutFacingStep
 
 	thumb_local_start
 sub_80896B0:

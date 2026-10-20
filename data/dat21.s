@@ -8060,7 +8060,7 @@ dead_8086CF4:
 	b loc_8086D10
 loc_8086D0A:
 	mov r0, #0x11
-	bl sub_800060A
+	bl sound_queueSfxWithVolume
 loc_8086D10:
 	mov r0, #0
 	pop {pc}
@@ -8127,7 +8127,7 @@ sub_8086DBC:
 	cmp r1, #0x81
 	bne loc_8086DDC
 	mov r0, #0x11
-	bl sub_800060A
+	bl sound_queueSfxWithVolume
 loc_8086DDC:
 	mov r0, #0
 	pop {r5, pc}
@@ -8188,7 +8188,7 @@ loc_8086E50::
 	cmp r1, #0x81
 	bne loc_8086E60
 	mov r0, #0x23 
-	bl sub_800060A
+	bl sound_queueSfxWithVolume
 loc_8086E60::
 	bl sub_8086F18
 	bl spawn_spawnObjectSwarm
@@ -8239,7 +8239,7 @@ loc_8086EBA:
 	movflag EVENT_5ED
 	bl TestEventFlagFromImmediate
 	beq loc_8086ECC
-	bl sub_808711C
+	bl battle_beastSpStartCutscene
 loc_8086ECC:
 	bl sub_80871F4
 	pop {r4-r7, pc}
