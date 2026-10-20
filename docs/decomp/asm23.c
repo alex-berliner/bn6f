@@ -209,7 +209,7 @@ signed int __fastcall battle_scenarioEffectInputStep(int a1, int a2, int a3)
         else
         {
             camera_startCutsceneScript();
-            sub_80468EC(1);
+            battle_clearEntryFlagAndMakeUnscalable_80468EC(1);
             *v3 = 24;
         }
     }
@@ -289,7 +289,7 @@ signed int __fastcall battleObject_scenarioEffectInputHandler_8089704(int a1, in
 
 
 // 0x8089792
-signed int __fastcall sub_8089792(int a1)
+signed int __fastcall ai_startChatScriptAtScenarioState2_8089792(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r0
@@ -323,7 +323,7 @@ signed int battleObject_beastOut_checkOrInit_80897A6()
                 ow_freeMapObjectTrio();
                 v2 = battle_getScenarioEffectStateField_81421D0();
                 sub_81421B2(v2);
-                sub_80468EC(1);
+                battle_clearEntryFlagAndMakeUnscalable_80468EC(1);
                 ai_setAIDataUnk18_8089CB0(10);
                 *v0 = 32;
             }
@@ -443,7 +443,7 @@ signed int battle_tickBeastSp_808985A()
 
 
 // 0x808989c
-signed int __fastcall sub_808989C(int a1)
+signed int __fastcall ai_chatScriptTickStoreState38_808989C(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -1067,7 +1067,7 @@ int ow_freeMapObjectTrio()
 char *battle_initBeastSpAIChipQueues()
 {
     battleObject_initAIChipQueueSlot_80468C6(4, 1, 0);
-    sub_80468EC(0);
+    battle_clearEntryFlagAndMakeUnscalable_80468EC(0);
     return battleObject_initAIChipQueueSlot_80468C6(3, 0, 1);
 }
 
@@ -1075,7 +1075,7 @@ char *battle_initBeastSpAIChipQueues()
 // 0x8089d44
 char *battle_initAIChipQueueSlot3()
 {
-    sub_80468EC(0);
+    battle_clearEntryFlagAndMakeUnscalable_80468EC(0);
     return battleObject_initAIChipQueueSlot_80468C6(3, 0, 0);
 }
 

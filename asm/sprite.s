@@ -1329,9 +1329,9 @@ loc_8002DFE:
 // symdb: Selects one of up to 16 sub-entries of an object via the high nibble of byte +2 and tests that sub-entry's bit 3 (hidden/disabled-style attribute), returning its address and the masked flag.
 // symdb: u32 checkSubEntryHiddenFlag(void) /* in: r5 = object ptr, lr = return addr; out: r3 = sub-entry
 // symdb: ptr, r0 = (entry[+3] & 0x08), NZ flags from r0; clobbers r0-r3, C, V */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8002E04.yaml
-	thumb_func_start sub_8002E04
-sub_8002E04:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkSubEntryHiddenFlag_8002E04.yaml
+	thumb_func_start checkSubEntryHiddenFlag_8002E04
+checkSubEntryHiddenFlag_8002E04:
 	ldrb r3, [r5,#2]
 	lsr r3, r3, #4
 	lsl r3, r3, #4
@@ -1340,7 +1340,7 @@ sub_8002E04:
 	mov r1, #8
 	and r0, r1
 	mov pc, lr
-	thumb_func_end sub_8002E04
+	thumb_func_end checkSubEntryHiddenFlag_8002E04
 
 // symdb: Set the sprite's OAM priority: bits 2-3 of sprite byte 0x15 = r0 (0-3).
 // symdb: (r0 = priority, r5 = object header) -> byte 0x15 = (byte & ~0xC) | r0 << 2; r0 = r0 << 2, r1 =

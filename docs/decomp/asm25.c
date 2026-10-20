@@ -10,7 +10,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
     if ( byte_2000312 <= 0 )
     {
         byte_2000321 = -1;
-        sub_808FA7C();
+        thunk_tailLoc808FA90_r0eq0_808FA7C();
         v1 = owPlayer_disableWallCollision_809e254();
         byte_2000312 = ++v2;
     }
@@ -28,7 +28,7 @@ signed int __fastcall weatherComp_putPlayerBack_808F810(int a1)
             sub_809E188(word_2000322 << 16, dword_2000324 << 16, 0x400000);
             sub_809E13C(byte_200031F);
             sub_809E2AE(byte_2000320);
-            sub_808FD64();
+            weather_requestMapParams_808FD64();
             return 0;
         }
     }
@@ -83,7 +83,7 @@ signed int __fastcall busStation_runBusMoveSequence_controller_808F900(int a1)
         byte_2000321 = -1;
         ClearEventFlagFromImmediate(11, 228);
         ClearEventFlagFromImmediate(11, 229);
-        sub_808FA7C();
+        thunk_tailLoc808FA90_r0eq0_808FA7C();
         a1 = owPlayer_disableWallCollision_809e254();
         byte_2000312 = ++v1;
     }
@@ -146,7 +146,7 @@ signed int __fastcall owPlayer_stepTowardTarget(int a1)
     int v6; // r0
 
     v1 = 0;
-    sub_808FA38(a1);
+    owPlayer_turnTowardTarget_808FA38(a1);
     v3 = sub_809E1AE();
     v2 = v3;
     HIDWORD(v3) = word_2000322 << 16;
@@ -197,7 +197,7 @@ LABEL_15:
 
 
 // 0x808fa38
-int __fastcall sub_808FA38(int a1)
+int __fastcall owPlayer_turnTowardTarget_808FA38(int a1)
 {
     __int64 v1; // r0
     int result; // r0
@@ -222,7 +222,7 @@ int __fastcall sub_808FA38(int a1)
 
 
 // 0x808fa7c
-void sub_808FA7C()
+void thunk_tailLoc808FA90_r0eq0_808FA7C()
 {
     JUMPOUT(&loc_808FA90);
 }
@@ -405,7 +405,7 @@ signed int sub_808FD1C()
 
 
 // 0x808fd64
-int sub_808FD64()
+int weather_requestMapParams_808FD64()
 {
     int v0; // r10
     int v1; // r0
@@ -445,7 +445,7 @@ int weatherComp_init_808FDC0()
     if ( v4 )
     {
         ZeroFillByWord(&eWeatherCompState, 96);
-        sub_808FE64(v5, v6, v7, v8);
+        clearWorkArea_808FE64(v5, v6, v7, v8);
         byte_2000314 = -1;
         dword_2000330 = 255;
         byte_2000318 = 1;
@@ -455,13 +455,13 @@ int weatherComp_init_808FDC0()
         ClearEventFlagFromImmediate(11, 242);
         v0 = SetEventFlagFromImmediate(11, 224);
     }
-    sub_808FE64(v0, v1, v2, v3);
+    clearWorkArea_808FE64(v0, v1, v2, v3);
     spawnOverworldMapObjects1aLoop();
     ow_spawnMapObject1b();
     battle_initAIChipQueueSlot();
     spawnSevenOverworldMapObjects();
     initScenarioEffect_8003914(1u, v9, v10, v11);
-    sub_809003C();
+    bbs_requestOnEventBE4_809003C();
     return 0;
 }
 
@@ -476,14 +476,14 @@ int ow_initBus()
         ZeroFillByWord(&eWeatherCompState, 96);
     dword_2000330 = 255;
     ow_spawnMapObject1b();
-    sub_809003C();
+    bbs_requestOnEventBE4_809003C();
     sub_809032C();
     return 0;
 }
 
 
 // 0x808fe64
-int __fastcall sub_808FE64(int a1, int a2, int a3, int a4)
+int __fastcall clearWorkArea_808FE64(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(byte_2011B30, 128);
     return 0;
@@ -638,7 +638,7 @@ int spawnSevenOverworldMapObjects()
 
 
 // 0x808ff8c
-signed int sub_808FF8C()
+signed int checkObjectField20Zero_808FF8C()
 {
     int v0; // r5
     signed int result; // r0
@@ -659,7 +659,7 @@ int ow_spawnMapObject1b()
     char v3; // r6
     int v4; // r1
 
-    v1 = sub_808FFC0();
+    v1 = getAreaTableEntry_808FFC0();
     v3 = v2;
     SpawnOverworldMapObject(27, v1, v4, 0x400000);
     *(v0 + 5) = v3;
@@ -668,7 +668,7 @@ int ow_spawnMapObject1b()
 
 
 // 0x808ffc0
-int sub_808FFC0()
+int getAreaTableEntry_808FFC0()
 {
     int v0; // r5
     int v1; // r10
@@ -730,7 +730,7 @@ signed int weatherComp_checkTrigger60_8090020()
 
 
 // 0x809003c
-int sub_809003C()
+int bbs_requestOnEventBE4_809003C()
 {
     int result; // r0
     char v1; // zf
@@ -764,7 +764,7 @@ signed int weatherComp_layOrbTrail_809005C()
     TestEventFlagFromImmediate(11, 228);
     if ( !v3 )
     {
-        sub_808FF8C();
+        checkObjectField20Zero_808FF8C();
         if ( !v3 )
         {
             if ( *(v0 + 6) < 250 && (v4 = **(v1 + oToolkit_JoypadPtr) & 1) != 0 )
@@ -790,7 +790,7 @@ signed int weatherComp_layOrbTrail_809005C()
                     ClearEventFlagFromImmediate(11, 229);
                     ClearEventFlagFromImmediate(23, 7);
                     v5 = ClearEventFlagFromImmediate(23, 57);
-                    sub_808FE64(v5, v6, v7, v8);
+                    clearWorkArea_808FE64(v5, v6, v7, v8);
                 }
             }
         }
@@ -832,10 +832,10 @@ char *weatherComp_pickScript_8090104()
     weatherComp_checkTrigger60_8090020();
     if ( !v2 )
         return byte_808F67C;
-    sub_80902DC();
+    checkCurrentMapEventFlag_80902DC();
     if ( v2 )
     {
-        sub_808FF8C();
+        checkObjectField20Zero_808FF8C();
         if ( !v2 && (TestEventFlagFromImmediate(11, 242), v2) )
         {
             v1 = byte_808F728;
@@ -1006,7 +1006,7 @@ signed int __fastcall weatherComp_isTornadoInRing_809022C(int a1)
 
 
 // 0x80902dc
-int sub_80902DC()
+int checkCurrentMapEventFlag_80902DC()
 {
     int v0; // r10
     int v1; // r0

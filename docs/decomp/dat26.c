@@ -479,8 +479,8 @@ char *sub_8093212()
 // 0x809322a
 int sub_809322A()
 {
-    sub_80468EC(3);
-    return sub_80468EC(4);
+    battle_clearEntryFlagAndMakeUnscalable_80468EC(3);
+    return battle_clearEntryFlagAndMakeUnscalable_80468EC(4);
 }
 
 

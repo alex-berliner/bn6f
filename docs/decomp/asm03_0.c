@@ -203,7 +203,7 @@ int battle_getObjectPanelXY()
 
 
 // 0x8026622
-int sub_8026622()
+int battle_probePanelChainRows_8026622()
 {
     int v0; // r5
     int v1; // r7
@@ -242,7 +242,7 @@ int sub_8026650()
 
 
 // 0x802665a
-unsigned __int64 sub_802665A()
+unsigned __int64 battle_runFacingOffsetCheck_802665A()
 {
     unsigned __int64 v0; // r0
 
@@ -259,7 +259,7 @@ int sub_8026668()
 
 
 // 0x8026672
-int sub_8026672()
+int battle_checkFacingOffsets_table_8026672()
 {
     return battle_checkFacingOffsets(byte_802676E);
 }
@@ -324,7 +324,7 @@ int battle_checkFacingTileMatch()
 
 
 // 0x80266de
-int sub_80266DE()
+int battle_checkFacingOffsetsDefaultTable_80266DE()
 {
     return battle_checkFacingOffsets(byte_80267AB);
 }
@@ -1764,7 +1764,7 @@ int battleObject_chipSelectAnimTick_802770C()
 
 
 // 0x8027738
-signed int sub_8027738()
+signed int object_setStatePhase4_8027738()
 {
     int v0; // r5
     signed int result; // r0
@@ -1779,7 +1779,7 @@ signed int sub_8027738()
 
 
 // 0x802774c
-signed int sub_802774C()
+signed int startFadeShakeTransition_802774C()
 {
     int v0; // r5
     int v1; // r1
@@ -1803,7 +1803,7 @@ signed int sub_802774C()
 
 
 // 0x802777c
-int sub_802777C()
+int object_tickFadeHoldThenSetState12_802777C()
 {
     int v0; // r5
     int result; // r0
@@ -1824,7 +1824,7 @@ int sub_802777C()
 
 
 // 0x8027796
-signed int sub_8027796()
+signed int battle_customScreenExitRotateChips_8027796()
 {
     int v0; // r5
     int v1; // r4
@@ -2346,7 +2346,7 @@ int battle_initChipSelectTurn_8027E2C()
     if ( v0[16] || v0[16] == v0[21] )
         v7 = callPossiblyGetBattleEmotion_8015B54(v6);
     else
-        v7 = sub_8015B5C(v6);
+        v7 = battle_getPlayerEmotionPriorityThunk_8015B5C(v6);
     battle_initBeastOutChipEntry(v7, v8);
     battle_spawnMirrorFacingHelper_80280E0();
     selectChipTableEntryIntoActiveSlot9_80280A2();
@@ -2396,7 +2396,7 @@ int resetBattleRecordSlots_8027E90()
         if ( result )
         {
             v6 = 1;
-            if ( sub_802A57E() )
+            if ( battle_checkEmotionAllowsAction_802A57E() )
                 v6 = 0;
             result = 2;
             *(v0 + 132) = 2;
@@ -3307,7 +3307,7 @@ signed __int64 loadConstArgsAndPairTable_80288D0()
 
 
 // 0x8028904
-signed __int64 sub_8028904()
+signed __int64 chatbox_getWindowLayout_8028904()
 {
     return 579820585051LL;
 }
@@ -3960,7 +3960,7 @@ signed int battle_updateActiveChipSlotB_state_8028F48()
         result = v2[7];
         if ( result != 2 )
         {
-            if ( *(v0 + 8) >= 5 || !sub_802A57E() || *(v0 + 25) )
+            if ( *(v0 + 8) >= 5 || !battle_checkEmotionAllowsAction_802A57E() || *(v0 + 25) )
             {
                 result = 1;
                 v2[7] = 1;
@@ -4405,7 +4405,7 @@ void sub_8029344()
     {
         v2 = 12;
     }
-    sub_8015952(v2, 0, v0);
+    storeRequestBytes_8015952(v2, 0, v0);
     byte_20349B0 = 1;
 }
 
@@ -4423,7 +4423,7 @@ void sub_802937A()
     if ( v2 >= 11 )
         v1 = 18;
     v3 = battle_getNaviStatWithBonusSaturated(1);
-    sub_8015952(*(v0 + 26) + v1, 0, v3);
+    storeRequestBytes_8015952(*(v0 + 26) + v1, 0, v3);
     dword_20349A0 |= 1 << (*(v0 + 26) + 5);
 }
 
@@ -4434,7 +4434,7 @@ void sub_80293B0()
     int v0; // r5
     int v1; // r3
 
-    sub_8015952(*(v0 + 58) + 12, 0, 3);
+    storeRequestBytes_8015952(*(v0 + 58) + 12, 0, 3);
     ++*(v1 + 5);
 }
 
@@ -5279,7 +5279,7 @@ int firstBattleTutorial_step_8029A56()
         }
         if ( result == 3 )
         {
-            result = sub_8029B16();
+            result = returnZero_8029B16();
             if ( result )
             {
                 v2 = result;
@@ -5367,7 +5367,7 @@ signed int entity_getActionIndex_8029ADA()
 
 
 // 0x8029b16
-int sub_8029B16()
+int returnZero_8029B16()
 {
     return 0;
 }
@@ -5766,7 +5766,7 @@ int __fastcall e_loadHudBattleFormByte(int a1)
     {
         v2 = *(dword_20352C8 + 22);
         if ( !eStruct2035280_NaviStatusGfxIdx17 || byte_2035296 )
-            sub_8015B5C(v2);
+            battle_getPlayerEmotionPriorityThunk_8015B5C(v2);
         else
             callPossiblyGetBattleEmotion_8015B54(v2);
         if ( v3 )
@@ -5789,7 +5789,7 @@ int __fastcall sub_802A088(int a1)
     v1 = a1 + 6;
     v2 = *(dword_20352C8 + 22);
     if ( !eStruct2035280_NaviStatusGfxIdx17 || byte_2035296 )
-        sub_8015B5C(v2);
+        battle_getPlayerEmotionPriorityThunk_8015B5C(v2);
     else
         callPossiblyGetBattleEmotion_8015B54(v2);
     if ( v3 >= 11 )
@@ -6123,7 +6123,7 @@ int __fastcall tickBeastOutCounter_802A49C(int a1)
         || v3 == 5
         || v3 == 8
         || *(v1 + 16)
-        || (*(v1 + 16) != *(v1 + 21) ? sub_8015B5C(*(*(v2 + oToolkit_S2034880_Ptr) + 13)) : callPossiblyGetBattleEmotion_8015B54(*(*(v2 + oToolkit_S2034880_Ptr) + 13)),
+        || (*(v1 + 16) != *(v1 + 21) ? battle_getPlayerEmotionPriorityThunk_8015B5C(*(*(v2 + oToolkit_S2034880_Ptr) + 13)) : callPossiblyGetBattleEmotion_8015B54(*(*(v2 + oToolkit_S2034880_Ptr) + 13)),
                 v4 != 5 && v4 != 17) )
     {
         result = 0;
@@ -6209,7 +6209,7 @@ int battle_getActorEmotion_802A564()
 
     v2 = *(*(v1 + oToolkit_S2034880_Ptr) + 13);
     if ( *(v0 + 21) )
-        result = sub_8015B5C(v2);
+        result = battle_getPlayerEmotionPriorityThunk_8015B5C(v2);
     else
         result = callPossiblyGetBattleEmotion_8015B54(v2);
     return result;
@@ -6217,7 +6217,7 @@ int battle_getActorEmotion_802A564()
 
 
 // 0x802a57e
-signed int sub_802A57E()
+signed int battle_checkEmotionAllowsAction_802A57E()
 {
     signed int v0; // r4
     int v1; // r0
@@ -10331,7 +10331,7 @@ signed int __fastcall __noreturn battle_initNaviFromStats(int a1)
     signed int result; // r0
 
     v3 = sub_8013774(a1, 44);
-    sub_8011384(v3);
+    battle_dispatchDetachRelatedObject_8011384(v3);
     battle_getObjectNameID_8011020();
     battleObject_markUsedAction_80143A6();
     v4 = GetBattleNaviStats2034A60Byte(v1->Alliance, 41);

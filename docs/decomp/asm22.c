@@ -130,7 +130,7 @@ void *startScreen_runBeastCutscene_8086FD8()
         {
             v3 = v2 - 176;
             v0[12] = v2 + 80;
-            sub_80871C0();
+            npc_checkStateEventFlag_80871C0();
             if ( !v7 || (TestEventFlagFromImmediate(5, 242), v7) )
             {
                 v4 = v3;
@@ -307,7 +307,7 @@ __int64 battle_beastSpRefreshAIDataFromBattleObject_8087184()
 
 
 // 0x80871c0
-int sub_80871C0()
+int npc_checkStateEventFlag_80871C0()
 {
     int v0; // r5
 

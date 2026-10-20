@@ -8979,7 +8979,7 @@ jt_8043B00:
 	.word initScenarioEffect_8003914+1
 	.word sub_814187C+1
 	.word clearScenarioEffectState+1
-	.word sub_8048F88+1
+	.word shop_addStockEntry_kind4_8048F88+1
 	.word sub_814227A+1
 	.word sub_802D15E+1
 	.word sub_802D158+1

@@ -703,7 +703,7 @@ t4_mapEnterSetupObjectsAndFlags:
 	bl TestEventFlagFromImmediate
 	bne loc_8089424
 	mov r0, #0
-	bl sub_8035450
+	bl battle_spawnObjectListByIndex_8035450
 	b loc_8089434
 loc_8089424:
 	mov r0, #6
@@ -711,7 +711,7 @@ loc_8089424:
 	bl TestEventFlagFromImmediate
 	bne loc_8089434
 	mov r0, #1
-	bl sub_8035450
+	bl battle_spawnObjectListByIndex_8035450
 loc_8089434:
 	mov r0, #7
 	mov r1, #0x40
@@ -835,7 +835,7 @@ jt_80895C0:
 	.word sub_80896B0+1
 	.word sub_80896C4+1
 	.word battle_scenarioEffectInputStep+1
-	.word sub_8089792+1
+	.word ai_startChatScriptAtScenarioState2_8089792+1
 	.word battleObject_beastOut_checkOrInit_80897A6+1
 	.word beastOverworldAi_decideTransformOrIdle_8089C16+1
 	.word sub_8089C78+1
@@ -844,7 +844,7 @@ jt_80895C0:
 	.word battle_chipLockoutExpiredSetState+1
 	.word battle_initBeastOutAiTurn_808983A+1
 	.word battle_tickBeastSp_808985A+1
-	.word sub_808989C+1
+	.word ai_chatScriptTickStoreState38_808989C+1
 	.word battleObject_beastModeAiPhaseInit_80898B2+1
 	.word battle_processChipLockout+1
 	.word ai_setStateIfTeamAlive+1
@@ -955,7 +955,7 @@ battle_scenarioEffectInputStep:
 	beq loc_80896F4
 	bl camera_startCutsceneScript
 	mov r0, #1
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #0x18
 	strb r0, [r5]
 	b loc_8089700
@@ -1049,11 +1049,11 @@ loc_808978C:
 	thumb_func_end battleObject_scenarioEffectInputHandler_8089704
 
 // symdb: Fetches a scenario-effect state value, launches an AI chat script two entries into it, then marks the returned state object with the phase byte 0x14 and reports success.
-// symdb: int sub_8089792(u8 *state /* r5 */, u32 ctx /* r10 */); // returns r0 = 1; r2/r3 leak through
+// symdb: int ai_startChatScriptAtScenarioState2_8089792(u8 *state /* r5 */, u32 ctx /* r10 */); // returns r0 = 1; r2/r3 leak through
 // symdb: from the chat-script call; NZCV clobbered; r4-r7 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8089792.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_startChatScriptAtScenarioState2_8089792.yaml
 	thumb_local_start
-sub_8089792:
+ai_startChatScriptAtScenarioState2_8089792:
 	push {r4-r7,lr}
 	bl battle_getScenarioEffectStateField_81421D0
 	add r0, #2
@@ -1062,7 +1062,7 @@ sub_8089792:
 	strb r0, [r5]
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089792
+	thumb_func_end ai_startChatScriptAtScenarioState2_8089792
 
 // symdb: Beast-Out AI/sub-behavior tick that, when not yet active, gates on chatbox state and either triggers the Beast-Out scenario or starts the timer-driven Beast-Out state, writing state bytes to the AIData/AIState pointed at by r5.
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused, r5 = AIData/AIState object ptr) -> r0 = 1
@@ -1089,7 +1089,7 @@ loc_80897C8:
 	bl battle_getScenarioEffectStateField_81421D0
 	bl sub_81421B2
 	mov r0, #1
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #0xa
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x20 
@@ -1215,11 +1215,11 @@ loc_8089898:
 	thumb_func_end battle_tickBeastSp_808985A
 
 // symdb: If a battle-side check passes, runs chat-script kind 7 for the object in r5 and then writes state byte 0x38 to it, always returning 1.
-// symdb: int sub_808989C(u32 r5 /* object ptr */, u32 r10 /* context */); returns r0 = 1; r2/r3 (and r1)
+// symdb: int ai_chatScriptTickStoreState38_808989C(u32 r5 /* object ptr */, u32 r10 /* context */); returns r0 = 1; r2/r3 (and r1)
 // symdb: come through from the kind-7 chat-script call when it runs; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808989C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_chatScriptTickStoreState38_808989C.yaml
 	thumb_local_start
-sub_808989C:
+ai_chatScriptTickStoreState38_808989C:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_80898AE
@@ -1230,7 +1230,7 @@ sub_808989C:
 loc_80898AE:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_808989C
+	thumb_func_end ai_chatScriptTickStoreState38_808989C
 
 // symdb: Picks the next AI sub-phase for a Beast-mode battle object by picking one of three PwrAtk phase IDs (0x5C / 0x18 / 0x3C) into the AI's Unk_18 state byte.
 // symdb: (r5 = ...AIData) -> r0 = 1 ; side effect: stores a u8 to [r5+0x18], possibly calls init helpers
@@ -1938,7 +1938,7 @@ battle_initBeastSpAIChipQueues:
 	mov r2, #0
 	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #3
 	mov r1, #0
 	mov r2, #1
@@ -1953,7 +1953,7 @@ battle_initBeastSpAIChipQueues:
 battle_initAIChipQueueSlot3:
 	push {r4-r7,lr}
 	mov r0, #0
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #3
 	mov r1, #0
 	mov r2, #0

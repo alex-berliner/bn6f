@@ -13,7 +13,7 @@ weatherComp_putPlayerBack_808F810:
 	bgt loc_808F830
 	mov r0, #0xff
 	strb r0, [r5,#0x11] // (byte_2000321 - 0x2000310)
-	bl sub_808FA7C
+	bl thunk_tailLoc808FA90_r0eq0_808FA7C
 	bl owPlayer_disableWallCollision_809e254
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
@@ -62,7 +62,7 @@ loc_808F878:
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
 	ldrb r0, [r5,#0x10] // (byte_2000320 - 0x2000310)
 	bl SetOWPlayerFacingDirection
-	bl sub_808FD64
+	bl weather_requestMapParams_808FD64
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_808F8A6:
@@ -113,7 +113,7 @@ off_808F8FC:
 
 // symdb: Per-frame controller for the bus-ride cutscene state machine at the bus station - walks the player to the bus, seats them, then walks them off at the destination and reports whether the ride is still running.
 // symdb: void busStation_tickBusRideCutscene(void); // in: r6, r7 (pass-through to
-// symdb: sub_808FA7C/sub_808FA84), r10, lr; out: r0 = 0 when the ride finished, 1 while still in progress
+// symdb: thunk_tailLoc808FA90_r0eq0_808FA7C/sub_808FA84), r10, lr; out: r0 = 0 when the ride finished, 1 while still in progress
 // symdb: (NZ set from r0); r2-r5 hold callee garbage; r4-r7 restored on exit
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/busStation_runBusMoveSequence_controller_808F900.yaml
 	thumb_local_start
@@ -130,7 +130,7 @@ busStation_runBusMoveSequence_controller_808F900:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_BE5
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_808FA7C
+	bl thunk_tailLoc808FA90_r0eq0_808FA7C
 	bl owPlayer_disableWallCollision_809e254
 	add r4, #1
 	strb r4, [r5,#0x2] // (byte_2000312 - 0x2000310)
@@ -212,7 +212,7 @@ owPlayer_stepTowardTarget:
 	ldr r5, off_808FB48 // =off_808F5D4 
 	ldr r5, [r5]
 	mov r4, #0
-	bl sub_808FA38
+	bl owPlayer_turnTowardTarget_808FA38
 	bl ReadOWPlayerObjectCoords
 	mov r6, r0
 	mov r7, r1
@@ -273,11 +273,11 @@ dword_808FA34:
 	thumb_func_end owPlayer_stepTowardTarget
 
 // symdb: Turns the overworld player sprite toward the map's target position by picking the walk animation matching the angle octant to that target.
-// symdb: void sub_808FA38(void)  // in: r10 (context/base), lr; out: r4, r5 returned unchanged; clobbers
+// symdb: void owPlayer_turnTowardTarget_808FA38(void)  // in: r10 (context/base), lr; out: r4, r5 returned unchanged; clobbers
 // symdb: r0-r3, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FA38.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_turnTowardTarget_808FA38.yaml
 	thumb_local_start
-sub_808FA38:
+owPlayer_turnTowardTarget_808FA38:
 	push {r4,r5,lr}
 	ldr r5, off_808FB48 // =off_808F5D4 
 	ldr r5, [r5]
@@ -309,19 +309,19 @@ off_808FA70:
 	.word byte_808FA74
 byte_808FA74:
 	.byte 0xB, 0xB, 0x9, 0xF, 0xD, 0x0, 0x0, 0x0
-	thumb_func_end sub_808FA38
+	thumb_func_end owPlayer_turnTowardTarget_808FA38
 
 // symdb: Pure tail-call thunk that pushes the r4-r7/lr frame, sets r0 = 0, and branches to loc_808FA90, whose pop {r4-r7,pc} returns straight to this function's caller.
-// symdb: void sub_808FA7C(void); // entered with r4-r7/r10/lr live, tail-calls loc_808FA90 with r0=0;
+// symdb: void thunk_tailLoc808FA90_r0eq0_808FA7C(void); // entered with r4-r7/r10/lr live, tail-calls loc_808FA90 with r0=0;
 // symdb: r4-r7 come back restored via the callee's pop
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FA7C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/thunk_tailLoc808FA90_r0eq0_808FA7C.yaml
 	thumb_local_start
-sub_808FA7C:
+thunk_tailLoc808FA90_r0eq0_808FA7C:
 	push {r4-r7,lr}
 	mov r0, #0
 	b loc_808FA90
 	.balign 4, 0x00
-	thumb_func_end sub_808FA7C
+	thumb_func_end thunk_tailLoc808FA90_r0eq0_808FA7C
 
 	thumb_local_start
 sub_808FA84:
@@ -747,11 +747,11 @@ off_808FD60:
 	thumb_func_end sub_808FD1C
 
 // symdb: Looks up a four-parameter entry for the current map and enqueues it via req_setFourParams, likely weather/ambient-effect parameters.
-// symdb: void sub_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
+// symdb: void weather_requestMapParams_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
 // symdb: r0-r1, lr, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FD64.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weather_requestMapParams_808FD64.yaml
 	thumb_local_start
-sub_808FD64:
+weather_requestMapParams_808FD64:
 	push {r4,r5,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -796,7 +796,7 @@ off_808FDB8:
 	.word eWeatherCompState
 dword_808FDBC:
 	.word 0x2011B30
-	thumb_func_end sub_808FD64
+	thumb_func_end weather_requestMapParams_808FD64
 
 // symdb: Mr. Weather comp entry: while flag 0xBFB is clear, zero eWeatherCompState and set its defaults; clear flags 0xBF4..+6, 0xBE9..+5 and 0xBF2, set 0xBE0; then the comp's setup calls.
 // symdb: r10 = toolkit -> r0 = 0
@@ -813,7 +813,7 @@ weatherComp_init_808FDC0:
 	ldr r0, [r0]
 	mov r1, #0x60 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_808FE64
+	bl clearWorkArea_808FE64
 	mov r0, #0xff
 	strb r0, [r5,#0x4] // (byte_2000314 - 0x2000310)
 	str r0, [r5,#0x20] // (dword_2000330 - 0x2000310)
@@ -832,14 +832,14 @@ weatherComp_init_808FDC0:
 	movflag EVENT_BE0
 	bl SetEventFlagFromImmediate
 loc_808FE10:
-	bl sub_808FE64
+	bl clearWorkArea_808FE64
 	bl spawnOverworldMapObjects1aLoop
 	bl ow_spawnMapObject1b
 	bl battle_initAIChipQueueSlot
 	bl spawnSevenOverworldMapObjects
 	mov r0, #1
 	bl initScenarioEffect_8003914
-	bl sub_809003C
+	bl bbs_requestOnEventBE4_809003C
 	mov r0, #0
 	pop {r5,pc}
 	.balign 4, 0x00
@@ -864,7 +864,7 @@ loc_808FE4E:
 	mov r0, #0xff
 	str r0, [r5,#0x20] // (dword_2000330 - 0x2000310)
 	bl ow_spawnMapObject1b
-	bl sub_809003C
+	bl bbs_requestOnEventBE4_809003C
 	bl sub_809032C
 	mov r0, #0
 	pop {r5,pc}
@@ -872,10 +872,10 @@ loc_808FE4E:
 	thumb_func_end ow_initBus
 
 // symdb: Zeroes a 0x80-byte work area whose address is stored in dword_808FDBC, then returns 0.
-// symdb: void sub_808FE64(void) // reads lr only; sets r0=0 on return but callers ignore it
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FE64.yaml
+// symdb: void clearWorkArea_808FE64(void) // reads lr only; sets r0=0 on return but callers ignore it
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkArea_808FE64.yaml
 	thumb_local_start
-sub_808FE64:
+clearWorkArea_808FE64:
 	push {lr}
 	ldr r0, off_808FEA0 // =off_808FDB8 
 	// memBlock
@@ -885,7 +885,7 @@ sub_808FE64:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_808FE64
+	thumb_func_end clearWorkArea_808FE64
 
 // symdb: Drives the overworld "weather" cutscene trigger each frame: while the screen fade is inactive, asks a state helper to spawn/update a weather-component battle object near the player, picks a cutscene script, and starts it if one is returned.
 // symdb: (r10 = *Toolkit) -> void ; no return; reads Toolkit globals, may call StartCutscene
@@ -1079,9 +1079,9 @@ loc_808FF74:
 // symdb: Tests whether field 0x20 of the object pointer in r5 is zero and returns the answer in the Z flag (Z clear = field is zero).
 // symdb: bool checkField20Zero(void* obj /* r5 */); returns via flags: Z set when [r5+0x20] != 0, Z clear
 // symdb: when [r5+0x20] == 0; clobbers r0, r1 and V/C (unconditionally, per the lifter's caller analysis)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FF8C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkObjectField20Zero_808FF8C.yaml
 	thumb_local_start
-sub_808FF8C:
+checkObjectField20Zero_808FF8C:
 	push {lr}
 	mov r0, #0
 	ldr r1, [r5,#0x20]
@@ -1091,17 +1091,17 @@ sub_808FF8C:
 loc_808FF98:
 	tst r0, r0
 	pop {pc}
-	thumb_func_end sub_808FF8C
+	thumb_func_end checkObjectField20Zero_808FF8C
 
-// symdb: Spawns overworld map object type 0x1B (likely the bus entity) using position/parameters computed by sub_808FFC0, then stores a byte into the new object.
-// symdb: () -> r0 = 0 (always); internally calls sub_808FFC0 to obtain r0-r3 args for
-// symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes sub_808FFC0's r3 low byte to new
+// symdb: Spawns overworld map object type 0x1B (likely the bus entity) using position/parameters computed by getAreaTableEntry_808FFC0, then stores a byte into the new object.
+// symdb: () -> r0 = 0 (always); internally calls getAreaTableEntry_808FFC0 to obtain r0-r3 args for
+// symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes getAreaTableEntry_808FFC0's r3 low byte to new
 // symdb: object+5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnMapObject1b.yaml
 	thumb_local_start
 ow_spawnMapObject1b:
 	push {r4-r7,lr}
-	bl sub_808FFC0
+	bl getAreaTableEntry_808FFC0
 	mov r6, r3
 	mov r4, r2
 	mov r2, r1
@@ -1121,9 +1121,9 @@ ow_spawnMapObject1b:
 // symdb: Looks up an 8-byte entry in a per-area data table chosen by the current map group, indexed by the caller's object field at +0xE, and returns the entry's two halfwords and two bytes.
 // symdb: int getAreaTableEntry(u32 obj /* r5 */, u32 toolkit /* r10 */) -> r0 = entry.half0 << 16, r1 =
 // symdb: entry.half1 << 16, r2 = entry.byte4, r3 = entry.byte6; clobbers N/Z/C/V
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FFC0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/getAreaTableEntry_808FFC0.yaml
 	thumb_local_start
-sub_808FFC0:
+getAreaTableEntry_808FFC0:
 	push {r4,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -1158,7 +1158,7 @@ off_808FFF4:
 	.word byte_814352C
 off_8090000:
 	.word byte_8143564
-	thumb_func_end sub_808FFC0
+	thumb_func_end getAreaTableEntry_808FFC0
 
 // symdb: Mr. Weather comp: if MegaMan's tile trigger (reqBBS_81409E4) is 0x70..0x79, stores it - 0x70 at eWeatherCompState+0xE and returns 1 (Z clear).
 // symdb: r5 = eWeatherCompState -> r0 = 0/1, Z
@@ -1203,11 +1203,11 @@ loc_8090034:
 	thumb_func_end weatherComp_checkTrigger60_8090020
 
 // symdb: Once the BE4 story-event flag is set, plays the mailbox sound, switches the game state to substate 3, and raises a BBS request flag; otherwise does nothing.
-// symdb: void sub_809003C(void)   // reads r10/lr per contract, r3 out (callee residue), r4 preserved,
+// symdb: void bbs_requestOnEventBE4_809003C(void)   // reads r10/lr per contract, r3 out (callee residue), r4 preserved,
 // symdb: flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809003C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bbs_requestOnEventBE4_809003C.yaml
 	thumb_local_start
-sub_809003C:
+bbs_requestOnEventBE4_809003C:
 	push {r4,lr}
 	movflag EVENT_BE4
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1220,7 +1220,7 @@ sub_809003C:
 locret_8090058:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809003C
+	thumb_func_end bbs_requestOnEventBE4_809003C
 
 // symdb: Mr. Weather comp: the rainbow-orb trail. While flag 0xBE4 is set and eWeatherCompState+0x20 is 0: with A held (Joypad held & 1) and fewer than 0xFA orbs, every frame MegaMan moves (sub_8090308) counts +8 down and at 0 reloads it with 5 and returns 1 (the caller lays an orb, map object 0x1D); A released (or 0xFA orbs): +8 = 1 and, if there are orbs, the trail is dropped (+6 = 0, flags 0xBE5, PET_DISABLED, 0x1739 cleared, the ring points at 0x2011B30 zeroed).
 // symdb: r5 = eWeatherCompState, r10 = toolkit -> r0 = 1 (lay an orb) or 0, Z
@@ -1232,7 +1232,7 @@ weatherComp_layOrbTrail_809005C:
 	movflag EVENT_BE4
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_80900C2
-	bl sub_808FF8C
+	bl checkObjectField20Zero_808FF8C
 	beq loc_80900C2
 	ldrh r0, [r5,#6]
 	cmp r0, #0xfa
@@ -1257,7 +1257,7 @@ loc_8090082:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_1739
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_808FE64
+	bl clearWorkArea_808FE64
 	b loc_80900C2
 loc_80900AE:
 	bl sub_8090308
@@ -1304,7 +1304,7 @@ weatherComp_spawnObject1DNearPlayer_80900C8:
 	pop {pc}
 	thumb_func_end weatherComp_spawnObject1DNearPlayer_80900C8
 
-// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
+// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by checkCurrentMapEventFlag_80902DC, checkObjectField20Zero_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
 // symdb: r5 = eWeatherCompState -> r4 = script or 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_pickScript_8090104.yaml
 	thumb_local_start
@@ -1322,9 +1322,9 @@ loc_8090114:
 	ldr r4, off_8090184 // =byte_808F67C 
 	b loc_809017C
 loc_809011E:
-	bl sub_80902DC
+	bl checkCurrentMapEventFlag_80902DC
 	bne loc_809017C
-	bl sub_808FF8C
+	bl checkObjectField20Zero_808FF8C
 	beq loc_8090138
 	movflag EVENT_BF2
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1578,9 +1578,9 @@ off_80902D8:
 // symdb: Tests the per-map event flag for the map the player is currently in and returns the result via the Z flag.
 // symdb: (r10 toolkit) -> zf (Z clear when the selected event flag is set; nz, r1, r3 also reflect
 // symdb: TestEventFlag's return); preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80902DC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/checkCurrentMapEventFlag_80902DC.yaml
 	thumb_local_start
-sub_80902DC:
+checkCurrentMapEventFlag_80902DC:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -1603,7 +1603,7 @@ off_80902FC:
 	.word byte_8090300
 byte_8090300:
 	.byte 0xE1, 0xB, 0xE2, 0xB, 0xE3, 0xB, 0xD2, 0xF
-	thumb_func_end sub_80902DC
+	thumb_func_end checkCurrentMapEventFlag_80902DC
 
 	thumb_local_start
 sub_8090308:

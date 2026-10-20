@@ -768,7 +768,7 @@ char *__fastcall battleObject_initAIChipQueueSlot_80468C6(char a1, int a2, int a
 
 
 // 0x80468e0
-int sub_80468E0()
+int sprite_clearScaleAndMakeUnscalable_80468E0()
 {
     _BYTE *v0; // r5
 
@@ -778,7 +778,7 @@ int sub_80468E0()
 
 
 // 0x80468ec
-int __fastcall sub_80468EC(int a1)
+int __fastcall battle_clearEntryFlagAndMakeUnscalable_80468EC(int a1)
 {
     byte_2011860[88 * a1] = 0;
     return sprite_makeUnscalable();
@@ -798,7 +798,7 @@ int sub_8046900()
     {
         result = *v0;
         if ( *v0 )
-            result = sub_80468E0();
+            result = sprite_clearScaleAndMakeUnscalable_80468E0();
         v0 += 88;
         ++v1;
     }
@@ -2396,7 +2396,7 @@ int __fastcall isIdInList(int result)
 
 
 // 0x8048f88
-int sub_8048F88()
+int shop_addStockEntry_kind4_8048F88()
 {
     return shop_addItemStockEntry(4, byte_8048BE4);
 }
@@ -5921,7 +5921,7 @@ int clearRenderFlags()
 
 
 // 0x804c43c
-int sub_804C43C()
+int battle_render_startBlurEffect_804C43C()
 {
     int v0; // r5
     int v1; // r10
@@ -6109,7 +6109,7 @@ void __fastcall e_queuePacketEntry(int a1)
 
 
 // 0x804c700
-int sub_804C700()
+int battle_dispatchStepHandler_804C700()
 {
     int v0; // r5
 
@@ -6158,13 +6158,13 @@ void battleObject_initBattleFieldTilesAndSfxTimer_804C770()
     v2[13] -= 12;
     v2[12] += 12;
     (*(&off_804C7B4 + *(v0 + 13)))();
-    sub_804C818();
+    object_periodicSoundTimerTick_804C818();
     CopyBackgroundTiles(0, 0, 3, byte_86A2C80, 32, &dword_20);
 }
 
 
 // 0x804c7c4
-void sub_804C7C4()
+void stub_doNothing_804C7C4()
 {
     ;
 }
@@ -6192,7 +6192,7 @@ void sub_804C7EC()
 
 
 // 0x804c818
-int sub_804C818()
+int object_periodicSoundTimerTick_804C818()
 {
     int v0; // r5
     int v1; // r0
@@ -6376,7 +6376,7 @@ signed int sub_804CC58()
 
 
 // 0x804cc6e
-signed int sub_804CC6E()
+signed int toolkit_setUnk2009740StateBytes_804CC6E()
 {
     int v0; // r10
     int v1; // r1

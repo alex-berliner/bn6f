@@ -181,18 +181,18 @@ off_8026580:
 	.word jt_8026584
 jt_8026584:
 	.word battle_getObjectPanelXY+1
-	.word sub_8026622+1
+	.word battle_probePanelChainRows_8026622+1
 	.word sub_8026650+1
-	.word sub_802665A+1
+	.word battle_runFacingOffsetCheck_802665A+1
 	.word sub_8026668+1
-	.word sub_8026672+1
+	.word battle_checkFacingOffsets_table_8026672+1
 	.word sub_802667C+1
 	.word sub_802668A+1
 	.word sub_8026694+1
 	.word sub_802669E+1
 	.word sub_80266AC+1
 	.word battle_checkFacingTileMatch+1
-	.word sub_80266DE+1
+	.word battle_checkFacingOffsetsDefaultTable_80266DE+1
 	.word sub_80266E8+1
 	.word sub_80266F2+1
 	.word sub_8026704+1
@@ -266,9 +266,9 @@ battle_getObjectPanelXY:
 // symdb: Probes a battle object's panel and a fixed list of nearby rows (via a signed offset table) with the panel-check routine, returning the first hit.
 // symdb: int battle_probePanelChainRows(void* object /*r5*/, int probeX /*r6*/, int row /*r7*/) -> (int
 // symdb: hit /*r0*/, int rowOrFlag /*r1*/); clobbers r2,r3,lr and NZCV; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8026622.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_probePanelChainRows_8026622.yaml
 	thumb_local_start
-sub_8026622:
+battle_probePanelChainRows_8026622:
 	push {r4,lr}
 	mov r1, r7
 	ldr r2, off_80267EC // =byte_802673C 
@@ -294,7 +294,7 @@ loc_8026632:
 	b loc_8026632
 locret_802664E:
 	pop {r4,pc}
-	thumb_func_end sub_8026622
+	thumb_func_end battle_probePanelChainRows_8026622
 
 	thumb_local_start
 sub_8026650:
@@ -305,17 +305,17 @@ sub_8026650:
 	thumb_func_end sub_8026650
 
 // symdb: Runs the shared battle facing-offset check against the table at byte_802675A for the current actor, then post-processes the result via sub_80265FE.
-// symdb: FacingCheckResult sub_802665A(u32 r4 /* battle context */, u32 r5 /* battle context */, u32 r6
+// symdb: FacingCheckResult battle_runFacingOffsetCheck_802665A(u32 r4 /* battle context */, u32 r5 /* battle context */, u32 r6
 // symdb: /* battle context */, u32 r7 /* battle context */) -> r0, r1, r5
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802665A.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runFacingOffsetCheck_802665A.yaml
 	thumb_local_start
-sub_802665A:
+battle_runFacingOffsetCheck_802665A:
 	push {lr}
 	ldr r0, off_8026800 // =byte_802675A 
 	bl battle_checkFacingOffsets
 	bl sub_80265FE
 	pop {pc}
-	thumb_func_end sub_802665A
+	thumb_func_end battle_runFacingOffsetCheck_802665A
 
 	thumb_local_start
 sub_8026668:
@@ -326,16 +326,16 @@ sub_8026668:
 	thumb_func_end sub_8026668
 
 // symdb: Thin wrapper that runs battle_checkFacingOffsets on the fixed facing-offset table baked into ROM at byte_802676E.
-// symdb: void sub_8026672(u32 r4 /*context*/, u32 r5, u32 r6, u32 r7); returns r0/r1 from
+// symdb: void battle_checkFacingOffsets_table_8026672(u32 r4 /*context*/, u32 r5, u32 r6, u32 r7); returns r0/r1 from
 // symdb: battle_checkFacingOffsets (r5 also passes through whatever the callee left in it)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8026672.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsets_table_8026672.yaml
 	thumb_local_start
-sub_8026672:
+battle_checkFacingOffsets_table_8026672:
 	push {lr}
 	ldr r0, off_8026808 // =byte_802676E 
 	bl battle_checkFacingOffsets
 	pop {pc}
-	thumb_func_end sub_8026672
+	thumb_func_end battle_checkFacingOffsets_table_8026672
 
 	thumb_local_start
 sub_802667C:
@@ -413,14 +413,14 @@ loc_80266D4:
 // symdb: Thin battle helper that runs the facing-offset check against one fixed default table instead of a caller-supplied one.
 // symdb: battle_checkFacingOffsetsDefaultTable(u32 r4, u32 r5, u32 r6, u32 r7) -> r0, r1, r5 (r4/r6/r7
 // symdb: preserved; nz/c/v, r2, r3 clobbered)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80266DE.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsetsDefaultTable_80266DE.yaml
 	thumb_local_start
-sub_80266DE:
+battle_checkFacingOffsetsDefaultTable_80266DE:
 	push {lr}
 	ldr r0, off_8026824 // =byte_80267AB 
 	bl battle_checkFacingOffsets
 	pop {pc}
-	thumb_func_end sub_80266DE
+	thumb_func_end battle_checkFacingOffsetsDefaultTable_80266DE
 
 	thumb_local_start
 sub_80266E8:
@@ -2790,18 +2790,18 @@ battleObject_chipSelectAnimTick_802770C: // (self: * S20364C0 $r5) -> ()
 off_8027720:
 	.word off_8027724
 off_8027724:
-	.word sub_8027738+1
-	.word sub_802774C+1
-	.word sub_802777C+1
-	.word sub_8027796+1
+	.word object_setStatePhase4_8027738+1
+	.word startFadeShakeTransition_802774C+1
+	.word object_tickFadeHoldThenSetState12_802777C+1
+	.word battle_customScreenExitRotateChips_8027796+1
 	.word battle_advanceScriptStateOnFadeDone+1
 	thumb_func_end battleObject_chipSelectAnimTick_802770C
 
 // symdb: Initializes a state-machine object (r5) to phase 4 with both flag bytes set to 1 and a zeroed counter at +0x40.
-// symdb: void sub_8027738(struct Obj *r5)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8027738.yaml
+// symdb: void object_setStatePhase4_8027738(struct Obj *r5)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setStatePhase4_8027738.yaml
 	thumb_local_start
-sub_8027738:
+object_setStatePhase4_8027738:
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#0x40]
@@ -2812,14 +2812,14 @@ sub_8027738:
 	mov r0, #4
 	strh r0, [r5,#2]
 	pop {pc}
-	thumb_func_end sub_8027738
+	thumb_func_end object_setStatePhase4_8027738
 
 // symdb: Kicks off a scripted transition: clears a work flag, sets up a screen fade, starts a camera shake, plays three sound effects, and advances the work object to state 8.
-// symdb: void sub_802774C(r5 = work object, r10 = context passed to sub_80302B6); returns nothing
+// symdb: void startFadeShakeTransition_802774C(r5 = work object, r10 = context passed to sub_80302B6); returns nothing
 // symdb: meaningful (r2-r6, r10 are just callee leftovers, nzcv clobbered)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802774C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startFadeShakeTransition_802774C.yaml
 	thumb_local_start
-sub_802774C:
+startFadeShakeTransition_802774C:
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#0x40]
@@ -2839,14 +2839,14 @@ sub_802774C:
 	mov r0, #8
 	strh r0, [r5,#2]
 	pop {pc}
-	thumb_func_end sub_802774C
+	thumb_func_end startFadeShakeTransition_802774C
 
 // symdb: Per-tick wait handler for an object: counts up a hold timer at obj+0x40 and, after 50 ticks with no screen fade running, advances the object's state field (obj+2) to 0xC.
-// symdb: void sub_802777C(Object* obj /* r5 */); // in: r5 = object work area, lr = return; out: r3 (from
+// symdb: void object_tickFadeHoldThenSetState12_802777C(Object* obj /* r5 */); // in: r5 = object work area, lr = return; out: r3 (from
 // symdb: IsScreenFadeActive), r4/r6 preserved; clobbers r0, r1, lr, NZCV
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802777C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_tickFadeHoldThenSetState12_802777C.yaml
 	thumb_local_start
-sub_802777C:
+object_tickFadeHoldThenSetState12_802777C:
 	push {r4,r6,lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2860,14 +2860,14 @@ sub_802777C:
 	strh r0, [r5,#2]
 locret_8027794:
 	pop {r4,r6,pc}
-	thumb_func_end sub_802777C
+	thumb_func_end object_tickFadeHoldThenSetState12_802777C
 
 // symdb: On leaving the chip custom screen, rotates the selected-chip id list by one slot, re-uploads every affected chip's sprite tiles to VRAM, frees one sprite slot, runs the custom-screen exit sequence and starts the fade back into battle.
-// symdb: void sub_8027796(u32 battleObj /*r5*/, u32 r10 /*unused here*/) — returns nothing meaningful;
+// symdb: void battle_customScreenExitRotateChips_8027796(u32 battleObj /*r5*/, u32 r10 /*unused here*/) — returns nothing meaningful;
 // symdb: clobbers r0-r3, r5, r6, r8-r12 and flags, preserves r4 and r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8027796.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_customScreenExitRotateChips_8027796.yaml
 	thumb_local_start
-sub_8027796:
+battle_customScreenExitRotateChips_8027796:
 	push {r4,r6,lr}
 	mov r4, #0
 	bl battle_getActorEmotion_802A564
@@ -2918,7 +2918,7 @@ loc_80277DA:
 	mov r0, #0x10
 	strh r0, [r5,#2]
 	pop {r4,r6,pc}
-	thumb_func_end sub_8027796
+	thumb_func_end battle_customScreenExitRotateChips_8027796
 
 // symdb: Polls IsScreenFadeActive; once the fade clears, writes 4 to the state byte at [r5+1] and clears the halfword at [r5+2], and if the substate byte at [r5+0xc] is 3, advances [r5+0xc] and [r5+0xd] to 4 and re-arms the state by writing 0x2c to [r5+1] and 0 to [r5+2].
 // symdb: (-, r5 = event/state struct) -> void; sets [r5+0x1] (state id), [r5+0x2] (counter, halfword),
@@ -3721,7 +3721,7 @@ loc_8027E52:
 	ldrb r2, [r5,#0x15]
 	cmp r1, r2
 	beq loc_8027E70
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 	b loc_8027E74
 loc_8027E70:
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
@@ -3774,7 +3774,7 @@ loc_8027EC2:
 	tst r0, r0
 	beq locret_8027EE0
 	mov r6, #1
-	bl sub_802A57E
+	bl battle_checkEmotionAllowsAction_802A57E
 	tst r0, r0
 	beq loc_8027ED6
 	mov r6, #0
@@ -5306,7 +5306,7 @@ off_8028868:
 jt_802886C:
 	.word battleObject_computeBButtonOffsets_8028894+1
 	.word loadConstArgsAndPairTable_80288D0+1
-	.word sub_8028904+1
+	.word chatbox_getWindowLayout_8028904+1
 	.word sub_8028968+1
 	.word sub_8028938+1
 	.word sub_8028938+1
@@ -5367,11 +5367,11 @@ byte_80288E4:
 	thumb_func_end loadConstArgsAndPairTable_80288D0
 
 // symdb: Returns the message-window position (x=0x5B, y=0x87) and a pointer to a fixed tile-layout byte table used to draw the chat/text box.
-// symdb: void Next sub_8028904(void); /* in: lr only; out: r0 = 0x5B (window x/pos), r1 = 0x87 (window
+// symdb: void Next chatbox_getWindowLayout_8028904(void); /* in: lr only; out: r0 = 0x5B (window x/pos), r1 = 0x87 (window
 // symdb: y/pos), r6 = &byte_8028918 (layout table); clobbers flags nzcv */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8028904.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_getWindowLayout_8028904.yaml
 	thumb_local_start
-sub_8028904:
+chatbox_getWindowLayout_8028904:
 	push {lr}
 	mov r0, #0x58 
 	mov r1, #0x88
@@ -5386,7 +5386,7 @@ byte_8028918:
 	.byte 0x2, 0x0, 0x1, 0x0, 0x2, 0x0, 0x16, 0x10, 0xE, 0x0, 0x16, 0x30, 0xE
 	.byte 0x0, 0x1, 0x20, 0x3, 0x0, 0x2, 0x0, 0x3, 0x0, 0x15, 0x10, 0xD, 0x0
 	.byte 0x15, 0x30, 0xD, 0x0, 0x2, 0x20
-	thumb_func_end sub_8028904
+	thumb_func_end chatbox_getWindowLayout_8028904
 
 	thumb_local_start
 sub_8028938:
@@ -6307,7 +6307,7 @@ battle_updateActiveChipSlotB_state_8028F48:
 	ldrb r0, [r5,#8]
 	cmp r0, #5
 	bge loc_8028F78
-	bl sub_802A57E
+	bl battle_checkEmotionAllowsAction_802A57E
 	tst r0, r0
 	beq loc_8028F78
 	ldrb r0, [r5,#0x19]
@@ -6882,7 +6882,7 @@ loc_8029368:
 	mov r0, r4
 	mov r1, #0
 	mov r2, r6
-	bl sub_8015952
+	bl storeRequestBytes_8015952
 	mov r0, #1
 	ldr r1, dword_80293F4 // =dword_20349A0
 	strb r0, [r1,#0x10] // (byte_20349B0 - 0x20349a0)
@@ -6905,7 +6905,7 @@ loc_8029388:
 	ldrb r0, [r5,#oS20364C0_EmotionSpriteVariant]
 	add r0, r0, r4
 	mov r1, #0
-	bl sub_8015952
+	bl storeRequestBytes_8015952
 
 	ldrb r0, [r5,#oS20364C0_EmotionSpriteVariant]
 	ldr r1, dword_80293E8 // =0x6 
@@ -6929,7 +6929,7 @@ sub_80293B0:
 	add r0, r0, r1
 	mov r1, #0
 	mov r2, #3
-	bl sub_8015952
+	bl storeRequestBytes_8015952
 	ldrb r0, [r3,#5]
 	add r0, #1
 	strb r0, [r3,#5]
@@ -8019,7 +8019,7 @@ loc_8029A78:
 	mov r1, r0
 	b loc_8029A90
 loc_8029A84:
-	bl sub_8029B16
+	bl returnZero_8029B16
 	cmp r0, #0
 	beq locret_8029AA8
 	mov r1, r0
@@ -8120,14 +8120,14 @@ locret_8029B14:
 	thumb_func_end entity_getActionIndex_8029ADA
 
 // symdb: Stub function that does nothing and always returns 0.
-// symdb: int sub_8029B16(void) -> always 0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8029B16.yaml
+// symdb: int returnZero_8029B16(void) -> always 0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/returnZero_8029B16.yaml
 	thumb_local_start
-sub_8029B16:
+returnZero_8029B16:
 	push {lr}
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_8029B16
+	thumb_func_end returnZero_8029B16
 
 // symdb: First-battle tutorial text trigger — for the current tutorial step, asks a per-step checker if a chatbox script should play, runs it, and moves the task into its post-text wait state.
 // symdb: u32 tutorialTextUpdate(void* work /* r5 */); returns 1 if a script started, 0 otherwise; reads
@@ -8879,7 +8879,7 @@ e_loadHudBattleFormByte:
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 	b loc_802A068
 loc_802A064:
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 loc_802A068:
 	pop {r5}
 	cmp r1, #0
@@ -8918,7 +8918,7 @@ sub_802A088:
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 	b loc_802A0AC
 loc_802A0A8:
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 loc_802A0AC:
 	pop {r5}
 	cmp r1, #0xb
@@ -9480,7 +9480,7 @@ loc_802A4CE:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#oBattleState_PlayerSide]
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 loc_802A4D8:
 	cmp r1, #5
 	beq loc_802A4E0
@@ -9600,16 +9600,16 @@ battle_getActorEmotion_802A564:
 	bl callPossiblyGetBattleEmotion_8015B54 // (alliance: u8) -> (res0: enum8?, transformation: u8, mood: u8, beast_out_counter: u8)
 	b locret_802A57C
 loc_802A578:
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 locret_802A57C:
 	pop {pc}
 	thumb_func_end battle_getActorEmotion_802A564
 
 // symdb: Checks a battle actor's emotion state and a counter to decide (0/1) whether some action is currently allowed.
 // symdb: u32 battle_checkEmotionAllowsAction_802A57E(u32 actor /* r5 */); returns 1 or 0 in r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_802A57E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkEmotionAllowsAction_802A57E.yaml
 	thumb_local_start
-sub_802A57E:
+battle_checkEmotionAllowsAction_802A57E:
 	push {r4,lr}
 	mov r4, #0
 	bl battle_getActorEmotion_802A564
@@ -9628,7 +9628,7 @@ loc_802A596:
 loc_802A59C:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_802A57E
+	thumb_func_end battle_checkEmotionAllowsAction_802A57E
 
 // symdb: Returns 1 when the beast transformation (Beast Over) is active for this battle, 0 otherwise.
 // symdb: bool battle_isBeastOverEnabled_802A5A0(/* r10 */ Toolkit *toolkit); -> r0 = 1/0; r4, r6
@@ -16432,7 +16432,7 @@ battle_initNaviFromStats:
 	push {r4,lr}
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	bl battle_getObjectNameID_8011020
 	bl battleObject_markUsedAction_80143A6
 	ldrb r0, [r5,#oBattleObject_Alliance]

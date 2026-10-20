@@ -51,7 +51,7 @@ off_8098C28:
 byte_8098C78:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
-	cs_call_native_with_return_value ptr1=sub_8098CCC+1
+	cs_call_native_with_return_value ptr1=cross_loadEntryFields_8098CCC+1
 	cs_jump_if_var_equal byte1=0x05 byte2=0xFF destination3=cutscenescript_8098C8B
 	cs_run_text_script_from_mem byte1=0x05
 	cs_wait_chatbox byte1=0x80
@@ -70,7 +70,7 @@ cutscenescript_8098C9F:
 byte_8098CA2:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
-	cs_call_native_with_return_value ptr1=sub_8098CCC+1
+	cs_call_native_with_return_value ptr1=cross_loadEntryFields_8098CCC+1
 	cs_jump_if_var_equal byte1=0x05 byte2=0xFF destination3=cutscenescript_8098CB5
 	cs_run_text_script_from_mem byte1=0x05
 	cs_wait_chatbox byte1=0x80
@@ -87,12 +87,12 @@ cutscenescript_8098CC9:
 	cs_end_for_map_reload_maybe_8037c64
 
 // symdb: Loads one Cross System entry's fixed fields (selected by an index in the work area) into the work area, and writes the entry's partner-character id into the partner state block when one is defined.
-// symdb: u32 sub_8098CCC(void* work /* r5 */, void* state /* r10 */); returns 0 in r0, partner-state
+// symdb: u32 cross_loadEntryFields_8098CCC(void* work /* r5 */, void* state /* r10 */); returns 0 in r0, partner-state
 // symdb: pointer in r2, flags NZ from the final mov r0,#0; clobbers r0-r2, c, v; lr returned to via mov
 // symdb: pc,lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8098CCC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cross_loadEntryFields_8098CCC.yaml
 	thumb_local_start
-sub_8098CCC:
+cross_loadEntryFields_8098CCC:
 	ldrb r1, [r5, #4]
 	ldr r0, =off_8098C28
 	mov r2, #0x14
@@ -117,7 +117,7 @@ loc_8098CF4:
 	mov r0, #0
 	mov pc, lr
 	.pool
-	thumb_func_end sub_8098CCC
+	thumb_func_end cross_loadEntryFields_8098CCC
 
 off_8098CFC:
 	.word 0x4000201
@@ -2803,16 +2803,16 @@ cutscenescript_809AD80:
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
 	cs_pause byte1=0xFF byte2=0x1E
-	cs_call_native_with_return_value ptr1=sub_809ADA8+1
+	cs_call_native_with_return_value ptr1=pet_exitToPetMenuReturnZero_809ADA8+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 
 // symdb: A one-shot exit handler that delegates to pet_returnToPetMenu to leave the current PET screen back at the PET menu, then always reports 0 in r0.
-// symdb: u32 sub_809ADA8(void)  // r4-r7, r9-r12 passed through to the callee; returns 0 in r0 with NZ
+// symdb: u32 pet_exitToPetMenuReturnZero_809ADA8(void)  // r4-r7, r9-r12 passed through to the callee; returns 0 in r0 with NZ
 // symdb: set from it
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809ADA8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_exitToPetMenuReturnZero_809ADA8.yaml
 	thumb_local_start
-sub_809ADA8:
+pet_exitToPetMenuReturnZero_809ADA8:
 	push {r4-r7,lr}
 	bl pet_returnToPetMenu
 	mov r0, #0
@@ -2876,7 +2876,7 @@ cutscenescript_809AEC6:
 	.word 0x1EFF0217, 0x0000804C, 0x3F000000, 0x00043F18, 0x1540003C, 0x0809AEC6
 	.byte 0x00
 	.byte 0x00
-	thumb_func_end sub_809ADA8
+	thumb_func_end pet_exitToPetMenuReturnZero_809ADA8
 
 // symdb: Spawn the story-5 entry overworld map object and recenter the camera on the player at that spot
 // symdb: (r5 = GameState/JumpTable scratch, r10 = Toolkit) -> r0 = 0 ; side effects: sets player
@@ -3590,7 +3590,7 @@ loc_809B8C4:
 	bne loc_809B8E8
 	push {r4-r7}
 	ldr r5, [r6,#0x10]
-	bl sub_8002E04
+	bl checkSubEntryHiddenFlag_8002E04
 	pop {r4-r7}
 	beq loc_809B8E8
 	mov r0, #1
@@ -4345,9 +4345,9 @@ cutscenescript_809C37E:
 	cs_wait_screen_fade
 	cs_free_all_ow_npc_objects_if_different_map
 	cs_call_native_with_return_value ptr1=camera_restartWithScriptHead+1
-	cs_call_native_with_return_value ptr1=sub_809C7FC+1
+	cs_call_native_with_return_value ptr1=ow_player_updateCoords_809C7FC+1
 	cs_call_native_with_return_value ptr1=owPlayer_setFixedAnimationFromLookup+1
-	cs_call_native_with_return_value ptr1=sub_809C830+1
+	cs_call_native_with_return_value ptr1=loadWorkByteFromStepTable_809C830+1
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
 	cs_wait_screen_fade
@@ -4608,11 +4608,11 @@ off_809C7F8:
 	thumb_func_end camera_restartWithScriptHead
 
 // symdb: Per-frame overworld player-object callback that pushes the player's three coordinate words through the shared copy-to-next/write-back coordinate helper.
-// symdb: void sub_809C7FC(u32 player /*r5*/, u32 r10, u32 lr); returns r0=0 (clobber, callers ignore),
+// symdb: void ow_player_updateCoords_809C7FC(u32 player /*r5*/, u32 r10, u32 lr); returns r0=0 (clobber, callers ignore),
 // symdb: leaves r2-r4,r5,r7 as the callee helper's leftovers, sets flags NZ from 0; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C7FC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_player_updateCoords_809C7FC.yaml
 	thumb_local_start
-sub_809C7FC:
+ow_player_updateCoords_809C7FC:
 	push {r4-r7,lr}
 	ldr r3, [r5,#0x70]
 	mov r0, #0
@@ -4624,7 +4624,7 @@ sub_809C7FC:
 	bl owPlayer_copyCoordsToNextCoordsWritePlayerCoordsThenIndirectlySetPlayerCoordsMaybe_809e188
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_809C7FC
+	thumb_func_end ow_player_updateCoords_809C7FC
 
 // symdb: Reads the player's overworld state index and applies the matching fixed animation id from a small lookup table.
 // symdb: void owPlayer_setFixedAnimationFromLookup(r5 player, r10 context) -> r0 = 0 (Z set, N clear), r3
@@ -4649,12 +4649,12 @@ dword_809C82C:
 	thumb_func_end owPlayer_setFixedAnimationFromLookup
 
 // symdb: Looks up one byte from a fixed 4x4 step/sequence table using two selector bytes in an object's state block and stores it into the work object at +0x5.
-// symdb: void sub_809C830(void); /* in: r5 = work object; out: [r5+5] = table byte, r2 = selected table
+// symdb: void loadWorkByteFromStepTable_809C830(void); /* in: r5 = work object; out: [r5+5] = table byte, r2 = selected table
 // symdb: word, r3 = state pointer, NZ from 'mov r0,#0' (Z set, C clobbered), r0/r1 scratch, r4-r7
 // symdb: preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C830.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadWorkByteFromStepTable_809C830.yaml
 	thumb_local_start
-sub_809C830:
+loadWorkByteFromStepTable_809C830:
 	push {r4-r7,lr}
 	ldr r3, [r5,#0x70]
 	mov r0, #0xc
@@ -4684,7 +4684,7 @@ dword_809C868:
 	.word 0x80706
 dword_809C86C:
 	.word 0xB0A09
-	thumb_func_end sub_809C830
+	thumb_func_end loadWorkByteFromStepTable_809C830
 
 	thumb_local_start
 sub_809C870:
@@ -4764,9 +4764,9 @@ off_809C93C:
 // symdb: Clears every event flag listed in the cutscene state's entry flag bitfield via ClearEventFlag.
 // symdb: (void) -> void; callers pass r10 (consumed by ClearEventFlag) and lr; the function preserves and
 // symdb: returns r5 to callers (r5 is both an input the caller expects back and the sole register output)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809C940.yaml
-	thumb_func_start sub_809C940
-sub_809C940:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_clearEntryEventFlags_809C940.yaml
+	thumb_func_start cutscene_clearEntryEventFlags_809C940
+cutscene_clearEntryEventFlags_809C940:
 	push {r4-r7,lr}
 	ldr r0, off_809C950 // =eCutsceneState 
 	ldr r0, [r0,#0x70] // (dword_2011CC0 - 0x2011c50)
@@ -4777,7 +4777,7 @@ sub_809C940:
 	.balign 4, 0
 off_809C950:
 	.word eCutsceneState
-	thumb_func_end sub_809C940
+	thumb_func_end cutscene_clearEntryEventFlags_809C940
 
 // symdb: Sets the event flag whose id is stored in an object's state block (object+0x70 -> state+0x10).
 // symdb: void e_setEventFlagFromStateBlock(void) — object pointer in r5, context in r10; clobbers r0-r1,

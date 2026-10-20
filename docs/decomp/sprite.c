@@ -787,7 +787,7 @@ int sprite_getFrameParameters()
 
 
 // 0x8002e04
-int sub_8002E04()
+int checkSubEntryHiddenFlag_8002E04()
 {
     int v0; // r5
 

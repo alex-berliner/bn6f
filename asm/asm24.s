@@ -1137,12 +1137,12 @@ init_beastSpScenario:
 	movflag EVENT_9D3
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_808CAA2
-	bl sub_808CF50
+	bl ai_syncModeEventFlag_808CF50
 loc_808CAA2:
 	movflag EVENT_9D3
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	bl init_queueBeastSpGfx
-	bl sub_808CBA0
+	bl spawnOverworldMapObjects_808CBA0
 	bl ai_testMapGroupEventFlag
 	cmp r0, #1
 	beq loc_808CABE
@@ -1169,7 +1169,7 @@ ow_storyTriggerSpawnJackoutLockScene:
 	bl init_queueBeastSpGfx
 	movflag EVENT_9D6
 	bl SetEventFlagFromImmediate
-	bl sub_808CBA0
+	bl spawnOverworldMapObjects_808CBA0
 	movflag EVENT_9D8
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_808CB06
@@ -1242,7 +1242,7 @@ loc_808CB76:
 	bl jackIn_attemptJackInCheck_808CFB8
 	cmp r0, #1
 	bne loc_808CB8A
-	bl sub_808D108
+	bl ow_setupMapTiles_808D108
 loc_808CB8A:
 	bl battle_pickBattleStateInitPtr_808CC34
 	cmp r0, #0
@@ -1258,12 +1258,12 @@ off_808CB9C:
 	thumb_func_end pet_tryStartRandomEncounterStep_808CB0C
 
 // symdb: Spawns the initial batch of overworld map objects, with the count depending on the current map (12 in map group 0x85, 9 elsewhere with a nonzero MapNumber, otherwise 7).
-// symdb: void sub_808CBA0(r10 toolkit); takes the toolkit pointer in r10, reads GameState via
+// symdb: void spawnOverworldMapObjects_808CBA0(r10 toolkit); takes the toolkit pointer in r10, reads GameState via
 // symdb: oToolkit_GameStatePtr; returns nothing meaningful — r2 holds whatever the last
 // symdb: SpawnOverworldMapObject call left behind; r4-r7 reach the caller exactly as they arrived
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CBA0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnOverworldMapObjects_808CBA0.yaml
 	thumb_local_start
-sub_808CBA0:
+spawnOverworldMapObjects_808CBA0:
 	push {r4-r7,lr}
 	mov r6, #0
 	mov r7, #7
@@ -1293,7 +1293,7 @@ loc_808CBBC:
 	blt loc_808CBBC
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CBA0
+	thumb_func_end spawnOverworldMapObjects_808CBA0
 
 // symdb: Spawns overworld map object type 0x11 (sub_80A8394), sets EVENT_1700 and GameState.JackOutLockState = 3, and plays sound_8000672(0x1F, 0x13B) except in map group 0x85; returns 0. Used in the JudgeTree and Pavilion comps.
 // symdb: (r10 = toolkit, r4 = passed on as the new object's ObjectID +4) -> r0 = 0 with Z set (a cutscene
@@ -1757,11 +1757,11 @@ loc_808CF4C:
 	thumb_func_end ai_testMapGroupEventFlag
 
 // symdb: For the current map group's AI/story mode, sets the mode's paired event flag if its check flag isn't already set.
-// symdb: void sub_808CF50(r10 /* map group / AI-mode context */, lr); returns r7 unchanged (restored from
+// symdb: void ai_syncModeEventFlag_808CF50(r10 /* map group / AI-mode context */, lr); returns r7 unchanged (restored from
 // symdb: stack); clobbers r0, r1, r3, lr, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CF50.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_syncModeEventFlag_808CF50.yaml
 	thumb_local_start
-sub_808CF50:
+ai_syncModeEventFlag_808CF50:
 	push {r4-r7,lr}
 	bl ai_getAIModeForMapGroup_808D084
 	lsl r0, r0, #1
@@ -1787,7 +1787,7 @@ byte_808CF7C:
 	.byte 0xF8, 0x9, 0xFB, 0x9, 0xFE, 0x9, 0xFD, 0xF
 byte_808CF84:
 	.byte 0xDA, 0x9, 0xDB, 0x9, 0xDC, 0x9, 0xC5, 0xF
-	thumb_func_end sub_808CF50
+	thumb_func_end ai_syncModeEventFlag_808CF50
 
 // symdb: If event flag EVENT_9D9 is set, copies a text id from the caller's object into the battle chatbox's cursor-text field and plays sound 0x122; returns whether it did so.
 // symdb: bool battle_chatbox_setCursorTextFromEventFlag(void *textSource /* r5 */, struct Toolkit
@@ -2028,11 +2028,11 @@ byte_808D105:
 	thumb_func_end ai_isPosInModeArea
 
 // symdb: Fetches the current overworld tile template, stamps it onto the map with template index 0, and refreshes the derived map/tilemap state.
-// symdb: void sub_808D108(void); // reads r10 (context/map pointer passed through to callees), trashes
+// symdb: void ow_setupMapTiles_808D108(void); // reads r10 (context/map pointer passed through to callees), trashes
 // symdb: r0-r3 and flags, r4-r9/r12 pass through from the callees and are preserved for callers
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808D108.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_setupMapTiles_808D108.yaml
 	thumb_local_start
-sub_808D108:
+ow_setupMapTiles_808D108:
 	push {r4-r6,lr}
 	bl sub_8142CB0
 	mov r1, #0
@@ -2040,7 +2040,7 @@ sub_808D108:
 	bl ow_redrawMapTilemapsCb
 	pop {r4-r6,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808D108
+	thumb_func_end ow_setupMapTiles_808D108
 
 	thumb_local_start
 sub_808D11C:
@@ -2166,14 +2166,14 @@ unk_808D24C:
 	.word 0x04000101, 0x00000000, 0x00000000, 0x00000000
 	thumb_func_end sub_808D11C
 
-// symdb: Pure glue routine that runs the worker at sub_8048F88 once and then sets r0 to 0 (Z set, N clear) before returning.
+// symdb: Pure glue routine that runs the worker at shop_addStockEntry_kind4_8048F88 once and then sets r0 to 0 (Z set, N clear) before returning.
 // symdb: void sub_808D25C(void) // in: r10 (forwarded to the worker); out: flags N/Z from 0,
 // symdb: r2/r3/r4/r5/r7/r8/r9/r12 pass through from the worker
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808D25C.yaml
 	thumb_local_start
 sub_808D25C:
 	push {lr}
-	bl sub_8048F88
+	bl shop_addStockEntry_kind4_8048F88
 	mov r0, #0
 	// <endpool> <endfile>
 	pop {pc}

@@ -3268,17 +3268,17 @@ battle_objectUpdateFreeOwnedPtrs:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0xc]
 	cmp r0, #0
 	beq loc_810F414
-	bl sub_80CBAF2
+	bl battle_clearObjectTimer24_80CBAF2
 loc_810F414:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0x10]
 	cmp r0, #0
 	beq loc_810F41E
-	bl sub_80CBAF2
+	bl battle_clearObjectTimer24_80CBAF2
 loc_810F41E:
 	ldr r0, [r5,#oBattleObject_ExtraVars+0x14]
 	cmp r0, #0
 	beq loc_810F428
-	bl sub_80CBAF2
+	bl battle_clearObjectTimer24_80CBAF2
 loc_810F428:
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	bl sub_80E5B6E
@@ -8320,7 +8320,7 @@ loc_8111C1E:
 	add r3, r3, r6
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	ldr r7, [r7,#oAIAttackVars_PanelChooseCallback]
-	bl sub_80C579E
+	bl battle_spawnType5ObjectFromSource_80C579E
 	mov r0, #1
 loc_8111C62:
 	add sp, sp, #0x18
@@ -11570,7 +11570,7 @@ sub_811363C:
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq loc_8113654
-	bl sub_80B8A0A
+	bl battle_setObjectPhase8_80B8A0A
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	bl battle_ResetObjectTimerTo8_80C4072
 loc_8113654:
@@ -33490,7 +33490,7 @@ loc_811DFC4:
 	thumb_local_start
 sub_811DFCC:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811DFCC
 
@@ -33635,7 +33635,7 @@ loc_811E0A2:
 	thumb_local_start
 sub_811E0B2:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E0B2
 
@@ -33830,7 +33830,7 @@ loc_811E1E6:
 	thumb_local_start
 sub_811E1FA:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E1FA
 
@@ -33987,7 +33987,7 @@ off_811E308:
 	thumb_local_start
 sub_811E30C:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E30C
 
@@ -34134,7 +34134,7 @@ off_811E408:
 	thumb_local_start
 sub_811E40C:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	.word eScenarioEffectState2000780
 	thumb_func_end sub_811E40C
@@ -34415,7 +34415,7 @@ sub_811E5EC:
 	thumb_local_start
 sub_811E5F8:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E5F8
 
@@ -34505,7 +34505,7 @@ object_initSpriteType23Tail:
 	thumb_local_start
 sub_811E698:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E698
 
@@ -34599,7 +34599,7 @@ sprite_resetToCenter:
 	thumb_local_start
 sub_811E73C:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E73C
 
@@ -34737,7 +34737,7 @@ sprite_updateAtCenter:
 	thumb_local_start
 sub_811E850:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E850
 
@@ -34812,7 +34812,7 @@ sprite_stepSetPos22462:
 	thumb_local_start
 sub_811E8D8:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E8D8
 
@@ -34911,7 +34911,7 @@ sub_811E980:
 	thumb_local_start
 sub_811E998:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811E998
 
@@ -34984,7 +34984,7 @@ sub_811EA0C:
 	thumb_local_start
 sub_811EA20:
 	push {lr}
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	thumb_func_end sub_811EA20
 

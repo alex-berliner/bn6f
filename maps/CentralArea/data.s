@@ -712,12 +712,12 @@ dword_80727C4:
 
 mapscript_80727EC:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_616 destination4=byte_8072802
-	ms_call_native_function ptr1=sub_8035450+1 word5=0x00000000
+	ms_call_native_function ptr1=battle_spawnObjectListByIndex_8035450+1 word5=0x00000000
 	ms_jump destination1=mapscript_8072813
 
 byte_8072802:
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_61A destination4=mapscript_8072813
-	ms_call_native_function ptr1=sub_8035450+1 word5=0x00000001
+	ms_call_native_function ptr1=battle_spawnObjectListByIndex_8035450+1 word5=0x00000001
 
 mapscript_8072813:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_741 destination4=byte_8072891

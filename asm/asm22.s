@@ -174,7 +174,7 @@ loc_8087048:
 	ldr r0, off_80870FC // =byte_8086D2C+4 
 	b loc_80870F2
 loc_808704C:
-	bl sub_80871C0
+	bl npc_checkStateEventFlag_80871C0
 	bne loc_808705C
 	movflag EVENT_5F2
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -385,9 +385,9 @@ loc_808718E:
 // symdb: Reads the caller object's current state index, looks up an event-flag id in a small table, and returns whether that flag is set via the N/Z flags.
 // symdb: bool check(r5 objectPtr, r10 unused) — tail result is the N/Z flags left by TestEventFlag (Z
 // symdb: clear = flag set); clobbers r0, r1, r3, lr, C and V
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80871C0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_checkStateEventFlag_80871C0.yaml
 	thumb_local_start
-sub_80871C0:
+npc_checkStateEventFlag_80871C0:
 	push {lr}
 	ldrb r0, [r5,#0xc]
 	lsl r0, r0, #1
@@ -400,6 +400,6 @@ sub_80871C0:
 off_80871D4:
 	// <endpool> <endfile>
 	.word byte_80871D8
-	thumb_func_end sub_80871C0
+	thumb_func_end npc_checkStateEventFlag_80871C0
 
 /*For debugging purposes, connect comment at any range!*/

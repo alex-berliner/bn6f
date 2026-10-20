@@ -1308,24 +1308,24 @@ battleObject_initAIChipQueueSlot_80468C6:
 	thumb_func_end battleObject_initAIChipQueueSlot_80468C6
 
 // symdb: Zeroes a byte at the head of a sprite object and then marks that sprite unscalable via sprite_makeUnscalable.
-// symdb: void sub_80468E0(r5 sprite_ptr); passes r5 through to sprite_makeUnscalable and returns its
+// symdb: void sprite_clearScaleAndMakeUnscalable_80468E0(r5 sprite_ptr); passes r5 through to sprite_makeUnscalable and returns its
 // symdb: r0-r3 and NZCV flags unchanged
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80468E0.yaml
-	thumb_func_start sub_80468E0
-sub_80468E0:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearScaleAndMakeUnscalable_80468E0.yaml
+	thumb_func_start sprite_clearScaleAndMakeUnscalable_80468E0
+sprite_clearScaleAndMakeUnscalable_80468E0:
 	push {r4-r7,lr}
 	mov r0, #0
 	strb r0, [r5]
 	bl sprite_makeUnscalable
 	pop {r4-r7,pc}
-	thumb_func_end sub_80468E0
+	thumb_func_end sprite_clearScaleAndMakeUnscalable_80468E0
 
 // symdb: Clears the flag byte of one 0x58-byte entry in the battle array at byte_2011860 and marks that entry's sprite unscalable.
-// symdb: u32 sub_80468EC(u32 index); // in: r0 = entry index; out: r1/r2/r3 and c/v as left by
+// symdb: u32 battle_clearEntryFlagAndMakeUnscalable_80468EC(u32 index); // in: r0 = entry index; out: r1/r2/r3 and c/v as left by
 // symdb: sprite_makeUnscalable; r5 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80468EC.yaml
-	thumb_func_start sub_80468EC
-sub_80468EC:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearEntryFlagAndMakeUnscalable_80468EC.yaml
+	thumb_func_start battle_clearEntryFlagAndMakeUnscalable_80468EC
+battle_clearEntryFlagAndMakeUnscalable_80468EC:
 	push {r4-r7,lr}
 	ldr r5, off_8046928 // =byte_2011860 
 	mov r1, #0x58 
@@ -1335,7 +1335,7 @@ sub_80468EC:
 	strb r0, [r5]
 	bl sprite_makeUnscalable
 	pop {r4-r7,pc}
-	thumb_func_end sub_80468EC
+	thumb_func_end battle_clearEntryFlagAndMakeUnscalable_80468EC
 
 	thumb_local_start
 sub_8046900:
@@ -1346,7 +1346,7 @@ loc_8046906:
 	ldrb r0, [r5]
 	tst r0, r0
 	beq loc_8046910
-	bl sub_80468E0
+	bl sprite_clearScaleAndMakeUnscalable_80468E0
 loc_8046910:
 	add r5, #0x58 
 	add r7, #1
@@ -4833,11 +4833,11 @@ off_8048F84:
 	thumb_func_end isIdInList
 
 // symdb: Registers a single shop stock entry (entry kind 4) pointing at the item table byte_8048BE4, then returns.
-// symdb: void sub_8048F88(void); // tail-wraps shop_addItemStockEntry(4, byte_8048BE4); r4-r7 preserved,
+// symdb: void shop_addStockEntry_kind4_8048F88(void); // tail-wraps shop_addItemStockEntry(4, byte_8048BE4); r4-r7 preserved,
 // symdb: lr/r0-r3/r8/r9/NZCV pass through from the callee
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8048F88.yaml
-	thumb_func_start sub_8048F88
-sub_8048F88:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shop_addStockEntry_kind4_8048F88.yaml
+	thumb_func_start shop_addStockEntry_kind4_8048F88
+shop_addStockEntry_kind4_8048F88:
 	push {r4-r7,lr}
 	mov r0, #4
 	ldr r1, off_8048F94 // =byte_8048BE4
@@ -4848,7 +4848,7 @@ off_8048F94:
 	.word byte_8048BE4
 off_8048F98:
 	.word dword_8046B98
-	thumb_func_end sub_8048F88
+	thumb_func_end shop_addStockEntry_kind4_8048F88
 
 // symdb: Initializes the E-Save (extra save) state block eS200A290 by zero-filling it, then writes a small header (save_arg, 8, 0xA) and sets *toolkit->main_jumptable_index_ptr to 0x30.
 // symdb: void sub_8048F9C(u16 save_arg /* r0 */, struct Toolkit *toolkit /* r10 */);
@@ -10715,7 +10715,7 @@ battle_dispatchJumpByActorSlotAndAction_804C404:
 off_804C41C:
 	.word off_804C420
 off_804C420:
-	.word sub_804C43C+1
+	.word battle_render_startBlurEffect_804C43C+1
 	.word battle_render_setBlurAndAnimUpdate_804C478+1
 off_804C428:
 	.word byte_804C3F0
@@ -10739,9 +10739,9 @@ clearRenderFlags:
 // symdb: Kicks off the battle "blur/afterimage" effect by queueing its GFX to VRAM, resetting the blend/fade state, and running the first blur update.
 // symdb: (r5, r7, r10 = toolkit, lr) -> r2 r8 r9 set by battle_render_setBlurAndAnimUpdate_804C478;
 // symdb: clobbers r0-r3, flags, lr; preserves r4-r9
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C43C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_render_startBlurEffect_804C43C.yaml
 	thumb_local_start
-sub_804C43C:
+battle_render_startBlurEffect_804C43C:
 	push {r4-r7,lr}
 	ldr r0, off_804C468 // =byte_86A1480
 	ldr r1, dword_804C46C // =0x600cb00 
@@ -10770,7 +10770,7 @@ off_804C470:
 	.word 0x4C0
 dword_804C474:
 	.word 0x1F82
-	thumb_func_end sub_804C43C
+	thumb_func_end battle_render_startBlurEffect_804C43C
 
 // symdb: Enables the blur/animation redraw flag in the render-info control word and submits one sprite draw with a z position offset by the blur object's subpixel value.
 // symdb: void battle_render_setBlurAndAnimUpdate_804C478(r5 blur_obj, r7 sprite, r10 toolkit) — outputs
@@ -11097,11 +11097,11 @@ locret_804C6FC:
 	thumb_func_end e_queuePacketEntry
 
 // symdb: Battle-start step dispatcher: reads a step byte from the battle object and tail-jumps to the matching handler from a two-entry table.
-// symdb: void sub_804C700(u32 battleObj /* r5 */); inputs r5, r10, lr; caller-visible outputs r2, r8, r9,
+// symdb: void battle_dispatchStepHandler_804C700(u32 battleObj /* r5 */); inputs r5, r10, lr; caller-visible outputs r2, r8, r9,
 // symdb: r10, r11, r12 (produced by the dispatched handler); nzcv clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C700.yaml
-	thumb_func_start sub_804C700
-sub_804C700:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStepHandler_804C700.yaml
+	thumb_func_start battle_dispatchStepHandler_804C700
+battle_dispatchStepHandler_804C700:
 	push {r4-r7,lr}
 	ldr r0, off_804C710 // =off_804C714 
 	ldrb r1, [r5,#0x10]
@@ -11115,7 +11115,7 @@ off_804C710:
 off_804C714:
 	.word battle_setupBackgroundGfx+1
 	.word battleObject_initBattleFieldTilesAndSfxTimer_804C770+1
-	thumb_func_end sub_804C700
+	thumb_func_end battle_dispatchStepHandler_804C700
 
 	thumb_func_start sub_804C71C
 sub_804C71C:
@@ -11192,7 +11192,7 @@ battleObject_initBattleFieldTilesAndSfxTimer_804C770:
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_804C818
+	bl object_periodicSoundTimerTick_804C818
 	mov r0, #0
 	mov r1, #0
 	mov r2, #3
@@ -11207,7 +11207,7 @@ off_804C7AC:
 off_804C7B0:
 	.word off_804C7B4
 off_804C7B4:
-	.word sub_804C7C4+1
+	.word stub_doNothing_804C7C4+1
 	.word sub_804C7C8+1
 	.word sub_804C7EC+1
 dword_804C7C0:
@@ -11217,12 +11217,12 @@ dword_804C7C0:
 // symdb: Empty placeholder routine that does nothing and returns immediately, most likely a stubbed-out callback or unimplemented hook.
 // symdb: void stub_doNothing_804C7C4(void) // in: lr (return address); out: r5 passes through unchanged;
 // symdb: all r4-r7 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C7C4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/stub_doNothing_804C7C4.yaml
 	thumb_local_start
-sub_804C7C4:
+stub_doNothing_804C7C4:
 	push {r4-r7,lr}
 	pop {r4-r7,pc}
-	thumb_func_end sub_804C7C4
+	thumb_func_end stub_doNothing_804C7C4
 
 	thumb_local_start
 sub_804C7C8:
@@ -11266,9 +11266,9 @@ dword_804C808:
 // symdb: Ticks an object's countdown timer; on expiry reloads it with a random 300-555 frame delay and plays the object's periodic sound effect.
 // symdb: void object_periodicSoundTimerTick_804C818(Object *obj /* r5 */); returns r10 pass-through (or
 // symdb: PlaySoundEffect's r10 when it fires)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804C818.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_periodicSoundTimerTick_804C818.yaml
 	thumb_local_start
-sub_804C818:
+object_periodicSoundTimerTick_804C818:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x14]
 	sub r0, #1
@@ -11291,7 +11291,7 @@ loc_804C824:
 locret_804C840:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804C818
+	thumb_func_end object_periodicSoundTimerTick_804C818
 
 // symdb: Sets a single field (offset 0x14) of the struct in r5 to 0x10, likely assigning a state, timer, or counter on a game object.
 // symdb: u32 obj_setField14To16_804C844(u32 obj /* r5 */); // in: r5 (object/struct pointer), lr
@@ -11555,7 +11555,7 @@ dword_804CBD8:
 	.word 0x3F0B
 	thumb_func_end clear_renderBlendEffect
 
-// symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→sub_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
+// symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→toolkit_setUnk2009740StateBytes_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
 // symdb: (r5 = battle/AIData struct (reads Unk_0c, writes Unk_0x10), r10 = toolkit) -> void; no return
 // symdb: value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_startTransformSequence.yaml
@@ -11610,7 +11610,7 @@ off_804CC40:
 	.word sub_804CC58+1
 	.word sub_804CC58+1
 	.word sub_804CC58+1
-	.word sub_804CC6E+1
+	.word toolkit_setUnk2009740StateBytes_804CC6E+1
 	.word sub_804CC7E+1
 	.word sub_804CC7E+1
 	thumb_func_end beastSp_startTransformSequence
@@ -11630,12 +11630,12 @@ sub_804CC58:
 	thumb_func_end sub_804CC58
 
 // symdb: Writes the constant bytes 0x0C and 0x10 into offset 2 and 3 of the toolkit's Unk2009740 struct, likely setting a two-byte state/counter pair.
-// symdb: void sub_804CC6E(r10 = toolkit register base); r5 is left untouched (the lifter reports it as an
+// symdb: void toolkit_setUnk2009740StateBytes_804CC6E(r10 = toolkit register base); r5 is left untouched (the lifter reports it as an
 // symdb: "output" only because callers happen to read it back after the call); flags NZ clobbered, r0-r1
 // symdb: clobbered, r4-r7 preserved.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_804CC6E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_setUnk2009740StateBytes_804CC6E.yaml
 	thumb_local_start
-sub_804CC6E:
+toolkit_setUnk2009740StateBytes_804CC6E:
 	push {r4-r7,lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_Unk2009740_Ptr]
@@ -11644,7 +11644,7 @@ sub_804CC6E:
 	mov r0, #0x10
 	strb r0, [r1,#3]
 	pop {r4-r7,pc}
-	thumb_func_end sub_804CC6E
+	thumb_func_end toolkit_setUnk2009740StateBytes_804CC6E
 
 // symdb: Writes the constants 8 and 0x10 into byte fields +2 and +3 of the toolkit's 2009740 object, switching that object into a particular mode.
 // symdb: void sub_804CC7E(void) // in: r10 = toolkit base (reads oToolkit_Unk2009740_Ptr), lr = return;

@@ -860,17 +860,17 @@ locret_800F2EE:
 	thumb_func_end battleObject_refreshSpriteAndArm_800F2C6
 
 // symdb: AI trampoline that redirects processing from an AI data block to the battle object it belongs to, then tail-calls sub_800F2FC.
-// symdb: void sub_800F2F0(u32 selfObject /* r5 = battle object whose AI is running */); returns
+// symdb: void ai_followTargetObject_800F2F0(u32 selfObject /* r5 = battle object whose AI is running */); returns
 // symdb: sub_800F2FC's results in r3/r4/r5, r5 passed through
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_800F2F0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_followTargetObject_800F2F0.yaml
 	thumb_local_start
-sub_800F2F0:
+ai_followTargetObject_800F2F0:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldr r0, [r0,#oAIData_BattleObjectPtr]
 	bl sub_800F2FC
 	pop {pc}
-	thumb_func_end sub_800F2F0
+	thumb_func_end ai_followTargetObject_800F2F0
 
 	thumb_func_start sub_800F2FC
 sub_800F2FC:
@@ -5020,7 +5020,7 @@ off_8010EA4:
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word battle_spawnObject56IntoRelatedObject2+1
-	.word sub_8010FD8+1
+	.word battle_spawnOwnerHelperPair_8010FD8+1
 	.word nullsub_43+1
 	.word battle_spawnObject56WithRomParam+1
 	.word nullsub_43+1
@@ -5038,7 +5038,7 @@ off_8010F08:
 	.word sub_80112FE+1
 	.word sub_8011308+1
 	.word sub_8011312+1
-	.word sub_8011330+1
+	.word battle_spawnRelatedObject_10E_8011330+1
 	.word sub_801131C+1
 	.word sub_8011326+1
 	.word sub_801133A+1
@@ -5163,9 +5163,9 @@ battle_spawnObject56AtYOffset:
 // symdb: battle_spawnOwnerHelperPair_8010FD8(u32 r1 spawn_arg, u32 r2 parent_tag, u32 r3 spawn_arg, u32
 // symdb: r5 owner) -> u32 r0 (second spawned object pointer, the value stored in owner->ExtraVars);
 // symdb: r3/r5/r6/r7 left as the last spawn leaves them; r4 preserved; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8010FD8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnOwnerHelperPair_8010FD8.yaml
 	thumb_local_start
-sub_8010FD8:
+battle_spawnOwnerHelperPair_8010FD8:
 	push {r4,lr}
 	push {r2}
 	mov r4, #6
@@ -5186,7 +5186,7 @@ sub_8010FD8:
 	bl battle_spawnObject56LinkedToOwner_80C44A8
 	str r0, [r5,#oBattleObject_ExtraVars]
 	pop {r4,pc}
-	thumb_func_end sub_8010FD8
+	thumb_func_end battle_spawnOwnerHelperPair_8010FD8
 
 // symdb: Builds a ROM pointer from r2 (bank in r2 <<= 16 plus fixed low bits 0x010F) and calls battle_spawnObject56LinkedToOwner to spawn a type-0x56 battle object, storing the returned pointer to owner+oBattleObject_RelatedObject2Ptr.
 // symdb: (r0 = owner battle object ptr, r1 = ?, r2 = 16-bit selector/param) -> r0 = spawned object ptr,
@@ -5305,14 +5305,14 @@ off_80110F4:
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_80111DC+1
+	.word battle_releaseRelatedObject2_80111DC+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word sub_80111EE+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_8011200+1
+	.word battle_releaseRelatedObject2_8011200+1
 	.word object_freeRelatedObjectAndExtraVars+1
 	.word nullsub_43+1
 	.word sub_8011256+1
@@ -5323,7 +5323,7 @@ off_80110F4:
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	.word sub_80113FC+1
 	.word sub_80113FC+1
 	.word sub_80113FC+1
@@ -5335,19 +5335,19 @@ off_80110F4:
 	.word sub_80113FC+1
 	.word sub_80113FC+1
 	.word nullsub_43+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	.word nullsub_43+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	thumb_func_end battle_runObjectTeardownByNameID
 
 // symdb: Detaches a battle object's "related object 2" attachment, running that object's removal routine first if one is attached.
@@ -5381,11 +5381,11 @@ locret_80111DA:
 	thumb_func_end sub_80111CA
 
 // symdb: Detaches a battle object's secondary linked object, running that object's cleanup routine and clearing the link pointer.
-// symdb: void sub_80111DC(u32 battleObject /* r5 */); — returns r1 (left over from sub_80C4204's return
+// symdb: void battle_releaseRelatedObject2_80111DC(u32 battleObject /* r5 */); — returns r1 (left over from sub_80C4204's return
 // symdb: when the link was non-null), clobbers r0 and NZ flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80111DC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_releaseRelatedObject2_80111DC.yaml
 	thumb_local_start
-sub_80111DC:
+battle_releaseRelatedObject2_80111DC:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
@@ -5395,7 +5395,7 @@ sub_80111DC:
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 locret_80111EC:
 	pop {pc}
-	thumb_func_end sub_80111DC
+	thumb_func_end battle_releaseRelatedObject2_80111DC
 
 	thumb_local_start
 sub_80111EE:
@@ -5413,9 +5413,9 @@ locret_80111FE:
 // symdb: Clears a battle object's RelatedObject2 link, sending the linked object to cleanup state 8 first if one was set.
 // symdb: u32 battle_releaseRelatedObject2_8011200(battle_object *obj /* r5 */, u32 r1_passthrough) -> u32
 // symdb: (r1 out from cleanup call, or passthrough)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011200.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_releaseRelatedObject2_8011200.yaml
 	thumb_local_start
-sub_8011200:
+battle_releaseRelatedObject2_8011200:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	tst r0, r0
@@ -5425,7 +5425,7 @@ sub_8011200:
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 locret_8011210:
 	pop {pc}
-	thumb_func_end sub_8011200
+	thumb_func_end battle_releaseRelatedObject2_8011200
 
 // symdb: If this battle object has a RelatedObject2, deletes/frees it and clears the pointer.
 // symdb: (r5 = battle object) -> void; destroys r0
@@ -5517,7 +5517,7 @@ off_801127C:
 	.word sub_80112FE+1
 	.word sub_8011308+1
 	.word sub_8011312+1
-	.word sub_8011330+1
+	.word battle_spawnRelatedObject_10E_8011330+1
 	.word sub_801131C+1
 	.word sub_8011326+1
 	.word sub_801133A+1
@@ -5606,17 +5606,17 @@ sub_8011326:
 	thumb_func_end sub_8011326
 
 // symdb: One-line battle-side stub that spawns a related object with fixed object id 0x10E, forwarding the caller's other arguments unchanged.
-// symdb: void sub_8011330(u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg5 /*r5*/); // tail-
+// symdb: void battle_spawnRelatedObject_10E_8011330(u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg5 /*r5*/); // tail-
 // symdb: jumps into battle_spawnObj56StoreRelatedObject2(0x10E, arg1, arg2, arg3, arg5); results in r4-r7
 // symdb: as left by the callee
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011330.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnRelatedObject_10E_8011330.yaml
 	thumb_local_start
-sub_8011330:
+battle_spawnRelatedObject_10E_8011330:
 	push {lr}
 	ldr r0, dword_80114F8 // =0x10e 
 	bl battle_spawnObj56StoreRelatedObject2
 	pop {pc}
-	thumb_func_end sub_8011330
+	thumb_func_end battle_spawnRelatedObject_10E_8011330
 
 	thumb_local_start
 sub_801133A:
@@ -5706,9 +5706,9 @@ locret_8011382:
 // symdb: Jumps to one of 27 per-type "detach related object" handlers selected by the type index in r0, running it with the caller's register context (notably the object pointer in r5) intact.
 // symdb: void battle_dispatchDetachRelatedObject(u32 type_index /*r0*/, void* ctx /*r5*/); returns
 // symdb: whatever the selected handler leaves in r4-r12 (tail-bridged to the caller)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011384.yaml
-	thumb_func_start sub_8011384
-sub_8011384:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchDetachRelatedObject_8011384.yaml
+	thumb_func_start battle_dispatchDetachRelatedObject_8011384
+battle_dispatchDetachRelatedObject_8011384:
 	push {lr}
 	lsl r0, r0, #2
 	ldr r1, off_8011394 // =off_8011398 
@@ -5732,20 +5732,20 @@ off_8011398:
 	.word sub_80113FC+1
 	.word sub_80113FC+1
 	.word nullsub_43+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
 	.word nullsub_43+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
-	.word sub_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
+	.word battle_releaseRelatedObject2_801140E+1
 	.word nullsub_43+1
-	.word sub_801140E+1
-	thumb_func_end sub_8011384
+	.word battle_releaseRelatedObject2_801140E+1
+	thumb_func_end battle_dispatchDetachRelatedObject_8011384
 
 	thumb_local_start
 sub_80113FC:
@@ -5764,9 +5764,9 @@ locret_801140C:
 // symdb: void battle_releaseRelatedObject2_801140E(BattleObject* self /* r5 */) — inputs r5, lr; outputs
 // symdb: c (set), v (clear), r1 (callee's result, or caller's r1 untouched if no link); preserves lr via
 // symdb: pop {pc}
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801140E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_releaseRelatedObject2_801140E.yaml
 	thumb_local_start
-sub_801140E:
+battle_releaseRelatedObject2_801140E:
 	push {lr}
 	ldr r0, [r5,#oBattleObject_RelatedObject2Ptr]
 	cmp r0, #NULL
@@ -5776,7 +5776,7 @@ sub_801140E:
 	str r0, [r5,#oBattleObject_RelatedObject2Ptr]
 locret_801141E:
 	pop {pc}
-	thumb_func_end sub_801140E
+	thumb_func_end battle_releaseRelatedObject2_801140E
 
 // symdb: Dispatches a menu/UI control value: if r0 is 0, forwards r1 to sub_8011268; otherwise forwards r0 to sub_8010DF6 with selector 2.
 // symdb: void sub_8011420(u32 r0, u32 r1); // no return; clobbers r0-r4, flags
@@ -5802,7 +5802,7 @@ sub_8011438:
 	cmp r0, #0
 	bne loc_8011446
 	mov r0, r1
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	pop {pc}
 loc_8011446:
 	mov r1, r0
@@ -14103,13 +14103,13 @@ activateCrossHappensHere_8014944:
 	cmp r0, #0xff
 	beq loc_8014958
 	ldr r0, [r6,#8]
-	bl sub_801596E
+	bl battle_clearAIFlag4000_801596E
 loc_8014958:
 	ldrb r0, [r7]
 	cmp r0, #0xff
 	beq loc_8014964
 	ldr r0, [r7,#8]
-	bl sub_801596E
+	bl battle_clearAIFlag4000_801596E
 loc_8014964:
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -14315,7 +14315,7 @@ off_8014AC4:
 	.word off_8014AC8
 off_8014AC8:
 	.word ai_relocateToFuturePanel+1
-	.word sub_8014D70+1
+	.word battle_aiAttackFireStep_8014D70+1
 	.word battle_ai_attackVars_step3_8014E08+1
 	.word object_aiAttackVarsExitState_8014F04+1
 off_8014AD8:
@@ -14470,7 +14470,7 @@ battle_runTransformationIntroStep_8014BEE:
 	str r0, [r1,#oAIData_TempAttackObjectPtr]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	push {r0}
@@ -14635,9 +14635,9 @@ loc_8014D5A:
 // symdb: Per-actor AI attack step handler that counts a charge timer down, then on expiry fires the attack (charge-up sound, effect spawn, lift, attack cry, camera shake) and arms the hit phase.
 // symdb: void battle_aiAttackFireStep(u32 r2 soundArg, battle_object_t *r5 obj, ai_attack_vars_t *r7
 // symdb: attackVars, u32 r10 passthrough); // outputs r5/r10 as left by callees; N/Z/C/V clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8014D70.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackFireStep_8014D70.yaml
 	thumb_local_start
-sub_8014D70:
+battle_aiAttackFireStep_8014D70:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
@@ -14712,7 +14712,7 @@ off_8014E00:
 	.word 0x1CD
 dword_8014E04:
 	.word 0x80000
-	thumb_func_end sub_8014D70
+	thumb_func_end battle_aiAttackFireStep_8014D70
 
 // symdb: AI step 3 for a battle object's attack vars — plays the load/charge-in animation, sets a 10-frame counter, plays a sound, and on expiry runs the turn-open / sprite-restoration cleanup and sets the next state to 0xC.
 // symdb: (r5 = battle object, r7 = AI attack vars, r10 = toolkit, lr = ret) -> void ; no return value to
@@ -14727,7 +14727,7 @@ battle_ai_attackVars_step3_8014E08:
 	bne loc_8014EB8
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	push {r0}
@@ -15003,7 +15003,7 @@ ai_stepForwardAttackUpdate:
 	bne loc_8015100
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	push {r0}
@@ -15301,7 +15301,7 @@ sub_80152C8:
 	bne loc_801537C
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_ai_getActorInfo_801595E
 	push {r0}
@@ -15559,7 +15559,7 @@ battle_naviAttackIntroStep:
 loc_80154E2:
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	mov r0, #0
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	ldr r1, [r5,#oBattleObject_AIDataPtr]
@@ -15779,7 +15779,7 @@ loc_801565E:
 	strb r0, [r5,#oBattleObject_AIType]
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	mov r0, #0
 	mov r1, #0
 	bl chip_class_lookup_800FC9E
@@ -15916,7 +15916,7 @@ loc_80157EE:
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
 	str r0, [sp]
-	bl sub_8011384
+	bl battle_dispatchDetachRelatedObject_8011384
 	mov r1, #0
 	ldr r0, [sp]
 	cmp r0, #0xa
@@ -16090,16 +16090,16 @@ sub_8015940:
 
 // symdb: Writes three argument bytes into the work buffer at byte_203CED0 (offsets 0, 1 and 3) as some kind of request/parameter record.
 // symdb: void storeRequestBytes_8015952(u8 a, u8 b, u8 c)  // r0, r1, r2 in; nothing returned
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8015952.yaml
-	thumb_func_start sub_8015952
-sub_8015952:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/storeRequestBytes_8015952.yaml
+	thumb_func_start storeRequestBytes_8015952
+storeRequestBytes_8015952:
 	push {r4,lr}
 	ldr r4, off_8015B38 // =byte_203CED0 
 	strb r0, [r4]
 	strb r1, [r4,#0x1] // (byte_203CED1 - 0x203ced0)
 	strb r2, [r4,#0x3] // (byte_203CED3 - 0x203ced0)
 	pop {r4,pc}
-	thumb_func_end sub_8015952
+	thumb_func_end storeRequestBytes_8015952
 
 // symdb: Reads three AIData fields (ActorType, AIIndex, Unk_03) for the AI slot given by r0 and returns them in r0/r1/r3.
 // symdb: (r0 = aiSlotIndex) -> r0 = ActorType, r1 = AIIndex, r3 = Unk_03 ; side effects: none (leaf)
@@ -16119,9 +16119,9 @@ battle_ai_getActorInfo_801595E:
 // symdb: If a non-null AI object pointer is passed, clears the 0x4000 flag in its AI data; otherwise does nothing.
 // symdb: int battle_clearAIFlag4000(AIObject* object); // r0 = object ptr; returns r3 (side effect of
 // symdb: callee), r5 preserved; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801596E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearAIFlag4000_801596E.yaml
 	thumb_local_start
-sub_801596E:
+battle_clearAIFlag4000_801596E:
 	push {r5,lr}
 	mov r5, r0
 	beq locret_801597A
@@ -16129,7 +16129,7 @@ sub_801596E:
 	bl SetAIData_Unk_44_Flag
 locret_801597A:
 	pop {r5,pc}
-	thumb_func_end sub_801596E
+	thumb_func_end battle_clearAIFlag4000_801596E
 
 // symdb: Returns 1 if battle object AIData has Unk_48 & 0x80 set, else 0 (nullptr-safe).
 // symdb: (r0 = *BattleObject) -> r0 = 0 or 1 ; side effects: none
@@ -16436,13 +16436,13 @@ callPossiblyGetBattleEmotion_8015B54: // (alliance: u8) -> (res0: enum8?, transf
 // symdb: Pure tail-call thunk that forwards r0 to battle_getPlayerEmotionPriority (sub_8015BA8) and returns its results unchanged.
 // symdb: battle_getPlayerEmotionPriorityThunk_8015B5C(u32 r0) -> r0,r1,r2,r3,r4,r6 passthrough of
 // symdb: sub_8015BA8's outputs; r10 passed-through unused by this stub
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8015B5C.yaml
-	thumb_func_start sub_8015B5C
-sub_8015B5C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getPlayerEmotionPriorityThunk_8015B5C.yaml
+	thumb_func_start battle_getPlayerEmotionPriorityThunk_8015B5C
+battle_getPlayerEmotionPriorityThunk_8015B5C:
 	push {lr}
 	bl battle_getPlayerEmotionPriority
 	pop {pc}
-	thumb_func_end sub_8015B5C
+	thumb_func_end battle_getPlayerEmotionPriorityThunk_8015B5C
 
 // symdb: Picks the player's current battle emotion (face/sprite state) from AI anger/chip flags and the navi's mood, returning it alongside transformation, mood and Beast Out counter from NaviStats.
 // symdb: u32 battle_getPlayerEmotion(u32 alliance /*r0: false=player side?*/); -> r0 = emotion (0..5), r1
@@ -18704,15 +18704,15 @@ object_genericDestroy:
 	thumb_func_end object_genericDestroy
 
 // symdb: Bare tail-call wrapper that releases a battle object's memory, forwarding the object pointer in r5 straight to object_freeMemory.
-// symdb: void sub_8016C9C(u32 object /* r5 */); tail-calls object_freeMemory, so r0-r3 and the nzcv flags
+// symdb: void object_freeMemoryWrapper_8016C9C(u32 object /* r5 */); tail-calls object_freeMemory, so r0-r3 and the nzcv flags
 // symdb: on return are whatever object_freeMemory leaves; r5 is preserved through the callee
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8016C9C.yaml
-	thumb_func_start sub_8016C9C
-sub_8016C9C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_freeMemoryWrapper_8016C9C.yaml
+	thumb_func_start object_freeMemoryWrapper_8016C9C
+object_freeMemoryWrapper_8016C9C:
 	push {lr}
 	bl object_freeMemory
 	pop {pc}
-	thumb_func_end sub_8016C9C
+	thumb_func_end object_freeMemoryWrapper_8016C9C
 
 // symdb: When the battle is running and the object's alliance differs from the battle's emotion-state byte, and that emotion state is 2 (an "enemy of the player's emotion"?), and the collision-data counter-timer is non-zero, applies a palette-color-shader (from the table at 0x8016CE4, indexed by Unk_40 & 2) to this battle object's sprite; otherwise leaves the sprite shader alone.
 // symdb: (r5 = BattleObjectPtr, r10 = ToolkitPtr) -> void ; side effects may write the sprite-block
@@ -19268,7 +19268,7 @@ loc_8017034: // endif
 	cmp r0, #0x3c 
 	beq loc_801705C /*+20*/
 
-	bl sub_800F2F0
+	bl ai_followTargetObject_800F2F0
 	b loc_8017064
 
 loc_801705C: // else
@@ -28082,9 +28082,9 @@ loc_801C1C8:
 // symdb: Eases a value toward a target by 1/8 of the remaining gap plus 2, clamping at the target, while setting a state/counter pair in the object at r4
 // symdb: int easeStepTowardTarget(int value /*r0*/, int target /*r1*/, void *work /*r4*/); returns the
 // symdb: adjusted value in r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801C1D0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/easeStepTowardTarget_801C1D0.yaml
 	thumb_local_start
-sub_801C1D0:
+easeStepTowardTarget_801C1D0:
 	mov r2, #2
 	strb r2, [r4,#8]
 	mov r2, #0xa
@@ -28099,7 +28099,7 @@ sub_801C1D0:
 	mov r0, r1
 locret_801C1E8:
 	mov pc, lr
-	thumb_func_end sub_801C1D0
+	thumb_func_end easeStepTowardTarget_801C1D0
 
 // symdb: Marks a state object as active/animating and moves a value one ease-out step toward a target value, clamping so it never overshoots.
 // symdb: int easeValueTowardTarget(int value /*r0*/, int target /*r1*/, StateObj *obj /*r4*/); returns
@@ -28309,7 +28309,7 @@ off_801C334:
 off_801C338:
 	.word off_801C33C
 off_801C33C:
-	.word sub_801C1D0+1
+	.word easeStepTowardTarget_801C1D0+1
 	.word easeValueTowardTarget_801C1EA+1
 dword_801C344:
 	.word 0x6016600
@@ -31442,7 +31442,7 @@ off_801DA6C:
 	.word battle_setUnkFlags44_0x40_801E006+1
 	.word background_applyFixedTilePatch_801E03E+1
 	.word sub_801E1E4+1
-	.word sub_801E144+1
+	.word battle_setFlagBits200_801E144+1
 	.word battle_loadModeGfx_801E10E+1
 	.word ow_drawBgTilesSetDrawnFlag+1
 	.word sub_801E468+1
@@ -32599,11 +32599,11 @@ sub_801E138:
 	thumb_func_end sub_801E138
 
 // symdb: Sets flag bit group 0x200 (bit 9) in the battle-state flag structure at 0x2035280 and returns.
-// symdb: void sub_801E144(void); // in: lr only; out: r0 = 0x200, r1/r2 = whatever
+// symdb: void battle_setFlagBits200_801E144(void); // in: lr only; out: r0 = 0x200, r1/r2 = whatever
 // symdb: flagSetBits_eStruct2035280_801BEB8 leaves, lr = caller return; clobbers N/Z
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801E144.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setFlagBits200_801E144.yaml
 	thumb_local_start
-sub_801E144:
+battle_setFlagBits200_801E144:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #9
@@ -32612,7 +32612,7 @@ sub_801E144:
 	.word dword_86E1C78
 	.word unk_3001A80
 	.word dword_86E1C78
-	thumb_func_end sub_801E144
+	thumb_func_end battle_setFlagBits200_801E144
 
 // symdb: Plays the "Beast Out" transformation transition: clears/loads beast-out graphics, fires dispatch effects, and plays the SE 0x9f jingle.
 // symdb: (r10 = toolkit) -> side effects only; side effects: clears bit 0x10000 of dword_20352C0,
@@ -33433,7 +33433,7 @@ battleObject_resolveEmotionPaletteAltEntry:
 	push {r4,r6,lr}
 	ldr r0, [r5,#0x48]
 	ldrb r0, [r0,#0x16]
-	bl sub_8015B5C
+	bl battle_getPlayerEmotionPriorityThunk_8015B5C
 	b loc_801E6B2
 	thumb_func_end battleObject_resolveEmotionPaletteAltEntry
 

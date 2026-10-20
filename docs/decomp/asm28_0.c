@@ -1295,7 +1295,7 @@ int clearBeastOutState()
 
 
 // 0x809ada8
-int sub_809ADA8()
+int pet_exitToPetMenuReturnZero_809ADA8()
 {
     pet_returnToPetMenu();
     return 0;
@@ -1628,7 +1628,7 @@ signed int __fastcall sub_809B890(int a1, int a2, int a3)
     {
         v15 = (v3 + 28);
         v11 = v3[32];
-        sub_8002E04();
+        checkSubEntryHiddenFlag_8002E04();
         if ( !v14 )
         {
             *(v15 + 28) = 1;
@@ -1937,7 +1937,7 @@ int camera_restartWithScriptHead()
 
 
 // 0x809c7fc
-int sub_809C7FC()
+int ow_player_updateCoords_809C7FC()
 {
     int v0; // r5
 
@@ -1957,7 +1957,7 @@ int owPlayer_setFixedAnimationFromLookup()
 
 
 // 0x809c830
-int sub_809C830()
+int loadWorkByteFromStepTable_809C830()
 {
     int v0; // r5
 
@@ -1998,7 +1998,7 @@ int ow_applyCutsceneDirOffset()
 
 
 // 0x809c940
-unsigned int sub_809C940()
+unsigned int cutscene_clearEntryEventFlags_809C940()
 {
     return ClearEventFlag(*(dword_2011CC0 + 20));
 }

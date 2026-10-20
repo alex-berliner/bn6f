@@ -2121,13 +2121,13 @@ int battle_objectUpdateFreeOwnedPtrs()
     {
         v2 = *(v0 + 108);
         if ( v2 )
-            sub_80CBAF2(v2);
+            battle_clearObjectTimer24_80CBAF2(v2);
         v3 = *(v0 + 112);
         if ( v3 )
-            sub_80CBAF2(v3);
+            battle_clearObjectTimer24_80CBAF2(v3);
         v4 = *(v0 + 116);
         if ( v4 )
-            sub_80CBAF2(v4);
+            battle_clearObjectTimer24_80CBAF2(v4);
         v1 = sub_80E5B6E(*(v0 + 104));
     }
     return battle_objectUpdateDispatchPhase_80165C2(v1);
@@ -5137,7 +5137,7 @@ int __fastcall ai_attackSpawnVariant(int a1)
         v13 = object_getFrontDirection(v1);
         v14 = *(v2 + 8);
         v15 = *(v2 + 40);
-        sub_80C579E(v13, v1->x + 196608 * v13, v1->y, v1->z + 786432);
+        battle_spawnType5ObjectFromSource_80C579E(v13, v1->x + 196608 * v13, v1->y, v1->z + 786432);
         result = 1;
     }
     return result;
@@ -7237,7 +7237,7 @@ int sub_811363C()
         v1 = *(v0 + 96);
         if ( v1 )
         {
-            sub_80B8A0A(v1);
+            battle_setObjectPhase8_80B8A0A(v1);
             v1 = battle_ResetObjectTimerTo8_80C4072(*(v0 + 104));
         }
     }
@@ -20100,7 +20100,7 @@ LABEL_6:
 // 0x811dfcc
 int sub_811DFCC()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20199,7 +20199,7 @@ void __noreturn sub_811E090()
 // 0x811e0b2
 int sub_811E0B2()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20326,7 +20326,7 @@ void __noreturn battleObject_setCoordsAndUpdateSprite_811E1D4()
 // 0x811e1fa
 int sub_811E1FA()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20423,7 +20423,7 @@ void __noreturn battleObject_beastSp_update_811E2B4()
 // 0x811e30c
 int sub_811E30C()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20507,7 +20507,7 @@ void __noreturn battleObject_setCoordsFromCutsceneScript_811E3CC()
 // 0x811e40c
 int sub_811E40C()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20691,7 +20691,7 @@ void __noreturn sub_811E5EC()
 // 0x811e5f8
 int sub_811E5F8()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20748,7 +20748,7 @@ void __noreturn object_initSpriteType23Tail()
 // 0x811e698
 int sub_811E698()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20804,7 +20804,7 @@ void __noreturn sprite_resetToCenter()
 // 0x811e73c
 int sub_811E73C()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20887,7 +20887,7 @@ void __noreturn sprite_updateAtCenter()
 // 0x811e850
 int sub_811E850()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20934,7 +20934,7 @@ void __noreturn sprite_stepSetPos22462()
 // 0x811e8d8
 int sub_811E8D8()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -20993,7 +20993,7 @@ void __noreturn sub_811E980()
 // 0x811e998
 int sub_811E998()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 
@@ -21040,7 +21040,7 @@ void __noreturn sub_811EA0C()
 // 0x811ea20
 int sub_811EA20()
 {
-    return sub_80468E0();
+    return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
 
 

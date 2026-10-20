@@ -1309,9 +1309,9 @@ sub_8093212::
 sub_809322A::
 	push {r4-r7,lr}
 	mov r0, #3
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #4
-	bl sub_80468EC
+	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	pop {r4-r7,pc}
 	thumb_func_end sub_809322A
 

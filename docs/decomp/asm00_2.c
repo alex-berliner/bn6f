@@ -503,7 +503,7 @@ AI *battleObject_refreshSpriteAndArm_800F2C6()
 
 
 // 0x800f2f0
-AI *sub_800F2F0()
+AI *ai_followTargetObject_800F2F0()
 {
     int v0; // r5
 
@@ -3370,7 +3370,7 @@ int __fastcall battle_spawnObject56AtYOffset(int a1, int a2, int a3, int a4)
 
 
 // 0x8010fd8
-int __fastcall sub_8010FD8(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnOwnerHelperPair_8010FD8(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -3459,7 +3459,7 @@ int sub_80111CA()
 
 
 // 0x80111dc
-int sub_80111DC()
+int battle_releaseRelatedObject2_80111DC()
 {
     int v0; // r5
     int result; // r0
@@ -3493,7 +3493,7 @@ int sub_80111EE()
 
 
 // 0x8011200
-int sub_8011200()
+int battle_releaseRelatedObject2_8011200()
 {
     int v0; // r5
     int result; // r0
@@ -3648,7 +3648,7 @@ int __fastcall sub_8011326(int a1, int a2, int a3, int a4)
 
 
 // 0x8011330
-int __fastcall sub_8011330(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnRelatedObject_10E_8011330(int a1, int a2, int a3, int a4)
 {
     return battle_spawnObj56StoreRelatedObject2(270, a2, a3, a4);
 }
@@ -3686,7 +3686,7 @@ int __fastcall battle_spawnRelatedObject2Variant2(int a1, int a2)
 
 
 // 0x8011384
-int __fastcall sub_8011384(int a1)
+int __fastcall battle_dispatchDetachRelatedObject_8011384(int a1)
 {
     return (*(&off_8011398 + a1))();
 }
@@ -3710,7 +3710,7 @@ int sub_80113FC()
 
 
 // 0x801140e
-int sub_801140E()
+int battle_releaseRelatedObject2_801140E()
 {
     int v0; // r5
     int result; // r0
@@ -3747,7 +3747,7 @@ int __fastcall sub_8011438(int a1, int a2)
     if ( a1 )
         result = battle_runObjectTeardownByNameID(2, a1);
     else
-        result = sub_8011384(a2);
+        result = battle_dispatchDetachRelatedObject_8011384(a2);
     return result;
 }
 
@@ -9436,9 +9436,9 @@ int activateCrossHappensHere_8014944()
     else
     {
         if ( *v1 != 255 )
-            sub_801596E(*(v1 + 2));
+            battle_clearAIFlag4000_801596E(*(v1 + 2));
         if ( *v2 != 255 )
-            sub_801596E(*(v2 + 2));
+            battle_clearAIFlag4000_801596E(*(v2 + 2));
         result = 4;
         *(v0 + 3) = 4;
     }
@@ -9689,7 +9689,7 @@ int __cdecl battle_runTransformationIntroStep_8014BEE(int a1, int a2, int a3)
         v3->parent = 0;
         v3->ai->unk_68 = 0;
         v5 = sub_8013774(0, 44);
-        sub_8011384(v5);
+        battle_dispatchDetachRelatedObject_8011384(v5);
         v6 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v7 = v6;
         v8 = sub_8013774(v6, 41);
@@ -9804,7 +9804,7 @@ signed int __noreturn ai_relocateToFuturePanel()
 
 
 // 0x8014d70
-int sub_8014D70()
+int battle_aiAttackFireStep_8014D70()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -9894,7 +9894,7 @@ int __cdecl battle_ai_attackVars_step3_8014E08(int a1, int a2, int a3)
     if ( !*(v4 + 1) )
     {
         v5 = sub_8013774(*(v4 + 1), 44);
-        sub_8011384(v5);
+        battle_dispatchDetachRelatedObject_8011384(v5);
         v6 = battle_ai_getActorInfo_801595E(v3->Alliance);
         v7 = v6;
         v8 = sub_8013774(v6, 41);
@@ -10106,7 +10106,7 @@ int ai_stepForwardAttackUpdate()
     if ( !*(v1 + 1) )
     {
         v2 = sub_8013774(*(v1 + 1), 44);
-        sub_8011384(v2);
+        battle_dispatchDetachRelatedObject_8011384(v2);
         v3 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v4 = v3;
         v5 = sub_8013774(v3, 41);
@@ -10336,7 +10336,7 @@ int sub_80152C8()
     if ( !*(v1 + 1) )
     {
         v2 = sub_8013774(*(v1 + 1), 44);
-        sub_8011384(v2);
+        battle_dispatchDetachRelatedObject_8011384(v2);
         v3 = battle_ai_getActorInfo_801595E(v0->Alliance);
         v4 = v3;
         v5 = sub_8013774(v3, 41);
@@ -10535,7 +10535,7 @@ int battle_naviAttackIntroStep()
         if ( v2 )
             *v2 |= 0x14u;
         v3 = sub_8013774(v2, 44);
-        sub_8011384(v3);
+        battle_dispatchDetachRelatedObject_8011384(v3);
         v0->parent = 0;
         v0->ai->unk_68 = 0;
         v4 = battle_ai_getActorInfo_801595E(v0->Alliance);
@@ -10684,7 +10684,7 @@ void ai_attackEmergeAtTargetPanel()
         object_clearFlag2(16);
         *(v0 + 31) = 0;
         v9 = sub_8013774(0, 44);
-        sub_8011384(v9);
+        battle_dispatchDetachRelatedObject_8011384(v9);
         chip_class_lookup_800FC9E(0, 0);
         sprite_load(v0, 128, v10, v11);
         sprite_loadAnimationData(v0);
@@ -10793,7 +10793,7 @@ signed int ai_attackRushForward()
             *v8 |= 0x14u;
         }
         v25 = sub_8013774(v8, 44);
-        sub_8011384(v25);
+        battle_dispatchDetachRelatedObject_8011384(v25);
         v9 = 0;
         if ( v25 > 10 )
         {
@@ -10909,7 +10909,7 @@ u32 sub_8015940()
 
 
 // 0x8015952
-int __fastcall sub_8015952(int result, char a2, char a3)
+int __fastcall storeRequestBytes_8015952(int result, char a2, char a3)
 {
     byte_203CED0 = result;
     byte_203CED1 = a2;
@@ -10935,7 +10935,7 @@ int __fastcall battle_ai_getActorInfo_801595E(int a1)
 
 
 // 0x801596e
-int __fastcall sub_801596E(int result)
+int __fastcall battle_clearAIFlag4000_801596E(int result)
 {
     if ( result )
         result = sub_800FFE4(0x4000);
@@ -11160,7 +11160,7 @@ int __fastcall callPossiblyGetBattleEmotion_8015B54(int a1)
 
 
 // 0x8015b5c
-int __fastcall sub_8015B5C(int a1)
+int __fastcall battle_getPlayerEmotionPriorityThunk_8015B5C(int a1)
 {
     return battle_getPlayerEmotionPriority(a1);
 }
@@ -12708,7 +12708,7 @@ int object_genericDestroy()
 
 
 // 0x8016c9c
-int sub_8016C9C()
+int object_freeMemoryWrapper_8016C9C()
 {
     return object_freeMemory();
 }
@@ -13049,7 +13049,7 @@ int __noreturn battleObject_initNaviObject_8016F56()
     }
     else
     {
-        sub_800F2F0();
+        ai_followTargetObject_800F2F0();
     }
     battle_objectNameIdToPopupHandler_8010DD0();
     v11 = sub_80136E4(*(v0 + 22) ^ 1, 62);
@@ -18541,7 +18541,7 @@ LABEL_15:
 
 
 // 0x801c1d0
-int __fastcall sub_801C1D0(int a1, int a2)
+int __fastcall easeStepTowardTarget_801C1D0(int a1, int a2)
 {
     int v2; // r4
     int result; // r0
@@ -21001,7 +21001,7 @@ int sub_801E138()
 
 
 // 0x801e144
-int sub_801E144()
+int battle_setFlagBits200_801E144()
 {
     return flagSetBits_eStruct2035280_801BEB8(512);
 }
@@ -21424,7 +21424,7 @@ void battleObject_resolveEmotionPaletteAltEntry()
 {
     int v0; // r5
 
-    sub_8015B5C(*(*(v0 + 72) + 22));
+    battle_getPlayerEmotionPriorityThunk_8015B5C(*(*(v0 + 72) + 22));
     JUMPOUT(&loc_801E6B2);
 }
 

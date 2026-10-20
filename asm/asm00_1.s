@@ -3153,7 +3153,7 @@ OverworldMapObjectUpdateJumptable:
 	.word battleObject_dispatchRunActionByState_80A6A16+1
 	.word battle_ai_dispatchBeastSp_80A6E98+1
 	.word battleObject_dispatchAIData_80A72B4+1
-	.word sub_80A77A8+1
+	.word ow_dispatchObjectHandler_80A77A8+1
 	.word battleObject_dispatchOnSubtype_80A781C+1
 	.word battle_aiDispatchByAIDataBLeftAbility_80A78B8+1
 	.word battleObject_dispatchCurAction_80A7C84+1
@@ -3161,7 +3161,7 @@ OverworldMapObjectUpdateJumptable:
 	.word battle_dispatchCustomJumptableByIndex_80A8208+1
 	.word npc_runStateHandler+1
 	.word battleObject_dispatchUpdateByCurAction_80A8654+1
-	.word sub_80A8728+1
+	.word battle_dispatchObjectByType_80A8728+1
 	.word sub_80A87F0+1
 	.word 0x0
 	.word dispatchTableCall+1
@@ -3169,8 +3169,8 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A8AB4+1
 	.word 0x0
 	.word owMapObject_weatherTornado_80A8E74+1
-	.word sub_80A92B8+1
-	.word sub_80A9430+1
+	.word battle_weatherCompDispatch_80A92B8+1
+	.word weatherMapObjectStateDispatch_80A9430+1
 	.word sub_80A9658+1
 	.word sub_80A9824+1
 	.word object_storyExplosionUpdate+1
@@ -3181,7 +3181,7 @@ OverworldMapObjectUpdateJumptable:
 	.word 0x0
 	.word battle_dispatchObjectBehaviorStep_80A9B70+1
 	.word 0x0
-	.word sub_80A9D10+1
+	.word ow_dispatchSpriteObjectState_80A9D10+1
 	.word ow_logoutDispatchState+1
 	.word ow_runObjectStateHandler+1
 	.word object_dispatchStep+1
@@ -12463,7 +12463,7 @@ off_8008968:
 off_800896C:
 	.word battle_startCrossNet_800898C+1
 	.word battle_advancePostMovePhase_80089CC+1
-	.word sub_8008A7C+1
+	.word battle_dispatchStateStep_8008A7C+1
 	.word battle_updateLoseSequence+1
 	.word sub_8008BF0+1
 	.word battle_effectStepByType+1
@@ -12590,9 +12590,9 @@ byte_8008A74:
 // symdb: Battle main-loop state dispatcher — reads the battle state byte and tail-jumps to that state's step handler via a 4-entry table.
 // symdb: void battle_dispatchStateStep(r5=battleStateObj, r3, r7, r10); // r0..r2,r4..r12/nzcv clobbered
 // symdb: per handler; lr must hold return-to-caller address
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8008A7C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStateStep_8008A7C.yaml
 	thumb_local_start
-sub_8008A7C:
+battle_dispatchStateStep_8008A7C:
 	push {lr}
 	ldr r1, off_8008A8C // =off_8008A90
 	ldrb r0, [r5,#2]
@@ -12608,7 +12608,7 @@ off_8008A90:
 	.word sub_8008B10+1
 	.word battle_waitCrossNetReadyStep+1
 	.word battle_battleEndDelayStep+1
-	thumb_func_end sub_8008A7C
+	thumb_func_end battle_dispatchStateStep_8008A7C
 
 // symdb: Battle-mode pre-fight tick that dispatches the pre-battle init phase once, picks and plays a battle/pre-battle song, decrements a per-tick counter, and hands off to the next state when the linked-partner sync is ready.
 // symdb: (r5 = BattleModePreBState, r10 = Toolkit) -> ; side effects writes to eBattleModePreBState
@@ -13011,10 +13011,10 @@ off_8008D3C:
 	thumb_func_end sub_8008D18
 
 // symdb: Zero-fills the 12-byte (3-word) work area at 0x203CA70 via ZeroFillByWord.
-// symdb: void sub_8008D40(void); /* outputs r0-r3 and nz c v are whatever ZeroFillByWord leaves behind */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8008D40.yaml
+// symdb: void clearWorkArea_8008D40(void); /* outputs r0-r3 and nz c v are whatever ZeroFillByWord leaves behind */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkArea_8008D40.yaml
 	thumb_local_start
-sub_8008D40:
+clearWorkArea_8008D40:
 	push {lr}
 	// memBlock
 	ldr r0, off_8008D4C // =dword_203CA70
@@ -13032,7 +13032,7 @@ dword_8008D54:
 off_8008D58:
 	.word 0x400
 	.word 0x0
-	thumb_func_end sub_8008D40
+	thumb_func_end clearWorkArea_8008D40
 
 // symdb: Runs one step of the battle's main state machine: dispatches the current phase handler, then advances AI script steps.
 // symdb: () -> r0 = byte at dword_203CA74 (updated battle state/next-phase byte); flags from
@@ -13682,7 +13682,7 @@ off_80091BC:
 	// 0x18
 	.word battle_tutFullSynchroTextStep+1
 	// 0x1C
-	.word sub_8009552+1
+	.word battle_dadCybeastTutStep_8009552+1
 	// 0x20
 	.word sub_8009594+1
 	// 0x24
@@ -14249,11 +14249,11 @@ locret_8009550:
 	thumb_func_end battle_tutFullSynchroTextStep
 
 // symdb: Advances the dad's Cybeast battle tutorial, running its textbox script on entry and picking the next tutorial index once the dialogue is closed.
-// symdb: void sub_8009552(r5=battleState, r10=toolkit); clobbers r0,r1,lr and nzcv; returns r2..r6
+// symdb: void battle_dadCybeastTutStep_8009552(r5=battleState, r10=toolkit); clobbers r0,r1,lr and nzcv; returns r2..r6
 // symdb: (mostly pass-through; r2 carries the chosen index, r5 may be the value chatbox_runScript left)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8009552.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dadCybeastTutStep_8009552.yaml
 	thumb_local_start
-sub_8009552:
+battle_dadCybeastTutStep_8009552:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14289,7 +14289,7 @@ loc_800958C:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009592:
 	pop {pc}
-	thumb_func_end sub_8009552
+	thumb_func_end battle_dadCybeastTutStep_8009552
 
 	thumb_local_start
 sub_8009594:
@@ -14893,7 +14893,7 @@ off_80099B4:
 	.word off_80099B8
 off_80099B8:
 	.word battle_advanceIndexFromPauseIntro_80099E0+1
-	.word sub_8009A88+1
+	.word battle_stateDispatchStep_8009A88+1
 	.word NULL
 	.word battle_runBattleStep_8009B20+1
 	.word sub_8009BAC+1
@@ -15000,11 +15000,11 @@ off_8009A84:
 	thumb_func_end battle_pauseIntroResumeStateStep
 
 // symdb: Battle main-loop state dispatcher — reads the battle state's phase byte and tail-jumps to that phase's step handler via a 3-entry table.
-// symdb: void sub_8009A88(r5=battle state ptr, lr=return) — dispatches to handler(r0=phase, r1=handler
+// symdb: void battle_stateDispatchStep_8009A88(r5=battle state ptr, lr=return) — dispatches to handler(r0=phase, r1=handler
 // symdb: addr); handler's r2-r12 pass through to caller, NZCV and r0-r1, r7, lr clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8009A88.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_stateDispatchStep_8009A88.yaml
 	thumb_local_start
-sub_8009A88:
+battle_stateDispatchStep_8009A88:
 	push {lr}
 	ldr r1, off_8009A98 // =off_8009A9C
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -15019,7 +15019,7 @@ off_8009A9C:
 	.word battleState4EventWaitOrSkip+1
 	.word battle_stateCrossNetBattleIntroStep+1
 	.word battle_stateWait10FramesThenGotoPhaseC+1
-	thumb_func_end sub_8009A88
+	thumb_func_end battle_stateDispatchStep_8009A88
 
 // symdb: Per-state handler for battle state 4: on first entry, if State4EventCount is nonzero arm a 10-frame CountdownTimer and set SubPhaseInitFlag; on subsequent ticks decrement it and once negative latch StatePhaseAndInitFlag=4; if no events are pending, write Index_01=0xC and clear StatePhaseAndInitFlag.
 // symdb: (r5 = battle state struct) -> r0 = undefined; updates oBattleState_CountdownTimer,
@@ -15121,7 +15121,7 @@ battle_runBattleStep_8009B20:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8009B30
-	bl sub_8008D40
+	bl clearWorkArea_8008D40
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 loc_8009B30:

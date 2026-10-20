@@ -102,10 +102,10 @@ int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
     gameState_setUnk09_8001172(0);
     v4 = TestEventFlagFromImmediate(9, 211);
     if ( v5 )
-        sub_808CF50(v4);
+        ai_syncModeEventFlag_808CF50(v4);
     ClearEventFlagFromImmediate(9, 211);
     init_queueBeastSpGfx();
-    v6 = sub_808CBA0();
+    v6 = spawnOverworldMapObjects_808CBA0();
     if ( ai_testMapGroupEventFlag(v6) != 1 )
         init_applyBeastSpScenarioEventFlags();
     init_clearBeastSpEventFlagTable();
@@ -121,7 +121,7 @@ int __fastcall ow_storyTriggerSpawnJackoutLockScene(int a1)
 
     init_queueBeastSpGfx();
     SetEventFlagFromImmediate(9, 214);
-    sub_808CBA0();
+    spawnOverworldMapObjects_808CBA0();
     TestEventFlagFromImmediate(9, 216);
     if ( !v1 )
     {
@@ -179,7 +179,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
         {
             ClearEventFlagFromImmediate(11, 241);
             if ( jackIn_attemptJackInCheck_808CFB8() == 1 )
-                sub_808D108();
+                ow_setupMapTiles_808D108();
         }
         else
         {
@@ -193,7 +193,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
 
 
 // 0x808cba0
-int sub_808CBA0()
+int spawnOverworldMapObjects_808CBA0()
 {
     int v0; // r10
     signed int v1; // r6
@@ -550,7 +550,7 @@ signed int __fastcall ai_testMapGroupEventFlag(int a1)
 
 
 // 0x808cf50
-unsigned int __fastcall sub_808CF50(int a1)
+unsigned int __fastcall ai_syncModeEventFlag_808CF50(int a1)
 {
     int v1; // r4
     unsigned int result; // r0
@@ -720,7 +720,7 @@ signed int __fastcall __spoils<R0,R2,R3,R12> ai_isPosInModeArea(signed int a1)
 
 
 // 0x808d108
-void sub_808D108()
+void ow_setupMapTiles_808D108()
 {
     int v0; // r0
 
@@ -763,7 +763,7 @@ unsigned int sub_808D11C()
 // 0x808d25c
 int sub_808D25C()
 {
-    sub_8048F88();
+    shop_addStockEntry_kind4_8048F88();
     return 0;
 }
 

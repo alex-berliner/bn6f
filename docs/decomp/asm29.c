@@ -777,7 +777,7 @@ void __noreturn battleObject_updateBeastOutPwrAtk_80A5828()
             *v0 = 3;
             *(v0 + 9) = 1;
         }
-        sub_80A58E0();
+        owPlayer_setupPrologue_80A58E0();
         if ( !v3 )
         {
             *(v1 + 7) = 0;
@@ -851,7 +851,7 @@ int sub_80A58AC()
 
 
 // 0x80a58e0
-void sub_80A58E0()
+void owPlayer_setupPrologue_80A58E0()
 {
     sub_80A5954();
     owPlayer_setDirectionAnimThunk();
@@ -1768,7 +1768,7 @@ signed int __fastcall battleObject_sineEaseMoveStep(int a1, int a2)
         v3[5] = v23;
         *(v3 + v2) = 0;
         *(v3 + v4) = 0;
-        sub_80A6E70(10);
+        addToWordAt_80A6E70(10);
         result = 1;
     }
     else
@@ -1837,7 +1837,7 @@ signed int __fastcall sub_80A6BD8(int a1, int a2)
         v3[5] += v3[13];
         *(v3 + v2) = 0;
         *(v3 + v4) = 0;
-        sub_80A6E70(10);
+        addToWordAt_80A6E70(10);
         result = 1;
     }
     else
@@ -1875,7 +1875,7 @@ signed int __fastcall sub_80A6CA4(int a1, int a2)
         return 0;
     *(v3 + v2) = 0;
     *(v3 + v4) = 0;
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -1890,7 +1890,7 @@ signed int __fastcall battleObject_copyPositionToStruct(int a1)
     v1[3] = v2[1] << 16;
     v1[4] = v2[2] << 16;
     v1[5] = v2[3] << 16;
-    sub_80A6E70(8);
+    addToWordAt_80A6E70(8);
     return 1;
 }
 
@@ -1909,7 +1909,7 @@ signed int __noreturn ow_spawnCurNaviNpc()
     sprite_removeShadow();
     *(v0 + 12) = sub_809E1AE();
     *(v0 + 20) = v2;
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -1931,7 +1931,7 @@ signed int __fastcall __noreturn sub_80A6D42(int a1)
     v2 = battleObject_getFromListPair_80A6E78();
     sprite_setAnimation(v1, *(v2 + 2));
     sprite_loadAnimationData(v1);
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -1944,7 +1944,7 @@ signed int sprite_setupScalableObjectScale()
     sprite_makeScalable();
     v0 = battleObject_getFromListPair_80A6E78();
     sprite_setScaleParameters(0, *(v0 + 2), *(v0 + 4));
-    sub_80A6E70(6);
+    addToWordAt_80A6E70(6);
     return 1;
 }
 
@@ -1953,7 +1953,7 @@ signed int sprite_setupScalableObjectScale()
 signed int sub_80A6D7A()
 {
     sprite_makeUnscalable();
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -1967,7 +1967,7 @@ signed int __fastcall sub_80A6D8A(int a1)
     v2 = *(battleObject_getFromListPair_80A6E78() + 2);
     *(v1 + 5) = v2;
     *(v1 + 40) = *(&off_80A619C + v2);
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -1982,7 +1982,7 @@ signed int __fastcall sub_80A6DAC(int a1, int a2)
     *(v2 + 40) = 0;
     if ( v3 != 36 )
         return 0;
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -1994,7 +1994,7 @@ signed int __fastcall sub_80A6DC6(int a1)
 
     v1 = battleObject_getFromListPair_80A6E78();
     sub_8002C7A(*(v1 + 2));
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -2003,7 +2003,7 @@ signed int __fastcall sub_80A6DC6(int a1)
 signed int sub_80A6DDC()
 {
     sprite_disableAlpha();
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -2014,7 +2014,7 @@ signed int __fastcall sub_80A6DEC(int a1, int a2)
     _BYTE *v2; // r5
 
     *v2 = 3;
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -2025,7 +2025,7 @@ signed int __fastcall sub_80A6DFC(int a1, int a2)
     _BYTE *v2; // r5
 
     *v2 = 1;
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -2039,7 +2039,7 @@ signed int __fastcall battleObject_playSoundEffect(int a1)
 
     v1 = battleObject_getFromListPair_80A6E78();
     PlaySoundEffect(*(v1 + 2), v2, v3);
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -2051,7 +2051,7 @@ signed int __fastcall sub_80A6E22(int a1)
 
     v1 = battleObject_getFromListPair_80A6E78();
     sprite_setMosaicSize(*(v1 + 2), *(v1 + 2));
-    sub_80A6E70(4);
+    addToWordAt_80A6E70(4);
     return 1;
 }
 
@@ -2060,7 +2060,7 @@ signed int __fastcall sub_80A6E22(int a1)
 signed int sub_80A6E3A()
 {
     sprite_clearMosaic();
-    sub_80A6E70(2);
+    addToWordAt_80A6E70(2);
     return 1;
 }
 
@@ -2098,7 +2098,7 @@ char (*sprite_setAnimPtrFromId())[28]
 
 
 // 0x80a6e70
-int __fastcall sub_80A6E70(int a1)
+int __fastcall addToWordAt_80A6E70(int a1)
 {
     int v1; // r5
     int v2; // r6
@@ -3038,7 +3038,7 @@ int battle_beastsp_setAITemplateStats_80A775C()
 
 
 // 0x80a77a8
-int sub_80A77A8()
+int ow_dispatchObjectHandler_80A77A8()
 {
     int v0; // r5
 
@@ -3064,7 +3064,7 @@ void __noreturn sprite_setupObjectSprite()
 
 
 // 0x80a77fc
-void __noreturn sub_80A77FC()
+void __noreturn sprite_tickAnimationWithEndEvent_80A77FC()
 {
     Battle *v0; // r5
 
@@ -3270,7 +3270,7 @@ signed int __noreturn object_startFacingStep()
     v13 = *(v0 + 16);
     *(v1 + 20) = *(v0 + 12);
     *(v1 + 24) = v13;
-    sub_80A7BA2(4);
+    addToByteAtR6_80A7BA2(4);
     return 1;
 }
 
@@ -3308,7 +3308,7 @@ signed int camera_sineEasePanStep()
     v10 = *(v1 + 32);
     *(v0 + 12) = *(v1 + 28);
     *(v0 + 16) = v10;
-    sub_80A7BA2(1);
+    addToByteAtR6_80A7BA2(1);
     return 1;
 }
 
@@ -3336,7 +3336,7 @@ signed int battle_beastspDelayCountdown()
     if ( !((v3 < 0) ^ v4) )
         return 0;
     *(v0 + 3) = 0;
-    sub_80A7BA2(2);
+    addToByteAtR6_80A7BA2(2);
     return 1;
 }
 
@@ -3344,7 +3344,7 @@ signed int battle_beastspDelayCountdown()
 // 0x80a7ad4
 signed int sub_80A7AD4()
 {
-    sub_80A7B9E(0);
+    storeByteAt_r6_80A7B9E(0);
     return 1;
 }
 
@@ -3360,7 +3360,7 @@ signed int sub_80A7AE0()
     readU32Unaligned((v1 + 1));
     v3 = v2;
     battle_getAIDataForEnemyIndex_8142050(*(v0 + 4));
-    sub_80A7B9E(v3 - v1);
+    storeByteAt_r6_80A7B9E(v3 - v1);
     return 1;
 }
 
@@ -3384,7 +3384,7 @@ signed int __noreturn sub_80A7AFA()
     *(v1 + 2) = v5;
     sprite_setAnimation(v0, v5);
     sprite_loadAnimationData(v0);
-    sub_80A7BA2(7);
+    addToByteAtR6_80A7BA2(7);
     return 1;
 }
 
@@ -3414,7 +3414,7 @@ signed int battle_checkEnemyInAttackRangeAndTrigger_80A7B32()
     v8 = (v0[4] - v4[8]) >> 16;
     if ( v7 * v7 + v8 * v8 >= 2 * *(v1 + 1) * *(v1 + 1) )
         return 0;
-    sub_80A7BA2(2);
+    addToByteAtR6_80A7BA2(2);
     return 1;
 }
 
@@ -3440,7 +3440,7 @@ unsigned __int8 *__fastcall getSignedHalfword(unsigned __int8 *result)
 
 
 // 0x80a7b9e
-int __fastcall sub_80A7B9E(int result)
+int __fastcall storeByteAt_r6_80A7B9E(int result)
 {
     _BYTE *v1; // r6
 
@@ -3450,7 +3450,7 @@ int __fastcall sub_80A7B9E(int result)
 
 
 // 0x80a7ba2
-int __fastcall sub_80A7BA2(int result)
+int __fastcall addToByteAtR6_80A7BA2(int result)
 {
     _BYTE *v1; // r6
 
@@ -3728,7 +3728,7 @@ void __noreturn battleObject_beastSP_init_80A7DB8()
     sprite_setAnimation(v0, *(v1 + 3));
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
-    sub_80A8020();
+    sprite_applyFormPalette_80A8020();
     v2 = *(v1 + 4);
     *(v0 + 12) = GetSoulWeaponCursorCameraCoords();
     *(v0 + 16) = v3;
@@ -3800,7 +3800,7 @@ signed int __noreturn ow_animWaitStep()
     v4 = *(v1 + 2) - v2;
     *(v1 + 2) = v4;
     if ( v4 > 0 )
-        sub_80A8020();
+        sprite_applyFormPalette_80A8020();
     result = 4;
     *(v0 + 9) = 4;
     return result;
@@ -3876,7 +3876,7 @@ signed int __noreturn object_playAnimAndState()
 
 
 // 0x80a7f14
-int sub_80A7F14()
+int sprite_setPalette8IfFrameFlagSet_80A7F14()
 {
     int v0; // r5
     int result; // r0
@@ -4023,7 +4023,7 @@ int __noreturn sprite_restartAnimation()
 
 
 // 0x80a8020
-void sub_80A8020()
+void sprite_applyFormPalette_80A8020()
 {
     int v0; // r7
 
@@ -4063,7 +4063,7 @@ void __noreturn battleObject_setupBeastSprite()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(2);
-    v2 = sub_80A82A4();
+    v2 = getMapAreaDataTableEntry_80A82A4();
     *(v0 + 12) = *v2 << 16;
     *(v0 + 16) = *(v2 + 1) << 16;
     *(v0 + 20) = *(v2 + 2) << 16;
@@ -4097,7 +4097,7 @@ int deleteOverworldMapObject()
 
 
 // 0x80a82a4
-char *sub_80A82A4()
+char *getMapAreaDataTableEntry_80A82A4()
 {
     int v0; // r5
     int v1; // r10
@@ -4246,7 +4246,7 @@ void __noreturn npc_updateGuarded()
                             v2 = *(v0 + 9);
                             if ( v2 <= 0 )
                             {
-                                sub_80A856C();
+                                obj_decrementFixedCounterBy4_80A856C();
                                 if ( !v1 )
                                     goto LABEL_18;
                                 *(v0 + 9) = v2 + 1;
@@ -4367,7 +4367,7 @@ int sprite_setAnimFromArgs()
 
 
 // 0x80a856c
-int sub_80A856C()
+int obj_decrementFixedCounterBy4_80A856C()
 {
     int v0; // r5
     int result; // r0
@@ -4590,7 +4590,7 @@ void beastSP_initOrUpdate_80A86B4()
 
 
 // 0x80a8728
-int sub_80A8728()
+int battle_dispatchObjectByType_80A8728()
 {
     int v0; // r5
 
@@ -5042,7 +5042,7 @@ void __noreturn sub_80A8C08()
         *(v0 + 16) += v5;
         sub_809E1AE();
         *(v0 + 20) = v6 + 1310720;
-        sub_8002E04();
+        checkSubEntryHiddenFlag_8002E04();
         if ( v3 )
         {
             *v1 = 0;
@@ -5209,7 +5209,7 @@ int npc_triggerCutscene()
     result = check_playerCanAdvanceForward_8034C36();
     if ( !v2 )
     {
-        sub_8002E04();
+        checkSubEntryHiddenFlag_8002E04();
         if ( v2 )
             JUMPOUT(&loc_80A8E0A);
         result = *(v0 + 36);
@@ -5726,7 +5726,7 @@ int owMapObject_weatherTornado_restoreState_80A9268()
 
 
 // 0x80a92b8
-int sub_80A92B8()
+int battle_weatherCompDispatch_80A92B8()
 {
     int v0; // r5
 
@@ -5751,12 +5751,12 @@ void __noreturn sprite_initBeastSp()
     *(v0 + 7) = 0;
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80A931C();
+    boss_updateStateByStoryFlags_80A931C();
 }
 
 
 // 0x80a931c
-void __noreturn sub_80A931C()
+void __noreturn boss_updateStateByStoryFlags_80A931C()
 {
     Battle *v0; // r5
     char v1; // zf
@@ -5775,13 +5775,13 @@ void __noreturn sub_80A931C()
     TestEventFlagFromImmediate(11, 228);
     if ( v1 )
     {
-        sub_80A93D8();
+        sprite_setUnk2cToE000000_80A93D8();
         sub_80A93E8();
     }
     else
     {
         v0->currState = 12;
-        sub_80A93D0();
+        freeOverworldMapObject_trampoline_80A93D0();
     }
     sprite_update(v0);
 }
@@ -5793,7 +5793,7 @@ void __fastcall __noreturn sub_80A9360(int a1)
     int v1; // r5
     int v2; // r0
 
-    sub_80A93D8();
+    sprite_setUnk2cToE000000_80A93D8();
     sub_80A937C();
     v2 = sub_8035694((v1 + 12));
     sprite_setPriority_8002E14(v2);
@@ -5811,7 +5811,7 @@ int sub_80A937C()
     if ( byte_80A93C0[*(v0 + 36) >> 1] == 255 )
     {
         *(v0 + 8) = 12;
-        sub_80A93D0();
+        freeOverworldMapObject_trampoline_80A93D0();
         SetEventFlagFromImmediate(11, 231);
     }
     else
@@ -5826,14 +5826,14 @@ int sub_80A937C()
 
 
 // 0x80a93d0
-int sub_80A93D0()
+int freeOverworldMapObject_trampoline_80A93D0()
 {
     return FreeOverworldMapObject();
 }
 
 
 // 0x80a93d8
-int sub_80A93D8()
+int sprite_setUnk2cToE000000_80A93D8()
 {
     return sprite_setUnk0x2c(234881024);
 }
@@ -5884,7 +5884,7 @@ signed int sub_80A93E8()
 
 
 // 0x80a9430
-int sub_80A9430()
+int weatherMapObjectStateDispatch_80A9430()
 {
     int v0; // r5
 
@@ -5907,7 +5907,7 @@ int __noreturn owMapObject_mrWeatherInit_80A9458()
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
     sprite_setPriority_8002E14(2);
-    v1 = sub_80A9570();
+    v1 = map_getPerMapTableRowPtr_80A9570();
     *(v0 + 12) = *v1 << 16;
     *(v0 + 16) = *(v1 + 1) << 16;
     *(v0 + 20) = *(v1 + 2) << 16;
@@ -5980,7 +5980,7 @@ int owMapObject_freeThunk()
 
 
 // 0x80a9570
-char *sub_80A9570()
+char *map_getPerMapTableRowPtr_80A9570()
 {
     int v0; // r5
     int v1; // r10
@@ -6014,7 +6014,7 @@ int object_mrWeatherProximityTrigger_80A95A8()
         {
             SetEventFlagFromImmediate(11, 252);
             *(v1 + 4) = *(v0 + 4);
-            sub_80A9614();
+            setFlagFromMenuSelection_80A9614();
             sprite_removeShadow();
             *(v0 + 8) = 8;
             LODWORD(v2) = PlaySoundEffect(&loc_1A4, v4, v5);
@@ -6051,7 +6051,7 @@ int owMapObject_updateLayerPriorityForPlayerZ_80A95EC()
 
 
 // 0x80a9614
-unsigned int sub_80A9614()
+unsigned int setFlagFromMenuSelection_80A9614()
 {
     int v0; // r5
 
@@ -6573,7 +6573,7 @@ LABEL_12:
 
 
 // 0x80a9d10
-int sub_80A9D10()
+int ow_dispatchSpriteObjectState_80A9D10()
 {
     int v0; // r5
 
@@ -6729,7 +6729,7 @@ int e_decelRiseUpdate()
         sprite_setAnimation(v0, 5u);
         sprite_loadAnimationData(v0);
         sprite_noShadow(v0);
-        sub_809C940();
+        cutscene_clearEntryEventFlags_809C940();
         v2 = *(v0 + 48);
         v3 = *(v0 + 52);
         v4 = *(v0 + 56);
@@ -6746,7 +6746,7 @@ int e_decelRiseUpdate()
 
 
 // 0x80a9eb6
-signed int sub_80A9EB6()
+signed int cutscene_setStateActive_80A9EB6()
 {
     signed int result; // r0
 
@@ -6789,12 +6789,12 @@ void __noreturn ow_startLogoutEffect()
     sprite_setPriority_8002E14(v4);
     PlaySoundEffect(118, v5, v6);
     *(v0 + 8) = 4;
-    sub_80A9F30();
+    sprite_frameTickMarkState8_80A9F30();
 }
 
 
 // 0x80a9f30
-void __noreturn sub_80A9F30()
+void __noreturn sprite_frameTickMarkState8_80A9F30()
 {
     Battle *v0; // r5
 
@@ -7576,7 +7576,7 @@ signed int isEventFlag212Set_80AA764()
 
 
 // 0x80aa778
-signed int sub_80AA778()
+signed int isEventFlag213Set_80AA778()
 {
     signed int v0; // r4
     char v1; // zf

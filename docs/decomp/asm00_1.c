@@ -7554,7 +7554,7 @@ int battle_advancePostMovePhase_80089CC()
 
 
 // 0x8008a7c
-int sub_8008A7C()
+int battle_dispatchStateStep_8008A7C()
 {
     int v0; // r5
 
@@ -7903,7 +7903,7 @@ int sub_8008D18()
 
 
 // 0x8008d40
-void __fastcall sub_8008D40(int a1, int a2, int a3, int a4)
+void __fastcall clearWorkArea_8008D40(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&dword_203CA70, 12);
 }
@@ -8858,7 +8858,7 @@ int battle_tutFullSynchroTextStep()
 
 
 // 0x8009552
-int sub_8009552()
+int battle_dadCybeastTutStep_8009552()
 {
     int v0; // r5
     int v1; // r10
@@ -9496,7 +9496,7 @@ int battle_pauseIntroResumeStateStep()
 
 
 // 0x8009a88
-int sub_8009A88()
+int battle_stateDispatchStep_8009A88()
 {
     int v0; // r5
 
@@ -9614,7 +9614,7 @@ void __fastcall battle_runBattleStep_8009B20(int a1, int a2, int a3, int a4)
 
     if ( !*(v4 + 3) )
     {
-        sub_8008D40(*(v4 + 3), a2, a3, a4);
+        clearWorkArea_8008D40(*(v4 + 3), a2, a3, a4);
         *(v4 + 3) = 4;
     }
     battle_dispatchPostMoveSubstate_8008950();
