@@ -6968,9 +6968,9 @@ off_8133554:
 	.word sub_81335D8+1
 	thumb_func_end battle_dispatchModeHandler_8133540
 
-// symdb: Per-frame input handler for an open submenu: adjusts its cursor on D-pad input, advances to state 4 on A, and on B plays the exit sound, runs a closing text script, and closes itself.
-// symdb: (r5 = submenu state struct, r10 = toolkit) -> void; also uses global event flag word and joypad
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_handleConfirmOrExitInput.yaml
+// symdb: Processes A/B button presses on an open submenu: A queues a confirm action, B plays the exit sound and runs the appropriate closing chatbox script, clearing the submenu input state.
+// symdb: void submenu_handleConfirmOrExitInput_8133564(SubmenuState *r5, Toolkit *r10)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_handleConfirmOrExitInput.yaml
 	thumb_local_start
 submenu_handleConfirmOrExitInput:
 	push {r4,lr}
@@ -12059,10 +12059,10 @@ loc_8135A3E:
 	pop {pc}
 	thumb_func_end sub_8135A24
 
-// symdb: Per-frame scroll/refresh of a submenu work struct: bails out if chatbox bits 0x80 or 0x20 are set, or if chatbox_GetState_8045F4C is nonzero (returning after copying r5+0x16 into r5+2 and one chatbox_8040818 call); otherwise clears r5+0xc/0x10, rebuilds the 25 oToolkit_Unk2004190 entries, then clamps the 4-row scroll window around the target index from r5+0x1a.
-// symdb: (r0 = unused; r5 = menu work struct preloaded by caller) -> updates struct fields (2, c, 10, 20,
-// symdb: 24) and calls state-machine helpers; flags set by final cmp used by locret branch only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateScroll.yaml
+// symdb: Rebuilds the chip/item list and refreshes the scroll window in the submenu navigation panel.
+// symdb: void submenu_updateScroll(void)  // r5=submenu_struct*, r6, r7, r10=caller context; r5 may be
+// symdb: updated internally but r4–r7 are restored on return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/submenu_updateScroll.yaml
 	thumb_local_start
 submenu_updateScroll:
 	push {r4-r7,lr}
@@ -13697,10 +13697,10 @@ off_8136640:
 	.word 0x100
 	thumb_func_end sub_813660C
 
-// symdb: For six slot IDs in unk_2022B70, reads a halfword from one of two 16-byte OAM attr0 tables (selected by r0) and stores it at unk_30019E0+0xF4..0xFE; when i>=4 and ID==0, uses a fixed 'slot off' entry from the same table instead.
-// symdb: (r0 = table set, 0 or 1) -> writes 6 halfwords to unk_30019E0 + 0xF4..0xFE; r0,r1,r2-r4,r7
-// symdb: clobbered, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_writeBeastOutOamAttr0.yaml
+// symdb: Populates six OAM shadow-buffer slots (indices 0x7A–0x7F) for the Beast Out transformation sprite, selecting attribute values from a per-mode lookup table.
+// symdb: void sprite_writeBeastOutOamAttr0(u32 mode /* r0: 0 or 1 selects sprite variant */);  //
+// symdb: clobbers r0–r3; preserves r4–r7, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_writeBeastOutOamAttr0.yaml
 	thumb_local_start
 sprite_writeBeastOutOamAttr0:
 	push {r4-r7,lr}
@@ -15899,6 +15899,10 @@ clearBeastSpState:
 	pop {pc}
 	thumb_func_end clearBeastSpState
 
+// symdb: Selects one of two u32 values (0x40000000 or 0x50000000) by index and passes them, plus fixed constants 0x2E40/1/2, to the common handler at loc_8001048.
+// symdb: void dispatchSelectedParam_81375F4(u32 arg0, u32 arg1, u32 tableIndex /*0|1*/); /* r0,r1 passed
+// symdb: through to callee; r10 preserved */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81375F4.yaml
 	thumb_local_start
 sub_81375F4:
 	push {r4,r5,lr}

@@ -4939,6 +4939,11 @@ off_809CA80:
 	.word off_809C0F0
 	thumb_func_end sub_809CA40
 
+// symdb: Looks up the scenario/event byte for the tile the overworld player is standing on, returning index+1 or 0 if no tile data exists.
+// symdb: static u32 ow_lookupScenarioTileData_809CA84(u32 toolkit /*r10*/, u32 prevStride /*r2 in/out*/)
+// symdb: -> r0 (scenario byte+1 or 0), r2 (0x18 on hit, prevStride on miss); preserves r4-r7; clobbers
+// symdb: r1, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809CA84.yaml
 	thumb_func_start sub_809CA84
 sub_809CA84:
 	push {r4-r7,lr}

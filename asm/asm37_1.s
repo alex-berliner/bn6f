@@ -2317,6 +2317,10 @@ off_8142CAC:
 	.word 0x420
 	thumb_func_end init_queueBeastSpGfx
 
+// symdb: Resolves the absolute memory address of the current battle-map tile by combining a tile offset with the tile-table base inside MapTilesState.
+// symdb: u32 battle_resolveMapTileAddr_8142CB0(/* r10 = battle context */) -> r0 (absolute tile data
+// symdb: address); r5-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142CB0.yaml
 	thumb_func_start sub_8142CB0
 sub_8142CB0:
 	push {r4-r7,lr}
@@ -2420,6 +2424,10 @@ off_8142D54:
 	.word eMapTilesState200be70
 	thumb_func_end ow_redrawMapTilemapsCb
 
+// symdb: Computes a byte offset within the area map tile array by adjusting the current camera offset by the signed distance from the tile-grid center.
+// symdb: u32 ow_calcMapTileOffset_8142D58(void) /* reads [eMapTilesState200be70], [unk_2000B40+8];
+// symdb: clobbers r0-r2, n, c, v; returns offset in r0; r4-r7, r5, r10, lr preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142D58.yaml
 	thumb_local_start
 sub_8142D58:
 	push {r4-r7,lr}
@@ -2460,6 +2468,9 @@ locret_8142D9E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142D58
 
+// symdb: Resolves a map tile's RAM address by offsetting a base pointer up or down by a row/column delta derived from the current tile index.
+// symdb: u32 resolve(u32 baseAddr /*r0*/) -> r0 = adjusted tile address; preserves r5 = tile-state ptr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142DA0.yaml
 	thumb_local_start
 sub_8142DA0:
 	push {r4-r7,lr}

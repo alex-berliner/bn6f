@@ -8851,8 +8851,10 @@ dword_80A93E4:
 	.word 0xE000000
 	thumb_func_end sprite_setUnk2cToE000000_80A93D8
 
-// symdb: Mr. Weather comp map object (type 0x1B) idle bob: alternates a phase byte at +0x06 every 0x18 frames and moves the object's Z (s16.16 at +0x14) by ±0x4000 (±0.25 px) per frame.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A93E8.yaml
+// symdb: Oscillate a battle object's fixed-point animation position back and forth with 24-step phase toggling
+// symdb: void battle_animOscillatePos_80A93E8(u32 r5); /* clobbers r0, r1, flags; reads/writes
+// symdb: r5->byte[6] phase, r5->byte[7] counter, r5->dword[0x14] position */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A93E8.yaml
 	thumb_local_start
 sub_80A93E8:
 	push {lr}
@@ -11705,9 +11707,10 @@ loc_80AA820:
 	pop {r4,pc}
 	thumb_func_end get_eventFlag222
 
-// symdb: A battle-settings entry's kind bits for pickBattleSettingsEntry_80AA5F4's filter: 0x20 when its setup has a Navi (enemy data byte 2 >= 4), else a bit per enemy family (bit from the enemy data's top nibble), plus 0x40 when the entry's byte 7 is 2.
-// symdb: (r0 = BattleSettings *) -> r0 = kind bits; r4, r6, r7 restored
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA824.yaml
+// symdb: Walk the battle object's per-enemy state-entry list and accumulate a bitmask of which enemy icons to display in the battle HUD.
+// symdb: u32 battle_getEnemyIconFlags_80AA824(u32 battleObj /* r0 */) -> r0 = iconFlags, r2 =
+// symdb: lastShiftVal; clobbers r1,r3,lr,flags; preserves r4,r6,r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA824.yaml
 	thumb_local_start
 sub_80AA824:
 	push {r4,r6,r7,lr}
@@ -11874,8 +11877,11 @@ loc_80AA908:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80AA8E0
 
-// symdb: Battle reward 1 (chip) roll: branches on NaviStats+0x26 bits 0/1 — bit 0: zenny-only path (sub_80AAA3C mode 0 + sub_80AAE98 + sub_80AAB04); bit 1 set: enemy-id chip path (sub_80AAA3C mode 1); else the normal path: sub_80AAA3C mode 0 picks the enemy id and damage_jitter_80AAA98 picks the column, the result halfword read from the id's byte_80AAEA8 row.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA910.yaml
+// symdb: Select a chip attribute for the active navi using stats byte 0x26 to choose between direct chip application, single-offset read, or random table-column scan.
+// symdb: u16 battle_pickChipAttr_80AA910(u32 naviId0 /*r0*/, u32 naviId1 /*r1*/, u32 attrIdx /*r2*/, u32
+// symdb: coordX /*r3*/, u32 coordY /*r4*/, u32 statNavi /*r5*/) → r0; outputs c, v; clobbers nz, r1–r3,
+// symdb: lr; preserves r4–r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA910.yaml
 	thumb_local_start
 sub_80AA910:
 	push {r4-r7,lr}

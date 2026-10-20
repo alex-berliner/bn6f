@@ -1887,9 +1887,11 @@ sprite_getCoordinates:
 	mov pc, lr
 	thumb_func_end sprite_getCoordinates
 
-// symdb: Look up the per-frame (dx, dy) shadow offset entry for a sprite given the current frame index.
-// symdb: (r0 = spriteDataPtr?, r1 = frameIndex) -> r0 = dx, r1 = dy (or both 0 if missing/none)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_getShadowOffsetForFrame_80030BA.yaml
+// symdb: Return the (X, Y) shadow-grounding offset for a given animation frame index of a sprite object, or (0, 0) past the table's 0xFF sentinel.
+// symdb: sprite_getShadowOffsetForFrame_80030BA(r0 = sprite object ptr, r1 = target frame index) -> r0 =
+// symdb: shadow X (s8 sign-extended), r1 = shadow Y (s8 sign-extended); clobbers r2 r3 NZCV; preserves
+// symdb: r4-r7 via push/pop.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_getShadowOffsetForFrame_80030BA.yaml
 	thumb_func_start sprite_getShadowOffsetForFrame_80030BA
 sprite_getShadowOffsetForFrame_80030BA:
 	push {r4-r7,lr}

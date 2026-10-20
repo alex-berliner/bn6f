@@ -3250,6 +3250,11 @@ dword_8027A54:
 	.word 0xFFF
 	thumb_func_end initBackgroundTilemap
 
+// symdb: Per-frame update dispatcher for the custom-screen battle object: selects a phase handler from a jump table by the object's kind byte, then runs chip-select animation tick and a second post-update pass.
+// symdb: void battleObject_tickPhaseDispatch_8027A58(void* self /*R5 = battle object at S20364C0*/); in:
+// symdb: R4 R6 R10 passed through to handlers; out: R2 R3 R4 R5 R6 modified by handler + post-passes,
+// symdb: R8-R12 pass through; clobbers: R0 R1 R7 LR NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8027A58.yaml
 	thumb_local_start
 sub_8027A58: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -5469,6 +5474,9 @@ dword_80289E0:
 	.word 0x200
 	thumb_func_end sub_802899C
 
+// symdb: Pushes an 18-sprite OAM strip (one animation frame) for the object pointed to by r5, computing XY origin from the object's column byte and selecting a tile bank from a flag bit.
+// symdb: void sprite_pushStrip_80289E4(uint32_t objPtr); /* r5 in; writes OAM FIFO, clobbers r0-r6 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80289E4.yaml
 	thumb_local_start
 sub_80289E4:
 	push {r4-r6,lr}

@@ -9496,6 +9496,10 @@ TakeNaviCustPrograms:
 	pop {r4,pc}
 	thumb_func_end TakeNaviCustPrograms
 
+// symdb: Thin trampoline that stashes a pointer in r4, then sequences sub_803D148 followed by CheckKeyItem to test whether the player holds a given key item.
+// symdb: u32 r0 = keyItemId, u32 r1 = param, u32 r2 = ptrStashedToR4, r10 = toolkit; -> u32 r0 =
+// symdb: checkResult, u32 r2 = data; clobbers r1, condition flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_803D138.yaml
 	thumb_func_start sub_803D138
 sub_803D138:
 	push {r4,lr}

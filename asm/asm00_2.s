@@ -1431,6 +1431,10 @@ byte_800F604:
 // r0 is battle object
 // r1 is alliance
 // r2 is some param
+// symdb: Inserts a battle-object pointer into the battle state's object list, keyed by alliance and slot type, evicting and zeroing the HP of any displaced object.
+// symdb: void battle_placeObjectSlot(u32 r0_newObject, u32 r1_alliance, u32 r2_type, u32 r10_toolkit) ->
+// symdb: flags nzcv, r1_slotAddr, r2_evicted, r3_state; clobbers r1 r2 r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setFieldBattleObject_800F614.yaml
 setFieldBattleObject_800F614:
 	push {lr}
 	mov r3, #0xc
@@ -6662,6 +6666,10 @@ ai_clearAttackVars:
 	mov pc, lr
 	thumb_func_end ai_clearAttackVars
 
+// symdb: Initialises the AI enemy's attack-variables block for the current turn: clamps beast damage to 5, clears auxiliary fields, reads navi-stat-based boosts, and selects a special sub-step/timer for high-status or navi-ID-0x18 allies.
+// symdb: void battle_setupAIAttackVars(u32 r5 battle_obj, u32 r7 ai_attack_vars, u32 r10 alliance_ctx) →
+// symdb: r0=0x1E, r1=timer, flags from final cmp; preserves r4–r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011AF2.yaml
 	thumb_local_start
 sub_8011AF2:
 	push {lr}
@@ -10867,6 +10875,10 @@ off_8013550:
 	.word 0x1F4
 	thumb_func_end sub_80134C8
 
+// symdb: Initialize a 100-byte battle NetNavi struct with default fields, sentinel ranges, and a stat value pulled from the Navi stats table.
+// symdb: void initBattleNaviData_8013554(BattleNaviData *navi /* r0 */); r10 provides the Navi stats
+// symdb: table base; returns with the struct pointer preserved in r4.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8013554.yaml
 	thumb_func_start sub_8013554
 sub_8013554:
 	push {r4,lr}
@@ -13561,6 +13573,10 @@ locret_8014604:
 	pop {r7,pc}
 	thumb_func_end sub_80145EC
 
+// symdb: Flags the object for collision (0x30), rebuilds its collision geometry with NoCustom+ awareness, and invokes a secondary collision-resolution handler when the object's status dword is zero.
+// symdb: object_updateCollisionAndResolveCleared_8014606(u32 r4, u32 r5 /*object ref*/, u32 r6 /*object
+// symdb: base*/, u32 r10, u32 lr) -> {r0-r7, nz, c, v, lr}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8014606.yaml
 	thumb_local_start
 sub_8014606:
 	push {r7,lr}
@@ -32098,6 +32114,9 @@ sub_801DE64:
 	pop {r4,r5,pc}
 	thumb_func_end sub_801DE64
 
+// symdb: Loads the battle background tileset into VRAM and marks it as initialized.
+// symdb: void battle_loadBgTileset_801DE82(SceneStruct *scene /*r5*/)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801DE82.yaml
 	thumb_local_start
 sub_801DE82:
 	push {r4,r5,lr}

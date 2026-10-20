@@ -3231,6 +3231,10 @@ SpawnOverworldMapObject:
 	pop {r0-r4,r6,pc}
 	thumb_func_end SpawnOverworldMapObject
 
+// symdb: Allocate the next free overworld map object (type 9) from a 56-slot pool, returning its address or 0 if full.
+// symdb: r0..r4 = init data (byte at +0x01, dwords at +0x04/+0x0C/+0x10/+0x14); r5 out = object pointer
+// symdb: or 0; flags clobbered; r1-r4,r6 preserved across the call.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8004822.yaml
 	thumb_func_start sub_8004822
 sub_8004822:
 	push {r0-r4,r6,lr}

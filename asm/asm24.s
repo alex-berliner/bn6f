@@ -1296,11 +1296,10 @@ loc_808CBBC:
 	.balign 4, 0x00
 	thumb_func_end spawnOverworldMapObjects_808CBA0
 
-// symdb: Spawns overworld map object type 0x11 (sub_80A8394), sets EVENT_1700 and GameState.JackOutLockState = 3, and plays sound_8000672(0x1F, 0x13B) except in map group 0x85; returns 0. Used in the JudgeTree and Pavilion comps.
-// symdb: (r10 = toolkit, r4 = passed on as the new object's ObjectID +4) -> r0 = 0 with Z set (a cutscene
-// symdb: native that does not wait); r5 preserved (the new object's pointer is dropped), r4-r7 preserved;
-// symdb: r1-r3, lr clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808CBD8.yaml
+// symdb: Handles transitioning out of the current area: spawns the overworld map object, sets a BBS flag, switches game state to mode 3, and plays a departure sound unless the map group is 0x85.
+// symdb: u32 overworld_leaveArea_808CBD8(/* r4 = spawnArg, r10 = toolkit */); // returns r0 = 0, sets nz;
+// symdb: preserves r4-r7, r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CBD8.yaml
 	thumb_local_start
 sub_808CBD8:
 	push {r4-r7,lr}
@@ -1434,6 +1433,10 @@ object_snapPosToPlayer:
 	pop {pc}
 	thumb_func_end object_snapPosToPlayer
 
+// symdb: Computes the tile coordinate one cell ahead of the player in their facing direction (8-way) and writes it into the target object's position fields.
+// symdb: void field_calcFacingTargetTile_808CCAC(u32 obj /*r5*/, u32 playerCtx /*r10*/); // writes
+// symdb: obj+0x1A (x tile) and obj+0x1C (y tile); r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CCAC.yaml
 	thumb_local_start
 sub_808CCAC:
 	push {r4-r7,lr}

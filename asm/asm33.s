@@ -4692,6 +4692,10 @@ off_81255F4:
 	.word 0x300
 	thumb_func_end menu_handleStartAndDpad_8125594
 
+// symdb: Ticks joypad input each frame for an open menu: handles Start/B exit confirmation, L/R page-turn, and a pending list-navigation operation by temporarily swapping the cursor index before dispatching submenu_moveListCursor.
+// symdb: void menu_tickInput_81255F8(u32 r0_in, u32 r2, MenuState* r5, Toolkit* r10); /* modifies *r5 in-
+// symdb: place; returns via r8=r0_in, r9/r12 set by callees */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81255F8.yaml
 	thumb_local_start
 sub_81255F8:
 	push {r4-r7,lr}

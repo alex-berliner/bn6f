@@ -3648,6 +3648,9 @@ byte_8140244:
 	.byte 0x8E, 0x0, 0x8F, 0x0, 0x90, 0x0, 0x91, 0x0
 	thumb_func_end reqBBS_renderRequestStatus
 
+// symdb: Draws rank-star tile indicators beside each completed request on the BBS screen.
+// symdb: void reqBBS_renderRankStars(reqBBS_Gui *gui /* r5 */) -> r5 unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_renderRankStars.yaml
 	thumb_local_start
 reqBBS_renderRankStars:
 	push {r4-r7,lr}

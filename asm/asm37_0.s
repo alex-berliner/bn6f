@@ -637,6 +637,12 @@ loc_813BAFC:
 	pop {pc}
 	thumb_func_end sub_813BAEC
 
+// symdb: Tests whether a 7×7 panel shape from a Custom Program or AI-selected attack can legally occupy its target tiles on the 15×15 battle grid.
+// symdb: int battle_checkPanelPlacement(unsigned panel_id /*r0*/, uint8_t *grid /*r1*/,
+// symdb: unsigned row /*r2*/, unsigned col /*r3*/); /* returns 1 = blocked or fully clear, 0 = overlaps
+// symdb: non-passable cells;    NZ flags reflect the return; r8–r12 are passed through from
+// symdb: ai_dispatchFromGlobalByte */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BB00.yaml
 	thumb_local_start
 sub_813BB00:
 	push {r4-r7,lr}

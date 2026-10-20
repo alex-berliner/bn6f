@@ -2437,6 +2437,11 @@ dword_8034E84:
 	.word 0xFFFF0401
 	thumb_func_end sub_8034E3C
 
+// symdb: Determines whether a menu/story entry is accessible given the player's current alliance and relevant event flags.
+// symdb: u32 story_checkEntryAlliance_8034E88(u32 r0=entry, u32 r1=category, u32 r4=alliance) ->
+// symdb: r1=result(1=selectable, 0=not, or mismatched byte), r2=byte-table pointer; nz flags reflect cmp
+// symdb: of r1 against alliance
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034E88.yaml
 	thumb_local_start
 sub_8034E88:
 	push {r6,r7,lr}
@@ -3307,6 +3312,9 @@ byte_80354D4:
 	.byte 0x0, 0x0
 	thumb_func_end battle_loadDeathAnims_8035424
 
+// symdb: Synchronizes five derived event flags to their source flags, then clears a trigger flag.
+// symdb: propagateDerivedEventFlags_803553c(u32 r10) -> u32 r0 (= 0); clobbers r1 r3; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/testSetClearFlags_803553c.yaml
 	thumb_func_start testSetClearFlags_803553c
 testSetClearFlags_803553c:
 	push {r4-r7,lr}

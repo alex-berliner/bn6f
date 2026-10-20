@@ -1278,6 +1278,9 @@ loc_80468A8:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_updateSpriteGfxForAll_8046854
 
+// symdb: Complete initialization of work area 5: sets up the entry structure, then fills each entry.
+// symdb: void initWorkArea5_80468BA(void); /* r0-r3, nzcv out; r4-r7 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80468BA.yaml
 	thumb_func_start sub_80468BA
 sub_80468BA:
 	push {r4-r7,lr}
@@ -4408,10 +4411,10 @@ dword_8048CC8:
 	.word 0xE80
 	thumb_func_end shop_copyItemTableToShopData_8048C98
 
-// symdb: Merges an 8-byte item/stock record into an indexed inventory-style list, stacking quantities up to 0xFF or filling the first empty slot.
-// symdb: (r0 = list index, r1 = pointer to 8-byte entry {id, count, halfword, byte, pad}) -> void; flags
-// symdb: not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_addItemStockEntry.yaml
+// symdb: Merges a batch of 8-byte item entries into a shop's stock table, adding quantities of matching items or copying new items into empty slots
+// symdb: void shop_addItemStockEntry(u32 tableIndex /*r0*/, u32 sourceEntries /*r1*/); /* uses r10 as
+// symdb: toolkit ptr; outputs r0-r3 + NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shop_addItemStockEntry.yaml
 	thumb_local_start
 shop_addItemStockEntry:
 	push {r4-r7,lr}

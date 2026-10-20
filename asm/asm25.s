@@ -701,6 +701,11 @@ byte_808FD14:
 	.byte 0x5, 0x5, 0x7, 0x7, 0x1, 0x1, 0x3, 0x3
 	thumb_func_end ow_startBeastOutHit
 
+// symdb: Advance the overworld player one tile-step in the facing direction, decrementing a per-move countdown; returns whether a step was taken.
+// symdb: owPlayer_stepOnce(r10 /*player ctx*/ , lr) -> nz /*1 stepped, 0 stopped*/ , r2 /*copy flag
+// symdb: 0x00400000 on move*/, r3/r7 /*from owPlayer_copyCoords callee*/ ; clobbers r0 r1 c v lr;
+// symdb: preserves r4 r5 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FD1C.yaml
 	thumb_local_start
 sub_808FD1C:
 	push {r4,r5,lr}
@@ -1224,9 +1229,11 @@ locret_8090058:
 	.balign 4, 0x00
 	thumb_func_end bbs_requestOnEventBE4_809003C
 
-// symdb: Mr. Weather comp: the rainbow-orb trail. While flag 0xBE4 is set and eWeatherCompState+0x20 is 0: with A held (Joypad held & 1) and fewer than 0xFA orbs, every frame MegaMan moves (sub_8090308) counts +8 down and at 0 reloads it with 5 and returns 1 (the caller lays an orb, map object 0x1D); A released (or 0xFA orbs): +8 = 1 and, if there are orbs, the trail is dropped (+6 = 0, flags 0xBE5, PET_DISABLED, 0x1739 cleared, the ring points at 0x2011B30 zeroed).
-// symdb: r5 = eWeatherCompState, r10 = toolkit -> r0 = 1 (lay an orb) or 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_layOrbTrail_809005C.yaml
+// symdb: Weather-component per-frame step that spawns a 5-frame orb-trail particle stream when the player holds A during the BE4 trail-ready event, then resets the associated event flags and countdown timer.
+// symdb: u32 weatherComp_layOrbTrail_809005C(void *battleObj /*r5*/, void *toolkit /*r10*/); /* sets NZ
+// symdb: on r0: nonzero = trail fully completed or sub_8090308 partial result, zero = not applicable /
+// symdb: early-out */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weatherComp_layOrbTrail_809005C.yaml
 	thumb_local_start
 weatherComp_layOrbTrail_809005C:
 	push {r4,lr}
@@ -1387,9 +1394,10 @@ off_8090198:
 	.word byte_808F6EC
 	thumb_func_end weatherComp_pickScript_8090104
 
-// symdb: Mr. Weather comp: while flag 0xBE8 (the ring closed) is set, each tornado i < +0xA inside the ring (weatherComp_isTornadoInRing_809022C) whose caught flag 0xBE9+i is clear gets flag 0xBEC+i, and +0xB (tornadoes left) drops by one; returns 1 when one was caught.
-// symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkRingCapture_809019C.yaml
+// symdb: Scans all rings of the weather component for uncaptured tornadoes, sets the captured event flag, and decrements the remaining-capture counter.
+// symdb: u32 weatherComp_checkRingCapture_809019C(u32 r5 = weatherCompPtr); /* r10 = context (unused) */
+// symdb: /* returns nz: nonzero if at least one ring was captured; r5 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkRingCapture_809019C.yaml
 	thumb_local_start
 weatherComp_checkRingCapture_809019C:
 	push {r4-r7,lr}
