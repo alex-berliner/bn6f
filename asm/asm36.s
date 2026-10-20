@@ -11684,7 +11684,7 @@ battle_initNaviCustomizerScene_81356F4:
 	strb r0, [r5,#0x14]
 	strh r0, [r5,#0x30]
 	strh r0, [r5,#0x32]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	strb r0, [r5,#0x10]
 	mov r0, #0x71 
 	bl CheckKeyItem
@@ -11959,7 +11959,7 @@ navicust_initScreenState:
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	mov r0, #0
 	strb r0, [r5,#0x10]
 loc_813599A:
@@ -12053,7 +12053,7 @@ sub_8135A24:
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	mov r0, #0
 	strb r0, [r5,#0x10]
 loc_8135A3E:
@@ -13017,7 +13017,7 @@ loc_813614C:
 	sub r0, #1
 	mov r1, #3
 	and r0, r1
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	strb r0, [r5,#0xe]
 	bl sub_8136384
 	b loc_81361FA
@@ -13029,7 +13029,7 @@ loc_8136176:
 	add r0, #1
 	mov r1, #3
 	and r0, r1
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	strb r0, [r5,#0xe]
 	bl sub_8136384
 	b loc_81361FA
@@ -13412,7 +13412,7 @@ loc_8136428:
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
@@ -13444,7 +13444,7 @@ navicust_confirmPartPlacement:
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	bl sub_81362F8
 	bl navicust_getCellProgramId
 	bl battle_trackObjectIdInList
@@ -13465,7 +13465,7 @@ loc_8136492:
 	mov r0, #0
 	strb r0, [r5,#0xe]
 	strb r0, [r5,#0x14]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	b locret_81364BA
@@ -13629,7 +13629,7 @@ navicust_loadSelectedPartInfo:
 	strb r0, [r5,#0x14]
 	ldrb r0, [r7,#5]
 	strb r0, [r5,#0xe]
-	bl sub_813B920
+	bl storeWorkByte_813B920
 	mov r0, r4
 	bl sub_813B9C4
 	mov r0, r4
@@ -14820,13 +14820,13 @@ off_8136E2C:
 	.word navicust_checkPiecePlacement+1
 	.word sub_813749C+1
 	.word navicust_counterThenShowDialog+1
-	.word sub_81374C4+1
+	.word chatbox_store74IfFlag80Clear_81374C4+1
 	.word navicust_dialogStateHandler+1
 	.word sub_8137528+1
 	.word sub_8137538+1
 	.word navicust_dialogDelayTick+1
 	.word navicust_queueBeastOutDialog+1
-	.word sub_813759C+1
+	.word chatbox_queueCmd8C_ifFlag80Clear_813759C+1
 	.word sub_81375AC+1
 	.word sub_81375CC+1
 off_8136EC0:
@@ -15698,10 +15698,10 @@ locret_81374C2:
 	thumb_func_end navicust_counterThenShowDialog
 
 // symdb: If chatbox eFlags2009F38 bit 0x80 is clear, writes the byte 0x74 to the caller-supplied byte pointer; otherwise does nothing.
-// symdb: void sub_81374C4(u8* dest /* r5 */)  // no return value, flags not meaningful to callers
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81374C4.yaml
+// symdb: void chatbox_store74IfFlag80Clear_81374C4(u8* dest /* r5 */)  // no return value, flags not meaningful to callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_store74IfFlag80Clear_81374C4.yaml
 	thumb_local_start
-sub_81374C4:
+chatbox_store74IfFlag80Clear_81374C4:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15710,7 +15710,7 @@ sub_81374C4:
 	strb r0, [r5]
 locret_81374D2:
 	pop {pc}
-	thumb_func_end sub_81374C4
+	thumb_func_end chatbox_store74IfFlag80Clear_81374C4
 
 // symdb: Per-frame NaviCust dialog handler: waits for the dialog to be ready, then on state 4 or 8 triggers the next NaviCust text script (checking a toolkit part flag for state 8).
 // symdb: (r7 = dialog state object, r5 = out byte ptr; r0/r1 unused) -> r0 = script/text id side effect;
@@ -15837,10 +15837,10 @@ locret_813759A:
 	thumb_func_end navicust_queueBeastOutDialog
 
 // symdb: If chatbox event flag 0x80 is clear, writes textbox command byte 0x8C to the caller-supplied byte; otherwise does nothing.
-// symdb: void sub_813759C(u8* dest /* r5 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813759C.yaml
+// symdb: void chatbox_queueCmd8C_ifFlag80Clear_813759C(u8* dest /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_queueCmd8C_ifFlag80Clear_813759C.yaml
 	thumb_local_start
-sub_813759C:
+chatbox_queueCmd8C_ifFlag80Clear_813759C:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15849,7 +15849,7 @@ sub_813759C:
 	strb r0, [r5]
 locret_81375AA:
 	pop {pc}
-	thumb_func_end sub_813759C
+	thumb_func_end chatbox_queueCmd8C_ifFlag80Clear_813759C
 
 	thumb_local_start
 sub_81375AC:

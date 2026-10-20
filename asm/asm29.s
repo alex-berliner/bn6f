@@ -5396,7 +5396,7 @@ sub_80A7AFA:
 	bl getSignedHalfword
 	lsl r1, r1, #0x10
 	str r1, [r5,#0x10]
-	bl sub_81420B0
+	bl battle_getShiftedEnemyTableByte_81420B0
 	str r0, [r5,#0x14]
 	add r0, r7, #5
 	bl getSignedHalfword
@@ -5760,7 +5760,7 @@ owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE:
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
 	b locret_80A7D70
 loc_80A7D60:
-	bl sub_81420B0
+	bl battle_getShiftedEnemyTableByte_81420B0
 	cmp r0, r4
 	bne locret_80A7D70
 	ldr r0, off_80A7D8C // =byte_8089FD8 // CutsceneScript
@@ -6099,7 +6099,7 @@ sub_80A7F78:
 	push {r4-r7,lr}
 	ldrb r0, [r7,#2]
 	bl sub_8142204
-	bl sub_8142990
+	bl ow_getPlayerTileMapIndex_8142990
 	mov r4, r0
 	ldr r0, [r5,#0xc]
 	ldr r1, [r5,#0x10]

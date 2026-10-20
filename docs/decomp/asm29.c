@@ -3379,7 +3379,7 @@ signed int __noreturn sub_80A7AFA()
     *(v0 + 12) = v3 << 16;
     getSignedHalfword(v2 + 3);
     *(v0 + 16) = v4 << 16;
-    *(v0 + 20) = sub_81420B0();
+    *(v0 + 20) = battle_getShiftedEnemyTableByte_81420B0();
     getSignedHalfword(v2 + 5);
     *(v1 + 2) = v5;
     sprite_setAnimation(v0, v5);
@@ -3689,7 +3689,7 @@ void *owMapObject_checkBoundsAndStartBeastSpEncounter_80A7CFE()
                                 }
                                 else
                                 {
-                                    result = sub_81420B0();
+                                    result = battle_getShiftedEnemyTableByte_81420B0();
                                     if ( result == v13 )
                                         result = StartCutscene(byte_8089FD8, v0, v14, v15);
                                 }
@@ -3927,7 +3927,7 @@ signed int __noreturn sub_80A7F78()
     signed int result; // r0
 
     sub_8142204(*(v1 + 2));
-    sub_8142990();
+    ow_getPlayerTileMapIndex_8142990();
     ow_getCursorMapTileIndex(*(v0 + 12), *(v0 + 16));
     v2 = getSoulWeaponCursorDir8();
     v3 = ow_animVariantToAnimId(v2);

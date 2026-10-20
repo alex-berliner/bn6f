@@ -302,14 +302,14 @@ loc_813B908:
 // symdb: Writes the byte value passed in r0 into the work-area byte at 0x20096D8 and returns that address in r1.
 // symdb: void storeWorkByte_813B920(u8 value); // in: r0 = byte value, lr = return addr; out: r1 =
 // symdb: &byte_20096D8 (side effect: byte written); flags untouched
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813B920.yaml
-	thumb_func_start sub_813B920
-sub_813B920:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/storeWorkByte_813B920.yaml
+	thumb_func_start storeWorkByte_813B920
+storeWorkByte_813B920:
 	ldr r1, off_813B930 // =byte_20096D8 
 	strb r0, [r1]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_813B920
+	thumb_func_end storeWorkByte_813B920
 
 	thumb_func_start sub_813B928
 sub_813B928:

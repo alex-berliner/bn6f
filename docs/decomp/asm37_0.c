@@ -275,7 +275,7 @@ __int64 __fastcall ai_getGridMargins(int a1)
 
 
 // 0x813b920
-int __fastcall sub_813B920(int result)
+int __fastcall storeWorkByte_813B920(int result)
 {
     byte_20096D8 = result;
     return result;

@@ -110,13 +110,13 @@ byte_8089E44::
 	cs_clear_ow_player_interaction_locked_809e23c
 	cs_disable_ow_player_wall_collision_809e254
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
-	cs_call_native_with_return_value ptr1=sub_81418AA+1
+	cs_call_native_with_return_value ptr1=eventStruct_setActiveFlag_81418AA+1
 	cs_call_native_with_return_value ptr1=dispatch_8089E90+1
 	cs_spawn_cutscene_process byte1=0x20 ptr2=cutscenescript_8089E76
 	cs_wait_cutscene_process byte1=0x20
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_701
-	cs_call_native_with_return_value ptr1=sub_81418B6+1
+	cs_call_native_with_return_value ptr1=clear_eStruct2001010_flagByte0D_81418B6+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_set_ow_player_interaction_locked_809e230
 	cs_enable_ow_player_wall_collision_809e248
@@ -202,7 +202,7 @@ byte_8089F10::
 	thumb_local_start
 sub_8089F40:
 	push {r4-r7, lr}
-	bl sub_81420B0
+	bl battle_getShiftedEnemyTableByte_81420B0
 	add r4, r0, #0
 	bl sub_8089F70
 	ldrh r1, [r5, #0x18]
@@ -283,14 +283,14 @@ byte_8089FD8::
 	cs_clear_ow_player_interaction_locked_809e23c
 	cs_disable_ow_player_wall_collision_809e254
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
-	cs_call_native_with_return_value ptr1=sub_81418AA+1
+	cs_call_native_with_return_value ptr1=eventStruct_setActiveFlag_81418AA+1
 	cs_call_native_with_return_value ptr1=dispatch_808A028+1
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_spawn_cutscene_process byte1=0x20 ptr2=cutscenescript_808A00D
 	cs_wait_cutscene_process byte1=0x20
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_701
-	cs_call_native_with_return_value ptr1=sub_81418B6+1
+	cs_call_native_with_return_value ptr1=clear_eStruct2001010_flagByte0D_81418B6+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_set_ow_player_interaction_locked_809e230
 	cs_enable_ow_player_wall_collision_809e248

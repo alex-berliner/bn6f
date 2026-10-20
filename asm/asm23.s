@@ -889,7 +889,7 @@ owPlayer_beastOutFacingStep:
 loc_808966E:
 	bl selectSoulWeaponCursorDir
 	mov r4, r0
-	bl sub_8142990
+	bl ow_getPlayerTileMapIndex_8142990
 	mov r1, r4
 	bl getSoulWeaponCursorDir8
 	bl SetOWPlayerFacingDirection

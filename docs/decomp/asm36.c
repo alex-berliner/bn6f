@@ -6694,7 +6694,7 @@ void __fastcall __noreturn battle_initNaviCustomizerScene_81356F4(int a1, int a2
     *(v4 + 20) = 0;
     *(v4 + 48) = 0;
     *(v4 + 50) = 0;
-    *(v4 + 16) = sub_813B920(0);
+    *(v4 + 16) = storeWorkByte_813B920(0);
     v12 = CheckKeyItem(113);
     *(v4 + 15) = v12;
     *(v4 + 68) = getIndexedDataTable_813B9E0(v12);
@@ -6886,7 +6886,7 @@ int navicust_initScreenState()
         navicust_drawBoardTilemap(1);
         v0[14] = 0;
         v0[20] = 0;
-        sub_813B920(0);
+        storeWorkByte_813B920(0);
         v0[16] = 0;
     }
     result = 0;
@@ -6975,7 +6975,7 @@ int sub_8135A24()
         v0[2] = 8;
         v0[14] = 0;
         v0[20] = 0;
-        sub_813B920(0);
+        storeWorkByte_813B920(0);
         v0[16] = 0;
     }
     result = 0;
@@ -7564,14 +7564,14 @@ int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
         if ( v5 & byte_200 )
         {
             v9 = sub_813B928();
-            *(v3 + 14) = sub_813B920((v9 - 1) & 3);
+            *(v3 + 14) = storeWorkByte_813B920((v9 - 1) & 3);
             sub_8136384();
             return PlaySoundEffect(127, v10, v11);
         }
         if ( v5 & byte_100 )
         {
             v12 = sub_813B928();
-            *(v3 + 14) = sub_813B920((v12 + 1) & 3);
+            *(v3 + 14) = storeWorkByte_813B920((v12 + 1) & 3);
             sub_8136384();
             return PlaySoundEffect(127, v10, v11);
         }
@@ -7831,7 +7831,7 @@ int __fastcall navicust_handlePlacementCancelInput(int a1, int a2, int a3)
         *(v3 + 2) = 12;
         *(v3 + 14) = 0;
         *(v3 + 20) = 0;
-        sub_813B920(0);
+        storeWorkByte_813B920(0);
         sub_813660C(0);
         navicust_drawBoardTilemap(0);
         sub_81362F8();
@@ -7862,7 +7862,7 @@ int navicust_confirmPartPlacement()
         *(v0 + 2) = 4;
         *(v0 + 14) = 0;
         *(v0 + 20) = 0;
-        sub_813B920(0);
+        storeWorkByte_813B920(0);
         sub_81362F8();
         navicust_getCellProgramId();
     }
@@ -7871,7 +7871,7 @@ int navicust_confirmPartPlacement()
     navicust_drawBoardTilemap(1);
     *(v0 + 14) = 0;
     *(v0 + 20) = 0;
-    sub_813B920(0);
+    storeWorkByte_813B920(0);
     return PlaySoundEffect(129, v5, v6);
 }
 
@@ -8004,7 +8004,7 @@ signed int navicust_loadSelectedPartInfo()
     *(v0 + 20) = v2[6];
     v6 = v2[5];
     *(v0 + 14) = v6;
-    sub_813B920(v6);
+    storeWorkByte_813B920(v6);
     sub_813B9C4(v1);
     sub_813BA48(v1);
     sub_813660C(1);
@@ -9354,7 +9354,7 @@ int navicust_counterThenShowDialog()
 
 
 // 0x81374c4
-int sub_81374C4()
+int chatbox_store74IfFlag80Clear_81374C4()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -9483,7 +9483,7 @@ int navicust_queueBeastOutDialog()
 
 
 // 0x813759c
-int sub_813759C()
+int chatbox_queueCmd8C_ifFlag80Clear_813759C()
 {
     _BYTE *v0; // r5
     int result; // r0

@@ -149,7 +149,7 @@ signed int owPlayer_beastOutFacingStep()
     else
     {
         selectSoulWeaponCursorDir(v1);
-        sub_8142990();
+        ow_getPlayerTileMapIndex_8142990();
         v4 = getSoulWeaponCursorDir8();
         sub_809E2AE(v4);
         v5 = sub_809E2B8();

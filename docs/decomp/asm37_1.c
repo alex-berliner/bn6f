@@ -18,7 +18,7 @@ int __fastcall sub_814189A(int a1, int a2, int a3, int a4)
 
 
 // 0x81418aa
-int sub_81418AA()
+int eventStruct_setActiveFlag_81418AA()
 {
     BYTE1(dword_200101C) = 1;
     return 0;
@@ -26,7 +26,7 @@ int sub_81418AA()
 
 
 // 0x81418b6
-int sub_81418B6()
+int clear_eStruct2001010_flagByte0D_81418B6()
 {
     BYTE1(dword_200101C) = 0;
     return 0;
@@ -428,7 +428,7 @@ unsigned int battle_getEnemyIndexFromMapGroup_8142080()
 
 
 // 0x81420b0
-int sub_81420B0()
+int battle_getShiftedEnemyTableByte_81420B0()
 {
     return *(&dword_81420C4 + battle_getEnemyIndexFromMapGroup_8142080()) << 16;
 }
@@ -514,7 +514,7 @@ int battleScenarioEffect_isActive_814216E()
 
 
 // 0x8142178
-int sub_8142178()
+int scenarioEffectAdvanceStep_8142178()
 {
     return byte_200078E++ + 1;
 }
@@ -765,7 +765,7 @@ int soulWeapons_apply_8142510()
             if ( v3 )
             {
                 SpawnOverworldMapObject(15, v9, v10, v11);
-                sub_8142178();
+                scenarioEffectAdvanceStep_8142178();
                 ClearEventFlag(v7 + 5712);
             }
             ++v7;
@@ -1017,7 +1017,7 @@ unsigned int __fastcall selectSoulWeaponCursorDir(int a1)
     int v11; // r0
     int v12; // r1
 
-    v1 = sub_8142990();
+    v1 = ow_getPlayerTileMapIndex_8142990();
     v2 = sub_809E2B8();
     if ( v2 & 1 )
         return movePackedCoordsByDir(v1, v2, 1);
@@ -1042,7 +1042,7 @@ unsigned int __fastcall movePackedCoordsByDir(unsigned int a1, int a2, int a3)
 
 
 // 0x8142990
-int sub_8142990()
+int ow_getPlayerTileMapIndex_8142990()
 {
     __int64 v0; // r0
 
@@ -1083,7 +1083,7 @@ int battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA()
 
     v0 = battleObject_scenarioEffectStateAddr_81421D8();
     ZeroFillByWord(v0, 16);
-    v1 = sub_8142990();
+    v1 = ow_getPlayerTileMapIndex_8142990();
     v2 = *(&off_8142A1C + battle_getScenarioEffectStateField_81421D0());
     result = 2 * (sub_809E2B8() >> 1);
     for ( i = (v2 + result); ; i += 8 )
@@ -1166,7 +1166,7 @@ int sub_8142ADA()
     {
         if ( *(v0 + 2) )
         {
-            v3 = sub_8142990();
+            v3 = ow_getPlayerTileMapIndex_8142990();
             get_isAdjacentPos(v3, *(v0 + 2));
             if ( !v4 )
                 ++v2;
@@ -1247,7 +1247,7 @@ unsigned int getSoulWeaponCursorDir8ByEffect()
     {
         if ( *(v0 + 2) && getField0x18OfScenarioEffectState2000780_81421e0() == *(v0 + 2) )
         {
-            sub_8142990();
+            ow_getPlayerTileMapIndex_8142990();
             v3 = *(v0 + 2);
             return getSoulWeaponCursorDir8();
         }
@@ -1261,7 +1261,7 @@ unsigned int getSoulWeaponCursorDir8ByEffect()
     {
         if ( *(v4 + 2) )
         {
-            v6 = sub_8142990();
+            v6 = ow_getPlayerTileMapIndex_8142990();
             get_isAdjacentPos(v6, *(v4 + 2));
             if ( !v7 )
                 break;
@@ -1270,7 +1270,7 @@ unsigned int getSoulWeaponCursorDir8ByEffect()
         if ( ++v5 >= 20 )
             return v2;
     }
-    sub_8142990();
+    ow_getPlayerTileMapIndex_8142990();
     v8 = *(v4 + 2);
     return getSoulWeaponCursorDir8();
 }
@@ -1342,7 +1342,7 @@ signed int sub_8142BFA()
         result = *(v0 + 2);
         if ( *(v0 + 2) )
         {
-            v3 = sub_8142990();
+            v3 = ow_getPlayerTileMapIndex_8142990();
             result = get_isAdjacentPos(v3, *(v0 + 2));
             if ( !v4 )
                 v0[6] = 12;
