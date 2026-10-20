@@ -1157,7 +1157,7 @@ off_3006310:
 	.word off_3006314
 off_3006314:
 	.word sub_300631C+1
-	.word sub_300638C+1
+	.word sprite_projectFromCamera+1
 	thumb_func_end sprite_projectAndCull
 
 	thumb_local_start
@@ -1227,9 +1227,9 @@ off_3006388:
 // symdb: (r0 = entity position struct: x halfword @+2, y @+6, z @+0xA; r5 = sprite/render entry; r4 =
 // symdb: flag (invert X when nonzero); r10 = toolkit for camera ptr) -> writes screen X to r5+0xC, screen
 // symdb: Y to r5+0xA, depth to r5+0xE/0xF; updates flip bits 0x30 at r5+0x13
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_300638C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_projectFromCamera.yaml
 	thumb_local_start
-sub_300638C:
+sprite_projectFromCamera:
 	mov r6, r4
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_CameraPtr]
@@ -1296,7 +1296,7 @@ loc_30063FA:
 	mov r7, r6
 locret_3006402:
 	mov pc, lr
-	thumb_func_end sub_300638C
+	thumb_func_end sprite_projectFromCamera
 
 // symdb: Boolean range check used by sprite_ensureGfxResident: tests whether a tile/gfx index taken from a struct is below a limit kept in the sprite settings block.
 // symdb: (r0 = pointer to struct with a halfword index/offset field) -> r0 = 1 if (halfword - 0x30 + r4)

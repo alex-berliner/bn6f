@@ -3869,7 +3869,7 @@ signed int __fastcall basicHandleBattleObjectDamage_801156A(int a1)
 
 
 // 0x80115ce
-signed int __fastcall sub_80115CE(int a1)
+signed int __fastcall battle_applyPanelDamageToCurrentObject(int a1)
 {
     int v1; // r5
     int v2; // r1
@@ -7576,7 +7576,7 @@ void sub_8013892()
     v4 = sub_8013774(v2, 6);
     if ( v4 )
     {
-        sub_801A7CC(v4);
+        battle_installBarrier(v4);
         v4 = sub_80E0D98(*(v0 + 88), v5, v6, v7);
     }
     if ( !sub_8013774(v4, 33) )
@@ -8546,7 +8546,7 @@ int battle_EnableAIUnk0x48FlagForNonstandardBoard_80141F4()
 
 
 // 0x8014216
-int sub_8014216()
+int battle_beginTurnForSide()
 {
     int v0; // r5
     char *v1; // r0
@@ -10074,7 +10074,7 @@ int ai_attackStepRiseUp()
 
 
 // 0x8015040
-int sub_8015040()
+int ai_stepForwardAttackUpdate()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10501,7 +10501,7 @@ int battle_aiAttackWhiteFlashUpdate()
 
 
 // 0x80154c8
-int sub_80154C8()
+int battle_naviAttackIntroStep()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -11968,7 +11968,7 @@ int __usercall sub_80164A0@<R0>(Battle *obj@<R5>)
 
 
 // 0x80164c0
-int __usercall __noreturn sub_80164C0@<R0>(Battle *obj@<R5>)
+int __usercall __noreturn battle_initBurrowedPhase@<R0>(Battle *obj@<R5>)
 {
     int v1; // r0
     int v2; // r1
@@ -12037,7 +12037,7 @@ LABEL_5:
 
 
 // 0x801657e
-int __fastcall __noreturn sub_801657E(int a1)
+int __fastcall __noreturn battle_resetObjectToIdle(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -12959,7 +12959,7 @@ signed int __fastcall battle_defeatObject(int a1)
 
 
 // 0x8016f1a
-int sub_8016F1A()
+int battle_deleteObjectWithEffect()
 {
     int v0; // r5
     int result; // r0
@@ -16077,7 +16077,7 @@ int __fastcall battle_applyPanelEventF6Status(int result)
 
 
 // 0x801a7cc
-char *__fastcall sub_801A7CC(int a1)
+char *__fastcall battle_installBarrier(int a1)
 {
     int v1; // r5
     int v2; // r3
@@ -16629,7 +16629,7 @@ int object_finishCollisionHitReaction_801AD12()
 
 
 // 0x801ad6a
-int sub_801AD6A()
+int object_resolveCollisionHit()
 {
     int v0; // r5
     int v1; // r7
@@ -16697,7 +16697,7 @@ int object_applyCollisionHit_801AD9E()
 
 
 // 0x801adfa
-int sub_801ADFA()
+int object_resolveCollisionHits()
 {
     int v0; // r5
     int v1; // r7
@@ -17298,7 +17298,7 @@ LABEL_28:
 
 
 // 0x801b610
-int __fastcall sub_801B610(int a1)
+int __fastcall object_updateAction(int a1)
 {
     int v1; // r5
     int v2; // r6

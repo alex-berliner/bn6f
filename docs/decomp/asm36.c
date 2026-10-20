@@ -7909,7 +7909,7 @@ int __fastcall navicust_installSelectedPart(int a1)
 
     v2 = a1;
     TestEventFlag(a1 + 9824);
-    v3 = sub_813BA08(v2, *(v1 + 40), *(v1 + 44), *(v1 + 14));
+    v3 = req_queueAddEntry(v2, *(v1 + 40), *(v1 + 44), *(v1 + 14));
     v4 = ai_stampAreaPattern(v3, v2, *(v1 + 40), *(v1 + 44));
     submenu_rebuildKeyItemList(v4, v5, v6, v7);
     *(v1 + 12) = 16;
@@ -8046,12 +8046,12 @@ int __fastcall sub_813660C(int a1)
         CopyWords(byte_201D080, word_30019E0, byte_100);
         v1 = 0;
     }
-    return sub_8136644(v1);
+    return sprite_writeBeastOutOamAttr0(v1);
 }
 
 
 // 0x8136644
-int __fastcall sub_8136644(int a1)
+int __fastcall sprite_writeBeastOutOamAttr0(int a1)
 {
     int v1; // r7
     signed int v2; // r4
@@ -8278,7 +8278,7 @@ void __noreturn object_beastOutSetup()
 
 
 // 0x81368d4
-int sub_81368D4()
+int e_beastSpStepDispatch()
 {
     int v0; // r5
 
@@ -9050,7 +9050,7 @@ int navicust_finalizePieceDrop()
         result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
-            sub_813BB68(&word_8C, *(v1 + 68), *(v1 + 40), *(v1 + 44));
+            navicust_checkPieceOverlap(&word_8C, *(v1 + 68), *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(23);
@@ -9269,7 +9269,7 @@ int navicust_checkPiecePlacement()
         result = navicust_testFlag(0, 10);
         if ( !v3 )
         {
-            sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44));
+            navicust_checkPieceOverlap(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44));
             if ( !v3 )
             {
                 RunTextScriptNaviCustDialog(32);
@@ -9294,11 +9294,11 @@ LABEL_9:
                 RunTextScriptNaviCustDialog(31);
                 goto LABEL_9;
             }
-            sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40) - 1, *(v1 + 44));
+            navicust_checkPieceOverlap(&loc_90, *(v1 + 68), *(v1 + 40) - 1, *(v1 + 44));
             if ( (v3 || *toolkit_getUnk2004190EntryPtr_813B9FC(v4 - 1) != &dword_34)
-                && ((sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40) + 1, *(v1 + 44)), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v5 - 1) != &dword_34)
-                && ((sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44) - 1), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v6 - 1) != &dword_34)
-                && ((sub_813BB68(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44) + 1), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v7 - 1) != &dword_34) )
+                && ((navicust_checkPieceOverlap(&loc_90, *(v1 + 68), *(v1 + 40) + 1, *(v1 + 44)), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v5 - 1) != &dword_34)
+                && ((navicust_checkPieceOverlap(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44) - 1), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v6 - 1) != &dword_34)
+                && ((navicust_checkPieceOverlap(&loc_90, *(v1 + 68), *(v1 + 40), *(v1 + 44) + 1), v3) || *toolkit_getUnk2004190EntryPtr_813B9FC(v7 - 1) != &dword_34) )
             {
                 sub_8137670(1);
                 *(v0 + 14) = 0;
@@ -10562,7 +10562,7 @@ void __fastcall __noreturn playCreditsScene_81382D0(int a1, int a2, int a3, int 
     zeroFillVRAM();
     ZeroFill_byte_3001960(v4, v5, v6, v7);
     ZeroFillGFX30025c0();
-    sub_81387D8(v8, v9, v10, v11);
+    ow_initCreditsOverworld(v8, v9, v10, v11);
 }
 
 
@@ -11054,7 +11054,7 @@ void __fastcall sub_8138768(int a1, int a2, int a3, int a4)
 
 
 // 0x81387d8
-unsigned int __fastcall __noreturn sub_81387D8(int a1, int a2, int a3, int a4)
+unsigned int __fastcall __noreturn ow_initCreditsOverworld(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r0

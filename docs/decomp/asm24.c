@@ -726,7 +726,7 @@ void sub_808D108()
 
     v0 = sub_8142CB0();
     ow_stampMapTileTemplate(v0, 0);
-    sub_8142D4C();
+    ow_redrawMapTilemapsCb();
 }
 
 
@@ -747,7 +747,7 @@ unsigned int sub_808D11C()
             byte_2000B49 = v1 + 113;
             v2 = sub_8142CB0();
             ow_stampMapTileTemplate(v2, 0);
-            sub_8142D4C();
+            ow_redrawMapTilemapsCb();
         }
         if ( ++v1 >= 31 )
         {

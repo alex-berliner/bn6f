@@ -91,7 +91,7 @@ int __fastcall sound_dispatchTask_8000630(int a1, int a2, int a3)
 // 0x8000642
 int __fastcall sound_dispatchSoundRequest_8000642(int a1, int a2, int a3)
 {
-    return sound_8000808(off_8000704[a1], a2, a3, sub_814F9AC);
+    return sound_8000808(off_8000704[a1], a2, a3, battle_smashApplyState);
 }
 
 
@@ -140,7 +140,7 @@ int __fastcall sub_80006A2(signed int a1, int a2, int a3)
     v7 = a2;
     sound_8000808(a1, a2, v4 * 4, m4a_SongNumStart);
     sound_8000808(v5, v8, v9, sound_mplayStop);
-    sound_8000808(v5, 255, 0, sub_814F9AC);
+    sound_8000808(v5, 255, 0, battle_smashApplyState);
     sound_8000808(v6, v10, v11, sub_814E9F0);
     return sound_8000808(v5, v7, v12, sub_814EAF0);
 }

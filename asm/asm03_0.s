@@ -876,7 +876,7 @@ off_8026AA4:
 	// 0x08
 	.word scrollStrip_update_8026BF4+1 // (self: * S20364C0 $r5) -> ()
 	// 0x0C
-	.word sub_8026D06+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObject_chipSelectOverlayTick+1 // (self: * S20364C0 $r5) -> ()
 	// 0x10
 	.word sub_8026DB0+1 // (self: * S20364C0 $r5) -> ()
 	// 0x14
@@ -1223,9 +1223,9 @@ locret_8026D04:
 // symdb: Per-frame state machine (states 0/1/2) for the chip-select object that opens a 15x20 tile overlay in tile block 3, holds while polling joypad/L+R swap, then closes by restoring background tiles and finalizing the parent state.
 // symdb: (self: *S20364C0 in r5, toolkit in r10) -> void; advances self+0x02 substate (0=enter, 1=wait,
 // symdb: 2=close) and writes self+0x01=4 on close; preserves r4-r5
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026D06.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectOverlayTick.yaml
 	thumb_local_start
-sub_8026D06: // (self: * S20364C0 $r5) -> ()
+battleObject_chipSelectOverlayTick: // (self: * S20364C0 $r5) -> ()
 	push {r4,r5,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_RenderInfoPtr]
@@ -1308,7 +1308,7 @@ off_8026DA8:
 	.word 0x2000
 off_8026DAC:
 	.word unk_2035000
-	thumb_func_end sub_8026D06
+	thumb_func_end battleObject_chipSelectOverlayTick
 
 	thumb_local_start
 sub_8026DB0: // (self: * S20364C0 $r5) -> ()
@@ -1706,7 +1706,7 @@ off_8027060:
 	.word object_timerFadeStateTick+1
 	.word sub_8027118+1
 	.word triggerScreenFadeOut+1
-	.word sub_8027150+1
+	.word submenu_shiftChipSelectUp+1
 	.word sub_80271C2+1
 	thumb_func_end battleObject_chipSelectStateTick
 
@@ -1845,9 +1845,9 @@ loc_802714A:
 // symdb: Shifts the chip-selection ordering array at r5+0x48 toward higher indices while reloading OBJ tiles for each moved chip, inserts 0xB at the front, marks active-chip entry 0's byte+7 as 2, runs the custom-screen exit with a fade and SFX 0x92, sets state 0x18, then idles each frame.
 // symdb: (r0 = unused on entry; r5 = custom-screen state struct) -> r0 = return of sub_80298D8; sets
 // symdb: [r5+2] halfword to 0x18, marks active-chip entry, starts fade and SFX 0x92
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027150.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_shiftChipSelectUp.yaml
 	thumb_local_start
-sub_8027150:
+submenu_shiftChipSelectUp:
 	push {r4,lr}
 	bl IsScreenFadeActive // () -> zf
 	cmp r0, #0
@@ -1901,7 +1901,7 @@ loc_80271A0:
 loc_80271BC:
 	bl sub_80298D8
 	pop {r4,pc}
-	thumb_func_end sub_8027150
+	thumb_func_end submenu_shiftChipSelectUp
 
 	thumb_local_start
 sub_80271C2:
@@ -2301,7 +2301,7 @@ off_8027424:
 	.word off_8027428
 off_8027428:
 	.word sub_8027434+1
-	.word sub_8027458+1
+	.word customScreen_consumeSelectedChipsStep+1
 	.word sub_802750C+1
 	thumb_func_end sub_8027406
 
@@ -2331,9 +2331,9 @@ loc_8027444:
 // symdb: Per-frame update of the battle custom screen's confirm phase: every 25 frames pops one selected chip (sound 0x196, chip-picker effect, slot redraw), tracks a 20-frame animation timer on activeChip[8].byte7, and when the queue is done compacts the folder and advances state via [r5+2]=8.
 // symdb: (r5 = custom-screen state object) -> void; increments [r5+0x40], updates [r5+8] remaining-chip
 // symdb: count, [r5+0x5F] used-chip count, [r5+0x44] frame timer, and sets [r5+2] = 8 when done
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027458.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_consumeSelectedChipsStep.yaml
 	thumb_local_start
-sub_8027458:
+customScreen_consumeSelectedChipsStep:
 	push {r4,r6,lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2419,7 +2419,7 @@ dword_8027504:
 	.word 0x1FF
 dword_8027508:
 	.word 0xFFFF
-	thumb_func_end sub_8027458
+	thumb_func_end customScreen_consumeSelectedChipsStep
 
 	thumb_local_start
 sub_802750C:
@@ -4716,7 +4716,7 @@ loc_80284C4:
 loc_80284CA:
 	ldr r0, [r0,#8]
 	ldrh r0, [r0]
-	bl sub_80285FE
+	bl battle_drawCustomChipPreview
 	b locret_80284E0
 loc_80284D4:
 	bl beastout_loadCustomScreenGfx
@@ -4876,9 +4876,9 @@ loc_80285FA:
 // symdb: Renders a chip preview (name text + tile/palette graphics) for the custom screen's chip picker, then reloads Beast Out selection sprite sheets.
 // symdb: (r0 = chip id, masked with 0x1FF) -> r0 = undefined; queues GFX to VRAM 0x6009360 (name text)
 // symdb: and 0x6009560 (chip tiles), writes palette to unk_3001AA0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80285FE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawCustomChipPreview.yaml
 	thumb_local_start
-sub_80285FE:
+battle_drawCustomChipPreview:
 	push {r4,lr}
 	push {r0-r7}
 	bl chip_SelectNameTextTable_8027D10
@@ -4944,7 +4944,7 @@ off_8028684:
 	.word unk_3001AD4
 dword_8028688:
 	.word 0x1FF
-	thumb_func_end sub_80285FE
+	thumb_func_end battle_drawCustomChipPreview
 
 // symdb: Queues N successive 0x40-byte GFX chunks from a ROM source (r0) into a destination buffer (r1), advancing the destination by 0x40 each step.
 // symdb: (r0 = queued_src_ptr, r1 = mut_queued_dest_ptr, r2 = ?, r3 = row_count, lr = return_addr) -> r0
@@ -5697,7 +5697,7 @@ loc_8028C36:
 	tst r0, r1
 	beq loc_8028C46
 
-	// trigger sub_8026D06 via custMenuMainMaybe_8026A88
+	// trigger battleObject_chipSelectOverlayTick via custMenuMainMaybe_8026A88
 	mov r0, #0xc
 	strb r0, [r5,#oS20364C0_JumpOffset01]
 
@@ -16239,17 +16239,17 @@ battle_applyHitElementEffect:
 off_802D728:
 	.word off_802D72C
 off_802D72C:
-	.word sub_802D738+1
-	.word sub_802D7A0+1
+	.word ai_attackLandDelayedHitStep+1
+	.word battle_initNaviFromStats+1
 	.word sub_802D8F0+1
 	thumb_func_end battle_applyHitElementEffect
 
 // symdb: AI attack step that finalizes the object's landing panel on first call (commits FuturePanelX/Y, releases panel reserve, recomputes coords/collision, plays anim 4, clears related pointers, sets collision region 1) and then after a 4-frame delay activates the hit element.
 // symdb: (r5 = battle object ptr, r7 = AI attack vars ptr) -> r0 = 1 (object_setCollisionRegion arg);
 // symdb: updates object state fields.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D738.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackLandDelayedHitStep.yaml
 	thumb_local_start
-sub_802D738:
+ai_attackLandDelayedHitStep:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
@@ -16296,14 +16296,14 @@ dword_802D798:
 	.word 0x1C41
 dword_802D79C:
 	.word 0x10
-	thumb_func_end sub_802D738
+	thumb_func_end ai_attackLandDelayedHitStep
 
 // symdb: Initializes a navi battle actor for its selected NaviStats entry: syncs the alliance's live NaviStats from the eBattleNaviStats2034A60 snapshot (via sub_802DCCC/init_8013B64), sets NameID from AIIndex, loads sprite/animation 3/palette, sets HP/MaxHP, dispatches by type/AIIdx, clears status flags, and sets secondary element weakness.
 // symdb: (r5 = battle object, r7 = AIData vars) -> r0 = ...; sets up oBattleObject_NameID, HP/MaxHP,
 // symdb: CurAnim, AIIndex; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D7A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviFromStats.yaml
 	thumb_local_start
-sub_802D7A0:
+battle_initNaviFromStats:
 	push {r4,lr}
 	mov r1, #0x2c 
 	bl GetBattleNaviStatsByte_AllianceFromBattleObject
@@ -16425,7 +16425,7 @@ loc_802D8C0:
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
 	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
-	bl sub_8014216
+	bl battle_beginTurnForSide
 	bl object_clearInvulnerableTime
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
@@ -16433,7 +16433,7 @@ loc_802D8C0:
 	.balign 4, 0
 off_802D8EC:
 	.word eBattleNaviStats2034A60
-	thumb_func_end sub_802D7A0
+	thumb_func_end battle_initNaviFromStats
 
 	thumb_local_start
 sub_802D8F0:
@@ -16482,7 +16482,7 @@ off_802D940:
 	.word off_802D944
 off_802D944:
 	.word sub_802D950+1
-	.word sub_802D9B0+1
+	.word battle_initNaviObjectFromStats+1
 	.word sub_802DA78+1
 	thumb_func_end sub_802D926
 
@@ -16535,9 +16535,9 @@ locret_802D9AE:
 // symdb: Initializes a navi battle object on its first entry: copies the alliance's NaviStats record into the local slot, sets AI index, name ID, HP/MaxHP, loads the chip-class sprite and anims, picks palette/flip, clears status/flags/invuln, sets element weakness and HitElement=8, then finalizes the spawn via begin-turn and arm-pos refresh.
 // symdb: (r5 = battle object, uses its oBattleObject_Alliance) -> r0 = ?; builds the navi from the
 // symdb: alliance's NaviStats entry at 0x2034A60
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D9B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviObjectFromStats.yaml
 	thumb_local_start
-sub_802D9B0:
+battle_initNaviObjectFromStats:
 	push {r4,lr}
 	bl battle_getObjectNameID_8011020
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -16601,12 +16601,12 @@ sub_802D9B0:
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
 	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
-	bl sub_8014216
+	bl battle_beginTurnForSide
 	bl object_clearInvulnerableTime
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {r4,pc}
-	thumb_func_end sub_802D9B0
+	thumb_func_end battle_initNaviObjectFromStats
 
 	thumb_local_start
 sub_802DA78:
@@ -16815,7 +16815,7 @@ sub_802DB80:
 	ldr r0, off_802DCA4 // =0x8000000 
 	bl object_clearFlag // (int bitfield) -> void
 	bl battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
-	bl sub_8014216
+	bl battle_beginTurnForSide
 	bl object_clearInvulnerableTime
 	ldrb r0, [r5,#0x16]
 	bl battle_networkInvert
@@ -17076,9 +17076,9 @@ battleObject_runAIScript_802DE5C:
 	bl TestBattleFlag_0x40
 	beq locret_802DE70
 	mov r0, #0
-	bl sub_802E2C4
+	bl battle_processSelectedChip
 	mov r0, #1
-	bl sub_802E2C4
+	bl battle_processSelectedChip
 locret_802DE70:
 	pop {pc}
 	.balign 4, 0x00
@@ -17743,9 +17743,9 @@ off_802E290:
 // symdb: (r0 = battle side/entity index) -> r0 = varies (0/0xff/queued chip via callees); writes
 // symdb: selected-chip state to the side's entry at 0x2036120 (+0x24 selected, +0x26 prev, +0x28 timer,
 // symdb: +0x2A queued chip)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E2C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processSelectedChip.yaml
 	thumb_local_start
-sub_802E2C4:
+battle_processSelectedChip:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	mov r6, r0
@@ -17927,7 +17927,7 @@ byte_802E430:
 	.byte 0x0, 0x15, 0x0, 0x2A, 0x0, 0x40, 0xFF, 0xFF, 0xFF, 0xFF
 byte_802E43A:
 	.byte 0x1, 0x1, 0x1, 0x0, 0x0, 0x0
-	thumb_func_end sub_802E2C4
+	thumb_func_end battle_processSelectedChip
 
 // symdb: Returns the first halfword parameter of a background-table entry looked up from the given id, used when laying out background tiles.
 // symdb: (r0 = background/table id, passed through to sub_802E490) -> r0 = halfword at [entry+0]; no

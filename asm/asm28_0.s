@@ -1800,9 +1800,9 @@ byte_809A628:
 // symdb: State-step handler on a per-object pointer in r5: while EVENT_F6 is set it counts a halfword timer down at r5+0xc and updates a word at r5+0x70 by a byte at r5+0xf each tick; on expiry it re-reads r5+0x70 via sub_802D15E and, if EVENT_F5 is set, performs a one-shot scene setup (writes 0x20 to r5+0x04, resets and respawns the battle eStruct records from byte_8099E90, patches three table entries via r5+0x7c/r5+0x80, moves three sprites to (-0x30, 0x58, 0), clears EVENT_F6) and returns 0; otherwise it calls sub_809A80C on r5+0x74 and returns 1.
 // symdb: (r0-r4 unused; r5 = this-object with fields 0x04, 0x0c, 0x0f, 0x70, 0x74, 0x7c, 0x80) -> r0 = 0
 // symdb: once the setup has fired, 1 while still waiting; flags clobbered by bls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A630.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_stepCountdownAndSceneSetup.yaml
 	thumb_local_start
-sub_809A630:
+init_stepCountdownAndSceneSetup:
 	push {r4-r7,lr}
 	movflag EVENT_F6
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -1851,7 +1851,7 @@ loc_809A694:
 	.balign 4, 0
 off_809A6A0:
 	.word byte_8099E90
-	thumb_func_end sub_809A630
+	thumb_func_end init_stepCountdownAndSceneSetup
 
 // symdb: Per-frame object update: bumps a step byte at [r5+4] by 0x10 up to 0x60, then on reaching the cap snapshots the chatbox's 0x4C halfword/0x50 byte into [r5+6]/[r5+5], slides three sprites at id (counter-0x30), runs entity/sprite updates plus sub_809A80C on [r5+0x74], and returns 0 until EVENT_F5 is set (1 after).
 // symdb: (r5 = object record, preloaded by caller) -> r0 = 0 while EVENT_F5 clear, 1 once set; no other
@@ -4949,14 +4949,14 @@ byte_809CAD8:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
 	cs_call_native_with_return_value ptr1=pet_runEffect0AndChatbox30+1
-	cs_call_native_with_return_value ptr1=sub_809CB88+1
+	cs_call_native_with_return_value ptr1=petNaviSelectDialogStep+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809CB0D
 	cs_jump_if_var_equal byte1=0x08 byte2=0x02 destination3=cutscenescript_809CB03
 	cs_jump_if_flag_set byte1=0xFF event16_2=EVENT_163 destination4=cutscenescript_809CB49
 
 cutscenescript_809CB03:
 	cs_wait_chatbox byte1=0x80
-	cs_call_native_with_return_value ptr1=sub_809CD44+1
+	cs_call_native_with_return_value ptr1=ow_endScenarioEffect+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 
@@ -4971,16 +4971,16 @@ byte_809CB1C:
 	cs_jump destination1=byte_809CB40
 
 byte_809CB28:
-	cs_call_native_with_return_value ptr1=sub_809CC60+1
+	cs_call_native_with_return_value ptr1=pet_confirmNaviSelect+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x00 destination3=byte_809CB1C
 	cs_wait_chatbox byte1=0x88
-	cs_call_native_with_return_value ptr1=sub_809CDD4+1
+	cs_call_native_with_return_value ptr1=petNaviGrantElementFolderEvent+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_wait_chatbox byte1=0x88
 
 byte_809CB40:
 	cs_chatbox_cmd_8037a70
-	cs_call_native_with_return_value ptr1=sub_809CD44+1
+	cs_call_native_with_return_value ptr1=ow_endScenarioEffect+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 
@@ -4989,7 +4989,7 @@ cutscenescript_809CB49:
 	cs_call_native_with_return_value ptr1=sub_809CD60+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_wait_chatbox byte1=0x88
-	cs_call_native_with_return_value ptr1=sub_809CDD4+1
+	cs_call_native_with_return_value ptr1=petNaviGrantElementFolderEvent+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_wait_chatbox byte1=0x88
 	cs_jump destination1=byte_809CB40
@@ -5019,9 +5019,9 @@ pet_runEffect0AndChatbox30:
 // symdb: Per-frame step of the PET navi-select dialog: gates on chatbox flag 0x8, then runs script 0x20 from the script archive; when chatbox text completes, branches on EVENT_163 to either run the prompt script 0x1f or commit by writing the current PET navi to the toolkit struct and clearing CurPETNavi plus a dialog field.
 // symdb: (r5 = dialog state struct) -> r0 = 1 while waiting (chatbox flag bit 3 clear), 0 once a step
 // symdb: advanced; stores substate 0/1/2 into [r5,#8]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CB88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/petNaviSelectDialogStep.yaml
 	thumb_local_start
-sub_809CB88:
+petNaviSelectDialogStep:
 	push {r4-r7,lr}
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -5075,7 +5075,7 @@ loc_809CBF6:
 	.balign 4, 0
 dword_809CBFC:
 	.word 0x100
-	thumb_func_end sub_809CB88
+	thumb_func_end petNaviSelectDialogStep
 
 // symdb: Per-frame wait step on a battle object: on first call clears IWRAM state, resets battle state, and seeds sub_803F512; subsequently polls link state and ticks a halfword countdown at word_200AD06 until ready, then stores a flag at object +0x08, mirrors it into IWRAM via setByte_200AD04, and (if set) queues chatbox script index 0x22 via chatbox_runScript; returns 1 while waiting, 0 once done.
 // symdb: (r5 = object/state pointer, r0 unused) -> r0 = 1 while still waiting/initializing, 0 once the
@@ -5136,9 +5136,9 @@ off_809CC5C:
 // symdb: PET menu confirm: when the picked ID falls in one of seven 0x1E-wide navi windows, assigns that navi, sets EVENT_163, plays sound 0x8D and chatbox script 0x23; otherwise, if a 'cancelable' bit is set, plays SOUND_UNSELECT and rejection script 0x20.
 // symdb: (r0..: no args read; r5 = menu/state obj, r10 = game-state ptr) -> r0 = 0 when a choice was
 // symdb: consumed, 1 when the screen should stay/wait; also writes [r5,#8] done-byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CC60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_confirmNaviSelect.yaml
 	thumb_local_start
-sub_809CC60:
+pet_confirmNaviSelect:
 	push {r4-r7,lr}
 	bl battle_checkLinkPartnerCamera
 	beq loc_809CC70
@@ -5219,7 +5219,7 @@ off_809CD14:
 byte_809CD18:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0x7, 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x9
 	.byte 0x0, 0x0, 0x0, 0xA, 0x0, 0x0, 0x0, 0xB, 0x0, 0x0, 0x0
-	thumb_func_end sub_809CC60
+	thumb_func_end pet_confirmNaviSelect
 
 // symdb: Runs chatbox script 0x21 from an archive whose pointer is held in a global, then returns 0
 // symdb: () -> r0 = 0; no flags meaningful (tail is a plain return)
@@ -5238,9 +5238,9 @@ chatbox_runGlobalScript21:
 // symdb: Tears down the active scenario effect: queues PET effect 1, reinitializes scenario effect state at 0x2000780, zeroes the 0x48-byte work struct at 0x2001010, clears the active flag (bit 7) at 0x2000780, and acks the pending-event flag byte at eStruct2001010.
 // symdb: (no args) -> r0 = 0; queues PET effect 1, clears effect state at 0x2000780 bit 7 and
 // symdb: eStruct2001010 event bit 7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CD44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_endScenarioEffect.yaml
 	thumb_local_start
-sub_809CD44:
+ow_endScenarioEffect:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl doPETEffect_8033fc0
@@ -5250,7 +5250,7 @@ sub_809CD44:
 	bl event_ackNewFlagByte_8003AEA
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_809CD44
+	thumb_func_end ow_endScenarioEffect
 
 	thumb_local_start
 sub_809CD60:
@@ -5316,9 +5316,9 @@ sub_809CDC4:
 
 // symdb: Reloads the current PET navi's stats and, if petNaviTryGiveElementFolder reports a count, runs one of three chatbox scripts (idx 0x33 default, 0x34 when count==0xf, 0x32 when count==0x10) from archive 4, then returns 0.
 // symdb: () -> r0 = 0 always; r0-r1 clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CDD4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/petNaviGrantElementFolderEvent.yaml
 	thumb_local_start
-sub_809CDD4:
+petNaviGrantElementFolderEvent:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
 	tst r0, r0
@@ -5350,7 +5350,7 @@ loc_809CE0E:
 locret_809CE10:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809CDD4
+	thumb_func_end petNaviGrantElementFolderEvent
 
 // symdb: Checks the link-battle state and partner slot; on success stores the partner's eCamera-related value into [r5+0x74] and returns 0, otherwise returns 1.
 // symdb: (uses caller's r5 as destination struct, r7/r12 saved around the call) -> r0 = 0 on success

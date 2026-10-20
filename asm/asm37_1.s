@@ -1842,9 +1842,9 @@ sub_8142990:
 // symdb: Returns 1 if two packed (x,y) tile positions are the same or 4-neighbors (Manhattan distance <= 1), else 0.
 // symdb: (r0 = packed pos A (hi=x<<8|lo? hi byte x, lo byte y), r1 = packed pos B) -> r0 = 1 if |dx|+|dy|
 // symdb: <= 1 else 0; sets flags via tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814299C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_isAdjacentPos.yaml
 	thumb_local_start
-sub_814299C:
+get_isAdjacentPos:
 	push {r4-r7,lr}
 	mov r7, #0
 	lsr r2, r0, #8
@@ -1871,7 +1871,7 @@ loc_81429C4:
 	mov r0, r7
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814299C
+	thumb_func_end get_isAdjacentPos
 
 // symdb: Writes the per-direction player-coordinate delta table into a scenario-effect buffer, indexed by the player's overworld facing direction.
 // symdb: (no explicit r0/r1) -> r0 = nothing to caller (out is only r3/r5 which the caller restores);
@@ -2007,7 +2007,7 @@ loc_8142AE2:
 	beq loc_8142AF6
 	bl sub_8142990
 	ldrh r1, [r5,#4]
-	bl sub_814299C
+	bl get_isAdjacentPos
 	beq loc_8142AF6
 	add r6, #1
 loc_8142AF6:
@@ -2110,7 +2110,7 @@ loc_8142B8A:
 	beq loc_8142BAA
 	bl sub_8142990
 	ldrh r1, [r5,#4]
-	bl sub_814299C
+	bl get_isAdjacentPos
 	beq loc_8142BAA
 	bl sub_8142990
 	ldrh r1, [r5,#4]
@@ -2180,7 +2180,7 @@ loc_8142C02:
 	beq loc_8142C16
 	bl sub_8142990
 	ldrh r1, [r5,#4]
-	bl sub_814299C
+	bl get_isAdjacentPos
 	beq loc_8142C16
 	strb r7, [r5,#6]
 loc_8142C16:
@@ -2379,16 +2379,16 @@ off_8142D44:
 
 // symdb: Register-saving trampoline (push r4-r7/lr, bl sub_80307D8, pop) used as a callback that triggers sub_80307D8 to repaint both tilemap layers of the overworld map window centered on the camera.
 // symdb: () -> r0 = result of sub_80307D8 (unknown); r4-r7 clobbered (saved/restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142D4C.yaml
-	thumb_func_start sub_8142D4C
-sub_8142D4C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_redrawMapTilemapsCb.yaml
+	thumb_func_start ow_redrawMapTilemapsCb
+ow_redrawMapTilemapsCb:
 	push {r4-r7,lr}
 	bl ow_redrawTilemapAtCamera
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8142D54:
 	.word eMapTilesState200be70
-	thumb_func_end sub_8142D4C
+	thumb_func_end ow_redrawMapTilemapsCb
 
 	thumb_local_start
 sub_8142D58:

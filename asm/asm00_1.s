@@ -3159,7 +3159,7 @@ OverworldMapObjectUpdateJumptable:
 	.word battleObject_dispatchCurAction_80A7C84+1
 	.word battleObject_runAIDispatchWithCurState_80A7D90+1
 	.word battle_dispatchCustomJumptableByIndex_80A8208+1
-	.word sub_80A8394+1
+	.word npc_runStateHandler+1
 	.word battleObject_dispatchUpdateByCurAction_80A8654+1
 	.word sub_80A8728+1
 	.word sub_80A87F0+1
@@ -4482,7 +4482,7 @@ GameStateJumptable:
 	// 0x24
 	.word gameState_tickFrameAndHandleFadeTransition+1 // (self: * GameState $r5) -> ()
 	// 0x28
-	.word sub_800572C+1 // (self: * GameState $r5) -> ()
+	.word start_reloadDuringFadeTick+1 // (self: * GameState $r5) -> ()
 	// 0x2C
 	.word pet_tickSceneAndReloadOnFade+1 // (self: * GameState $r5) -> ()
 	// 0x30
@@ -5151,9 +5151,9 @@ locret_800572A:
 // symdb: (r0 unused; fetches GameState via oToolkit_GameStatePtr) -> r0 = 0 discarded; writes 0x3C to
 // symdb: *oToolkit_MainJumptablePtr, clears all object type 0x21, reinitializes graphics/scenario/NPC
 // symdb: state
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800572C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_reloadDuringFadeTick.yaml
 	thumb_local_start
-sub_800572C: // (self: * GameState $r5) -> ()
+start_reloadDuringFadeTick: // (self: * GameState $r5) -> ()
 	push {lr}
 	bl dispatch_80339CC // () -> ()
 	bl scenario_runEffectStateJumptable_80039AA
@@ -5189,7 +5189,7 @@ sub_800572C: // (self: * GameState $r5) -> ()
 	strb r1, [r0]
 locret_800579E:
 	pop {pc}
-	thumb_func_end sub_800572C
+	thumb_func_end start_reloadDuringFadeTick
 
 // symdb: Per-frame tick of the PET/menu scene state; once a screen fade is active it tears the scene down and hands control to the reload/main-jumptable mode 0x40.
 // symdb: (self: * GameState $r5) -> (); sets eMainJumptableIndex byte to 0x40 when tearing down
@@ -6202,9 +6202,9 @@ clear_gameStateForNewScene:
 
 // symdb: Resets game state by zeroing oGameState_Ptr_20, freeing type-0x25 objects, resetting all graphics, running a setup step, reinitialising the battle-fade GFX state, zero-filling global structs (eStruct200a6a0 and the scenario effect state block at 0x2000780), and finally refreshing the current PET navi's HP.
 // symdb: () -> r0 = 0 written to GameState->field20; no return value, flags from last callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005E22.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_resetGameState.yaml
 	thumb_local_start
-sub_8005E22:
+init_resetGameState:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -6221,7 +6221,7 @@ sub_8005E22:
 	bl sub_8038A9C
 	bl reloadCurNaviStatBoosts_813c3ac
 	pop {r4-r7,pc}
-	thumb_func_end sub_8005E22
+	thumb_func_end init_resetGameState
 
 	thumb_local_start
 dead_8005E54:
@@ -6261,7 +6261,7 @@ ow_startWarpTransition:
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
 
-  // trigger sub_800572C via cbGameState_80050EC
+  // trigger start_reloadDuringFadeTick via cbGameState_80050EC
 	mov r0, #0x28 
 	strb r0, [r5,#oGameState_SubsystemIndex]
 
@@ -11114,7 +11114,7 @@ off_8008038:
 	.word battle_updateMainFlow_80080D2+1
 	.word battle_runVictorySequence_80081A4+1
 	.word battle_runLoserSequence_800825A+1
-	.word sub_80082DC+1
+	.word battle_stepEndCountdownToResult+1
 	.word sub_800834A+1
 	.word sub_80083E4+1
 	.word battle_stepIntroPhase+1
@@ -11452,9 +11452,9 @@ locret_80082DA:
 // symdb: (r0 = unused; r5 = battle step/state struct: +0 = step dword, +3 = phase byte, +4 = result byte,
 // symdb: +8 = frame counter halfword; r10 = toolkit) -> r0 = destroyed; writes [r5] step (0xC/0x10),
 // symdb: [r5+4] = 3, oGameState_BattleEndSubState = 3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80082DC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepEndCountdownToResult.yaml
 	thumb_local_start
-sub_80082DC:
+battle_stepEndCountdownToResult:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -11507,7 +11507,7 @@ loc_8008338:
 	strb r0, [r5,#4]
 locret_8008348:
 	pop {pc}
-	thumb_func_end sub_80082DC
+	thumb_func_end battle_stepEndCountdownToResult
 
 	thumb_local_start
 sub_800834A:
@@ -11978,7 +11978,7 @@ e_dispatchUpdateByState:
 off_8008674:
 	.word off_8008678
 off_8008678:
-	.word sub_8008688+1
+	.word battle_winnerAnnounceState+1
 	.word sub_80086F8+1
 	.word sub_8008716+1
 	.word e_battleEndWaitCountdown+1
@@ -11987,9 +11987,9 @@ off_8008678:
 // symdb: Battle-flow state that records the losing side on first entry, plays the winner jingle (or ACDC Town music when phase==1), kicks off battle effect 0x14, and ticks a halfword timer down before writing 0xc to the next-state field.
 // symdb: (r0 = unused; r5 = battle flow state struct: +3 state byte, +2 next-state halfword, +8 countdown
 // symdb: halfword) -> r0 = void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008688.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_winnerAnnounceState.yaml
 	thumb_local_start
-sub_8008688:
+battle_winnerAnnounceState:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12041,7 +12041,7 @@ sub_8008688:
 	strh r0, [r5,#2]
 .ret:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8008688
+	thumb_func_end battle_winnerAnnounceState
 
 	thumb_local_start
 sub_80086F8:
@@ -13149,7 +13149,7 @@ battle_dispatchStateUpdate:
 off_8008E8C:
 	.word off_8008E90
 off_8008E90:
-	.word sub_8008EA0+1
+	.word battle_stepDefeatSequence+1
 	.word sub_8008F10+1
 	.word battle_linkBattleIntroWaitUpdate+1
 	.word sub_8008F52+1
@@ -13158,9 +13158,9 @@ off_8008E90:
 // symdb: Battle-flow step that runs the player-defeat sub-sequence: clears dispatches/event bits 0x4C43, marks the player as loser, plays the defeat jingle (overridden to 0x24 in phase-1/cross-net), ticks player HP regen, dispatches kind-effect 0x14, then counts down substep+8 before writing next-state 0xC.
 // symdb: (r0 = this, battle sub-state struct: byte+0x03 = substep, halfword+0x02 = next state,
 // symdb: halfword+0x08 = timer) -> void; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008EA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepDefeatSequence.yaml
 	thumb_local_start
-sub_8008EA0:
+battle_stepDefeatSequence:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -13212,7 +13212,7 @@ loc_8008EF4:
 	strh r0, [r5,#2]
 locret_8008F0E:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8008EA0
+	thumb_func_end battle_stepDefeatSequence
 
 	thumb_local_start
 sub_8008F10:
@@ -13797,7 +13797,7 @@ off_80092B0:
 off_80092B4:
 	.word battle_runState4CountdownOrAdvance_80092C0+1
 	.word battle_stateIntroEffectWait+1
-	.word sub_8009314+1
+	.word battle_phaseDelayToState8+1
 	thumb_func_end battle_dispatchStatePhase_80092A0
 
 // symdb: Runs a short 10-frame countdown in battle state 4 on the battle state object and, when it finishes (or if nothing was pending), advances the battle flow to state 8.
@@ -13864,9 +13864,9 @@ locret_8009312:
 
 // symdb: Battle sub-phase: on first entry, initialize a 10-frame countdown timer; each subsequent frame decrements it, and when the signed value goes negative (after 11 decrements) advance the battle to state 8 and clear the phase/init flags.
 // symdb: (r0 = battleStatePtr (also r5)) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009314.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_phaseDelayToState8.yaml
 	thumb_local_start
-sub_8009314:
+battle_phaseDelayToState8:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -13887,7 +13887,7 @@ loc_8009326:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009336:
 	pop {pc}
-	thumb_func_end sub_8009314
+	thumb_func_end battle_phaseDelayToState8
 
 // symdb: Per-frame tick of what the draft calls the battle-end sequence: one-time setup (sub_8026840), then poll sub_8026A28 until it finishes and switch the battle state machine to 0xC.
 // symdb: (r5 = battle state)
@@ -14323,7 +14323,7 @@ off_8009630:
 	.word battle_startBattleIntro+1
 	.word sub_8009734+1
 	.word battle_stateWaitFinishPhase+1
-	.word sub_800980E+1
+	.word battle_processBattleResultPhase+1
 	.word sub_80098BC+1
 	.word sub_800993A+1
 	.word NULL
@@ -14601,9 +14601,9 @@ locret_800980C:
 // symdb: Battle-end sub-phase: runs once-only init, then sub_80084F0 + the end-of-battle check; classifies the outcome (1=win, 2=loss, 7=other), records it via setTwoStructs_800A840, computes/stores BustingLevelCategory for wins/losses, syncs into the 200A008 overworld-player struct, and advances the sub-state machine by writing Index_01 (0x10/0x14) and clearing StatePhaseAndInitFlag.
 // symdb: (r5 = battle state struct) -> r0 = 0; writes BustingLevelCategory, Index_01 (0x10 or 0x14),
 // symdb: clears StatePhaseAndInitFlag; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800980E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processBattleResultPhase.yaml
 	thumb_local_start
-sub_800980E:
+battle_processBattleResultPhase:
 	push {r4,lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -14680,7 +14680,7 @@ loc_80098B4:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_80098BA:
 	pop {r4,pc}
-	thumb_func_end sub_800980E
+	thumb_func_end battle_processBattleResultPhase
 
 	thumb_local_start
 sub_80098BC:
@@ -14963,7 +14963,7 @@ sub_8009A88:
 off_8009A98:
 	.word off_8009A9C
 off_8009A9C:
-	.word sub_8009AA8+1
+	.word battleState4EventWaitOrSkip+1
 	.word battle_stateCrossNetBattleIntroStep+1
 	.word battle_stateWait10FramesThenGotoPhaseC+1
 	thumb_func_end sub_8009A88
@@ -14971,9 +14971,9 @@ off_8009A9C:
 // symdb: Per-state handler for battle state 4: on first entry, if State4EventCount is nonzero arm a 10-frame CountdownTimer and set SubPhaseInitFlag; on subsequent ticks decrement it and once negative latch StatePhaseAndInitFlag=4; if no events are pending, write Index_01=0xC and clear StatePhaseAndInitFlag.
 // symdb: (r5 = battle state struct) -> r0 = undefined; updates oBattleState_CountdownTimer,
 // symdb: SubPhaseInitFlag, StatePhaseAndInitFlag, Index_01
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009AA8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleState4EventWaitOrSkip.yaml
 	thumb_local_start
-sub_8009AA8:
+battleState4EventWaitOrSkip:
 	push {lr}
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
@@ -15001,7 +15001,7 @@ loc_8009ACE:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009AD6:
 	pop {pc}
-	thumb_func_end sub_8009AA8
+	thumb_func_end battleState4EventWaitOrSkip
 
 // symdb: Battle state-machine sub-phase handler: fires a one-shot battle sub-effect (using the event count as kind byte), then polls cross-net/linked-battle readiness before advancing to state 8.
 // symdb: (r0,r1 unused on entry; r5 = battle state struct) -> r0 clobbered; updates

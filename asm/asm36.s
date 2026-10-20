@@ -11652,7 +11652,7 @@ off_81357E0:
 	.word sub_8135A10+1
 	.word ow_objectStepSavePos+1
 	.word sub_8135A24+1
-	.word sub_81368D4+1
+	.word e_beastSpStepDispatch+1
 	.word submenu_updateScroll+1
 	.word t4_waitChatboxThenFadeScene+1
 	.word sub_8135B38+1
@@ -13427,7 +13427,7 @@ loc_81364FC:
 	ldrh r1, [r5,#0x28]
 	ldrh r2, [r5,#0x2c]
 	ldrb r3, [r5,#0xe]
-	bl sub_813BA08
+	bl req_queueAddEntry
 	mov r1, r7
 	ldrh r2, [r5,#0x28]
 	ldrh r3, [r5,#0x2c]
@@ -13581,7 +13581,7 @@ loc_8136620:
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	mov r0, #0
 loc_8136632:
-	bl sub_8136644
+	bl sprite_writeBeastOutOamAttr0
 	pop {pc}
 	.balign 4, 0
 off_8136638:
@@ -13595,9 +13595,9 @@ off_8136640:
 // symdb: For six slot IDs in unk_2022B70, reads a halfword from one of two 16-byte OAM attr0 tables (selected by r0) and stores it at unk_30019E0+0xF4..0xFE; when i>=4 and ID==0, uses a fixed 'slot off' entry from the same table instead.
 // symdb: (r0 = table set, 0 or 1) -> writes 6 halfwords to unk_30019E0 + 0xF4..0xFE; r0,r1,r2-r4,r7
 // symdb: clobbered, flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136644.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_writeBeastOutOamAttr0.yaml
 	thumb_local_start
-sub_8136644:
+sprite_writeBeastOutOamAttr0:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r4, #0
@@ -13660,7 +13660,7 @@ byte_81366B8:
 	.byte 0x10, 0x89, 0x7E, 0x87, 0x7, 0x3C, 0x1E
 byte_81366C8:
 	.byte 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F, 0x0, 0x0
-	thumb_func_end sub_8136644
+	thumb_func_end sprite_writeBeastOutOamAttr0
 
 // symdb: Registers a battle object's ID into a 6-slot unique-ID list at unk_2022B70 if not already present.
 // symdb: (r5 = current object ptr, reads [r5+0x18] as object index) -> r0 = descriptor byte 3 (leftover,
@@ -13953,9 +13953,9 @@ byte_81368C8:
 // symdb: Dispatches one step of the beast-SP cutscene state machine by tail-calling the handler selected from off_81368E8 by the step index at [r5+3]; entries 0-6 idle in sub_813691C, then run battle_beginInit, pet_naviHealCutsceneStep, battle_beastOutTimerTick, sub_8136A74, e_waitChatboxThenFadeOut, and sub_8136AE8.
 // symdb: (r5 = cutscene/object state struct, r5+3 = step index) -> calls handler via lr, returns
 // symdb: handler's r0; no flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81368D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_beastSpStepDispatch.yaml
 	thumb_local_start
-sub_81368D4:
+e_beastSpStepDispatch:
 	push {lr}
 	ldr r0, off_81368E4 // =off_81368E8 
 	ldrb r1, [r5,#3]
@@ -13980,7 +13980,7 @@ off_81368E8:
 	.word navicust_stateWaitFramesThenAdvance+1
 	.word e_waitChatboxThenFadeOut+1
 	.word sub_8136AE8+1
-	thumb_func_end sub_81368D4
+	thumb_func_end e_beastSpStepDispatch
 
 	thumb_local_start
 sub_813691C:
@@ -15158,7 +15158,7 @@ navicust_finalizePieceDrop:
 	ldr r1, [r7,#0x44]
 	ldrh r2, [r7,#0x28]
 	ldrh r3, [r7,#0x2c]
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_81371E2
 	mov r0, #0x17
 	bl RunTextScriptNaviCustDialog
@@ -15409,7 +15409,7 @@ loc_8137388:
 	ldr r1, [r7,#0x44]
 	ldrh r2, [r7,#0x28]
 	ldrh r3, [r7,#0x2c]
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_81373B2
 	mov r0, #0x20 
 	bl RunTextScriptNaviCustDialog
@@ -15448,7 +15448,7 @@ loc_81373E4:
 	ldrh r2, [r6,#0x28]
 	sub r2, #1
 	ldrh r3, [r6,#0x2c]
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_8137406
 	sub r0, r1, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -15463,7 +15463,7 @@ loc_8137406:
 	ldrh r2, [r6,#0x28]
 	add r2, #1
 	ldrh r3, [r6,#0x2c]
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_8137426
 	sub r0, r1, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -15478,7 +15478,7 @@ loc_8137426:
 	ldrh r2, [r6,#0x28]
 	ldrh r3, [r6,#0x2c]
 	sub r3, #1
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_8137446
 	sub r0, r1, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -15493,7 +15493,7 @@ loc_8137446:
 	ldrh r2, [r6,#0x28]
 	ldrh r3, [r6,#0x2c]
 	add r3, #1
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 	beq loc_813747A
 	sub r0, r1, #1
 	bl toolkit_getUnk2004190EntryPtr_813B9FC
@@ -17463,7 +17463,7 @@ playCreditsScene_81382D0:
 
 	bl ZeroFillGFX30025c0
 
-	bl sub_81387D8
+	bl ow_initCreditsOverworld
 
 	bl sub_8138758
 
@@ -18205,9 +18205,9 @@ dword_81387D4:
 // symdb: Prepares the engine for the credits overworld scene: zeroes GameState+0x20, runs the full overworld reset chain, decompresses coord event 2 data, initializes the field camera for map group 0xD0 / map 0 at (0,0,0), clears effect/scenario state and event-flag ranges at 0x2DE/0x2C8, force-ends any active cutscene, clears stale script positions and pending battle state for event 0x1708, then frees all type-0x25 objects.
 // symdb: () -> r0 = FreeAllObjectsOfSpecifiedTypes result; clears GameState field at +0x20 and many
 // symdb: engine work areas
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81387D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_initCreditsOverworld.yaml
 	thumb_local_start
-sub_81387D8:
+ow_initCreditsOverworld:
 	push {lr}
 
 	mov r1, r10
@@ -18253,7 +18253,7 @@ sub_81387D8:
 	bl FreeAllObjectsOfSpecifiedTypes
 
 	pop {pc}
-	thumb_func_end sub_81387D8
+	thumb_func_end ow_initCreditsOverworld
 
 // symdb: Runs the overworld frame: updates player/NPC/map objects, resolves interactions, then queues and flushes all overworld sprites.
 // symdb: () -> (); no arguments or return value, r0-r3 clobbered by the calls

@@ -3087,7 +3087,7 @@ signed int __fastcall IsR2BetweenR0AndR1(int a1, int a2, int a3)
 
 
 // 0x800e708
-signed int __fastcall sub_800E708(int a1, int a2, int a3)
+signed int __fastcall e_isValueInRangeInclusive(int a1, int a2, int a3)
 {
     signed int v3; // r3
 

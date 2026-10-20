@@ -5206,7 +5206,7 @@ int sub_8038606()
 
 
 // 0x8038630
-signed int __fastcall __noreturn sub_8038630(int a1)
+signed int __fastcall __noreturn init_battleScene(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r0
@@ -5774,7 +5774,7 @@ void t3_waitForAnyKeyStartFade()
 
 
 // 0x8038f0c
-int sub_8038F0C()
+int startScreen_update()
 {
     int result; // r0
     char v1; // zf
@@ -6033,7 +6033,7 @@ int battle_dispatchModeAndRunUpdates()
 
 
 // 0x8039694
-signed int __fastcall __noreturn sub_8039694(int a1, int a2, int a3, int a4)
+signed int __fastcall __noreturn init_resetGfxAndBranchState(int a1, int a2, int a3, int a4)
 {
     _BYTE *v4; // r5
     int v5; // r0
@@ -6423,7 +6423,7 @@ int sub_80399CE()
 
 
 // 0x8039a58
-signed int sub_8039A58()
+signed int battle_initScene()
 {
     int v0; // r5
     int v1; // r0
@@ -6900,7 +6900,7 @@ int __fastcall sub_8039E2C(int a1)
 
 
 // 0x8039e80
-int __fastcall sub_8039E80(int a1)
+int __fastcall battle_runBattleBootState(int a1)
 {
     char v1; // zf
     int v2; // r0
@@ -10998,7 +10998,7 @@ int cb_803CCD6()
 
 
 // 0x803ccfc
-signed int __fastcall __noreturn sub_803CCFC(int a1)
+signed int __fastcall __noreturn start_initBattleScene(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r0

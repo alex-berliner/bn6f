@@ -12217,7 +12217,7 @@ int __fastcall object_setSmashFactor(int a1, __int16 a2)
 
 
 // 0x814f9ac
-int __fastcall sub_814F9AC(int a1, unsigned __int16 a2, int a3)
+int __fastcall battle_smashApplyState(int a1, unsigned __int16 a2, int a3)
 {
     int v3; // r7
     unsigned int v4; // r6

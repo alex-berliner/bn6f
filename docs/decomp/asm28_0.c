@@ -654,7 +654,7 @@ signed int sub_809A520()
 
 
 // 0x809a630
-signed int sub_809A630()
+signed int init_stepCountdownAndSceneSetup()
 {
     int v0; // r5
     char v1; // zf
@@ -2145,7 +2145,7 @@ int __fastcall pet_runEffect0AndChatbox30(int a1, int a2, int a3)
 
 
 // 0x809cb88
-signed int sub_809CB88()
+signed int petNaviSelectDialogStep()
 {
     int v0; // r5
     char v1; // zf
@@ -2228,7 +2228,7 @@ signed int battle_waitLink()
 
 
 // 0x809cc60
-signed int sub_809CC60()
+signed int pet_confirmNaviSelect()
 {
     int v0; // r5
     _DWORD *v1; // r10
@@ -2302,7 +2302,7 @@ int chatbox_runGlobalScript21()
 
 
 // 0x809cd44
-int __fastcall sub_809CD44(int a1, int a2, int a3)
+int __fastcall ow_endScenarioEffect(int a1, int a2, int a3)
 {
     doPETEffect_8033fc0(1, a2, a3);
     scenario_initEffectState_8003962();
@@ -2357,7 +2357,7 @@ int sub_809CDC4()
 
 
 // 0x809cdd4
-int sub_809CDD4()
+int petNaviGrantElementFolderEvent()
 {
     int v0; // r1
     char v1; // zf
@@ -3080,7 +3080,7 @@ int owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4()
 
 
 // 0x809d92c
-signed int sub_809D92C()
+signed int ow_playerSetFacingAndState()
 {
     int v0; // r5
     signed int v1; // r0

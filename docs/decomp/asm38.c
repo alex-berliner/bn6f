@@ -676,7 +676,7 @@ _DWORD *__fastcall sub_300631C(_DWORD *result)
 
 
 // 0x300638c
-signed __int16 *__fastcall sub_300638C(signed __int16 *result)
+signed __int16 *__fastcall sprite_projectFromCamera(signed __int16 *result)
 {
     int v1; // r4
     int v2; // r5

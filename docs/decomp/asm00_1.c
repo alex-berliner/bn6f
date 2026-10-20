@@ -2809,7 +2809,7 @@ _BYTE *__fastcall gameState_tickFrameAndHandleFadeTransition(int a1)
 
 
 // 0x800572c
-_BYTE *__fastcall sub_800572C(int a1)
+_BYTE *__fastcall start_reloadDuringFadeTick(int a1)
 {
     int v1; // r10
     _BYTE *result; // r0
@@ -3607,7 +3607,7 @@ int __noreturn clear_gameStateForNewScene()
 
 
 // 0x8005e22
-int __noreturn sub_8005E22()
+int __noreturn init_resetGameState()
 {
     int v0; // r10
     int v1; // r0
@@ -6692,7 +6692,7 @@ int battle_runLoserSequence_800825A()
 
 
 // 0x80082dc
-int sub_80082DC()
+int battle_stepEndCountdownToResult()
 {
     int v0; // r5
     int v1; // r10
@@ -7105,7 +7105,7 @@ int e_dispatchUpdateByState()
 
 
 // 0x8008688
-int sub_8008688()
+int battle_winnerAnnounceState()
 {
     int v0; // r5
     int v1; // r10
@@ -8020,7 +8020,7 @@ int battle_dispatchStateUpdate()
 
 
 // 0x8008ea0
-int sub_8008EA0()
+int battle_stepDefeatSequence()
 {
     int v0; // r5
     int v1; // r10
@@ -8551,7 +8551,7 @@ int battle_stateIntroEffectWait()
 
 
 // 0x8009314
-int sub_8009314()
+int battle_phaseDelayToState8()
 {
     int v0; // r5
     int result; // r0
@@ -9205,7 +9205,7 @@ int battle_stateWaitFinishPhase()
 
 
 // 0x800980e
-void __fastcall sub_800980E(int a1, int a2, int a3, int a4)
+void __fastcall battle_processBattleResultPhase(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -9505,7 +9505,7 @@ int sub_8009A88()
 
 
 // 0x8009aa8
-int sub_8009AA8()
+int battleState4EventWaitOrSkip()
 {
     int v0; // r5
     int result; // r0
@@ -13241,7 +13241,7 @@ char *battleObject_stepSnakeArm_800BA8A()
 
 
 // 0x800bba8
-char *sub_800BBA8()
+char *battle_chipUseStep()
 {
     int v0; // r5
     char *result; // r0

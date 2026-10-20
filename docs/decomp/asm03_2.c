@@ -2478,7 +2478,7 @@ int sub_804900C()
 
 
 // 0x8049058
-int sub_8049058()
+int battle_resetVideoAndScene()
 {
     int result; // r0
     char v1; // zf
@@ -2508,7 +2508,7 @@ char *sub_8049080()
 
 
 // 0x8049104
-signed int sub_8049104()
+signed int initPostBattleScene()
 {
     int v0; // r5
     int v1; // r0
@@ -3807,7 +3807,7 @@ int __noreturn chatbox_initNewScreen_8049E28()
 
 
 // 0x8049e5c
-int sub_8049E5C()
+int submenu_resetVideoDuringFade()
 {
     int result; // r0
     char v1; // zf
@@ -4269,7 +4269,7 @@ LABEL_11:
 
 
 // 0x804a460
-void __fastcall __noreturn sub_804A460(int a1)
+void __fastcall __noreturn e_giveChipStep(int a1)
 {
     sub_804A8F4();
 }

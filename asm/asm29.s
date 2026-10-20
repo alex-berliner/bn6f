@@ -3017,7 +3017,7 @@ JumpTable_80A6ABC:
 	.word battleObject_sineEaseMoveStep+1
 	.word sub_80A6CA4+1
 	.word battleObject_copyPositionToStruct+1
-	.word sub_80A6CFC+1
+	.word ow_spawnCurNaviNpc+1
 	.word sub_80A6D38+1
 	.word sub_80A6D42+1
 	.word sprite_setupScalableObjectScale+1
@@ -3312,9 +3312,9 @@ battleObject_copyPositionToStruct:
 
 // symdb: Spawns an overworld NPC sprite matching the PET's currently selected navi at the player's position, then forwards mode 2 to sub_80A6E70 and returns 1.
 // symdb: (r0 = object/state pointer, saved and passed on; r5 = object) -> r0 = 1; clobbers r1-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6CFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnCurNaviNpc.yaml
 	thumb_local_start
-sub_80A6CFC:
+ow_spawnCurNaviNpc:
 	push {lr}
 	push {r0}
 	bl GetCurPETNavi // () -> u8
@@ -3339,7 +3339,7 @@ sub_80A6CFC:
 	.balign 4, 0
 off_80A6D34:
 	.word PETNaviToNPCSpriteTable
-	thumb_func_end sub_80A6CFC
+	thumb_func_end ow_spawnCurNaviNpc
 
 	thumb_local_start
 sub_80A6D38:
@@ -4239,7 +4239,7 @@ battleObject_updateFromCurAction_80A7354:
 	ldr r0, [r5,#0x24]
 	cmp r0, #0
 	beq loc_80A7380
-	bl sub_80A7640
+	bl req_stepBoardCutsceneAnim
 	b loc_80A738E
 loc_80A7380:
 	mov r0, #8
@@ -4673,9 +4673,9 @@ locret_80A763C:
 // symdb: State-machine driver (states 0..3 at [r5+9]) that animates a request-board overworld sprite through a two-stage cutscene (anim 0x0A then 9 with SFX 0xE1), then clears the BBS completion flag, zeroes [r5+0x24], writes 2 to [r6+9], and hands control back via sub_80A7398.
 // symdb: (r5 = object state struct ptr, r6 = config/marker struct ptr) -> r0 = destroyed; advances state
 // symdb: byte [r5+9] 0..3 and loops back to 0 when done
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7640.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_stepBoardCutsceneAnim.yaml
 	thumb_local_start
-sub_80A7640:
+req_stepBoardCutsceneAnim:
 	push {r4-r7,lr}
 	ldrb r4, [r5,#9]
 	cmp r4, #0
@@ -4738,7 +4738,7 @@ loc_80A76A0:
 locret_80A76C8:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A7640
+	thumb_func_end req_stepBoardCutsceneAnim
 
 // symdb: Counts down an object's delay timer at +0x34 and plays sound effect 0xE2 once when the timer reaches 1.
 // symdb: (r0 = unused by the callee body; r5 = object work struct, caller-set) -> r0 = sound ID passed to
@@ -6473,9 +6473,9 @@ off_80A8384:
 // symdb: Dispatches an NPC/actor handler by indexing a 3-entry thumb jump table at off_80A83A8 with a byte from [r5,#8], passing unk_2000B40 in r6 to the chosen handler.
 // symdb: (r5 = actor object, [r5+8] = handler/state index) -> r0 = handler's return value; calls table
 // symdb: entry with r6 = unk_2000B40 work area
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8394.yaml
-	thumb_func_start sub_80A8394
-sub_80A8394:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_runStateHandler.yaml
+	thumb_func_start npc_runStateHandler
+npc_runStateHandler:
 	push {lr}
 	ldr r6, off_80A83B4 // =unk_2000B40 
 	ldr r0, off_80A83A4 // =off_80A83A8 
@@ -6493,7 +6493,7 @@ off_80A83A8:
 	.word ow_cleanupNpcAfterCutscene+1
 off_80A83B4:
 	.word unk_2000B40
-	thumb_func_end sub_80A8394
+	thumb_func_end npc_runStateHandler
 
 // symdb: Initializes an overworld beast event actor: sets mode byte r5[0]=3, calls sprite_load(0x80,0x1c,0x52) and related setup, applies layer effect and priority, clears EVENT_9FF, and once (gated by EVENT_9D7) converts r6+0x16/+0x18 pixel coords to 16.16 fixed-point into r5+0xc/0x10 then clears the flag; finally sets r5[8]=4 and calls sub_80A8424.
 // symdb: (r0-r2 set before call: 0x80, 0x1c, 0x52 for sprite_load; r5 = actor struct, r6 = source data
@@ -9616,7 +9616,7 @@ sprite_dispatchAnimStateHandler:
 off_80A9A1C:
 	.word off_80A9A20
 off_80A9A20:
-	.word sub_80A9A2C+1
+	.word ow_updateObjectSprite+1
 	.word sprite_animateCheckAttributeFlag+1
 	.word sub_80A9A96+1
 	thumb_func_end sprite_dispatchAnimStateHandler
@@ -9624,9 +9624,9 @@ off_80A9A20:
 // symdb: Refreshes an overworld object's visual state: recalculates Z/layer draw data, reloads its sprite and animation, and re-applies priority, palette, shadow, and animation index before tail-calling sub_80A9A76.
 // symdb: (r5 = object pointer, implicit; no args read from r0-r3) -> r0 = undefined; sets object state
 // symdb: bytes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateObjectSprite.yaml
 	thumb_local_start
-sub_80A9A2C:
+ow_updateObjectSprite:
 	push {lr}
 	mov r0, #3
 	strb r0, [r5]
@@ -9655,7 +9655,7 @@ sub_80A9A2C:
 	strb r0, [r5,#8]
 	bl sprite_animateCheckAttributeFlag
 	pop {pc}
-	thumb_func_end sub_80A9A2C
+	thumb_func_end ow_updateObjectSprite
 
 // symdb: Advances an object's sprite animation counter, and if the current frame's attribute has bit 7 set, writes 8 to a state byte before running the sprite update.
 // symdb: (r0 = unused on entry, r5 = object struct) -> r0 = value passed to sprite_update; no flags
@@ -10575,7 +10575,7 @@ off_80AA150:
 	.word off_80AA154
 off_80AA154:
 	.word sub_80AA160+1
-	.word sub_80AA194+1
+	.word object_revealOnFlag+1
 	.word object_updateFreeOnFrameFlag+1
 	thumb_func_end sub_80AA140
 
@@ -10598,15 +10598,15 @@ sub_80AA160:
 	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80AA194
+	bl object_revealOnFlag
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA160
 
 // symdb: Object update: when its mapped event flag is set, plays a reveal sequence (animation 1, camera shake, SFX 0x17B) and sets state to 8; otherwise just runs sprite_update.
 // symdb: () -> void; uses r5 = object pointer; sets ZF from TestEventFlag internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA194.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_revealOnFlag.yaml
 	thumb_local_start
-sub_80AA194:
+object_revealOnFlag:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	bl sub_8143B5E
@@ -10627,7 +10627,7 @@ sub_80AA194:
 loc_80AA1C2:
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AA194
+	thumb_func_end object_revealOnFlag
 
 // symdb: Sprite-update routine for an overworld map object that frees the object when the current animation frame's attribute byte has bit 0x80 set, then updates the sprite.
 // symdb: (r0 = object pointer) -> void; flags set by tst/bit test only
@@ -10660,7 +10660,7 @@ off_80AA1F0:
 	.word off_80AA1F4
 off_80AA1F4:
 	.word sub_80AA204+1
-	.word sub_80AA248+1
+	.word object_updateOnTimerExpire+1
 	.word sub_80AA282+1
 	.word object_waitTimerUpdate+1
 	thumb_func_end sub_80AA1E0
@@ -10692,16 +10692,16 @@ sub_80AA204:
 	str r0, [r5,#0x24]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80AA248
+	bl object_updateOnTimerExpire
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA204
 
 // symdb: Decrements an actor's fixed-point timer field by 5.0 per frame; when it goes negative, clamps to 0, switches the sprite to animation 1, triggers a 1-magnitude/10-frame camera shake, plays sound effects 0xDA and 0xC0, writes 0x08 to the actor's state byte, and finally calls sprite_update.
 // symdb: (r5 = actor/object struct, fields at +0x08, +0x14) -> r0 = destroyed/void; no meaningful return;
 // symdb: r0-r3, r12 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA248.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateOnTimerExpire.yaml
 	thumb_local_start
-sub_80AA248:
+object_updateOnTimerExpire:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x14]
 	mov r1, #5
@@ -10726,7 +10726,7 @@ sub_80AA248:
 loc_80AA27C:
 	bl sprite_update
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AA248
+	thumb_func_end object_updateOnTimerExpire
 
 // symdb: Falling-object map object (type 0x2C): one primary RNG draw per landing, which sets a random 8-39 frame wait at object +0x24.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA282.yaml

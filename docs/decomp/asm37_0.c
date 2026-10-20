@@ -401,7 +401,7 @@ int __fastcall toolkit_getUnk2004190EntryPtr_813B9FC(int a1)
 
 
 // 0x813ba08
-int __fastcall sub_813BA08(unsigned __int16 a1, char a2, char a3, char a4)
+int __fastcall req_queueAddEntry(unsigned __int16 a1, char a2, char a3, char a4)
 {
     char v4; // r4
     int v5; // r10
@@ -508,7 +508,7 @@ int __fastcall sub_813BAEC(int a1, int a2, int a3, int a4)
     sub_813BB00(a1, a2, a3, a4);
     result = v6;
     if ( v5 )
-        result = sub_813BB68(v6, v7, v8, v9);
+        result = navicust_checkPieceOverlap(v6, v7, v8, v9);
     return result;
 }
 
@@ -563,7 +563,7 @@ LABEL_10:
 
 
 // 0x813bb68
-signed int __fastcall sub_813BB68(int a1, int a2, int a3, int a4)
+signed int __fastcall navicust_checkPieceOverlap(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // ST0C_4

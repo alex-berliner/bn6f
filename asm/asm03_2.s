@@ -4899,7 +4899,7 @@ off_8048FF4:
 	.word off_8048FF8
 off_8048FF8:
 	.word sub_804900C+1
-	.word sub_8049058+1
+	.word battle_resetVideoAndScene+1
 	.word sub_8049080+1
 	.word sub_804971C+1
 off_8049008:
@@ -4947,9 +4947,9 @@ off_8049054:
 
 // symdb: After the screen fade gate passes, wipes VRAM, zero-fills the BG tile buffer at 0x30025c0, reloads the 0x800-byte GFX block to VRAM 0x600D400 plus the 32-byte IWRAM block at 0x3001B40, reinitializes the chatbox, sets DISPCNT-equivalent to 0x40, and calls battle_resetAndInitScene to tear down and restart the battle scene.
 // symdb: () -> (); early-returns via ZF from IsScreenFadeActive, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049058.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetVideoAndScene.yaml
 	thumb_local_start
-sub_8049058:
+battle_resetVideoAndScene:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_804907A
@@ -4965,7 +4965,7 @@ locret_804907A:
 	.balign 4, 0
 off_804907C:
 	.word 0x40
-	thumb_func_end sub_8049058
+	thumb_func_end battle_resetVideoAndScene
 
 	thumb_local_start
 sub_8049080:
@@ -4981,7 +4981,7 @@ sub_8049080:
 off_8049094:
 	.word off_8049098
 off_8049098:
-	.word sub_8049104+1
+	.word initPostBattleScene+1
 	.word sub_8049158+1
 	.word rfu_idMatchAdvanceState+1
 	.word sub_804918A+1
@@ -5013,9 +5013,9 @@ off_8049098:
 // symdb: Scene init step run after returning from battle: configures LCD control, clears render counters, applies overlay palette 0x12, resets eStruct records, reinitializes chatbox/sub-objects, redraws RNG, and sets scene state byte to 4.
 // symdb: (r5 = pointer to large scene/work struct, set by caller; no args used) -> r0 clobbered by calls;
 // symdb: writes byte 4 to [r5+1]; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initPostBattleScene.yaml
 	thumb_local_start
-sub_8049104:
+initPostBattleScene:
 	push {r4-r7,lr}
 	ldr r0, dword_8049154 // =0x1f40 
 	bl SetRenderInfoLCDControl // (a_00: u16) -> ()
@@ -5047,7 +5047,7 @@ sub_8049104:
 	.balign 4, 0
 dword_8049154:
 	.word 0x1F40
-	thumb_func_end sub_8049104
+	thumb_func_end initPostBattleScene
 
 	thumb_local_start
 sub_8049158:
@@ -6779,7 +6779,7 @@ off_8049E14:
 	.word off_8049E18
 off_8049E18:
 	.word chatbox_initNewScreen_8049E28+1
-	.word sub_8049E5C+1
+	.word submenu_resetVideoDuringFade+1
 	.word sub_8049E84+1
 off_8049E24:
 	.word eS200A290
@@ -6813,9 +6813,9 @@ off_8049E58:
 
 // symdb: During an active screen transition, fully reinitializes video (VRAM clear, BG tilemap zero, base GFX reload, chatbox reset, LCD forced-blank via 0x40) and then restores the submenu snapshot to resume at main jumptable 0x28.
 // symdb: () -> (); returns early via flags if IsScreenFadeActive reports a fade in progress
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049E5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_resetVideoDuringFade.yaml
 	thumb_local_start
-sub_8049E5C:
+submenu_resetVideoDuringFade:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8049E7E
@@ -6831,7 +6831,7 @@ locret_8049E7E:
 	.balign 4, 0
 off_8049E80:
 	.word 0x40
-	thumb_func_end sub_8049E5C
+	thumb_func_end submenu_resetVideoDuringFade
 
 // symdb: Dispatches a chatbox/scene/fade sub-state step by jumping to one of nine Thumb handlers selected by the sub-state byte at `r5+1`.
 // symdb: void sub_8049E84(void);  // inputs: r2 r4 r5 r10 lr; outputs: r8 r9 r10 r11 r12; clobbers nz c v
@@ -7487,9 +7487,9 @@ off_804A338:
 off_804A33C:
 	.word sub_804A360+1
 	.word menu_processFrameInput+1
-	.word sub_804A460+1
+	.word e_giveChipStep+1
 	.word sub_804A4D4+1
-	.word sub_804A460+1
+	.word e_giveChipStep+1
 	.word sub_804A514+1
 	.word sub_804A54C+1
 	.word eS200AC80
@@ -7620,9 +7620,9 @@ loc_804A44C:
 // symdb: Per-tick step of a scenario effect: if a state byte equals 0x10, grants a chip via GiveChips and queues a return-to-overworld fade (EnterMapFadeParam1=0xC), returning 1; otherwise resets the effect state and acks the new-event flag, returning 0.
 // symdb: () -> r0 = 1 when the chip was granted and the exit fade was queued, 0 otherwise; no flag
 // symdb: guarantees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A460.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_giveChipStep.yaml
 	thumb_local_start
-sub_804A460:
+e_giveChipStep:
 	push {r4-r7,lr}
 	ldr r7, off_804A4D0 // =eS200AC80 
 	bl sub_804A8F4
@@ -7667,7 +7667,7 @@ loc_804A4CC:
 	.balign 4, 0
 off_804A4D0:
 	.word eS200AC80
-	thumb_func_end sub_804A460
+	thumb_func_end e_giveChipStep
 
 	thumb_local_start
 sub_804A4D4:

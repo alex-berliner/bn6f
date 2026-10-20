@@ -473,9 +473,9 @@ off_800BBA4:
 // symdb: Battle-object action step that dispatches the chip-use sub-effect (kind 0x4C, or 0x50 if the linked ally used the same chip) with the chip's ID and damage/state data, plays the chip-use sound, then waits for cross-net readiness and advances CurAction by 4 or 8 depending on the ally's status.
 // symdb: (r0 = unused, r5 = battle object ptr) -> r0 = 0/1; updates object PhaseInitialized, Param2,
 // symdb: CurAction, CurPhaseAndPhaseInitialized; clears/dispatches flag 0x10000 in eStruct2035280
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BBA8.yaml
-	thumb_func_start sub_800BBA8
-sub_800BBA8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipUseStep.yaml
+	thumb_func_start battle_chipUseStep
+battle_chipUseStep:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -583,7 +583,7 @@ loc_800BC7C:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_800BC86:
 	pop {pc}
-	thumb_func_end sub_800BBA8
+	thumb_func_end battle_chipUseStep
 
 	thumb_func_start object_undimScreen
 object_undimScreen:
@@ -5620,9 +5620,9 @@ IsR2BetweenR0AndR1:
 // symdb: Returns 1 if r2 is between r0 and r1 inclusive (either order), else 0.
 // symdb: (r0 = bound A, r1 = bound B, r2 = value) -> r0 = 1 if min(A,B) <= value <= max(A,B), else 0;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E708.yaml
-	thumb_func_start sub_800E708
-sub_800E708:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_isValueInRangeInclusive.yaml
+	thumb_func_start e_isValueInRangeInclusive
+e_isValueInRangeInclusive:
 	mov r3, #0
 	cmp r0, r2
 	beq loc_800E72A
@@ -5646,7 +5646,7 @@ loc_800E72A:
 loc_800E72C:
 	mov r0, r3
 	mov pc, lr
-	thumb_func_end sub_800E708
+	thumb_func_end e_isValueInRangeInclusive
 
 // symdb: Per-frame update for a battle object's status-effect timers (paralysis, blind, confuse, freeze, superarmor, immobilize, anger, invuln) and the corresponding action resets in BattleObject + CollisionData.
 // symdb: (r5 = battle object ptr, r10 = toolkit) -> r0 = 1 ; side effects: decrements several

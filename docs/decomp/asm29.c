@@ -1896,7 +1896,7 @@ signed int __fastcall battleObject_copyPositionToStruct(int a1)
 
 
 // 0x80a6cfc
-signed int __noreturn sub_80A6CFC()
+signed int __noreturn ow_spawnCurNaviNpc()
 {
     int v0; // r5
     int v1; // r0
@@ -2573,7 +2573,7 @@ void __noreturn battleObject_updateFromCurAction_80A7354()
                 {
                     v5 = *(v0 + 36);
                     if ( v5 )
-                        sub_80A7640(v5, v3, v4);
+                        req_stepBoardCutsceneAnim(v5, v3, v4);
                     else
                         *(v0 + 8) = 8;
                 }
@@ -2898,7 +2898,7 @@ signed int owMapObject_event5F1Trigger_80A75DC()
 
 
 // 0x80a7640
-int __fastcall sub_80A7640(int a1, int a2, int a3)
+int __fastcall req_stepBoardCutsceneAnim(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r6
@@ -4176,7 +4176,7 @@ unsigned int ow_swapMapEventFlags()
 
 
 // 0x80a8394
-int sub_80A8394()
+int npc_runStateHandler()
 {
     int v0; // r5
 
@@ -6396,7 +6396,7 @@ int sprite_dispatchAnimStateHandler()
 
 
 // 0x80a9a2c
-void __noreturn sub_80A9A2C()
+void __noreturn ow_updateObjectSprite()
 {
     int v0; // r5
     int v1; // r6
@@ -6990,12 +6990,12 @@ void __noreturn sub_80AA160()
     v1 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v1);
     *(v0 + 8) = 4;
-    sub_80AA194();
+    object_revealOnFlag();
 }
 
 
 // 0x80aa194
-void __noreturn sub_80AA194()
+void __noreturn object_revealOnFlag()
 {
     int v0; // r5
     int v1; // r0
@@ -7059,12 +7059,12 @@ void __noreturn sub_80AA204()
     *(v0 + 48) = v3;
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80AA248();
+    object_updateOnTimerExpire();
 }
 
 
 // 0x80aa248
-void __noreturn sub_80AA248()
+void __noreturn object_updateOnTimerExpire()
 {
     int v0; // r5
     int v1; // r0

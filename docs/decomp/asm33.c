@@ -6199,7 +6199,7 @@ int sub_8128CBC()
 
 
 // 0x8128cd8
-void __noreturn sub_8128CD8()
+void __noreturn init_eventSceneState()
 {
     int v0; // r5
     int v1; // r10
@@ -6268,7 +6268,7 @@ int sub_8128DF4()
     {
         v1 = *byte_201BDB8;
         sub_811C2A8(*byte_201BDB8, 0);
-        sub_811DC88(v1, 1);
+        battle_loadEnemySprite(v1, 1);
         *(v0 + 3) = 1;
     }
     IsPaletteFadeActive();
@@ -8371,7 +8371,7 @@ int __fastcall sub_812A3FC(int a1)
 
 
 // 0x812a424
-int __fastcall sub_812A424(int a1)
+int __fastcall screens3_initScreen(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -8625,7 +8625,7 @@ int __fastcall ow_beginScreenFadeUnlessFlagSet(int a1)
 
 
 // 0x812a694
-int __fastcall sub_812A694(int a1)
+int __fastcall initScreenSceneAndFadeIn(int a1)
 {
     int result; // r0
     char v2; // zf
@@ -9268,7 +9268,7 @@ int sub_812ACF0()
 {
     int result; // r0
 
-    sub_812AE74();
+    battle_initSceneFromFade();
     result = eStruct200BC30_getJumpOffset00();
     if ( result == 8 )
         result = sub_803C612();
@@ -9424,7 +9424,7 @@ int sub_812AE3C()
 
 
 // 0x812ae74
-int sub_812AE74()
+int battle_initSceneFromFade()
 {
     unsigned __int8 *v0; // r5
     int result; // r0

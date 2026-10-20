@@ -714,7 +714,7 @@ int __usercall custMenuUpdateWaitSelectionState_8026CCC@<R0>(void *r5@<R5>)
 
 
 // 0x8026d06
-int sub_8026D06()
+int battleObject_chipSelectOverlayTick()
 {
     int v0; // r5
     _DWORD *v1; // r10
@@ -1124,7 +1124,7 @@ int triggerScreenFadeOut()
 
 
 // 0x8027150
-int sub_8027150()
+int submenu_shiftChipSelectUp()
 {
     int v0; // r5
     int v1; // r3
@@ -1473,7 +1473,7 @@ signed int sub_8027434()
 
 
 // 0x8027458
-char *sub_8027458()
+char *customScreen_consumeSelectedChipsStep()
 {
     int v0; // r5
     int v5; // r0
@@ -3000,7 +3000,7 @@ void battleObject_runCustomScreenChipPickerEffect_8028476()
     else
     {
         if ( v3 == 6 || v3 == 7 )
-            sub_80285FE(**(v1 + 2));
+            battle_drawCustomChipPreview(**(v1 + 2));
         if ( v3 == 3 )
         {
             beastout_loadCustomScreenGfx(v1, 3, v2);
@@ -3103,7 +3103,7 @@ LABEL_15:
 
 
 // 0x80285fe
-void __fastcall __noreturn sub_80285FE(__int16 a1)
+void __fastcall __noreturn battle_drawCustomChipPreview(__int16 a1)
 {
     __int16 v1; // ST00_2
     int (*v2)[345]; // r0
@@ -10253,7 +10253,7 @@ void battle_applyHitElementEffect()
 
 
 // 0x802d738
-int sub_802D738()
+int ai_attackLandDelayedHitStep()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -10299,7 +10299,7 @@ int sub_802D738()
 
 
 // 0x802d7a0
-signed int __fastcall __noreturn sub_802D7A0(int a1)
+signed int __fastcall __noreturn battle_initNaviFromStats(int a1)
 {
     Battle *v1; // r5
     _WORD *v2; // r7
@@ -10406,7 +10406,7 @@ signed int __fastcall __noreturn sub_802D7A0(int a1)
     battle_clearCollisionData();
     v27 = object_clearFlag(GameEntryPoint);
     battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v27);
-    sub_8014216();
+    battle_beginTurnForSide();
     object_clearInvulnerableTime();
     result = 8;
     *v2 = 8;
@@ -10499,7 +10499,7 @@ int sub_802D950()
 
 
 // 0x802d9b0
-signed int __noreturn sub_802D9B0()
+signed int __noreturn battle_initNaviObjectFromStats()
 {
     Battle *v0; // r5
     _WORD *v1; // r7
@@ -10559,7 +10559,7 @@ signed int __noreturn sub_802D9B0()
     battle_clearCollisionData();
     v17 = object_clearFlag(GameEntryPoint);
     battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
-    sub_8014216();
+    battle_beginTurnForSide();
     object_clearInvulnerableTime();
     result = 8;
     *v1 = 8;
@@ -10754,7 +10754,7 @@ signed int __noreturn sub_802DB80()
     object_removePanelReserve(v0->futurePanelX, v0->futurePanelY);
     v17 = object_clearFlag(GameEntryPoint);
     battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C(v17);
-    sub_8014216();
+    battle_beginTurnForSide();
     object_clearInvulnerableTime();
     if ( battle_networkInvert(v0->Alliance) )
         sub_801DC7C(0, 0);
@@ -10906,8 +10906,8 @@ int __fastcall battleObject_runAIScript_802DE5C(int a1)
     result = sub_802E09A();
     if ( !v2 )
     {
-        sub_802E2C4(0);
-        result = sub_802E2C4(1);
+        battle_processSelectedChip(0);
+        result = battle_processSelectedChip(1);
     }
     return result;
 }
@@ -11343,7 +11343,7 @@ char (*__fastcall sub_802E284(int a1))[60]
 
 
 // 0x802e2c4
-int __fastcall sub_802E2C4(int a1)
+int __fastcall battle_processSelectedChip(int a1)
 {
     int v1; // r10
     int v2; // r6

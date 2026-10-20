@@ -4083,7 +4083,7 @@ cutscenescript_8097639:
 	thumb_local_start
 sub_8097654:
 	push {lr}
-	bl sub_8005E22
+	bl init_resetGameState
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0

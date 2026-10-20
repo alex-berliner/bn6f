@@ -1052,7 +1052,7 @@ int sub_8142990()
 
 
 // 0x814299c
-signed int __fastcall sub_814299C(unsigned int a1, unsigned int a2)
+signed int __fastcall get_isAdjacentPos(unsigned int a1, unsigned int a2)
 {
     signed int v2; // r7
     signed int v3; // r2
@@ -1167,7 +1167,7 @@ int sub_8142ADA()
         if ( *(v0 + 2) )
         {
             v3 = sub_8142990();
-            sub_814299C(v3, *(v0 + 2));
+            get_isAdjacentPos(v3, *(v0 + 2));
             if ( !v4 )
                 ++v2;
         }
@@ -1262,7 +1262,7 @@ unsigned int sub_8142B58()
         if ( *(v4 + 2) )
         {
             v6 = sub_8142990();
-            sub_814299C(v6, *(v4 + 2));
+            get_isAdjacentPos(v6, *(v4 + 2));
             if ( !v7 )
                 break;
         }
@@ -1343,7 +1343,7 @@ signed int sub_8142BFA()
         if ( *(v0 + 2) )
         {
             v3 = sub_8142990();
-            result = sub_814299C(v3, *(v0 + 2));
+            result = get_isAdjacentPos(v3, *(v0 + 2));
             if ( !v4 )
                 v0[6] = 12;
         }
@@ -1476,7 +1476,7 @@ int __fastcall ow_stampMapTileTemplate(int a1, int a2)
 
 
 // 0x8142d4c
-void sub_8142D4C()
+void ow_redrawMapTilemapsCb()
 {
     ow_redrawTilemapAtCamera();
 }

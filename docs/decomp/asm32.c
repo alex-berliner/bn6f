@@ -1017,7 +1017,7 @@ int battle_stepArcMotion()
 
 
 // 0x810e57c
-int sub_810E57C()
+int ai_dispatchAttackByType()
 {
     unsigned __int8 *v0; // r7
 
@@ -1943,7 +1943,7 @@ void battle_aiBeastOutTick_810F0D8()
             {
                 *(v3 + 16) = byte_810F1A4[sub_810F1E6()];
                 *(v3 + 44) = 0;
-                *(v3 + 40) = sub_810F1F2;
+                *(v3 + 40) = get_battleObjectExtraVar1;
                 object_setAttack0();
             }
         }
@@ -1988,7 +1988,7 @@ int sub_810F1E6()
 
 
 // 0x810f1f2
-int sub_810F1F2()
+int get_battleObjectExtraVar1()
 {
     int v0; // r5
 
@@ -3071,7 +3071,7 @@ int __fastcall battle_initCloneChild(int a1, int a2, int a3, int a4)
 
 
 // 0x81100e2
-signed int sub_81100E2()
+signed int battle_setFieldHitFlag()
 {
     int v0; // r5
     signed int result; // r0
@@ -4469,7 +4469,7 @@ void ai_sweepTargetSelect()
         if ( !v1 )
             ai_setRandomPanelTarget();
     }
-    sub_81117DA(v1, v2);
+    ai_setFacingTowardTarget(v1, v2);
     *(v0 + 101) = v4;
     *(v0 + 102) = v5;
 }
@@ -4745,7 +4745,7 @@ int __fastcall ai_pickRandomOffRowPanelFromOffsets(int a1, int a2, int a3, int a
 
 
 // 0x81117da
-void __fastcall sub_81117DA(int a1, int a2)
+void __fastcall ai_setFacingTowardTarget(int a1, int a2)
 {
     _BYTE *v2; // r5
     int v3; // r0
@@ -6538,7 +6538,7 @@ char *sub_8112D84()
 
 
 // 0x8112d9c
-int sub_8112D9C()
+int battle_dispatchAIAttackByElement()
 {
     unsigned __int8 *v0; // r7
 
@@ -7451,7 +7451,7 @@ int ai_attackHitTarget()
         sub_80C00C2(*(v0 + 104), 10);
         *(v0 + 110) = 0;
         *(v0 + 111) = 0;
-        sub_8113CC8();
+        battle_setVelocityTowardTargetPanel();
         sub_8113C84(*(v1 + 44));
         PlaySoundEffect(189, v5, v6);
         *v1 = 20;
@@ -7778,7 +7778,7 @@ void __fastcall sub_8113C84(int result)
 
 
 // 0x8113cc8
-int sub_8113CC8()
+int battle_setVelocityTowardTargetPanel()
 {
     int v0; // r5
     int v1; // r2
@@ -7837,7 +7837,7 @@ int sub_8113CC8()
 
 
 // 0x8113dd8
-int sub_8113DD8()
+int ai_dispatchScriptHandler()
 {
     unsigned __int8 *v0; // r6
 
@@ -9744,7 +9744,7 @@ int sub_811581C()
 
 
 // 0x8115876
-int sub_8115876()
+int ai_sweepAttackTick()
 {
     int v0; // r7
     int v1; // r0
@@ -10791,7 +10791,7 @@ signed int battle_updateCustGauge_8116720()
 
 
 // 0x8116758
-int sub_8116758()
+int ai_startAction30FrameWait()
 {
     int v0; // r6
     int result; // r0
@@ -11825,7 +11825,7 @@ int sprite_dispatchStateHandler()
 
 
 // 0x81172d0
-void __fastcall __noreturn sub_81172D0(int a1, void *a2)
+void __fastcall __noreturn object_initSpriteFromDescriptor(int a1, void *a2)
 {
     int v2; // r5
     int v3; // r0
@@ -16990,7 +16990,7 @@ int sub_811B338()
 
 
 // 0x811b35c
-void __noreturn sub_811B35C()
+void __noreturn object_initType23Sprite()
 {
     Battle *v0; // r5
 
@@ -17993,7 +17993,7 @@ int __fastcall sub_811BED4(int a1, int a2)
 
 
 // 0x811c01c
-void __noreturn sub_811C01C()
+void __noreturn sprite_spawnObjectType23()
 {
     int v0; // r5
 
@@ -19504,7 +19504,7 @@ signed int __noreturn sub_811D410()
 
 
 // 0x811d464
-int __noreturn sub_811D464()
+int __noreturn initSpriteVariant()
 {
     int v0; // r5
     char *v1; // r0
@@ -19767,7 +19767,7 @@ signed int gui_initIndexedSprite()
 
 
 // 0x811d954
-signed int __noreturn sub_811D954()
+signed int __noreturn initObjectGuiSpriteVariant()
 {
     int v0; // r5
     u8 v1; // r0
@@ -19823,7 +19823,7 @@ int sub_811DA00()
 
 
 // 0x811da94
-int __fastcall __noreturn sub_811DA94(int a1, int a2)
+int __fastcall __noreturn sprite_spawnEffect(int a1, int a2)
 {
     Battle *v2; // r5
     int v3; // r1
@@ -19969,7 +19969,7 @@ int sub_811DC80()
 
 
 // 0x811dc88
-int __fastcall sub_811DC88(int a1, int a2)
+int __fastcall battle_loadEnemySprite(int a1, int a2)
 {
     int result; // r0
     Battle *v3; // r1

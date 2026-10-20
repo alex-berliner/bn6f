@@ -1064,7 +1064,7 @@ locret_809D91A:
 	pop {pc}
 	.balign 4, 0
 off_809D91C:
-	.word sub_809D92C+1
+	.word ow_playerSetFacingAndState+1
 	.word ow_playerForcedWalkStep+1
 	.word ow_playerAdvanceForwardStep+1
 off_809D928:
@@ -1074,9 +1074,9 @@ off_809D928:
 // symdb: Overworld player object: remap direction counter (≤3→+4) to select from an 8-entry table of facing byte + two word fields, apply the facing byte to AnimationSelect/FacingDirection/Unk_11, copy the two words to Unk_38/Unk_3C, set ActionSubState=4, and set Unk_5C=1.
 // symdb: (r0 = scratch, r5 = oOWPlayerObject) -> r0 = 1; writes fields 0x0B, 0x0D, 0x11, 0x38, 0x3C,
 // symdb: 0x5C, 0x66 of the player object; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D92C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_playerSetFacingAndState.yaml
 	thumb_local_start
-sub_809D92C:
+ow_playerSetFacingAndState:
 	push {lr}
 	mov r1, #0x64 
 	ldrh r0, [r5,r1]
@@ -1106,7 +1106,7 @@ loc_809D938:
 	mov r1, #0x5c 
 	strb r0, [r5,r1]
 	pop {pc}
-	thumb_func_end sub_809D92C
+	thumb_func_end ow_playerSetFacingAndState
 
 // symdb: Per-frame step of a scripted forced player walk: moves the overworld player by a velocity, plays a footstep sound every 6 frames, and ends the action when the target coordinate is reached.
 // symdb: (r5 = oOWPlayerObject) -> r0 = undefined; updates player X/Y, byte 0x5C counter, byte

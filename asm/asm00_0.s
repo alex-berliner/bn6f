@@ -134,7 +134,7 @@ sound_dispatchTask_8000630:
 	pop {pc}
 	thumb_func_end sound_dispatchTask_8000630
 
-// symdb: Looks up a sound handler by sound id in a table and hands it, with its arguments, to the sound dispatcher sound_8000808 via the shared callback sub_814F9AC.
+// symdb: Looks up a sound handler by sound id in a table and hands it, with its arguments, to the sound dispatcher sound_8000808 via the shared callback battle_smashApplyState.
 // symdb: void sound_dispatchSoundRequest(u8 idx /* r0 */, u32 a1 /* r1 */, u32 a2 /* r2 */); returns
 // symdb: caller's r10 in r3, passes c/v through from sound_8000808
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchSoundRequest_8000642.yaml
@@ -148,7 +148,7 @@ sound_dispatchSoundRequest_8000642: // (idx: u8, a1: ?, a2: ?) -> ()
 
 	mov r3, r10
 	push {r3}
-	ldr r3, off_8000874 // =sub_814F9AC+1
+	ldr r3, off_8000874 // =battle_smashApplyState+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	pop {r3}
 	mov r10, r3
@@ -239,7 +239,7 @@ loc_80006B0:
 	mov r0, r7
 	mov r1, #0xff
 	mov r2, #0
-	ldr r3, off_800088C // =sub_814F9AC+1
+	ldr r3, off_800088C // =battle_smashApplyState+1
 	bl sound_8000808 // (a0: * ?, a1: ?, a2: ?, a3: * Fn) -> ()
 	mov r0, r4
 	ldr r3, off_8000890 // =sub_814E9F0+1
@@ -522,7 +522,7 @@ off_800086C:
 off_8000870:
 	.word sound_tickAllMusicPlayers_814EA58+1
 off_8000874:
-	.word sub_814F9AC+1
+	.word battle_smashApplyState+1
 off_8000878:
 	.word sub_814FA14+1
 off_800087C:
@@ -534,7 +534,7 @@ off_8000884:
 off_8000888:
 	.word sound_mplayStop+1
 off_800088C:
-	.word sub_814F9AC+1
+	.word battle_smashApplyState+1
 off_8000890:
 	.word sub_814E9F0+1
 off_8000894:

@@ -477,9 +477,9 @@ toolkit_getUnk2004190EntryPtr_813B9FC:
 // symdb: Scans oToolkit_Unk2004190 for the first of up to 49 8-byte request slots with a zero halfword flag, writes the caller's halfword tag at +0 and four byte params at +3..+6, and returns the slot index (loop counter) in r0.
 // symdb: (r0 = halfword tag, r1-r4 = byte params) -> r0 = slot index filled (nonzero/garbage on queue
 // symdb: full); flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BA08.yaml
-	thumb_func_start sub_813BA08
-sub_813BA08:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_queueAddEntry.yaml
+	thumb_func_start req_queueAddEntry
+req_queueAddEntry:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -515,7 +515,7 @@ loc_813BA42:
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BA08
+	thumb_func_end req_queueAddEntry
 
 	thumb_func_start sub_813BA48
 sub_813BA48:
@@ -623,7 +623,7 @@ sub_813BAEC:
 	bl sub_813BB00
 	pop {r0-r3}
 	bne loc_813BAFC
-	bl sub_813BB68
+	bl navicust_checkPieceOverlap
 loc_813BAFC:
 	tst r0, r0
 	pop {pc}
@@ -692,9 +692,9 @@ loc_813BB60:
 // symdb: Returns whether the placed NaviCust part, anchored with its 7x7 shape's top-left at (gridX-3, gridY-3), overlaps any occupied cell of the 7x7 customizer board; on hit returns 1 with the obstructing board cell's byte in r1, otherwise 0.
 // symdb: (r0 = passes through to ai_dispatchFromGlobalByte, r1 = unused, r2 = grid x, r3 = grid y) -> r0
 // symdb: = 1 with r1 = overlapping board cell value, else r0 = 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BB68.yaml
-	thumb_func_start sub_813BB68
-sub_813BB68:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPieceOverlap.yaml
+	thumb_func_start navicust_checkPieceOverlap
+navicust_checkPieceOverlap:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -753,7 +753,7 @@ loc_813BBCE:
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BB68
+	thumb_func_end navicust_checkPieceOverlap
 
 // symdb: Initializes a battle-related state buffer plus three 0x31-byte I/O scratch buffers pulled from the toolkit, then runs the battle sub-init sequence (layout, sprite/cell setup, etc.) on the state buffer.
 // symdb: void sub_813BBD4(u32 toolkit_ptr /* r10 */); // returns nothing; r4..r8 preserved, r9/r10
