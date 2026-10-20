@@ -15076,7 +15076,7 @@ off_8115234:
 	thumb_func_end ai_chargeAttackInitAndStep
 
 // symdb: One step of an AI-controlled enemy's lunge/dash attack - counts down a wind-up timer, then launches the object forward onto its current panel with a sound and element tag.
-// symdb: ai_attackLungeStep_811523C(r5 = battle object, r7 = oAIAttackVars state block) -> r1, r5 from ai_attackStepHighlightFrontPanel_8115492; r10
+// symdb: sub_811523C(r5 = battle object, r7 = oAIAttackVars state block) -> r1, r5 from sub_8115492; r10
 // symdb: as left by PlaySoundEffect on the lunge path
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackLungeStep_811523C.yaml
 	thumb_local_start
@@ -15398,7 +15398,7 @@ locret_8115490:
 	thumb_func_end sub_8115466
 
 // symdb: Advances an enemy AI attack-step counter every tick and, on the attacking steps (3 of every 8), highlights the panel directly in front of the battle object.
-// symdb: void ai_attackStepHighlightFrontPanel_8115492(r5 battleObject, r7 aiAttackVars) -> r1 (status from the highlight call, or 4
+// symdb: void sub_8115492(r5 battleObject, r7 aiAttackVars) -> r1 (status from the highlight call, or 4
 // symdb: on off-steps); r5 returned from highlightPanelIfSomeCondition_8109660 on the attacking path
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackStepHighlightFrontPanel_8115492.yaml
 	thumb_local_start
@@ -15424,7 +15424,7 @@ locret_81154B6:
 	thumb_func_end ai_attackStepHighlightFrontPanel_8115492
 
 // symdb: Per-frame check that cuts a battle object's charge/release animation short at a marked frame, forcing it into the follow-up animation and raising the object's guard flag.
-// symdb: void battle_checkCutShortChargeAnimSetGuard_81154B8(battleObject* r5)  /* r1 passes through to the return value; clobbers r0-r3,
+// symdb: void sub_81154B8(battleObject* r5)  /* r1 passes through to the return value; clobbers r0-r3,
 // symdb: lr, flags */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkCutShortChargeAnimSetGuard_81154B8.yaml
 	thumb_local_start
@@ -21679,7 +21679,7 @@ off_81183E8:
 	thumb_func_end battle_beastOut_runBattleStep_81183C4
 
 // symdb: Writes 1 to the flag byte pointed to by r5, acting as a tiny "set to true" callback.
-// symdb: void setFlagByteTrue_8118424(u8 *flag /* in r5 */) // returns r0 = 1, nz flags set from the mov r0,
+// symdb: void sub_8118424(u8 *flag /* in r5 */) // returns r0 = 1, nz flags set from the mov r0,
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setFlagByteTrue_8118424.yaml
 	thumb_local_start
 setFlagByteTrue_8118424:
@@ -21901,7 +21901,7 @@ loc_811858A:
 	thumb_func_end battle_beastOutTransformEndStep
 
 // symdb: Sets the byte pointed to by r5 to 1 when chatbox eFlags bit 0x80 is set, otherwise leaves it unchanged.
-// symdb: void chatbox_setByteIfFlag80_81185A8(u8* dest /* r5 */)
+// symdb: void sub_81185A8(u8* dest /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setByteIfFlag80_81185A8.yaml
 	thumb_local_start
 chatbox_setByteIfFlag80_81185A8:
@@ -30176,7 +30176,7 @@ off_811C188:
 	thumb_func_end battleObject_initBeastOutOverworldGui_811C13C
 
 // symdb: Per-frame update for the request BBS screen — refreshes the eReqBBSGui object and then runs the sprite update.
-// symdb: void reqBBS_updateFrame_811C18C(u32 r5 /* sprite update arg / GUI object list */); outputs r2, r3 (from
+// symdb: void sub_811C18C(u32 r5 /* sprite update arg / GUI object list */); outputs r2, r3 (from
 // symdb: sprite_update), r5 preserved; clobbers r0, r1, lr and nzcv
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_updateFrame_811C18C.yaml
 	thumb_local_start

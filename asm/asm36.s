@@ -11620,7 +11620,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / battle_copyWorkBlockToBattleWork_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -13873,7 +13873,7 @@ loc_8136768:
 	thumb_func_end battle_removeObjectTagFromList
 
 // symdb: Copies an 8-byte block from the work/save buffer at 0x2000090 into the battle work area at 0x2022B70.
-// symdb: void battle_copyWorkBlockToBattleWork_813676C(void)
+// symdb: void sub_813676C(void)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_copyWorkBlockToBattleWork_813676C.yaml
 	thumb_local_start
 battle_copyWorkBlockToBattleWork_813676C:
@@ -14844,7 +14844,7 @@ off_8136EC8:
 	thumb_func_end battleObject_runBeastSpFunction_8136DE0
 
 // symdb: Counts 20 frames in the object's current phase, then switches its state byte to 4 to end the phase.
-// symdb: void npc_tickTimerPhaseEnd4_8136EE4(u8 *obj /* r5 */); no return value; flags clobbered
+// symdb: void sub_8136EE4(u8 *obj /* r5 */); no return value; flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_tickTimerPhaseEnd4_8136EE4.yaml
 	thumb_local_start
 npc_tickTimerPhaseEnd4_8136EE4:
@@ -15129,7 +15129,7 @@ locret_81370C2:
 	thumb_func_end beastOutDialogDelayStep
 
 // symdb: Stores state byte 0x30 at *r5, but only while chatbox flag eFlags2009F38 bit 0x80 is still clear.
-// symdb: void chatbox_writeState30IfFlag80Clear_81370C4(u8* dest /* r5 */)  // reads no other inputs, returns nothing, no flags read
+// symdb: void sub_81370C4(u8* dest /* r5 */)  // reads no other inputs, returns nothing, no flags read
 // symdb: back
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_writeState30IfFlag80Clear_81370C4.yaml
 	thumb_local_start
@@ -15367,7 +15367,7 @@ locret_813725A:
 	thumb_func_end navicust_delayedDialogTimer
 
 // symdb: If chatbox flag 0x80 is not set, writes the state code 0x50 into a caller-supplied object byte.
-// symdb: void chatbox_setState50IfFlag80Clear_813725C(u8* obj /* r5 */); clobbers r0 and NZ flags, preserves r1; no return value
+// symdb: void sub_813725C(u8* obj /* r5 */); clobbers r0 and NZ flags, preserves r1; no return value
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setState50IfFlag80Clear_813725C.yaml
 	thumb_local_start
 chatbox_setState50IfFlag80Clear_813725C:
@@ -15505,7 +15505,7 @@ locret_8137366:
 	thumb_func_end sub_8137334
 
 // symdb: If chatbox flag 0x80 in eFlags2009F38 is clear, resets the byte counter at *r5 to 100.
-// symdb: void chatbox_resetCounterIfFlag80Clear_8137368(u8* counter /* r5 */)
+// symdb: void sub_8137368(u8* counter /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_resetCounterIfFlag80Clear_8137368.yaml
 	thumb_local_start
 chatbox_resetCounterIfFlag80Clear_8137368:
