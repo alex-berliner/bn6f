@@ -3013,7 +3013,7 @@ int __fastcall sub_8010AE4(int a1, int a2)
 
 
 // 0x8010b78
-int __fastcall battle_calcDamageTakenRamp(int a1, int a2)
+int __fastcall battle_calcCustGaugeRamp(int a1, int a2)
 {
     char *v3; // r0
     unsigned int v4; // r1
@@ -3024,7 +3024,7 @@ int __fastcall battle_calcDamageTakenRamp(int a1, int a2)
     v10 = a2;
     battle_testFlag0x40_800A8F8(a1);
     if ( _ZF )
-        v3 = battle_getTotalDamageTakenForActor_801DFE4();
+        v3 = GetCustGauge();
     else
         v3 = &loc_1500 + *(getEntryPtr_2036120_1D0_802E070(v10) + 20);
     v4 = v3;
@@ -20844,7 +20844,7 @@ signed int __fastcall SetCustGauge(signed int result)
 
 
 // 0x801dfb8
-int __fastcall battle_addHudField20(int a1)
+int __fastcall AddCustGauge(int a1)
 {
     int result; // r0
 
@@ -20857,7 +20857,7 @@ int __fastcall battle_addHudField20(int a1)
 
 
 // 0x801dfd0
-signed int __fastcall battle_hudSubtractValueAt20(signed int result)
+signed int __fastcall SubtractCustGauge(signed int result)
 {
     __int16 v1; // r1
 
@@ -20870,7 +20870,7 @@ signed int __fastcall battle_hudSubtractValueAt20(signed int result)
 
 
 // 0x801dfe4
-int battle_getTotalDamageTakenForActor_801DFE4()
+int GetCustGauge()
 {
     return word_20352A0;
 }

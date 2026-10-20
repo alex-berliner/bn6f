@@ -7021,8 +7021,8 @@ int battle_dispatchNextPhase()
             {
                 battle_isTimeStop();
                 if ( v6 )
-                    battle_addHudField20(13);
-                result = battle_shouldPlayDeathAnim_800A21C();
+                    AddCustGauge(13);
+                result = battle_isCustGaugeFull_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -7529,7 +7529,7 @@ int battle_advancePostMovePhase_80089CC()
             v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
-                result = battle_shouldPlayDeathAnim_800A21C();
+                result = battle_isCustGaugeFull_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -7986,7 +7986,7 @@ int sub_8008DDC()
             v5 = battle_checkFlowAdvanceFlags_800A046();
             if ( v5 == 255 )
             {
-                result = battle_shouldPlayDeathAnim_800A21C();
+                result = battle_isCustGaugeFull_800A21C();
                 if ( result )
                 {
                     if ( result == 1 )
@@ -10536,12 +10536,12 @@ BOOL battle_checkNaviFreeze_800A1D0()
 
 
 // 0x800a21c
-BOOL battle_shouldPlayDeathAnim_800A21C()
+BOOL battle_isCustGaugeFull_800A21C()
 {
     char v0; // zf
 
     battle_isTimeStop();
-    return v0 && !battle_isBattleOver() && battle_getTotalDamageTakenForActor_801DFE4() == 0x4000;
+    return v0 && !battle_isBattleOver() && GetCustGauge() == 0x4000;
 }
 
 

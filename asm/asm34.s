@@ -1037,7 +1037,7 @@ npc_runDialog41:
 	pop {pc}
 	thumb_func_end npc_runDialog41
 
-// symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> battle_initWaitTimer on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
+// symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> sub_803C754 on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
 // symdb: (r0 = unused/clobbered, r5 = *state struct (callee-saved)) -> r0 = return of sub_8120AB8; flags
 // symdb: from bl/cmp
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_finishCommScreenStep.yaml
