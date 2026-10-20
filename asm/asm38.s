@@ -318,6 +318,10 @@ off_3005DE8:
 	.word off_3000E70
 	thumb_func_end _SetInterruptCallback
 
+// symdb: Atomically ORs the IE bits in r0 into the Interrupt Enable register by briefly clearing the Interrupt Master Enable register, preserving r4 and returning nothing.
+// symdb: (r0 = IE bit mask to enable) -> r0 = destroyed? (not reloaded); preserves r4; no meaningful
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005DEC.yaml
 	thumb_func_start sub_3005DEC
 sub_3005DEC:
 	push {r4,lr}
@@ -2773,6 +2777,10 @@ off_3006E18:
 	.word byte_200DD20
 	thumb_func_end sub_3006DC8
 
+// symdb: Chatbox script-command handler that runs N=low_nibble_of_byte2 (default 8 if zero) iterations over one chatbox entry chosen by 1-based index in byte 3, calling chatbox_8040D5C and conditionally chatbox_addOffsetToRow per row, then returns r0+4.
+// symdb: (r0 = ptr to 4-byte chatbox script command; r10 = chatbox context) -> r0 = r0+4 (next command);
+// symdb: calls chatbox_8040D5C and chatbox_addOffsetToRow.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006E1C.yaml
 	thumb_local_start
 sub_3006E1C:
 	push {r3,r7,lr}

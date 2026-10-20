@@ -7520,6 +7520,10 @@ off_800691C:
 	.word byte_20081B0
 	thumb_func_end sub_8006910
 
+// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
+// symdb: (r0 = pointer to an 11-field task descriptor) -> r0 = result of req_enqueueTask; r4-r7 clobbered
+// symdb: (saved/restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006920.yaml
 	thumb_func_start sub_8006920
 sub_8006920:
 	push {r4-r7,lr}
@@ -11920,6 +11924,10 @@ battle_forEachAliveActor:
 	pop {r5,pc}
 	thumb_func_end battle_forEachAliveActor
 
+// symdb: Syncs the halfword at +0x24 of two object structs to the smaller of the two values; if r2<2 or either pointer is null, it instead writes 0 to both fields, dispatches event 0x820080, and clears bits 0x820080 in dword_20352C0.
+// symdb: (r0 = struct ptr A, r1 = struct ptr B, r2 = mode) -> r0 = none; writes halfword [x+0x24] on both
+// symdb: structs, may call dispatch and clear flag bits; returns without writing if r0 is null
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008622.yaml
 	thumb_local_start
 sub_8008622:
 	push {lr}

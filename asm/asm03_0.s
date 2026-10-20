@@ -49,6 +49,11 @@ loc_80264A4:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_8026450
 
+// symdb: Scans a signed (dx,dy) offset table at r2, mirroring by the object's front-direction multiplier, and returns sub_8026510's first match passing object_checkEnemyOrAllyPanel and panel bounds (col 0-6, row vs incoming r6); r0=0 on terminator 0x7F or no match.
+// symdb: (r0 = base column, r1 = base row, r2 = int8 (dx,dy) offset table terminated by dx=0x7F; uses
+// symdb: global current battle object, incoming r6/r7 forwarded) -> r0 = sub_8026510 result for first
+// symdb: matching panel, or 0 if none; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80264A8.yaml
 	thumb_local_start
 sub_80264A8:
 	push {r4,r6,r7,lr}
@@ -429,6 +434,10 @@ sub_802670E:
 	pop {pc}
 	thumb_func_end sub_802670E
 
+// symdb: Loads the facing-offset table at byte_80267CC into r0 and tail-calls battle_checkFacingOffsets, running the tile-offset check against that hardcoded table.
+// symdb: (r1 = object) -> r0 = nonzero as soon as a checker on a mirrored relative tile succeeds; flags
+// symdb: from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802671C.yaml
 	thumb_local_start
 sub_802671C:
 	push {lr}
@@ -2496,6 +2505,10 @@ sub_8027574:
 	pop {pc}
 	thumb_func_end sub_8027574
 
+// symdb: Per-frame step (r5 = state struct): after 16 frames elapses on the [r5+0x40] counter, zeros the counter, kicks off SetScreenFade(4, 0x20) and sets the halfword state field [r5+2] to 8.
+// symdb: (r5 = state/task struct) -> void; updates [r5+0x40] counter, on expiry sets halfword [r5+2] = 8
+// symdb: and calls SetScreenFade(4, 0x20)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027580.yaml
 	thumb_local_start
 sub_8027580:
 	push {lr}
@@ -2626,6 +2639,9 @@ locret_8027656:
 	pop {pc}
 	thumb_func_end t4_waitThenFadeScreen
 
+// symdb: Increments the 32-bit counter at [r5+0x40]; once it reaches 0x32 (50) and no screen fade is active, writes 0xC into the halfword at [r5+2].
+// symdb: (r5 = object/state struct) -> r0 = undefined; updates [r5+0x40] counter and [r5+2] state field
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027658.yaml
 	thumb_local_start
 sub_8027658:
 	push {r4,r6,lr}
@@ -4443,6 +4459,10 @@ sub_80282C2:
 	pop {pc}
 	thumb_func_end sub_80282C2
 
+// symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at dword_86E441C, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
+// symdb: (r0 = dst VRAM ptr, r1 = dst VRAM ptr, r4 = object struct with byte index at +7) -> r1 advanced
+// symdb: by 0x180; r0 = src ptr used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80282D2.yaml
 	thumb_local_start
 sub_80282D2:
 	push {lr}
@@ -11612,6 +11632,10 @@ sub_802B6EC:
 	b loc_802B6F6
 	thumb_func_end sub_802B6EC
 
+// symdb: Zero-fills 0x20 bytes at word_2036660, stores a header halfword, two bytes, and a 0xFFFF-terminated halfword list (with count: 0xFF = empty) into the record at base+0x14, for the custom-screen chip-confirm command queue.
+// symdb: (r0 = header halfword, r1 = byte for +6, r2 = byte for +7, r3 = ptr to 0xFFFF-terminated
+// symdb: halfword array) -> r0 clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B6F2.yaml
 	thumb_local_start
 sub_802B6F2:
 	push {r4-r7,lr}
@@ -12059,6 +12083,10 @@ locret_802B9FC:
 	pop {r0,r1,pc}
 	thumb_func_end sub_802B9E4
 
+// symdb: Queues an 8-byte transfer from a ROM table entry (indexed by r0) to the fixed buffer unk_3001AA0 via QueueEightWordAlignedGFXTransfer.
+// symdb: (r0 = entry index into table byte_802BA48) -> r0 = clobbered? (r0-r3,lr saved/restore pattern
+// symdb: suggests void); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B9FE.yaml
 	thumb_local_start
 sub_802B9FE:
 	push {r1-r3,lr}
@@ -12106,6 +12134,10 @@ locret_802BA32:
 	pop {r6,pc}
 	thumb_func_end bg_copyTilesIfRequested
 
+// symdb: Chip-preview UI task hook: if byte 7 of the task struct at word_2036660 is non-zero, calls the IWRAM sound routine at 0x03005EBA with no arguments; otherwise returns immediately.
+// symdb: () -> r0 = result of the 0x3005EBA call; r6 clobbered; returns immediately if [word_2036660+7]
+// symdb: == 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA34.yaml
 	thumb_local_start
 sub_802BA34:
 	push {r6,lr}
@@ -19516,6 +19548,10 @@ sub_802EFF8:
 	pop {pc}
 	thumb_func_end sub_802EFF8
 
+// symdb: Given two battle objects and a third object's alliance as orientation reference, returns whichever of the two inputs sits further 'in front' relative to that side (signed PanelX distance using object_getEnemyDirection's ±1 step, then |PanelY| distance, then raw PanelY).
+// symdb: (r0 = BattleObject A, r1 = BattleObject B; r5 = BattleObject whose alliance defines the
+// symdb: reference side, not saved) -> r0 = pointer to the more 'in front' object; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F006.yaml
 	thumb_local_start
 sub_802F006:
 	push {r4-r7,lr}

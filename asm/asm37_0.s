@@ -593,6 +593,10 @@ sub_813BAA8:
 	pop {pc}
 	thumb_func_end sub_813BAA8
 
+// symdb: t4 scene step that copies two fixed ROM blobs (0x100 and 0x620 bytes) into toolkit-held buffers at offsets Unk200414c_Ptr and Unk2004190_Ptr.
+// symdb: () -> r0,r1 clobbered; copies data into [*oToolkit_Unk200414c_Ptr + 0x100] and
+// symdb: [*oToolkit_Unk2004190_Ptr + 0x620]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BAC4.yaml
 	thumb_func_start sub_813BAC4
 sub_813BAC4:
 	push {lr}
@@ -4859,6 +4863,10 @@ off_813DB1C:
 
 	push {lr}
 	pop {pc}
+// symdb: Picks between the two eLinkState tag-block pointers (eLinkState+0x38/+0x3C) by the link mode selector stored in eStruct200F360, returning the one whose 'BRE5'-magic block matches byte_813DBAC[r0*4] (high-byte-only if r1!=0), or 0xFF if neither matches.
+// symdb: (r0 = slot index 0..3, r1 = compare-high-byte-only flag) -> r0 = pointer to matching tag block
+// symdb: (eLinkState+0x38/+0x3C target) or 0xFF if none; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DB24.yaml
 	thumb_func_start sub_813DB24
 sub_813DB24:
 	push {r4-r7,lr}

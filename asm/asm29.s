@@ -12298,6 +12298,10 @@ off_80AAC88:
 	.word 0x201
 	thumb_func_end sub_80AABA4
 
+// symdb: Picks a random chip-drop for the battle-result record: returns 0xFFFF if an RNG byte <8 and sub_80AAE36 returns 0; otherwise builds a 6-entry halfword pool, scans circularly from sub_80AAB68's starting index, picks via SWI 6 Div on a fresh RNG, and returns sub_80AAD04's pair packed as (r1<<9)|r0 (or 0 if the pool is empty).
+// symdb: (r0 = battle-result record ptr) -> r0 = packed drop: 0xFFFF = none, 0 = none found, else low
+// symdb: field | (r1<<9); clobbers r4,r6,r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAC8C.yaml
 	thumb_func_start sub_80AAC8C
 sub_80AAC8C:
 	push {r4,r6,r7,lr}
@@ -12361,6 +12365,10 @@ dword_80AAD00:
 	.word 0xFFFF
 	thumb_func_end sub_80AAC8C
 
+// symdb: Scans chip IDs 1..0x13F for the r1-th whose chip record byte 5 matches r0, then picks a random nonzero entry from that chip's 4-byte bonus table at dword_2033000 and returns the chip ID plus the chipRecord[chosen] value.
+// symdb: (r0 = kind byte matched against chipRecord[5], r1 = 0-based match index) -> r0 = chip ID, r1 =
+// symdb: chipRecord[random table byte]; clobbers r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAD04.yaml
 	thumb_local_start
 sub_80AAD04:
 	push {r4-r7,lr}

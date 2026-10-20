@@ -4041,6 +4041,10 @@ off_8145DD4:
 	.word eStruct200FE00
 	thumb_func_end sub_8145D54
 
+// symdb: Per-tick maintenance of the RFU parent/child link: detects new child joins (0x10), times out and drops stale slots (0x11), force-disconnects when last child leaves (0x12), or resets state when no children remain (0x14); only runs when link-state byte is 5..8 and advances the +0x7 sub-state to drive the connection FSM.
+// symdb: () -> void; no return value, operates on eStruct200FE00 link state and fires the registered
+// symdb: connection callback with reason codes 0x10/0x11/0x12/0x14
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145DD8.yaml
 	thumb_local_start
 sub_8145DD8:
 	push {r4-r7,lr}
@@ -4764,6 +4768,9 @@ dword_81462D4:
 	.word 0x8024
 	thumb_func_end rfu_disconnectSlots
 
+// symdb: Wireless link maintenance: toggles per-peer send-target bits and stops receiving from peers whose local counters exceed the global timeout counter in eStruct200FE00
+// symdb: () -> r0 = destroyed; touches rfu peer table dword_2010CB0[4] and eStruct200FE00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81462D8.yaml
 	thumb_local_start
 sub_81462D8:
 	push {r4-r7,lr}
@@ -6992,6 +6999,10 @@ loc_8147222:
 	bx r0
 	thumb_func_end sub_81471D8
 
+// symdb: Handles RFU link close: on status 0x26 with matching +0x2C/+0x1A checksum, clears the slot, writes state 3, and dispatches a table entry callback; otherwise (mismatch or status 0x27) clears the slot and writes state 4.
+// symdb: (r0 = *u8 out state, r1 = connection struct) -> r0 = clobbered; writes 3 (clean close) or 4
+// symdb: (failed/error) to *r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147228.yaml
 	thumb_local_start
 sub_8147228:
 	push {r4-r6,lr}

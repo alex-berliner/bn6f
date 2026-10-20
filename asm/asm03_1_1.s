@@ -820,6 +820,10 @@ off_8038EA8:
 	.word byte_8038A3C
 	thumb_func_end sub_8038E78
 
+// symdb: Per-frame tick that, once a short delay (6 frames) expires, re-uploads the comm-error text glyphs into VRAM and reloads two GFXAnim scripts before resuming the parent state.
+// symdb: (r0 implicit in r5 = error-object/state struct) -> r0 = result of sub_8039198; updates [r5+2]
+// symdb: state byte and [r5+4] frame counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038EAC.yaml
 	thumb_local_start
 sub_8038EAC:
 	push {lr}
@@ -2051,8 +2055,8 @@ off_8039AB4:
 	.word byte_8039390
 	thumb_func_end battle_initScene
 
-// symdb: State-machine step that initializes the rfu link session: on success, triggers a fade and script 0x13 and sets [r5+1]=0x10; on failure, sets [r5+1]=8; then calls battle_stepFrame.
-// symdb: (no args; r5 = per-menu state struct set by caller) -> r0 = return of battle_stepFrame; writes state
+// symdb: State-machine step that initializes the rfu link session: on success, triggers a fade and script 0x13 and sets [r5+1]=0x10; on failure, sets [r5+1]=8; then calls sub_803A1B0.
+// symdb: (no args; r5 = per-menu state struct set by caller) -> r0 = return of sub_803A1B0; writes state
 // symdb: byte at [r5+1] (0x10 or 8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_linkSessionStep.yaml
 	thumb_local_start
@@ -2193,7 +2197,7 @@ loc_8039BBA:
 	thumb_func_end sub_8039B98
 
 // symdb: Per-frame object state step: skip if not ready, consume a use counter; if B pressed play effect 0x68 and store state 0x68; else if chatbox flag bit 0x8 is on and chatbox is active, close it, set a 0x1E timer, wait on sub_813D638, then run network text phase 0xB and store state 0x20.
-// symdb: (r0 = unused, r5 = object ptr) -> r0 = result of battle_stepFrame; sets [r5+1] to 0x68 or 0x20; flags
+// symdb: (r0 = unused, r5 = object ptr) -> r0 = result of sub_803A1B0; sets [r5+1] to 0x68 or 0x20; flags
 // symdb: from sub_803A558/sub_803BB80/sub_813D638 tests
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_chatboxStep.yaml
 	thumb_local_start
@@ -2252,6 +2256,10 @@ loc_8039C2C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039C14
 
+// symdb: Object advance-phase routine: passes a sequence of checks, then sets object state to 0x1C, stores 0x1E at object+0x28, runs net text script 0xE; otherwise dispatches via timer-based table sub_803A5F4(0x66) before tail-calling sub_803A104.
+// symdb: (r5 = object pointer, r0 = check selector on entry) -> r0 = 0 or 1; sets object state byte
+// symdb: [r5+1] and field [r5+0x28]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039C32.yaml
 	thumb_local_start
 sub_8039C32:
 	push {r4-r7,lr}
@@ -3173,6 +3181,9 @@ off_803A330:
 	.word palette_3001960
 	thumb_func_end sub_803A2CC
 
+// symdb: Step that each frame shifts two toolkit counters by -0x30 and two by +0x30; once the decremented counter at +6 hits 0x71 it loads BG-tile-table entry 6, fills BG layers 2 and 3 with a 30x20 tile wipe, runs sub_803A422, and stores state bytes 0/0xF/0/8 before returning 0; otherwise it ticks entities via chatbox_waitStepUpdateEntities and returns 0.
+// symdb: () -> r0 = 0 (step not finished); no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A334.yaml
 	thumb_local_start
 sub_803A334:
 	push {r4-r7,lr}
@@ -3226,6 +3237,9 @@ loc_803A398:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A334
 
+// symdb: Per-frame battle-object step that decrements a counter at [r5+0x1a]; when it reaches 0, loads a GFX anim script (byte_80392D8), plays sound 0xB7, and writes state 0xC to [r5+2], then calls sub_803A422 and returns 0.
+// symdb: (r5 = object struct, r0-r4 unused on entry) -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A39C.yaml
 	thumb_local_start
 sub_803A39C:
 	push {r4-r7,lr}
@@ -5676,6 +5690,10 @@ byte_803B6AC:
 	.byte 0x2, 0x5, 0x3, 0x1, 0x17, 0xB, 0x3, 0x50, 0x2, 0x5, 0x3, 0x1, 0x17, 0xD, 0x3
 	thumb_func_end sub_803B674
 
+// symdb: Queues one OAM sprite per character of a NUL-terminated string, mapping each byte through byte_80391A8 to a glyph index, advancing x via chatbox_8045ED0, and submitting each sprite to sprite_queueOamEntry with tile-pointer = 0x40001000 + idx*4 and high attr bits (arg2<<12)|0x420.
+// symdb: (r0 = packed pos/attr A, r1 = packed pos/attr B, r2 = extra attr bits (<<12 | 0x420), r3 = null-
+// symdb: terminated string ptr) -> r0 = void; loops until NUL or count exhausted
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B814.yaml
 	thumb_local_start
 sub_803B814:
 	push {r4-r7,lr}
@@ -10081,6 +10099,10 @@ off_803DDA0:
 	.word eLinkState // eLinkState
 	thumb_func_end init_linkState
 
+// symdb: Initializes four fields of eLinkState (byte0=0x10, byte1=0x0C, byte8=0, halfword+0xC=0x10) with constants; called from battle and from sub_812AC1A.
+// symdb: () -> void; writes eLinkState byte0=0x10, byte1=0x0C, halfword at +0xC=0x10, byte8=0; no return
+// symdb: value, flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DDA4.yaml
 	thumb_func_start sub_803DDA4
 sub_803DDA4:
 	push {r7,lr}
@@ -12743,6 +12765,10 @@ dword_803EE94:
 	.word 0x1000
 	thumb_func_end sub_803ED4C
 
+// symdb: Each frame, scans four 2-byte slots of unk_2009480 to find two active link players, copies their columns into eLinkState.unk_88 and unk_88C for unk_70 halfwords, dispatches sub_803E828/850 on 0xFC control markers, and writes the held L/R joypad byte plus an incremented counter into eLinkState.unk_84.
+// symdb: () -> void; writes eCamera.unk_88/8C row buffers, eCamera.unk_84 entry fields, eStruct200BC30+7
+// symdb: counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EE98.yaml
 	thumb_local_start
 sub_803EE98:
 	push {r4-r7,lr}

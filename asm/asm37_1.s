@@ -2078,6 +2078,10 @@ off_8142B54:
 	.word eOverworldMapObjects
 	thumb_func_end battleObject_getPanelChipByIndexAtPlayerPos_8142B28
 
+// symdb: Walks the 20-entry, 8-byte-stride table at byte_2006670 twice: first matching entries whose ID equals the current scenario effect's 0x18 field, then matching via sub_8142990/sub_814299C validation, returning the matching entry's 8-way direction from getSoulWeaponCursorDir8, or 0xFF if none.
+// symdb: () -> r0 = direction 0-7 of the matching soul-weapon cursor, or 0xFF if no entry matches; calls
+// symdb: only, no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B58.yaml
 	thumb_func_start sub_8142B58
 sub_8142B58:
 	push {r4-r7,lr}
@@ -2887,6 +2891,10 @@ dword_8143194:
 	.word 0x16F1
 	thumb_func_end sub_814312C
 
+// symdb: Counts the number of set event flags in a fixed group (size from sub_81433CA, base id from sub_81430B6) and returns the count in r0 with Z set when every flag in the group is set, used by ow_crowLessonInteraction to gate cutscene stages.
+// symdb: () -> r0 = number of set flags; flags Z set iff r0 == total flags in group (r1 = total), N/C per
+// symdb: cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143198.yaml
 	thumb_func_start sub_8143198
 sub_8143198:
 	push {r4-r7,lr}
@@ -2912,6 +2920,9 @@ loc_81431B4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143198
 
+// symdb: Resets the Cybercrow lesson state: runs sub_814339C, zero-fills the 0xA0-byte crow-records array at byte_2000D20, and calls sub_81430B6(0) twice with each result passed to ClearEventFlagRange(8).
+// symdb: () -> void; clobbers r0-r2, calls sub_814339C, ZeroFillByWord, sub_81430B6, ClearEventFlagRange
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81431C6.yaml
 	thumb_local_start
 sub_81431C6:
 	push {r4-r7,lr}
@@ -2950,6 +2961,9 @@ ow_cybercrowGetCrowRecord:
 	pop {r4-r7,pc}
 	thumb_func_end ow_cybercrowGetCrowRecord
 
+// symdb: Calls sub_81431F8 to obtain a struct pointer, then writes a random halfword in range 30–93 ([GetRNG & 0x3F] + 0x1E) at offset +6 of that struct, used as a frame-delay timer.
+// symdb: () -> r0 = undefined; stores halfword timer into [crowState+6]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143204.yaml
 	thumb_func_start sub_8143204
 sub_8143204:
 	push {r4-r7,lr}
@@ -2993,6 +3007,10 @@ dword_8143244:
 	.word 0x1E
 	thumb_func_end sub_8143220
 
+// symdb: Per-crow proximity check for the Cybercrow lesson: when an active crow's position is within the collision threshold of another active crow (delta hypot < 6<<16), flag that crow into state 2 via sub_81432FA.
+// symdb: () -> void; for each active crow record whose position comes within 6.0 of another active crow,
+// symdb: invokes sub_81432FA(crowIndex, 2) and moves on
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143248.yaml
 	thumb_local_start
 sub_8143248:
 	push {r4-r7,lr}
@@ -3037,6 +3055,10 @@ loc_814328A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8143248
 
+// symdb: Per-frame loop over 8 Cybercrow lesson records at byte_2000D20: for each active slot, marks +1 = 8 when the player is within 0xFA<<16 hypot distance of the crow's position, then calls sub_81432FA(i, 1) for every active slot.
+// symdb: (void) -> void; touches byte_2000D20 slots (+0 state read, +1 written 8 when player near), calls
+// symdb: sub_81432FA(i, 1) per active slot
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143294.yaml
 	thumb_func_start sub_8143294
 sub_8143294:
 	push {r4-r7,lr}

@@ -5082,6 +5082,10 @@ sprite_gfxAnimState_GotoNext_8002310: // (self: * GFXAnimState $r7, params: * GF
 	pop {pc}
 	thumb_func_end sprite_gfxAnimState_GotoNext_8002310
 
+// symdb: If the sound ID at offset 0 of the GFXAnimDataNext pointer in r0 is non-negative, calls PlaySoundEffect with that ID; otherwise returns without playing anything.
+// symdb: (r0 = * GFXAnimDataNext, frame data whose offset-0 field oGFXAnimData_ParamNext holds the sound
+// symdb: ID) -> r0 clobbered; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800232A.yaml
 	thumb_local_start
 sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}

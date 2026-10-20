@@ -8457,6 +8457,10 @@ ai_attackGetAlliancePanelRegion:
 	pop {r7,pc}
 	thumb_func_end ai_attackGetAlliancePanelRegion
 
+// symdb: AI state step that looks up alliance-dependent panel args (alliance*5+1, column 2) from byte_8111D80 via GetAllianceDependentPanelParamArgs and then calls object_getPanelRegion with region id 0x23.
+// symdb: (r5 = battle object) -> r0 = result of object_getPanelRegion; reads oBattleObject_Alliance from
+// symdb: r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8111D46.yaml
 	thumb_local_start
 sub_8111D46:
 	push {r7,lr}
@@ -12878,9 +12882,9 @@ battle_pickAllianceParamPanel:
 	pop {r4-r7,pc}
 	thumb_func_end battle_pickAllianceParamPanel
 
-// symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to ai_pickRandomPanel to run.
+// symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to sub_8114088 to run.
 // symdb: (r4 = index into PanelOffsetListsPointerTable, r6 = parameter passed through) -> tail-calls
-// symdb: ai_pickRandomPanel(r4 = list pointer, r6); no direct return value used
+// symdb: sub_8114088(r4 = list pointer, r6); no direct return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_startPanelOffsetList.yaml
 	thumb_local_start
 battleObject_startPanelOffsetList:
@@ -25913,6 +25917,10 @@ dword_811A3A0:
 	.word 0x10200
 	thumb_func_end sprite_cyclePaletteAnim
 
+// symdb: Tail-call wrapper that rebuilds the given sprite as unscalable via sprite_clearScaleCounterAndMakeUnscalable_804668A, forwarding r0 unchanged.
+// symdb: (r0 = sprite object pointer) -> r0 = whatever sprite_clearScaleCounterAndMakeUnscalable_804668A
+// symdb: returns; flags set by callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A3A4.yaml
 	thumb_local_start
 sub_811A3A4:
 	push {lr}
@@ -26740,6 +26748,10 @@ loc_811A90E:
 	.balign 4, 0x00
 	thumb_func_end object_setPositionIfActive
 
+// symdb: Loads a word (0x20000000 or 0x40000000) from byte_811A938 using r0<<2 and stores it via sprite_setUnk0x2c on the entity at eStructArr2008450 entry r1. Then returns the entity's first (status) byte with Z set iff bit 0x8 is clear.
+// symdb: (r0 = selector indexed into byte_811A938 (word-sized), r1 = index into eStructArr2008450) -> r0
+// symdb: = entry status byte; Z set iff bit 0x8 of that byte is clear
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A914.yaml
 	thumb_func_start sub_811A914
 sub_811A914:
 	push {r4-r7,lr}
@@ -27077,6 +27089,10 @@ off_811ABC4:
 	.word unk_2024E8C
 	thumb_func_end object_initSpriteResource8
 
+// symdb: Step handler for objects initialized with sprite resource 8: each frame compares the halfword timer at object+0xC against 0x80, writing 1 or 0x23 to object byte 0; in state 1 only sprite_update runs, while state 0 dispatches via a two-entry table indexed by object byte 9 to sub_811ABF8 or sub_811ACA8.
+// symdb: (r0 = object ptr (also r5 = object ptr, callee-saved convention)) -> r0 clobbered; sets object
+// symdb: byte 0 to state (0 or 1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811ABC8.yaml
 	thumb_local_start
 sub_811ABC8:
 	push {lr}
@@ -27105,6 +27121,10 @@ off_811ABF0:
 	.word sub_811ACA8+1
 	thumb_func_end sub_811ABC8
 
+// symdb: Sets state 4 on a folder-name display object, resolves a text script (with a 0x22 clamp on slot 0 via battle_getPlayerCurState), and tail-calls sub_3006B94 to draw into one of three text windows indexed by r5+3.
+// symdb: (r0-r3 = object in r5 by caller convention; r5 = object: +3 window idx, +9 state, +0xc
+// symdb: selection) -> r0 = sub_3006B94 result; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811ABF8.yaml
 	thumb_local_start
 sub_811ABF8:
 	push {r4-r7,lr}
@@ -27187,6 +27207,9 @@ byte_811AC9C:
 	.byte 0x98, 0x98, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0xE6, 0x0, 0x0, 0x0
 	thumb_func_end sub_811ABF8
 
+// symdb: Queues 8 OAM entries in a row starting at (x-32, y-8), advancing x by 0x80000 (8 px) and the tile index by 2 each iteration; the starting tile is selected from a 3-entry table at byte_811ACF0 indexed by byte [r5+3].
+// symdb: (r5 = object/sprite struct ptr, carried in) -> void; r0-r3,r4-r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811ACA8.yaml
 	thumb_local_start
 sub_811ACA8:
 	push {r4-r7,lr}
@@ -27344,6 +27367,10 @@ byte_811ADB8:
 	.byte 0x7E, 0x0, 0x24, 0x0, 0x7E, 0x0, 0x48, 0x0
 	thumb_func_end gui_initSpriteWithPosition
 
+// symdb: Per-frame updater for GUI sprite 0x68: dispatches a 3-way state handler via off_811ADF4, calls sprite_update on its sprite struct, and if flag bit 1 is set runs a fixed five-subroutine effect sequence.
+// symdb: (r5 = gui sprite object pointer; [r5+9] = state selector, [r5+0] = flags) -> r0 destroyed; no
+// symdb: meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811ADC0.yaml
 	thumb_local_start
 sub_811ADC0:
 	push {lr}
@@ -27379,6 +27406,10 @@ sub_811AE00:
 	pop {pc}
 	thumb_func_end sub_811AE00
 
+// symdb: Per-frame step that subtracts 0x30 from object+0x10 (scale), clamps to a minimum of 0x40, and calls sprite_setScaleParameters(0,0x40). When the scale reaches exactly 0x40, it calls sprite_makeUnscalable and zeroes object+0x09, terminating the shrink.
+// symdb: (r0 unused entry, r5 = object struct) -> void; touches object+0x10 (scale) and object+0x09
+// symdb: (state flag)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811AE04.yaml
 	thumb_local_start
 sub_811AE04:
 	push {lr}
@@ -28382,6 +28413,10 @@ jt_811B58C:
 	.word sub_811B5C0+1
 	thumb_func_end sprite_updateStateDispatch
 
+// symdb: Battle-object state handler: on first call delays 4 frames (stores 4 into [r5+0xa]); afterwards runs sub_811B6E0, sub_811B71C, sub_811B7D4, battle_setupObjectSpriteFromEntry, sprite_applyStateSpriteTransform, then advances [r5+0x9] to 4 and clears [r5+0xa].
+// symdb: (r5 = battle object/work struct pointer, set by caller) -> r0 = 0 clobbered; writes [r5+0x9] = 4
+// symdb: (next state) and [r5+0xa] = 0 (step reset) on completion
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B594.yaml
 	thumb_local_start
 sub_811B594:
 	push {lr}
@@ -28799,6 +28834,10 @@ byte_811B8A4:
 	.byte 0x8, 0x1, 0x6
 	thumb_func_end battle_setupObjectSpriteFromEntry
 
+// symdb: Each frame, while a shared counter (word_20377A0) plus 2 is below the per-object threshold byte at r5+0x4, applies the constant shader 0xA108 via sprite_setColorShader; once it reaches the threshold, applies one of eight halfword shaders from byte_811B904 indexed by (curFrame & 0xF)>>1, alternating a flash sequence.
+// symdb: (r0 = object/sprite handle passed to sprite_zeroColorShader; r5 = state struct, byte +0x4 =
+// symdb: threshold) -> r0 = result of sprite_setColorShader; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B8C8.yaml
 	thumb_local_start
 sub_811B8C8:
 	push {r4-r7,lr}
@@ -29140,6 +29179,10 @@ locret_811BB2E:
 	pop {pc}
 	thumb_func_end battle_getAdjustedCountFromObject
 
+// symdb: Looks up a battle-object descriptor via an index derived from r6+0x3c and r6+0x3e into word_2023FA0 (with a 0x90 bias), decrements the descriptor's byte 3 by 1, and stores the result as the current sprite's palette via sprite_setPalette.
+// symdb: (none; object struct in r6) -> r0 = new palette index-1 passed to sprite_setPalette; flags from
+// symdb: pops/subs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BB30.yaml
 	thumb_local_start
 sub_811BB30:
 	push {lr}
@@ -31536,6 +31579,10 @@ byte_811CFE4:
 	.byte 0x1E, 0x0, 0x0, 0x0, 0x40, 0x0, 0x0, 0x0
 	thumb_func_end sub_811CFD0
 
+// symdb: State-machine step (r5 = object struct): decrements byte at +0xC; if still >0 stores it back and returns, otherwise clears the sprite's color shader (0xFFFF), sets halfword +0xE = 0x1F, transitions state byte +0 to 0x23, reloads timer +0xC = 3, sets +9 = 8, and plays sound 0x194.
+// symdb: (r5 = object/work struct pointer, no args in r0-r3) -> r0 = sound id 0x194 passed to
+// symdb: PlaySoundEffect; no meaningful return, flags from the bne on the decremented counter
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CFEC.yaml
 	thumb_local_start
 sub_811CFEC:
 	push {lr}
@@ -31675,6 +31722,10 @@ off_811D0C0:
 	.word sub_811D120+1
 	thumb_func_end sub_811D0AC
 
+// symdb: Centers the r5 object at (0x80,0x80) via sprite_setCoordinates, sets a 16-frame timer at [r5+0xC] and state byte 4 at [r5+9], then plays sound effect SOUND_LOG_OUT_76.
+// symdb: (r0/r1 = hardcoded 0x80 coords passed to sprite_setCoordinates; r5 = object/sprite struct) -> r0
+// symdb: = sound effect ID after wrapper call; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D0CC.yaml
 	thumb_local_start
 sub_811D0CC:
 	push {lr}
@@ -34017,7 +34068,7 @@ off_811E42C:
 	thumb_func_end object_dispatchModeHandler
 
 // symdb: Initializer for a sprite-based object: assigns sprite 0xA1, animation 1, no shadow, palette 0, priority 2, position halfword 0x280, and sets the object's kind/state bytes.
-// symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = object_updateSpriteObjA1's return; no
+// symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = sub_811E490's return; no
 // symdb: meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSpriteObjA1.yaml
 	thumb_local_start
@@ -34310,7 +34361,7 @@ off_811E630:
 	thumb_func_end sub_811E61C
 
 // symdb: Initializer for a fixed on-screen object of type 0x23: builds its GUI sprite (id 0x39) with animation 0, no shadow, palette 0, priority 0, and places it at (220, 44).
-// symdb: (r0/r1 = caller context, r5 = object struct pointer) -> r0 = result of object_initSpriteType23Tail; no
+// symdb: (r0/r1 = caller context, r5 = object struct pointer) -> r0 = result of sub_811E68C; no
 // symdb: meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSpriteType23.yaml
 	thumb_local_start
@@ -34458,6 +34509,9 @@ sub_811E73C:
 	pop {pc}
 	thumb_func_end sub_811E73C
 
+// symdb: Builds a 13-tile (0x340-byte) 4bpp horizontal gauge strip with palette indices 10-14 into unk_2027000, masking unused tiles per sub_8144010's 0-8 fill level, then DMA-queues it to VRAM 0x6014180.
+// symdb: () -> void; r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E744.yaml
 	thumb_func_start sub_811E744
 sub_811E744:
 	push {r4-r7,lr}
@@ -39431,6 +39485,10 @@ loc_8120B1A:
 	.balign 4, 0x00
 	thumb_func_end countNaviFolderChipsWithElement_8120AE8
 
+// symdb: Iterates a packed u16 chip-entry array, looks up each chip's 44-byte record, and counts entries whose byte 7 equals the given value.
+// symdb: (r0 = target value of chip record byte 7, r1 = *u16[30] packed chip entries) -> r0 = match
+// symdb: count; flags clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8120B28.yaml
 	thumb_local_start
 sub_8120B28:
 	push {r4-r7,lr}
@@ -40123,7 +40181,7 @@ off_8121150:
 	.word word_200DCF0
 	thumb_func_end clearWorkArea_200DCF0_8121144
 
-// symdb: Rebuilds the current PET navi's effect/stat-modifier list into the work area at 200DCF0 by zeroing it, looking up a per-navi effect table via GetCurPETNavi and a state-derived index, dispatching each 8-byte {handlerId, argument} record (terminated by -1) through off_81211D0, then calling pet_applyNaviStatUpdates to recompute derived stats.
+// symdb: Rebuilds the current PET navi's effect/stat-modifier list into the work area at 200DCF0 by zeroing it, looking up a per-navi effect table via GetCurPETNavi and a state-derived index, dispatching each 8-byte {handlerId, argument} record (terminated by -1) through off_81211D0, then calling sub_8123208 to recompute derived stats.
 // symdb: (no args) -> r0 destroyed; clears work area at 200DCF0 and invokes effect handlers from a table
 // symdb: before returning
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_reloadCurNaviEffects.yaml

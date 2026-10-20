@@ -1253,6 +1253,10 @@ loc_80898E4:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastModeAiPhaseInit_80898B2
 
+// symdb: Per-frame chip-lockout handler: decrements AIData+0x18 via battle_tickChipLockout_8089CB4; if the timer has not expired it returns 1 immediately, else calls sub_8142BFA, writes 0x40 to [r5] and returns 1.
+// symdb: (r5 = some battle/AI struct pointer, set by caller) -> r0 = 1 always; calls
+// symdb: battle_tickChipLockout_8089CB4 and sub_8142BFA
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80898E8.yaml
 	thumb_local_start
 sub_80898E8:
 	push {r4-r7,lr}
@@ -1319,6 +1323,10 @@ byte_8089958:
 	.byte 0xFF, 0x2E, 0xFF, 0x2F, 0xFF, 0x30, 0xFF, 0x31
 	thumb_func_end owPlayer_cutsceneTurnAnimStep
 
+// symdb: When called each frame for an entity with a chip-lockout timer: if the [r5+0x13] flag is clear, ticks the lockout timer; if the ticker reports the lockout just expired, starts a mode-4 screen fade via SetScreenFade(4,0xFF) and transitions the entity's state byte at [r5] to 0x4C. Always returns 1.
+// symdb: (r5 = entity/AI struct, set by caller) -> r0 = 1 always; calls SetScreenFade(4, 0xFF) and stores
+// symdb: state 0x4C on expiry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089960.yaml
 	thumb_local_start
 sub_8089960:
 	push {r4-r7,lr}

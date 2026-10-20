@@ -5387,6 +5387,9 @@ loc_809CE38:
 	.balign 4, 0x00
 	thumb_func_end battle_checkLinkPartnerCamera
 
+// symdb: Copies NaviStats bytes at offsets 0x2D-0x30 and 0x56-0x5B from the PET's currently selected navi record into navi 0's record via GetCurPETNaviStatsByte/SetCurPETNaviStatsByte, using a 0xFF-terminated offset table at byte_809CE84.
+// symdb: () -> void; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CE40.yaml
 	thumb_local_start
 sub_809CE40:
 	push {r4-r7,lr}

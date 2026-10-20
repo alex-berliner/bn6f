@@ -1349,6 +1349,10 @@ byte_800F588:
 	.byte 0x0, 0x80, 0x3
 	thumb_func_end ai_checkPanelForDirection
 
+// symdb: Returns the (dx, dy, mode) slide vector and a ±1 sign factor for a battle object being knocked back, derived from its collision flags and HitModifierFinal; returns 0,0,0,0 when no relevant flag bits are set.
+// symdb: (r5 = battle object, r0 unused) -> r0 = signed dx, r1 = dy, r2 = mode byte from table, r3 = ±1
+// symdb: sign factor; returns 0,0,0,0 when no applicable flag bits; clobbers flags only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F598.yaml
 	thumb_local_start
 sub_800F598:
 	push {r4,r6,r7,lr}
@@ -3142,6 +3146,10 @@ locret_80101AC:
 	pop {pc}
 	thumb_func_end battle_objectClearPendingHitIfCollisionProcessed_8010198
 
+// symdb: Stores the given halfword as the object's hit countdown timer, sets OBJECT_FLAGS_UNK_4 in CollisionData ObjectFlags1, and clears bit 1 of the object header Flags byte.
+// symdb: (r0 = battle object (uses r5 as object pointer? no — r5 holds the object), r0 halfword stored =
+// symdb: countdown duration) -> r0 = scratch; flags: none meaningful, r1 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80101AE.yaml
 	thumb_func_start sub_80101AE
 sub_80101AE:
 	push {lr}
@@ -4609,6 +4617,10 @@ locret_8010C04:
 	pop {pc}
 	thumb_func_end battle_getPlayerHpMod100
 
+// symdb: Returns half the MaxHP of either the highest-MaxHP opponent actor or the player object (whose alliance is the passed-in flag inverted, per bit8 of GetBattleEffects), capped at 999, or 0 if no player exists.
+// symdb: (r0 = bool flag (inverted when bit8 set)) -> r0 = half of MaxHP (0-999); flags preserved except
+// symdb: compare after cap
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010C06.yaml
 	thumb_local_start
 sub_8010C06:
 	push {r4,lr}
@@ -5594,6 +5606,11 @@ battle_spawnObj56StoreRelatedObject2:
 	pop {r4,pc}
 	thumb_func_end battle_spawnObj56StoreRelatedObject2
 
+// symdb: Entry thunk that presets r3=2 and branches into the shared tail loc_8011368 of battle_spawnRelatedObject2 to spawn a kind-0x47 t1 object packed with 0x0A0C and the caller's r2 halfword, storing the result at [r5+oBattleObject_RelatedObject2Ptr].
+// symdb: (r0, r1 = spawner args, r2 = halfword param, r5 = battle object) -> tail-calls
+// symdb: battle_spawnRelatedObject2 with r3 = 2; spawned object ends up in
+// symdb: [r5+oBattleObject_RelatedObject2Ptr]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011352.yaml
 	thumb_local_start
 sub_8011352:
 	mov r3, #2
@@ -8022,6 +8039,9 @@ sub_801236E:
 	pop {pc}
 	thumb_func_end sub_801236E
 
+// symdb: Thin wrapper that calls the chip-parameter writer at 0x080126EA with a fixed argument of 9, initializing chip/parameter entry 9.
+// symdb: () -> void; r0 = 9 passed to callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012378.yaml
 	thumb_local_start
 sub_8012378:
 	push {lr}
@@ -8046,6 +8066,9 @@ sub_801238C:
 	pop {pc}
 	thumb_func_end sub_801238C
 
+// symdb: Thunk that loads r0=0xC7 (chip ID 199) and tail-calls the chip-parameter writer at 0x080126EA.
+// symdb: () -> void; r0 = 0xC7 passed to the callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012396.yaml
 	thumb_local_start
 sub_8012396:
 	push {lr}
@@ -9633,7 +9656,7 @@ sub_8012D64:
 	thumb_func_end sub_8012D64
 
 // symdb: runs three compare/swap passes over entries 0-2 of a small list, likely to (re)sort it after the caller shifts bytes
-// symdb: () -> r0 = undefined; calls object_transferPanelReserve(idx, idx) with (0,1),(0,2),(1,2)
+// symdb: () -> r0 = undefined; calls sub_8012D8C(idx, idx) with (0,1),(0,2),(1,2)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sortThreeEntries.yaml
 	thumb_local_start
 sortThreeEntries:
@@ -11912,6 +11935,9 @@ initNaviStatsFromNaviId:
 	pop {r4,r6,r7,pc}
 	thumb_func_end initNaviStatsFromNaviId
 
+// symdb: Clears ObjectFlags1 bit 0x20000 on the battle object, then bx-calls a function pointer from a 13-entry ARM table at off_8013C70 indexed by the object's alliance byte, returning the handler's result.
+// symdb: () -> r0 = handler return value; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013C4E.yaml
 	thumb_local_start
 sub_8013C4E:
 	push {r4,r6,lr}
@@ -12231,6 +12257,10 @@ sub_8013EC2:
 	pop {r4,pc}
 	thumb_func_end sub_8013EC2
 
+// symdb: Parameterless wrapper that calls object_setInvulnerableTime with a hardcoded 300-frame (5 second) invulnerability duration.
+// symdb: (no args; reads object from a global pointer at 0x080141BC) -> sets that object's invulnerable-
+// symdb: time field to 0x12c; flags clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8013ECC.yaml
 	thumb_local_start
 sub_8013ECC:
 	push {lr}
@@ -13616,6 +13646,10 @@ nullsub_8014728:
 	mov pc, lr
 	thumb_func_end nullsub_8014728
 
+// symdb: Battle helper that, unless the current battle phase is 1, calls battle_clearObjectStatusFlagsAndTimers_801A264 (which clears both status flag words and the status timers of a battle object).
+// symdb: (r0 = battle object ptr, passed through from caller) -> no return value used; calls
+// symdb: battle_clearObjectStatusFlagsAndTimers_801A264 when oBattleState_BattlePhase != 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801472A.yaml
 	thumb_local_start
 sub_801472A:
 	push {lr}
@@ -21216,6 +21250,10 @@ sub_8018094:
 	pop {pc}
 	thumb_func_end sub_8018094
 
+// symdb: Per-frame wobble for a battle object: jitters its XYZ by a small random offset each frame while the hold timer is nonzero, and when it expires restores the original position, sets the landing panel, lobs the object there, plays sfx 0xFFF3, and blocks animation.
+// symdb: (r0 unused entry, r5 = battle object ptr) -> r0 = launch result / sfx id, clobbered; no
+// symdb: meaningful flags out
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80180A8.yaml
 	thumb_local_start
 sub_80180A8:
 	push {r7,lr}
@@ -30364,6 +30402,10 @@ sub_801D2A0:
 	pop {pc}
 	thumb_func_end sub_801D2A0
 
+// symdb: Loads context via [caller_r5+0x48]; copies a 28x2 tile strip from byte_801D9B4 into BG block 0 at (0,0x12), then uploads three tilemap chunks (0,0x280→0x200,0x500→0x400) bracketed by sub_802E440/44A/454 calls. Increments a frame counter and every 32 frames redraws a 9x2 segment at y=0x12 using segment index (state-1)*10+1.
+// symdb: (r0-r3 unused; context pointer expected in caller's r5: +0x16 = buffer/BG id, +0x1a = segment
+// symdb: selector, +0x30 = frame counter) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D2A4.yaml
 	thumb_local_start
 sub_801D2A4:
 	push {r4,r6,r7,lr}
@@ -32129,6 +32171,10 @@ dword_801DFB4:
 	.word 0x4000
 	thumb_func_end SetCustGauge
 
+// symdb: Adds a signed delta (r0) to the halfword at eStruct2035280+0x20, saturating the result to a maximum of 0x4000 before storing it back.
+// symdb: (r0 = signed delta to add) -> writes gauge halfword at eStruct2035280+0x20; no return value,
+// symdb: flags from cmp set but unused by caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DFB8.yaml
 	thumb_func_start sub_801DFB8
 sub_801DFB8:
 	push {lr}

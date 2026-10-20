@@ -554,6 +554,10 @@ loc_804637C:
 	.word byte_200A220
 	thumb_func_end sub_8046356
 
+// symdb: A 3-byte display-script opcode that loads a 32-bit value from byte_200A220, converts it to 8-digit packed BCD, and renders each digit (plus optional padding tiles of glyph 1) one tile at a time via sub_80461D0, with the layout byte selecting leading-zero vs trailing-pad mode.
+// symdb: (r0 = pointer to script command: [r0+1] = value-table index, [r0+2] = layout byte, bit7 = order
+// symdb: flag, bits0-6 = position) -> r0 = r0+3 (next script command); no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80463A0.yaml
 	thumb_local_start
 sub_80463A0:
 	push {r3,lr}
@@ -5058,8 +5062,8 @@ sub_8049158:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049158
 
-// symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls battle_stepFrame.
-// symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of battle_stepFrame;
+// symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls sub_803A1B0.
+// symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of sub_803A1B0;
 // symdb: byte [r5+1] set to 0xC or 0x10
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_idMatchAdvanceState.yaml
 	thumb_local_start
@@ -5157,9 +5161,9 @@ loc_8049218:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491FC
 
-// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into battle_stepFrame.
+// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
 // symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =
-// symdb: battle_stepFrame result; updates [r5+1] = 0x20 on trigger
+// symdb: sub_803A1B0 result; updates [r5+1] = 0x20 on trigger
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_netScriptTriggerStep.yaml
 	thumb_local_start
 object_netScriptTriggerStep:
@@ -5412,7 +5416,7 @@ loc_804940C:
 	thumb_func_end sub_80493FE
 
 // symdb: One step of the wireless-connection state machine: on failure shows network text and sets phase 0x38, on cancel paths sets 0x3C, and on success initializes the wireless session and sets phase 0x44.
-// symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of submenu_queueSlotIcons; writes
+// symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of sub_8049BC0; writes
 // symdb: next phase id into [r5+1]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_wirelessConnectStep.yaml
 	thumb_local_start
@@ -5632,7 +5636,7 @@ loc_80495C8:
 
 // symdb: Reloads an 0x800-byte OBJ tile block (and a 32-byte palette) and defers a follow-up callback until the screen fade ends, otherwise performs the immediate alternative.
 // symdb: () -> r0 = undefined; calls copyMemory_8001850 then sub_803CB8C(callback=sub_8039570+1) when
-// symdb: IsScreenFadeActive, else calls battle_stepFrame; no return value used
+// symdb: IsScreenFadeActive, else calls sub_803A1B0; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesDuringFadeOrRun.yaml
 	thumb_local_start
 sprite_loadTilesDuringFadeOrRun:
@@ -7425,6 +7429,9 @@ byte_804A2B0:
 	.byte 0x0, 0x2, 0x4, 0x4, 0x1, 0x2, 0x4, 0x5, 0x2, 0x2, 0xFF, 0xFF, 0xFF, 0xFF
 	thumb_func_end chatbox_getTextScriptPointerByIndex_804A24C
 
+// symdb: Initializes the chip trader sub-scene: stores the launch argument at dword_200ACB0 (eS200AC80+0x30), saves the current MapGroup into LastMapGroup so the overworld can be restored, and clears the eStruct scene record array via battle_resetEStructRecords_8046664.
+// symdb: (r0 = value/pointer stored to dword_200ACB0) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A2CC.yaml
 	thumb_func_start sub_804A2CC
 sub_804A2CC:
 	push {r5,lr}
@@ -7715,6 +7722,9 @@ loc_804A50A:
 	.balign 4, 0x00
 	thumb_func_end chatbox_startFadeOnIdle
 
+// symdb: Per-frame menu loop: skips work on two state conditions, else reads held d-pad via the toolkit joypad pointer and advances an 8-entry cursor index in [r5+0x34], then refreshes per-entry state and copies background tiles; always returns 0.
+// symdb: () -> r0 = 0 always; updates menu state at [r5+0x34] (cursor index) and background tiles
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A514.yaml
 	thumb_local_start
 sub_804A514:
 	push {lr}
@@ -7761,6 +7771,10 @@ off_804A564:
 	.word object_riseOffscreenAndClear+1
 	thumb_func_end sub_804A54C
 
+// symdb: Looks up a 0x20-byte entry in unk_202A3E0 using two halfwords from the caller's object struct, splits the entry's +0x1c word into two 7-bit values, configures three consecutive sprite-table entries (ids 0xFFFFFFD8..0xFFFFFFDA) with those values plus zero fields, repositions the trio to (0x58, 0), then sets the object's state to 4 and clears its frame counter.
+// symdb: (r0 = unused on entry; r5 = object struct: +0x2a/+0x2e halfword table index, +0x01 state byte,
+// symdb: +0x18 halfword counter) -> r0 = 0; sets [r5+1]=4, [r5+0x18]=0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A574.yaml
 	thumb_local_start
 sub_804A574:
 	push {lr}

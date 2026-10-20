@@ -363,6 +363,11 @@ sub_812D5EC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_812D5EC
 
+// symdb: Queues one OAM entry from a frame's OAM row table for a battle object using the state byte's low nibble as the row index; when the state byte's high nibble is 1, advances the per-object animation table pointer via battleObject_advanceAnimTableBy0xFF_8120CC8 and stores the new table byte into the state byte.
+// symdb: (r0 = base ptr (low half replaced by offset), r1 = frame/OAM table base, r2 = state-byte offset
+// symdb: into object struct r5, r3 = index-byte selector (0 => frame index 0, else halfword [r5,r3]),
+// symdb: r4/r6 = extra args passed through) -> void; updates byte [r5+r2] = (nextRow<<4)|(old&0xF)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D600.yaml
 	thumb_local_start
 sub_812D600:
 	push {r4-r7,lr}
@@ -512,6 +517,10 @@ off_812D6FC:
 	.word unk_2037780
 	thumb_func_end submenu_getWork
 
+// symdb: Per-frame handler that toggles a menu subscreen (state 0x20): START opens or closes it, B also closes it, otherwise reports not-handled via Z flag.
+// symdb: (r5 = menu work struct, r7 from callee = related struct) -> r0 untouched (returns via Z flag
+// symdb: from final tst); side effects on state byte and sounds
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D700.yaml
 	thumb_local_start
 sub_812D700:
 	push {r7,lr}
