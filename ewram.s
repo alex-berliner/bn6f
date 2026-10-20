@@ -64,6 +64,8 @@ dword_2000330:: // 0x2000330
 	.space 64
 unk_2000370:: // 0x2000370
 	.space 368
+// symdb: Per-boot random key bytes (0x200) for the eKeyItems anti-tamper check (unk_2004A8C).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20004E0.yaml
 byte_20004E0:: // 0x20004e0
 	.space 400
 byte_2000670:: // 0x2000670
@@ -361,12 +363,18 @@ unk_2002230:: // 0x2002230
 	.space 236
 unk_200231C:: // 0x200231c
 	.space 3608
+// symdb: Owned counts per item id (u8[]): key items, and NaviCust programs at ids 0x90 + 4*prog + variant (variant = colour slot; the colour is byte +3 of the 16-byte entry at 0x0813944C + 16*(id-0x90): 1 white 2 yellow 3 pink 4 red 5 blue 6 green). The count includes placed copies; the customizer list shows count minus placed.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eKeyItems.yaml
 eKeyItems:: // 0x2003134
 	.space 404
 unk_20032C8:: // 0x20032c8
 	.space 3716
+// symdb: NaviCust board: u8[7][7] at [y*7+x], each cell the placed slot + 1 (unk_2004190); the visible 5x5 board is x, y = 1..5, row/column 0 and 6 the border pieces may hang into. A piece's 7x7 shape cell (r, c) lands on (y-3+r, x-3+c); shapes at +8 (normal) and +12 (compressed) of the ROM entry.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_200414C.yaml
 unk_200414C:: // 0x200414c
 	.space 68
+// symdb: NaviCust placed programs: 49 slots x 8 bytes {u16 prog_index (= item id - 0x90; 0 = empty), u8 0, u8 x, u8 y, u8 rot (quarter turns clockwise), u8 compressed (mirrors the event flag 0x2660 + prog_index), u8 0}; x, y = the shape centre in the 7x7 grid.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2004190.yaml
 unk_2004190:: // 0x2004190
 	.space 396
 unk_200431C:: // 0x200431c
@@ -387,14 +395,20 @@ eNaviStats:: // 0x20047cc
     navi_stats_struct eNaviStats0
     navi_stats_struct eNaviStats1
 	.space 504
+// symdb: Anti-tamper check byte per item id for eKeyItems: an item counts (CheckKeyItem) only if byte[0x2004A8C+id] == byte_20004E0[id] ^ 0x6F; items never received hold ~byte_20004E0[id].
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2004A8C.yaml
 unk_2004A8C:: // 0x2004a8c
 	.space 404
 unk_2004C20:: // 0x2004c20
 	.space 516
 unk_2004E24:: // 0x2004e24
 	.space 516
+// symdb: Encrypted zenny copy: u32 = zenny ^ *(u32*)dword_2000060 (eGameState+0x5C ProtectedZenny, +0x6C its ~mirror; a mismatch sets eGameState+0x74 bit 0 and zenny gains/payments then do nothing).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2005028.yaml
 unk_2005028:: // 0x2005028
 	.space 8
+// symdb: Encrypted bugfrag copy: u32 = bugfrags ^ *(u32*)dword_20018B8 (eGameState+0x60 bugfrags, +0x70 its ~mirror; tamper bit 1 of eGameState+0x74).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2005030.yaml
 unk_2005030:: // 0x2005030
 	.space 8
 unk_2005038:: // 0x2005038
