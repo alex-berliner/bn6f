@@ -4080,7 +4080,7 @@ handleExitSubmenu_803AA24:
 	push {r4-r7,lr}
 	mov r0, #0x10
 	mov r1, #0x30
-	bl sub_803C068
+	bl chatbox_stackPop
 	beq locret_803AA3E
 	mov r0, #0
 	strb r0, [r5,#0x13]
@@ -4524,7 +4524,7 @@ submenu_tryExit:
 	push {r4-r7,lr}
 	mov r0, #0x11
 	mov r1, #0x90
-	bl sub_803C068
+	bl chatbox_stackPop
 	beq locret_803AD1E
 	mov r0, #0
 	strb r0, [r5,#0x13]
@@ -6610,9 +6610,9 @@ locret_803C066:
 // symdb: (r0 = offset of the stack-count byte within the struct at r5, r1 = offset of the 2-byte entry
 // symdb: array within the struct) -> r0 = 1 if an occupied entry was popped/freed, 0 if the stack was
 // symdb: already empty; uses r5 as a global struct base.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C068.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_stackPop.yaml
 	thumb_local_start
-sub_803C068:
+chatbox_stackPop:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -6659,7 +6659,7 @@ loc_803C0B8:
 	mov r0, r4
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C068
+	thumb_func_end chatbox_stackPop
 
 // symdb: Walks a 2-byte-per-entry list to its first 0xE6 terminator and, if that terminator lies past the used range, rewrites trailing free slots (0x00 or 0xE5 entries) into 0xE5 0xE5 pairs.
 // symdb: void sub_803C0BE(u32 countOffset /*r0*/, u32 listOffset /*r1*/,                  struct* base

@@ -4107,7 +4107,7 @@ _WORD *fade_tick_80064BE()
 
 
 // 0x8006518
-_WORD *sub_8006518()
+_WORD *e_stepColorCycle()
 {
     int v0; // r5
     int v1; // r10
@@ -9998,7 +9998,7 @@ signed int RunTextScriptDustManUndernetTut_8009E2C()
 
 
 // 0x8009e40
-int sub_8009E40()
+int battle_forceStateCIfFlag80Clear()
 {
     int v0; // r5
     int result; // r0

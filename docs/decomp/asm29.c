@@ -3276,7 +3276,7 @@ signed int __noreturn object_startFacingStep()
 
 
 // 0x80a7a40
-signed int sub_80A7A40()
+signed int camera_sineEasePanStep()
 {
     int v0; // r5
     int v1; // r6
@@ -3375,12 +3375,12 @@ signed int __noreturn sub_80A7AFA()
     int v4; // r1
     u8 v5; // r1
 
-    sub_80A7B90(v2 + 1);
+    getSignedHalfword(v2 + 1);
     *(v0 + 12) = v3 << 16;
-    sub_80A7B90(v2 + 3);
+    getSignedHalfword(v2 + 3);
     *(v0 + 16) = v4 << 16;
     *(v0 + 20) = sub_81420B0();
-    sub_80A7B90(v2 + 5);
+    getSignedHalfword(v2 + 5);
     *(v1 + 2) = v5;
     sprite_setAnimation(v0, v5);
     sprite_loadAnimationData(v0);
@@ -3430,7 +3430,7 @@ unsigned __int8 *__fastcall readU32Unaligned(unsigned __int8 *result)
 
 
 // 0x80a7b90
-unsigned __int8 *__fastcall sub_80A7B90(unsigned __int8 *result)
+unsigned __int8 *__fastcall getSignedHalfword(unsigned __int8 *result)
 {
     int v1; // r1
 
@@ -3543,7 +3543,7 @@ void *battle_checkBeastSpTrigger_80A7BC0()
                         battle_getAIDataVersionFields_81418E4();
                         v15 = v14;
                         v16 = battle_getEnemyIndexFromMapGroup_8142080();
-                        result = sub_81420C8(v16);
+                        result = getSetFlagCount(v16);
                         if ( result == v15 )
                         {
                             SetEventFlagFromImmediate(23, 49);
@@ -4195,7 +4195,7 @@ void __noreturn ow_initBeastEventActor()
 
     *v0 = 3;
     sprite_load(v0, 128, 28, 82);
-    sub_80A84C4();
+    ow_computePointFromPlayerAngle();
     sprite_setAnimFromArgs();
     sprite_setAnimation(v0, *(v0 + 4));
     sprite_loadAnimationData(v0);
@@ -4251,7 +4251,7 @@ void __noreturn npc_updateGuarded()
                                     goto LABEL_18;
                                 *(v0 + 9) = v2 + 1;
                             }
-                            sub_80A85B4();
+                            npc_stepTowardTargetPos();
                             npc_playerProximityEventTrigger();
                         }
                     }
@@ -4297,7 +4297,7 @@ signed int ow_cleanupNpcAfterCutscene()
 
 
 // 0x80a84c4
-int sub_80A84C4()
+int ow_computePointFromPlayerAngle()
 {
     _DWORD *v0; // r5
     int v1; // r0
@@ -4327,7 +4327,7 @@ int getRandomFadeLevel()
 
 
 // 0x80a8518
-int __fastcall sub_80A8518(int a1, int a2)
+int __fastcall battle_getDirTowardPoint(int a1, int a2)
 {
     int v2; // r5
     __int64 v3; // r0
@@ -4353,7 +4353,7 @@ int sprite_setAnimFromArgs()
     int result; // r0
     char v3; // r4
 
-    result = sub_80A8518(*(v1 + 26), *(v1 + 28));
+    result = battle_getDirTowardPoint(*(v1 + 26), *(v1 + 28));
     v3 = result;
     if ( result != *(v0 + 4) )
     {
@@ -4381,7 +4381,7 @@ int sub_80A856C()
 
 
 // 0x80a8580
-int sub_80A8580()
+int getDirScale()
 {
     int v0; // r5
     int v1; // r6
@@ -4397,7 +4397,7 @@ int sub_80A8580()
 
 
 // 0x80a85b4
-int sub_80A85B4()
+int npc_stepTowardTargetPos()
 {
     int v0; // r5
     int v1; // r6
@@ -4411,7 +4411,7 @@ int sub_80A85B4()
 
     v2 = 0;
     sprite_setAnimFromArgs();
-    v3 = sub_80A8580();
+    v3 = getDirScale();
     v4 = *(v0 + 12);
     v5 = *(v1 + 26) << 16;
     if ( v4 != v5 )
@@ -6692,7 +6692,7 @@ int __fastcall beastsp_updateMotion(int a1, int a2, int a3)
 
 
 // 0x80a9e48
-int sub_80A9E48()
+int object_tick8SetState()
 {
     int v0; // r5
     int result; // r0
@@ -6890,7 +6890,7 @@ int __fastcall ow_getApproachTarget(int a1)
 
 
 // 0x80aa058
-int sub_80AA058()
+int object_dispatchStep()
 {
     int v0; // r5
 

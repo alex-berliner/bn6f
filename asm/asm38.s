@@ -116,7 +116,7 @@ byte_3005C98:
 off_3005C9C:
 	.word off_3000E70
 off_3005CA0:
-	.word sub_3005CDA+1
+	.word t1_dispatchJumpTable+1
 	.word nullsub_38+1
 	.word nullsub_38+1
 	.word nullsub_38+1
@@ -139,9 +139,9 @@ nullsub_38:
 // symdb: (r0 = don't care/ignored on entry) -> control transferred to handler at
 // symdb: iJumpTable3005D10[index], whose return value passes through and whose return goes to this
 // symdb: function's caller; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005CDA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1_dispatchJumpTable.yaml
 	thumb_local_start
-sub_3005CDA:
+t1_dispatchJumpTable:
 	push {lr}
 	ldr r0, off_3005D20 // =eStruct200BC30_getJumpOffset00_pushpop+1
 	mov lr, pc
@@ -153,7 +153,7 @@ sub_3005CDA:
 	bx r0
 	pop {r0}
 	mov lr, r0
-	thumb_func_end sub_3005CDA
+	thumb_func_end t1_dispatchJumpTable
 
 	thumb_local_start
 sub_3005CF0:
@@ -1419,7 +1419,7 @@ loc_30064B0:
 	and r1, r0
 	lsl r1, r1, #6
 	orr r6, r1
-	bl sub_3006594
+	bl sprite_transformPieceOffsets
 	mov r8, r1
 	mov r9, r0
 	mov r3, r6
@@ -1524,9 +1524,9 @@ off_3006590:
 // symdb: (r2 = piece struct ptr, r5 = object struct ptr, r6 = piece flags, r7 = flip/variant flag) -> r0,
 // symdb: r1 = transformed piece offsets; r6/r7 preserved (r6 gets 0x02000000 set and rotation index+0x10
 // symdb: when r7==1).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006594.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_transformPieceOffsets.yaml
 	thumb_local_start
-sub_3006594:
+sprite_transformPieceOffsets:
 	mov r3, #3
 	lsl r3, r3, #8
 	and r3, r6
@@ -1727,7 +1727,7 @@ off_3006728:
 	.word math_sinTable
 off_300672C:
 	.word math_cosTable
-	thumb_func_end sub_3006594
+	thumb_func_end sprite_transformPieceOffsets
 
 	thumb_func_start _sprite_loadAnimationData
 _sprite_loadAnimationData:

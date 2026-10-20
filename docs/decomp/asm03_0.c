@@ -1655,7 +1655,7 @@ int sub_8027624()
     {
         *(v0 + 64) = 0;
         engine_setScreeneffect(100, 8);
-        sub_80302B6(1, 40);
+        cameraSetShake(1, 40);
         PlaySoundEffect(403, v2, v3);
         PlaySoundEffect(188, v4, v5);
         result = 8;
@@ -1701,7 +1701,7 @@ signed int sub_8027672()
     char *v9; // r0
     signed int result; // r0
 
-    sub_802A040(0);
+    e_loadHudBattleFormByte(0);
     v1 = *(v0 + 8) - 1;
     v2 = (*(v0 + 8) + 71 + v0);
     v3 = *v2;
@@ -1792,7 +1792,7 @@ signed int sub_802774C()
 
     *(v0 + 64) = 0;
     engine_setScreeneffect(100, 8);
-    sub_80302B6(1, 40);
+    cameraSetShake(1, 40);
     PlaySoundEffect(403, v1, v2);
     PlaySoundEffect(129, v3, v4);
     PlaySoundEffect(188, v5, v6);
@@ -1842,7 +1842,7 @@ signed int sub_8027796()
     v1 = 0;
     if ( battle_getActorEmotion_802A564() == 1 )
         v1 = 12;
-    sub_802A040(v1);
+    e_loadHudBattleFormByte(v1);
     v2 = *(v0 + 8) - 1;
     v3 = (*(v0 + 8) + 71 + v0);
     v4 = *v3;
@@ -1871,7 +1871,7 @@ signed int sub_8027796()
 
 
 // 0x8027806
-int sub_8027806()
+int battle_advanceScriptStateOnFadeDone()
 {
     int v0; // r5
     int result; // r0
@@ -2008,7 +2008,7 @@ int __fastcall sub_802794A(int a1, int a2, int a3)
         if ( v10 == *(v3 + 27) )
             v11 = 0;
         v12 = v10;
-        sub_8029D94(v10, *(&word_50 + v10 + v3), v11);
+        beastsp_uploadBeastImageAndTiles(v10, *(&word_50 + v10 + v3), v11);
         v10 = v12 + 1;
     }
     while ( v12 + 1 < *(v3 + 24) );
@@ -4392,7 +4392,7 @@ void sub_8029344()
     int v1; // r1
     int v2; // r4
 
-    v0 = sub_802A11C(0);
+    v0 = battle_getNaviStatWithBonusSaturated(0);
     if ( battle_getActorEmotion_802A564() == 1 )
     {
         v2 = 24;
@@ -4422,7 +4422,7 @@ void sub_802937A()
     battle_getActorEmotion_802A564();
     if ( v2 >= 11 )
         v1 = 18;
-    v3 = sub_802A11C(1);
+    v3 = battle_getNaviStatWithBonusSaturated(1);
     sub_8015952(*(v0 + 26) + v1, 0, v3);
     dword_20349A0 |= 1 << (*(v0 + 26) + 5);
 }
@@ -5093,7 +5093,7 @@ int custMenu_80298F4()
         JUMPOUT(&loc_80299B2);
     if ( !*(v0 + 12) )
     {
-        result = sub_802996E();
+        result = battleTutorialCheckCustomScreen();
         if ( !result )
             return result;
         v3 = result;
@@ -5108,7 +5108,7 @@ int custMenu_80298F4()
             v3 = result;
             goto LABEL_20;
         case 3:
-            result = sub_80299FA();
+            result = battleTutorial_getMessageId();
             if ( !result )
                 return result;
             v3 = result;
@@ -5139,7 +5139,7 @@ LABEL_20:
 
 
 // 0x802996e
-signed int sub_802996E()
+signed int battleTutorialCheckCustomScreen()
 {
     _BYTE *v0; // r5
     int v2; // r0
@@ -5202,7 +5202,7 @@ signed int battle_getPrepStatus_80299B6()
 
 
 // 0x80299fa
-signed int sub_80299FA()
+signed int battleTutorial_getMessageId()
 {
     int v0; // r5
     int v1; // r0
@@ -5600,7 +5600,7 @@ void __noreturn sub_8029D80()
 
 
 // 0x8029d94
-void __fastcall sub_8029D94(int a1, int a2, signed int a3)
+void __fastcall beastsp_uploadBeastImageAndTiles(int a1, int a2, signed int a3)
 {
     int v3; // r6
     signed int v4; // r0
@@ -5754,7 +5754,7 @@ signed int sub_802A034()
 
 
 // 0x802a040
-int __fastcall sub_802A040(int a1)
+int __fastcall e_loadHudBattleFormByte(int a1)
 {
     signed int v1; // r6
     int v2; // r0
@@ -5832,7 +5832,7 @@ char *battle_DispatchPendingEvent_802A0F8()
 
 
 // 0x802a11c
-int __fastcall sub_802A11C(int a1)
+int __fastcall battle_getNaviStatWithBonusSaturated(int a1)
 {
     int v1; // r10
     int v2; // r4
@@ -6356,7 +6356,7 @@ void __noreturn sub_802A8A4()
     SetEventFlagFromImmediate(1, 151);
     SetEventFlagFromImmediate(1, 173);
     decomp_802B060();
-    sub_802B4D4(&unk_2035000, 36976, 100699648, v1);
+    sprite_initSequentialIndices(&unk_2035000, 36976, 100699648, v1);
     sub_802B51C(&unk_2035000, 37076);
     *(v0 + 30) = getEventFlagList(word_2031000);
     v2 = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
@@ -6520,7 +6520,7 @@ int __fastcall battlePickTwoGridItems(int a1, int a2, int a3)
         if ( *(v3 + 36) != *(v3 + 38) )
             battle_renderChipSelectNames(word_2031000, &decomp_2032000);
         if ( *(v3 + 32) != *(v3 + 34) )
-            sub_802B438(&unk_2030E60, word_2031000);
+            queueBcdDigitTiles(&unk_2030E60, word_2031000);
     }
     else if ( *(*(v4 + oToolkit_JoypadPtr) + 4) & 1 )
     {
@@ -7257,7 +7257,7 @@ int __fastcall __noreturn battle_renderChipSelectNames(int a1, int a2)
 
 
 // 0x802b438
-int __fastcall sub_802B438(int a1, int a2)
+int __fastcall queueBcdDigitTiles(int a1, int a2)
 {
     int v2; // r5
     int v3; // r0
@@ -7309,7 +7309,7 @@ int __fastcall sub_802B438(int a1, int a2)
 
 
 // 0x802b4d4
-void __fastcall sub_802B4D4(int a1, int a2, int a3, int a4)
+void __fastcall sprite_initSequentialIndices(int a1, int a2, int a3, int a4)
 {
     _WORD *v4; // r7
     _WORD *v5; // r4
@@ -8153,7 +8153,7 @@ int submenu_dispatchPendingSelection()
                             v7[2];
                     }
                 }
-                sub_802C75C(v8, v9);
+                drawChipNameTileRow(v8, v9);
             }
             if ( v3 == 1 )
                 textWindow_openDialog_802C5B0(v4);
@@ -8669,7 +8669,7 @@ int __fastcall sub_802C6EC(signed int a1)
 
 
 // 0x802c75c
-int __fastcall __noreturn sub_802C75C(unsigned int a1, int a2)
+int __fastcall __noreturn drawChipNameTileRow(unsigned int a1, int a2)
 {
     int v2; // ST04_4
     _WORD *v4; // [sp+8h] [bp-7Ch]
@@ -13996,7 +13996,7 @@ int __fastcall camera_initShakeEffect_80302a8(int result, __int16 a2)
 
 
 // 0x80302b6
-int __fastcall sub_80302B6(int result, __int16 a2)
+int __fastcall cameraSetShake(int result, __int16 a2)
 {
     int v2; // r10
     int v3; // r2
@@ -14009,7 +14009,7 @@ int __fastcall sub_80302B6(int result, __int16 a2)
 
 
 // 0x80302c0
-signed int __fastcall sub_80302C0(signed int result, __int16 a2)
+signed int __fastcall camera_raiseYWithLimit(signed int result, __int16 a2)
 {
     int v2; // r10
     int v3; // r2

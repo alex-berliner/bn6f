@@ -5680,7 +5680,7 @@ CutsceneScriptOnInMapWarp_8098a78::
 	cs_free_all_ow_map_objects
 	cs_disable_ow_player_wall_collision_809e254
 	cs_clear_ow_player_interaction_locked_809e23c
-	cs_call_native_with_return_value ptr1=sub_8098B8C+1
+	cs_call_native_with_return_value ptr1=ow_setPlayerPosAndFacing+1
 	cs_run_cutscene_camera_script ptr1=ccs_8098A00
 	cs_wait_camera_script
 	cs_stop_cutscene_camera_script
@@ -5780,9 +5780,9 @@ end_cutscenescript_8098B8A:
 
 // symdb: Overworld helper that places the player at given coordinates and sets their facing direction.
 // symdb: (unknown arguments, likely target X/Y/Z and facing direction) -> r0 = unknown; flags unknown
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8098B8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setPlayerPosAndFacing.yaml
 	thumb_local_start
-sub_8098B8C:
+ow_setPlayerPosAndFacing:
 	push {r4, lr}
 	mov r4, r10
 	ldr r4, [r4, #0x14]
@@ -5803,7 +5803,7 @@ sub_8098B8C:
 	mov r0, #0
 	pop {r4, pc}
 	.balign 4, 0
-	thumb_func_end sub_8098B8C
+	thumb_func_end ow_setPlayerPosAndFacing
 
 // Notifications like mail trigger this when MegaMan mentions it.
 CutsceneScriptNotification_8098BB8::

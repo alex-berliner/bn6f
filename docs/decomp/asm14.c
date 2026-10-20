@@ -97,7 +97,7 @@ int sub_8072B54()
     result = *(v1 + 56) + 1;
     if ( result >= 10 )
     {
-        sub_80302C0(0, 4);
+        camera_raiseYWithLimit(0, 4);
         result = 0;
     }
     *(v1 + 56) = result;

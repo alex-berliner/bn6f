@@ -2951,7 +2951,7 @@ byte_809AFC0:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_disable_ow_player_wall_collision_809e254
-	cs_call_native_with_return_value ptr1=sub_809B00C+1
+	cs_call_native_with_return_value ptr1=ow_setupCoordTriggerRequest+1
 	cs_spawn_cutscene_process byte1=0x20 ptr2=byte_809AFEC
 	cs_spawn_cutscene_process byte1=0x24 ptr2=cutscenescript_809AFFE
 	cs_spawn_cutscene_process byte1=0x28 ptr2=byte_809B004
@@ -2976,7 +2976,7 @@ cutscenescript_809AFFE:
 	cs_cutscene_end
 
 byte_809B004:
-	cs_call_native_with_return_value ptr1=sub_809B0D8+1
+	cs_call_native_with_return_value ptr1=ow_periodicObjectSpawner+1
 	cs_cutscene_end
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
@@ -2986,9 +2986,9 @@ byte_809B004:
 // symdb: Populates an overworld trigger/dialog request (r5) for the player at a coordinate trigger: looks up the trigger id via checkCoordinateTrigger_8031a7a on player+0x1C, indexes dword_809B050 (after subtracting 0xC0) into r5+4, sets r5+5=0x1A, and stores r5+6=2 / r5+0x1A=0 if player+0x24>>16 >= 0x3C else r5+6=3 / r5+0x1A=0x18; r5+0x18=-1; returns 0.
 // symdb: (r0 unused in, r4/r5 = dialog-request struct) -> fills r5+4 (table byte), r5+5 = 0x1A, r5+6 (2
 // symdb: or 3), r5+0x1A (0 or 0x18), r5+0x18 = -1; r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B00C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_setupCoordTriggerRequest.yaml
 	thumb_local_start
-sub_809B00C:
+ow_setupCoordTriggerRequest:
 	push {r4-r7,lr}
 	mov r7, r10
 	ldr r7, [r7,#oToolkit_GameStatePtr]
@@ -3028,7 +3028,7 @@ off_809B04C:
 	.word dword_809B050
 dword_809B050:
 	.word 0x105
-	thumb_func_end sub_809B00C
+	thumb_func_end ow_setupCoordTriggerRequest
 
 // symdb: Overworld Beast transform step: from the player's charge timer (>=60 → state 2 else 3) decides the target beast form, early-outs with r0=1 if already there (state 2 also requires work+0x10 cleared), otherwise plays the form's sound (0xE1/0xE2), sets/clears the OW player Navi palette index (0 vs 4), and SpawnOverworldMapObject(0x48020000) at the player's position with object id 0xB, returning 0.
 // symdb: (r0 unused, r5 = beast-out work struct, r10+0x3c = engine struct) -> r0 = 1 if already in the
@@ -3108,9 +3108,9 @@ dword_809B0D4:
 // symdb: Overworld object behavior: decrements a per-entity timer at +0x1a each tick and, when the gating condition holds (state==2 with timer<=0, or state!=2 but variant==2 with timer>0), increments a counter at +0x18 and calls SpawnOverworldMapObject every 8th tick with id 0xB and r4 = 0x48000001 | (variant<<16). Always returns 1.
 // symdb: (r0 = ? unused, r5 = behavior struct: +6 state, +7 variant id, +0x18 spawn counter, +0x1a timer)
 // symdb: -> r0 = 1 always; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B0D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_periodicObjectSpawner.yaml
 	thumb_local_start
-sub_809B0D8:
+ow_periodicObjectSpawner:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#6]
 	cmp r0, #2
@@ -3158,7 +3158,7 @@ loc_809B128:
 	.balign 4, 0
 dword_809B12C:
 	.word 0x48000001
-	thumb_func_end sub_809B0D8
+	thumb_func_end ow_periodicObjectSpawner
 
 	thumb_local_start
 sub_809B130:
@@ -3251,7 +3251,7 @@ CutsceneScript_809b5ad:
 	cs_disable_ow_player_wall_collision_809e254
 	cs_clear_ow_player_interaction_locked_809e23c
 	cs_decomp_text_archive ptr1=CompText873C0D8 + COMPRESSED_PTR_FLAG
-	cs_call_native_with_return_value ptr1=sub_809B7A4+1
+	cs_call_native_with_return_value ptr1=owPlayer_applyStepAnimTable+1
 	cs_run_text_script_from_mem byte1=0x04
 	cs_wait_chatbox byte1=0x80
 	cs_jump_if_var_equal byte1=0x08 byte2=0xFF destination3=cutscenescript_809B65A
@@ -3402,9 +3402,9 @@ byte_809B77B:
 
 // symdb: Indexes a 4-byte table via a byte from [r10+0x3c]+4, writes entry[0..1] into r5+4/+5, sets the overworld player facing via entry[0], stores entry[2] as a fixed animation id via owPlayer_setS200ace0_fixedAnimationSelect_809e13c, then clears byte [r10+0x14]+0x10 and returns 0.
 // symdb: (r0 unused; r10 struct supplies index and state pointer, r5 = target struct) -> r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B7A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_applyStepAnimTable.yaml
 	thumb_local_start
-sub_809B7A4:
+owPlayer_applyStepAnimTable:
 	push {r4-r7,lr}
 	ldr r4, off_809B7D0 // =byte_809B7D4
 	mov r0, r10
@@ -3432,7 +3432,7 @@ byte_809B7D4:
 	.byte 0x32, 0x5, 0x1, 0xFF, 0xA, 0x5, 0x1, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0x14, 0x5, 0x1, 0xFF, 0x1E, 0x3, 0x7, 0xFF, 0x28, 0x3
 	.byte 0x7, 0xFF
-	thumb_func_end sub_809B7A4
+	thumb_func_end owPlayer_applyStepAnimTable
 
 // symdb: Reads the player's overworld facing direction, remaps it from 0-3 to 4-7, and stores it in a byte field of the object at r5.
 // symdb: (r5 = object struct, not passed in r0-r3) -> r0 = 0; writes byte at [r5,#5]
@@ -4316,7 +4316,7 @@ cutscenescript_809C37E:
 	cs_set_screen_fade byte1=0xFF byte2=0x0C byte3=0x08
 	cs_wait_screen_fade
 	cs_free_all_ow_npc_objects_if_different_map
-	cs_call_native_with_return_value ptr1=sub_809C7A0+1
+	cs_call_native_with_return_value ptr1=camera_restartWithScriptHead+1
 	cs_call_native_with_return_value ptr1=sub_809C7FC+1
 	cs_call_native_with_return_value ptr1=owPlayer_setFixedAnimationFromLookup+1
 	cs_call_native_with_return_value ptr1=sub_809C830+1
@@ -4529,9 +4529,9 @@ cutscenescript_809C745:
 
 // symdb: Backs up the current camera script pointer, builds an 8-byte header-only copy (command IDs of the first three script words plus an 0x08 terminator) in the static buffer byte_20065E0, then calls SetCutsceneCameraScript to restart playback from that stripped header.
 // symdb: (r0 = unused/scratch, r5 = cutscene/camera engine state) -> r0 = 0; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C7A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_restartWithScriptHead.yaml
 	thumb_local_start
-sub_809C7A0:
+camera_restartWithScriptHead:
 	push {r4-r7,lr}
 	ldr r0, [r5,#4]
 	str r0, [r5,#0x70]
@@ -4577,7 +4577,7 @@ sub_809C7A0:
 	.balign 4, 0
 off_809C7F8:
 	.word byte_20065E0
-	thumb_func_end sub_809C7A0
+	thumb_func_end camera_restartWithScriptHead
 
 	thumb_local_start
 sub_809C7FC:

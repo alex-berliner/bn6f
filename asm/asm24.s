@@ -1804,7 +1804,7 @@ dword_808CFB4:
 // symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
 // symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
 // symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
-// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
+// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and ai_isPosInModeArea, calls ReadOWPlayerObjectCoords.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/jackIn_attemptJackInCheck_808CFB8.yaml
 	thumb_local_start
 jackIn_attemptJackInCheck_808CFB8:
@@ -1819,7 +1819,7 @@ jackIn_attemptJackInCheck_808CFB8:
 	cmp r2, r3
 	beq loc_808D020
 	strh r2, [r5,#0x14] // (word_2000B54 - 0x2000b40)
-	bl sub_808D098
+	bl ai_isPosInModeArea
 	bne loc_808CFDA
 	b loc_808D020
 loc_808CFDA:
@@ -1944,9 +1944,9 @@ locret_808D096:
 
 // symdb: Returns whether the (r0=x, r1=y) tile coordinate lies inside the AI mode's rectangular bounds in byte_808D0FC (true→1, false→0), with mode 1 having an L-shaped fallback and mode 3 testing y instead of x.
 // symdb: (r0 = coord A, r1 = coord B) -> r0 = 1 if inside the mode's range, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D098.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_isPosInModeArea.yaml
 	thumb_local_start
-sub_808D098:
+ai_isPosInModeArea:
 	push {r4-r7,lr}
 	push {r0,r1}
 	mov r6, #0
@@ -2006,7 +2006,7 @@ byte_808D104:
 	.byte 0x72
 byte_808D105:
 	.byte 0x84, 0x0, 0x0
-	thumb_func_end sub_808D098
+	thumb_func_end ai_isPosInModeArea
 
 	thumb_local_start
 sub_808D108:

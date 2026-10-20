@@ -2590,7 +2590,7 @@ sub_8027624:
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #1
 	mov r1, #0x28 
-	bl sub_80302B6
+	bl cameraSetShake
 	mov r0, #0x94
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -2623,7 +2623,7 @@ locret_8027670:
 sub_8027672:
 	push {r4,r6,lr}
 	mov r0, #0
-	bl sub_802A040
+	bl e_loadHudBattleFormByte
 	ldrb r3, [r5,#8]
 	sub r3, #1
 	mov r2, #0x48 
@@ -2725,7 +2725,7 @@ off_8027724:
 	.word sub_802774C+1
 	.word sub_802777C+1
 	.word sub_8027796+1
-	.word sub_8027806+1
+	.word battle_advanceScriptStateOnFadeDone+1
 	thumb_func_end battleObject_chipSelectAnimTick_802770C
 
 	thumb_local_start
@@ -2752,7 +2752,7 @@ sub_802774C:
 	bl SetScreenFade // (int a1, int a2) -> void
 	mov r0, #1
 	mov r1, #0x28 
-	bl sub_80302B6
+	bl cameraSetShake
 	mov r0, #0x94
 	add r0, #0xff
 	bl PlaySoundEffect
@@ -2796,7 +2796,7 @@ sub_8027796:
 	mov r4, #0xc
 loc_80277A4:
 	mov r0, r4
-	bl sub_802A040
+	bl e_loadHudBattleFormByte
 	ldrb r3, [r5,#8]
 	sub r3, #1
 	mov r2, #0x48 
@@ -2843,9 +2843,9 @@ loc_80277DA:
 // symdb: Polls IsScreenFadeActive; once the fade clears, writes 4 to the state byte at [r5+1] and clears the halfword at [r5+2], and if the substate byte at [r5+0xc] is 3, advances [r5+0xc] and [r5+0xd] to 4 and re-arms the state by writing 0x2c to [r5+1] and 0 to [r5+2].
 // symdb: (-, r5 = event/state struct) -> void; sets [r5+0x1] (state id), [r5+0x2] (counter, halfword),
 // symdb: and conditionally [r5+0xc]/[r5+0xd]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027806.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advanceScriptStateOnFadeDone.yaml
 	thumb_local_start
-sub_8027806:
+battle_advanceScriptStateOnFadeDone:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	cmp r0, #0
@@ -2868,7 +2868,7 @@ sub_8027806:
 locret_802782E:
 	pop {pc}
 	.word TextScriptFirstBattleTutorials
-	thumb_func_end sub_8027806
+	thumb_func_end battle_advanceScriptStateOnFadeDone
 
 	thumb_local_start
 sub_8027834: // (self: * S20364C0 $r5) -> ()
@@ -3068,7 +3068,7 @@ loc_802799E:
 	add r1, r1, r0
 	ldrb r1, [r5,r1]
 	push {r0}
-	bl sub_8029D94
+	bl beastsp_uploadBeastImageAndTiles
 	pop {r0}
 	add r0, #1
 	ldrb r2, [r5,#0x18]
@@ -6764,7 +6764,7 @@ loc_802933C:
 sub_8029344:
 	push {r0-r4,r6,lr}
 	mov r0, #0
-	bl sub_802A11C
+	bl battle_getNaviStatWithBonusSaturated
 	mov r6, r0
 	bl battle_getActorEmotion_802A564
 	cmp r0, #1
@@ -6801,7 +6801,7 @@ sub_802937A:
 	ldr r4, dword_80293EC // =0x12 
 loc_8029388:
 	mov r0, #1
-	bl sub_802A11C
+	bl battle_getNaviStatWithBonusSaturated
 	mov r2, r0
 
 	ldrb r0, [r5,#oS20364C0_EmotionSpriteVariant]
@@ -7672,7 +7672,7 @@ custMenu_80298F4:
 	mov r0, #0
 	b locret_802996C
 loc_8029918:
-	bl sub_802996E
+	bl battleTutorialCheckCustomScreen
 	cmp r0, #0
 	beq locret_802996C
 	mov r1, r0
@@ -7684,7 +7684,7 @@ loc_8029924:
 	mov r1, r0
 	b loc_8029952
 loc_8029930:
-	bl sub_80299FA
+	bl battleTutorial_getMessageId
 	cmp r0, #0
 	beq locret_802996C
 	mov r1, r0
@@ -7720,9 +7720,9 @@ locret_802996C:
 // symdb: Per-frame check routine for battle tutorial phase 0xA (custom-screen step): returns 0xB/0xC prompts by sub-counter, returns 0 when sorted +0x48/+0x49 pair equals {0,2}, otherwise returns 0x17 nag.
 // symdb: (r0 unused; r5 = tutorial-state struct) -> r0 = message id (0xB, 0xC or 0x17 to display, 0 =
 // symdb: step complete/no message); flags clobbered.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802996E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorialCheckCustomScreen.yaml
 	thumb_local_start
-sub_802996E:
+battleTutorialCheckCustomScreen:
 	push {lr}
 	ldrb r0, [r5,#7]
 	cmp r0, #0xa
@@ -7766,7 +7766,7 @@ loc_80299B2:
 	mov r0, #0
 locret_80299B4:
 	pop {pc}
-	thumb_func_end sub_802996E
+	thumb_func_end battleTutorialCheckCustomScreen
 
 // symdb: Inspects a battle object's prep-state/mode/slot fields and returns a preparation-status code (0/8/9/0xD) for the navi-cust battle flow.
 // symdb: u8 battle_getPrepStatus_80299B6(void *obj /* r5 */);  // returns status in r0, leaves r3 = 0x48
@@ -7819,9 +7819,9 @@ locret_80299F8:
 // symdb: Returns the chatbox message id for the current battle-tutorial step: 0x25 for step 0xA, 0x24 for other steps, or 0 if +0x17 latch is set or step is 0xB.
 // symdb: (r5 = tutorial state struct; r0 input unused) -> r0 = message id 0x24/0x25, or 0 if none
 // symdb: pending; flags clobbered by cmp/tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80299FA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorial_getMessageId.yaml
 	thumb_local_start
-sub_80299FA:
+battleTutorial_getMessageId:
 	push {lr}
 	ldrb r0, [r5,#7]
 	cmp r0, #0xa
@@ -7843,7 +7843,7 @@ loc_8029A1A:
 	mov r0, #0
 locret_8029A1C:
 	pop {pc}
-	thumb_func_end sub_80299FA
+	thumb_func_end battleTutorial_getMessageId
 
 // symdb: Tutorial-check routine for the cust tutorial: in state 0xB, when the player's emotion is clear, yields message id 0x26 to be played by the caller.
 // symdb: (r5 = tutorial state struct, reads [r5,#7]) -> r0 = message id (0x26) or 0; r3 flags from
@@ -8418,9 +8418,9 @@ sub_8029D80:
 // symdb: Queues r1 row-bands of beast graphics (0x240 bytes each) from dword_86E7DCC into VRAM at 0x600A720 (offset by r0 bands, plus 5-band variant shift when r2>=2) and installs the matching 9x2 tile-id block into BG block 3 at column 1, row 1+2*r0.
 // symdb: (r0 = band index 0-4, r1 = number of gfx rows to copy, r2 = variant id (>=2 shifts source by 5
 // symdb: bands)) -> r0/r1 clobbered; queues GFX DMA transfer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029D94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_uploadBeastImageAndTiles.yaml
 	thumb_local_start
-sub_8029D94:
+beastsp_uploadBeastImageAndTiles:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -8492,7 +8492,7 @@ byte_8029E88:
 	.byte 0xA1, 0x86, 0xA1, 0x87, 0xA1, 0x88, 0xA1, 0x89, 0xA1
 	.byte 0x8A, 0xA1, 0x8B, 0xA1, 0x8C, 0xA1, 0x8D, 0xA1, 0x8E
 	.byte 0xA1, 0x8F, 0xA1, 0x90, 0xA1, 0x91, 0xA1, 0x92, 0xA1
-	thumb_func_end sub_8029D94
+	thumb_func_end beastsp_uploadBeastImageAndTiles
 
 // symdb: Queues a 32-byte GFX transfer copying one tile (index r0) from a ROM sprite-sheet table into the fixed buffer unk_3001AA0.
 // symdb: (r0 = tile/frame index) -> r0 = preserved?; queues transfer via QueueEightWordAlignedGFXTransfer
@@ -8754,9 +8754,9 @@ dword_802A03C:
 // symdb: Resolves a battle form/emotion-dependent base pointer (r6) and stores a byte derived via sub_801E660 into eStruct2035280+0x4C, returning it in r0.
 // symdb: (r0 = base struct ptr or NULL) -> r0 = stored byte; writes eStruct2035280+0x4C, clobbers
 // symdb: r1-r3/r5 flags per bls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A040.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_loadHudBattleFormByte.yaml
 	thumb_local_start
-sub_802A040:
+e_loadHudBattleFormByte:
 	push {r4,r6,r7,lr}
 	ldr r1, dword_802A084 // =0xc 
 	add r6, r0, r1
@@ -8794,7 +8794,7 @@ loc_802A072:
 	.balign 4, 0
 dword_802A084:
 	.word 0xC
-	thumb_func_end sub_802A040
+	thumb_func_end e_loadHudBattleFormByte
 
 	thumb_local_start
 sub_802A088:
@@ -8896,9 +8896,9 @@ dword_802A118:
 // symdb: Returns a navi's signed stat byte at navi-stats offset 0x32 plus a fixed bonus from a 4-byte word table indexed by r0 (nonzero entries are 1 at index 0 and 3 at index 4), saturated to the range 1..9.
 // symdb: (r0 = table index, word-granular: 0 or 4) -> r0 = clamped stat value (0..9); flags from the
 // symdb: final cmp/ble/bge are not meaningful to callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A11C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getNaviStatWithBonusSaturated.yaml
 	thumb_local_start
-sub_802A11C:
+battle_getNaviStatWithBonusSaturated:
 	push {r4,lr}
 	ldr r1, off_802A144 // =byte_802A148
 	lsl r0, r0, #2
@@ -8924,7 +8924,7 @@ off_802A144:
 	.word byte_802A148
 byte_802A148:
 	.byte 0x1, 0x0, 0x0, 0x0, 0x3, 0x0, 0x0, 0x0
-	thumb_func_end sub_802A11C
+	thumb_func_end battle_getNaviStatWithBonusSaturated
 
 	.byte 0xD0, 0xB5, 0xFF, 0x24, 0x3
 	.byte 0xF0, 0x6E, 0xF8, 0x0, 0x28, 0x2C, 0xD1, 0x17, 0x4F, 0x78, 0x79, 0xFF, 0x28
@@ -9803,7 +9803,7 @@ sub_802A8A4:
 	ldr r0, off_802A918 // =unk_2035000 
 	ldr r1, dword_802A91C // =0x9070 
 	ldr r2, dword_802A920 // =0x6008e00 
-	bl sub_802B4D4
+	bl sprite_initSequentialIndices
 	ldr r0, off_802A918 // =unk_2035000 
 	ldr r1, dword_802A924 // =0x90d4 
 	ldr r2, dword_802A928 // =0x6009a80 
@@ -9827,7 +9827,7 @@ sub_802A8A4:
 	bl battle_renderChipSelectNames
 	ldr r0, off_802A930 // =unk_2030E60 
 	ldr r1, off_802A914 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	mov r0, #4
 	str r0, [r5]
 	ldr r0, dword_802A910 // =0x20000 
@@ -10002,7 +10002,7 @@ loc_802AA38:
 	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	b loc_802AB98
@@ -10096,7 +10096,7 @@ loc_802AAE0:
 	beq loc_802AB98
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	b loc_802AB98
 loc_802AB0E:
 	ldr r0, off_802ABB4 // =unk_2031000 
@@ -10104,7 +10104,7 @@ loc_802AB0E:
 	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	b loc_802AB98
 loc_802AB20:
 	mov r0, r10
@@ -10161,7 +10161,7 @@ loc_802AB7C:
 	bl battle_renderChipSelectNames
 	ldr r0, off_802ABCC // =unk_2030E60 
 	ldr r1, off_802ABB4 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 	b loc_802AB98
@@ -11262,9 +11262,9 @@ byte_802B3F8:
 // symdb: Renders three 4-digit BCD numbers as digit-glyph tiles into VRAM via queued GFX copies, with leading-zero blanking using glyph 0xA. (r0=tile sheet base, r1=halfword array; uses caller-set r5=UI struct)
 // symdb: (r0 = digit tile-sheet base (0x20 bytes per glyph, glyph 0xA = blank), r1 = halfword array of
 // symdb: entry IDs; uses r5 = UI struct: +0x20 halfword base, +0x24 halfword index) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B438.yaml
-	thumb_func_start sub_802B438
-sub_802B438:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/queueBcdDigitTiles.yaml
+	thumb_func_start queueBcdDigitTiles
+queueBcdDigitTiles:
 	push {r4-r7,lr}
 	sub sp, sp, #0x18
 	str r0, [sp,#0x10]
@@ -11348,14 +11348,14 @@ dword_802B4CC:
 	.word 0x6009A80
 dword_802B4D0:
 	.word 0xFFFF
-	thumb_func_end sub_802B438
+	thumb_func_end queueBcdDigitTiles
 
 // symdb: Initializes two interleaved halfword sub-arrays of a sprite-related struct with consecutive IDs starting from r1 across 5 strided blocks, and zero-fills a 0xC80-byte buffer at r2.
 // symdb: (r0 = struct base, r1 = starting index value, r2 = buffer) -> void; writes halfwords at r0+0x40
 // symdb: and r0+0x5E in 5 strided blocks, zeroes 0xC80 bytes at r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B4D4.yaml
-	thumb_func_start sub_802B4D4
-sub_802B4D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initSequentialIndices.yaml
+	thumb_func_start sprite_initSequentialIndices
+sprite_initSequentialIndices:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r1, [sp]
@@ -11393,7 +11393,7 @@ loc_802B4F4:
 	.balign 4, 0
 off_802B518:
 	.word 0xC80
-	thumb_func_end sub_802B4D4
+	thumb_func_end sprite_initSequentialIndices
 
 	thumb_func_start sub_802B51C
 sub_802B51C:
@@ -11467,7 +11467,7 @@ loc_802B57E:
 	bl battle_renderChipSelectNames
 	ldr r0, off_802B5AC // =unk_2030E60 
 	ldr r1, off_802B5A4 // =unk_2031000 
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 locret_802B5A2:
@@ -12790,7 +12790,7 @@ off_802C0A0:
 	.word unk_2035320
 	thumb_func_end battle_chipSelectAnimTileStep
 
-// symdb: After a per-frame countdown at r5+0xb expires, dispatches the packed selection ID at r5+0x10 by group: group 0 validates a chip against the chip DB and calls sub_802C75C with sound 0x96; group 1 opens a text dialog (sub_802C5B0) with 0x95; group 2 calls sub_802C646 with 0x95 and re-arms the counter to 0x1e while writing state 8/0 at [r5+2]/[r5+3]; group 3 calls sub_802C5E6 with 0x95; finally zeroes the halfword at [r5+2].
+// symdb: After a per-frame countdown at r5+0xb expires, dispatches the packed selection ID at r5+0x10 by group: group 0 validates a chip against the chip DB and calls drawChipNameTileRow with sound 0x96; group 1 opens a text dialog (sub_802C5B0) with 0x95; group 2 calls sub_802C646 with 0x95 and re-arms the counter to 0x1e while writing state 8/0 at [r5+2]/[r5+3]; group 3 calls sub_802C5E6 with 0x95; finally zeroes the halfword at [r5+2].
 // symdb: (r5 = menu state struct; no register args) -> r0 clobbered by calls; updates struct: [r5+0xb]
 // symdb: counter, [r5+0x10] pending ID cleared to 0xFFFF path via [r5+2]=0, [r5+2]/[r5+3] state for group
 // symdb: 2
@@ -12850,7 +12850,7 @@ loc_802C0FE:
 	b loc_802C106
 loc_802C106:
 	pop {r0,r1}
-	bl sub_802C75C
+	bl drawChipNameTileRow
 	mov r0, #0x96
 	bl PlaySoundEffect
 	b loc_802C15C
@@ -13772,9 +13772,9 @@ dword_802C758:
 // symdb: (r0 = (table<<8)|chipIndex packed: low byte chip index 0-0xFF, high byte selects
 // symdb: TextScriptChipNames0/1) -> void; clobbers r5, writes text-render state unk_2035320/unk_2035520
 // symdb: and the row buffer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C75C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/drawChipNameTileRow.yaml
 	thumb_local_start
-sub_802C75C:
+drawChipNameTileRow:
 	push {r5,lr}
 	sub sp, sp, #0x70
 	mov r6, sp
@@ -13848,7 +13848,7 @@ byte_802C7EC:
 	.byte 0x91, 0xDE, 0x91, 0xE0, 0x91, 0xE2, 0x91, 0xC5, 0x90
 	.byte 0xD5, 0x91, 0xD7, 0x91, 0xD9, 0x91, 0xDB, 0x91, 0xDD
 	.byte 0x91, 0xDF, 0x91, 0xE1, 0x91, 0xE3, 0x91, 0xC5, 0x90
-	thumb_func_end sub_802C75C
+	thumb_func_end drawChipNameTileRow
 
 // symdb: Draws one of two small tilemap sprite blocks (10 halfword pairs) into unk_2034B30's 24-wide row buffer at x=2,y=0xE for the chip selection screen, picking the block by the caller's anim-state index.
 // symdb: (r0 = animStateIndex 0..1) -> side effects only (writes halfwords into the row buffer via
@@ -22287,22 +22287,22 @@ camera_initShakeEffect_80302a8:
 
 // symdb: Stores the shake pattern index (r0) and duration in frames (r1) into the camera struct as halfwords, priming a camera shake applied by later camera-tick code.
 // symdb: (r0 = shake index/pattern, r1 = shake duration in frames) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302B6.yaml
-	thumb_func_start sub_80302B6
-sub_80302B6:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cameraSetShake.yaml
+	thumb_func_start cameraSetShake
+cameraSetShake:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
 	strh r0, [r2,#oCamera_ShakeIndex]
 	strh r1, [r2,#oCamera_ShakeFrames]
 	mov pc, lr
-	thumb_func_end sub_80302B6
+	thumb_func_end cameraSetShake
 
 // symdb: If the new Y candidate (r0) is >= the camera's current Y limit at +0xE, updates camera+0xE with r0 and camera+0xC with r1, allowing the Y bound to only increase.
 // symdb: (r0 = new halfword value, r1 = companion halfword value) -> void; writes [camera+0xC],
 // symdb: [camera+0xE] only if r0 >= [camera+0xE]; no flags returned
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302C0.yaml
-	thumb_func_start sub_80302C0
-sub_80302C0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_raiseYWithLimit.yaml
+	thumb_func_start camera_raiseYWithLimit
+camera_raiseYWithLimit:
 	mov r2, r10
 	ldr r2, [r2,#oToolkit_CameraPtr]
 	ldrh r3, [r2,#0xe]
@@ -22312,7 +22312,7 @@ sub_80302C0:
 	strh r1, [r2,#0xc]
 locret_80302CE:
 	mov pc, lr
-	thumb_func_end sub_80302C0
+	thumb_func_end camera_raiseYWithLimit
 
 // symdb: Dispatches the camera's per-mode update routine based on the camera struct's mode field.
 // symdb: (r5 = camera struct, mode at oCamera_Mode selects handler) -> calls handler with r5 intact;

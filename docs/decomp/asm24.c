@@ -606,7 +606,7 @@ signed int jackIn_attemptJackInCheck_808CFB8()
     if ( v3 != word_2000B54 )
     {
         word_2000B54 = v3;
-        sub_808D098(v2);
+        ai_isPosInModeArea(v2);
         if ( !v4 )
         {
             v0 = 1;
@@ -682,7 +682,7 @@ signed int ai_getAIModeForMapGroup_808D084()
 
 
 // 0x808d098
-signed int __fastcall __spoils<R0,R2,R3,R12> sub_808D098(signed int a1)
+signed int __fastcall __spoils<R0,R2,R3,R12> ai_isPosInModeArea(signed int a1)
 {
     signed int v1; // r6
     signed int v2; // r0

@@ -4011,7 +4011,7 @@ loc_804184C:
 	lsl r1, r1, #8
 	orr r0, r1
 	ldrb r1, [r4,#4]
-	bl sub_8021C02
+	bl chatbox_countChipAcrossFolders
 	mov r1, r0
 	pop {r0,r4,r5}
 	sub r0, r0, r1
@@ -6377,7 +6377,7 @@ off_8042844:
 	.word sub_80428FC
 	.word sub_8042910
 	.word chatbox_placeCenteredTextRun_804293C
-	.word sub_8042990
+	.word chatbox_centerTextX
 	.word sub_80429D8
 	thumb_func_end chatbox_F7_move
 
@@ -6573,9 +6573,9 @@ loc_8042972:
 
 // symdb: Chatbox text-script handler that positions the current text run centered on screen: width = 11*n+8, X base is 240 (or 176 if chatbox flag 0x2 set), shifted left by TextScriptCharIdx when flag is clear; result is stored at chatbox+0x94 and a pointer at chatbox+0x7C is advanced by width*4. Returns 1.
 // symdb: (r4 = text script cursor, r5 = chatbox object) -> r0 = 1; advances r4 past a 3-byte command
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8042990.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_centerTextX.yaml
 	thumb_local_start
-sub_8042990: // 0x8042990
+chatbox_centerTextX: // 0x8042990
 	push {r6,r7,lr}
 	mov r6, #0xf0
 	mov r7, #0xb0
@@ -6611,7 +6611,7 @@ loc_80429BE:
 	add r4, #3
 	mov r0, #1
 	pop {r6,r7,pc}
-	thumb_func_end sub_8042990
+	thumb_func_end chatbox_centerTextX
 	.balign 4, 0
 
 // symdb: Advances the chatbox's script cursor by a row-aligned half-width offset, bumps an internal data pointer by an 8-byte aligned slot, and steps the caller's row iterator forward by 3; returns 1.

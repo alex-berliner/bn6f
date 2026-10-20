@@ -3184,7 +3184,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A9D10+1
 	.word ow_logoutDispatchState+1
 	.word ow_runObjectStateHandler+1
-	.word sub_80AA058+1
+	.word object_dispatchStep+1
 	.word sub_80AA140+1
 	.word sub_80AA1E0+1
 	.word battle_object_dispatchSpriteState3_80AA2D8+1
@@ -7261,7 +7261,7 @@ loc_80064D6:
 off_800650C:
 	.word off_8006510
 off_8006510:
-	.word sub_8006518+1
+	.word e_stepColorCycle+1
 	.word sub_8006580+1
 	thumb_func_end fade_tick_80064BE
 
@@ -7269,9 +7269,9 @@ off_8006510:
 // symdb: (r5 = effect/entity struct; no args in r0-r3) -> r0 = 0 after palette calls; writes palette
 // symdb: slots 0x14/0x15 via sub_8002378, dword_20096D0 = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
 // symdb: +2 = color from [r5+6]>>4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006518.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_stepColorCycle.yaml
 	thumb_local_start
-sub_8006518:
+e_stepColorCycle:
 	push {r4-r7,lr}
 	mov r0, #0
 	ldr r1, off_80065B8 // =byte_80065BC
@@ -7323,7 +7323,7 @@ loc_8006552:
 	orr r1, r2
 	strh r1, [r0,#2]
 	pop {r4-r7,pc}
-	thumb_func_end sub_8006518
+	thumb_func_end e_stepColorCycle
 
 // symdb: Tears down the cross-over/transform overlay effect, freeing its two BG palettes and clearing the render-info bits it set up.
 // symdb: void effectTransformTeardown_8006580(struct EffectState* r5, struct Toolkit* r10) -> r2 = 0x40
@@ -15460,7 +15460,7 @@ off_8009E20:
 	.word off_8009E24
 off_8009E24:
 	.word RunTextScriptDustManUndernetTut_8009E2C+1
-	.word sub_8009E40+1
+	.word battle_forceStateCIfFlag80Clear+1
 	thumb_func_end battle_dispatchPhaseHandler
 
 	thumb_local_start
@@ -15478,9 +15478,9 @@ RunTextScriptDustManUndernetTut_8009E2C:
 
 // symdb: Battle state-machine hook: if chatbox flag bit 0x80 is clear, force the battle state to 0xC and reset its phase/init counter; otherwise leave it alone.
 // symdb: (r5 = battle state object) -> none; r0 clobbered, flags set by chatbox_mask_eFlags2009F38 test
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E40.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_forceStateCIfFlag80Clear.yaml
 	thumb_local_start
-sub_8009E40:
+battle_forceStateCIfFlag80Clear:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15492,7 +15492,7 @@ sub_8009E40:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8009E54:
 	pop {pc}
-	thumb_func_end sub_8009E40
+	thumb_func_end battle_forceStateCIfFlag80Clear
 
 // symdb: Battle-state handler that, after the hand-validation helper returns a nonzero outcome code (1/2/7), records that result and busting-level category, writes BattlePhase to eStruct fields, gates phase-2 completion on battle-effect bits 0x8/0x2/0x400, then sets Index_01 (0x14 or 0) and clears StatePhaseAndInitFlag to advance the state machine.
 // symdb: (r5 = current battle state object) -> void; sets battle state fields BattlePhase->result byte,

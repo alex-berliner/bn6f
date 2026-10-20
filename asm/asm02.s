@@ -273,9 +273,9 @@ loc_8021BFE:
 // symdb: Scans the chip-folder table over a count of folder entries from unk_20018EC, returning how many matching id+code slots the player also holds in the pack, used by chatbox chip-script conditions.
 // symdb: (r0 = chip id, r1 = code letter value) -> r0 = number of matching slots found; flags set by
 // symdb: final compare/pop
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8021C02.yaml
-	thumb_func_start sub_8021C02
-sub_8021C02:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_countChipAcrossFolders.yaml
+	thumb_func_start chatbox_countChipAcrossFolders
+chatbox_countChipAcrossFolders:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	push {r0,r1}
@@ -329,7 +329,7 @@ off_8021C60:
 	.word unk_20018EC
 dword_8021C64:
 	.word 0x1FF
-	thumb_func_end sub_8021C02
+	thumb_func_end chatbox_countChipAcrossFolders
 
 // symdb: Zero-fills the 0xF00-byte extra work-RAM block whose pointer is held in the toolkit struct.
 // symdb: void zeroFillExtraWorkRam_e2002230(void); /* reads r10 (toolkit base), preserves r2/r3, returns

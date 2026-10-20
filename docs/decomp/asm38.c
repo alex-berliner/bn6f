@@ -6,7 +6,7 @@ void nullsub_38()
 
 
 // 0x3005cda
-int *sub_3005CDA()
+int *t1_dispatchJumpTable()
 {
     int v0; // r0
     int v2; // [sp+0h] [bp-4h]
@@ -779,7 +779,7 @@ LABEL_7:
                 v7 = *(v2 + 22);
                 v8 = (v7 & 0x40) << 6;
                 v9 = *(v2 + 16) | v8;
-                v10 = sub_3006594(v7, v8, v4);
+                v10 = sprite_transformPieceOffsets(v7, v8, v4);
                 v12 = (v9 | (((*(v2 + 12) + v11) & 0x1FF) << 16) | (v4[3] << 30)) ^ ((v4[3] & 0xF0) << 22) | (*(v2 + v5 + 14) + v10) & 0xFF | ((v4[4] & 0xF) << 14);
                 v13 = *(v2 + 20);
                 if ( v19 > 255 )
@@ -805,7 +805,7 @@ LABEL_7:
 
 
 // 0x3006594
-int __fastcall sub_3006594(int a1, int a2, _BYTE *a3)
+int __fastcall sprite_transformPieceOffsets(int a1, int a2, _BYTE *a3)
 {
     int v3; // r5
     __int16 v4; // r6

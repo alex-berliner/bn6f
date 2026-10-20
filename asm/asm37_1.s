@@ -96,13 +96,13 @@ sub_81418F0:
 	push {r4-r7,lr}
 	ldr r5, off_8141B14 // =eStruct2001010 
 	mov r0, #0
-	bl sub_81420C8
+	bl getSetFlagCount
 	push {r0}
 	mov r0, #1
-	bl sub_81420C8
+	bl getSetFlagCount
 	push {r0}
 	mov r0, #2
-	bl sub_81420C8
+	bl getSetFlagCount
 	pop {r1,r2}
 	add r0, r0, r1
 	add r0, r0, r2
@@ -760,9 +760,9 @@ dword_81420C4:
 // symdb: Given a group index into byte_8142120, returns how many of its contiguous event flags (base..base+count) are currently set, by tallying TestEventFlag results.
 // symdb: (r0 = index into flag-group table at byte_8142120) -> r0 = number of set flags in that group;
 // symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81420C8.yaml
-	thumb_func_start sub_81420C8
-sub_81420C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSetFlagCount.yaml
+	thumb_func_start getSetFlagCount
+getSetFlagCount:
 	push {r4-r7,lr}
 	ldr r7, off_814211C // =byte_8142120 
 	lsl r0, r0, #2
@@ -785,7 +785,7 @@ loc_81420E8:
 loc_81420EC:
 	mov r0, r6
 	pop {r4-r7,pc}
-	thumb_func_end sub_81420C8
+	thumb_func_end getSetFlagCount
 
 // symdb: Returns a per-MapGroup base value from a small table plus the caller's local index, used by the beast-spread object setup to build flag/object IDs for the current map group.
 // symdb: (r0 = local index/id to offset) -> r0 = tableBase[currentMapGroup] + r0; flags clobbered by call
@@ -1497,7 +1497,7 @@ loc_8142730:
 	pop {r4-r7,pc}
 	thumb_func_end getSoulWeaponsUnlockedCount
 
-// symdb: Clears the per-map Soul/Beast event-flag block via sub_814278C's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from sub_81427F2 is still set.
+// symdb: Clears the per-map Soul/Beast event-flag block via sub_814278C's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from getSoulWeaponId is still set.
 // symdb: (r0 = current map id) -> void; ZF from final TestEventFlag
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearSoulWeaponsMapState.yaml
 	thumb_local_start
@@ -1520,7 +1520,7 @@ loc_8142754:
 	ldr r0, off_81428D0 // =byte_2006670 
 	ldr r1, byte_8142774+20 // =0xa0 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	bl sub_81427F2
+	bl getSoulWeaponId
 	mov r0, r0
 	bl TestEventFlag // (flag: u16) -> !zf
 	beq locret_814276C
@@ -1599,9 +1599,9 @@ byte_81427E0:
 // symdb: Calls GetSoulWeaponsMapIndex and returns a 16-bit per-soul-weapon ID from the byte_8142804 lookup table (halfword stride, 8 entries 0x686-0x68D with a 0x0000 padding).
 // symdb: (r0 = ? passed through to GetSoulWeaponsMapIndex) -> r0 = halfword ID from byte_8142804[index];
 // symdb: no flag use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427F2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponId.yaml
 	thumb_local_start
-sub_81427F2:
+getSoulWeaponId:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex
 	ldr r1, off_8142800 // =byte_8142804 
@@ -1614,7 +1614,7 @@ off_8142800:
 byte_8142804:
 	.byte 0x86, 0x6, 0x87, 0x6, 0x88, 0x6, 0x89, 0x6, 0x8A, 0x6, 0x8B
 	.byte 0x6, 0x8C, 0x6, 0x8D, 0x6, 0x0, 0x0
-	thumb_func_end sub_81427F2
+	thumb_func_end getSoulWeaponId
 
 // symdb: Computes an index into the 256x256 map tile array (byte_2006670) for the tile under the cursor (camera position plus a caller-supplied 16.16 offset).
 // symdb: (r0 = 16.16 x-offset added to camera cursor x, r1 = 16.16 y-offset) -> r0 = tile index (x +

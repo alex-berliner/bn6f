@@ -244,7 +244,7 @@ void __noreturn battle_handleChipUseSubmenuInput_81235A4()
             *(v0 + 30) = 26;
             *(v0 + 40) = 26;
             *(v0 + 50) = 26;
-            if ( !sub_811F91C(*(*(v1 + oToolkit_JoypadPtr) + 4), 1u, 0, *(&dword_8123640 + *(v0 + 12))) )
+            if ( !submenu_moveGridCursor(*(*(v1 + oToolkit_JoypadPtr) + 4), 1u, 0, *(&dword_8123640 + *(v0 + 12))) )
             {
                 v10 = *(*(v1 + oToolkit_JoypadPtr) + 4);
                 v11 = *(*(v1 + oToolkit_Unk2001c04_Ptr) + 5);
@@ -6227,7 +6227,7 @@ void __noreturn sub_8128CD8()
     v6[12] = 0;
     v6[13] = 0;
     sub_8128F04();
-    sub_802B4D4(byte_201BB60, 36976, 100699648, v7);
+    sprite_initSequentialIndices(byte_201BB60, 36976, 100699648, v7);
     sub_8129104(byte_201BB60, 36960);
     battle_resetEStructRecords_8046664();
     battle_spawnEStructRecordsFromTable_80465A0(byte_8128CB0);
@@ -6294,7 +6294,7 @@ int sub_8128E2C()
             battle_renderChipSelectNames(byte_201BDB8, eDecompBuffer2013A00);
         if ( *(v0 + 32) != *(v0 + 34) )
         {
-            sub_802B438(&eTextScript201BA00, byte_201BDB8);
+            queueBcdDigitTiles(&eTextScript201BA00, byte_201BDB8);
             sub_81290A4(byte_201BDB8);
         }
     }
@@ -7397,7 +7397,7 @@ int decideBattleAction_8129AC8()
 
 
 // 0x8129af0
-signed int sub_8129AF0()
+signed int chatbox_runScriptIfSlotsFree()
 {
     int v0; // r5
     signed int v1; // r6

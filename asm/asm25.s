@@ -820,7 +820,7 @@ loc_808FE10:
 	bl sub_808FE64
 	bl spawnOverworldMapObjects1aLoop
 	bl ow_spawnMapObject1b
-	bl sub_808FF30
+	bl battle_initAIChipQueueSlot
 	bl spawnSevenOverworldMapObjects
 	mov r0, #1
 	bl initScenarioEffect_8003914
@@ -929,14 +929,14 @@ off_808FED4:
 	.word off_808FDB8
 	thumb_func_end battle_runBattleFrameForCyberWorld_808FEA4
 
-// symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from sub_808FF00's return value.
+// symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from spawn_getEncounterTableByte's return value.
 // symdb: (no args) -> r0 = 0 always; r4-r7 clobbered/restored, SpawnOverworldMapObject called N times
 // symdb: with r0=0x1A, r1=0, r2=0, r3=0x400000, r4=loop index
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnOverworldMapObjects1aLoop.yaml
 	thumb_local_start
 spawnOverworldMapObjects1aLoop:
 	push {r4-r7,lr}
-	bl sub_808FF00
+	bl spawn_getEncounterTableByte
 	mov r7, r0
 	mov r6, #0
 loc_808FEE2:
@@ -959,9 +959,9 @@ loc_808FEE2:
 // symdb: Looks up a per-map byte from a 4-entry table using MapNumber (or constant 3 if MapGroup==0x85), stores it at struct offset 0xA and also at 0xB unless story flag EVENT_BFB is set; returns the byte.
 // symdb: (r0 = toolkit (via r10), r5 = target struct) -> r0 = looked-up byte; writes r5+0xA always and
 // symdb: r5+0xB only if EVENT_BFB clear
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawn_getEncounterTableByte.yaml
 	thumb_local_start
-sub_808FF00:
+spawn_getEncounterTableByte:
 	push {r4,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -989,13 +989,13 @@ off_808FF28:
 	.word dword_808FF2C
 dword_808FF2C:
 	.word 0x2020201
-	thumb_func_end sub_808FF00
+	thumb_func_end spawn_getEncounterTableByte
 
 // symdb: Battle-side wrapper that initializes the AI chip-queue slot (0x58 bytes in EWRAM at 0x02011860) via the AI-chip-queue helper, with r0/r1/r2=0 selecting slot 0 and returning 0.
 // symdb: () -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF30.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initAIChipQueueSlot.yaml
 	thumb_local_start
-sub_808FF30:
+battle_initAIChipQueueSlot:
 	push {lr}
 	bl sub_80468BA
 	mov r0, #0
@@ -1004,7 +1004,7 @@ sub_808FF30:
 	bl battleObject_initAIChipQueueSlot_80468C6
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_808FF30
+	thumb_func_end battle_initAIChipQueueSlot
 
 // symdb: Toggles/clears a player's ally lockout flag and resets its associated counters during battle.
 // symdb: (r5 = ptr to battle-related struct) -> r5 preserved ; r1/r2/r3 clobbered ; NZ flags updated

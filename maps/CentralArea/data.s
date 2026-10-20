@@ -921,7 +921,7 @@ sub_8072B54:
 	blt loc_8072B6C
 	mov r0, #0
 	mov r1, #4
-	bl sub_80302C0
+	bl camera_raiseYWithLimit
 	mov r0, #0
 loc_8072B6C:
 	str r0, [r5,#0x38]

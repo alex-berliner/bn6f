@@ -1517,7 +1517,7 @@ sub_810D150::
 	ldrb r4, [r4,#oAIData_Version_16]
 	mov r0, #1
 	and r4, r0
-	bl sub_80E532C
+	bl object_spawnLinkedType41Helper
 	str r0, [r5,#oBattleObject_ExtraVars]
 	mov r0, #4
 	strb r0, [r6,#oAIState_ScriptId]

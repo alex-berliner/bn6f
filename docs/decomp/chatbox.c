@@ -2012,7 +2012,7 @@ signed int chatbox_evaluateChipScript_8041818()
     if ( v1 == 9 )
     {
         v6 = GetChipCountOfCode(v0[2] | (v0[3] << 8), v0[4]);
-        v2 = v6 - sub_8021C02(v0[2] | (v0[3] << 8), v0[4]);
+        v2 = v6 - chatbox_countChipAcrossFolders(v0[2] | (v0[3] << 8), v0[4]);
         v7 = v0[5];
         v8 = 0;
         if ( v2 != v7 )

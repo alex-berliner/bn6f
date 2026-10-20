@@ -307,7 +307,7 @@ loc_809D3A8:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_173E
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
-	bl sub_809DE60
+	bl ow_initSlipRunDirs
 loc_809D3BC:
 	bl overworld_CheckPlayerAdvanceForwardTrigger_809E46E
 	bl owPlayerInputTick_809DB60
@@ -1066,7 +1066,7 @@ locret_809D91A:
 off_809D91C:
 	.word sub_809D92C+1
 	.word ow_playerForcedWalkStep+1
-	.word sub_809D9A0+1
+	.word ow_playerAdvanceForwardStep+1
 off_809D928:
 	.word off_809D91C
 	thumb_func_end owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4
@@ -1145,9 +1145,9 @@ loc_809D98E:
 
 // symdb: Overworld player 'advance forward' step: if the player is on a 0x4C..0x4F trigger tile, add stored X/Y deltas to the player's position; otherwise clear EVENT_1717_PLAYER_ADVANCE_FORWARD and reset the player's action/jumptable state.
 // symdb: (r5 = OW player object, r0 unused) -> r0 = trigger id or 0; touches X/Y and state fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D9A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_playerAdvanceForwardStep.yaml
 	thumb_local_start
-sub_809D9A0:
+ow_playerAdvanceForwardStep:
 	push {lr}
 	mov r0, r5
 	add r0, #0x1c
@@ -1180,7 +1180,7 @@ off_809D9D8:
 	.word off_809D9DC
 off_809D9DC:
 	.word byte_809D07C
-	thumb_func_end sub_809D9A0
+	thumb_func_end ow_playerAdvanceForwardStep
 
 // symdb: Overworld player interaction handler: builds a target XYZ ahead of the player's facing direction, runs the coordinate trigger check (e.g. examining an NPC/object via the A button), and packs the resulting "interaction" bits into the OW player's `Unk_4c` word, also updating `Unk_0d` / `FacingDirection` on no-input.
 // symdb: (uses r5=OWPlayer, r10=Toolkit) -> r0 unused, r2 carries result ; sets OWPlayer.Unk_4c,
@@ -1724,7 +1724,7 @@ oowExitSlipRun_809DDF0:
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 	movflag EVENT_173F
 	bl SetEventFlagFromImmediate
-	bl sub_809DE60
+	bl ow_initSlipRunDirs
 locret_809DE2A:
 	pop {pc}
 	.balign 4, 0
@@ -1758,9 +1758,9 @@ locret_809DE5E:
 // symdb: Initializes the overworld player object's per-facing-direction slip-run delta values (Unk_38/Unk_3c) by indexing a map-group-dependent table (byte_809CFBC or byte_809D0DC) with the player's facing direction (dir*12).
 // symdb: (r5 = overworld player object) -> void; writes oOWPlayerObject_Unk_38 and Unk_3c from the
 // symdb: direction-indexed table entry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DE60.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_initSlipRunDirs.yaml
 	thumb_local_start
-sub_809DE60:
+ow_initSlipRunDirs:
 	push {lr}
 	mov r1, #0
 	ldr r7, off_809E060 // =eStruct2000aa0 
@@ -1789,7 +1789,7 @@ off_809DE8C:
 off_809DE90:
 	.word byte_809CFBC
 	.word byte_809D0DC
-	thumb_func_end sub_809DE60
+	thumb_func_end ow_initSlipRunDirs
 
 // symdb: Overworld player helper that clears SlipRun/related story flags when a guard story flag is set, otherwise only clears the SlipRun cancel flag unless B is held
 // symdb: () -> ; side effects: clears story/event flags via ClearEventFlagFromImmediate

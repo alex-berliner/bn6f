@@ -640,7 +640,7 @@ loc_81235E8:
 	ldrb r3, [r2,r1]
 	mov r1, #1
 	mov r2, #0
-	bl sub_811F91C
+	bl submenu_moveGridCursor
 	tst r0, r0
 	bne loc_8123628
 	mov r1, r10
@@ -11845,7 +11845,7 @@ sub_8128CD8:
 	ldr r0, off_8128D9C // =byte_201BB60
 	ldr r1, dword_8128DA0 // =0x9070 
 	ldr r2, dword_8128DA4 // =0x6008e00 
-	bl sub_802B4D4
+	bl sprite_initSequentialIndices
 	ldr r0, off_8128D9C // =byte_201BB60
 	ldr r1, dword_8128DBC // =0x9060 
 	ldr r2, dword_8128DC0 // =0x6008c00 
@@ -11882,7 +11882,7 @@ loc_8128D4A:
 	bl battle_renderChipSelectNames
 	ldr r0, off_8128DC4 // =eTextScript201BA00
 	ldr r1, off_8128DB0 // =byte_201BDB8
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	ldr r0, off_8128DB0 // =byte_201BDB8
 	bl sub_81290A4
 loc_8128D7C:
@@ -12006,7 +12006,7 @@ loc_8128E5C:
 loc_8128E64:
 	ldr r0, off_8128ED0 // =eTextScript201BA00
 	ldr r1, off_8128EC4 // =byte_201BDB8
-	bl sub_802B438
+	bl queueBcdDigitTiles
 	ldr r0, off_8128EC4 // =byte_201BDB8
 	bl sub_81290A4
 	ldr r0, off_8128EC4 // =byte_201BDB8
@@ -13685,7 +13685,7 @@ off_8129AAC:
 	.word off_8129AB0
 off_8129AB0:
 	.word decideBattleAction_8129AC8+1
-	.word sub_8129AF0+1
+	.word chatbox_runScriptIfSlotsFree+1
 	.word sub_8129B34+1
 	.word chipSelectInit_8129B90+1
 	.word sub_8129BB0+1
@@ -13721,9 +13721,9 @@ locret_8129AEC:
 // symdb: If both text-slot structs at unk_20251A0 have a zero byte at +7, clears bit31 on both slot pointers, sets the caller's state byte at r5+3 to 8, runs a chatbox script on the second slot via sub_812B3B4, and clears bit0 of r5+0x1b; otherwise returns without side effects.
 // symdb: (r5 = caller context struct, pre-set by caller; r0 unused on entry) -> r0 = script-runner
 // symdb: result; writes bit31 flags of both unk_20251A0 entries, r5[3] = 8, clears bit0 of r5[0x1b]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129AF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_runScriptIfSlotsFree.yaml
 	thumb_local_start
-sub_8129AF0:
+chatbox_runScriptIfSlotsFree:
 	push {r4-r7,lr}
 	mov r6, #0
 	ldr r4, off_8129B30 // =unk_20251A0 
@@ -13761,7 +13761,7 @@ locret_8129B2E:
 	.balign 4, 0
 off_8129B30:
 	.word unk_20251A0
-	thumb_func_end sub_8129AF0
+	thumb_func_end chatbox_runScriptIfSlotsFree
 
 // symdb: Folder-style menu tick: handles cursor up/down, A confirm, B exit, while screen is not fading.
 // symdb: void sub_8129B34(u32 r5 /* menu state struct */, u32 r6, u32 r7, u32 r10 /* toolkit */); returns

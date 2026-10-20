@@ -199,7 +199,7 @@ int __fastcall GetTotalChipCount(signed int a1)
 
 
 // 0x8021c02
-int __fastcall sub_8021C02(int a1, int a2)
+int __fastcall chatbox_countChipAcrossFolders(int a1, int a2)
 {
     int v2; // r10
     int v3; // r4

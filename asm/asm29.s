@@ -5118,7 +5118,7 @@ off_80A794C:
 	.word off_80A7950
 off_80A7950:
 	.word object_startFacingStep+1
-	.word sub_80A7A40+1
+	.word camera_sineEasePanStep+1
 	.word battle_beastspDelayCountdown+1
 	.word sub_80A7AD4+1
 	.word sub_80A7AE0+1
@@ -5243,9 +5243,9 @@ byte_80A7A38:
 // symdb: (r0 = unused, r6 = move descriptor {u16 counter@6, u32 step@0x24, start x/y@0x14/0x18, end
 // symdb: x/y@0x1c/0x20}, r5 = destination state {x@0xc, y@0x10}) -> r0 = 1 when the move finished, 0
 // symdb: while blocked/in progress; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7A40.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_sineEasePanStep.yaml
 	thumb_local_start
-sub_80A7A40:
+camera_sineEasePanStep:
 	push {r4-r7,lr}
 	bl battle_isInputAllowedOrBattleBusy_80A7C58
 	bne loc_80A7A88
@@ -5296,7 +5296,7 @@ loc_80A7A8C:
 	.balign 4, 0
 off_80A7AA0:
 	.word math_sinTable
-	thumb_func_end sub_80A7A40
+	thumb_func_end camera_sineEasePanStep
 
 // symdb: Runs a one-shot countdown from a delay value in a config struct and, once it expires, triggers sub_80A7BA2 with mode 2 (beast-SP related action), returning 1 only on the tick it fires.
 // symdb: (r6 = state struct: +3 active flag byte, +4 remaining-ticks halfword; r7 = config struct: +1
@@ -5358,17 +5358,17 @@ sub_80A7AE0:
 sub_80A7AFA:
 	push {r4-r7,lr}
 	add r0, r7, #1
-	bl sub_80A7B90
+	bl getSignedHalfword
 	lsl r1, r1, #0x10
 	str r1, [r5,#0xc]
 	add r0, r7, #3
-	bl sub_80A7B90
+	bl getSignedHalfword
 	lsl r1, r1, #0x10
 	str r1, [r5,#0x10]
 	bl sub_81420B0
 	str r0, [r5,#0x14]
 	add r0, r7, #5
-	bl sub_80A7B90
+	bl getSignedHalfword
 	mov r0, r1
 	strb r0, [r6,#2]
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -5445,9 +5445,9 @@ readU32Unaligned:
 // symdb: Reads a little-endian signed 16-bit halfword from [r0]/[r0+1] and returns it sign-extended in r1 (r0 is scratch, flags clobbered).
 // symdb: (r0 = pointer to two-byte field) -> r0 = sign-extended 16-bit value of [r0] | [r0+1]<<8; flags
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSignedHalfword.yaml
 	thumb_local_start
-sub_80A7B90:
+getSignedHalfword:
 	ldrb r1, [r0]
 	ldrb r2, [r0,#1]
 	lsl r2, r2, #8
@@ -5455,7 +5455,7 @@ sub_80A7B90:
 	lsl r1, r1, #0x10
 	asr r1, r1, #0x10
 	mov pc, lr
-	thumb_func_end sub_80A7B90
+	thumb_func_end getSignedHalfword
 
 	thumb_local_start
 sub_80A7B9E:
@@ -5541,7 +5541,7 @@ battle_checkBeastSpTrigger_80A7BC0:
 	bl battle_getAIDataVersionFields_81418E4
 	mov r4, r2
 	bl battle_getEnemyIndexFromMapGroup_8142080
-	bl sub_81420C8
+	bl getSetFlagCount
 	cmp r0, r4
 	bne locret_80A7C3C
 	movflag EVENT_1731
@@ -6497,7 +6497,7 @@ ow_initBeastEventActor:
 	mov r1, #0x1c
 	mov r2, #0x52 
 	bl sprite_load // (int a1, int a2, int a3) ->
-	bl sub_80A84C4
+	bl ow_computePointFromPlayerAngle
 	bl sprite_setAnimFromArgs
 	ldrb r0, [r5,#4]
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -6569,7 +6569,7 @@ loc_80A843A:
 	add r4, #1
 	strb r4, [r5,#9]
 loc_80A8470:
-	bl sub_80A85B4
+	bl npc_stepTowardTargetPos
 	bl npc_playerProximityEventTrigger
 loc_80A8478:
 	bl npc_syncScreenPosToCamera
@@ -6611,9 +6611,9 @@ off_80A84C0:
 // symdb: Computes an X/Y/Z point offset from the overworld player's position by a given angle (cos/sin * 0x6000) and stores it into a destination structure.
 // symdb: (r5 = dest struct, angle from sub_80A84FC in r0) -> writes [r5+0xC]=x, [r5+0x10]=y, [r5+0x14]=z;
 // symdb: no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A84C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_computePointFromPlayerAngle.yaml
 	thumb_local_start
-sub_80A84C4:
+ow_computePointFromPlayerAngle:
 	push {r4-r7,lr}
 	bl getRandomFadeLevel
 	lsl r0, r0, #1
@@ -6640,7 +6640,7 @@ off_80A84F4:
 	.word math_cosTable
 off_80A84F8:
 	.word math_sinTable
-	thumb_func_end sub_80A84C4
+	thumb_func_end ow_computePointFromPlayerAngle
 
 // symdb: Returns a random fade/brightness amount chosen from an 8-entry ramp table, for a screen or sprite fade effect.
 // symdb: () -> r0 = byte from byte_80A8510[0..7] (one of 0x00,0x1F,0x3F,0x7F,0x9F,0xBF,0xDF,0xFF); flags
@@ -6665,9 +6665,9 @@ byte_80A8510:
 // symdb: Computes the 0–3 facing direction for the object in r5 toward a target point (r0/r1 shifted to 16-bit), via battle_calcAngleOctant_800118A and the table at 0x080A8540 mapping octants 1..4 to directions {1,1,0,3}; on a zero vector returns the object's own direction byte at r5+0x4.
 // symdb: (r0 = target X (halfword, shifted to 16-bit), r1 = target Y; r5 = object with X at +0xC, Y at
 // symdb: +0x10, default dir at +0x4) -> r0 = direction index 0–3; flags clobbered by call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8518.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getDirTowardPoint.yaml
 	thumb_local_start
-sub_80A8518:
+battle_getDirTowardPoint:
 	push {r4,lr}
 	lsl r0, r0, #0x10
 	lsl r1, r1, #0x10
@@ -6691,18 +6691,18 @@ off_80A853C:
 	.word byte_80A8540
 byte_80A8540:
 	.byte 0x1, 0x1, 0x0, 0x3, 0x2, 0x0, 0x0, 0x0
-	thumb_func_end sub_80A8518
+	thumb_func_end battle_getDirTowardPoint
 
-// symdb: Reads two halfword arguments from [r6+0x1a] and [r6+0x1c], passes them to sub_80A8518 to derive a direction/animation index, and updates the sprite animation (via sprite_setAnimation, sprite_loadAnimationData, sprite_noShadow) only when that index differs from the cached value at [r5+4]; caches the new index on change.
+// symdb: Reads two halfword arguments from [r6+0x1a] and [r6+0x1c], passes them to battle_getDirTowardPoint to derive a direction/animation index, and updates the sprite animation (via sprite_setAnimation, sprite_loadAnimationData, sprite_noShadow) only when that index differs from the cached value at [r5+4]; caches the new index on change.
 // symdb: (r5 = object, r6 = object; args taken from [r6+0x1a] and [r6+0x1c]) -> void; r0 = direction
-// symdb: index from sub_80A8518
+// symdb: index from battle_getDirTowardPoint
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setAnimFromArgs.yaml
 	thumb_local_start
 sprite_setAnimFromArgs:
 	push {r4,lr}
 	ldrh r0, [r6,#0x1a]
 	ldrh r1, [r6,#0x1c]
-	bl sub_80A8518
+	bl battle_getDirTowardPoint
 	mov r4, r0
 	ldrb r1, [r5,#4]
 	cmp r0, r1
@@ -6734,9 +6734,9 @@ locret_80A857E:
 // symdb: Returns a fixed-point scalar (0x24000 normally, 0x12000 when calcAngle of (r6 - r5) yields exactly 0x20 or 0xA0) loaded from byte_80A85AC at offset r4; r4 is 0 or 4 based on the diagonal test.
 // symdb: (r5 = ptr to struct with 16.16 fixed x,y at +0xC/+0x10, r6 = ptr to struct with integer x,y at
 // symdb: +0x1A/+0x1B) -> r0 = 0x24000 (2.25) normally, 0x12000 (1.125) on diagonal; clobbers r0-r3, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8580.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getDirScale.yaml
 	thumb_local_start
-sub_80A8580:
+getDirScale:
 	push {r4,lr}
 	mov r4, #0
 	ldrh r0, [r6,#0x1a]
@@ -6763,18 +6763,18 @@ off_80A85A8:
 	.word byte_80A85AC
 byte_80A85AC:
 	.byte 0x0, 0x40, 0x2, 0x0, 0x0, 0x20, 0x1, 0x0
-	thumb_func_end sub_80A8580
+	thumb_func_end getDirScale
 
 // symdb: Moves an overworld NPC's fixed-point X/Y one step toward target coordinates read from r6, clamping to avoid overshoot, and writes a moved-flag to [r6+0xC].
 // symdb: (void; r5/r6 = actor & control structs set up by callees) -> r0 = clobbered; stores updated X at
 // symdb: [r5+0xC], Y at [r5+0x10], and moved-flag at [r6+0xC]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A85B4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_stepTowardTargetPos.yaml
 	thumb_local_start
-sub_80A85B4:
+npc_stepTowardTargetPos:
 	push {r4-r7,lr}
 	mov r4, #0
 	bl sprite_setAnimFromArgs
-	bl sub_80A8580
+	bl getDirScale
 	mov r2, r0
 	ldr r0, [r5,#0xc]
 	ldrh r1, [r6,#0x1a]
@@ -6819,7 +6819,7 @@ loc_80A8604:
 loc_80A8608:
 	str r4, [r6,#0xc]
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A85B4
+	thumb_func_end npc_stepTowardTargetPos
 
 // symdb: NPC-side trigger: once story flag 1717 is set, sets event flag 9D9 and switches the object's state when the player walks within 8 units of it.
 // symdb: (r5 = object, fields +0xc/+0x10 = its X/Y) -> void; sets EVENT_9D9 and rewrites object state
@@ -10003,7 +10003,7 @@ off_80A9DA0:
 off_80A9DA4:
 	.word object_timerStateTick+1
 	.word beastsp_updateMotion+1
-	.word sub_80A9E48+1
+	.word object_tick8SetState+1
 	.word e_decelRiseUpdate+1
 	.word sub_80A9EB6+1
 	thumb_func_end ow_spriteObjectUpdate
@@ -10102,9 +10102,9 @@ locret_80A9E46:
 // symdb: Object step: increments a u16 at +0x24; when it reaches 8, wraps it to 0 and stores 0xC into the u8 at +9.
 // symdb: (r5 = object struct) -> r0 clobbered; [r5+0x24] (u16) incremented, wraps 0..7; [r5+9] (u8) = 0xC
 // symdb: on wrap
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9E48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tick8SetState.yaml
 	thumb_local_start
-sub_80A9E48:
+object_tick8SetState:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x24]
 	add r0, #1
@@ -10117,7 +10117,7 @@ sub_80A9E48:
 	strb r0, [r5,#9]
 locret_80A9E5C:
 	pop {r4-r7,pc}
-	thumb_func_end sub_80A9E48
+	thumb_func_end object_tick8SetState
 
 // symdb: Per-frame update that moves an object (likely the Beast-Out/BeastSP sprite) with a decelerating motion for 30 frames, then resets its animation, restores its saved position, plays SFX 0x1AD and sets a state byte.
 // symdb: (r5 = object/entity struct, no arg registers) -> r0 = void; sets state byte [r5+9] = 0x10 when
@@ -10412,9 +10412,9 @@ off_80AA054:
 // symdb: Dispatches to an object's per-state step handler by indexing a function table with the state byte at [r5,#8] and tail-calling the selected handler.
 // symdb: (r0 = unused/scratch, r5 = object pointer with state id at +0x8) -> r0 = whatever the state
 // symdb: handler returns; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA058.yaml
-	thumb_func_start sub_80AA058
-sub_80AA058:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchStep.yaml
+	thumb_func_start object_dispatchStep
+object_dispatchStep:
 	push {lr}
 	ldr r0, off_80AA068 // =off_80AA06C 
 	ldrb r1, [r5,#8]
@@ -10429,7 +10429,7 @@ off_80AA06C:
 	.word object_initSprite+1
 	.word object_stepApproachTarget+1
 	.word sub_80AA0FC+1
-	thumb_func_end sub_80AA058
+	thumb_func_end object_dispatchStep
 
 // symdb: Initializes an overworld object's sprite from its object-record fields (sprite id, animation, priority) and stages its initial state.
 // symdb: () -> void; operates on the object pointer in r5, sets its state bytes and animation handle

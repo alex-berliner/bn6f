@@ -3334,7 +3334,7 @@ int __fastcall battle_spawnDelayedObject56(int a1, int a2, int a3, int a4)
 
 
 // 0x8010f96
-int __fastcall sub_8010F96(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObject56IntoRelatedObject2(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -3387,7 +3387,7 @@ int __fastcall sub_8010FD8(int a1, int a2, int a3, int a4)
 
 
 // 0x8011004
-int __fastcall sub_8011004(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObject56WithRomParam(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0
@@ -3418,7 +3418,7 @@ int __fastcall battle_callActorActionHandler_801102A(int a1)
 
 
 // 0x8011044
-int __fastcall sub_8011044(int a1, int a2)
+int __fastcall battle_runObjectTeardownByNameID(int a1, int a2)
 {
     return (off_801105C[a1][a2])();
 }
@@ -3745,7 +3745,7 @@ int __fastcall sub_8011438(int a1, int a2)
     int result; // r0
 
     if ( a1 )
-        result = sub_8011044(2, a1);
+        result = battle_runObjectTeardownByNameID(2, a1);
     else
         result = sub_8011384(a2);
     return result;
@@ -4068,7 +4068,7 @@ int calledOnBAtkProbInit_8011764()
 
 
 // 0x801177a
-int sub_801177A()
+int battle_dispatchNaviBonusHandler()
 {
     int v0; // r5
 
@@ -9496,7 +9496,7 @@ int battle_runBeastOutIntro_801498E()
 
 
 // 0x8014a00
-int sub_8014A00()
+int battle_clearObjectActionIfNoAiFlags()
 {
     int v0; // r5
     int v1; // r6
@@ -9631,7 +9631,7 @@ int sub_8014B98()
         if ( result >= 0 )
             return result;
         battle_ai_getActorInfo_801595E(*(v0 + 22));
-        sub_80BC844(*(v0 + 18), *(v0 + 19), v3, 20);
+        battle_spawnLinkedType1b(*(v0 + 18), *(v0 + 19), v3, 20);
         *(v1 + 16) = 48;
         *(v1 + 48) = 0;
         *(v1 + 1) = 4;
@@ -9840,7 +9840,7 @@ int sub_8014D70()
             if ( v7 != 11 )
                 v9 = byte_1CD;
             PlaySoundEffect(v9, v9, v8);
-            sub_80302B6(2, 60);
+            cameraSetShake(2, 60);
         }
         *(v1 + 16) = 54;
         *(v1 + 1) = 4;
@@ -10055,7 +10055,7 @@ int ai_attackStepRiseUp()
             if ( v7 >= 18 )
                 v9 = byte_1CD;
             PlaySoundEffect(v9, v9, v8);
-            sub_80302B6(2, 60);
+            cameraSetShake(2, 60);
         }
         *(v1 + 16) = 54;
         *(v1 + 1) = 4;
@@ -10280,7 +10280,7 @@ int __fastcall sub_80151D4(int a1, int a2, int a3)
                 if ( v16 != 23 )
                     v18 = byte_1CD;
                 PlaySoundEffect(v18, v18, v17);
-                sub_80302B6(2, 75);
+                cameraSetShake(2, 75);
             }
         }
         *(v4 + 16) = 54;
@@ -10469,7 +10469,7 @@ int battle_aiAttackWhiteFlashUpdate()
         if ( result >= 0 )
             return result;
         battle_ai_getActorInfo_801595E(*(v0 + 22));
-        sub_80BC844(*(v0 + 18), *(v0 + 19), v3, 20);
+        battle_spawnLinkedType1b(*(v0 + 18), *(v0 + 19), v3, 20);
         *(v1 + 16) = 48;
         *(v1 + 48) = 0;
         *(v1 + 1) = 4;
@@ -11162,7 +11162,7 @@ int __fastcall callPossiblyGetBattleEmotion_8015B54(int a1)
 // 0x8015b5c
 int __fastcall sub_8015B5C(int a1)
 {
-    return sub_8015BA8(a1);
+    return battle_getPlayerEmotionPriority(a1);
 }
 
 
@@ -11204,7 +11204,7 @@ signed int __fastcall possiblyGetBattleEmotion_8015B64(int a1)
 
 
 // 0x8015ba8
-signed int __fastcall sub_8015BA8(int a1)
+signed int __fastcall battle_getPlayerEmotionPriority(int a1)
 {
     int v1; // r4
     unsigned __int8 *v2; // r6
@@ -14691,7 +14691,7 @@ int hideSummonsWhenBlind_80181F6()
 
 
 // 0x801823c
-int sub_801823C()
+int battle_shakeRenderCoords()
 {
     int v0; // r5
     int v1; // r1
@@ -16375,7 +16375,7 @@ int battleObject_runPerFrameUpdate_801AA48()
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
                 applyChipAllianceEffect_8013AE4(v4);
-                sub_801AF0E();
+                battle_applyHitModifierFlags();
                 battle_applyFlattenHitStatus_800EB26();
                 battleObject_applyStatusEffect_801A554();
                 battleObject_clearChipSelectionOnAirShoe_801A2CC();
@@ -16462,7 +16462,7 @@ int battleObject_handleCollisionAndStatusTick_801AB40()
                 v3 = battle_incrementAllianceStatOnCollisionHit_801A6B4();
                 v4 = battle_buffTwoStatsPlus2OnEventF6_801A720(v3);
                 applyChipAllianceEffect_8013AE4(v4);
-                sub_801AF0E();
+                battle_applyHitModifierFlags();
                 battle_applyFlattenHitStatus_800EB26();
                 battle_applyStatusEffectFamily1();
                 battleObject_clearChipSelectionOnAirShoe_801A2CC();
@@ -16807,7 +16807,7 @@ int battleObject_applyHitModifierFlags_801AEB0()
 
 
 // 0x801af0e
-int sub_801AF0E()
+int battle_applyHitModifierFlags()
 {
     int v0; // r7
     char v1; // r4
@@ -17206,7 +17206,7 @@ LABEL_8:
         }
         else if ( *(v1 + 9) )
         {
-            return sub_801823C();
+            return battle_shakeRenderCoords();
         }
     }
 LABEL_29:
@@ -17288,7 +17288,7 @@ int __fastcall sub_801B4D4(int a1)
     }
     else if ( *(v1 + 9) )
     {
-        return sub_801823C();
+        return battle_shakeRenderCoords();
     }
 LABEL_28:
     sprite_zeroColorShader();
@@ -17380,7 +17380,7 @@ LABEL_8:
         }
         else if ( *(v1 + 9) )
         {
-            return sub_801823C();
+            return battle_shakeRenderCoords();
         }
     }
 LABEL_29:
@@ -17451,7 +17451,7 @@ LABEL_8:
             return sub_801813A();
         battle_isTimeStop();
         if ( !v9 )
-            return sub_801823C();
+            return battle_shakeRenderCoords();
         *(v1 + 24) = 0;
         if ( object_getFlag2() & 0x100 )
         {
@@ -17561,7 +17561,7 @@ LABEL_9:
         }
         else if ( *(v1 + 9) )
         {
-            return sub_801823C();
+            return battle_shakeRenderCoords();
         }
     }
 LABEL_30:
@@ -20560,7 +20560,7 @@ signed int releaseSlotByValue_801DC36()
 
 
 // 0x801dc60
-int sub_801DC60()
+int battleClearFlagBit2()
 {
     return flags_clearBits_20352C4_801BEC2(4);
 }
@@ -21237,7 +21237,7 @@ int sub_801E4B0()
 
 
 // 0x801e4f4
-int sub_801E4F4()
+int submenuDrawHpGauges()
 {
     int v0; // r5
     _WORD *v1; // r7

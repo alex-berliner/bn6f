@@ -272,13 +272,13 @@ loc_804618E:
 loc_80461A6:
 	cmp r1, #0xe4
 	beq loc_80461B2
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	add r0, #1
 	b loc_804618E
 loc_80461B2:
 	ldrb r1, [r0,#1]
 	add r1, #0xe4
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	add r0, #2
 	b loc_804618E
 loc_80461BE:
@@ -294,9 +294,9 @@ off_80461C8:
 // symdb: Animation-opcode handler: blits a 0x60-byte tile entry (12 rows of 8 bytes) from the sprite tile-data base at work+0x18 into the bit-packed render buffer, advancing the bit cursor by a per-bank width-table value and a per-row byte stride from work+0.
 // symdb: (r1 = tile/entry index into the 0x60-byte tile data array at work+0x18) -> r0 = destroyed;
 // symdb: updates work at byte_200A220 (bit cursor +0x1c, byte counter +0x3c), no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80461D0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_blitTileEntryToBitBuffer.yaml
 	thumb_local_start
-sub_80461D0:
+sprite_blitTileEntryToBitBuffer:
 	push {r0,r3,lr}
 	mov r3, r10
 	push {r3}
@@ -394,7 +394,7 @@ off_8046284:
 	.word byte_8043CA4
 	.word byte_8043E84
 	.word byte_8044064
-	thumb_func_end sub_80461D0
+	thumb_func_end sprite_blitTileEntryToBitBuffer
 
 	thumb_local_start
 sub_8046290:
@@ -594,7 +594,7 @@ loc_80463DC:
 	push {r1}
 	mov r1, #1
 	add r1, r1, r7
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	pop {r1}
 	sub r1, #4
 	bge loc_80463DC
@@ -604,7 +604,7 @@ loc_80463F4:
 	ble loc_804643C
 	sub r3, #1
 	mov r1, r0
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	b loc_80463F4
 loc_8046402:
 	sub r3, #0x80
@@ -620,7 +620,7 @@ loc_8046412:
 	ble loc_8046420
 	sub r3, #1
 	mov r1, r0
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	b loc_8046412
 loc_8046420:
 	pop {r0,r1}
@@ -633,7 +633,7 @@ loc_8046426:
 	push {r1}
 	mov r1, #1
 	add r1, r1, r7
-	bl sub_80461D0
+	bl sprite_blitTileEntryToBitBuffer
 	pop {r1}
 	sub r1, #4
 	bge loc_8046426
@@ -10607,9 +10607,9 @@ off_804C428:
 
 // symdb: Clears bits 0x4800 in the halfword at offset 0 of the toolkit RenderInfo pointer and writes it back, with no other observable side effects.
 // symdb: () -> nothing; writes back to [toolkit->renderInfoPtr]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C42C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearRenderFlags.yaml
 	thumb_local_start
-sub_804C42C:
+clearRenderFlags:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -10618,7 +10618,7 @@ sub_804C42C:
 	bic r0, r2
 	strh r0, [r1]
 	pop {r4-r7,pc}
-	thumb_func_end sub_804C42C
+	thumb_func_end clearRenderFlags
 
 	thumb_local_start
 sub_804C43C:

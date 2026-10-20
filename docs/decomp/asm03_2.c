@@ -130,12 +130,12 @@ int __fastcall sub_8046154(unsigned __int8 *a1, int a2, int a3, int a4)
         {
             if ( v15 == 228 )
             {
-                sub_80461D0(v13, v13[1] + 228);
+                sprite_blitTileEntryToBitBuffer(v13, v13[1] + 228);
                 v13 = (v17 + 2);
             }
             else
             {
-                sub_80461D0(v13, v15);
+                sprite_blitTileEntryToBitBuffer(v13, v15);
                 v13 = (v16 + 1);
             }
         }
@@ -149,7 +149,7 @@ int __fastcall sub_8046154(unsigned __int8 *a1, int a2, int a3, int a4)
 
 
 // 0x80461d0
-void __fastcall sub_80461D0(int a1, int a2)
+void __fastcall sprite_blitTileEntryToBitBuffer(int a1, int a2)
 {
     int *v2; // r8
     int v3; // r9
@@ -349,14 +349,14 @@ int __fastcall sub_80463A0(int a1)
             v12 = 1;
         }
         while ( v11 > 0 )
-            sub_80461D0(v12, v12);
+            sprite_blitTileEntryToBitBuffer(v12, v12);
         v13 = 4 * (v2 - 1);
         v18 = v17;
         v14 = 15;
         do
         {
             v15 = v13;
-            sub_80461D0(v14, ((v1 >> v13) & v14) + 1);
+            sprite_blitTileEntryToBitBuffer(v14, ((v1 >> v13) & v14) + 1);
             v13 = v15 - 4;
         }
         while ( v15 >= 4 );
@@ -372,13 +372,13 @@ int __fastcall sub_80463A0(int a1)
         do
         {
             v8 = v3;
-            sub_80461D0(v7, ((v1 >> v3) & v7) + 1);
+            sprite_blitTileEntryToBitBuffer(v7, ((v1 >> v3) & v7) + 1);
             v3 = v8 - 4;
         }
         while ( v8 >= 4 );
         v10 = v6;
         while ( v9 > 0 )
-            sub_80461D0(v10, v10);
+            sprite_blitTileEntryToBitBuffer(v10, v10);
     }
     return v18 + 3;
 }
@@ -5907,7 +5907,7 @@ int battle_dispatchJumpByActorSlotAndAction_804C404()
 
 
 // 0x804c42c
-int sub_804C42C()
+int clearRenderFlags()
 {
     int v0; // r10
     _WORD *v1; // r1

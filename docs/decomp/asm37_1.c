@@ -72,9 +72,9 @@ int sub_81418F0()
     int v1; // ST00_4
     int result; // r0
 
-    v0 = sub_81420C8(0);
-    v1 = sub_81420C8(1);
-    result = sub_81420C8(2) + v1 + v0;
+    v0 = getSetFlagCount(0);
+    v1 = getSetFlagCount(1);
+    result = getSetFlagCount(2) + v1 + v0;
     BYTE2(dword_2001024) = result;
     return result;
 }
@@ -435,7 +435,7 @@ int sub_81420B0()
 
 
 // 0x81420c8
-int __fastcall sub_81420C8(int a1)
+int __fastcall getSetFlagCount(int a1)
 {
     char *v1; // r7
     signed int v2; // r4
@@ -906,7 +906,7 @@ int clearSoulWeaponsMapState()
             break;
     }
     ZeroFillByWord(byte_2006670, 160);
-    v3 = sub_81427F2();
+    v3 = getSoulWeaponId();
     result = TestEventFlag(v3);
     if ( !v5 )
         result = sub_814227A(result);
@@ -936,7 +936,7 @@ int battle_getSoulWeaponBase_81427CE()
 
 
 // 0x81427f2
-int sub_81427F2()
+int getSoulWeaponId()
 {
     return *&byte_8142804[2 * GetSoulWeaponsMapIndex()];
 }

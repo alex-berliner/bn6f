@@ -1050,7 +1050,7 @@ sub_8089792:
 	push {r4-r7,lr}
 	bl battle_getScenarioEffectStateField_81421D0
 	add r0, #2
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x14
 	strb r0, [r5]
 	mov r0, #1
@@ -1213,7 +1213,7 @@ sub_808989C:
 	bl battle_tickChipLockout_8089CB4
 	beq loc_80898AE
 	mov r0, #7
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x38 
 	strb r0, [r5]
 loc_80898AE:
@@ -1277,7 +1277,7 @@ ai_setStateIfTeamAlive:
 	tst r0, r0
 	beq loc_8089918
 	mov r0, #8
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x44 
@@ -1510,7 +1510,7 @@ ai_chipLockoutWaitState:
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089AE4
 	mov r0, #0xc
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x68 
@@ -1561,7 +1561,7 @@ loc_8089B2A:
 
 // symdb: AI handler that locks the chip queue and queues a PwrAtk chip when the chip lockout timer is active.
 // symdb: (r5 = AIData*, r7 = ?, r10 = Toolkit*) -> r0 = 1 ; side effects: writes AIData[0x18]=0x70, calls
-// symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls sub_8089CA4(0x11), calls sub_8089CB0(0x1e).
+// symdb: chatbox_8045EDC with r1=Toolkit+0x10, calls ai_runChatScript(0x11), calls sub_8089CB0(0x1e).
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipLockoutLockoutAndAttack_8089B2E.yaml
 	thumb_local_start
 battle_tickChipLockoutLockoutAndAttack_8089B2E:
@@ -1572,7 +1572,7 @@ battle_tickChipLockoutLockoutAndAttack_8089B2E:
 	ldr r1, [r7,#0x10]
 	bl chatbox_8045EDC
 	mov r0, #0x11
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x1e
 	bl ai_setAIDataUnk18_8089CB0
 	mov r0, #0x70 
@@ -1613,7 +1613,7 @@ sub_8089B7E:
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089B90
 	mov r0, #0
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x78 
 	strb r0, [r5]
 loc_8089B90:
@@ -1645,7 +1645,7 @@ battle_waitChipLockoutEnd:
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BBC
 	mov r0, #0xd
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x80
 	strb r0, [r5]
 loc_8089BBC:
@@ -1685,7 +1685,7 @@ battle_aiChipLockoutWait:
 	bl battle_tickChipLockout_8089CB4
 	beq loc_8089BF6
 	mov r0, #0xe
-	bl sub_8089CA4
+	bl ai_runChatScript
 	mov r0, #0x88
 	strb r0, [r5]
 loc_8089BF6:
@@ -1792,15 +1792,15 @@ off_8089CA0:
 // symdb: Wrapper that forwards r0 (script index) and the TextScriptArchive* at [r5+0x30] to chatbox_runScript, queuing the AI-controlled entity's dialogue script.
 // symdb: (r0 = script index u8; r5 = AI/context struct whose +0x30 holds TextScriptArchive*) -> r0 =
 // symdb: chatbox_runScript return; calls chatbox_runScript(archive=[r5+0x30], idx=r0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_runChatScript.yaml
 	thumb_local_start
-sub_8089CA4:
+ai_runChatScript:
 	push {r4-r7,lr}
 	mov r1, r0
 	ldr r0, [r5,#0x30]
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089CA4
+	thumb_func_end ai_runChatScript
 
 // symdb: Stores the halfword from r0 into AIData+0x18 (Unk_18) of the AIData struct pointed to by r5.
 // symdb: (r0 = halfword value, r5 = AIData*) -> (none, void); side effect: *(AIData* r5 + 0x18) = r0 as

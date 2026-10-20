@@ -458,7 +458,7 @@ int weatherComp_init_808FDC0()
     sub_808FE64(v0, v1, v2, v3);
     spawnOverworldMapObjects1aLoop();
     ow_spawnMapObject1b();
-    sub_808FF30();
+    battle_initAIChipQueueSlot();
     spawnSevenOverworldMapObjects();
     initScenarioEffect_8003914(1u, v9, v10, v11);
     sub_809003C();
@@ -547,7 +547,7 @@ int spawnOverworldMapObjects1aLoop()
     int v0; // r7
     int v1; // r6
 
-    v0 = sub_808FF00();
+    v0 = spawn_getEncounterTableByte();
     v1 = 0;
     do
     {
@@ -560,7 +560,7 @@ int spawnOverworldMapObjects1aLoop()
 
 
 // 0x808ff00
-int sub_808FF00()
+int spawn_getEncounterTableByte()
 {
     int v0; // r5
     int v1; // r10
@@ -584,7 +584,7 @@ int sub_808FF00()
 
 
 // 0x808ff30
-int sub_808FF30()
+int battle_initAIChipQueueSlot()
 {
     sub_80468BA();
     battleObject_initAIChipQueueSlot_80468C6(0, 0, 0);

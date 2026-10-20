@@ -371,7 +371,7 @@ mapscript_806096A:
 byte_806096C::
 	ms_clear_event_flag byte1=0xFF event16_2=EVENT_1640
 	ms_jump_if_flag_set byte1=0xFF event16_2=EVENT_A28 destination4=byte_8060989
-	ms_init_eStruct200a6a0 ptr1=battle_dispatchJumpByActorSlotAndAction_804C404+1 ptr5=sub_804C42C+1 word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battle_dispatchJumpByActorSlotAndAction_804C404+1 ptr5=clearRenderFlags+1 word9=0x00000000
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_1640
 
 byte_8060989::

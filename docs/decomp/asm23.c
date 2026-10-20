@@ -295,7 +295,7 @@ signed int __fastcall sub_8089792(int a1)
     int v2; // r0
 
     v2 = battle_getScenarioEffectStateField_81421D0();
-    sub_8089CA4(v2 + 2);
+    ai_runChatScript(v2 + 2);
     *v1 = 20;
     return 1;
 }
@@ -451,7 +451,7 @@ signed int __fastcall sub_808989C(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8089CA4(7);
+        ai_runChatScript(7);
         *v1 = 56;
     }
     return 1;
@@ -514,7 +514,7 @@ signed int ai_setStateIfTeamAlive()
 
     if ( battle_countAliveActorsOnTeam_8142C20(16) )
     {
-        sub_8089CA4(8);
+        ai_runChatScript(8);
         ai_setAIDataUnk18_8089CB0(30);
         *v0 = 68;
     }
@@ -717,7 +717,7 @@ signed int __fastcall ai_chipLockoutWaitState(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8089CA4(12);
+        ai_runChatScript(12);
         ai_setAIDataUnk18_8089CB0(30);
         *v1 = 104;
     }
@@ -771,7 +771,7 @@ signed int __fastcall battle_tickChipLockoutLockoutAndAttack_8089B2E(int a1)
     if ( !v3 )
     {
         chatbox_8045EDC(2, *(v2 + 16));
-        sub_8089CA4(17);
+        ai_runChatScript(17);
         ai_setAIDataUnk18_8089CB0(30);
         *v1 = 112;
     }
@@ -812,7 +812,7 @@ signed int __fastcall sub_8089B7E(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8089CA4(0);
+        ai_runChatScript(0);
         *v1 = 120;
     }
     return 1;
@@ -842,7 +842,7 @@ signed int __fastcall battle_waitChipLockoutEnd(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8089CA4(13);
+        ai_runChatScript(13);
         *v1 = -128;
     }
     return 1;
@@ -876,7 +876,7 @@ signed int __fastcall battle_aiChipLockoutWait(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8089CA4(14);
+        ai_runChatScript(14);
         *v1 = -120;
     }
     return 1;
@@ -958,7 +958,7 @@ signed int __fastcall sub_8089C78(int a1)
 
 
 // 0x8089ca4
-void __fastcall sub_8089CA4(int a1)
+void __fastcall ai_runChatScript(int a1)
 {
     int v1; // r5
 

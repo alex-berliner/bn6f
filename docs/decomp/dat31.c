@@ -889,7 +889,7 @@ int sub_810D150()
     int result; // r0
 
     v3 = *(v0 + 22) & 1;
-    *(v1 + 96) = sub_80E532C();
+    *(v1 + 96) = object_spawnLinkedType41Helper();
     *v2 = 4;
     result = 0;
     *(v2 + 2) = 0;

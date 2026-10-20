@@ -1362,7 +1362,7 @@ int sub_809AF7C()
 
 
 // 0x809b00c
-int sub_809B00C()
+int ow_setupCoordTriggerRequest()
 {
     int v0; // r5
     int v1; // r10
@@ -1447,7 +1447,7 @@ signed int ow_beastTransformStep()
 
 
 // 0x809b0d8
-signed int sub_809B0D8()
+signed int ow_periodicObjectSpawner()
 {
     int v0; // r5
     int v1; // r10
@@ -1514,7 +1514,7 @@ int sub_809B130()
 
 
 // 0x809b7a4
-int sub_809B7A4()
+int owPlayer_applyStepAnimTable()
 {
     int v0; // r5
     int v1; // r10
@@ -1917,7 +1917,7 @@ int sub_809C09C()
 
 
 // 0x809c7a0
-int sub_809C7A0()
+int camera_restartWithScriptHead()
 {
     int v0; // r5
     _DWORD *v1; // r0
@@ -2603,7 +2603,7 @@ unsigned int owPlayer_update_809D348()
                     SetEventFlagFromImmediate(23, 63);
                 ClearEventFlagFromImmediate(23, 61);
                 ClearEventFlagFromImmediate(23, 62);
-                sub_809DE60();
+                ow_initSlipRunDirs();
             }
         }
     }
@@ -3129,7 +3129,7 @@ int __fastcall ow_playerForcedWalkStep(int a1, int a2, int a3)
 
 
 // 0x809d9a0
-int sub_809D9A0()
+int ow_playerAdvanceForwardStep()
 {
     int v0; // r5
     signed int v1; // r0
@@ -3380,7 +3380,7 @@ int oowExitSlipRun_809DDF0()
                 ClearEventFlagFromImmediate(23, 61);
                 ClearEventFlagFromImmediate(23, 62);
                 SetEventFlagFromImmediate(23, 63);
-                result = sub_809DE60();
+                result = ow_initSlipRunDirs();
             }
         }
     }
@@ -3408,7 +3408,7 @@ int endSlipRunState_809DE30()
 
 
 // 0x809de60
-int sub_809DE60()
+int ow_initSlipRunDirs()
 {
     int v0; // r5
     int v1; // r10

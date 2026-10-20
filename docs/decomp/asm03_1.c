@@ -8057,7 +8057,7 @@ int handleExitSubmenu_803AA24()
     int v3; // r2
     char v4; // zf
 
-    result = sub_803C068(16, 48);
+    result = chatbox_stackPop(16, 48);
     if ( !v4 )
     {
         *(v0 + 19) = 0;
@@ -8425,7 +8425,7 @@ int submenu_tryExit()
     int v3; // r2
     char v4; // zf
 
-    result = sub_803C068(17, 144);
+    result = chatbox_stackPop(17, 144);
     if ( !v4 )
     {
         *(v0 + 19) = 0;
@@ -9624,7 +9624,7 @@ signed int __fastcall sub_803C040(signed int result, int a2)
 
 
 // 0x803c068
-signed int __fastcall sub_803C068(int a1, int a2)
+signed int __fastcall chatbox_stackPop(int a1, int a2)
 {
     int v2; // r5
     int v3; // r6
