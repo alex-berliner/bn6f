@@ -903,10 +903,10 @@ locret_800F320: // endif
 	mov pc, lr
 	thumb_func_end battle_SetObjectAIDataField78_800F318
 
-// symdb: Consume one chip from the battle object's queue and clear the current chip ID when the queue empties
-// symdb: (r5 = BattleObject*) -> ; side effects: writes r5->ChipsHeld, conditionally writes r5->Chip;
-// symdb: clobbers r0 and NZCV
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_decrementChipHeldAndClearChip_800F322.yaml
+// symdb: Decrements a battle object's held-chip count, and when the last held chip is dropped, clears the selected-chip slot to the "no chip" marker (0xFFFF).
+// symdb: void battleObject_decrementChipsHeldAndClearChipIfEmpty_800F322(struct BattleObject* obj /* r5
+// symdb: */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_decrementChipHeldAndClearChip_800F322.yaml
 	thumb_func_start battleObject_decrementChipHeldAndClearChip_800F322
 battleObject_decrementChipHeldAndClearChip_800F322:
 	ldrb r0, [r5,#oBattleObject_ChipsHeld]
@@ -6603,9 +6603,9 @@ loc_8011AC4:
 	pop {r4,pc}
 	thumb_func_end busterBugChargeShotDamageCalcHappensHere_8011A7E
 
-// symdb: Zeroes all fields of the AI attack-vars block pointed to by r7 and returns a constant 0x33 status value.
-// symdb: (r7 = pointer to oAIAttackVars struct) -> r0 = 0x33; flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearAttackVars.yaml
+// symdb: Zeroes the AI opponent's per-battle attack state variables and returns the AI module's "done" status (0x33).
+// symdb: u32 ai_resetAttackVars(AIAttackVars* vars /* r7 */); sets NZ flags from the returned value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_clearAttackVars.yaml
 	thumb_local_start
 ai_clearAttackVars:
 	mov r0, #0
@@ -6987,9 +6987,10 @@ sub_8011D20:
 	pop {pc}
 	thumb_func_end sub_8011D20
 
-// symdb: Initializes an AI attack's variables for a Beast-Power-style strike: resets charge/delay/boost, sets fixed extra damage, and computes the attack damage via the scaled-base helper.
-// symdb: (r0-r3 unused) -> r0 = 0x4a; touches AIAttackVars fields via r7, clobbers r0-r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_initBeastPwrAttackVars.yaml
+// symdb: Resets an AI attack's per-attack state block and computes the base damage for a Beast Out power attack, returning the next AI state (0x4A).
+// symdb: u32 ai_initBeastPwrAttackVars(BattleContext* r5 context, AIAttackVars* r7 vars, u32 r10
+// symdb: ignored); returns u32 r0 = 0x4A (next state)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_initBeastPwrAttackVars.yaml
 	thumb_local_start
 ai_initBeastPwrAttackVars:
 	push {lr}
@@ -7137,11 +7138,10 @@ battle_initBeastPwrAtkVars:
 	pop {pc}
 	thumb_func_end battle_initBeastPwrAtkVars
 
-// symdb: Initializes the AI attack-vars block for the Beast-SP charged attack: clears its state, sets damage from the beast-power formula, and returns a cycle/timer value.
-// symdb: (no args; entity AI struct in r7) -> r0 = 0x52 (value stored by caller, likely a
-// symdb: countdown/interval); sets InitFlag=0, ChargeCycles=2, ChargeReadyFlag=0, ChipUseDelay=0,
-// symdb: AttackBoost=0, ExtraDamage=0x9E, Damage=scaled base
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_beastSpAtkInit.yaml
+// symdb: AI-script handler that initialises the Beast-Out special attack of an enemy AI, resetting its charge bookkeeping and computing base damage.
+// symdb: void ai_beastSpAtkInit(r5 basePower, r7 aiAttackVars, r10 helperInput); returns r0 = next script
+// symdb: opcode (0x52), r5 = value left by battle_beastPwrAtk_addScaledBase_8012642; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_beastSpAtkInit.yaml
 	thumb_local_start
 ai_beastSpAtkInit:
 	push {lr}
@@ -7852,10 +7852,9 @@ tomahawkmanBPwrAtk_init_8012258:
 	pop {pc}
 	thumb_func_end tomahawkmanBPwrAtk_init_8012258
 
-// symdb: Initializes the AI attack-vars block for an attack (damage 10, extra damage 138, boost 6, timer 6) and returns state 9.
-// symdb: (r7 = entity AI attack-vars struct) -> r0 = 9 (state/phase code); fields Damage=10,
-// symdb: ExtraDamage=138, InitFlag=4, AttackBoost2=6, TimerOrCycles=6 written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupAttackVars.yaml
+// symdb: Fills the AI's attack-variables struct with fixed default values (damage 10, extra damage 0x8A, init flag 4, boost 6, timer 6) and returns 9.
+// symdb: u32 ai_setupAttackVars(struct AIAttackVars *vars /* r7 */); returns 9 in r0; clobbers N/Z flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_setupAttackVars.yaml
 	thumb_local_start
 ai_setupAttackVars:
 	push {lr}
@@ -11018,6 +11017,10 @@ off_801369C:
 	.word eBattleNaviStats203CB10
 	thumb_func_end GetBattleNaviStats203CB10Addr
 
+// symdb: Returns the address of the NaviStats record at the given index in the battle-side navi-stats table.
+// symdb: u32 battle_getNaviStatsEntryAddr(u32 index); // r0 = index, returns r0 = base + index *
+// symdb: oNaviStats_Size
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleNaviStats2034A60Addr.yaml
 	thumb_local_start
 GetBattleNaviStats2034A60Addr:
 	mov r1, #oNaviStats_Size
@@ -11065,6 +11068,9 @@ GetBattleNaviStatsByte:
 	pop {r6,pc}
 	thumb_func_end GetBattleNaviStatsByte
 
+// symdb: Returns one sign-extended byte from a NaviStats record, selecting the record by alliance flag and the field by byte offset.
+// symdb: (u32 alliance, u32 offset) -> s32; clobbers r1, flags; preserves r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetBattleNaviStatsSignedByte.yaml
 	thumb_func_start GetBattleNaviStatsSignedByte
 GetBattleNaviStatsSignedByte:
 	push {r6,lr}
@@ -11159,6 +11165,10 @@ loc_8013732:
 	mov pc, lr
 	thumb_func_end SetNaviStatsHword
 
+// symdb: Reads a halfword field from one of the two Navi stats records indexed off the toolkit's NaviStatsPtr.
+// symdb: u16 naviStats_readHword(u32 record /* r0: 0 = first, nonzero = second */, u32 field_offset /*
+// symdb: r1: byte offset within oNaviStats */, Toolkit* toolkit /* r10 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetNaviStatsHword.yaml
 	thumb_local_start
 GetNaviStatsHword:
 	cmp r0, #0
@@ -13172,10 +13182,10 @@ battle_incrementAIDataUnk4c_8014432:
 	mov pc, lr
 	thumb_func_end battle_incrementAIDataUnk4c_8014432
 
-// symdb: Resets the battle object's AI counter-hit chain field to the 0xFFFF 'none' sentinel.
-// symdb: (r5 = battle object) -> void; writes 0xFFFF to oAIData_CounterHitChainFlag of the object's AI
-// symdb: data; no return value, no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_clearCounterHitChainFlag.yaml
+// symdb: Clears a battle object's counter-hit chain flag by writing 0xFFFF to the CounterHitChainFlag field of its AIData.
+// symdb: void ai_clearCounterHitChainFlag(battleObject *obj in r5); returns AIData pointer in r3;
+// symdb: clobbers r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_clearCounterHitChainFlag.yaml
 	thumb_func_start ai_clearCounterHitChainFlag
 ai_clearCounterHitChainFlag:
 	push {lr}
@@ -20638,7 +20648,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / ai_dispatchHitElementHandler / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start

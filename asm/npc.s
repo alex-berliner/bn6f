@@ -1353,6 +1353,10 @@ NPCCommand_jump_if_flag_clear:
 // 0x06 event16_1
 // set event flag
 // event16_1 - event flag to set
+// symdb: NPC script command that sets an event flag whose id is read from the script.
+// symdb: u32 NPCCommand_set_event_flag(u32 r6_script_ptr) // r10: script context, lr: return; returns
+// symdb: updated script pointer in r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_event_flag.yaml
 NPCCommand_set_event_flag:
 	push {lr}
 	add r0, r6, #1
@@ -1367,6 +1371,10 @@ NPCCommand_set_event_flag:
 // 0x07 event16_1
 // clear event flag
 // event16_1 - event flag to clear
+// symdb: NPC script opcode handler that clears every event flag named in a 16-bit bitfield embedded after the opcode, then advances the script pointer.
+// symdb: void NPCCommand_clear_event_flag(u8** scriptPtr in r6, flagCtx in r10); updates r6 (script
+// symdb: pointer) and sets NZ flags from the new r6; clobbers r0, r1, r3, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_clear_event_flag.yaml
 NPCCommand_clear_event_flag:
 	push {lr}
 	add r0, r6, #1
@@ -1939,6 +1947,10 @@ NPCCommand_remove_shadow:
 	thumb_local_start
 // 0x24
 // set the current npc's sprite to the current PET navi's sprite
+// symdb: NPC script command that changes an overworld NPC's sprite to the current PET Navi's NPC sprite and reattaches its shadow.
+// symdb: void NPCCommand_set_sprite_to_cur_pet_navi(OverworldNPCObject* npc /*r5*/, u32 counter /*r6*/);
+// symdb: // reads r10 (via callee GetCurPETNavi); returns r6 = counter+1; clobbers r0,r1,r3,lr and NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_set_sprite_to_cur_pet_navi.yaml
 NPCCommand_set_sprite_to_cur_pet_navi:
 	push {lr}
 	bl GetCurPETNavi // () -> u8
@@ -2667,6 +2679,10 @@ NPCCommand_set_unk_flags_60_flag_0x200:
 	thumb_local_start
 // 0x41
 // clear the flag OW_NPC_UNK_FLAGS_60_0x200 from the current npc's flags
+// symdb: NPC script VM command that sets bit 0x200 in the overworld NPC's UnkFlags_60 and advances the script command counter.
+// symdb: (r5 = overworld NPC object pointer, r6 = script command counter) -> r6 = counter + 1; clobbers
+// symdb: r0, r1 and NZCV flags; returns to caller in lr via pop {pc}
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_clear_unk_flags_60_flag_0x200.yaml
 NPCCommand_clear_unk_flags_60_flag_0x200:
 	push {lr}
 	mov r0, #(OW_NPC_UNK_FLAGS_60_0x200 >> 4)
@@ -2867,6 +2883,11 @@ off_809F3E0:
 // the code suggests something was removed
 // unused1to4 - unused
 // destination5 - script to jump to
+// symdb: NPC script opcode handler that jumps execution to a 16-bit target read from the script, storing the new script position in r6.
+// symdb: u32 npc_jumpAlt(u32 script_ptr_r6); // in: r6 = NPC script pointer, lr = return; out: r6 = new
+// symdb: script position (word read at ptr+5), r2 = passthrough from ReadNPCScriptWord; clobbers r0, r1,
+// symdb: r3, lr and NZCV flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/NPCCommand_jump_alt.yaml
 NPCCommand_jump_alt:
 	push {lr}
 	add r0, r6, #5

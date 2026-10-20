@@ -8135,7 +8135,7 @@ loc_803C8AC:
 	thumb_func_end sub_803C888
 
 // symdb: Per-frame wireless link manager tick: cleans up disconnected link slots and runs a state step of the 0x200AF80 link-state machine.
-// symdb: () -> r0 = rfu_pollLinkState return; no meaningful flags
+// symdb: () -> r0 = sub_803C90C return; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateLinkManager.yaml
 	thumb_local_start
 rfu_updateLinkManager:

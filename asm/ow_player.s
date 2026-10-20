@@ -2527,6 +2527,10 @@ WriteOWPlayerLayerIndexOverride:
 	mov pc, lr
 	thumb_func_end WriteOWPlayerLayerIndexOverride
 
+// symdb: Clears the overworld player object's layer-index override so the player renders at its default layer again.
+// symdb: u32 ClearOWPlayerLayerIndexOverride(u32 toolkit /* r10 */); returns r3 = overworld player object
+// symdb: pointer
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ClearOWPlayerLayerIndexOverride.yaml
 	thumb_func_start ClearOWPlayerLayerIndexOverride
 ClearOWPlayerLayerIndexOverride:
 	mov r3, r10

@@ -1727,9 +1727,11 @@ byte_808CF14:
 	.byte 0x0, 0x0, 0xFD, 0xF, 0xCF, 0xF, 0x3, 0x0, 0x0, 0x0
 	thumb_func_end init_applyBeastSpScenarioEventFlags
 
-// symdb: Returns whether the event flag associated with the current map group's AI mode is set.
-// symdb: () -> r0 = 1 if event flag table[aiMode] is set, else 0; ZF clobbered by TestEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_testMapGroupEventFlag.yaml
+// symdb: Tests the event flag assigned to the current map group's AI mode and returns 1 if it is set, 0 otherwise.
+// symdb: int ai_testMapGroupEventFlag(void); /* in: r10 = map group context used by
+// symdb: ai_getAIModeForMapGroup_808D084, lr = return; out: r0 = 1 if the group's event flag is set else
+// symdb: 0; r7 passed through unchanged; clobbers r1, r3, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_testMapGroupEventFlag.yaml
 	thumb_local_start
 ai_testMapGroupEventFlag:
 	push {r4-r7,lr}
@@ -1875,10 +1877,12 @@ off_808D030:
 	.word dword_808CA44
 	thumb_func_end jackIn_attemptJackInCheck_808CFB8
 
-// symdb: Converts 16.16 absolute world (X,Y) returned by sub_808D060 into a packed (panelCol, panelRow) tile offset on a BattleObject, packed back into r2/r3 and stored to the object's PanelX/PanelY
-// symdb: (r0 = xQ12, r1 = yQ12, r5 = BattleObject*, r10 = Toolkit) -> r2 = (panelCol<<1 | low bit), r3 =
-// symdb: (panelRow<<1 | low bit) ; writes [r5+8] and [r5+9] bytes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_computePanelOffsetFromCoords_808D034.yaml
+// symdb: Converts a battle object's fixed-point world coordinates (plus an AI/map-group offset) into byte-sized panel X/Y grid coordinates, stores them in the object, and returns the flat panel lookup index.
+// symdb: PanelOffsetResult battleObject_computePanelOffsetFromCoords(u32 coordX /*r0*/, u32 coordY
+// symdb: /*r1*/, BattleObject* obj /*r5*/, BattleState* state /*r10, passed through to callee*/); returns
+// symdb: r0 = panel X, r1 = panel Y, r2 = panel index (X*0x100 + Y); r4 and r5 preserved; nz c v
+// symdb: clobbered but not read by callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_computePanelOffsetFromCoords_808D034.yaml
 	thumb_local_start
 battleObject_computePanelOffsetFromCoords_808D034:
 	push {r4,r5,lr}
@@ -1904,10 +1908,10 @@ battleObject_computePanelOffsetFromCoords_808D034:
 	pop {r4,r5,pc}
 	thumb_func_end battleObject_computePanelOffsetFromCoords_808D034
 
-// symdb: Looks up an AI behaviour pair for the current map group's battle by indexing a small 4-byte-pair table with the AI mode returned from `ai_getAIModeForMapGroup_808D084`.
-// symdb: (r10 = Toolkit ptr) -> r0 = signed byte 0 from byte_808D07C[2*mode+0], r1 = signed byte 1 from
-// symdb: byte_808D07C[2*mode+1] ; no other side effects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForChipForMapGroup_808D060.yaml
+// symdb: Looks up the current map group's AI mode and returns a pair of signed byte parameters from a small table, in r0 and r1.
+// symdb: u32 ai_getChipParamsForMapGroup_808D060(void /* r10 = AI/map-group context */); returns r0 =
+// symdb: param0 (s8 sign-extended), r1 = param1 (s8 sign-extended); clobbers r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForChipForMapGroup_808D060.yaml
 	thumb_local_start
 ai_getAIModeForChipForMapGroup_808D060:
 	push {lr}
@@ -1927,9 +1931,9 @@ byte_808D07C:
 	.byte 0x4, 0xE, 0xC, 0x4, 0xA, 0x4, 0xFC, 0xF6
 	thumb_func_end ai_getAIModeForChipForMapGroup_808D060
 
-// symdb: Returns the AI mode selector for the current map group (3 for map group 0x85, otherwise MapNumber byte).
-// symdb: () -> r0 = AI mode index (3 if MapGroup==0x85, else oToolkit_GameStatePtr->MapNumber)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForMapGroup_808D084.yaml
+// symdb: Returns the AI mode to use for the current map group — 3 for special map group 0x85, otherwise the AI-mode byte stored in the game state.
+// symdb: u32 ai_getAIModeForMapGroup(Toolkit* r10); reads r10, returns r0; clobbers r1 and NZCV flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_getAIModeForMapGroup_808D084.yaml
 	thumb_local_start
 ai_getAIModeForMapGroup_808D084:
 	push {lr}

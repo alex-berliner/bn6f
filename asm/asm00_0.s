@@ -3781,6 +3781,10 @@ BGScrollCB_BG1FastLeftScroll:
 	mov pc, lr
 	thumb_func_end BGScrollCB_BG1FastLeftScroll
 
+// symdb: Background scroll callback that scrolls the BG3 layer steadily to the left, decrementing a shared scroll counter by 8 each frame.
+// symdb: void BGScrollCB_BG3FastLeftScroll(u32 toolkit /* r10 */); // returns via lr; clobbers r1, r2 and
+// symdb: flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/BGScrollCB_BG3FastLeftScroll.yaml
 	thumb_func_start BGScrollCB_BG3FastLeftScroll
 BGScrollCB_BG3FastLeftScroll:
 	ldr r1, off_8001AB0 // =eBGScrollCBCounters

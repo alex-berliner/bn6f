@@ -15972,6 +15972,11 @@ ow_forceKeyState:
 	.balign 4, 0x00
 	thumb_func_end ow_forceKeyState
 
+// symdb: Runs a script (r0 = script index) from the fixed NaviCust dialog text archive in the chatbox, forwarding the chatbox context in r10.
+// symdb: void chatbox_runNaviCustDialog(u8 script_idx /* r0 */, ChatboxCtx* ctx /* r10 */) — returns
+// symdb: chatbox_runScript's live r2/r4/r5/r6/r7 to the caller; clobbers r0-r3, flags, lr; preserves
+// symdb: r4-r7.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/RunTextScriptNaviCustDialog.yaml
 	thumb_local_start
 RunTextScriptNaviCustDialog:
 	push {lr}

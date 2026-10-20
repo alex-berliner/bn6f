@@ -2748,9 +2748,10 @@ off_8027708:
 	.word TextScriptFirstBattleTutorials
 	thumb_func_end battle_runFirstTutorialChatboxStep
 
-// symdb: Dispatches the chip-select animation tick for a BattleObject based on its S20364C0 sub-state (JumpOffset00)
-// symdb: (r5 = * S20364C0 self) -> ()
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_802770C.yaml
+// symdb: Runs one tick of the chip-select screen animation state machine for a battle object, dispatching through a per-step handler table and then running the shared animation tick.
+// symdb: void battleObject_chipSelectAnimTick_802770C(self r5 /* * S20364C0 */, r10); returns r2-r6 and
+// symdb: passes r8-r12 through from the state handler; clobbers r0, r1, r7, lr and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_chipSelectAnimTick_802770C.yaml
 	thumb_local_start
 battleObject_chipSelectAnimTick_802770C: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -22309,6 +22310,10 @@ camera_targetPlayer:
 	mov pc, lr
 	thumb_func_end camera_targetPlayer
 
+// symdb: Returns the current camera position (X, Y, Z) from the active camera object in r0/r1/r2.
+// symdb: GetCameraXYZ(void) -> (r0 = camera X, r1 = camera Y, r2 = camera Z); inputs r10 = toolkit base,
+// symdb: clobbers r3
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetCameraXYZ.yaml
 	thumb_func_start GetCameraXYZ
 GetCameraXYZ:
 	mov r3, r10

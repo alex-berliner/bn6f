@@ -1014,6 +1014,11 @@ MapScriptCutsceneCmd_set_event_flag_range: // 8035DF8
 // event flags cleared are in the range [event16_2, event16_2+byte1) (interval notation)
 // byte1 - number of event flags to clear
 // event16_2 - starting event flag
+// symdb: Cutscene/map-script command that clears a run of event flags, reading a count byte and a start-index halfword from the script stream.
+// symdb: void MapScriptCutsceneCmd_clear_event_flag_range(u32 cursor /*r7*/, u32 scriptCtx /*r10*/); //
+// symdb: returns updated cursor in r7, leftover r2/r5 from ClearEventFlagRange, always returns with N=0
+// symdb: Z=0 (r0=1)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_clear_event_flag_range.yaml
 MapScriptCutsceneCmd_clear_event_flag_range: // 8035E16
 	push {lr}
 	mov r6, #1
@@ -3015,6 +3020,13 @@ CutsceneCameraCmd_init_shake_effect:
 // scroll the camera to the player automatically
 // the scroll starts off fast, then progressively deaccelerates
 // see CutsceneCamera_GetAutoScrollDeltaForCoord for how the scroll works
+// symdb: Cutscene-camera command that auto-scrolls the overworld camera toward the player on X, Y and Z each tick, returning 1 while it has not yet arrived; on arrival it clears the command's wait fields and advances the cutscene counter.
+// symdb: void CutsceneCameraCmd_autoScrollToPlayer_8037104(u32 r1_counter, u32 r5_cmdState, u32
+// symdb: r10_toolkit); returns r0=1; live-out r1 (counter, +1 on arrival), r2 (first differing player
+// symdb: coord, 0 on arrival), r3 (camera Z), r6 (camera obj ptr), r7 (player obj ptr); flags =
+// symdb: CMP(camera, player-X) for axis 0, else CMP(camera, player) on the first still-differing axis,
+// symdb: else CMP(0, ~counter) from the ADDS-counter+1 path; clobbers nz,c,v,r2-r4,r6-r7,lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCameraCmd_auto_scroll_to_player.yaml
 CutsceneCameraCmd_auto_scroll_to_player:
 	push {lr}
 	mov r7, r10
@@ -4396,6 +4408,11 @@ CutsceneCmd_spawn_cutscene_process:
 // 0x13 byte1
 // kill a cutscene process
 // byte1 - cutscene script ptr struct offset to write to (which cutscene process to kill)
+// symdb: Map-script cutscene command "kill cutscene process": replaces one cutscene process slot's script with the dummy (immediately-ending) script, identified by an operand byte in the script.
+// symdb: void CutsceneCmd_kill_cutscene_process(u32 processTable /*r5*/, u32 scriptPos /*r7*/, void* lr);
+// symdb: // out: r4 = slot index read from the script, r7 = scriptPos+2 (past the operand), r0 = 1 with
+// symdb: NZ flags set from it; clobbers r0, r6, lr, C, V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_kill_cutscene_process.yaml
 CutsceneCmd_kill_cutscene_process:
 	push {lr}
 	ldr r0, =DummyCutsceneScript
@@ -4537,6 +4554,10 @@ MapScriptCutsceneCmd_jump_if_current_navi_equals:
 // jump if the player's current navi doesn't equal byte1
 // byte1 - navi to compare the current navi with
 // destination2 - script to jump to
+// symdb: Cutscene script command that jumps to a script address if the navi currently installed in the PET differs from a given navi id operand.
+// symdb: u32 MapScriptCutsceneCmd_jump_if_current_navi_not_equal(u32 cursor /* r7 */, u32 r10, lr);
+// symdb: returns new script cursor in r7; sets NZ from constant 1; clobbers r0 r3 r4 r6 lr, C/V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_jump_if_current_navi_not_equal.yaml
 MapScriptCutsceneCmd_jump_if_current_navi_not_equal:
 	push {lr}
 	mov r6, #1
@@ -5981,6 +6002,10 @@ MapScriptCutsceneCmd_init_eStruct200a6a0:
 	thumb_local_start
 // 0x39/0x59
 // call run_eStruct200a6a0_Callback_8002484
+// symdb: Map-script command handler that invokes the current cutscene callback, advances the script counter past the command, and always returns "keep running" (r0 = 1).
+// symdb: u32 mapScript_cmd_runCutsceneCallback(u32 scriptCounter /* r7 in, dead */, u32 *out /* r7 out
+// symdb: */); // tail-branchless: sets NZ flags from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_run_eStruct200a6a0_callback.yaml
 MapScriptCutsceneCmd_run_eStruct200a6a0_callback:
 	push {lr}
 	bl run_eStruct200a6a0_Callback_8002484
@@ -6073,6 +6098,10 @@ CutsceneCmd_terminate_bg_scroll_effect:
 // 0x3b/0x60 byte1
 // init scenario effect
 // byte1 - scenario effect to initialize (0=soul weapons counter, 1=mr. weather comp rainbow gauge)
+// symdb: Map-script cutscene command handler that reads a one-byte scenario-effect id from the script and initializes that scenario effect.
+// symdb: u32 MapScriptCutsceneCmd_init_scenario_effect(u32 script_pos /* r7 */); returns advanced script
+// symdb: pointer in r7; sets flags NZ from "mov r0,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_init_scenario_effect.yaml
 MapScriptCutsceneCmd_init_scenario_effect:
 	push {lr}
 	mov r6, #1
@@ -6087,6 +6116,11 @@ MapScriptCutsceneCmd_init_scenario_effect:
 	thumb_local_start
 // 0x3c/0x61
 // end scenario effect
+// symdb: Map-script "end_scenario_effect" command handler that tears down the running scenario/cutscene effect and advances the script cursor.
+// symdb: void MapScriptCutsceneCmd_end_scenario_effect(u32 r2, u32 r3, u32 r4, u32 r6, u32 r7 /*script
+// symdb: cursor*/, u32 r8, u32 r9, u32 r11, u32 r12); returns r0 = 1 (command done), Z flag clear;
+// symdb: r4/r5/r6 preserved, r7 incremented past the one-slot command.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_end_scenario_effect.yaml
 MapScriptCutsceneCmd_end_scenario_effect:
 	push {lr}
 	bl endScenarioEffectMaybe_8003940
@@ -6099,6 +6133,11 @@ MapScriptCutsceneCmd_end_scenario_effect:
 // 0x3d/0x62 byte1
 // init minigame effect
 // byte1 - minigame effect to initialize (0=AquaMan, 1=SlashMan, 2=TenguMan, 3=ElecMan, 4=EraseMan, 5=GroundMan).
+// symdb: Map-script cutscene command that reads a one-byte ID operand and starts the matching minigame effect, then advances the script cursor past it.
+// symdb: void MapScriptCutsceneCmd_init_minigame_effect(u32 r7 /*script cursor*/); returns u32 r0 = 1
+// symdb: (command handled, NZ set from it), updated cursor in r7 (r7 += 2); r2-r5 left as callee leaves
+// symdb: them
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_init_minigame_effect.yaml
 MapScriptCutsceneCmd_init_minigame_effect:
 	push {lr}
 	mov r6, #1
@@ -6167,6 +6206,11 @@ CutsceneCmd_encryption_cmd_80382de:
 	thumb_local_start
 // 0x69
 // call endOfSection_NaviSetup_80340F6
+// symdb: Cutscene command handler that runs the "NaviSetup" end-of-section handler on the script state, then advances the script pointer to the next command and reports success.
+// symdb: void CutsceneCmd_navi_cmd_80340f6(void) — takes the cutscene script state in r4-r12 (r7 = script
+// symdb: pointer); returns the callee's r2..r12 passthrough with r7 incremented, sets r0 = 1, and NZ
+// symdb: flags from that value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_navi_cmd_80340f6.yaml
 CutsceneCmd_navi_cmd_80340f6:
 	push {lr}
 	bl endOfSection_NaviSetup_80340F6
