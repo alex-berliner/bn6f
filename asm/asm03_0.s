@@ -201,10 +201,10 @@ jt_8026584:
 	.word battle_checkAnyAdjacentTile+1
 	thumb_func_end battle_beastJumpLockOn_8026554
 
-// symdb: Walks a 0x7F-terminated table of signed tile offsets, mirrors each by the object's facing direction, and returns nonzero as soon as a checker on the resulting relative tile succeeds.
-// symdb: (r0 = arg pushed to stack; r6 = base object/pointer, r7 = checker arg, custom ABI) -> r0 = first
-// symdb: nonzero checker result, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsets.yaml
+// symdb: Scans a facing-offset table, computing candidate positions (frontDirection × offset + base) and testing each against the target via sub_8026450 until a hit or the 0x7F terminator is found.
+// symdb: battle_checkFacingOffsets(r0=target, r5=objPtr, r6=base, r7=dir) -> r0 hit/0, r1 r2 r3 side-
+// symdb: results; sets nz/c/v; preserves r4 r5 r6 r7 lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsets.yaml
 	thumb_local_start
 battle_checkFacingOffsets:
 	push {r4,lr}

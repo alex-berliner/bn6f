@@ -971,11 +971,12 @@ loc_8089700:
 	pop {r4-r7,pc}
 	thumb_func_end battle_scenarioEffectInputStep
 
-// symdb: Battle custom-screen handler that maps joypad (A/B/L/R) inputs over the active scenario-effect slot in the chip-select state, playing the appropriate cue and returning a non-zero code on a successful change.
-// symdb: in (r10 = toolkit, lr) -> r0 = 0 (no change) / 1 (select changed) / 2 (confirm) / 3 (cancel) ;
-// symdb: side effects: PlaySoundEffect, mutation of scenario-effect state field via sub_81421C8, and
-// symdb: reads scenario-effect active flag and sub_8142A84.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInputHandler_8089704.yaml
+// symdb: Processes one frame of joypad input during the battle scenario-effect (jack-in) selection menu; handles A to confirm/jack-in, B to cancel, and L/R to cycle the highlighted effect index with 4-step wraparound.
+// symdb: void battleObject_scenarioEffectInputHandler_8089704(void) — reads r2 (extra PlaySoundEffect
+// symdb: parameter), r10 (toolkit pointer); returns r0 = action code {0 idle/blocked, 1 shoulder cycled,
+// symdb: 2 A advanced, 3 B unselected} with NZ flags; clobbers r1, r4–r7 via callee wrappers, preserves
+// symdb: r4–r7, r10 across the call boundary.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInputHandler_8089704.yaml
 	thumb_local_start
 battleObject_scenarioEffectInputHandler_8089704:
 	push {r4-r7,lr}

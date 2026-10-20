@@ -5806,6 +5806,11 @@ MapScriptCutsceneCmd_play_music:
 	thumb_local_start
 // 0x32/0x4f hword1 byte3 byte4
 // call sound_80006A2 with r0=hword1, r1=byte3, r2=byte4
+// symdb: Map-script cutscene command handler that reads a 16-bit sound ID and two 8-bit parameters (channel, volume) from the script stream, plays the sound, and advances past the 5-byte command.
+// symdb: u32 cutscenePlaySoundCmd(u32 *r7 /* script_ptr in, advanced ptr out */, u32 r12 /* channel/flag
+// symdb: passthrough */); sets NZ from final mov r0,#1 (always N=0, Z=0). Preserves r5, r8, r9, r10, r12;
+// symdb: clobbers r0, r1, r6, v, c, lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCutsceneCmd_sound_cmd_80380ea.yaml
 MapScriptCutsceneCmd_sound_cmd_80380ea:
 	push {lr}
 	mov r6, #1
@@ -6438,6 +6443,10 @@ CutsceneCmd_cutscene_run_or_end_secondary_continuous_map_script:
 // store or load the current game progress to or from a buffer
 // byte1 - operation type (0=store, 1=load)
 // byte2 - index of the buffer to use
+// symdb: Cutscene script opcode that reads a 2-byte progress-slot ID and a 1-byte selector, then either snapshots current game progress to a buffer or restores it from that buffer.
+// symdb: u32 r7 (script cursor) + u32 r10 (toolkit ptr) in; r2,r3,r4,r5,r7 + NZ flags out; clobbers
+// symdb: r0,r6,c,v,lr; preserves r5 across the save/load call
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CutsceneCmd_store_or_load_game_progress_buffer_maybe_803843c.yaml
 CutsceneCmd_store_or_load_game_progress_buffer_maybe_803843c:
 	push {lr}
 	mov r3, r10

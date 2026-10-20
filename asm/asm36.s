@@ -6531,9 +6531,11 @@ dword_81331FC:
 	.word 0xFF060606
 	thumb_func_end gfx_fillAllBandedTilemaps_81330AC
 
-// symdb: Thunk that reads the battle object's CurState (offset 0) and tail-calls one of several per-state handlers via an indirect jump table
-// symdb: (r5 = BattleObject*) -> tail-call to selected handler ; side effects none of its own
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchUpdateByState_8133200.yaml
+// symdb: Per-frame state-machine dispatch for a battle object: reads a state byte from the object at [r5+1] and jumps through a five-entry word table to the matching handler (init overlay, update/effect, or draw).
+// symdb: void battleObject_dispatchUpdateByState_8133200(void)  // in: r5 = battle object ptr (state byte
+// symdb: at [r5+1], valid 0/4/8/12/16); r2,r4,r6-r10 passed through; out: r0-r3,r5,r8-r12,flags from
+// symdb: handler; preserved: r4,r5,r6,r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_dispatchUpdateByState_8133200.yaml
 	thumb_func_start battleObject_dispatchUpdateByState_8133200
 battleObject_dispatchUpdateByState_8133200:
 	push {r4-r7,lr}
@@ -9464,11 +9466,11 @@ off_81347A0:
 	.word dword_81331FC
 	thumb_func_end battleObject_submenuRenderAngerGauge_8134740
 
-// symdb: A-button confirm step for the custom-style AI/anger menu: stores the picked slot index, plays the select SFX, flips a state byte through a 2-byte cursor pair, then dispatches a per-mode handler via `battle_fieldLockDispatch_8120018` and rewrites the three tracked target slots so they no longer match their stored enemy references.
-// symdb: (r2 = scene ctx, r5 = AI menu state, r8 = ?, r10 = Toolkit, lr) -> r0 = 1 if A was newly
-// symdb: pressed, else 0; side effects: PlaySoundEffect(SOUND_MENU_SELECT), writes AIData-related fields
-// symdb: on r5 and the cursor pair at s_2001c04, calls battle_fieldLockDispatch_8120018
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_selectAIDataHandler_81347A4.yaml
+// symdb: Handles the A-button confirm in the battle-object (AI/Navon) selection menu: saves the current slot indices, plays the select sound, updates toolkit navigation state, dispatches a field-lock change, then rescans the 30-entry selection table to remap saved indices to loop positions.
+// symdb: u32 battleObject_selectAIDataHandler_81347A4(void *battleCtx /*r5*/, void *toolkitPtr /*r10*/,
+// symdb: u32 soundParam /*r2*/, u32 r8) -> nz(1=confirmed / 0=no A press), r8-r12 updated via field-lock
+// symdb: dispatch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_selectAIDataHandler_81347A4.yaml
 	thumb_local_start
 battleObject_selectAIDataHandler_81347A4:
 	push {r4-r7,lr}
@@ -12587,10 +12589,11 @@ loc_8135E5E:
 	pop {r4,r5,r7,pc}
 	thumb_func_end battle_collectKeyItemCounts
 
-// symdb: Scans a 4-entry ID table and, for each ID, subtracts the number of toolkit-array references (entries whose first halfword + 0x90 matches the ID) from CheckKeyItem(id); if a surplus remains and the battle-object descriptor's byte 3 is nonzero, appends a {id, surplus} 4-byte record to the caller-provided buffer.
-// symdb: (r6 = output buffer pointer) -> r0 = clobbered; writes 4-byte {id:halfword, count:halfword}
-// symdb: records into buffer, advancing past the last one written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectKeyItemSurplus.yaml
+// symdb: Builds a list of surplus key-item IDs (and their surplus counts) for the 4 battle-relevant key items, accounting for copies consumed by toolkit entries.
+// symdb: u32 battle_collectKeyItemSurplus(u32 outList /* r6, output write cursor; returns advanced
+// symdb: pointer in r6 */); /* r10 = toolkit base, read via callee; clobbers r0,r1,nzcv; r2,r3,r5 also
+// symdb: set by callees */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_collectKeyItemSurplus.yaml
 	thumb_local_start
 battle_collectKeyItemSurplus:
 	push {r4,r5,r7,lr}
@@ -14747,11 +14750,10 @@ off_8136DDC:
 	.word unk_30019A0
 	thumb_func_end sub_8136DC8
 
-// symdb: Run a saved function table entry for the Beast-SP context, saving/restoring AIData timer fields across the call
-// symdb: (r0 = beast-sp subsystem object ptr, r1 = 0x28) -> r0 = ? (caller treats as unknown); side
-// symdb: effects: writes EWRAM 0x2009398..0xC and calls one of 0x24 dispatch targets then invokes
-// symdb: beastsp_dispatchHandler_81356D4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_runBeastSpFunction_8136DE0.yaml
+// symdb: Per-frame tick of the Beast SP dialog state machine: saves the 3-halfword dialog triple from the battle object, dispatches the active dialog handler via a 36-entry jump table, runs the beast-SP handler dispatcher, then restores the triple.
+// symdb: void battleObject_runBeastSpDialogStep(void /* inputs r2 r4 r6 r9 r10 r11 r12 -> outputs r8 r9
+// symdb: r10 r11 r12; preserves r4 r5 r6 r7 */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_runBeastSpFunction_8136DE0.yaml
 	thumb_func_start battleObject_runBeastSpFunction_8136DE0
 battleObject_runBeastSpFunction_8136DE0:
 	push {r4-r7,lr}
@@ -15698,7 +15700,7 @@ locret_81374C2:
 	thumb_func_end navicust_counterThenShowDialog
 
 // symdb: If chatbox eFlags2009F38 bit 0x80 is clear, writes the byte 0x74 to the caller-supplied byte pointer; otherwise does nothing.
-// symdb: void chatbox_store74IfFlag80Clear_81374C4(u8* dest /* r5 */)  // no return value, flags not meaningful to callers
+// symdb: void sub_81374C4(u8* dest /* r5 */)  // no return value, flags not meaningful to callers
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_store74IfFlag80Clear_81374C4.yaml
 	thumb_local_start
 chatbox_store74IfFlag80Clear_81374C4:
@@ -15837,7 +15839,7 @@ locret_813759A:
 	thumb_func_end navicust_queueBeastOutDialog
 
 // symdb: If chatbox event flag 0x80 is clear, writes textbox command byte 0x8C to the caller-supplied byte; otherwise does nothing.
-// symdb: void chatbox_queueCmd8C_ifFlag80Clear_813759C(u8* dest /* r5 */)
+// symdb: void sub_813759C(u8* dest /* r5 */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_queueCmd8C_ifFlag80Clear_813759C.yaml
 	thumb_local_start
 chatbox_queueCmd8C_ifFlag80Clear_813759C:

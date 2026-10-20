@@ -1372,10 +1372,10 @@ off_8046928:
 	.word byte_2011860
 	thumb_func_end battle_testEntityStateFlag
 
-// symdb: Tests each hitbox slot in the AIData's collision hitbox table against the panel grid and updates a per-direction-overlap bitfield plus a "hitbox touches any enemy/ally panel" object flag.
-// symdb: (r5 = AIData pointer) -> r3 written back to AIData+0x03 (battle-object Flags bits 1/3), r7
-// symdb: (overlap bitmap) stored to AIData+0x28; side effects: mutates the caller's AIData
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateHitboxPanelOverlap_804692C.yaml
+// symdb: Tests each sub-hitbox point in the object's current-frame panel list against the visible battle-panel grid rectangle, builds a 32-bit per-point overlap mask, and folds it into the object's control byte.
+// symdb: u32 battleObject_updateHitboxPanelOverlap(u32 r5_obj); /* returns updated ctrl byte in r3;
+// symdb: clobbers r0-r2,r4,r6-r9,r12 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_updateHitboxPanelOverlap_804692C.yaml
 	thumb_local_start
 battleObject_updateHitboxPanelOverlap_804692C:
 	push {r5,lr}
@@ -10429,10 +10429,10 @@ locret_804C240:
 	.balign 4, 0x00
 	thumb_func_end tickActionTimer_804C214
 
-// symdb: Initializes and steps the frame counter for the battle screen-flash/background-fill effect driven by its caller.
-// symdb: (r5 = effect state object, r10 = toolkit; uses toolkit->oToolkit_Unk2009740_Ptr) -> r0 = void;
-// symdb: sets state fields 0x11/0x18 and struct bytes 0-3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_flashTickFrames.yaml
+// symdb: Ticks a 2-frame palette flash animation, priming a BGRA slot and advancing its colour-index/ramp bytes each cycle until the fade completes.
+// symdb: void battle_flashTickFrames(u32 state_obj /*r5*/, u32 toolkit /*r10*/); /* r5 preserved; flags
+// symdb: clobbered */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_flashTickFrames.yaml
 	thumb_local_start
 battle_flashTickFrames:
 	push {r4-r7,lr}
@@ -11168,10 +11168,10 @@ dword_804C76C:
 	.word 0x1F09
 	thumb_func_end battle_setupBackgroundGfx
 
-// symdb: Sets the BG3/BG2 viewport offset, dispatches a "post-init" callback chosen from r5+0xd, rolls a random ambient-SFX timer, and copies a 0x20×0x20 tile block to BG tile area 3.
-// symdb: (r5 = battle object pointer, r10 = toolkit ptr) -> side effects only (modifies RenderInfo, calls
-// symdb: a thunk, sets SFX timer, copies tiles)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBattleFieldTilesAndSfxTimer_804C770.yaml
+// symdb: Per-frame setup of the battlefield background: enables tile-render mode, shifts the scroll window by 12px, dispatches the stage-type tile layout, ticks the periodic sound-effect timer, and uploads the 32×32 background tile block to VRAM.
+// symdb: void battleObject_initBattleFieldTilesAndSfxTimer_804C770(u32 battle_obj /*r5*/, u32 toolkit
+// symdb: /*r10*/) -> {r2, r8, r9, r10, r11, r12}; flags: nzcv clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_initBattleFieldTilesAndSfxTimer_804C770.yaml
 	thumb_local_start
 battleObject_initBattleFieldTilesAndSfxTimer_804C770:
 	push {r4-r7,lr}

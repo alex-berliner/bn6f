@@ -26,7 +26,7 @@ sub_814189A:
 	thumb_func_end sub_814189A
 
 // symdb: Writes 1 to the "event struct active" flag byte (0x200101D, eStruct2001010+0xD) and returns 0 with the Z flag set.
-// symdb: void eventStruct_setActiveFlag_81418AA(void); // in: lr only; out: r0=0, Z set / N clear; r4-r7 preserved
+// symdb: void sub_81418AA(void); // in: lr only; out: r0=0, Z set / N clear; r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/eventStruct_setActiveFlag_81418AA.yaml
 	thumb_local_start
 eventStruct_setActiveFlag_81418AA:
@@ -39,7 +39,7 @@ eventStruct_setActiveFlag_81418AA:
 	thumb_func_end eventStruct_setActiveFlag_81418AA
 
 // symdb: Zeroes one status byte (offset 0x0D) of the fixed struct at 0x2001010 and returns.
-// symdb: void clear_eStruct2001010_flagByte0D_81418B6(void); // in: lr only; out: Z set, N clear (from "mov r0,#0"); r4-r7 preserved,
+// symdb: void sub_81418B6(void); // in: lr only; out: Z set, N clear (from "mov r0,#0"); r4-r7 preserved,
 // symdb: r0 clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clear_eStruct2001010_flagByte0D_81418B6.yaml
 	thumb_local_start
@@ -904,7 +904,7 @@ battleScenarioEffect_isActive_814216E:
 	thumb_func_end battleScenarioEffect_isActive_814216E
 
 // symdb: Increments the scenario effect step counter (byte at 0x200078E) by one.
-// symdb: void scenarioEffectAdvanceStep_8142178(void); // no meaningful register inputs; r4-r7 preserved, r0 and flags (nzcvq)
+// symdb: void sub_8142178(void); // no meaningful register inputs; r4-r7 preserved, r0 and flags (nzcvq)
 // symdb: clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/scenarioEffectAdvanceStep_8142178.yaml
 	thumb_local_start
@@ -1757,7 +1757,7 @@ off_81428D0:
 	thumb_func_end battleObject_getByIndex_81428C2
 
 // symdb: Returns the chosen 8-way direction index for the soul-weapon/beast cursor: if the player's facing has bit0 set, returns the result of sub_8142952(state, facing, 1) directly; otherwise compares the two neighbour directions (facing-1 and facing+1) by their camera-distance from the player and returns the index whose cursor is farther away.
-// symdb: (r0 = cursor state from ow_getPlayerTileMapIndex_8142990? passed implicitly) -> r0 = chosen direction index (0-7); no
+// symdb: (r0 = cursor state from sub_8142990? passed implicitly) -> r0 = chosen direction index (0-7); no
 // symdb: meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/selectSoulWeaponCursorDir.yaml
 	thumb_func_start selectSoulWeaponCursorDir
@@ -1897,11 +1897,10 @@ loc_81429C4:
 	pop {r4-r7,pc}
 	thumb_func_end get_isAdjacentPos
 
-// symdb: Writes the per-direction player-coordinate delta table into a scenario-effect buffer, indexed by the player's overworld facing direction.
-// symdb: (no explicit r0/r1) -> r0 = nothing to caller (out is only r3/r5 which the caller restores);
-// symdb: side effects: writes a variable number of u32 entries to *r6 = buffer returned from
-// symdb: battleObject_scenarioEffectStateAddr_81421D8, indexed by player's facing direction
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA.yaml
+// symdb: Builds a 4-entry player-position offset matrix for a scenario-effect camera, selecting a per-effect table and per-facing sub-record, then packing signed (dx,dy) deltas onto a base word into the effect state buffer.
+// symdb: void battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA(void); /* in: r10 (pass-through);
+// symdb: out: r3 = dy byte of 0x7F sentinel; clobbers: nzcv r0-r2 lr; preserves: r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA.yaml
 	thumb_func_start battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA
 battleObject_scenarioEffectInitPlayerOffsetMatrix_81429CA:
 	push {r4-r7,lr}
@@ -2102,7 +2101,7 @@ off_8142B54:
 	.word eOverworldMapObjects
 	thumb_func_end battleObject_getPanelChipByIndexAtPlayerPos_8142B28
 
-// symdb: Walks the 20-entry, 8-byte-stride table at byte_2006670 twice: first matching entries whose ID equals the current scenario effect's 0x18 field, then matching via ow_getPlayerTileMapIndex_8142990/sub_814299C validation, returning the matching entry's 8-way direction from getSoulWeaponCursorDir8, or 0xFF if none.
+// symdb: Walks the 20-entry, 8-byte-stride table at byte_2006670 twice: first matching entries whose ID equals the current scenario effect's 0x18 field, then matching via sub_8142990/sub_814299C validation, returning the matching entry's 8-way direction from getSoulWeaponCursorDir8, or 0xFF if none.
 // symdb: () -> r0 = direction 0-7 of the matching soul-weapon cursor, or 0xFF if no entry matches; calls
 // symdb: only, no flags of interest
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponCursorDir8ByEffect.yaml

@@ -2289,10 +2289,10 @@ dword_800FC2C:
 	.word 0xFFFF
 	thumb_func_end playerAI_tryExecuteAttackChip_800FB54
 
-// symdb: AI-side check-and-fire: validates the object's state and held chip, then triggers the object's chip attack and reports chip ID/damage/boost, or 0xFFFF if the attack is not allowed.
-// symdb: (r5 = battle object ptr) -> r0 = chip ID (or 0xFFFF on refusal); r1/r2 also loaded with
-// symdb: Damage/AttackBoost on success; flags from final ldrh
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tryUseChipAttack.yaml
+// symdb: AI routine that attempts to have a net navi use a chip attack during its action selection
+// symdb: ai_tryUseChipAttack(r4, r5=battleObject, r6, r7, r8, r9, r10, r11, r12) -> r0=chipID|0xFFFF,
+// symdb: r4..r12 updated
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_tryUseChipAttack.yaml
 	thumb_func_start ai_tryUseChipAttack
 ai_tryUseChipAttack:
 	push {r4,r7,lr}
@@ -17982,10 +17982,10 @@ loc_8016722:
 	pop {r6,r7,pc}
 	thumb_func_end battle_objectArriveAtFuturePanel
 
-// symdb: Per-frame step of a battle object's "moving to its future panel" state (slide / approach), decrementing the timer and finishing by either reverting to standing or starting a new sub-step.
-// symdb: (r5 = BattleObject*) -> void ; side effects: panel reserve/release, write to battle object
-// symdb: fields, possibly AI data word, clear/leave object collision flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepMoveToFuturePanel_8016730.yaml
+// symdb: Per-frame step of a battle object's staged grid-panel movement: ticks a sub-pixel walk timer, then on arrival resolves panel-type effects (holes, contact zones, shift-allowed tiles) and either chains to the next panel or finalises the move.
+// symdb: battleObject_stepMoveToFuturePanel_8016730(BattleObject *obj /*r5*/) -> void; preserves
+// symdb: r4,r6,r7; clobbers r0-r2,lr,flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_stepMoveToFuturePanel_8016730.yaml
 	thumb_local_start
 battleObject_stepMoveToFuturePanel_8016730:
 	push {r4,r6,r7,lr}
@@ -20335,11 +20335,10 @@ off_80178C8:
 	.word sub_8017A38+1
 	thumb_func_end sub_80178B6
 
-// symdb: Kicks off an actor's move one panel in the chosen direction by reserving the destination panel, computing a constant X/Y velocity from the row/col offset, and setting the end-of-move waiting state (or a fallback halt state if the destination panel can't be used).
-// symdb: (r5 = battleObject) -> r0 = 0x4 or 0x8 ; side effects: writes AIData Unk_68 = 0,
-// symdb: RelatedObject1Ptr = 0, sets CurAnim, copies FuturePanelXY -> PanelXY, sets XVelocity/YVelocity,
-// symdb: reserves next panel, etc.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initMoveStep_80178D4.yaml
+// symdb: Per-turn cycle for a battle object: dispatches AI, selects idle animation, resets sprite/panel/collision state, then either commits a one-panel step (velocity + panel reserve, sub-state 4) or enters a 24-tick idle wait (sub-state 8).
+// symdb: void battleObject_initMoveStep_80178D4(BattleObject *obj /* r5 */, u32 r4_in /* r4 */, u32 r8_in
+// symdb: /* r8 */); /* writes obj, clobbers r0-r3, flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_initMoveStep_80178D4.yaml
 	thumb_local_start
 battleObject_initMoveStep_80178D4:
 	push {r6,r7,lr}
@@ -29632,11 +29631,10 @@ loc_801CC2A:
 	pop {r0,r4,r6,r7,pc}
 	thumb_func_end battle_updateObjectAnim_801CB38
 
-// symdb: Queues GFX/vram transfers for a battle object's beast-out form change and picks the emotion palette
-// symdb: (r0 = emotionIdx (1-based), r4 = ?, r5 = BattleObject*, r10 = Toolkit*) -> r0 = emotionIdx
-// symdb: (unchanged) ; side effects: GFX/VRAM queued via QueueEightWordAlignedGFXTransfer; writes
-// symdb: BattleObject+0x10 and +0x11
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_loadBeastOutFormGfx_801CC34.yaml
+// symdb: Loads tile, sprite-palette, and emotion-palette DMA transfers for a Cybeast/Beast Out form sprite, refreshing the object's animation flag.
+// symdb: u32 battleObject_loadBeastOutFormGfx_801CC34(u32 object_id /*r0*/, u32 r4, u32 object_ptr
+// symdb: /*r5*/, u32 r6) -> u32 /* returns object_id unchanged; updates r5, r6 via emotion resolve */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_loadBeastOutFormGfx_801CC34.yaml
 	thumb_local_start
 battleObject_loadBeastOutFormGfx_801CC34:
 	push {r0,r4,r7,lr}

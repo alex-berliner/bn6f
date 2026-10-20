@@ -4090,10 +4090,11 @@ off_800D458:
 	.word PanelOffsetListsPointerTable
 	thumb_func_end object_getPanelRegion
 
-// symdb: Scans the 3x3 panels around a battle object and collects coordinates of panels whose status flags match a required/forbidden mask pair into a list, returning the count.
-// symdb: (r5 = battle object, r7 = output byte array, r2 = required panel-flag mask, r3 = forbidden
-// symdb: panel-flag mask) -> r0 = number of entries written to [r7]; each entry is (panelY<<4)|panelX
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectAdjacentPanelsByFlags.yaml
+// symdb: Scans the ring of cells surrounding the player's 3×3 battle area, filters them by required/excluded flag bits from object_getPanelParameters, and writes matching (row<<4|col) pairs into a caller-supplied buffer.
+// symdb: u8 battle_collectAdjacentPanelsByFlags(u32 requiredFlags /*r2*/, u32 excludeFlags /*r3*/, u32
+// symdb: battleObjPtr /*r5*/, u32 outputBuffer /*r7*/) -> u8 count /*r0*/; clobbers r1, preserves r2 r3
+// symdb: r4 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_collectAdjacentPanelsByFlags.yaml
 	thumb_func_start battle_collectAdjacentPanelsByFlags
 battle_collectAdjacentPanelsByFlags:
 	push {r4,r6,lr}

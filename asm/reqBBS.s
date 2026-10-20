@@ -1984,6 +1984,10 @@ ReqBBSSubSystemJumpTable:
 	.word reqBBS_813FD14+1
 	thumb_func_end reqBBS_subsystemCotnrol
 
+// symdb: Initialise and open the Request BBS screen: run the one-time intro-event ack, reset state fields, execute the screen bring-up chain, render request names, apply overlay palette and fade, spawn entry graphics, then enter the header view (unread selection) or the loading view.
+// symdb: void reqBBS_openMenu(u32 r5, u32 r10); // in: r5=*reqBBSState, r10=*parentWindow; out: r10, r11
+// symdb: modified; clobbers nzcv r0-r3 r7 r12 lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/OpenReqBBSMenu813F474.yaml
 	thumb_local_start
 OpenReqBBSMenu813F474:
 	push {lr}
@@ -2117,6 +2121,10 @@ dword_813F58C:
 	.word 0x1F40
 	thumb_func_end UpdateReqBBSMenu813F550
 
+// symdb: Handles the closing of the BBS request screen: waits for the fade to finish, writes the player's dialog answer to the NPC, unlocks the overworld player, clears player-control and overworld state, then resets the game to the opening screen.
+// symdb: Next bbs_exitRequestMenu_813F590(u32 r5 /*dialogCtx*/, u32 r10 /*toolkitPtr*/) /* r10,r11
+// symdb: updated by reqBBS; returns 1 = menu closed, 0 = defer until fade ends */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ExitReqBBSMenu813F590.yaml
 	thumb_local_start
 ExitReqBBSMenu813F590:
 	push {lr}

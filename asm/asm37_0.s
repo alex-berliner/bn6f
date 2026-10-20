@@ -1127,11 +1127,10 @@ loc_813BE1E:
 	.balign 4, 0x00
 	thumb_func_end battleObject_collectTargetsInRegion_813BD90
 
-// symdb: Bumps a per-battle counter for sibling battle objects sharing the caller's Element
-// symdb: (r0 = battleObject index, r6 = saved caller Element, r10 = toolkit) -> r0 = 0 ; side effects:
-// symdb: increments byte in Unk200431c (toolkit+0x60) for every other live battle object with the same
-// symdb: Element
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38.yaml
+// symdb: Tallies how many active battle objects share the same type as a reference object, incrementing a per-subtype counter in the toolkit's Unk200431c array for each match.
+// symdb: void battleObject_countSameKindBySubtype_813BE38(u32 r0 /* battleObjIndex */, u32 r6 /*
+// symdb: callerEntryIdx (skipped) */, u32 r10 /* toolkitPtr */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38.yaml
 	thumb_local_start
 battleObject_incrementUnk200431cCounterForMatchingObjects_813BE38:
 	push {r4-r7,lr}

@@ -24974,6 +24974,9 @@ loc_814F4EC:
 	.balign 4, 0x00
 	thumb_func_end soundChannel_tickPanVolume_814F4A0
 
+// symdb: Per-tick GB APU emulation: advances the 14-step frame sequencer, processes all four sound channels (pulse/wave/noise) for trigger, length, envelope, timer, and frequency modulation, then writes the emulated hardware registers NRxx to drive the GBA's CGB sound mixer.
+// symdb: void cgbSound_tick(void); /* no in/out registers; clobbers r0-r3, flags; preserves r4-r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CgbSound.yaml
 	thumb_local_start
 CgbSound:
 	push {r4-r7,lr}

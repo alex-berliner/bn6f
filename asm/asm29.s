@@ -1377,10 +1377,10 @@ loc_80A581E:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_initPlayerBeastOutShrine_80A57D0
 
-// symdb: Drives a beast-out Navi's per-tick PwrAtk hand-off animation: copies target coords, runs the hand-off sub-state until it finishes, then resets.
-// symdb: (r5 = BattleObject, r6 = AIData) -> void ; no return; writes AIData.Unk_07 (sub-state),
-// symdb: BattleObject.CurState/CurAction, then runs sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBeastOutPwrAtk_80A5828.yaml
+// symdb: Per-frame state machine for the Beast Out Power Attack battle-object, handling idle refresh, attack start-up data copy, playback stepping, and finish reset.
+// symdb: void battleObject_updateBeastOutPwrAtk(void) — inputs r4,r5,r6,r7,r10,lr; outputs
+// symdb: r2,r3,r4,r5,r8,r9,r10,r11,r12; clobbers NZCV,r0,r1,lr; preserves r4,r5,r6,r7,r8,r9,r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_updateBeastOutPwrAtk_80A5828.yaml
 	thumb_local_start
 battleObject_updateBeastOutPwrAtk_80A5828:
 	push {r4-r7,lr}
@@ -3612,10 +3612,10 @@ off_80A6EB8:
 	.word unk_2011A90
 	thumb_func_end battle_ai_dispatchBeastSp_80A6E98
 
-// symdb: Initialize a Beast+ SP-form enemy battle object: load its sprite/animation, set draw layer/priority/palette, optionally patch coords from sub_80A70C0, optionally run sub_80A7208 when event 0x5E5 is set, then transition CurState to UPDATE (0x4).
-// symdb: (r5 = BattleObject*) -> r0 = 0x26 ; side effects: writes many BattleObject fields, may patch
-// symdb: coords from a returned table, may run a one-shot story-gated helper
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastSpEnemy_80A6EBC.yaml
+// symdb: Initializes a Beast-type overworld enemy sprite: loads graphics and animation, sets layer effect/priority/palette, copies position from a parameter table, optionally loads battle stats (flag 0x5E5), then spawns via animation update.
+// symdb: void battleObject_initBeastOverworldSprite(u32 r4, u32 r5 /*sprite object ptr*/, u32 r6, u32 r7,
+// symdb: u32 r10, lr)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_initBeastSpEnemy_80A6EBC.yaml
 	thumb_local_start
 battleObject_initBeastSpEnemy_80A6EBC:
 	push {r4-r7,lr}
@@ -5532,10 +5532,10 @@ sub_80A7BBA:
 	mov pc, lr
 	thumb_func_end sub_80A7BBA
 
-// symdb: Checks whether the BeastSP trigger zone is active and, if so, sets the EVENT_1731 flag, plays a sound, and starts the BeastSP cutscene.
-// symdb: (r5 = *BeastSPTriggerZone, r10 = *Toolkit) -> void ; side effects: writes to r5+4 flag/byte,
-// symdb: sets EVENT_1731, plays sound 0x73, kicks off cutscene byte_8089DD8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkBeastSpTrigger_80A7BC0.yaml
+// symdb: Checks whether the player has entered a Beast-area special encounter zone during battle, and if so fires the trigger event, validates AI-data flag count, sets cutscene event 0x1731, and launches the Beast cutscene script.
+// symdb: void battle_checkBeastSpTrigger_80A7BC0(void) /* r5 = trigger object ptr, r10 = toolkit;
+// symdb: preserves r4-r7, r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkBeastSpTrigger_80A7BC0.yaml
 	thumb_local_start
 battle_checkBeastSpTrigger_80A7BC0:
 	push {r4-r7,lr}
@@ -5894,11 +5894,10 @@ battleObject_clearActionPhaseUnk09_80A7E44:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_clearActionPhaseUnk09_80A7E44
 
-// symdb: Indirect tail-call dispatch on battle object AIData by current action byte (r5->+9), invoking one of three action handlers.
-// symdb: (r0 = AIData base via r5, r1 = log2 of step?, r2 = ?, r3 = saved ptr) -> r0 = new r0 written by
-// symdb: callee (varies: 0x4, 0x1d, 0x14, 0x13, 0x12, 0x11, ...); side effects: jumps via tail-call into
-// symdb: one of sub_80A7E6C / sub_80A7EA4 / sub_80A7EBE; no other stack use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIActionByAction_80A7E4C.yaml
+// symdb: Jump-table dispatcher that routes an in-battle AI object to one of three per-frame action handlers based on the byte at [object+9].
+// symdb: battle_dispatchAIActionByAction_80A7E4C(r5 = object, r7 = ?, r10 = ?) -> r5, r8-r12; clobbers
+// symdb: r0-r3, nzcv, lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchAIActionByAction_80A7E4C.yaml
 	thumb_local_start
 battle_dispatchAIActionByAction_80A7E4C:
 	push {r4-r7,lr}
@@ -6309,10 +6308,10 @@ off_80A8228:
 	.word unk_2000B40
 	thumb_func_end battle_dispatchCustomJumptableByIndex_80A8208
 
-// symdb: Initializes a beast entity: loads gfx 0x1c/0x56, calls sub_80A8324, sets priority-by-event-flag, applies animation + noShadow + OAM priority 2, converts three 16-bit coords to upper-word format into [r5+0xC/0x10/0x14], and refreshes the sprite.
-// symdb: (r5 = entity/object struct ptr, preset before entry) -> void; writes state bytes and position
-// symdb: fields into the struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setupBeastSprite.yaml
+// symdb: Initialises a Beast Linker battle object's sprite: loads its tileset, resolves animation and draw priority from map-event flags, packs three attribute words, transitions to ready state, and performs the final sprite update.
+// symdb: battleObject_setupBeastSprite(r5 *object, r10 *gameState) -> r2, r3 (from update routine); r4,
+// symdb: r5 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_setupBeastSprite.yaml
 	thumb_local_start
 battleObject_setupBeastSprite:
 	push {r4-r7,lr}
@@ -6348,9 +6347,10 @@ battleObject_setupBeastSprite:
 	.balign 4, 0x00
 	thumb_func_end battleObject_setupBeastSprite
 
-// symdb: If a derived animation id differs from the cached one, reload the object's sprite animation data and shadow flag, then always run sprite_update.
-// symdb: (r5 = BattleObject*) -> void ; side effects sprite state, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteAndMaybeReloadAnim_80A827C.yaml
+// symdb: Advances a battle object's sprite each frame; if the event-flag-driven animation priority differs from the stored animation ID (byte at offset 5), reloads the sprite's animation data and clears its shadow before ticking.
+// symdb: void battleObject_updateSpriteAndMaybeReloadAnim(u32 r5 /*battleObject*/, u32 r10 /*toolkit*/,
+// symdb: lr); /*-> r2 r3 r4 r5 clobbered, nzcv clobbered*/
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_updateSpriteAndMaybeReloadAnim_80A827C.yaml
 	thumb_local_start
 battleObject_updateSpriteAndMaybeReloadAnim_80A827C:
 	push {r4-r7,lr}
