@@ -1849,6 +1849,10 @@ off_809A6A0:
 	.word byte_8099E90
 	thumb_func_end sub_809A630
 
+// symdb: Per-frame object update: bumps a step byte at [r5+4] by 0x10 up to 0x60, then on reaching the cap snapshots the chatbox's 0x4C halfword/0x50 byte into [r5+6]/[r5+5], slides three sprites at id (counter-0x30), runs entity/sprite updates plus sub_809A80C on [r5+0x74], and returns 0 until EVENT_F5 is set (1 after).
+// symdb: (r5 = object record, preloaded by caller) -> r0 = 0 while EVENT_F5 clear, 1 once set; no other
+// symdb: outputs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A6A4.yaml
 	thumb_local_start
 sub_809A6A4:
 	push {r4-r7,lr}
@@ -1987,6 +1991,10 @@ loc_809A7A6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A784
 
+// symdb: Per-frame step handler for the Chip Trader NPC object: counts down obj+0xC by tick while updating an animation counter at obj+0x70 and stepping sub_809A80C; once expired, waits for chatbox bit 0x20 to clear, then runs the Chip Trader text script, clears EVENT_1725, sets state byte 8 at obj+0x84, and returns 0.
+// symdb: (r5 = chip trader object) -> r0 = 0 when it just started/finished the chatbox interaction, 1
+// symdb: while still waiting; no flags of use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A7B0.yaml
 	thumb_local_start
 sub_809A7B0:
 	push {r4-r7,lr}
@@ -4985,6 +4993,9 @@ cutscenescript_809CB49:
 
 	thumb_func_end sub_809CA84
 
+// symdb: Triggers PET effect 0, sets bit 0x80 on eStruct2001010, runs chatbox script 30 of archive 4, then zeroes byte at [r5,#8] and word at [r5,#0x70] of a caller-provided struct.
+// symdb: (r0 unused; r5 from caller = state struct) -> void; r0-r3, r12 clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CB68.yaml
 	thumb_local_start
 sub_809CB68:
 	push {r4-r7,lr}
@@ -5058,6 +5069,10 @@ dword_809CBFC:
 	.word 0x100
 	thumb_func_end sub_809CB88
 
+// symdb: Per-frame wait step on a battle object: on first call clears IWRAM state, resets battle state, and seeds sub_803F512; subsequently polls link state and ticks a halfword countdown at word_200AD06 until ready, then stores a flag at object +0x08, mirrors it into IWRAM via setByte_200AD04, and (if set) queues chatbox script index 0x22 via chatbox_runScript; returns 1 while waiting, 0 once done.
+// symdb: (r5 = object/state pointer, r0 unused) -> r0 = 1 while still waiting/initializing, 0 once the
+// symdb: script was queued; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CC00.yaml
 	thumb_local_start
 sub_809CC00:
 	push {r4-r7,lr}

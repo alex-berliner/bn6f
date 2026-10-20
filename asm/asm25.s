@@ -929,7 +929,7 @@ off_808FED4:
 	.word off_808FDB8
 	thumb_func_end battle_runBattleFrameForCyberWorld_808FEA4
 
-// symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from spawn_getEncounterTableByte's return value.
+// symdb: Spawns N copies of overworld-map object 0x1A with fixed parameters, N taken from sub_808FF00's return value.
 // symdb: (no args) -> r0 = 0 always; r4-r7 clobbered/restored, SpawnOverworldMapObject called N times
 // symdb: with r0=0x1A, r1=0, r2=0, r3=0x400000, r4=loop index
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnOverworldMapObjects1aLoop.yaml

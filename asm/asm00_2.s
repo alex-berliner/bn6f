@@ -1816,6 +1816,11 @@ loc_800F90A:
 	pop {r4,pc}
 	thumb_func_end sub_800F8CE
 
+// symdb: Packs a spawn parameter word in r4 from the source object: sets bit 0x100 if ObjectFlags2 has 0x200000, ORs in currentAnim<<16 and palette<<24, then forwards sprite record word at 0x2c (r0) and three words from obj+0x34 (r1-r3) to sub_80E996E. Relies on caller already having the object pointer in r5.
+// symdb: (r0 = source battle object, r5 must also hold the same object pointer) -> spawns via
+// symdb: sub_80E996E; r4 carries packed attrs (bit8 from ObjectFlags2&0x200000, anim<<16, palette<<24),
+// symdb: r0 = sprite unk0x2c, r1-r3 = [obj+0x34..0x3F]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F90E.yaml
 	thumb_func_start sub_800F90E
 sub_800F90E:
 	push {r4,r6,lr}
@@ -4658,6 +4663,10 @@ locret_8010C74:
 	pop {r4-r6,pc}
 	thumb_func_end battle_chargePwrAtk_8010C50
 
+// symdb: Returns the raw halfword at ChipData+0x1A for normal chips; for special chips (field >= 0x3E9), maps a per-chip counter through packed-BCD thresholds (0x10..0x28) to a rank 0..10 and returns the corresponding halfword from a per-chip rank table.
+// symdb: (r0 = *ChipData) -> r0 = halfword: table entry [rank][chipIndex] if field 0x1A >= 0x3E9, else
+// symdb: field 0x1A raw; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010C76.yaml
 	thumb_func_start sub_8010C76
 sub_8010C76:
 	push {r4,lr}
@@ -8910,6 +8919,10 @@ dword_80128F8:
 	.word 0xFFFF
 	thumb_func_end useChipRelated_80127C0
 
+// symdb: If the object's panel type is 6 and the battle side's NaviStats byte 0x2C is 7 or 0x13, and the chip record (via chip id) has byte+6==3 with bit1 set and bit0 clear, converts the panel to type 2 and returns 1; otherwise returns 0.
+// symdb: (r0 = battle object/handle (saved, unused here), r1 = chip id) -> r0 = 1 if panel converted to
+// symdb: type 2, else 0 via sub_8012956 path; r5 = battle object supplying x/y at +0x12/+0x13
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80128FC.yaml
 	thumb_local_start
 sub_80128FC:
 	push {r4,r6,r7,lr}
@@ -12508,6 +12521,9 @@ locret_801407E:
 	pop {r4,r5,pc}
 	thumb_func_end battle_playerHPRegenTick_8014040
 
+// symdb: Guarded by NaviStats byte 0x29, clears several ObjectFlags1 bits (0x20000, 0x20, 0x40000, 0x10), zeros NaviStats bytes 0x23/0x1b/0x1d/0x1c, sets byte 0x07 to 0xFF, refreshes collision data passing the Custom+ flag result, and if byte 0x2C is zero stores 0xFF into the object's AIData BLeftAbility.
+// symdb: (r0 = battle object) -> void; destroys r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014080.yaml
 	thumb_local_start
 sub_8014080:
 	push {lr}
@@ -12953,6 +12969,10 @@ battleObject_markUsedAction_80143A6:
 	strb r1, [r0,#0xe]
 	b loc_80143B6
 
+// symdb: Clears transient AI flags (Flags1 bit 0x200000, Flags2 bit 0x200) on the battle object and zeros AIData.Anger and AIScriptCounter, used as end-of-AI-step cleanup by AI scripts.
+// symdb: (r0 = battle object, r5 = same object) -> r0 = 0; sets flags via
+// symdb: object_clearFlag/object_clearFlag2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80143B4.yaml
 	thumb_func_start sub_80143B4
 sub_80143B4:
 	push {lr}
@@ -15818,6 +15838,9 @@ loc_80158C6:
 	pop {r4,r6,r7,pc}
 	thumb_func_end ai_attackRushForward
 
+// symdb: Called during the enemy attack-emerge step. Sets NaviStats byte 0xE to 0x80 for the object's alliance, then if battle mode != 1 checks NaviStats byte 0x2C: values 0xB–0x16 clear the AI counter-hit chain, values > 0x16 call sub_8014466, values < 0xB do nothing.
+// symdb: (uses caller's r5 = battle object; no register args) -> r0/r1 clobbered, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80158CC.yaml
 	thumb_local_start
 sub_80158CC:
 	push {lr}
@@ -18322,6 +18345,9 @@ locret_8016B70:
 	pop {pc}
 	thumb_func_end battle_objectStatePendingCommit
 
+// symdb: Per-frame update that, on first call (PhaseInitialized==0), clears flag 0x100000, dispatches AI handlers (3-entry table), resets collision state, nulls RelatedObject1Ptr, plays SFX 0x2D, and sets PhaseInitialized=4. Each frame it computes a Z offset from byte_8016BDC (a 32-entry -6..+6 sine-like table indexed by ((collisionCounter>>2)&0x1F)) added to oAIData_SavedZ16, and stores it into object Z16. If object flag bit 31 is clear it plays SFX 0x24, copies PendingStateAction into CurStateActionPhaseAndPhaseInitialized, clears PendingStateAction, and restores Z16 to SavedZ16.
+// symdb: (r5 = battle object, reads oBattleObject_AIDataPtr) -> r0 = void; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016B72.yaml
 	thumb_func_start sub_8016B72
 sub_8016B72:
 	push {r4,lr}
@@ -23708,6 +23734,10 @@ locret_801A4CE:
 	pop {r4,pc}
 	thumb_func_end battle_spawnArmHitEffect_801A4A6
 
+// symdb: Writes (r1<<8)|r0 as a packed halfword into collision-data field +0x12 of the battle object in r5; used by spawn/init handlers to stamp a two-byte param tag (e.g. high type, low sub-param) onto a new collision block.
+// symdb: (r0 = low byte param, r1 = high byte param; r5 = battle object) -> r0 = 0x12; no flag
+// symdb: significance
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A4D0.yaml
 	thumb_func_start sub_801A4D0
 sub_801A4D0:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
@@ -29917,6 +29947,10 @@ dword_801D044:
 	.word 0xB390
 	thumb_func_end sub_801CF9E
 
+// symdb: Per-frame BG counter renderer: DMA-fills tilemap rows, draws a label via the text toolkit and a 2x2 glyph at (14,5) in BG block 3, then renders right-justified hex digit tiles into two 4x2 fields at (9,5) and (17,5); on the final step it sets a done flag and triggers a sub_3005EBA effect.
+// symdb: (r7 = state block at byte_2036840) -> r0 = undefined; writes BG map block 3, state+0xE done
+// symdb: flag, and scratch at byte_203C4E0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D048.yaml
 	thumb_local_start
 sub_801D048:
 	push {r4-r7,lr}
@@ -30734,6 +30768,10 @@ off_801D654:
 	.word off_86E968C
 	thumb_func_end battle_queueDigitTileGfx
 
+// symdb: Draws a fixed two-tile OAM marker at the object's projected screen position when its battle hand slot is empty (0xFFFF) and the linked 0x2036120 record has either of two marker halfwords set.
+// symdb: (r5 = context struct; uses [r5+0x48] object ptr) -> void; queues OAM entries via
+// symdb: sprite_queueOamEntry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D65C.yaml
 	thumb_local_start
 sub_801D65C:
 	push {r4-r7,lr}
@@ -33797,6 +33835,10 @@ e_setFlagBit16:
 	pop {pc}
 	thumb_func_end e_setFlagBit16
 
+// symdb: Builds/updates unk_2036850 from pt_801EF84[0x50], calls chip_renderListEntry with the chip id, writes a 0x3C value, then sets request bit 0x10000 on eStruct2035280 and dispatches it via dispatch_801DA48(1).
+// symdb: (r0 = chip id/index) -> r0 clobbered by calls; writes unk_2036850+0x2/+0x7/+0x8, ORs bit 0x1
+// symdb: into eStruct2035280+0x40 request dword, then dispatch_801DA48(1); flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801EB18.yaml
 	thumb_func_start sub_801EB18
 sub_801EB18:
 	push {r4,r5,lr}

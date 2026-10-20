@@ -534,6 +534,10 @@ ow_drawHudOverlays: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end ow_drawHudOverlays
 
+// symdb: Overworld HUD wrapper: draws the PET navi HP digits, then the battle-start overlay frame with flag=1, then the current map name.
+// symdb: (r0 = self *S2011E30, unused by body) -> r0 = return of RenderMapName_8033EE8; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B6E.yaml
 	thumb_local_start
 sub_8033B6E: // (self: * S2011E30 $r5) -> ()
 	push {lr}

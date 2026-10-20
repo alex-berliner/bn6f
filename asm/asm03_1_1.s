@@ -1520,6 +1520,10 @@ dword_8039708:
 	.word 0x1F40
 	thumb_func_end sub_8039694
 
+// symdb: State-machine update step gated on IsScreenFadeActive and bit 8 of eFlags2009F38; clears [r5,#0x14], calls sub_803BB2C with phase 0, sets phase 8 at [r5,#1], then unconditionally calls sub_803B880 and sub_803C2F0.
+// symdb: (r5 = task/state object pointer set by caller) -> r0 = result of sub_803C2F0; flags from last
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803970C.yaml
 	thumb_local_start
 sub_803970C:
 	push {r4-r7,lr}
@@ -1774,6 +1778,10 @@ dword_80398D8:
 	.word 0x1F40
 	thumb_func_end sub_80398B0
 
+// symdb: Advances a scripted event sequence on the r5 object: a use-counter at +0x28 gates each pass via sub_803BB80, and when ungated dispatches commands from the cursor at +0x2C (0=init emotion entry with 3 words/advance 0x10; 1=write word to +0x28/advance 8; 2=stop with r0=0; 3=SetScreenFade with 2 words/advance 0xC; 4=PlaySoundEffect with 1 word/advance 8), then stores back the cursor and returns r0=1 while active, 0 when stopped.
+// symdb: (r5 = script object; fields: +0x28 value/wait counter, +0x2C command-stream cursor) -> r0 = 1
+// symdb: while script still active, 0 when a stop (type 2) command was hit; no flag guarantees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80398DC.yaml
 	thumb_local_start
 sub_80398DC:
 	push {r4-r7,lr}
@@ -2400,6 +2408,10 @@ loc_8039DAE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039D9A
 
+// symdb: State phase handler that branches on sub_803A558: one branch shows a script via sub_803BB2C and sets phase 0x38; the other waits (sub_803CB18 frames 8/0x10), then on success fades the screen, stops music, plays SOUND_BATTLE_START, and advances to phase 0x3C.
+// symdb: (r5 = pointer to object/state struct; r0/r1 scratch) -> r0 = result of sub_803A104; writes next
+// symdb: phase id into byte at r5+1 (0x38, 0x48, or 0x3C)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039DB4.yaml
 	thumb_local_start
 sub_8039DB4:
 	push {r4-r7,lr}
@@ -4172,6 +4184,10 @@ loc_803AAC6:
 	pop {r4-r7,pc}
 	thumb_func_end jackInPetMenuSelectState_803AAA0
 
+// symdb: Plays SOUND_MENU_SELECT, then displays text script 0x1A if byte_2006772 is zero or 0x18 if nonzero (via sub_803C3E0/sub_803BB2C), and stores 0x10 into byte 1 of the caller's state struct.
+// symdb: (r0 = unused (clobbered for sound ID), r5 = pointer to state struct, no args in r0) -> r0 =
+// symdb: destroyed; writes struct+1 byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AAD8.yaml
 	thumb_local_start
 sub_803AAD8:
 	push {r4-r7,lr}
@@ -4437,6 +4453,10 @@ loc_803AC72:
 	pop {r4-r7,pc}
 	thumb_func_end battle_startInit
 
+// symdb: Tests bit 0x80 of the chatbox event flag word; if clear, zeroes [r5+0x13], repairs a halfword table's free slots with sub_803C0BE, counts entries with sub_803C132 into [r5+0x10], and writes 0xC to [r5+1]; then unconditionally calls battle_moduleInit_803A820.
+// symdb: (r0 = flag bit to test = 0x80; r4-r5/r6/r7 = caller context, r5 = state struct ptr) -> r0 =
+// symdb: result of battle_moduleInit_803A820; flags NZ from flag test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AC78.yaml
 	thumb_local_start
 sub_803AC78:
 	push {r4-r7,lr}
@@ -4616,6 +4636,9 @@ loc_803ADA6:
 	pop {r4-r7,pc}
 	thumb_func_end handleMenuAction90_803AD80
 
+// symdb: Plays SOUND_MENU_SELECT, displays text script 0x1B (or 0x19 when flag byte_2006772 is non-zero) via sub_803BB2C, then writes 0 to the r5 struct's +3 and 0x2C to its +1 menu-state field.
+// symdb: (r5 = menu/task state struct, not passed in r0) -> r0 = 0; writes state+1 = 0x2C, state+3 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803ADB8.yaml
 	thumb_local_start
 sub_803ADB8:
 	push {r4-r7,lr}
@@ -4867,6 +4890,9 @@ loc_803AF40:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803AF1C
 
+// symdb: Battle transition step: if the chatbox event bit (0x80) is set, returns after calling battle_moduleInit; otherwise if chatbox state is nonzero, writes step 0x28 and returns; once cleared, calls SetScreenFade(0xC, 0x10), writes step 0x3C, and always calls battle_moduleInit_803A820.
+// symdb: (r5 = work/context struct, byte at +1 = step field) -> void; sets flags via chatbox bit test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AF46.yaml
 	thumb_local_start
 sub_803AF46:
 	push {r4-r7,lr}
@@ -4912,6 +4938,10 @@ loc_803AF8A:
 	pop {r4-r7,pc}
 	thumb_func_end battle_condInitModule
 
+// symdb: If the screen fade is still active, jumps straight to battle_moduleInit_803A820; otherwise snapshots the link flag and a fresh RNG session token, runs a few helpers, writes state 8/step 0 into the work struct, then falls through to battle_moduleInit_803A820.
+// symdb: (r5 = battle work struct pointer, set by caller) -> r0 = 0; no return value; clobbers r0-r3 and
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803AF90.yaml
 	thumb_local_start
 sub_803AF90:
 	push {r4-r7,lr}

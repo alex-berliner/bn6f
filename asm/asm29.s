@@ -6693,9 +6693,9 @@ byte_80A8540:
 	.byte 0x1, 0x1, 0x0, 0x3, 0x2, 0x0, 0x0, 0x0
 	thumb_func_end battle_getDirTowardPoint
 
-// symdb: Reads two halfword arguments from [r6+0x1a] and [r6+0x1c], passes them to battle_getDirTowardPoint to derive a direction/animation index, and updates the sprite animation (via sprite_setAnimation, sprite_loadAnimationData, sprite_noShadow) only when that index differs from the cached value at [r5+4]; caches the new index on change.
+// symdb: Reads two halfword arguments from [r6+0x1a] and [r6+0x1c], passes them to sub_80A8518 to derive a direction/animation index, and updates the sprite animation (via sprite_setAnimation, sprite_loadAnimationData, sprite_noShadow) only when that index differs from the cached value at [r5+4]; caches the new index on change.
 // symdb: (r5 = object, r6 = object; args taken from [r6+0x1a] and [r6+0x1c]) -> void; r0 = direction
-// symdb: index from battle_getDirTowardPoint
+// symdb: index from sub_80A8518
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setAnimFromArgs.yaml
 	thumb_local_start
 sprite_setAnimFromArgs:
@@ -7865,6 +7865,10 @@ sub_80A8D7C:
 	.pool // 80A8DA4
 	thumb_func_end sub_80A8D7C
 
+// symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs sub_8143204 and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
+// symdb: (r0..r3 = unused; r5 = Cybercrow/NPC state struct) -> r0 = clobbered; only acts when player may
+// symdb: advance, sub_8002E04 passes, and bit 0x10000 of +0x24 is set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8DB0.yaml
 	thumb_local_start
 sub_80A8DB0:
 	push {r4-r7,lr}

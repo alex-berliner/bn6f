@@ -66,6 +66,10 @@ off_812D3E0:
 	.word unk_2023FC0
 	thumb_func_end battle_initChipSearchList
 
+// symdb: Renders six sections (folder chips, folder OAM pack, icon slots, pack entries, panel entries, plus a header) into tilemap buffers and copies each into BG tile block 2 as 2-column x 14-row strips (columns 3,1,0xB,0xD,0xE,0x10), then calls sub_812D5EC.
+// symdb: () -> r0 = 0 via callees; reads screen-state struct from sub_812D6F8, writes tilemap data
+// symdb: buffers at 202DFA0..202E144 and copies them into BG tile block 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D3E4.yaml
 	thumb_func_start sub_812D3E4
 sub_812D3E4:
 	push {r4-r7,lr}

@@ -3661,6 +3661,10 @@ loc_8124E1A:
 	.balign 4, 0x00
 	thumb_func_end sprite_shieldUpdate_8124DCC
 
+// symdb: Per-frame handler for the in-battle chip-folder/select screen: advances the frame counter (clamping to 0x8E and transitioning to state 0xC), pumps the battle transition and redraws the folder-select and arena-floor tiles, then writes chip-slot animation halfword pairs to up to three pool structs.
+// symdb: (r0 = 0 mode passed to the slot-buffer init; r5 = battle context struct) -> r0 = 0/1 status from
+// symdb: last callee; mutates r5 state, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124E24.yaml
 	thumb_local_start
 sub_8124E24:
 	push {lr}
@@ -4066,6 +4070,10 @@ locret_8125124:
 	.balign 4, 0x00
 	thumb_func_end battle_transitionStepWaitForFade
 
+// symdb: Battle intro scene draw: blits the progressive intro tile graphic, queues an OAM entry, pumps the battle transition (reloading tilemaps when flagged), draws the arena floor, and runs a fixed-arg overlay; when no screen fade is active it writes 8 to the state byte at r5+1 to advance the phase.
+// symdb: (r5 = battle-scene/state object) -> r0 = 8 stored to [r5+1] when screen fade finished; no return
+// symdb: value otherwise; flags clobbered by bls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125128.yaml
 	thumb_local_start
 sub_8125128:
 	push {lr}
@@ -5990,6 +5998,9 @@ off_8125F58:
 	.word byte_8124A14
 	thumb_func_end bg_drawArenaTiles_8125E78
 
+// symdb: After a chip-select scroll step, redraws the BG tile block 2 column strips (3-wide left strip, an 8-wide right strip, a 2x14 middle strip and a 3x14 patch) and reloads up to 7 chip icon GFX plus the 7 selection-slot structs; chooses between a standard and a 0xF/15-variant tile-offset layout.
+// symdb: (r5 = chip-select screen work struct; r0-r4 clobbered) -> r0 = destroyed; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125F5C.yaml
 	thumb_local_start
 sub_8125F5C:
 	push {r4-r7,lr}
@@ -12857,6 +12868,10 @@ locret_8129548:
 	.balign 4, 0x00
 	thumb_func_end battle_updateEntitiesAndStartFadeOut
 
+// symdb: Battle-end step: runs entity and e-struct sprite pipelines, waits for the screen fade to end, then closes the chatbox, sets state byte +2 to 8, and hands off to the extra-save flow (initSaveStateBlock with save_arg=1, which clears eS200A290, writes its header, and sets the main jumptable index to 0x30).
+// symdb: (r5 = state/context struct, r0-r3 unused on entry) -> r0 = 1 passed to initSaveStateBlock; sets
+// symdb: state->byte_2 = 8; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812954C.yaml
 	thumb_local_start
 sub_812954C:
 	push {lr}
@@ -15448,6 +15463,10 @@ locret_812A76A:
 	pop {pc}
 	thumb_func_end sub_812A758
 
+// symdb: Tutorial-battle step that polls the chip-selection screen each tick and, when the player picks chips matching the singleton's required chip (compared against sub_803EF74's record terminated by 0xFFFFFFFF), fires the success chatbox and sets the singleton flag; on sub_803EAE4==4 or counter expiry at [r5+0x28]>=0x168, fires the timeout chatbox.
+// symdb: (r0 = battle/step entity, r5 = its state struct) -> r0 = step result; updates state fields
+// symdb: [r5+0x01/02/03/0x10/0x26/0x28/0x2a]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A76C.yaml
 	thumb_local_start
 sub_812A76C:
 	push {r4-r7,lr}
@@ -15885,6 +15904,10 @@ loc_812AAB8:
 	.byte 0, 0
 	thumb_func_end sub_812A8EC
 
+// symdb: Per-frame chatbox-driven scene step that polls chatbox flags, runs scenario text scripts based on flag/state, then compares two 0x10-byte entries against eLinkState fields (+0x1c, +0xa) to dispatch menu/script actions and update state bytes.
+// symdb: (r0 = unused (0 written), r5 = scene state record) -> r0 = preserved-ish; writes state byte
+// symdb: [r5+0x10], sub-state [r5+0x11], halfword [r5+0x26], bytes [r5+1..3]; runs chatbox scripts
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AAC0.yaml
 	thumb_local_start
 sub_812AAC0:
 	push {r4-r7,lr}
@@ -17642,6 +17665,10 @@ sub_812B758:
 	.balign 4, 0x00
 	thumb_func_end sub_812B758
 
+// symdb: Loads battle settings via getBattleSettingsFromList1/copyBattleSettingsTo_200AF60, conditionally applies stage flag-mask from table 0x812B7AC and background, then fades screen, turns off music, and plays SOUND_BATTLE_START to begin the battle.
+// symdb: (r0 = battleSettings list index, r1 = background/stage id) -> r0 = PlaySoundEffect result;
+// symdb: r5[0x12]/r5[0x13] index the flag-mask table
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B768.yaml
 	thumb_local_start
 sub_812B768:
 	push {r4-r7,lr}
@@ -18284,6 +18311,10 @@ off_812BC28:
 	.word sub_812BD60+1
 	thumb_func_end sub_812BC14
 
+// symdb: Merges per-chip 'newly obtained' flags (0x2020) into the 'registered' flag block (0x2220), snapshots/restores 0x2020, scans chips to detect newly registered entries (state 0x12) vs none (state 0x11), clears 0x2020 for invalid chips, then recomputes save checksum (and conditionally triggers sub_803F798 when nothing new was found).
+// symdb: (r5 = menu/task object with state byte at +0x10) -> r0 = next state in [r5+0x10] (0x11 = no new
+// symdb: chips, 0x12 = new chips); writes [r5+0xC]=8, [r5+0x28]=0x96
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BC38.yaml
 	thumb_local_start
 sub_812BC38:
 	push {r4-r7,lr}
@@ -18602,6 +18633,9 @@ locret_812BF0E:
 	pop {pc}
 	thumb_func_end sub_812BEEC
 
+// symdb: A/B button handler for an RFU/wireless menu state: on press, advances the menu state machine (to handler 0x14, or 0x18 in state 0x11 with an active wireless mode) and tears down the RFU link while fading the screen.
+// symdb: (r5 = menu state record) -> void; sets record fields and global screen fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BF10.yaml
 	thumb_local_start
 sub_812BF10:
 	push {lr}

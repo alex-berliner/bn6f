@@ -5051,6 +5051,10 @@ sub_8049158:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049158
 
+// symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls sub_803A1B0.
+// symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of sub_803A1B0;
+// symdb: byte [r5+1] set to 0xC or 0x10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049164.yaml
 	thumb_local_start
 sub_8049164:
 	push {r4-r7,lr}
@@ -5946,6 +5950,10 @@ dword_804982C:
 	.word sub_803AB94+1
 	thumb_func_end sub_8049808
 
+// symdb: Waits for chatbox to become idle (or skip if bit 0x80 set), kicks off a screen fade, writes the next state (0xC while waiting, 0x14 after fade), then calls battle_moduleInit_803A820.
+// symdb: (-, r5 = state struct ptr) -> void; stores next state byte at [r5+1] (0xC wait, 0x14 after fade
+// symdb: start); calls battle_moduleInit_803A820 before returning
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049844.yaml
 	thumb_local_start
 sub_8049844:
 	push {r4-r7,lr}
@@ -5969,6 +5977,9 @@ loc_8049868:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049844
 
+// symdb: Initializes the battle module (battle_moduleInit_803A820), and when no screen fade is active, additionally primes the caller-supplied r5 work structure with bytes 4 and 0 via sub_8049CBC.
+// symdb: () -> r0 = 0 result of battle_moduleInit_803A820; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804986E.yaml
 	thumb_local_start
 sub_804986E:
 	push {r4-r7,lr}
@@ -7546,6 +7557,10 @@ off_804A3F4:
 	.word eS200AC80
 	thumb_func_end sub_804A360
 
+// symdb: Per-frame menu input handler: gates on screen fade and two predicates, branches RIGHT into an exit transition with sound 0x9c, otherwise advances sub-state to 4 and calls sub_804AB10; when halfword [r5+0x28] is set, runs the D-pad/mask-7 cursor adjust over range 0..10, then redraws and returns 0.
+// symdb: (r5 = menu state struct) -> r0 = 0 always; touches struct bytes [r5+0], [r5+1], [r5+3], halfword
+// symdb: [r5+0x28]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A3FC.yaml
 	thumb_local_start
 sub_804A3FC:
 	push {lr}

@@ -4143,6 +4143,10 @@ object_getEdgePanelMatchingRow:
 	pop {pc}
 	thumb_func_end object_getEdgePanelMatchingRow
 
+// symdb: From a starting battle panel, scans along a direction keyed by the second entity's facing through a 2-entry {dx,dy} table, applies a flip-direction offset, and validates the resulting panel against the 6x3 grid.
+// symdb: (r0 = facing flag A (also direction-table index), r1 = facing flag B, r2 = starting panel) -> r0
+// symdb: = resulting panel (0 if none/check fails); Z flag = object_isValidPanel result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D4D0.yaml
 	thumb_func_start sub_800D4D0
 sub_800D4D0:
 	push {r4,lr}
@@ -6168,6 +6172,9 @@ battle_settleCollisionCounters:
 	pop {pc}
 	thumb_func_end battle_settleCollisionCounters
 
+// symdb: Ends the object's hit/stun/status state by clearing the 0x301FE ObjectFlags2 collision bits, zeroing the 14-byte status block at CollisionDataPtr+0x80, and resetting HitStunTimer and StatusEffectTimer1 to 0.
+// symdb: (r0 = scratch; uses r5 = battle object pointer from caller) -> r0 = destroyed; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EADA.yaml
 	thumb_func_start sub_800EADA
 sub_800EADA:
 	push {lr}

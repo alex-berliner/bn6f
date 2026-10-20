@@ -1066,6 +1066,10 @@ locret_810CCDA::
 	pop {pc}
 	thumb_func_end sub_810CC54
 
+// symdb: Releases a battle object's reserved panel, toggles its collision flags/region, and spawns a type-0 effect object at the released panel's screen coordinates.
+// symdb: unknown argument layout; probably r0 = battle object or CollisionData pointer -> r0 possibly the
+// symdb: spawned effect object; flags unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CCDC.yaml
 	thumb_local_start
 sub_810CCDC::
 	push {lr}

@@ -6260,6 +6260,9 @@ ow_startWarpTransition:
 	pop {r4-r7,pc}
 	thumb_func_end ow_startWarpTransition
 
+// symdb: Starts a map warp: snapshots the current map group and player position into game state, triggers a screen fade, and sets the subsystem index so the next reload restores the destination scene.
+// symdb: () -> void; no args or return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005EA2.yaml
 	thumb_func_start sub_8005EA2
 sub_8005EA2:
 	push {r4-r7,lr}
@@ -10934,6 +10937,10 @@ locret_8007F2A:
 	pop {pc}
 	thumb_func_end sub_8007F14
 
+// symdb: Waits for the screen fade to clear, then stops the battle BGM, frees type-0x1A objects, and writes oBattleState_Index_00=8 / oBattleState_Index_01=4 with a zeroed phase field to defer into the next battle state.
+// symdb: (r0 = unused/scratch, r5 = battle state struct pointer set by caller) -> r0 = clobbered; sets
+// symdb: battle state fields, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007F2C.yaml
 	thumb_local_start
 sub_8007F2C:
 	push {lr}
@@ -12151,6 +12158,10 @@ locret_80087D6:
 	pop {r4,pc}
 	thumb_func_end sub_8008764
 
+// symdb: Battle-state handler that, on first entry dispatches battle sub-effect kind 0x1C and arms a ~102-frame counter (phase 4), then waits while the cross-net partner is not ready; once the wait elapses it branches on GetBattleEffects bit 0x400 to either route to next state 8/0xC via sub_800AF50's result, or write phase 3 to [r5+4] and the battle-end substate.
+// symdb: (r5 = battle state struct {+0 next-state word, +3 phase byte, +4 phase byte, +8 frame counter
+// symdb: halfword}; r10 = toolkit) -> writes next state; flags unused
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80087D8.yaml
 	thumb_local_start
 sub_80087D8:
 	push {lr}
@@ -12819,6 +12830,10 @@ off_8008C6C:
 	.word sub_8008CEE+1
 	thumb_func_end sub_8008C58
 
+// symdb: Battle step state machine that on first entry dispatches effect 0x54 and clears flag bits 0x4C43, then polls comm_checkCrossNetBattleReady and writes 4 to r5+2 while the linked partner is not ready, returning once the partner is ready.
+// symdb: (no args; r5 = battle step/state struct) -> r0 clobbered; writes state fields and returns when
+// symdb: partner ready or not, flags from tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008C7C.yaml
 	thumb_local_start
 sub_8008C7C:
 	push {lr}

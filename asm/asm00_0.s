@@ -1882,6 +1882,10 @@ loc_8000F80:
 
 	thumb_func_end GetTitleScreenIconCount
 
+// symdb: When the save work area is reported invalid, sets EVENT_E00 and EVENT_1001, stores the incoming r0 at toolkit->S2001c04+0x18, and commits the 0x6710-byte EWRAM save buffer to SRAM via save_writeAndVerifyEWRAMToSRAM_803F79E.
+// symdb: (r0 = value stored into toolkit->S2001c04->field_0x18, likely a save/option word) -> r0 =
+// symdb: clobbered; flags from callees; returns early (bne) if init reports the existing save as valid
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000F86.yaml
 	thumb_func_start sub_8000F86
 sub_8000F86:
 	push {r4-r7,lr}

@@ -1411,6 +1411,10 @@ loc_8026E72:
 	pop {pc}
 	thumb_func_end chatbox_stateMaybeFinishText_8026E4C
 
+// symdb: Per-frame tick for the chip-select object: when bit 0x80 of eFlags2009F38 is clear, plays sound 0x9E, sets state byte to 0x54 and phase halfword to 0, then always calls battleObject_chipSelectAnimTick_8029C08.
+// symdb: (r0 = self, chip-select object at S20364C0) -> r0 = destroyed; calls PlaySoundEffect /
+// symdb: chipSelectAnimTick, flags from flag test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026E78.yaml
 	thumb_local_start
 sub_8026E78: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -9135,6 +9139,10 @@ locret_802A33C:
 	pop {r4,pc}
 	thumb_func_end sound_stepFadeSequence
 
+// symdb: On the chip-select screen, starts a two-part screen fade transition unless the chip in the selected regular/custom slot has attribute bit 0x20, then resets the state struct's fade sequence index and writes 0xC to JumpOffset12.
+// symdb: (r0 = chipSelect state struct S20364C0 (r5 in caller, unused directly except via fields)) -> r0
+// symdb: = clobbered; writes FadeSeqIndex=0 and JumpOffset12=0xC when fade is started
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A33E.yaml
 	thumb_local_start
 sub_802A33E: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -9856,6 +9864,10 @@ off_802A930:
 	.word unk_2030E60
 	thumb_func_end sub_802A8A4
 
+// symdb: Battle phase step: sets AliveAllianceCount from AliveActorTurnIndex, copies the turn-order tail from battleState+0x80 to +0xD0 (skipping at index 0), dispatches 0x820080 via dispatch_801DA48, ORs it into eStruct2035280+0x40 request bits, calls dispatch_801DACC with flags 4, zeros BG2ScrollX, and writes 1 to caller object byte +4.
+// symdb: (r0 = unused?, r5 = caller object/state with byte flag at +4) -> r0 = 1 stored to [r5+4]; no
+// symdb: return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A934.yaml
 	thumb_local_start
 sub_802A934:
 	push {lr}
@@ -10574,6 +10586,10 @@ loc_802AE70:
 	.balign 4, 0x00
 	thumb_func_end sub_802AE5C
 
+// symdb: Object update that draws a two-tile 'next/advance' arrow OAM icon; when the chatbox is still active it either waits or starts a dialog script and stores a state value in the object.
+// symdb: (r5 = object ptr, r0 clobbered) -> r0 = ?; sets object->state byte at [r5,#1], queues OAM
+// symdb: entries
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AE84.yaml
 	thumb_local_start
 sub_802AE84:
 	push {lr}
@@ -12790,7 +12806,7 @@ off_802C0A0:
 	.word unk_2035320
 	thumb_func_end battle_chipSelectAnimTileStep
 
-// symdb: After a per-frame countdown at r5+0xb expires, dispatches the packed selection ID at r5+0x10 by group: group 0 validates a chip against the chip DB and calls drawChipNameTileRow with sound 0x96; group 1 opens a text dialog (sub_802C5B0) with 0x95; group 2 calls sub_802C646 with 0x95 and re-arms the counter to 0x1e while writing state 8/0 at [r5+2]/[r5+3]; group 3 calls sub_802C5E6 with 0x95; finally zeroes the halfword at [r5+2].
+// symdb: After a per-frame countdown at r5+0xb expires, dispatches the packed selection ID at r5+0x10 by group: group 0 validates a chip against the chip DB and calls sub_802C75C with sound 0x96; group 1 opens a text dialog (sub_802C5B0) with 0x95; group 2 calls sub_802C646 with 0x95 and re-arms the counter to 0x1e while writing state 8/0 at [r5+2]/[r5+3]; group 3 calls sub_802C5E6 with 0x95; finally zeroes the halfword at [r5+2].
 // symdb: (r5 = menu state struct; no register args) -> r0 clobbered by calls; updates struct: [r5+0xb]
 // symdb: counter, [r5+0x10] pending ID cleared to 0xFFFF path via [r5+2]=0, [r5+2]/[r5+3] state for group
 // symdb: 2
@@ -12901,6 +12917,10 @@ dword_802C16C:
 	.word 0x136
 	thumb_func_end submenu_dispatchPendingSelection
 
+// symdb: Per-frame handler for the battle HP-recovery effect: counts down a timer, then either fully restores the player's HP or adds the decoded packed-id index as HP, plays sound 0x8A, copies the new HP into oBattleState_PlayerHPSnapshot, advances state to 4, and on the next frames unconditionally clears the state once the linked sprite's status halfwords are idle.
+// symdb: (r5 = eStruct2035280 effect state) -> void; state field at +3 advances 0 -> 4 -> done (+2
+// symdb: cleared)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C170.yaml
 	thumb_local_start
 sub_802C170:
 	push {lr}
@@ -16077,6 +16097,10 @@ sub_802D658:
 	mov pc, lr
 	thumb_func_end sub_802D658
 
+// symdb: During battle object teardown, zeros a single byte inside the fixed table at byte_203EAE0 entry 0xA at byte offset = id, gated by EVENT_1D8, per-id flag 0x196+id being clear, and id not being 0xA or 0xD.
+// symdb: (r0 = object id/byte index, uses r4) -> r0 = clobbered; returns without writing if EVENT_1D8
+// symdb: clear, flag 0x196+r0 set, or id is 10/13.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D65E.yaml
 	thumb_func_start sub_802D65E
 sub_802D65E:
 	push {r4,lr}
@@ -17098,6 +17122,10 @@ off_802DED4:
 	.word 0x1000
 	thumb_func_end battle_getObjectHandCardId
 
+// symdb: Reads the selected hand slot index (r5+0x16), looks up its per-slot record and hand entry, skips empty slots (chipID==0xFFFF), adds two record-based bonuses to a hand-stored u16 when chip-data byte 9 has bits 0x2/0x4 set, then calls battle_chipEffectDispatcher_80109A4 and returns chipID, dispatcher result, adjusted value, and the ChipData pointer.
+// symdb: (r5 = struct with u8 selected slot index at +0x16; r0 unused) -> r0 = chip ID, r1 = chip-effect
+// symdb: handler result, r2 = adjusted damage value, r3 = *ChipData
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802DED8.yaml
 	thumb_local_start
 sub_802DED8:
 	push {r4,r6,r7,lr}

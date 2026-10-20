@@ -672,6 +672,10 @@ off_81304E8:
 	.word unk_2024370
 	thumb_func_end t4_refreshChipPackBuffer
 
+// symdb: Renders the in-battle chip-select folder panel (chip name, chip gfx, OAM pack, icon slots, chip-pack entries) into background tile block 2 from the current state struct fetched via sub_8130404.
+// symdb: () -> r0 = destroyed; renders tiles into background tile block 2; uses global state from
+// symdb: sub_8130404
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304EC.yaml
 	thumb_func_start sub_81304EC
 sub_81304EC:
 	push {r4-r7,lr}
@@ -1971,6 +1975,10 @@ off_8130F0C:
 	.word battle_initScenarioScene+1
 	.word sub_8130FC4+1
 	thumb_func_end sub_8130EDC
+// symdb: Scene-exit dispatcher: if eStruct200BC30[0xE]==2, sets scene state 0xC and tears down RFU; otherwise, when permitted by r5[0x1B] bit 1 or chatbox flags 0x80|0x8, clears/restores the eStruct200BC30 work record and starts a screen fade (SetScreenFade 8,0x10).
+// symdb: (r5 = scene state struct, eStruct200BC30 as shared work area) -> void; no meaningful return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130F1C.yaml
 	thumb_local_start
 sub_8130F1C:
 	push {r4-r7,lr}
@@ -3961,6 +3969,10 @@ off_8131FB4:
 	.word submenu_linkResultHandler+1
 	thumb_func_end sub_8131FA0
 
+// symdb: Event phase that waits for the screen fade to finish (ZF set), then sets up the E5RB scene: initialises camera/screen block, writes tag 'E5RB'/0x2000 into eLinkState, dispatches via sub_81322E8, advances state to phase 4, and sets the main jumptable index to 0x28.
+// symdb: (r5 = event state record) -> r0 = 0; writes state+0x03 = 4, state+0x0C = 0, sets
+// symdb: *mainJumptableIndexPtr = 0x28
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131FC4.yaml
 	thumb_local_start
 sub_8131FC4:
 	push {lr}
@@ -7078,6 +7090,10 @@ dword_81336C0:
 	.word 0xFFFF
 	thumb_func_end chatbox_stateRunScript12Once
 
+// symdb: Handles input for a chatbox-driven submenu: guards on eFlags2009F38 bit 0x80, adjusts a 0..7 selection via menu_adjustCursorOrValue, and on A/B runs eTextScript2028A20 scripts 0xD, 0xA or 0x1B while updating r5+0x68 state and r5+3 flag.
+// symdb: (r0 = joypad held mask source via r10 toolkit, r5 = screen object) -> r0 = none; updates r5+0x68
+// symdb: state, r5+0x03 flag, runs chatbox scripts
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81336C4.yaml
 	thumb_local_start
 sub_81336C4:
 	push {r4,lr}
@@ -12993,7 +13009,7 @@ byte_8136210:
 	.byte 0x6, 0x6, 0x7, 0x6, 0x7, 0x7, 0x0, 0x0
 	thumb_func_end navicust_handlePlacementCursorInput
 
-// symdb: Navi Customizer board 'confirm' handler: adds cursor halfwords at r5+0x24/+0x20 to index into the board via sub_8136290; if sub_813629C returns 0 it calls battle_resetEStructRecords_8046664 then plays SOUND_CANT_JACK_IN; if the cell ID is 0x14C it stores state 0x2C, plays SOUND_SELECT_82 and dispatches to object_beastOutSetup/sub_813677C; else if cell's +2 word is nonzero it stores state 0x10, calls sub_813660C(1), redraws the board and plays SOUND_MENU_SELECT (pick-up).
+// symdb: Navi Customizer board 'confirm' handler: adds cursor halfwords at r5+0x24/+0x20 to index into the board via sub_8136290; if sub_813629C returns 0 it calls battle_resetEStructRecords_8046664 then plays SOUND_CANT_JACK_IN; if the cell ID is 0x14C it stores state 0x2C, plays SOUND_SELECT_82 and dispatches to sub_813686C/sub_813677C; else if cell's +2 word is nonzero it stores state 0x10, calls sub_813660C(1), redraws the board and plays SOUND_MENU_SELECT (pick-up).
 // symdb: () -> void; reads cursor coords from context r5 at +0x20/+0x24, writes state byte [r5+2], plays
 // symdb: a sound ID in r0 via PlaySoundEffect
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardConfirm.yaml
@@ -13876,7 +13892,7 @@ byte_8136844:
 	.byte 0x0, 0x0, 0x0, 0x0
 	thumb_func_end beastsp_feedBoardCodeInput
 
-// symdb: Battle-side setup for the Beast Out transformation: initializes object state, spawns the associated eStruct effects from byte_8136828, and programs the toolkit's Unk200f3a0 / RenderInfo / Unk2009740 fields before calling copy_loadBackgroundChunk(0).
+// symdb: Battle-side setup for the Beast Out transformation: initializes object state, spawns the associated eStruct effects from byte_8136828, and programs the toolkit's Unk200f3a0 / RenderInfo / Unk2009740 fields before calling sub_8136B58(0).
 // symdb: (no args used; object in r5, toolkit in r10) -> void; no return value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_beastOutSetup.yaml
 	thumb_local_start
@@ -14031,7 +14047,7 @@ byte_81369B5:
 	thumb_func_end sub_813691C
 
 // symdb: Prepares the battle state for a new battle: sets a mode/phase byte, clears a counter, initializes the battle state, and starts the next step with flag 1.
-// symdb: (r0 = unused/ignored) -> r0 = return of battle_beastOutReapplyCrossLevels; writes [r5+3] = 0x20, [r5+0x12] = 0
+// symdb: (r0 = unused/ignored) -> r0 = return of sub_8136B10; writes [r5+3] = 0x20, [r5+0x12] = 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beginInit.yaml
 	thumb_local_start
 battle_beginInit:
@@ -14048,7 +14064,7 @@ battle_beginInit:
 	thumb_func_end battle_beginInit
 
 // symdb: Per-frame step of a scripted scene that, after a 80-frame delay, fully heals the current PET navi and plays a sound/effect flourish before advancing the scene state.
-// symdb: (r5 = scene/PET-event object, fields at +0x03/+0x12/+0x15/+0x1c) -> r0 = battle_beastOutReapplyCrossLevels return
+// symdb: (r5 = scene/PET-event object, fields at +0x03/+0x12/+0x15/+0x1c) -> r0 = sub_8136B10 return
 // symdb: value; flags from callees
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_naviHealCutsceneStep.yaml
 	thumb_local_start

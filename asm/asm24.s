@@ -978,6 +978,10 @@ byte_808C930:
 end_cutscenescript_808C947:
 	.balign 4, 0
 
+// symdb: Ticks a scripted camera move driven by a halfword bitmask at [r10+4]: on the first call it initializes state via camera_writeUnk03_14_80301b2 and sub_8089244(1), then each call dispatches on one of 8 mask bits via byte_808CA18 to pick X/Y deltas from byte_808CA24, tests the new point with sub_80303FC (else calls sub_8089370), and commits via SetCameraXYZ; returns 1 while running and 0 when bit 0x200 terminates it (clears EVENT_9D4, plays SFX 0x83).
+// symdb: () -> r0 = 1 while the pan sequence is still running, 0 when it finishes; reads global state at
+// symdb: unk_2000B40 and the word at [r10+4]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C948.yaml
 	thumb_local_start
 sub_808C948:
 	push {r4-r7, lr}
@@ -1804,7 +1808,7 @@ dword_808CFB4:
 // symdb: (r10 = toolkit) -> r0 = status (0 = no change, 1 = player moved onto a jack-in hotspot, 2 =
 // symdb: jack-in failed sound played) ; side effects: writes to *dword_808CA44 jack-in state struct
 // symdb: (offsets 0x4/0x6/0x8-0x9/0x12/0x14/0x20..), calls PlaySoundEffect (0x11B then
-// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and ai_isPosInModeArea, calls ReadOWPlayerObjectCoords.
+// symdb: SOUND_CANT_JACK_IN), calls sub_808D034 and sub_808D098, calls ReadOWPlayerObjectCoords.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/jackIn_attemptJackInCheck_808CFB8.yaml
 	thumb_local_start
 jackIn_attemptJackInCheck_808CFB8:

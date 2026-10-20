@@ -5785,7 +5785,7 @@ dword_81108E0:
 	.word 0xC000000
 	thumb_func_end ai_runElementAttackUpdate
 
-// symdb: Boss AI step that winds up via oAIAttackVars_StepTimer, then writes the panel one step toward the target (or a stored backup minus direction) into object fields 0x7A/0x7B, calls ai_lungeAttackInit, resets CurAnim, sets OBJECT_FLAGS_GUARD, and assigns HitElement=4 before clearing AttackElement.
+// symdb: Boss AI step that winds up via oAIAttackVars_StepTimer, then writes the panel one step toward the target (or a stored backup minus direction) into object fields 0x7A/0x7B, calls sub_8110CC6, resets CurAnim, sets OBJECT_FLAGS_GUARD, and assigns HitElement=4 before clearing AttackElement.
 // symdb: (r5 = battle object ptr, r7 = AI attack vars struct) -> r0 = 0/void; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_panelChargeStep.yaml
 	thumb_local_start
@@ -5851,7 +5851,7 @@ locret_811095C:
 	pop {r4-r7,pc}
 	thumb_func_end ai_panelChargeStep
 
-// symdb: Per-frame AI dash/sweep update: decrements a timer at r5+0x7C while advancing X by velocity; on abort (object_hasNextXPanelProperty nonzero) restores panels from r5+0x78/0x79, clears flag bit 2, releases reservation, sets collision region 1 and HitElement 0x28; on timer expiry restores from r5+0x7A/PanelY and sets HitElement 8; both paths resync panels, set TargetPanelX/Y, and zero AttackElement.
+// symdb: Per-frame AI dash/sweep update: decrements a timer at r5+0x7C while advancing X by velocity; on abort (sub_8110D34 nonzero) restores panels from r5+0x78/0x79, clears flag bit 2, releases reservation, sets collision region 1 and HitElement 0x28; on timer expiry restores from r5+0x7A/PanelY and sets HitElement 8; both paths resync panels, set TargetPanelX/Y, and zero AttackElement.
 // symdb: (r5 = battle object, r7 = AI attack state; no register args) -> r0 clobbered; no meaningful
 // symdb: return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_sweepAttackStep.yaml
@@ -6244,7 +6244,7 @@ locret_8110C24:
 	pop {r4-r7,pc}
 	thumb_func_end ai_lungeAttackUpdate
 
-// symdb: AI update for a hovering object: drifts X while timer>0 and object_hasNextXPanelProperty==0; on timer expiry lands from panel stored at +0x7A/+0x7B, on object_hasNextXPanelProperty!=0 clears airborne flag and lands from +0x78/+0x79, then releases panel reserve, sets collision region 1, and ends the attack element.
+// symdb: AI update for a hovering object: drifts X while timer>0 and sub_8110D34==0; on timer expiry lands from panel stored at +0x7A/+0x7B, on sub_8110D34!=0 clears airborne flag and lands from +0x78/+0x79, then releases panel reserve, sets collision region 1, and ends the attack element.
 // symdb: (r5 = battle object, r7 = AI attack vars) -> r0 = undefined; updates object X/panels/collision
 // symdb: and AIAttackVars
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_hoverFlightUpdate.yaml
@@ -8147,7 +8147,7 @@ sub_8111B70:
 	pop {pc}
 	thumb_func_end sub_8111B70
 
-// symdb: Per-frame AI attack tick that telegraphs when ChargeCycles == 0x11, decrements the timer each frame, and on expiry invokes ai_spawnFirstAttackVariant with the difficulty tier, plays sound 0x80, and sets hit element 8.
+// symdb: Per-frame AI attack tick that telegraphs when ChargeCycles == 0x11, decrements the timer each frame, and on expiry invokes sub_8111BDE with the difficulty tier, plays sound 0x80, and sets hit element 8.
 // symdb: (r7 = pointer to the acting object's oAIAttackVars) -> r0 = 0; no meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tickCharge.yaml
 	thumb_local_start
@@ -17188,8 +17188,8 @@ locret_811650E:
 	pop {r4-r7,pc}
 	thumb_func_end ai_timerAttackSelect
 
-// symdb: Battle AI step: finds the closest enemy to the acting object, then calls helper ai_spawnSubObject with a value picked from the AI version's pattern table and a random 0-2 roll.
-// symdb: (r4 = AI data of acting object, r5 = acting BattleObject) -> r0 = result of ai_spawnSubObject(r0=table
+// symdb: Battle AI step: finds the closest enemy to the acting object, then calls helper sub_80DFAD6 with a value picked from the AI version's pattern table and a random 0-2 roll.
+// symdb: (r4 = AI data of acting object, r5 = acting BattleObject) -> r0 = result of sub_80DFAD6(r0=table
 // symdb: value, r1=random 0-2, r2=closest enemy BattleObject)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_randomAttackPick.yaml
 	thumb_local_start
@@ -19679,6 +19679,10 @@ off_81177A0:
 	.word byte_2011C10
 	thumb_func_end sub_8117780
 
+// symdb: Initializer handler for an object: sets type/state byte to 0x23, attaches sprite 0xF from byte_202FA04 via initGuiSprite, clears field +0xC, configures sprite (setAnimation, loadAnimationData, noShadow, palette bank 8, sub-record field A = 1, OAM priority 0), stores halfword 0x40 into a slot, sets field +8 = 4, then tail-calls sub_81177EC.
+// symdb: (r5 = current object struct) -> void; calls initGuiSprite with (0xF, &byte_202FA04) to attach
+// symdb: sprite data
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81177A4.yaml
 	thumb_local_start
 sub_81177A4:
 	push {lr}
@@ -21670,6 +21674,10 @@ loc_811855E:
 	pop {pc}
 	thumb_func_end sub_8118550
 
+// symdb: Final step of the beast-out transformation: clear byte [r5+0xC], pick next state 1 or 0x23 based on cutscene flag bit 0x80 (set→1, clear→0x23), set sprite alpha 0xA, reset color shader, advance the scrolling strips, refresh palette from the 0x0201DA80 table, and return sub_8118658's result.
+// symdb: (r0 = work struct in r5, r0 = flag mask 0x80 passed to mask_eFlags2009F38) -> r0 = result of
+// symdb: sub_8118658; writes [r5]=next state (1 or 0x23), [r5+0xC]=0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811857C.yaml
 	thumb_local_start
 sub_811857C:
 	push {lr}
@@ -24954,6 +24962,11 @@ byte_8119DC8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_8119D74
 
+// symdb: Per-frame update for overworld event object at entry 0 of eStructArr2008450: repositions it from struct+0x2C/+0x2E via sprite_setCoordinates, sets bit 0x80 on the status byte kept only when EVENT_1720 or EVENT_1723 is set (otherwise stores 1 to hide it), sets sprite alpha from mosaic params, runs obj_getSpriteFlag10AndRenderInfoHigh_8002F3E and the loc_8002F02 render-info helper, then calls sprite_update.
+// symdb: (r0 = 0 hardcoded entry index; r5 = pointer receiving the object's status byte, likely its own
+// symdb: struct+0) -> r0 = sprite_update result; status byte written with bit 0x80 set, or 1 when neither
+// symdb: event flag is set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119DE8.yaml
 	thumb_local_start
 sub_8119DE8:
 	push {r4-r7,lr}
@@ -25823,6 +25836,9 @@ sub_811A3A4:
 	pop {pc}
 	thumb_func_end sub_811A3A4
 
+// symdb: Initializes a fixed GUI sprite at unk_201D700 for the caller-supplied object: sets object state byte 0x23, attaches the sprite via initGuiSprite_8002770, then sets animation 0 (plus loadAnimationData), no shadow, palette 0, OAM priority 2, and via slotList_storeHalfwordAndClearField_800306C writes 0 to dword_811A3E8, then sub-entry palette bank 8 and sub-record field A 3.
+// symdb: (r5 = object/base pointer, r0-r3 clobbered) -> r0 = 0; sets [r5]=0x23
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A3AC.yaml
 	thumb_local_start
 sub_811A3AC:
 	push {r4,r5,lr}
@@ -26550,6 +26566,9 @@ off_811A86C:
 	.word sub_811A8EC+1
 	thumb_func_end sub_811A858
 
+// symdb: Initializes GUI sprite object 0x23 using graphic eGuiSprite2022FA0 (sprite 0x2B): runs a sub-init (sub_811A940 with 0,6), then sets palette 0, OAM priority 2, slot halfword 0x1D0, sub-entry palette bank 0xA, sub-record +0xA=4, positions at (0x78,0x50,6), runs sub_811A914(0,6), writes state 4 to [r5+8], and finishes via sub_811A8D0.
+// symdb: () -> void; operates on a global object pointer in r5 (no args)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A878.yaml
 	thumb_local_start
 sub_811A878:
 	push {lr}
@@ -28188,6 +28207,10 @@ jt_811B4C0:
 	.word sprite_updateStateDispatch+1
 	.word sub_811B6D8+1
 
+// symdb: Initializes an object as type 0x23 with sprite resource 0x25; variant index in [r5+4] (0-8) selects a halfword from a 9-entry table passed to slotList_storeHalfwordAndClearField_800306C, a palette bank from the same index, and a y-coordinate from a 9-entry table for sprite_setCoordinates with x=0xB0.
+// symdb: (r5 = object ptr, [r5+4] = variant index 0-8) -> r0 = 0; sets sprite, palette, coordinates and
+// symdb: state fields on the object
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B4CC.yaml
 	thumb_local_start
 sub_811B4CC:
 	push {lr}
@@ -28839,6 +28862,10 @@ off_811B9D4:
 	.word unk_2037780
 	thumb_func_end sub_811B9B4
 
+// symdb: Initializes a GUI sprite object (resource 0x12): sets state 0x23, configures animation 6/no-shadow/priority 3, programs a slot halfword (0x300 or 0x260) selected by byte +3 and gated by byte +4, sets palette bank 0xB (or byte+3+0xB when the flag is set), writes +8=4, +9=4 or 0, +0xC=6, then tail-calls sub_811BA58.
+// symdb: (r5 = object struct; no register args) -> void; object state byte set to 0x23, fields +8/+9/+0xC
+// symdb: initialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B9D8.yaml
 	thumb_local_start
 sub_811B9D8:
 	push {r4,lr}
@@ -32160,6 +32187,9 @@ byte_811D5F2:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_811D530
 
+// symdb: Decompresses a sprite resource into a static buffer, initializes it as a GUI sprite with resource 0x8F, sets animation 0, disables shadow, and positions it at (0x80, 0x80) on screen.
+// symdb: () -> void; r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D5F8.yaml
 	thumb_local_start
 sub_811D5F8:
 	push {r7,lr}
@@ -34251,6 +34281,9 @@ off_811E6E0:
 	.word eStruct2001010
 	thumb_func_end e_dispatchByState
 
+// symdb: Initializes an object's sprite state for type 0x23: sets type byte, calls loc_8002774 with 0x63, animation 0 with data loaded, no shadow, palette bank 0xB, slot halfword 0x1F0, sub-record cleared, OAM priority 0, palette 0, byte 8 = 4, then calls sub_811E72C before returning.
+// symdb: (r5 = object pointer, implicit) -> void; r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E6E4.yaml
 	thumb_local_start
 sub_811E6E4:
 	push {lr}
@@ -34457,6 +34490,9 @@ off_811E878:
 	.word eStruct2001010
 	thumb_func_end sub_811E858
 
+// symdb: One-shot initializer that sets object type byte 0x23, attaches sprite id 0x65 via loc_8002774, configures default render state (animation 0 with animation data load, no shadow, palette bank 0xF, slot halfword 0x290, sub-record field A 0, OAM priority 0, palette 0), then sets object byte 8 to 4 and tail-calls sub_811E8C4.
+// symdb: (r5 = object pointer, implicit) -> void; r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E87C.yaml
 	thumb_local_start
 sub_811E87C:
 	push {lr}
@@ -34553,6 +34589,10 @@ off_811E934:
 	.word eStruct2001010
 	thumb_func_end sub_811E914
 
+// symdb: Initializes a kind-0x23 object: writes kind byte, calls loc_8002774 with 0x66, runs the standard sprite init block (animation 0, load anim data, no shadow, palette bank 0xF, subrecord A=0, priority 0, palette 0), stores selector 0x2A8 via slotList, and sets byte [r5+8]=4 before tail-calling sub_811E980.
+// symdb: (r5 = object ptr, clobbers r0) -> r0 = result of last callee; object fields at [r5], [r5+8]
+// symdb: written
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E938.yaml
 	thumb_local_start
 sub_811E938:
 	push {lr}
@@ -34624,6 +34664,10 @@ off_811E9C0:
 	.word eStruct2001010
 	thumb_func_end sub_811E9A0
 
+// symdb: Initializes a type-0x23 object in r5: sets kind byte, attaches sprite 0x67, selects animation 0, loads its animation data, disables shadow, sets sub-entry palette bank 0xF, stores halfword 0x250 into a slot list, clears sub-record field A, sets OAM priority 0 and palette 0, writes 4 to r5+8, then tail-calls sub_811EA0C.
+// symdb: (r5 = object struct pointer, preloaded by caller) -> r0 = value from tail-called sub_811EA0C; no
+// symdb: meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E9C4.yaml
 	thumb_local_start
 sub_811E9C4:
 	push {lr}
