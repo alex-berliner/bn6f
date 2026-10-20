@@ -4523,7 +4523,7 @@ byte_8010B54:
 	.byte 0x0, 0x64, 0x0
 	thumb_func_end sub_8010AE4
 
-// symdb: Returns a ramp value: if battle flag 0x40 is set, returns (entry at unk_2036120[r1])[0x28] + 0x1500; otherwise maps the actor's TotalDamageTaken (r0) >>7 through piecewise-linear segments (≤0x40: 10+22*t/64; ≤0x70: 32+96*(t-64)/48; <0x80: 128+128*(t-112)/15), or 0xa as fallback. r1 is the unk_2036120 record index, r0 is the actor pointer.
+// symdb: Maps the custom gauge (>>7) through a piecewise-linear ramp to 10..256, or 10 once it is full; with battle flag 0x40 returns the per-alliance gauge value (record +0x28) + 0x1500 instead.
 // symdb: (r0 = actor index/param, r1 = index into the 0x1D0-stride array at 2036120) -> r0 = computed
 // symdb: value; r1 clobbered by BIOS Div.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcDamageTakenRamp.yaml
@@ -20638,7 +20638,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / ai_dispatchHitElementHandler / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -32212,9 +32212,8 @@ dword_801DFB4:
 	.word 0x4000
 	thumb_func_end SetCustGauge
 
-// symdb: Adds a signed delta (r0) to the halfword at eStruct2035280+0x20, saturating the result to a maximum of 0x4000 before storing it back.
-// symdb: (r0 = signed delta to add) -> writes gauge halfword at eStruct2035280+0x20; no return value,
-// symdb: flags from cmp set but unused by caller
+// symdb: Adds r0 to the custom gauge (eStruct2035280+0x20), saturating at its 0x4000 maximum.
+// symdb: (r0 = amount to add) -> custom gauge updated; r0-r2 clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_addHudField20.yaml
 	thumb_func_start battle_addHudField20
 battle_addHudField20:
@@ -32234,8 +32233,8 @@ dword_801DFCC:
 	.word 0x4000
 	thumb_func_end battle_addHudField20
 
-// symdb: Subtracts r0 from the halfword at +0x20 of the battle HUD struct, clamping at zero (probable shown-HP damage display).
-// symdb: (r0 = amount to subtract) -> r0 = destroyed; writes halfword at eStruct2035280+0x20
+// symdb: Subtracts r0 from the custom gauge (eStruct2035280+0x20), clamping at zero.
+// symdb: (r0 = amount to subtract) -> custom gauge updated; r0-r2 clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_hudSubtractValueAt20.yaml
 	thumb_local_start
 battle_hudSubtractValueAt20:
@@ -32251,8 +32250,8 @@ loc_801DFDC:
 	.word 0x4000
 	thumb_func_end battle_hudSubtractValueAt20
 
-// symdb: Returns the cumulative damage-taken counter (TotalDamageTaken) for the actor's AIData.
-// symdb: () -> r0 = u16 TotalDamageTaken for the currently-bound AIData record
+// symdb: Returns the custom gauge (u16 at eStruct2035280+0x20, 0 to 0x4000).
+// symdb: () -> r0 = custom gauge
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getTotalDamageTakenForActor_801DFE4.yaml
 	thumb_func_start battle_getTotalDamageTakenForActor_801DFE4
 battle_getTotalDamageTakenForActor_801DFE4:

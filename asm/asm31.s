@@ -19072,8 +19072,8 @@ off_80C04C0:
 	.word object_freeMemory+1
 	thumb_func_end t1_0x2a_80C04AC
 
-// symdb: Initializes a battle object's sprite (load 0x80/8/0xB, reset anims, toggle shadow, set visible flag), plays sound 0x8C, spawns a linked effect via sub_8010DF6(1, Param1, 1), and transitions to the CUR_STATE_UPDATE handler battle_dispatchAction.
-// symdb: (r4/r5 = battle object pointer, args preloaded in r0-r2) -> r0 = return of battle_dispatchAction; object
+// symdb: Initializes a battle object's sprite (load 0x80/8/0xB, reset anims, toggle shadow, set visible flag), plays sound 0x8C, spawns a linked effect via sub_8010DF6(1, Param1, 1), and transitions to the CUR_STATE_UPDATE handler sub_80C0526.
+// symdb: (r4/r5 = battle object pointer, args preloaded in r0-r2) -> r0 = return of sub_80C0526; object
 // symdb: state set to CUR_STATE_UPDATE
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initSpriteAndSpawnEffect.yaml
 	thumb_local_start
@@ -68686,7 +68686,7 @@ off_80D6574:
 
 // symdb: Initializes a battle object sprite (0x80/0x10/0x45), disables shadow, sets CurAnim=1/CurAnimCopy=0xFF with animation reload, applies flip, palette from Param3, sub_80D67D2, and a slow backward drift (XVel = -frontDir, YVel = 1) for 0x168 frames with no angle-based motion before handing off to its update state.
 // symdb: (r5 = battle object pointer, inputs in r0-r2 preset by caller: 0x80/0x10/0x45 sprite ids) -> r0
-// symdb: = result of object_runCurActionUpdate; sets object fields
+// symdb: = result of sub_80D65E0; sets object fields
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initObjectDrift.yaml
 	thumb_local_start
 battle_initObjectDrift:
@@ -68728,7 +68728,7 @@ battle_initObjectDrift:
 	pop {r7,pc}
 	thumb_func_end battle_initObjectDrift
 
-// symdb: Dispatches the battle object's CurAction handler via a jump table (off_80D65F4) indexed by oBattleObject_CurAction, with two Thumb entries (sub_80D65FC, battle_objectWaitClearRelatedAndDestroy); uses the mov lr,pc / bx r1 Thumb long-branch trick.
+// symdb: Dispatches the battle object's CurAction handler via a jump table (off_80D65F4) indexed by oBattleObject_CurAction, with two Thumb entries (sub_80D65FC, sub_80D677C); uses the mov lr,pc / bx r1 Thumb long-branch trick.
 // symdb: (no args; operates on object in r5) -> void; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_runCurActionUpdate.yaml
 	thumb_local_start
@@ -112264,7 +112264,7 @@ locret_80E96C4:
 	pop {r4,pc}
 	thumb_func_end battle_beastOutTransformAction
 
-// symdb: Battle-object phase handler: sets a 60-frame timer, spawns a flash effect at RelatedObject1's position, plays sound 0x43, writes its Param2 into the navi's NaviStats byte 5 (real or ghost per alliance), chains to battle_setRelatedObject1AttackPower, and on expiry transitions to action 0xC.
+// symdb: Battle-object phase handler: sets a 60-frame timer, spawns a flash effect at RelatedObject1's position, plays sound 0x43, writes its Param2 into the navi's NaviStats byte 5 (real or ghost per alliance), chains to sub_80E97BE, and on expiry transitions to action 0xC.
 // symdb: (r0 = battle object, kept in r5) -> void; on phase expiry sets oBattleObject_CurAction = 0xC and
 // symdb: clears CurPhaseAndPhaseInitialized
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateNaviForm.yaml
@@ -112308,7 +112308,7 @@ locret_80E9712:
 	pop {r4,pc}
 	thumb_func_end battle_updateNaviForm
 
-// symdb: Battle-object handler that on first call spawns a type-4 effect (effect word 0x5C | Param3<<16) at the related object's arm attachment offset, copies Param2 into byte 5 of that navi's NaviStats record (twice, via the alliance wrapper and the index wrapper), calls battle_setRelatedObject1AttackPower, plays sound 77 at timer 0x28, decrements Timer to 0 over 0x3C frames, then sets CurAction=0xC and clears CurPhaseAndPhaseInitialized.
+// symdb: Battle-object handler that on first call spawns a type-4 effect (effect word 0x5C | Param3<<16) at the related object's arm attachment offset, copies Param2 into byte 5 of that navi's NaviStats record (twice, via the alliance wrapper and the index wrapper), calls sub_80E97BE, plays sound 77 at timer 0x28, decrements Timer to 0 over 0x3C frames, then sets CurAction=0xC and clears CurPhaseAndPhaseInitialized.
 // symdb: (r0-r3 unused; r4 = battle object, r5 = battle object this handler runs on) -> r0 clobbered;
 // symdb: object CurTimer/CurPhase/CurAction updated
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_armEffectAndSetNaviStatsByte.yaml
