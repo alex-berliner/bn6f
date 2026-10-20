@@ -2352,6 +2352,10 @@ loc_80011EC:
 	mov pc, lr
 	thumb_func_end overworldObject_withinBoxCheck_signed_80011D6
 
+// symdb: Returns 1 if the point (x,y) is within radius r of center (cx,cy), else 0, using squared comparison.
+// symdb: (r0 = point x, r1 = point y, r2 = center x, r3 = center y, r4 = radius) -> r0 = 1 if (x-cx)^2 +
+// symdb: (y-cy)^2 <= r^2, else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011F0.yaml
 	thumb_local_start
 sub_80011F0:
 	sub r0, r0, r2

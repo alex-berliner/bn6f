@@ -15722,7 +15722,7 @@ battle_clearAIDataStateBlock:
 	mov pc, lr
 	thumb_func_end battle_clearAIDataStateBlock
 
-// symdb: Per-frame tick for the player battle object's custom AI state: lazily initializes AIDataPtr+0xF0 (sets flag, halfword=8), reads state id, jumps via a 3-entry Thumb table (sub_802D358/battle_aiPickRandomRowObject/sub_802D3CA) with r6 holding the state block; r7 is computed as AIDataPtr+0xA0 and preserved across the call.
+// symdb: Per-frame tick for the player battle object's custom AI state: lazily initializes AIDataPtr+0xF0 (sets flag, halfword=8), reads state id, jumps via a 3-entry Thumb table (sub_802D358/sub_802D3A8/sub_802D3CA) with r6 holding the state block; r7 is computed as AIDataPtr+0xA0 and preserved across the call.
 // symdb: (r5 = battle object, reads oBattleObject_AIDataPtr) -> r0 = state id passed to handler; r1 =
 // symdb: pointer to state block (AIDataPtr+0xF0) for handlers
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_tickPlayerCustomState.yaml
@@ -22143,6 +22143,9 @@ locret_8030102:
 	mov pc, lr
 	thumb_func_end battle_clampCameraToBounds_80300AC
 
+// symdb: Converts oCamera_nextX/nextY fixed-point follow position to integer, applies offsets (+0x88 X, +0xB0 Y), and stores to oCamera_ScrollX and oCamera_CameraYInt.
+// symdb: (r5 = oCamera struct pointer) -> void; writes oCamera_ScrollX and oCamera_CameraYInt
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030104.yaml
 	thumb_local_start
 sub_8030104:
 	ldr r4, [r5,#oCamera_nextX_3c]

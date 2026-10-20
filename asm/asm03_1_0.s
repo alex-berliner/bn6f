@@ -3550,6 +3550,9 @@ locret_8035712:
 	pop {r4-r7,pc}
 	thumb_func_end req_enqueue
 
+// symdb: Iterates the 32-entry, 8-byte-per-entry table at 0x020000DC0; on the first active slot (word at +0 nonzero) whose id byte at +6 equals r0, clears the slot's word at +4 and active word at +0. On match r0 is set to 0; otherwise the scan runs to the end and r0 is left as the input id.
+// symdb: (r0 = entry id byte) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035714.yaml
 	thumb_local_start
 sub_8035714:
 	push {r4-r7,lr}
@@ -3640,6 +3643,10 @@ off_8035788:
 	.word 0x100
 	thumb_func_end claimNextPendingRequest_8035756
 
+// symdb: After a fade completes, sets the main jumptable index to 4 and resets GameState to MapGroup=0, MapNumber=0, SubsystemIndex=0, GameProgress=0x65, MapSubArea=0x62 to force a scene transition.
+// symdb: () -> void; writes Toolkit.MainJumptableIndex = 4 and GameState
+// symdb: MapGroup/MapNumber/SubsystemIndex/GameProgress(0x65)/MapSubArea(0x62)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803578C.yaml
 	thumb_func_start sub_803578C
 sub_803578C:
 	push {r4-r7,lr}

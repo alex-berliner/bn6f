@@ -4282,6 +4282,10 @@ byte_813D7A0:
 	.byte 0x40, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0
 	thumb_func_end rfu_setEntryFlagBit
 
+// symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls sub_813D5E8(1); clears byte_200AF81 each tick.
+// symdb: (r0 = ptr to state struct; [r0+1] = step counter 0..0x14) -> r0 = 0 (or finalize result); r5/r7
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D7B8.yaml
 	thumb_func_start sub_813D7B8
 sub_813D7B8:
 	push {r5,r7,lr}
@@ -4633,6 +4637,9 @@ off_813D9A8:
 	.word eS200BC50
 	thumb_func_end rfu_setLinkPhase
 
+// symdb: Dispatches via a 2-entry thumb handler table indexed by eS200BC50+1, returns sub_813D9F4's value (4 = done), otherwise calls sub_8146B70 as a per-step wait.
+// symdb: (no args) -> r0 = new state/task value (4 appears to mean finished); no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D9AC.yaml
 	thumb_local_start
 sub_813D9AC:
 	push {r4,lr}

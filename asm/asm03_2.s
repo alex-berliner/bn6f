@@ -4530,6 +4530,9 @@ locret_8048D9A:
 	pop {r4-r7,pc}
 	thumb_func_end shop_incrementPurchaseCount
 
+// symdb: Returns a pointer into the per-shop data buffer for the entry at the given index, computed as entry[shop].offsetIntoData + Toolkit_ShopDataPtr.
+// symdb: (r0 = shop entry index) -> r0 = pointer into shop data at (entry+0x08 offset); clobbers r1, r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048D9C.yaml
 	thumb_local_start
 sub_8048D9C:
 	ldr r2, off_8048F98 // =dword_8046B98
@@ -7755,6 +7758,10 @@ loc_804A53C:
 	pop {pc}
 	thumb_func_end submenu_updateCursorLoop
 
+// symdb: Dispatches to one of four sprite animation state handlers from off_804A564, selected by the state byte at [r5+1], then calls sub_804AA58 and returns via pop {pc}.
+// symdb: (r5 = object struct) -> jumps to handler table off_804A564[state] with r0 = state index and r1 =
+// symdb: state index, then calls sub_804AA58 before returning
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A54C.yaml
 	thumb_local_start
 sub_804A54C:
 	push {lr}
@@ -10628,6 +10635,9 @@ dword_804C3B8:
 	.word 0x1F0B
 	thumb_func_end sub_804C348
 
+// symdb: parameterless wrapper that re-invokes t3_loadTextWindowTiles to redraw the fixed 12x6 chatbox text window; takes no args, returns r0 as the callee's result.
+// symdb: (no args) -> r0 = result of t3_loadTextWindowTiles; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C3BC.yaml
 	thumb_local_start
 sub_804C3BC:
 	push {r4-r7,lr}
@@ -11425,7 +11435,7 @@ off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
-// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls ow_updateMarkerProj, then stores state 8 at r5+0x10.
+// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
 // symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;
 // symdb: writes RenderInfo flags and struct byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_showFullScreenBackground.yaml

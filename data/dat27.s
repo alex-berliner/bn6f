@@ -3128,6 +3128,10 @@ cutscenescript_8096AEF:
 end_cutscenescript_8096AFF:
 	.balign 4, 0
 
+// symdb: Masks the earned title-screen icon bitmask with 0xF6 and stores 1 at [r5+4] if all five of those icons are earned, else 0; always returns 0 in r0.
+// symdb: (no args; r5 = ptr to result struct, set by caller) -> r0 = 0; [r5+4] = 1 if (earnedIconMask &
+// symdb: 0xF6) == 0xF6 else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8096B00.yaml
 	thumb_local_start
 sub_8096B00:
 	push {r4-r7, lr}

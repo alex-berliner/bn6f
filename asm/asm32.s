@@ -2050,6 +2050,10 @@ locret_810E9B4:
 	pop {r4,r7,pc}
 	thumb_func_end sub_810E97A
 
+// symdb: Per-frame routine: decrements the object's halfword Timer; when it underflows, sets CurAnim=5, writes 9 to byte +0x10 of the struct at oBattleObject_ExtraVars+4, reloads Timer=0x20, and moves the object to phase 0xC.
+// symdb: (r5 = battle object, no args) -> r0 = final/new Timer value; updates object Timer, CurAnim,
+// symdb: ExtraVars+4 struct, and phase fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E9B6.yaml
 	thumb_local_start
 sub_810E9B6:
 	push {lr}
@@ -19488,6 +19492,10 @@ off_81175CC:
 	.word math_cosTable
 	thumb_func_end sub_81175C4
 
+// symdb: Tail-calling state dispatcher that selects one of three Thumb handlers via the object's r5+8 state byte and the table at off_81175E4, including the sprite-scale-clear routine as state 2.
+// symdb: (r5 = object work area; r5+8 = state index 0..2) -> tail-calls handler, returns its result; no
+// symdb: flags set by dispatcher itself
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81175D0.yaml
 	thumb_func_start sub_81175D0
 sub_81175D0:
 	push {lr}
@@ -19730,6 +19738,10 @@ locret_811777E:
 	pop {pc}
 	thumb_func_end battle_clampEnemyCountByBattleStartProgress_8117768
 
+// symdb: Dispatches a per-object handler selected by a byte at offset 8 of the object struct in r5, passing the handler a pointer to shared IWRAM byte_2011C10 (also held in r6) via a fake ARM/Thumb interwork call.
+// symdb: (r5 = object struct, r0 = pointer to byte_2011C10 on entry) -> calls handler from
+// symdb: off_8117794[r1] with r0=&byte_2011C10; r6 set to the same pointer, clobbers r6/lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117780.yaml
 	thumb_func_start sub_8117780
 sub_8117780:
 	push {lr}
@@ -26538,6 +26550,10 @@ dword_811A788:
 	.word 0xFFFFFFD0
 	thumb_func_end sub_811A768
 
+// symdb: Thumb dispatch stub that jumps to one of three functions in a 3-entry table at off_811A7A0, selected by the state byte [r5,#8], using a tail call (pop {pc}) so the handler's return passes through.
+// symdb: (r5 = gui sprite object, no r0 args) -> dispatches to handler with r5 context; handler result
+// symdb: passes through as return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A78C.yaml
 	thumb_func_start sub_811A78C
 sub_811A78C:
 	push {lr}
@@ -28099,6 +28115,10 @@ locret_811B336:
 	pop {r4,r5,pc}
 	thumb_func_end sub_811B314
 
+// symdb: Dispatches to a per-type update handler for a submenu object, tail-calling one of three handlers from off_811B34C based on the type byte at [r5,#8].
+// symdb: (r5 = object struct; type id at [r5,#8]) -> tail-calls handler from off_811B34C with r6 =
+// symdb: sSubmenu
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B338.yaml
 	thumb_func_start sub_811B338
 sub_811B338:
 	push {lr}
@@ -28963,6 +28983,10 @@ sub_811B984:
 	.byte 0, 0
 	thumb_func_end sub_811B984
 
+// symdb: Returns current value moved halfway toward a target (r1), leaving it unchanged when the halved distance rounds to 0 or 1; used by callers to ease a field toward a target until convergence.
+// symdb: (r0 = current value, r1 = target value) -> r0 = current moved by diff/2 toward target; unchanged
+// symdb: if |diff| <= 3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B990.yaml
 	thumb_local_start
 sub_811B990:
 	mov r2, r0
@@ -30650,6 +30674,9 @@ off_811C780:
 	.word 0xC0
 	thumb_func_end sprite_isWithinScreenBounds
 
+// symdb: Per-frame step that advances the two 32-bit pointer fields at r5+0x18 and r5+0x1c by the sprite's signed x/y velocity from r5+0x14/r5+0x16, each scaled by 16.
+// symdb: (r0 = unused/scratch, r5 = sprite object) -> void; r5+0x18 and r5+0x1c incremented in place
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C784.yaml
 	thumb_local_start
 sub_811C784:
 	ldr r0, [r5,#0x18]
@@ -31151,8 +31178,8 @@ off_811CC88:
 	.word sub_811D2E0+1
 	thumb_func_end sub_811CC74
 
-// symdb: Initializes an object struct (pointer in r5) by setting active/flags, positioning its sprite at (-8,128), clearing fields, and dispatching to a per-variant setup routine selected by a struct field, then calls object_runStateHandler.
-// symdb: (r5 = object struct pointer; r0/r1 unused) -> r0 = return of object_runStateHandler; no meaningful flags
+// symdb: Initializes an object struct (pointer in r5) by setting active/flags, positioning its sprite at (-8,128), clearing fields, and dispatching to a per-variant setup routine selected by a struct field, then calls sub_811CD08.
+// symdb: (r5 = object struct pointer; r0/r1 unused) -> r0 = return of sub_811CD08; no meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initVariant.yaml
 	thumb_local_start
 object_initVariant:
@@ -31361,6 +31388,10 @@ off_811CE30:
 	.word 0x1CD
 	thumb_func_end object_timerSfxTick
 
+// symdb: Periodic battle task that runs every 16 frames: in mode 1 it sets a state byte to 0x1C and records an emotion change via battle_recordEmotionChange, then clears field +0xE; otherwise it sets the byte to 0xC and calls sub_811D6F4.
+// symdb: (r5 = battle object/state struct, not passed in r0-r3) -> r0 = 0 (clobbered by calls); no
+// symdb: meaningful return value, flags from the counter test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CE34.yaml
 	thumb_local_start
 sub_811CE34:
 	push {lr}
@@ -31571,6 +31602,10 @@ locret_811CFA2:
 	pop {pc}
 	thumb_func_end sub_811CF94
 
+// symdb: Trampoline that reads a behavior selector byte at [r5,#9], indexes into the 6-entry Thumb jump table at off_811CFB8, and tail-calls the matching object behavior handler.
+// symdb: (r5 = object ptr) -> r0 = whatever the selected handler returns; lr trick preserves return
+// symdb: address for Thumb callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CFA4.yaml
 	thumb_local_start
 sub_811CFA4:
 	push {lr}
@@ -31897,6 +31932,10 @@ sub_811D1B4:
 	pop {pc}
 	thumb_func_end sub_811D1B4
 
+// symdb: Tail-calls one of four Thumb handlers (sub_811D1DC, sub_811D20C, sub_811D248, sub_811D2C0) selected by the byte at [r5,#9].
+// symdb: (r5 = object/state struct, r1..r3 passthrough) -> tail-calls handler, returns its result; no
+// symdb: return value consumed at this level
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D1B8.yaml
 	thumb_local_start
 sub_811D1B8:
 	push {lr}

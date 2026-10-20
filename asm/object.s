@@ -812,6 +812,10 @@ locret_800BE08:
 	.balign 4, 0x00
 	thumb_func_end sub_800BDD0
 
+// symdb: Battle object phase that waits 30 frames on first entry (initializing Timer=0x1E, PhaseInitialized=4) then advances CurPhaseAndPhaseInitialized to 8.
+// symdb: (r5 = battle object) -> r0 = 1 if timer still running, 0 if phase advanced; writes
+// symdb: oBattleObject_Timer, oBattleObject_PhaseInitialized, oBattleObject_CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BE0C.yaml
 	thumb_local_start
 sub_800BE0C:
 	push {lr}

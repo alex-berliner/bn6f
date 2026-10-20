@@ -975,6 +975,10 @@ sub_812D9F0:
 	.balign 4, 0x00
 	thumb_func_end sub_812D9F0
 
+// symdb: Parameterized helper that packs r0 into the low half of a word, sets the high half to a fixed 0x20002 flag word, reads two halfwords from the caller-supplied object in r5 at the offsets given in r2 and r3, and calls object_computeAndQueueOamEntry_811FA98 with fixed extras (r4=7, r6=0xC24C, r7=0x64) to submit one OAM entry.
+// symdb: (r0 = value A (16-bit), r1 = value B (16-bit), r2 = offset of field 1 in [r5], r3 = offset of
+// symdb: field 2 in [r5]) -> r0 = result of object_computeAndQueueOamEntry; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA08.yaml
 	thumb_local_start
 sub_812DA08:
 	push {r4-r7,lr}

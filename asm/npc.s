@@ -3870,6 +3870,9 @@ locret_809F9BC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_809F942
 
+// symdb: Returns the current mystery-data ID stored at byte_2000210+8, used by chatbox scripts and mysteryData_lookupForNavi.
+// symdb: () -> r7 = word at byte_2000210+8; does not touch flags or other registers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809F9BE.yaml
 	thumb_func_start sub_809F9BE
 sub_809F9BE:
 	ldr r7, off_809F9C4 // =byte_2000210 

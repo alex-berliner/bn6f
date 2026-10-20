@@ -1274,6 +1274,10 @@ dword_80931FE::
 	.word 0x46F78B28
 	thumb_func_end sub_80931FA
 
+// symdb: Decrements the halfword frame counter at [r5,#0x18] and returns 1 when it underflows (timer expired), else 0; used by Groundman minigame callers to gate per-frame sequencing.
+// symdb: (r5 = minigame state struct) -> r0 = 1 once the halfword counter at [r5,#0x18] underflows, else
+// symdb: 0 (and the counter is decremented); flags clobbered by bl/branch usage
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8093202.yaml
 	thumb_local_start
 sub_8093202::
 	ldrh r0, [r5,#0x18]

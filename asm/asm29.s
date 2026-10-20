@@ -7186,6 +7186,10 @@ ow_clearEventFlagAndFreeObject:
 	pop {pc}
 	thumb_func_end ow_clearEventFlagAndFreeObject
 
+// symdb: Loads a byte from [r5,#8], uses it to index a 4-entry Thumb function table at off_80A8884, and tail-calls the selected entry via 'mov lr,pc; bx r0' so the callee returns directly to the caller.
+// symdb: (no args in r0-r3; caller must hold the object pointer in r5) -> calls table handler indexed by
+// symdb: [r5,#8]; returns to caller via the handler's return path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8870.yaml
 	thumb_func_start sub_80A8870
 sub_80A8870:
 	push {r4-r7,lr}
@@ -7558,7 +7562,7 @@ off_80A8B40:
 	.word sub_80A8C08+1
 	thumb_func_end sub_80A8B2C
 
-// symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from ow_stepAngleTowardTarget(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
+// symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from sub_80A8D02(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
 // symdb: (r4/r5 = object record) -> void; also calls sprite_update on the object every frame
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_cybercrowOrbitUpdate.yaml
 	thumb_local_start
@@ -9486,6 +9490,10 @@ sub_80A98CC:
 	pop {pc}
 	thumb_func_end sub_80A98CC
 
+// symdb: Per-frame dispatcher for a story-script explosion object: reads the state byte at work+0x08, indexes off_80A98E8 to fetch a handler, and tail-calls it via 'mov lr,pc; bx r0' so execution returns to this function's caller; handlers receive r0 = handler fn pointer and r1 = state index and re-obtain the work pointer from r5.
+// symdb: (r5 = story explosion object work, r0 = unused/ignored) -> tail-jumps to handler from
+// symdb: off_80A98E8 indexed by [r5,#8]; handler receives r0 = table-entry value, r1 = state index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A98D4.yaml
 	thumb_func_start sub_80A98D4
 sub_80A98D4:
 	push {lr}

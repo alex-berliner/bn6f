@@ -216,6 +216,10 @@ loc_812EBFE:
 	.balign 4, 0x00
 	thumb_func_end e_spawnFromTableAndPlaceByAltY
 
+// symdb: Loads the halfword at word_2023FA0 indexed by (cursor+scrollOffset)*4 into slot 9 via sub_811BC00, using submenu state at 0x2037780 fields +0x20 and +0x24.
+// symdb: () -> r0 = destroyed; uses submenu state at 0x2037780 fields +0x20/+0x24; no return value used
+// symdb: by callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EC04.yaml
 	thumb_func_start sub_812EC04
 sub_812EC04:
 	push {r4-r7,lr}
@@ -733,6 +737,9 @@ off_812EF9C:
 off_812EFA0:
 	.word unk_2025A70
 	thumb_func_end renderTextWindowToBg
+// symdb: Fills a 4x10 tilemap buffer at unk_2025A70 with consecutive halfword tile indices starting at 0x21C0, used as the text window's tile map blitted to BG block 3.
+// symdb: () -> writes 0x78 bytes of halfword tile indices into unk_2025A70; r0-r4,r7 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EFA4.yaml
 	thumb_local_start
 sub_812EFA4:
 	push {r4-r7,lr}

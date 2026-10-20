@@ -278,6 +278,10 @@ off_813024C:
 	.word dword_86B7AE0
 	thumb_func_end sub_8130208
 
+// symdb: Queues 8 OAM entries from a static template array in a fixed loop, using one shared u16 attribute word for every call.
+// symdb: () -> void; no inputs (r0 only used as zero index), no return value; calls sprite_queueOamEntry
+// symdb: 8 times
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130250.yaml
 	thumb_func_start sub_8130250
 sub_8130250:
 	push {r4-r7,lr}
@@ -3994,6 +3998,10 @@ byte_8131F94:
 	.word sub_8131FA0+1
 	thumb_func_end eStruct200BC30_dispatchByFirstByte
 
+// symdb: Dispatches a submenu state tick: reads a phase byte at [r5,#3] and tail-calls one of four Thumb handlers from off_8131FB4 (sub_8131FC4, t4_tickSubsystemE290, sub_813202C, submenu_linkResultHandler), all sharing the r5 context.
+// symdb: (r5 = state object; handler index = byte [r5,#3]) -> calls table[off_8131FB4][index] as Thumb;
+// symdb: no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131FA0.yaml
 	thumb_local_start
 sub_8131FA0:
 	push {lr}
@@ -4194,7 +4202,7 @@ locret_8132100:
 	.balign 4, 0x00
 	thumb_func_end sub_81320AC
 
-// symdb: RFU session setup/restart: bails on flag bits 8 (stores 0xC at +0xC) or on sub_803C330 pending (after error step); otherwise if flag 0x10 is set, runs the mode dispatcher, then either re-initializes the wireless session (adapter present) or tears down via rfu_initCommStateCall, finally spinning one counter tick and calling two RFU cleanup routines.
+// symdb: RFU session setup/restart: bails on flag bits 8 (stores 0xC at +0xC) or on sub_803C330 pending (after error step); otherwise if flag 0x10 is set, runs the mode dispatcher, then either re-initializes the wireless session (adapter present) or tears down via sub_8147B24, finally spinning one counter tick and calling two RFU cleanup routines.
 // symdb: (r0 = selector passed to sub_803CB18 checks, r5 = eS200BC50 state struct) -> r0 = destroyed;
 // symdb: writes state bytes at eS200BC50+0xC and +0x3
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initOrRestartSession.yaml
@@ -5634,6 +5642,10 @@ dword_8132A9C:
 	.hword 0x0400
 	thumb_func_end sub_8132A50
 
+// symdb: Tail-calls sprite_queueOamEntry with a 16-bit attr2 loaded from a hardcoded tile/palette table at 0x08132ABC indexed by (r0<<16)|r1, with r2 supplying the palette field and fixed args 2 and 7.
+// symdb: (r0:r1 = byte offset into table byte_8132ABC (r0<<16|r1), r2 = palette number) -> r0 = void;
+// symdb: calls sprite_queueOamEntry(table+offset, attr2 | palette<<12, 2, 7).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132A9E.yaml
 	thumb_func_start sub_8132A9E
 sub_8132A9E:
 	push {r4-r7,lr}
@@ -16294,6 +16306,10 @@ byte_81378AC:
 	.byte 0x50, 0xC2, 0x4F, 0xC2, 0x4E, 0xC2, 0xFF, 0xFF
 	thumb_func_end get_sChipEntryAt
 
+// symdb: Dispatches through a 3-entry function table at off_81378C8 indexed by [r5+1], tail-calling handlers like battle_initRoundState or submenu_runPromptFrameUpdate and returning their result; the caller uses a nonzero return to advance the pre-battle scene state.
+// symdb: (r0 = unused/trashed, r5 = pointer to state struct) -> r0 = result of the dispatched handler
+// symdb: (nonzero = state finished); clobbers lr.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81378B4.yaml
 	thumb_func_start sub_81378B4
 sub_81378B4:
 	push {lr}
@@ -16969,6 +16985,10 @@ off_8137E74:
 off_8137E78:
 	.word unk_201CF00
 	thumb_func_end sub_8137E4C
+// symdb: Renders 7 BCD time digits into per-digit display buffer slots using enable flags, packing two position/attr words with a constant 0x200 flag.
+// symdb: (r0 = time-slot index, r1 = table of halfword enable flags, r2 = digit buffer base, r3/r4 =
+// symdb: packed position/attr values) -> r0 = last sub_8137F08 result; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137E7C.yaml
 	thumb_local_start
 sub_8137E7C:
 	push {r4-r7,lr}
@@ -17140,6 +17160,10 @@ off_8137F84:
 off_8137F88:
 	.word unk_201CF00
 	thumb_func_end sprite_renderCharGlyph
+// symdb: Queues 7 stacked 6-px-tall OAM sprites (one per 2-byte entry) into an OAM work buffer, advancing Y by 12 px per row and skipping rows whose first byte is zero.
+// symdb: (r0 = stride/base?, r1 = glyph entry array ptr, r2 = base Y, r3 = X base value) -> void;
+// symdb: clobbers r4-r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137F8C.yaml
 	thumb_local_start
 sub_8137F8C:
 	push {r4-r7,lr}

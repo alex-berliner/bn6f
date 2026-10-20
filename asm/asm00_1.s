@@ -3852,6 +3852,10 @@ locret_8004C60:
 	mov pc, lr
 	thumb_func_end sub_8004BFC
 
+// symdb: Converts a NUL-terminated ASCII string at r2 into 16-bit font tile indices (byte - 0x20) stored as halfwords at r1, looping up to r5 entries or 0xFF iterations, leaving r4=1.
+// symdb: (r0 = padding/unused, r1 = dest halfword buffer, r2 = source string, r5 = max entries) -> r0
+// symdb: unchanged, r4 = 1; clobbers r8 (counter, set to 0xFF if it was 0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004C62.yaml
 	thumb_local_start
 sub_8004C62:
 	push {r0,r5-r7,lr}
@@ -7881,6 +7885,10 @@ off_8006B8C:
 	.word byte_20081B0
 	thumb_func_end sub_8006B3A
 
+// symdb: Fills an 8-byte-per-scanline table with window-register pairs: per row writes a dword encoding WIN0H=(n,n+1) with WIN0V=0xFFFF (a 1-pixel-wide vertical window) followed by 0xFFFFFF00 (full-screen WIN1H/WIN1V), stepping n by -0x101 each row to draw a diagonal window edge.
+// symdb: (r0 = scanline table buffer, r1 = table size in bytes (rows*8), r2 = starting x for the window
+// symdb: line) -> fills table; clobbers r2, r3, r5.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006B94.yaml
 	thumb_local_start
 sub_8006B94:
 	push {r5,lr}
@@ -11520,6 +11528,10 @@ locret_8008348:
 	pop {pc}
 	thumb_func_end battle_stepEndCountdownToResult
 
+// symdb: Per-object state dispatcher: reads the state byte at [r5,#2], indexes off_800835C, and calls the matching handler (object_wait60FramesThenDispatchEvent for 0, sub_800838A for 1) with r0 = state byte.
+// symdb: (r5 = object pointer, r0 = state byte at [r5,#2] passed through) -> jumps to handler
+// symdb: off_800835C[state], returns to caller; flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800834A.yaml
 	thumb_local_start
 sub_800834A:
 	push {lr}
@@ -12848,6 +12860,10 @@ locret_8008C56:
 	pop {pc}
 	thumb_func_end sub_8008BF0
 
+// symdb: Reads a type byte at [r5,#2] from an effect state struct, uses it to index a 4-entry dispatch table, and tail-calls the matching per-type handler with r5 in place.
+// symdb: (r5 = pointer to effect/state struct; dispatch index = [r5,#2]) -> tail-calls handler(r5); no
+// symdb: direct return value, flags from handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008C58.yaml
 	thumb_local_start
 sub_8008C58:
 	push {lr}
@@ -15631,6 +15647,9 @@ locret_8009EE0:
 	pop {r4,pc}
 	thumb_func_end battle_resolveBattleOutcome
 
+// symdb: Reads StatePhase from battle state in r5 and tail-calls the corresponding handler from jump table off_8009EF4 (phase 0 = waitLinkResultsSyncPhase, phase 1 = stateChipSelectOpen).
+// symdb: (r5 = battle state struct) -> tail-call to table[StatePhase] handler; returns handler's result
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009EE2.yaml
 	thumb_local_start
 sub_8009EE2:
 	push {lr}
@@ -19283,7 +19302,7 @@ battle_initLoopbackLinkPackets:
 	thumb_func_end battle_initLoopbackLinkPackets
 
 // symdb: Writes a 0xA9B8C7D6-tagged two-word packet into the outgoing battle link buffer and requests battle mode 3.
-// symdb: (r0 = passed to battle_findActorSlotOffset, r1 = second payload word) -> r0 = 1 from
+// symdb: (r0 = passed to sub_800B4CE, r1 = second payload word) -> r0 = 1 from
 // symdb: battle_requestSetBattleMode; r4 consumed as first payload word
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_linkSendTaggedPacketMode3.yaml
 	thumb_local_start

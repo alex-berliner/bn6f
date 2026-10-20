@@ -275,6 +275,9 @@ battle_initSpriteProjection:
 	mov pc, lr
 	thumb_func_end battle_initSpriteProjection
 
+// symdb: Initializes the global sprite-placement block (byte_20098A8=0x10, byte_20098A9=0 [isometric projection], halfword at 0x20098AA=0xFF) during overworld scene reset.
+// symdb: () -> r0 = undefined; writes globals byte_20098A8..A9 and word_20098AA, clobbers flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027F4.yaml
 	thumb_func_start sub_80027F4
 sub_80027F4:
 	ldr r1, off_8002804 // =byte_20098A8

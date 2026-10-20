@@ -7979,6 +7979,10 @@ sub_801230C:
 	pop {pc}
 	thumb_func_end sub_801230C
 
+// symdb: Initializes an AI attack-vars struct (caller-supplied via r7) with an attack boost of 0x100 or 0x300, base damage 30, extra damage 148, and returns 0x5c; selected by entering at the top for boost 1x or at loc_801232A for boost 3x.
+// symdb: (r7 = pointer to AI attack-vars struct; entered at top for boost=1, at loc_801232A for boost=3)
+// symdb: -> r0 = 0x5c; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012326.yaml
 	thumb_local_start
 sub_8012326:
 	mov r0, #1
@@ -9619,6 +9623,11 @@ loc_8012D20:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_beastPwrAtkHitEnemies
 
+// symdb: Builds a packed (PanelY<<4)|PanelX byte array from up to three battle objects, pads to three entries, and sorts them ascending via sortThreeEntries.
+// symdb: (r0 = output byte array >=4 bytes, r4 = object count <=3, r6 = array of battle-object pointers,
+// symdb: caller's r6/r4 reused) -> r0 clobbered; writes zero word then count packed panel-coord bytes,
+// symdb: pads to 3 and sorts via sortThreeEntries
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D24.yaml
 	thumb_local_start
 sub_8012D24:
 	push {r4-r7,lr}
@@ -15623,6 +15632,10 @@ dword_8015610:
 	.word 0x80008600
 	thumb_func_end ai_attackTimerFinishStep
 
+// symdb: Loads the HitElement byte from the AI attack vars at r7, uses it to index off_8015628, and bx-dispatches to the selected handler (Thumb set bit); r0 holds the HitElement index and control passes via lr set to pc, so the handler must return with bx lr.
+// symdb: (r7 = AI attack vars; reads oAIAttackVars_HitElement) -> calls table[HitElement] as ARM routine,
+// symdb: returns to caller via pop {pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015614.yaml
 	thumb_local_start
 sub_8015614:
 	push {lr}
@@ -20740,6 +20753,10 @@ byte_8017CB0:
 	.byte 0x0, 0x0, 0x0, 0x8, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end battle_ai_dispatchQueuedAttacks_8017BC0
 
+// symdb: Dispatches the battle object's MoveSubState byte through a 3-entry function-pointer table (off_8017CD4) to one of object_continuePanelMoveStep, sub_8017D64, or sub_8017E0A, then returns to the caller.
+// symdb: (r5 = battle object; r0 = [r5+oBattleObject_MoveSubState] as table index) -> tail-dispatches to
+// symdb: handler in off_8017CD4, no direct return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017CC0.yaml
 	thumb_func_start sub_8017CC0
 sub_8017CC0:
 	push {lr}
@@ -21353,6 +21370,10 @@ nullsub_57:
 	mov pc, lr
 	thumb_func_end nullsub_57
 
+// symdb: Advances a battle object's animation by dispatching through a 2-entry table indexed by [r5+oBattleObject_PreventAnim]: entry 0 (set) starts the erase animation, entry 1 (clear) runs the normal per-frame animation step.
+// symdb: (r5 = battle object) -> r0 = result of the dispatched handler; calls through a 2-entry dispatch
+// symdb: table indexed by [r5+oBattleObject_PreventAnim]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801813A.yaml
 	thumb_local_start
 sub_801813A:
 	push {lr}

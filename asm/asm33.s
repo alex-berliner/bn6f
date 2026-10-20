@@ -12219,6 +12219,9 @@ off_8128F84:
 	.word NULL
 	thumb_func_end e_renderBgTilemapLayers
 
+// symdb: Per-frame redraw of the 32x12-tile chatbox window by calling sub_8129018 with a tilemap/data pointer while the active flag at [r5,#0x1e] is set; shared across multiple state-machine callers.
+// symdb: (r5 = message-state struct; no args) -> void; reads flag halfword [r5,#0x1e]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128FF0.yaml
 	thumb_local_start
 sub_8128FF0:
 	push {r4-r7,lr}
@@ -15474,7 +15477,7 @@ off_812A6F4:
 	.word byte_8129150
 	thumb_func_end initScreenSceneAndFadeIn
 
-// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls rfu_initCommStateCall; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
+// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
 // symdb: (r5 = link connection state struct, set by caller) -> r0 = clobbered; updates struct fields +0x1
 // symdb: (state=0x10), +0x2 (sub-state=0), +0x28 (retry count), +0xC (state=0x18 in alternate branch)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryInitSessionStateStep.yaml
