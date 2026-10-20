@@ -9931,8 +9931,8 @@ locret_8112966:
 	pop {pc}
 	thumb_func_end ai_attackPhaseSubStep
 
-// symdb: AI helper that targets the panel one step in front of the acting battle object (PanelX +/- 1 via front direction, PanelY) and calls sub_80D1EB8 with packed DifficultyTier|SubStepIndex, Damage, and a pointer to AttackBoost2 offset from the battle object, after dereferencing oAIAttackVars_TimerOrCycles by SubStepIndex.
-// symdb: (r5 = battle object, r7 = oAIAttackVars) -> r0 = sub_80D1EB8 result; flags clobbered
+// symdb: AI helper that targets the panel one step in front of the acting battle object (PanelX +/- 1 via front direction, PanelY) and calls battle_spawnInitializedObject6c_80D1EB8 with packed DifficultyTier|SubStepIndex, Damage, and a pointer to AttackBoost2 offset from the battle object, after dereferencing oAIAttackVars_TimerOrCycles by SubStepIndex.
+// symdb: (r5 = battle object, r7 = oAIAttackVars) -> r0 = battle_spawnInitializedObject6c_80D1EB8 result; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_queueAttackFromFrontPanel.yaml
 	thumb_local_start
 ai_queueAttackFromFrontPanel:
@@ -9957,7 +9957,7 @@ loc_8112984:
 	ldr r6, [r7,#oAIAttackVars_Damage]
 	ldrb r7, [r7,#oAIAttackVars_AttackBoost2]
 	add r7, r7, r5
-	bl sub_80D1EB8
+	bl battle_spawnInitializedObject6c_80D1EB8
 	pop {r4,r6,r7,pc}
 byte_8112998:
 	.byte 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0

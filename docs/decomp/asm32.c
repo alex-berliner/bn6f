@@ -6219,7 +6219,7 @@ int ai_queueAttackFromFrontPanel()
     v6 = *(v1 + 3) | (*(v1 + 14) << 8);
     v7 = *(v1 + 8);
     v8 = v0 + *(v1 + 12);
-    return sub_80D1EB8(v2, v0->panelY, v3, v4);
+    return battle_spawnInitializedObject6c_80D1EB8(v2, v0->panelY, v3, v4);
 }
 
 
