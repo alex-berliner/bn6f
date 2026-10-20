@@ -1308,7 +1308,7 @@ battleObject_initAIChipQueueSlot_80468C6:
 	thumb_func_end battleObject_initAIChipQueueSlot_80468C6
 
 // symdb: Zeroes a byte at the head of a sprite object and then marks that sprite unscalable via sprite_makeUnscalable.
-// symdb: void sprite_clearScaleAndMakeUnscalable_80468E0(r5 sprite_ptr); passes r5 through to sprite_makeUnscalable and returns its
+// symdb: void sub_80468E0(r5 sprite_ptr); passes r5 through to sprite_makeUnscalable and returns its
 // symdb: r0-r3 and NZCV flags unchanged
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_clearScaleAndMakeUnscalable_80468E0.yaml
 	thumb_func_start sprite_clearScaleAndMakeUnscalable_80468E0
@@ -1321,7 +1321,7 @@ sprite_clearScaleAndMakeUnscalable_80468E0:
 	thumb_func_end sprite_clearScaleAndMakeUnscalable_80468E0
 
 // symdb: Clears the flag byte of one 0x58-byte entry in the battle array at byte_2011860 and marks that entry's sprite unscalable.
-// symdb: u32 battle_clearEntryFlagAndMakeUnscalable_80468EC(u32 index); // in: r0 = entry index; out: r1/r2/r3 and c/v as left by
+// symdb: u32 sub_80468EC(u32 index); // in: r0 = entry index; out: r1/r2/r3 and c/v as left by
 // symdb: sprite_makeUnscalable; r5 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearEntryFlagAndMakeUnscalable_80468EC.yaml
 	thumb_func_start battle_clearEntryFlagAndMakeUnscalable_80468EC
@@ -4833,7 +4833,7 @@ off_8048F84:
 	thumb_func_end isIdInList
 
 // symdb: Registers a single shop stock entry (entry kind 4) pointing at the item table byte_8048BE4, then returns.
-// symdb: void shop_addStockEntry_kind4_8048F88(void); // tail-wraps shop_addItemStockEntry(4, byte_8048BE4); r4-r7 preserved,
+// symdb: void sub_8048F88(void); // tail-wraps shop_addItemStockEntry(4, byte_8048BE4); r4-r7 preserved,
 // symdb: lr/r0-r3/r8/r9/NZCV pass through from the callee
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/shop_addStockEntry_kind4_8048F88.yaml
 	thumb_func_start shop_addStockEntry_kind4_8048F88
@@ -11097,7 +11097,7 @@ locret_804C6FC:
 	thumb_func_end e_queuePacketEntry
 
 // symdb: Battle-start step dispatcher: reads a step byte from the battle object and tail-jumps to the matching handler from a two-entry table.
-// symdb: void battle_dispatchStepHandler_804C700(u32 battleObj /* r5 */); inputs r5, r10, lr; caller-visible outputs r2, r8, r9,
+// symdb: void sub_804C700(u32 battleObj /* r5 */); inputs r5, r10, lr; caller-visible outputs r2, r8, r9,
 // symdb: r10, r11, r12 (produced by the dispatched handler); nzcv clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStepHandler_804C700.yaml
 	thumb_func_start battle_dispatchStepHandler_804C700
@@ -11555,7 +11555,7 @@ dword_804CBD8:
 	.word 0x3F0B
 	thumb_func_end clear_renderBlendEffect
 
-// symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→toolkit_setUnk2009740StateBytes_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
+// symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→sub_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
 // symdb: (r5 = battle/AIData struct (reads Unk_0c, writes Unk_0x10), r10 = toolkit) -> void; no return
 // symdb: value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastSp_startTransformSequence.yaml
@@ -11630,7 +11630,7 @@ sub_804CC58:
 	thumb_func_end sub_804CC58
 
 // symdb: Writes the constant bytes 0x0C and 0x10 into offset 2 and 3 of the toolkit's Unk2009740 struct, likely setting a two-byte state/counter pair.
-// symdb: void toolkit_setUnk2009740StateBytes_804CC6E(r10 = toolkit register base); r5 is left untouched (the lifter reports it as an
+// symdb: void sub_804CC6E(r10 = toolkit register base); r5 is left untouched (the lifter reports it as an
 // symdb: "output" only because callers happen to read it back after the call); flags NZ clobbered, r0-r1
 // symdb: clobbered, r4-r7 preserved.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/toolkit_setUnk2009740StateBytes_804CC6E.yaml

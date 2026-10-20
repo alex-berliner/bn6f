@@ -113,7 +113,7 @@ off_808F8FC:
 
 // symdb: Per-frame controller for the bus-ride cutscene state machine at the bus station - walks the player to the bus, seats them, then walks them off at the destination and reports whether the ride is still running.
 // symdb: void busStation_tickBusRideCutscene(void); // in: r6, r7 (pass-through to
-// symdb: thunk_tailLoc808FA90_r0eq0_808FA7C/sub_808FA84), r10, lr; out: r0 = 0 when the ride finished, 1 while still in progress
+// symdb: sub_808FA7C/sub_808FA84), r10, lr; out: r0 = 0 when the ride finished, 1 while still in progress
 // symdb: (NZ set from r0); r2-r5 hold callee garbage; r4-r7 restored on exit
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/busStation_runBusMoveSequence_controller_808F900.yaml
 	thumb_local_start
@@ -273,7 +273,7 @@ dword_808FA34:
 	thumb_func_end owPlayer_stepTowardTarget
 
 // symdb: Turns the overworld player sprite toward the map's target position by picking the walk animation matching the angle octant to that target.
-// symdb: void owPlayer_turnTowardTarget_808FA38(void)  // in: r10 (context/base), lr; out: r4, r5 returned unchanged; clobbers
+// symdb: void sub_808FA38(void)  // in: r10 (context/base), lr; out: r4, r5 returned unchanged; clobbers
 // symdb: r0-r3, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_turnTowardTarget_808FA38.yaml
 	thumb_local_start
@@ -312,7 +312,7 @@ byte_808FA74:
 	thumb_func_end owPlayer_turnTowardTarget_808FA38
 
 // symdb: Pure tail-call thunk that pushes the r4-r7/lr frame, sets r0 = 0, and branches to loc_808FA90, whose pop {r4-r7,pc} returns straight to this function's caller.
-// symdb: void thunk_tailLoc808FA90_r0eq0_808FA7C(void); // entered with r4-r7/r10/lr live, tail-calls loc_808FA90 with r0=0;
+// symdb: void sub_808FA7C(void); // entered with r4-r7/r10/lr live, tail-calls loc_808FA90 with r0=0;
 // symdb: r4-r7 come back restored via the callee's pop
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/thunk_tailLoc808FA90_r0eq0_808FA7C.yaml
 	thumb_local_start
@@ -747,7 +747,7 @@ off_808FD60:
 	thumb_func_end sub_808FD1C
 
 // symdb: Looks up a four-parameter entry for the current map and enqueues it via req_setFourParams, likely weather/ambient-effect parameters.
-// symdb: void weather_requestMapParams_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
+// symdb: void sub_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
 // symdb: r0-r1, lr, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weather_requestMapParams_808FD64.yaml
 	thumb_local_start
@@ -872,7 +872,7 @@ loc_808FE4E:
 	thumb_func_end ow_initBus
 
 // symdb: Zeroes a 0x80-byte work area whose address is stored in dword_808FDBC, then returns 0.
-// symdb: void clearWorkArea_808FE64(void) // reads lr only; sets r0=0 on return but callers ignore it
+// symdb: void sub_808FE64(void) // reads lr only; sets r0=0 on return but callers ignore it
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkArea_808FE64.yaml
 	thumb_local_start
 clearWorkArea_808FE64:
@@ -1093,9 +1093,9 @@ loc_808FF98:
 	pop {pc}
 	thumb_func_end checkObjectField20Zero_808FF8C
 
-// symdb: Spawns overworld map object type 0x1B (likely the bus entity) using position/parameters computed by getAreaTableEntry_808FFC0, then stores a byte into the new object.
-// symdb: () -> r0 = 0 (always); internally calls getAreaTableEntry_808FFC0 to obtain r0-r3 args for
-// symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes getAreaTableEntry_808FFC0's r3 low byte to new
+// symdb: Spawns overworld map object type 0x1B (likely the bus entity) using position/parameters computed by sub_808FFC0, then stores a byte into the new object.
+// symdb: () -> r0 = 0 (always); internally calls sub_808FFC0 to obtain r0-r3 args for
+// symdb: SpawnOverworldMapObject (r0=0x1B type, r3=0x400000), writes sub_808FFC0's r3 low byte to new
 // symdb: object+5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_spawnMapObject1b.yaml
 	thumb_local_start
@@ -1203,7 +1203,7 @@ loc_8090034:
 	thumb_func_end weatherComp_checkTrigger60_8090020
 
 // symdb: Once the BE4 story-event flag is set, plays the mailbox sound, switches the game state to substate 3, and raises a BBS request flag; otherwise does nothing.
-// symdb: void bbs_requestOnEventBE4_809003C(void)   // reads r10/lr per contract, r3 out (callee residue), r4 preserved,
+// symdb: void sub_809003C(void)   // reads r10/lr per contract, r3 out (callee residue), r4 preserved,
 // symdb: flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/bbs_requestOnEventBE4_809003C.yaml
 	thumb_local_start
@@ -1304,7 +1304,7 @@ weatherComp_spawnObject1DNearPlayer_80900C8:
 	pop {pc}
 	thumb_func_end weatherComp_spawnObject1DNearPlayer_80900C8
 
-// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by checkCurrentMapEventFlag_80902DC, checkObjectField20Zero_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
+// symdb: Mr. Weather comp: picks the cutscene to start: byte_808F668 on a 0x7x trigger, byte_808F67C on 0x6x, else by sub_80902DC, sub_808FF8C / flag 0xBF2, the tornado-hit flag 0xBE6 (hit counter +0x16), sub_80901EC.
 // symdb: r5 = eWeatherCompState -> r4 = script or 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_pickScript_8090104.yaml
 	thumb_local_start

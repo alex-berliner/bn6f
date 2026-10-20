@@ -13011,7 +13011,7 @@ off_8008D3C:
 	thumb_func_end sub_8008D18
 
 // symdb: Zero-fills the 12-byte (3-word) work area at 0x203CA70 via ZeroFillByWord.
-// symdb: void clearWorkArea_8008D40(void); /* outputs r0-r3 and nz c v are whatever ZeroFillByWord leaves behind */
+// symdb: void sub_8008D40(void); /* outputs r0-r3 and nz c v are whatever ZeroFillByWord leaves behind */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWorkArea_8008D40.yaml
 	thumb_local_start
 clearWorkArea_8008D40:
@@ -14249,7 +14249,7 @@ locret_8009550:
 	thumb_func_end battle_tutFullSynchroTextStep
 
 // symdb: Advances the dad's Cybeast battle tutorial, running its textbox script on entry and picking the next tutorial index once the dialogue is closed.
-// symdb: void battle_dadCybeastTutStep_8009552(r5=battleState, r10=toolkit); clobbers r0,r1,lr and nzcv; returns r2..r6
+// symdb: void sub_8009552(r5=battleState, r10=toolkit); clobbers r0,r1,lr and nzcv; returns r2..r6
 // symdb: (mostly pass-through; r2 carries the chosen index, r5 may be the value chatbox_runScript left)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dadCybeastTutStep_8009552.yaml
 	thumb_local_start
@@ -15000,7 +15000,7 @@ off_8009A84:
 	thumb_func_end battle_pauseIntroResumeStateStep
 
 // symdb: Battle main-loop state dispatcher — reads the battle state's phase byte and tail-jumps to that phase's step handler via a 3-entry table.
-// symdb: void battle_stateDispatchStep_8009A88(r5=battle state ptr, lr=return) — dispatches to handler(r0=phase, r1=handler
+// symdb: void sub_8009A88(r5=battle state ptr, lr=return) — dispatches to handler(r0=phase, r1=handler
 // symdb: addr); handler's r2-r12 pass through to caller, NZCV and r0-r1, r7, lr clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_stateDispatchStep_8009A88.yaml
 	thumb_local_start

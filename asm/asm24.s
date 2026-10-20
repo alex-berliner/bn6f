@@ -1258,7 +1258,7 @@ off_808CB9C:
 	thumb_func_end pet_tryStartRandomEncounterStep_808CB0C
 
 // symdb: Spawns the initial batch of overworld map objects, with the count depending on the current map (12 in map group 0x85, 9 elsewhere with a nonzero MapNumber, otherwise 7).
-// symdb: void spawnOverworldMapObjects_808CBA0(r10 toolkit); takes the toolkit pointer in r10, reads GameState via
+// symdb: void sub_808CBA0(r10 toolkit); takes the toolkit pointer in r10, reads GameState via
 // symdb: oToolkit_GameStatePtr; returns nothing meaningful — r2 holds whatever the last
 // symdb: SpawnOverworldMapObject call left behind; r4-r7 reach the caller exactly as they arrived
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/spawnOverworldMapObjects_808CBA0.yaml
@@ -1757,7 +1757,7 @@ loc_808CF4C:
 	thumb_func_end ai_testMapGroupEventFlag
 
 // symdb: For the current map group's AI/story mode, sets the mode's paired event flag if its check flag isn't already set.
-// symdb: void ai_syncModeEventFlag_808CF50(r10 /* map group / AI-mode context */, lr); returns r7 unchanged (restored from
+// symdb: void sub_808CF50(r10 /* map group / AI-mode context */, lr); returns r7 unchanged (restored from
 // symdb: stack); clobbers r0, r1, r3, lr, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_syncModeEventFlag_808CF50.yaml
 	thumb_local_start
@@ -2028,7 +2028,7 @@ byte_808D105:
 	thumb_func_end ai_isPosInModeArea
 
 // symdb: Fetches the current overworld tile template, stamps it onto the map with template index 0, and refreshes the derived map/tilemap state.
-// symdb: void ow_setupMapTiles_808D108(void); // reads r10 (context/map pointer passed through to callees), trashes
+// symdb: void sub_808D108(void); // reads r10 (context/map pointer passed through to callees), trashes
 // symdb: r0-r3 and flags, r4-r9/r12 pass through from the callees and are preserved for callers
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_setupMapTiles_808D108.yaml
 	thumb_local_start
@@ -2166,7 +2166,7 @@ unk_808D24C:
 	.word 0x04000101, 0x00000000, 0x00000000, 0x00000000
 	thumb_func_end sub_808D11C
 
-// symdb: Pure glue routine that runs the worker at shop_addStockEntry_kind4_8048F88 once and then sets r0 to 0 (Z set, N clear) before returning.
+// symdb: Pure glue routine that runs the worker at sub_8048F88 once and then sets r0 to 0 (Z set, N clear) before returning.
 // symdb: void sub_808D25C(void) // in: r10 (forwarded to the worker); out: flags N/Z from 0,
 // symdb: r2/r3/r4/r5/r7/r8/r9/r12 pass through from the worker
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_808D25C.yaml

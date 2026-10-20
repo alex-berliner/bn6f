@@ -1049,7 +1049,7 @@ loc_808978C:
 	thumb_func_end battleObject_scenarioEffectInputHandler_8089704
 
 // symdb: Fetches a scenario-effect state value, launches an AI chat script two entries into it, then marks the returned state object with the phase byte 0x14 and reports success.
-// symdb: int ai_startChatScriptAtScenarioState2_8089792(u8 *state /* r5 */, u32 ctx /* r10 */); // returns r0 = 1; r2/r3 leak through
+// symdb: int sub_8089792(u8 *state /* r5 */, u32 ctx /* r10 */); // returns r0 = 1; r2/r3 leak through
 // symdb: from the chat-script call; NZCV clobbered; r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_startChatScriptAtScenarioState2_8089792.yaml
 	thumb_local_start
@@ -1215,7 +1215,7 @@ loc_8089898:
 	thumb_func_end battle_tickBeastSp_808985A
 
 // symdb: If a battle-side check passes, runs chat-script kind 7 for the object in r5 and then writes state byte 0x38 to it, always returning 1.
-// symdb: int ai_chatScriptTickStoreState38_808989C(u32 r5 /* object ptr */, u32 r10 /* context */); returns r0 = 1; r2/r3 (and r1)
+// symdb: int sub_808989C(u32 r5 /* object ptr */, u32 r10 /* context */); returns r0 = 1; r2/r3 (and r1)
 // symdb: come through from the kind-7 chat-script call when it runs; flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_chatScriptTickStoreState38_808989C.yaml
 	thumb_local_start

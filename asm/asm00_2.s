@@ -860,7 +860,7 @@ locret_800F2EE:
 	thumb_func_end battleObject_refreshSpriteAndArm_800F2C6
 
 // symdb: AI trampoline that redirects processing from an AI data block to the battle object it belongs to, then tail-calls sub_800F2FC.
-// symdb: void ai_followTargetObject_800F2F0(u32 selfObject /* r5 = battle object whose AI is running */); returns
+// symdb: void sub_800F2F0(u32 selfObject /* r5 = battle object whose AI is running */); returns
 // symdb: sub_800F2FC's results in r3/r4/r5, r5 passed through
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_followTargetObject_800F2F0.yaml
 	thumb_local_start
@@ -5381,7 +5381,7 @@ locret_80111DA:
 	thumb_func_end sub_80111CA
 
 // symdb: Detaches a battle object's secondary linked object, running that object's cleanup routine and clearing the link pointer.
-// symdb: void battle_releaseRelatedObject2_80111DC(u32 battleObject /* r5 */); — returns r1 (left over from sub_80C4204's return
+// symdb: void sub_80111DC(u32 battleObject /* r5 */); — returns r1 (left over from sub_80C4204's return
 // symdb: when the link was non-null), clobbers r0 and NZ flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_releaseRelatedObject2_80111DC.yaml
 	thumb_local_start
@@ -5606,7 +5606,7 @@ sub_8011326:
 	thumb_func_end sub_8011326
 
 // symdb: One-line battle-side stub that spawns a related object with fixed object id 0x10E, forwarding the caller's other arguments unchanged.
-// symdb: void battle_spawnRelatedObject_10E_8011330(u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg5 /*r5*/); // tail-
+// symdb: void sub_8011330(u32 arg1 /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg5 /*r5*/); // tail-
 // symdb: jumps into battle_spawnObj56StoreRelatedObject2(0x10E, arg1, arg2, arg3, arg5); results in r4-r7
 // symdb: as left by the callee
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnRelatedObject_10E_8011330.yaml
@@ -18704,7 +18704,7 @@ object_genericDestroy:
 	thumb_func_end object_genericDestroy
 
 // symdb: Bare tail-call wrapper that releases a battle object's memory, forwarding the object pointer in r5 straight to object_freeMemory.
-// symdb: void object_freeMemoryWrapper_8016C9C(u32 object /* r5 */); tail-calls object_freeMemory, so r0-r3 and the nzcv flags
+// symdb: void sub_8016C9C(u32 object /* r5 */); tail-calls object_freeMemory, so r0-r3 and the nzcv flags
 // symdb: on return are whatever object_freeMemory leaves; r5 is preserved through the callee
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_freeMemoryWrapper_8016C9C.yaml
 	thumb_func_start object_freeMemoryWrapper_8016C9C
@@ -32599,7 +32599,7 @@ sub_801E138:
 	thumb_func_end sub_801E138
 
 // symdb: Sets flag bit group 0x200 (bit 9) in the battle-state flag structure at 0x2035280 and returns.
-// symdb: void battle_setFlagBits200_801E144(void); // in: lr only; out: r0 = 0x200, r1/r2 = whatever
+// symdb: void sub_801E144(void); // in: lr only; out: r0 = 0x200, r1/r2 = whatever
 // symdb: flagSetBits_eStruct2035280_801BEB8 leaves, lr = caller return; clobbers N/Z
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setFlagBits200_801E144.yaml
 	thumb_local_start

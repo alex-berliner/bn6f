@@ -3271,7 +3271,7 @@ off_8035448:
 	.word byte_8034AFC
 	.word 0xFFFFFFFF
 // symdb: Spawns a predefined object list during battle setup, selecting the descriptor by index from a fixed pointer table and forwarding the caller's r5 argument to the spawner.
-// symdb: void battle_spawnObjectListByIndex_8035450(u32 list_index /*r0*/, u32 spawn_arg /*r5*/) — returns r0 = 0; r2, r3, r8-r12
+// symdb: void sub_8035450(u32 list_index /*r0*/, u32 spawn_arg /*r5*/) — returns r0 = 0; r2, r3, r8-r12
 // symdb: and flags nzcv are whatever SpawnObjectsFromList leaves behind; r4-r7 preserved
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnObjectListByIndex_8035450.yaml
 	thumb_local_start

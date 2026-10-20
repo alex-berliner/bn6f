@@ -305,7 +305,7 @@ sub_8026650:
 	thumb_func_end sub_8026650
 
 // symdb: Runs the shared battle facing-offset check against the table at byte_802675A for the current actor, then post-processes the result via sub_80265FE.
-// symdb: FacingCheckResult battle_runFacingOffsetCheck_802665A(u32 r4 /* battle context */, u32 r5 /* battle context */, u32 r6
+// symdb: FacingCheckResult sub_802665A(u32 r4 /* battle context */, u32 r5 /* battle context */, u32 r6
 // symdb: /* battle context */, u32 r7 /* battle context */) -> r0, r1, r5
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runFacingOffsetCheck_802665A.yaml
 	thumb_local_start
@@ -326,7 +326,7 @@ sub_8026668:
 	thumb_func_end sub_8026668
 
 // symdb: Thin wrapper that runs battle_checkFacingOffsets on the fixed facing-offset table baked into ROM at byte_802676E.
-// symdb: void battle_checkFacingOffsets_table_8026672(u32 r4 /*context*/, u32 r5, u32 r6, u32 r7); returns r0/r1 from
+// symdb: void sub_8026672(u32 r4 /*context*/, u32 r5, u32 r6, u32 r7); returns r0/r1 from
 // symdb: battle_checkFacingOffsets (r5 also passes through whatever the callee left in it)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkFacingOffsets_table_8026672.yaml
 	thumb_local_start
@@ -2798,7 +2798,7 @@ off_8027724:
 	thumb_func_end battleObject_chipSelectAnimTick_802770C
 
 // symdb: Initializes a state-machine object (r5) to phase 4 with both flag bytes set to 1 and a zeroed counter at +0x40.
-// symdb: void object_setStatePhase4_8027738(struct Obj *r5)
+// symdb: void sub_8027738(struct Obj *r5)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_setStatePhase4_8027738.yaml
 	thumb_local_start
 object_setStatePhase4_8027738:
@@ -2815,7 +2815,7 @@ object_setStatePhase4_8027738:
 	thumb_func_end object_setStatePhase4_8027738
 
 // symdb: Kicks off a scripted transition: clears a work flag, sets up a screen fade, starts a camera shake, plays three sound effects, and advances the work object to state 8.
-// symdb: void startFadeShakeTransition_802774C(r5 = work object, r10 = context passed to sub_80302B6); returns nothing
+// symdb: void sub_802774C(r5 = work object, r10 = context passed to sub_80302B6); returns nothing
 // symdb: meaningful (r2-r6, r10 are just callee leftovers, nzcv clobbered)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/startFadeShakeTransition_802774C.yaml
 	thumb_local_start
@@ -2842,7 +2842,7 @@ startFadeShakeTransition_802774C:
 	thumb_func_end startFadeShakeTransition_802774C
 
 // symdb: Per-tick wait handler for an object: counts up a hold timer at obj+0x40 and, after 50 ticks with no screen fade running, advances the object's state field (obj+2) to 0xC.
-// symdb: void object_tickFadeHoldThenSetState12_802777C(Object* obj /* r5 */); // in: r5 = object work area, lr = return; out: r3 (from
+// symdb: void sub_802777C(Object* obj /* r5 */); // in: r5 = object work area, lr = return; out: r3 (from
 // symdb: IsScreenFadeActive), r4/r6 preserved; clobbers r0, r1, lr, NZCV
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_tickFadeHoldThenSetState12_802777C.yaml
 	thumb_local_start
@@ -2863,7 +2863,7 @@ locret_8027794:
 	thumb_func_end object_tickFadeHoldThenSetState12_802777C
 
 // symdb: On leaving the chip custom screen, rotates the selected-chip id list by one slot, re-uploads every affected chip's sprite tiles to VRAM, frees one sprite slot, runs the custom-screen exit sequence and starts the fade back into battle.
-// symdb: void battle_customScreenExitRotateChips_8027796(u32 battleObj /*r5*/, u32 r10 /*unused here*/) — returns nothing meaningful;
+// symdb: void sub_8027796(u32 battleObj /*r5*/, u32 r10 /*unused here*/) — returns nothing meaningful;
 // symdb: clobbers r0-r3, r5, r6, r8-r12 and flags, preserves r4 and r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_customScreenExitRotateChips_8027796.yaml
 	thumb_local_start
@@ -5367,7 +5367,7 @@ byte_80288E4:
 	thumb_func_end loadConstArgsAndPairTable_80288D0
 
 // symdb: Returns the message-window position (x=0x5B, y=0x87) and a pointer to a fixed tile-layout byte table used to draw the chat/text box.
-// symdb: void Next chatbox_getWindowLayout_8028904(void); /* in: lr only; out: r0 = 0x5B (window x/pos), r1 = 0x87 (window
+// symdb: void Next sub_8028904(void); /* in: lr only; out: r0 = 0x5B (window x/pos), r1 = 0x87 (window
 // symdb: y/pos), r6 = &byte_8028918 (layout table); clobbers flags nzcv */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_getWindowLayout_8028904.yaml
 	thumb_local_start
@@ -8120,7 +8120,7 @@ locret_8029B14:
 	thumb_func_end entity_getActionIndex_8029ADA
 
 // symdb: Stub function that does nothing and always returns 0.
-// symdb: int returnZero_8029B16(void) -> always 0
+// symdb: int sub_8029B16(void) -> always 0
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/returnZero_8029B16.yaml
 	thumb_local_start
 returnZero_8029B16:

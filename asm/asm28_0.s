@@ -87,7 +87,7 @@ cutscenescript_8098CC9:
 	cs_end_for_map_reload_maybe_8037c64
 
 // symdb: Loads one Cross System entry's fixed fields (selected by an index in the work area) into the work area, and writes the entry's partner-character id into the partner state block when one is defined.
-// symdb: u32 cross_loadEntryFields_8098CCC(void* work /* r5 */, void* state /* r10 */); returns 0 in r0, partner-state
+// symdb: u32 sub_8098CCC(void* work /* r5 */, void* state /* r10 */); returns 0 in r0, partner-state
 // symdb: pointer in r2, flags NZ from the final mov r0,#0; clobbers r0-r2, c, v; lr returned to via mov
 // symdb: pc,lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cross_loadEntryFields_8098CCC.yaml
@@ -2808,7 +2808,7 @@ cutscenescript_809AD80:
 	cs_end_for_map_reload_maybe_8037c64
 
 // symdb: A one-shot exit handler that delegates to pet_returnToPetMenu to leave the current PET screen back at the PET menu, then always reports 0 in r0.
-// symdb: u32 pet_exitToPetMenuReturnZero_809ADA8(void)  // r4-r7, r9-r12 passed through to the callee; returns 0 in r0 with NZ
+// symdb: u32 sub_809ADA8(void)  // r4-r7, r9-r12 passed through to the callee; returns 0 in r0 with NZ
 // symdb: set from it
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_exitToPetMenuReturnZero_809ADA8.yaml
 	thumb_local_start
@@ -4608,7 +4608,7 @@ off_809C7F8:
 	thumb_func_end camera_restartWithScriptHead
 
 // symdb: Per-frame overworld player-object callback that pushes the player's three coordinate words through the shared copy-to-next/write-back coordinate helper.
-// symdb: void ow_player_updateCoords_809C7FC(u32 player /*r5*/, u32 r10, u32 lr); returns r0=0 (clobber, callers ignore),
+// symdb: void sub_809C7FC(u32 player /*r5*/, u32 r10, u32 lr); returns r0=0 (clobber, callers ignore),
 // symdb: leaves r2-r4,r5,r7 as the callee helper's leftovers, sets flags NZ from 0; preserves r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_player_updateCoords_809C7FC.yaml
 	thumb_local_start
@@ -4649,7 +4649,7 @@ dword_809C82C:
 	thumb_func_end owPlayer_setFixedAnimationFromLookup
 
 // symdb: Looks up one byte from a fixed 4x4 step/sequence table using two selector bytes in an object's state block and stores it into the work object at +0x5.
-// symdb: void loadWorkByteFromStepTable_809C830(void); /* in: r5 = work object; out: [r5+5] = table byte, r2 = selected table
+// symdb: void sub_809C830(void); /* in: r5 = work object; out: [r5+5] = table byte, r2 = selected table
 // symdb: word, r3 = state pointer, NZ from 'mov r0,#0' (Z set, C clobbered), r0/r1 scratch, r4-r7
 // symdb: preserved */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadWorkByteFromStepTable_809C830.yaml
