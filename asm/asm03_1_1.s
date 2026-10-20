@@ -9466,6 +9466,11 @@ loc_803D104:
 	pop {pc}
 	thumb_func_end gameState_getProtectedBugfrags_803D0F4
 
+// symdb: Resolves the NaviCust program awarded for the current event and passes it to GiveItem.
+// symdb: void GiveNaviCustPrograms(u32 lookup_r0, u32 lookup_r1, u32 give_r1, u32 ctx_r5, u32 ctx_r7, u32
+// symdb: ctx_r8, u32 ctx_r9, u32 ctx_r11, u32 ctx_r12); preserves r4 and lr; clobbers NZ, C, V; other
+// symdb: register outputs are inherited from the GiveItem call.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GiveNaviCustPrograms.yaml
 	thumb_func_start GiveNaviCustPrograms
 GiveNaviCustPrograms:
 	push {r4,lr}

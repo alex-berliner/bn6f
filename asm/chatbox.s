@@ -6345,7 +6345,7 @@ dword_804281C:
 	.word 0xF
 	thumb_func_end chatbox_8042804
 
-// symdb: Runs the chatbox's per-frame update (ow_lookupScenarioTileData_809CA84), stores its result into the chatbox control block at +0x4C, advances the state counter by 2, and reports "continue" (r0=1) to the caller.
+// symdb: Runs the chatbox's per-frame update (sub_809CA84), stores its result into the chatbox control block at +0x4C, advances the state counter by 2, and reports "continue" (r0=1) to the caller.
 // symdb: u32 chatbox_stepUpdateAndContinue(void); // reads r4 (state counter/ptr), r5 (chatbox control
 // symdb: block), r10; writes result to [r5+0x4C], returns r4+=2 in r4 and constant 1 in r0; clobbers r1,
 // symdb: lr, NZCV
@@ -7068,6 +7068,11 @@ dword_8042CF4:
 	.word 0xFFFFFFFF
 	thumb_func_end chatbox_8042C18
 
+// symdb: Dispatches a FE number-input operation according to the chatbox state byte.
+// symdb: void chatbox_FE_numberinput(struct chatbox *chatbox /* r4 */); unspecified additional register
+// symdb: inputs and outputs follow the original ARM call context; all r4-r12 and flags are preserved
+// symdb: across the jump-table dispatch
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_FE_numberinput.yaml
 	thumb_local_start
 chatbox_FE_numberinput:
 	push {lr}

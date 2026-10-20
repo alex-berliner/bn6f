@@ -582,6 +582,11 @@ loc_8035BD0:
 // jump if the the player's z coordinate equals signedhword1
 // signedhword1 - z coordinate to compare the player's z coordinate with
 // destination2 - script to jump to
+// symdb: Map-script opcode: read a signed halfword and jump to a 4-byte target if the overworld player's Z coordinate equals it.
+// symdb: // r10 = oToolkit*, r7 = current map script PC // returns r7 = next script PC; r0 = 1; NZ flags
+// symdb: reflect r0 // clobbers r0, r4, r6, lr; flags c/v void MapScriptCmd_jump_if_player_z_equals(u32
+// symdb: /*r10*/ toolkit, u32 /*in/out r7*/ scriptPc);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCmd_jump_if_player_z_equals.yaml
 MapScriptCmd_jump_if_player_z_equals: // 8035BD6
 	push {lr}
 	mov r0, r10
@@ -609,6 +614,11 @@ MapScriptCmd_jump_if_player_z_equals: // 8035BD6
 // jump if the the player's z coordinate does not equal signedhword1
 // signedhword1 - z coordinate to compare the player's z coordinate with
 // destination2 - script to jump to
+// symdb: Map-script opcode that jumps to a 32-bit script address when the overworld player's signed Z cell differs from a signed halfword operand, otherwise skips the 7-byte instruction.
+// symdb: void MapScriptCmd_jump_if_player_z_not_equal(void); inputs: r7 = script cursor, r10 = Toolkit
+// symdb: pointer, lr = return address; outputs: r7 = updated script cursor, r0 = 1, NZ flag reflecting
+// symdb: r0; clobbers: r0, r4, r6, lr, flags NZ/C/V
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/MapScriptCmd_jump_if_player_z_not_equal.yaml
 MapScriptCmd_jump_if_player_z_not_equal: // 8035BFE
 	push {lr}
 	mov r0, r10

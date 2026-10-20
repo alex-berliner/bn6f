@@ -2323,7 +2323,7 @@ off_8034DAC:
 
 // symdb: Picks and starts one of four cutscene scripts based on the overworld player coord interaction value, when not slip-run and not in a cutscene
 // symdb: () -> r0 = 0 on cutscene-started, 1 on no-op ; side effects: may call
-// symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, story_checkEntryAlliance_8034E88, and StartCutscene to load
+// symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, sub_8034E88, and StartCutscene to load
 // symdb: eS200AC80+4 as script
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_runTriggeredOverworldCutscene_8034DB0.yaml
 	thumb_local_start

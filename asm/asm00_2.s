@@ -6297,6 +6297,11 @@ dword_8011760:
 	thumb_func_end object_exitAttackState
 	thumb_func_end object_exitAttackState_801171C
 
+// symdb: Dispatches an active battle object's B-button attack to the handler selected by its AI configuration.
+// symdb: u32 calledOnBAtkProbInit_8011764(struct BattleObject *battleObj /* r5 */, void *attackProcCtx /*
+// symdb: r10 */); returns the selected handler's result in r0; r5, r8-r12 are outputs, while nz, c, and v
+// symdb: are clobbered and r1-r4, lr, and r6-r7 are not preserved.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/calledOnBAtkProbInit_8011764.yaml
 	thumb_func_start calledOnBAtkProbInit_8011764
 calledOnBAtkProbInit_8011764:
 	push {r6,r7,lr}
@@ -20301,7 +20306,7 @@ byte_8017868:
 	.byte 0xFE, 0xFD, 0xFC, 0xFC, 0xFB, 0xFB, 0xFA, 0xFA, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x0
 	thumb_func_end battleObject_jumpLandStep_8017768
 
-// symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (battle_spawnAndLinkTypeF_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
+// symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (sub_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
 // symdb: void sub_8017888(battle_object *obj /* r5 */); returns r0 = 0; clobbers r0-r3, r7 (scratch,
 // symdb: restored), flags NZ set from "mov r0,#0"
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_endTurnMarkActed_8017888.yaml

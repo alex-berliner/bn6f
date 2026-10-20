@@ -11844,9 +11844,9 @@ dword_80AA8DC:
 	.word 0xFFFF
 	thumb_func_end battle_rollRandomItemDrops_80AA88C
 
-// symdb: Reward-1 wrapper for the result record: when enabled, runs the battle_pickChipAttr_80AA910 reward roll (sub_80AAA3C enemy-id pick + damage_jitter_80AAA98 / sub_80AAB04) and returns the packed reward in r0 with BattleState+0x36 (reward 2) in r1; disabled it returns (0, 0).
+// symdb: Reward-1 wrapper for the result record: when enabled, runs the sub_80AA910 reward roll (sub_80AAA3C enemy-id pick + damage_jitter_80AAA98 / sub_80AAB04) and returns the packed reward in r0 with BattleState+0x36 (reward 2) in r1; disabled it returns (0, 0).
 // symdb: u32x2 sub_80AA8E0(u32 arg0 /*r0*/, u32 enable /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg4
-// symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of battle_pickChipAttr_80AA910, r1 =
+// symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of sub_80AA910, r1 =
 // symdb: battleState->oBattleState_Unk_36 (halfword, zero-extended); clobbers C/V.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA8E0.yaml
 	thumb_func_start sub_80AA8E0

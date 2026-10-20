@@ -2305,6 +2305,11 @@ off_813F6F4:
 	.word reqBBS_eTextScript // TextScriptArchive
 	thumb_func_end reqBBS_813F65C
 
+// symdb: Per-frame BBS request tick that animates two scratch sprites on the toolkit and, when the request's counter expires, marks it finished and runs the closing sequence.
+// symdb: void tickBBSRequest_813F6F8(u32 r5 /* request state */, u32 r10 /* toolkit ptr */, u32 lr);
+// symdb: clobbers r0-r4,r6,r7,r12,lr and N/Z/C/V; preserves r5,r8,r9; returns r10 unchanged, r0:=0 then
+// symdb: flags NZ.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_813F6F8.yaml
 	thumb_local_start
 reqBBS_813F6F8:
 	push {lr}
@@ -2509,6 +2514,9 @@ off_813F860:
 dword_813F864:
 	.word 0x5F40
 	thumb_func_end reqBBS_813F80C
+// symdb: BBS chip-trading message request: advance page counter, run a chatbox/screen-fade transition if open, then hand off to the BBS driver.
+// symdb: void reqBBS_813F868(u32 r5_hostState, u32 toolkit_ptr /* r10 */) -> void; flags z/c/v clobbered
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/reqBBS_813F868.yaml
 	thumb_local_start
 reqBBS_813F868:
 	push {lr}

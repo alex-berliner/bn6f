@@ -143796,7 +143796,7 @@ locret_80F8092:
 	pop {pc}
 	thumb_func_end battle_aiStepPanelMove_80F803E
 
-// symdb: SpoutMan AI helper (range sub_80F8094..battle_pickPanel_80F8256): no RNG call in this one.
+// symdb: SpoutMan AI helper (range sub_80F8094..sub_80F8256): no RNG call in this one.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F8094.yaml
 	thumb_local_start
 sub_80F8094:

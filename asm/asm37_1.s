@@ -1669,6 +1669,10 @@ ow_getCursorMapTileIndex:
 	thumb_local_start
 // probably needed since the "grid" where
 // the evil spirits can exist depends on the map
+// symdb: Returns the (X, Y) cursor camera offset for the player's current soul-weapon map by indexing a per-map table with the result of GetSoulWeaponsMapIndex.
+// symdb: void getSoulWeaponCursorCameraOffsetForMap(void) -> r0 x_offset (s32, signed byte), r1 y_offset
+// symdb: (s32, signed byte); preserved r4-r7; clobbers nz,cv,r3,lr; r10 passed in/out unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/GetSoulWeaponCursorCameraOffsetForMap.yaml
 GetSoulWeaponCursorCameraOffsetForMap:
 	push {r4-r7,lr}
 	bl GetSoulWeaponsMapIndex

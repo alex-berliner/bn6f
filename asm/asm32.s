@@ -17595,7 +17595,7 @@ off_8116754:
 	.word ai_startAction30FrameWait+1
 	thumb_func_end battle_updateCustGauge_8116720
 
-// symdb: AI state handler: on first entry sets substate=1, loads a 30-frame timer, and fires battle_slot_spawnNavPic_811677A once; subsequent entries decrement the timer and reset substate to 0 when it expires.
+// symdb: AI state handler: on first entry sets substate=1, loads a 30-frame timer, and fires sub_811677A once; subsequent entries decrement the timer and reset substate to 0 when it expires.
 // symdb: (r6 = battle object with AI state fields) -> r0 = 0/1 passthrough from callee call; flags not
 // symdb: meaningfully used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_startAction30FrameWait.yaml
@@ -33584,7 +33584,7 @@ off_811DF3C:
 
 // symdb: Initializes a battle object as a navi-type sprite (offscreen staging position), then hands it to a roster-filling helper identified by r6.
 // symdb: void battleObject_initNaviRosterEntry(r1 param, r5 obj, r6 rosterEntry) -> r2, r3, r5 (results
-// symdb: of battle_rosterIconUpdate_811DF94); clobbers r0, r1, flags
+// symdb: of sub_811DF94); clobbers r0, r1, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_initNaviRosterEntry_811DF40.yaml
 	thumb_local_start
 battleObject_initNaviRosterEntry_811DF40:
