@@ -7602,7 +7602,7 @@ void battle_beginTurnResetObject()
     v3 = *(v2 + 80);
     if ( v3 )
     {
-        sub_80E5410(v3);
+        entity_resetTimerAndCounter_80E5410(v3);
         *(v2 + 80) = 0;
     }
     JUMPOUT(&loc_8013956);
@@ -15622,7 +15622,7 @@ Battle *battle_spawnHitEffectAtArm_801A42E()
         if ( *&result->extraVars[32] )
         {
             v2 = getBattleArmPositionMaybe_8018810(*(v0 + 40), 5, *(v0 + 22), *(v0 + 23));
-            result = sub_80E8124(v2, v2 << 16, 0, v3 << 16);
+            result = battle_spawnObject6B_linkRelated_80E8124(v2, v2 << 16, 0, v3 << 16);
         }
     }
     return result;
@@ -15667,7 +15667,7 @@ Battle *battle_spawnArmHitEffect_801A4A6()
     if ( v2 == 244 || v2 == 247 )
     {
         v3 = getBattleArmPositionMaybe_8018810(*(v0 + 40), 5, *(v0 + 22), *(v0 + 23));
-        result = sub_80E8124(v3, v3 << 16, 0, v4 << 16);
+        result = battle_spawnObject6B_linkRelated_80E8124(v3, v3 << 16, 0, v4 << 16);
     }
     return result;
 }

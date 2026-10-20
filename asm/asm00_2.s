@@ -11559,7 +11559,7 @@ loc_8013918:
 	ldr r0, [r7,#oAIData_SubordinateObjectUnk]
 	tst r0, r0
 	beq loc_8013938
-	bl sub_80E5410
+	bl entity_resetTimerAndCounter_80E5410
 	mov r0, #0
 	str r0, [r7,#oAIData_SubordinateObjectUnk]
 loc_8013938:
@@ -23881,7 +23881,7 @@ battle_spawnHitEffectAtArm_801A42E:
 	lsl r1, r0, #0x10
 	mov r2, #0
 	mov r4, #0
-	bl sub_80E8124
+	bl battle_spawnObject6B_linkRelated_80E8124
 locret_801A45A:
 	pop {r4,pc}
 	thumb_func_end battle_spawnHitEffectAtArm_801A42E
@@ -23931,7 +23931,7 @@ locret_801A4A4:
 // symdb: If a battle object was just hit by an arm-style attack (hit type 0xF4 or 0xF7), computes where the attacker's arm connects and spawns the corresponding battle effect there.
 // symdb: void battle_spawnArmHitEffect_801A4A6(battleObject* obj /* r5 */); also reads r4/r6/r7 per the
 // symdb: caller contract but does not use them; preserves r4-r7, returns r3 and the c/v flags as left by
-// symdb: sub_80E8124
+// symdb: battle_spawnObject6B_linkRelated_80E8124
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnArmHitEffect_801A4A6.yaml
 	thumb_local_start
 battle_spawnArmHitEffect_801A4A6:
@@ -23953,7 +23953,7 @@ loc_801A4B6:
 	lsl r1, r0, #0x10
 	mov r2, #0
 	mov r4, #3
-	bl sub_80E8124
+	bl battle_spawnObject6B_linkRelated_80E8124
 locret_801A4CE:
 	pop {r4,pc}
 	thumb_func_end battle_spawnArmHitEffect_801A4A6

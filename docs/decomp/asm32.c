@@ -1933,7 +1933,7 @@ void battle_aiBeastOutTick_810F0D8()
                 v8 = byte_810F18C[*(v0 + 22)];
                 *(v3 + 8) = v8;
                 *(v3 + 10) = v8;
-                *(v3 + 12) = byte_810F192[sub_810F1E6()];
+                *(v3 + 12) = byte_810F192[ai_getVersionSlotIndex_810F1E6()];
                 *(v3 + 13) = *(v0 + 22);
                 *(v3 + 14) = *(v1 + 96);
                 *(v3 + 40) = v1 + 100;
@@ -1941,7 +1941,7 @@ void battle_aiBeastOutTick_810F0D8()
             }
             else
             {
-                *(v3 + 16) = byte_810F1A4[sub_810F1E6()];
+                *(v3 + 16) = byte_810F1A4[ai_getVersionSlotIndex_810F1E6()];
                 *(v3 + 44) = 0;
                 *(v3 + 40) = get_battleObjectExtraVar1;
                 object_setAttack0();
@@ -1978,7 +1978,7 @@ signed int battle_aiTryChipAttack_0810F1B6()
 
 
 // 0x810f1e6
-int sub_810F1E6()
+int ai_getVersionSlotIndex_810F1E6()
 {
     int v0; // r4
     int v1; // r5
@@ -1997,7 +1997,7 @@ int get_battleObjectExtraVar1()
 
 
 // 0x810f2ec
-int sub_810F2EC()
+int ai_attackStateDispatch_810F2EC()
 {
     unsigned __int8 *v0; // r7
 
@@ -3437,7 +3437,7 @@ void ai_aimRowTargetStartAttack()
         && (*(v2 + 44) = v6, !FindBattleActorsWithNonzeroParam_ReturnCountAndSum(108, 103, 108)) )
     {
         *(v0 + 108) = 1;
-        sub_8110D18();
+        battle_setObjectToArmAnchorPos_8110D18();
         v4 = *(v2 + 44);
         v5 = *(v4 + 19);
         *(v0 + 128) = *(v4 + 18);
@@ -3455,7 +3455,7 @@ void ai_aimRowTargetStartAttack()
 
 
 // 0x81107a0
-int sub_81107A0()
+int ai_dispatchAttackStep_81107A0()
 {
     unsigned __int8 *v0; // r7
 
@@ -3479,7 +3479,7 @@ void __noreturn ai_attackDashStart()
         *(v0 + 21) = v3;
         object_reservePanel(v2, v3);
         *v1 = 4;
-        sub_8110840();
+        ai_attackAimAtTargetPanel_8110840();
         ai_attackDashMoveStep();
     }
     else
@@ -3527,7 +3527,7 @@ void ai_attackDashMoveStep()
 
 
 // 0x8110840
-unsigned int sub_8110840()
+unsigned int ai_attackAimAtTargetPanel_8110840()
 {
     int v0; // r5
     int v1; // r7
@@ -3762,7 +3762,7 @@ int ai_attackFrontPanel()
 
 
 // 0x8110b16
-int sub_8110B16()
+int ai_attackVarsTickElementTimer_8110B16()
 {
     int v0; // r7
     int result; // r0
@@ -3928,14 +3928,14 @@ int ai_lungeAttackInit()
 
 
 // 0x8110d18
-Battle *sub_8110D18()
+Battle *battle_setObjectToArmAnchorPos_8110D18()
 {
     int v0; // r5
     int v1; // r0
     int v2; // r1
 
     v1 = getBattleArmPositionMaybe_8018810(*(v0 + 40), 5, *(v0 + 22), *(v0 + 23));
-    return sub_80E8124(v1, v1 << 16, 0, v2 << 16);
+    return battle_spawnObject6B_linkRelated_80E8124(v1, v1 << 16, 0, v2 << 16);
 }
 
 
@@ -4041,7 +4041,7 @@ void __fastcall ai_chooseSpecialOrAttack9(int a1, int a2, int a3)
     int v5; // r0
     char v6; // r1
 
-    v5 = sub_8110F8C(a1, a2, a3);
+    v5 = ai_tryActionElsePickAdjacentPanel_8110F8C(a1, a2, a3);
     if ( v5 )
     {
         sub_8111030(v5, v6);
@@ -4117,13 +4117,13 @@ int __noreturn ai_initPanelReserveAttack()
 
 
 // 0x8110f8c
-int __fastcall sub_8110F8C(int a1, int a2, int a3)
+int __fastcall ai_tryActionElsePickAdjacentPanel_8110F8C(int a1, int a2, int a3)
 {
     int result; // r0
     int v4; // r1
     int v5; // r2
 
-    result = sub_8110FA2(a1, a2, a3);
+    result = battle_checkPanelFlagsByState_8110FA2(a1, a2, a3);
     if ( !result )
         result = ai_pickAdjacentNeighborPanel(0, v4, v5);
     return result;
@@ -4131,7 +4131,7 @@ int __fastcall sub_8110F8C(int a1, int a2, int a3)
 
 
 // 0x8110fa2
-int __fastcall sub_8110FA2(int a1, int a2, int a3)
+int __fastcall battle_checkPanelFlagsByState_8110FA2(int a1, int a2, int a3)
 {
     int v3; // r5
     char (*v4)[8]; // r4
@@ -4202,7 +4202,7 @@ int __fastcall sub_8111030(char a1, char a2)
     }
     *(v3 + 104) = v6;
     object_setAttack0();
-    return sub_81107A0();
+    return ai_dispatchAttackStep_81107A0();
 }
 
 
@@ -4880,13 +4880,13 @@ void __fastcall ai_commitMoveAttack(int a1)
         *(v2 + 12) = 16;
         *v2 = 4;
         sub_8111B06();
-        sub_8111A72();
+        battle_attackUpdateOnHitFrame_8111A72();
     }
 }
 
 
 // 0x8111a72
-int sub_8111A72()
+int battle_attackUpdateOnHitFrame_8111A72()
 {
     int v0; // r5
     _WORD *v1; // r7
@@ -4993,7 +4993,7 @@ int sub_8111B06()
 
 
 // 0x8111b4a
-int sub_8111B4A()
+int ai_dispatchHitElementAttack_8111B4A()
 {
     unsigned __int8 *v0; // r7
 
@@ -5002,7 +5002,7 @@ int sub_8111B4A()
 
 
 // 0x8111b70
-signed int sub_8111B70()
+signed int ai_beginChargeAttack_8111B70()
 {
     int v0; // r5
     _WORD *v1; // r7
@@ -5394,7 +5394,7 @@ signed int battleObject_tryUseSelectedChip_8111FAE()
 
 
 // 0x81120e4
-int sub_81120E4()
+int ai_attackDispatchHitElementStep_81120E4()
 {
     unsigned __int8 *v0; // r7
 
@@ -5575,7 +5575,7 @@ LABEL_11:
         goto LABEL_5;
     }
     battle_clearAnimationAndFreeTimer_8112630();
-    if ( !sub_81124D4() )
+    if ( !battle_getFrontPanelFlagsByAlliance_81124D4() )
     {
         *(v3 + 24) = 18;
         *(v3 + 40) = battle_randFilteredPanelXY;
@@ -5696,7 +5696,7 @@ _BYTE *__fastcall battle_randFilteredPanelXY(int a1, int a2)
     int v9; // [sp+10h] [bp+10h]
 
     v2 = object_getPanelsExceptCurrentFilterred(a1, a2, 0x800000, 0);
-    if ( v2 && (result = sub_8112426(v2)) != 0 || (result = battle_getHighestHpPanelCoordsOnParamPanel()) != 0 )
+    if ( v2 && (result = object_filterRebasedPanelRefs_8112426(v2)) != 0 || (result = battle_getHighestHpPanelCoordsOnParamPanel()) != 0 )
     {
         v4 = result;
         GetPositiveSignedRNG();
@@ -5708,7 +5708,7 @@ _BYTE *__fastcall battle_randFilteredPanelXY(int a1, int a2)
 
 
 // 0x8112426
-_BYTE *__fastcall sub_8112426(int a1)
+_BYTE *__fastcall object_filterRebasedPanelRefs_8112426(int a1)
 {
     Battle *v1; // r5
     unsigned __int8 *v2; // r7
@@ -5817,7 +5817,7 @@ int battle_getHighestHpPanelCoordsOnParamPanel()
 
 
 // 0x81124d4
-int sub_81124D4()
+int battle_getFrontPanelFlagsByAlliance_81124D4()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -5993,7 +5993,7 @@ void ai_beginAttackB()
 
 
 // 0x81127c8
-int sub_81127C8()
+int ai_dispatchHitElement_81127C8()
 {
     unsigned __int8 *v0; // r7
 
@@ -6101,7 +6101,7 @@ void ai_attackStepWaitEnd()
 
 
 // 0x81128b2
-int sub_81128B2()
+int battle_aiAttackStepDispatch_81128B2()
 {
     unsigned __int8 *v0; // r7
 
@@ -6975,7 +6975,7 @@ signed int battle_object_tryUseChipWhenLowHP_81131D8()
 
 
 // 0x8113330
-int sub_8113330()
+int aiAttack_dispatchHitElementHandler_8113330()
 {
     unsigned __int8 *v0; // r7
 
@@ -7094,7 +7094,7 @@ int battleObject_advanceMoveStep_811339A()
 
 
 // 0x811348e
-int sub_811348E()
+int ai_dispatchAttackStateHandler_811348E()
 {
     unsigned __int8 *v0; // r7
 
@@ -7103,7 +7103,7 @@ int sub_811348E()
 
 
 // 0x81134b0
-int sub_81134B0()
+int battle_beastAiChargeShotStep_81134B0()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -7226,7 +7226,7 @@ int __fastcall sub_8113626(int a1, int a2, int a3)
 
 
 // 0x811363c
-int sub_811363C()
+int battle_objectTickExtraVarsThenDispatch_811363C()
 {
     int v0; // r5
     int v1; // r0
@@ -7295,7 +7295,7 @@ LABEL_10:
         *(v3 + 48) = *&byte_81135FC[4 * *(v0 + 22)];
         *(v3 + 44) = battleObject_findClosestEnemyBattleObject_80103F8(*(v1 + 22) ^ 1);
         object_setAttack0();
-        sub_8113330();
+        aiAttack_dispatchHitElementHandler_8113330();
         return;
     }
     if ( object_getFlag() & 0x2000 )
@@ -9248,7 +9248,7 @@ void sub_8115098()
 
 
 // 0x81151a0
-int sub_81151A0()
+int ai_attackStepDispatch_81151A0()
 {
     unsigned __int8 *v0; // r7
 

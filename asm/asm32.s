@@ -2984,7 +2984,7 @@ loc_810F0F4:
 	ldrb r0, [r1,r0]
 	strh r0, [r7,#oAIAttackVars_Damage]
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
-	bl sub_810F1E6
+	bl ai_getVersionSlotIndex_810F1E6
 	ldr r1, off_810F184 // =byte_810F192
 	ldrb r0, [r1,r0]
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
@@ -2999,7 +2999,7 @@ loc_810F0F4:
 	bl object_setAttack0
 	b locret_810F178
 loc_810F160:
-	bl sub_810F1E6
+	bl ai_getVersionSlotIndex_810F1E6
 	ldr r1, off_810F188 // =byte_810F1A4
 	ldrb r0, [r1,r0]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
@@ -3061,16 +3061,16 @@ loc_810F1E2:
 // symdb: Computes an AI version slot index from the battle object's ExtraVars field and the AI data's version byte (6 entries per extra var).
 // symdb: int ai_getVersionSlotIndex_810F1E6(AIData* aiData /* r4 */, BattleObject* obj /* r5 */); //
 // symdb: returns r0 = obj->ExtraVars * 6 + aiData->Version, tail-calls back to lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810F1E6.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_getVersionSlotIndex_810F1E6.yaml
 	thumb_local_start
-sub_810F1E6:
+ai_getVersionSlotIndex_810F1E6:
 	ldr r1, [r5,#oBattleObject_ExtraVars]
 	mov r0, #6
 	mul r1, r0
 	ldrb r0, [r4,#oAIData_Version_16]
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_810F1E6
+	thumb_func_end ai_getVersionSlotIndex_810F1E6
 
 // symdb: Battle-object handler that loads the second word of the object's ExtraVars array (offset ExtraVars+4) into r0 and returns; used as a dispatch-table entry.
 // symdb: (r5 = battle object ptr, r0 unused) -> r0 = value of [r5 + oBattleObject_ExtraVars+4]; flags
@@ -3117,11 +3117,11 @@ byte_810F22C:
 	thumb_func_end get_battleObjectExtraVar1
 
 // symdb: Trampoline that dispatches the current enemy AI attack-state byte to its per-state step handler (setup/step/exit) via a jump table.
-// symdb: void sub_810F2EC(r5, r6, r7 /*AIAttackVars**/, r10); results passed through in r1/r5/r8-r12,
+// symdb: void ai_attackStateDispatch_810F2EC(r5, r6, r7 /*AIAttackVars**/, r10); results passed through in r1/r5/r8-r12,
 // symdb: NZCV clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810F2EC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackStateDispatch_810F2EC.yaml
 	thumb_local_start
-sub_810F2EC:
+ai_attackStateDispatch_810F2EC:
 	push {lr}
 	ldr r1, off_810F2FC // =off_810F300
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -3137,7 +3137,7 @@ off_810F300:
 	.word sub_810F33C+1
 	.word ai_beastAttackStepTick+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_810F2EC
+	thumb_func_end ai_attackStateDispatch_810F2EC
 
 	thumb_local_start
 sub_810F310:
@@ -3237,7 +3237,7 @@ off_810F39C:
 	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchStateScript+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_810F2EC+1
+	.word ai_attackStateDispatch_810F2EC+1
 byte_810F3C8:
 	.byte 0x0, 0x50, 0x1, 0x0, 0x0, 0x60, 0x1, 0x0, 0x0, 0x70, 0x1, 0x0, 0x0, 0x80
 	.byte 0x1, 0x0, 0x0, 0x90, 0x1, 0x0, 0x0, 0xA0, 0x1, 0x0
@@ -5611,7 +5611,7 @@ ai_aimRowTargetStartAttack:
 	bne loc_8110794
 	mov r0, #1
 	str r0, [r5,#oBattleObject_ExtraVars+0xc]
-	bl sub_8110D18
+	bl battle_setObjectToArmAnchorPos_8110D18
 	ldr r0, [r7,#oAIAttackVars_TargetObjectPtr]
 	ldrb r1, [r0,#0x12]
 	ldrb r2, [r0,#0x13]
@@ -5635,11 +5635,11 @@ locret_811079E:
 	thumb_func_end ai_aimRowTargetStartAttack
 
 // symdb: Tail-call dispatcher that jumps to the AI attack-step handler selected by the HitElement field (dash start vs dash move step).
-// symdb: void sub_81107A0(r5 attackCtx, r6 attackCtx2, r7 aiAttackVars); outputs r1, r5, r6, r8-r12 come
+// symdb: void ai_dispatchAttackStep_81107A0(r5 attackCtx, r6 attackCtx2, r7 aiAttackVars); outputs r1, r5, r6, r8-r12 come
 // symdb: from the selected handler; clobbers r0-r4, r7, lr and nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81107A0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_dispatchAttackStep_81107A0.yaml
 	thumb_local_start
-sub_81107A0:
+ai_dispatchAttackStep_81107A0:
 	push {lr}
 	ldr r1, off_81107B0 // =off_81107B4
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -5653,9 +5653,9 @@ off_81107B0:
 off_81107B4:
 	.word ai_attackDashStart+1
 	.word ai_attackDashMoveStep+1
-	thumb_func_end sub_81107A0
+	thumb_func_end ai_dispatchAttackStep_81107A0
 
-// symdb: Setup handler for an AI dash attack: validates the target panel, and if it still matches reserves the panel, records the future coords, sets HitElement=4, finalizes via sub_8110840, and launches the per-frame dash move; otherwise clears HasMoved and exits the attack state.
+// symdb: Setup handler for an AI dash attack: validates the target panel, and if it still matches reserves the panel, records the future coords, sets HitElement=4, finalizes via ai_attackAimAtTargetPanel_8110840, and launches the per-frame dash move; otherwise clears HasMoved and exits the attack state.
 // symdb: (r5 = battle object, r7 = AI attack vars) -> r0 = ...; sets oBattleObject_FuturePanelX/Y,
 // symdb: oAIAttackVars_HitElement, oAIAttackVars_HasMoved
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackDashStart.yaml
@@ -5676,7 +5676,7 @@ ai_attackDashStart:
 	bl object_reservePanel
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_HitElement]
-	bl sub_8110840
+	bl ai_attackAimAtTargetPanel_8110840
 	bl ai_attackDashMoveStep
 	b locret_81107F0
 loc_81107E8:
@@ -5731,10 +5731,10 @@ locret_811083E:
 	thumb_func_end ai_attackDashMoveStep
 
 // symdb: Aims an AI-controlled battle object at its target panel by setting its velocity along the panel axis toward the target, then derives the attack's step timer and charge cycles from the distance.
-// symdb: void sub_8110840(BattleObject *obj /* r5 */, AIAttackVars *ai /* r7 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8110840.yaml
+// symdb: void ai_attackAimAtTargetPanel_8110840(BattleObject *obj /* r5 */, AIAttackVars *ai /* r7 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackAimAtTargetPanel_8110840.yaml
 	thumb_local_start
-sub_8110840:
+ai_attackAimAtTargetPanel_8110840:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_TargetPanelY]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -5776,7 +5776,7 @@ loc_811087E:
 	strh r0, [r7,#oAIAttackVars_ChargeCycles]
 locret_8110888:
 	pop {pc}
-	thumb_func_end sub_8110840
+	thumb_func_end ai_attackAimAtTargetPanel_8110840
 
 // symdb: Per-frame AI attack-state update: clears collision region on certain hit flags, then dispatches to an element-specific attack handler.
 // symdb: (r5 = battle object, r7 = AI attack vars) -> r0 = handler return value; flags clobbered
@@ -5809,7 +5809,7 @@ off_81108B4:
 	.word ai_updateDiveAttack+1
 	.word ai_attackTelegraphFrontPanel+1
 	.word ai_attackFrontPanel+1
-	.word sub_8110B16+1
+	.word ai_attackVarsTickElementTimer_8110B16+1
 	.word ai_stepTimerCountdown+1
 	.word ai_checkGuardFrame+1
 	.word ai_lungeAttackUpdate+1
@@ -6121,11 +6121,11 @@ locret_8110B14:
 	thumb_func_end ai_attackFrontPanel
 
 // symdb: Ticks an enemy-AI attack state's step timer, winding the attack down (setting hit element 0x18 and clearing the attack element) each time it expires.
-// symdb: void sub_8110B16(oAIAttackVars *r7); /* r5 pass-through: read as input and returned unchanged in
+// symdb: void ai_attackVarsTickElementTimer_8110B16(oAIAttackVars *r7); /* r5 pass-through: read as input and returned unchanged in
 // symdb: r5; no flags consumed, NZCV clobbered */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8110B16.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackVarsTickElementTimer_8110B16.yaml
 	thumb_local_start
-sub_8110B16:
+ai_attackVarsTickElementTimer_8110B16:
 	push {r4-r7,lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	tst r0, r0
@@ -6145,7 +6145,7 @@ loc_8110B22:
 	strb r0, [r7,#oAIAttackVars_AttackElement]
 locret_8110B36:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8110B16
+	thumb_func_end ai_attackVarsTickElementTimer_8110B16
 
 // symdb: AI attack helper: counts down the step timer and, when it expires, switches the object to animation 6 and resets attack state fields.
 // symdb: (r5 = battle object, r7 = oAIAttackVars struct) -> r0 = 0 on expiry / last timer value
@@ -6414,11 +6414,11 @@ loc_8110D0A:
 	thumb_func_end ai_lungeAttackInit
 
 // symdb: Repositions a battle object at the fixed-point coordinates of its "part 5" arm/anchor position derived from its name ID, alliance, and facing.
-// symdb: void sub_8110D18(u32 object /* r5 = battle object struct */); outputs r5/r6/r7 unchanged (entry
+// symdb: void battle_setObjectToArmAnchorPos_8110D18(u32 object /* r5 = battle object struct */); outputs r5/r6/r7 unchanged (entry
 // symdb: values), r4 preserved; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8110D18.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setObjectToArmAnchorPos_8110D18.yaml
 	thumb_local_start
-sub_8110D18:
+battle_setObjectToArmAnchorPos_8110D18:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#oBattleObject_NameID]
 	mov r1, #5
@@ -6429,9 +6429,9 @@ sub_8110D18:
 	lsl r1, r0, #0x10
 	mov r2, #0
 	mov r4, #0
-	bl sub_80E8124
+	bl battle_spawnObject6B_linkRelated_80E8124
 	pop {r4-r7,pc}
-	thumb_func_end sub_8110D18
+	thumb_func_end battle_setObjectToArmAnchorPos_8110D18
 
 // symdb: Returns 1 if the battle panel at the object's next X position (X + XVelocity) has the panel-status bit masked by byte_8110DB0 set, else 0; r5 = battle object pointer.
 // symdb: (r0 unused; r5 = battle object pointer) -> r0 = 1 if flagged panel at next position, else 0;
@@ -6535,7 +6535,7 @@ off_8110DC0:
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_dispatchAttackHandlerByElement+1
 	.word ai_runElementAttackUpdate+1
-	.word sub_81107A0+1
+	.word ai_dispatchAttackStep_81107A0+1
 byte_8110DF4:
 	.byte 0x0, 0xC0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x80, 0x2, 0x0, 0x0, 0x0, 0x3
 	.byte 0x0, 0x0, 0x0, 0x2, 0x0, 0x0, 0x0, 0x3, 0x0
@@ -6630,12 +6630,12 @@ off_8110ED4:
 
 // symdb: AI tick for an enemy/boss: if a check passes, runs a special action and switches AI script state to 4, otherwise queues attack 9 with an 80-frame step timer.
 // symdb: (r6 = enemy object, r7 = its AI attack vars) -> sets r6->AIState_ScriptId = 4 or r7->StepTimer =
-// symdb: 0x50 with attack 9; r0 = condition result from sub_8110F8C
+// symdb: 0x50 with attack 9; r0 = condition result from ai_tryActionElsePickAdjacentPanel_8110F8C
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_chooseSpecialOrAttack9.yaml
 	thumb_local_start
 ai_chooseSpecialOrAttack9:
 	push {lr}
-	bl sub_8110F8C
+	bl ai_tryActionElsePickAdjacentPanel_8110F8C
 	tst r0, r0
 	beq loc_8110EEC
 	bl sub_8111030
@@ -6738,13 +6738,13 @@ ai_initPanelReserveAttack:
 	thumb_func_end ai_initPanelReserveAttack
 
 // symdb: AI update step that tries one behavior first and, if it did nothing, falls back to picking an adjacent neighbor panel for the object at r5.
-// symdb: void sub_8110F8C(u32 r5 /* object/entity pointer */) -> r0 = success/result flag of whichever
+// symdb: void ai_tryActionElsePickAdjacentPanel_8110F8C(u32 r5 /* object/entity pointer */) -> r0 = success/result flag of whichever
 // symdb: callee ran last; clobbers r2 r3 lr and flags; preserves r4-r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8110F8C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_tryActionElsePickAdjacentPanel_8110F8C.yaml
 	thumb_local_start
-sub_8110F8C:
+ai_tryActionElsePickAdjacentPanel_8110F8C:
 	push {r4-r7,lr}
-	bl sub_8110FA2
+	bl battle_checkPanelFlagsByState_8110FA2
 	tst r0, r0
 	bne locret_8110FA0
 	bl ai_pickAdjacentNeighborPanel
@@ -6753,14 +6753,14 @@ sub_8110F8C:
 	b locret_8110FA0
 locret_8110FA0:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8110F8C
+	thumb_func_end ai_tryActionElsePickAdjacentPanel_8110F8C
 
 // symdb: Reads the panel flag state at a battle object's panel, using a per-state parameter table chosen by the object to decide which panel flags count.
 // symdb: PanelFlagResult battle_checkPanelFlagsByState_8110FA2(BattleObject* obj /* r5 */); returns r0/r1
 // symdb: from panelFlagCheck_8015D80, r5 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8110FA2.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelFlagsByState_8110FA2.yaml
 	thumb_local_start
-sub_8110FA2:
+battle_checkPanelFlagsByState_8110FA2:
 	push {r4-r7,lr}
 	ldr r0, [r5,#oBattleObject_ExtraVars+8]
 	ldr r1, off_8110FC0 // =off_8110FC4
@@ -6789,7 +6789,7 @@ byte_8110FE4:
 	.byte 0x0, 0xFF, 0x0, 0x1, 0xFF, 0x0, 0x7F, 0x0
 byte_8110FEC:
 	.byte 0x0, 0xFF, 0x0, 0x1, 0x1, 0x0, 0x7F, 0x0
-	thumb_func_end sub_8110FA2
+	thumb_func_end battle_checkPanelFlagsByState_8110FA2
 
 // symdb: AI helper that picks a random panel adjacent to the battle object's panel (up/down/left/right in facing-transformed coords), filtered by a flag check, using parameters indexed by the object's alliance.
 // symdb: (r5 = battle object, read only) -> r0 = result from panelFlagCheck_8015D80 (chosen panel or
@@ -6872,7 +6872,7 @@ loc_811108E:
 	str r3, [r5,#oBattleObject_ExtraVars+8]
 	mov r0, #0xc
 	bl object_setAttack0
-	bl sub_81107A0
+	bl ai_dispatchAttackStep_81107A0
 	pop {pc}
 	thumb_func_end sub_8111030
 
@@ -8001,7 +8001,7 @@ off_8111A10:
 	.word off_8111A14
 off_8111A14:
 	.word ai_commitMoveAttack+1
-	.word sub_8111A72+1
+	.word battle_attackUpdateOnHitFrame_8111A72+1
 	.word battleObject_performMovementStep_8111A8C+1
 	.word ai_animEndResetAttack+1
 	.word aiAttack_tickAiAttackVarsTimer_81097DC+1
@@ -8037,7 +8037,7 @@ ai_commitMoveAttack:
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_HitElement]
 	bl sub_8111B06
-	bl sub_8111A72
+	bl battle_attackUpdateOnHitFrame_8111A72
 	b locret_8111A70
 loc_8111A68:
 	mov r0, #0
@@ -8048,11 +8048,11 @@ locret_8111A70:
 	thumb_func_end ai_commitMoveAttack
 
 // symdb: On the sprite frame flagged as the attack frame, switches a battle object to its attack animation, sets the hit element, and advances its movement step.
-// symdb: void sub_8111A72(r5=battleObject*, r7=aiAttackVars*) -> r1 (movement-step result, or 0x80 if
+// symdb: void battle_attackUpdateOnHitFrame_8111A72(r5=battleObject*, r7=aiAttackVars*) -> r1 (movement-step result, or 0x80 if
 // symdb: frame bit clear), r5 (object ptr passthrough)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8111A72.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_attackUpdateOnHitFrame_8111A72.yaml
 	thumb_local_start
-sub_8111A72:
+battle_attackUpdateOnHitFrame_8111A72:
 	push {lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -8065,7 +8065,7 @@ sub_8111A72:
 	bl battleObject_performMovementStep_8111A8C
 locret_8111A8A:
 	pop {pc}
-	thumb_func_end sub_8111A72
+	thumb_func_end battle_attackUpdateOnHitFrame_8111A72
 
 // symdb: Advances a battle object one frame along an in-progress panel-to-panel move, snapping to its destination panel and entering a post-move completion state when the move timer elapses.
 // symdb: (r5 = *BattleObject, r7 = *AIAttackVars) -> void ; mutates r5's
@@ -8182,9 +8182,9 @@ locret_8111B48:
 // symdb: Dispatches an in-progress AI attack to the per-hit-element handler selected from a small jump table.
 // symdb: void ai_dispatchHitElementAttack(r2, r5, r7 (AI attack vars), r10, lr); // tail dispatch;
 // symdb: results passed through in r1, r5, r8-r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8111B4A.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_dispatchHitElementAttack_8111B4A.yaml
 	thumb_local_start
-sub_8111B4A:
+ai_dispatchHitElementAttack_8111B4A:
 	push {lr}
 	ldr r1, off_8111B58 // =off_8111B5C
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -8195,19 +8195,19 @@ sub_8111B4A:
 off_8111B58:
 	.word off_8111B5C
 off_8111B5C:
-	.word sub_8111B70+1
+	.word ai_beginChargeAttack_8111B70+1
 	.word ai_tickCharge+1
 	.word ai_setCurAnimAndHitElementOnFlag+1
 	.word ai_resetAnimOnFrameFlag+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_8111B4A
+	thumb_func_end ai_dispatchHitElementAttack_8111B4A
 
 // symdb: Starts a boss AI charge attack — puts the battle object in charge animation 4 with a 30-frame timer and marks it as charging with hit element 4.
-// symdb: void sub_8111B70(battle object r5, ai attack vars r7) -> r1 passthrough from object_setFlag1;
+// symdb: void ai_beginChargeAttack_8111B70(battle object r5, ai attack vars r7) -> r1 passthrough from object_setFlag1;
 // symdb: NZCV clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8111B70.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_beginChargeAttack_8111B70.yaml
 	thumb_local_start
-sub_8111B70:
+ai_beginChargeAttack_8111B70:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#oBattleObject_CurAnim]
@@ -8219,7 +8219,7 @@ sub_8111B70:
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_HitElement]
 	pop {pc}
-	thumb_func_end sub_8111B70
+	thumb_func_end ai_beginChargeAttack_8111B70
 
 // symdb: Per-frame AI attack tick that telegraphs when ChargeCycles == 0x11, decrements the timer each frame, and on expiry invokes sub_8111BDE with the difficulty tier, plays sound 0x80, and sets hit element 8.
 // symdb: (r7 = pointer to the acting object's oAIAttackVars) -> r0 = 0; no meaningful return
@@ -8568,7 +8568,7 @@ off_8111DC0:
 	.word sub_8111DFC+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_dispatchAttackStep+1
-	.word sub_8111B4A+1
+	.word ai_dispatchHitElementAttack_8111B4A+1
 	thumb_func_end ai_getPanelRegionFromAllianceParam
 
 // symdb: Starts a new AI turn for a battle object, resetting its AI turn counter to 1 and clearing its current action state.
@@ -8897,9 +8897,9 @@ byte_8112024:
 // symdb: void ai_attackDispatchHitElementStep(u32 r5 /*AI state*/, u32 r7 /*attack vars*/, u32 r10 /*AI
 // symdb: state*/); // r0 in = element byte reloaded by callee; r1, r5, r8-r12 out = whatever the
 // symdb: dispatched handler leaves; clobbers flags and r0-r7,lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81120E4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackDispatchHitElementStep_81120E4.yaml
 	thumb_local_start
-sub_81120E4:
+ai_attackDispatchHitElementStep_81120E4:
 	push {lr}
 	ldr r1, off_81120F4 // =off_81120F8
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -8914,7 +8914,7 @@ off_81120F8:
 	.word ai_attackChargeLineStep+1
 	.word ai_falzarAttackSpawnStep+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_81120E4
+	thumb_func_end ai_attackDispatchHitElementStep_81120E4
 
 // symdb: AI attack state step: charge animation, telegraphs a line of panels in front of the attacker, then fires (sets hit element and counter).
 // symdb: (r0 unused entry, r5 = battle object, r7 = AI attack vars) -> void; updates
@@ -9060,7 +9060,7 @@ off_81121F0:
 	.word battle_hoverBobObjectUpdate+1
 	.word ai_runStateDispatch+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
-	.word sub_81120E4+1
+	.word ai_attackDispatchHitElementStep_81120E4+1
 	.word genericAI_movementRelated_8109952+1
 	.word sub_8109804+1
 byte_8112224:
@@ -9153,7 +9153,7 @@ loc_81122D2:
 	b loc_811233A
 loc_81122E8:
 	bl battle_clearAnimationAndFreeTimer_8112630
-	bl sub_81124D4
+	bl battle_getFrontPanelFlagsByAlliance_81124D4
 	cmp r0, #0
 	bne loc_8112302
 	mov r0, #0x12
@@ -9304,7 +9304,7 @@ battle_randFilteredPanelXY:
 	bl object_getPanelsExceptCurrentFiltered
 	cmp r0, #0
 	beq loc_8112406
-	bl sub_8112426
+	bl object_filterRebasedPanelRefs_8112426
 	cmp r0, #0
 	bne loc_811240E
 loc_8112406:
@@ -9328,9 +9328,9 @@ loc_8112422:
 
 // symdb: Rewrites a list of packed panel-reference bytes, rebasing each relative direction against the object's facing and dropping entries whose adjusted panel is invalid.
 // symdb: (int count in r0, void *object in r5, u8 *srcList in r7) -> int writtenCount in r0
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8112426.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_filterRebasedPanelRefs_8112426.yaml
 	thumb_local_start
-sub_8112426:
+object_filterRebasedPanelRefs_8112426:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl object_getFrontDirection // () -> int
@@ -9362,7 +9362,7 @@ loc_811245A:
 	pop {r1}
 	sub r0, r5, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8112426
+	thumb_func_end object_filterRebasedPanelRefs_8112426
 
 // symdb: Collects, into a caller-supplied scratch buffer, the packed (PanelY<<4|(PanelX-frontDir)) panel bytes of battle objects whose front panel matches an alliance-dependent panel-parameter check and which have the highest HP (ties kept). Returns the count and the winning HP value.
 // symdb: (r0 = scratch ctx whose [ctx..] is a pointer array filled by the callee, r1..r3 args passed to
@@ -9429,11 +9429,11 @@ locret_81124D2:
 	thumb_func_end battle_getHighestHpPanelCoordsOnParamPanel
 
 // symdb: Looks up the panel an object is facing and returns its parameter word masked by a side-specific bit mask chosen from the object's alliance.
-// symdb: int sub_81124D4(BattleObject* object /* r5 */) -> r0 = panelParams & mask, r1 = mask; clobbers
+// symdb: int battle_getFrontPanelFlagsByAlliance_81124D4(BattleObject* object /* r5 */) -> r0 = panelParams & mask, r1 = mask; clobbers
 // symdb: r2 r3 lr, flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81124D4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getFrontPanelFlagsByAlliance_81124D4.yaml
 	thumb_local_start
-sub_81124D4:
+battle_getFrontPanelFlagsByAlliance_81124D4:
 	push {lr}
 	bl object_getFrontDirection // () -> int
 	ldrb r1, [r5,#oBattleObject_PanelX]
@@ -9448,7 +9448,7 @@ sub_81124D4:
 loc_81124EE:
 	and r0, r1
 	pop {pc}
-	thumb_func_end sub_81124D4
+	thumb_func_end battle_getFrontPanelFlagsByAlliance_81124D4
 
 // symdb: Battle-AI panel selector: finds an alliance-dependent panel behind the opponent's rows, re-validates it against panel flags, and falls back to a random nearby panel.
 // symdb: (r0 = battle object, r5 = context entity with panel/coord bytes at +0x16/+0x17) -> r0 = chosen
@@ -9739,11 +9739,11 @@ byte_8112708:
 	thumb_func_end ai_beginAttackB
 
 // symdb: Dispatches an AI attack step based on the element byte stored in the attacker's AI attack vars, tail-calling the per-element handler from a small jump table.
-// symdb: void sub_81127C8(r4, r5, r6, r7=&AI attack vars) — tail-dispatch; results in r1 r5 r8 r9 r10 r11
+// symdb: void ai_dispatchHitElement_81127C8(r4, r5, r6, r7=&AI attack vars) — tail-dispatch; results in r1 r5 r8 r9 r10 r11
 // symdb: r12 and NZCV are whatever the dispatched handler leaves.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81127C8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_dispatchHitElement_81127C8.yaml
 	thumb_local_start
-sub_81127C8:
+ai_dispatchHitElement_81127C8:
 	push {lr}
 	ldr r1, off_81127D8 // =off_81127DC
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -9758,7 +9758,7 @@ off_81127DC:
 	.word sub_81127E8+1
 	.word ai_teleportToPanelStep+1
 	.word ai_attackStepWaitEnd+1
-	thumb_func_end sub_81127C8
+	thumb_func_end ai_dispatchHitElement_81127C8
 
 	thumb_local_start
 sub_81127E8:
@@ -9874,9 +9874,9 @@ locret_81128B0:
 // symdb: AI attack-state step dispatcher - reads the HitElement byte from the AI attack vars and jumps to one of four per-step handlers chosen from a small jump table.
 // symdb: void battle_aiAttackStepDispatch_81128B2(AiWork *r5, AiAttackVars *r7) // lr = return; outputs
 // symdb: (r0/r1/r5/r8-r12) are whatever the dispatched handler leaves in the guest register file
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81128B2.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiAttackStepDispatch_81128B2.yaml
 	thumb_local_start
-sub_81128B2:
+battle_aiAttackStepDispatch_81128B2:
 	push {lr}
 	ldr r1, off_81128C0 // =off_81128C4
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -9891,7 +9891,7 @@ off_81128C4:
 	.word ai_attackAnimHitStep+1
 	.word ai_attackPhaseSubStep+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	thumb_func_end sub_81128B2
+	thumb_func_end battle_aiAttackStepDispatch_81128B2
 
 	bl object_exitAttackState
 	pop {pc}
@@ -10035,8 +10035,8 @@ off_81129A0:
 	.word battle_hoverBobObjectUpdate+1
 	.word snakearm_dispatchScriptStep+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_81127C8+1
-	.word sub_81128B2+1
+	.word ai_dispatchHitElement_81127C8+1
+	.word battle_aiAttackStepDispatch_81128B2+1
 byte_81129D0:
 	.byte 0x5, 0xA, 0x14, 0x19, 0xF, 0x19
 byte_81129D6:
@@ -11236,12 +11236,12 @@ byte_8113268:
 	thumb_func_end battle_object_tryUseChipWhenLowHP_81131D8
 
 // symdb: Dispatches the AI attack-state post-hit handler via a small jump table indexed by the AI attack vars' HitElement byte.
-// symdb: void sub_8113330(r5=workA, r6=workB, r7=AI attack vars, lr=return); tail-jumps through handler
+// symdb: void aiAttack_dispatchHitElementHandler_8113330(r5=workA, r6=workB, r7=AI attack vars, lr=return); tail-jumps through handler
 // symdb: table, so r0=element and r1=table entry pass to the handler and its r1/r5/r8-r12 and nzcv
 // symdb: results become this function's outputs
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8113330.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/aiAttack_dispatchHitElementHandler_8113330.yaml
 	thumb_local_start
-sub_8113330:
+aiAttack_dispatchHitElementHandler_8113330:
 	push {lr}
 	ldr r1, off_8113340 // =off_8113344
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -11256,7 +11256,7 @@ off_8113344:
 	.word sub_8113350+1
 	.word battleObject_advanceMoveStep_811339A+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
-	thumb_func_end sub_8113330
+	thumb_func_end aiAttack_dispatchHitElementHandler_8113330
 
 	thumb_local_start
 sub_8113350:
@@ -11423,9 +11423,9 @@ locret_811348C:
 // symdb: void ai_dispatchAttackStateHandler(u8* aiAttackVars in r7, context in r5/r6/r10); tail-calls
 // symdb: handler(handler in r1, element in r0) which returns results to this function's caller in
 // symdb: r1/r5/r8-r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811348E.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_dispatchAttackStateHandler_811348E.yaml
 	thumb_local_start
-sub_811348E:
+ai_dispatchAttackStateHandler_811348E:
 	push {lr}
 	ldr r1, off_811349C // =off_81134A0
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -11436,19 +11436,19 @@ sub_811348E:
 off_811349C:
 	.word off_81134A0
 off_81134A0:
-	.word sub_81134B0+1
+	.word battle_beastAiChargeShotStep_81134B0+1
 	.word ai_stepTargetPanelRepeatAttack+1
 	.word ai_restartAttackAnimOnLoop+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
-	thumb_func_end sub_811348E
+	thumb_func_end ai_dispatchAttackStateHandler_811348E
 
 // symdb: Per-frame AI step for the beast-type enemy's charged shot: winds up 30 frames, walks its facing direction to a panel bordering all three enemy rows, then spawns the charge shot.
-// symdb: u32 sub_81134B0(r5=battle object, r7=oAIAttackVars, r10=pass-through, r1=pass-through); returns
+// symdb: u32 battle_beastAiChargeShotStep_81134B0(r5=battle object, r7=oAIAttackVars, r10=pass-through, r1=pass-through); returns
 // symdb: r1 (caller's r1 while still charging, spawn helper's r1 once the shot exists); r0/r2/r3/lr and
 // symdb: NZCV clobbered, r4/r6 preserved via push/pop
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81134B0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_beastAiChargeShotStep_81134B0.yaml
 	thumb_local_start
-sub_81134B0:
+battle_beastAiChargeShotStep_81134B0:
 	push {r4,r6,lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackElement]
 	cmp r0, #0
@@ -11497,7 +11497,7 @@ loc_81134F2:
 	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_811350E:
 	pop {r4,r6,pc}
-	thumb_func_end sub_81134B0
+	thumb_func_end battle_beastAiChargeShotStep_81134B0
 
 // symdb: AI attack driver: on first invocation spawns a 0xD3 attack object at (TargetPanelX,TargetPanelY) with element 0 carrying AttackBoost2<<8 and Damage, then uses AttackBoost2 as a StepTimer delay. After the delay, ChargeCycles (max 8) drives a zigzag walk of TargetPanelX/Y read as (dx,dy) signed pairs from byte_8113594, with dx scaled by the attacker's front direction; if X stays within 1..6 the attack element is cleared to retrigger the spawn, otherwise anim 3 plays on r5, an extra-var+8 timer slot is cleared, and HitElement=8 ends it.
 // symdb: (r0 = unused (immediately overwritten), r5 = battle object, r7 = oAIAttackVars of attacker) ->
@@ -11604,7 +11604,7 @@ dword_81135C8:
 off_81135CC:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_811363C+1
+	.word battle_objectTickExtraVarsThenDispatch_811363C+1
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -11612,8 +11612,8 @@ off_81135CC:
 	.word battle_hoverBobObjectUpdate+1
 	.word sub_811365A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_8113330+1
-	.word sub_811348E+1
+	.word aiAttack_dispatchHitElementHandler_8113330+1
+	.word ai_dispatchAttackStateHandler_811348E+1
 byte_81135FC:
 	.byte 0x0, 0x50, 0x2, 0x0, 0x0, 0x60, 0x2, 0x0, 0x0, 0x70, 0x2, 0x0, 0x0, 0x80
 	.byte 0x2, 0x0, 0x0, 0x90, 0x2, 0x0, 0x0, 0x0, 0x3, 0x0
@@ -11642,9 +11642,9 @@ sub_8113626:
 // symdb: Per-frame tick for a battle object (r5): on phase 0 fires its ExtraVars one-shot action and rewinds that payload's timer to 8, then hands the object to the shared phase-update dispatcher.
 // symdb: void battle_objectTickExtraVarsThenDispatch_811363C(BattleObject* obj /* r5, tail-passed through
 // symdb: dispatcher */, ... pass-through r2-r4, r6-r9, r11, r12; outputs r1, r5, r8-r12 from dispatcher)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811363C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectTickExtraVarsThenDispatch_811363C.yaml
 	thumb_local_start
-sub_811363C:
+battle_objectTickExtraVarsThenDispatch_811363C:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
@@ -11658,7 +11658,7 @@ sub_811363C:
 loc_8113654:
 	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
-	thumb_func_end sub_811363C
+	thumb_func_end battle_objectTickExtraVarsThenDispatch_811363C
 
 	thumb_local_start
 sub_811365A:
@@ -11694,7 +11694,7 @@ ai_setVersionTimerStartAttack9:
 	pop {pc}
 	thumb_func_end ai_setVersionTimerStartAttack9
 
-// symdb: Boss AI turn chooser: on counter<2 it updates AiAttackParam, PanelParamFlags2, loads a version-indexed scratch, sets TargetObjectPtr to the closest enemy (alliance eor 1), and issues attack 0xa via sub_8113330; on counter==2 (after reset) it branches on object flags 0x8000/0x2000, then on FindBattleActorsWithNonzeroParam count, setting version-scaled StepTimer/Damage/AttackBoost2 and calling object_setAttack0 with 9 or 0xb.
+// symdb: Boss AI turn chooser: on counter<2 it updates AiAttackParam, PanelParamFlags2, loads a version-indexed scratch, sets TargetObjectPtr to the closest enemy (alliance eor 1), and issues attack 0xa via aiAttack_dispatchHitElementHandler_8113330; on counter==2 (after reset) it branches on object flags 0x8000/0x2000, then on FindBattleActorsWithNonzeroParam count, setting version-scaled StepTimer/Damage/AttackBoost2 and calling object_setAttack0 with 9 or 0xb.
 // symdb: (no args; r4 = AI data ptr, r5 = battle object, r6 = AI state, r7 = AI attack vars) -> r0 =
 // symdb: attack id passed to object_setAttack0; returns void
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickTurnAttack.yaml
@@ -11775,7 +11775,7 @@ loc_8113700:
 	str r0, [r7,#oAIAttackVars_TargetObjectPtr]
 	mov r0, #0xa
 	bl object_setAttack0
-	bl sub_8113330
+	bl aiAttack_dispatchHitElementHandler_8113330
 locret_811372C:
 	pop {pc}
 	.balign 4, 0
@@ -14997,9 +14997,9 @@ byte_81150D8:
 // symdb: Dispatches an enemy AI's current attack step: reads the attack-phase byte from the attacker's AI attack vars and jumps to one of six per-step attack handlers.
 // symdb: void ai_attackStepDispatch_81151A0(void); // r7 = attacker AIAttackVars, r5/r6/r10 inputs passed
 // symdb: through; returns whatever the selected handler leaves in r1/r5/r8-r12
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81151A0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackStepDispatch_81151A0.yaml
 	thumb_local_start
-sub_81151A0:
+ai_attackStepDispatch_81151A0:
 	push {lr}
 	ldr r1, off_81151B0 // =off_81151B4
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -15017,7 +15017,7 @@ off_81151B4:
 	.word ai_throwObjectStep+1
 	.word ai_hopStepUpdate+1
 	.word sub_8115404+1
-	thumb_func_end sub_81151A0
+	thumb_func_end ai_attackStepDispatch_81151A0
 
 // symdb: Runs an AI battle object's charging/ramming attack across the panels: initializes it on the first call, then advances its scripted move each frame.
 // symdb: (r7 = AI attack vars, r5 = battle object) -> void; branch into runMoveStep once AttackElement is
@@ -15461,7 +15461,7 @@ off_81154F0:
 	.word ai_dispatchScriptState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_8109804+1
-	.word sub_81151A0+1
+	.word ai_attackStepDispatch_81151A0+1
 byte_8115520:
 	.byte 0x0, 0x70, 0x0, 0x0, 0x0, 0x80, 0x0, 0x0, 0x0, 0x90, 0x0, 0x0, 0x0, 0xA0
 	.byte 0x0, 0x0, 0x0, 0xB0, 0x0, 0x0, 0x0, 0xC0, 0x0, 0x0

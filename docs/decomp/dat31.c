@@ -864,7 +864,7 @@ int sub_810D118()
     {
         v1 = *(v0 + 96);
         if ( v1 )
-            v1 = sub_80E5410(v1);
+            v1 = entity_resetTimerAndCounter_80E5410(v1);
     }
     return battle_objectUpdateDispatchPhase_80165C2(v1);
 }

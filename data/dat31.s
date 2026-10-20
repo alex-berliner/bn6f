@@ -1490,7 +1490,7 @@ sub_810D118::
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq loc_810D12A
-	bl sub_80E5410
+	bl entity_resetTimerAndCounter_80E5410
 loc_810D12A::
 	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {pc}
