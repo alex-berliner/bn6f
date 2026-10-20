@@ -5911,6 +5911,10 @@ sub_803BA74:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803BA74
 
+// symdb: Copies a 2-byte-aligned block of chatbox script from src to dest, then scans backward from the first 0xE6 opcode, expanding each 0xE5 entry into the two-byte pair 0xB2 0xE5, bounded by a count byte in the buffer.
+// symdb: (r0 = src offset, r1 = dest offset, r2 = byte count, r3 = index of count byte in buffer, r5 =
+// symdb: script buffer base) -> void; no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BA84.yaml
 	thumb_local_start
 sub_803BA84:
 	push {r4-r7,lr}

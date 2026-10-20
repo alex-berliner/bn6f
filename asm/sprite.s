@@ -260,6 +260,9 @@ palette_InitTransferState_80027D4:
 	mov pc, lr
 	thumb_func_end palette_InitTransferState_80027D4
 
+// symdb: Initializes the sprite/camera projection settings struct at byte_20098A8 by writing 8 to byte +0, 4 to byte +1 (camera projection), and 0xFFFF to halfword +2.
+// symdb: () -> void; writes globals at byte_20098A8, no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027E4.yaml
 	thumb_func_start sub_80027E4
 sub_80027E4:
 	ldr r1, off_8002804 // =byte_20098A8

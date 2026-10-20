@@ -397,6 +397,10 @@ onUpdateInRealWorld_8033A96: // (self: * S2011E30 $r5) -> ()
 	pop {pc}
 	thumb_func_end onUpdateInRealWorld_8033A96
 
+// symdb: Per-frame dispatcher called once per battle-start animation tick: queues one OAM entry, conditionally draws the battle-start overlay, and advances the chip-slot gfx/spin SFX.
+// symdb: (r0 = self object, passed through to callees; r1 = frame-index/0 flag per callee) -> r0 = last
+// symdb: callee's return; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033AB0.yaml
 	thumb_local_start
 sub_8033AB0: // (self: * S2011E30 $r5) -> ()
 	push {lr}

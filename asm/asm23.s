@@ -865,6 +865,10 @@ jt_80895C0:
 	.word ai_setupStateTimer1C+1
 	thumb_func_end battleObject_runUpdateJumpTable_80895A8
 
+// symdb: Overworld Beast-Out step: sets player facing then plays the matching fixed animation (facing value as id on the zero path, table-indexed 0x29–0x2C on the nonzero path), clears AIData+0x18 or runs a sub-chain, and writes the next state byte (0x74 or 4) into [r5].
+// symdb: (r0 = arg passed to sub_814219C, r5 = caller object whose first byte is the next state) -> r0 =
+// symdb: 1 always; flags from sub_814219C branch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808964C.yaml
 	thumb_local_start
 sub_808964C:
 	push {r4-r7,lr}

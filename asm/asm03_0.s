@@ -3111,6 +3111,9 @@ loc_80279E6:
 	.word 0x1FF
 	thumb_func_end battle_customScreen_clearSelection_80279C8
 
+// symdb: Initializes a 15x20 background tilemap in unk_2035000 by copying a base grid from byte_86E64B4, stamping rectangle entries from byte_8027B2C via sub_8027CCC, and uploading the result to BG tile block 3.
+// symdb: () -> void; no args, writes tilemap VRAM via callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80279FC.yaml
 	thumb_local_start
 sub_80279FC:
 	push {lr}
@@ -3241,6 +3244,10 @@ locret_8027ADC:
 	pop {r4,r6,pc}
 	thumb_func_end battle_customScreenConfirmSelectedChip
 
+// symdb: Per-frame tick for a tutorial's Custom Screen phase: gates on fade, ticks chip-picker GFX helpers, sets state=4, and at step 6 queues chatbox_runScript with the TextScriptFirstBattleTutorials archive (index out-of-range suggests caller pre-loads r5 or the step check is gated).
+// symdb: (r0 = scratch/ignored, r5 = tutorial state struct: +0x01 state byte, +0x02 timer halfword, +0x0C
+// symdb: step counter, +0x0D substate) -> r0 = clobbered; updates state fields in r5 struct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027ADE.yaml
 	thumb_local_start
 sub_8027ADE:
 	push {lr}
@@ -9908,6 +9915,9 @@ locret_802A9CC:
 	.byte 0, 0
 	thumb_func_end ow_scrollBg2LeftStepState
 
+// symdb: Battle submenu letting the player select up to two items from a grid under a 0x32 budget: A picks a cell (id from unk_2031000, weight from byte_802B5FC, total tracked at [r5+0x12]) into slot [r5+0x10] then [r5+0x11]; B clears the most recent slot; 0x100 inspects (state 0x18, sound 0x9c); 0x200 confirms (state 0x1c, text script 0).
+// symdb: (r5 = menu state struct, r10 = toolkit) -> void; drives sounds, text script and screen rebuilds
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A9D0.yaml
 	thumb_local_start
 sub_802A9D0:
 	push {r4-r7,lr}
@@ -12748,6 +12758,11 @@ off_802C0A0:
 	.word unk_2035320
 	thumb_func_end battle_chipSelectAnimTileStep
 
+// symdb: After a per-frame countdown at r5+0xb expires, dispatches the packed selection ID at r5+0x10 by group: group 0 validates a chip against the chip DB and calls sub_802C75C with sound 0x96; group 1 opens a text dialog (sub_802C5B0) with 0x95; group 2 calls sub_802C646 with 0x95 and re-arms the counter to 0x1e while writing state 8/0 at [r5+2]/[r5+3]; group 3 calls sub_802C5E6 with 0x95; finally zeroes the halfword at [r5+2].
+// symdb: (r5 = menu state struct; no register args) -> r0 clobbered by calls; updates struct: [r5+0xb]
+// symdb: counter, [r5+0x10] pending ID cleared to 0xFFFF path via [r5+2]=0, [r5+2]/[r5+3] state for group
+// symdb: 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C0A4.yaml
 	thumb_local_start
 sub_802C0A4:
 	push {lr}
@@ -26248,6 +26263,10 @@ sub_8031C5A:
 	pop {pc}
 	thumb_func_end sub_8031C5A
 
+// symdb: Returns the battle textbox cursor blink state byte only when the entity's position relative to a doubled target reference lies on the negative side of the half-plane test; returns 0 otherwise.
+// symdb: (r0 = entity/target descriptor for calcRelPosToTarget) -> r0 = blink-state byte if the point
+// symdb: test passes, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8031C64.yaml
 	thumb_local_start
 sub_8031C64:
 	push {lr}

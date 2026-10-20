@@ -179,6 +179,9 @@ loc_808F98A:
 	.balign 4, 0x00
 	thumb_func_end busStation_runBusMoveSequence_controller_808F900
 
+// symdb: Part of the bus-boarding sequence: locks player input and swaps the overworld player's sprite to the seated/riding pose used while the bus moves.
+// symdb: () -> r0 = 0; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F990.yaml
 	thumb_local_start
 sub_808F990:
 	push {r5,lr}
@@ -201,6 +204,9 @@ sub_808F990:
 	pop {r5,pc}
 	thumb_func_end sub_808F990
 
+// symdb: Steps the overworld player one 0x10000 unit per axis toward the target coords stored in the state struct (loaded via off_808F5D4), clamping to the target when within one step, writes the new (X, Y, Z=0x400000) coords, and returns 1 if any axis moved this frame or 0 if already on target.
+// symdb: (void) -> r0 = 1 if the player moved this call, 0 if already at target; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808F9C4.yaml
 	thumb_local_start
 sub_808F9C4:
 	push {r4-r7,lr}

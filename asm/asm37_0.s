@@ -4788,6 +4788,10 @@ off_813DAB8:
 	.word sub_813DADC+1
 	thumb_func_end startScreen_runJumpTable_813DA94
 
+// symdb: Attempts to (re)initialize the RFU link session via rfu_initLinkSession; on failure bumps a retry counter at [r5+2] by 4, then writes 0 to byte 0x200BC55 via sub_813D62C and returns 0.
+// symdb: (no args) -> r0 = 0, r1 = base of IWRAM struct at 0x200BC50; side effects on struct bytes 2 and
+// symdb: 5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DAC0.yaml
 	thumb_local_start
 sub_813DAC0:
 	push {lr}

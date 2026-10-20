@@ -5545,6 +5545,10 @@ start_cutsceneWithFlagSwap: // (self: * GameState $r5) -> ()
 	pop {pc}
 	thumb_func_end start_cutsceneWithFlagSwap
 
+// symdb: GameState one-shot handler that sets EVENT_1703 and EVENT_1738, triggers a screen fade via SetScreenFade(0xc,0x10), ticks the countdown-timer table, writes 0x3c to FrameCountdown, and sets byte 0x10 into SubsystemIndex to hand off to another subsystem.
+// symdb: (r5 = * GameState) -> void; sets EVENT_1703 and EVENT_1738, starts fade, reprograms
+// symdb: r5.FrameCountdown and r5.SubsystemIndex
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005A28.yaml
 	thumb_local_start
 sub_8005A28: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -11632,6 +11636,11 @@ locret_8008450:
 	pop {pc}
 	thumb_func_end sub_800840C
 
+// symdb: Per-frame step of the pre-battle/intro phase: one-time player-tracker init and AI-timer warm-up ticks for both alliances, then polls the two-slot state machine at dword_203C970 until it finishes; the entire phase is skipped (writing 0x24 to [r5]) when the battle mode is NOT 5 and the 0x40 flag is set.
+// symdb: (r0-r3 = scratch/call context, r5 = phase-state struct: word +0 = next phase id, byte +3 = init-
+// symdb: done flag) -> r0 = result of sub_802D6C4 (nonzero = phase still running) or 0x24 (next phase id
+// symdb: written to [r5]) when the phase ends
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008452.yaml
 	thumb_local_start
 sub_8008452:
 	push {lr}
@@ -14279,6 +14288,10 @@ off_8009630:
 	.word sub_8009966+1
 	thumb_func_end sub_800961C
 
+// symdb: Battle-state phase-4 handler: init spawns a type-4 object and enemy objects, pauses, applies navi stats, plays encounter BGM; subsequent frames run sub_80096E0 then poll bit 2 of unk5c and dispatch the intro-finished transition to the next state.
+// symdb: (r5 = battle state) -> updates oBattleState_SubPhaseInitFlag, State4EventCount, StatePhase,
+// symdb: Index_01; r0 = 0/1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009658.yaml
 	thumb_local_start
 sub_8009658:
 	push {r4,r6,r7,lr}
@@ -15473,6 +15486,10 @@ locret_8009E54:
 	pop {pc}
 	thumb_func_end sub_8009E40
 
+// symdb: Battle-state handler that, after the hand-validation helper returns a nonzero outcome code (1/2/7), records that result and busting-level category, writes BattlePhase to eStruct fields, gates phase-2 completion on battle-effect bits 0x8/0x2/0x400, then sets Index_01 (0x14 or 0) and clears StatePhaseAndInitFlag to advance the state machine.
+// symdb: (r5 = current battle state object) -> void; sets battle state fields BattlePhase->result byte,
+// symdb: BustingLevelCategory, Index_01, StatePhaseAndInitFlag
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E56.yaml
 	thumb_local_start
 sub_8009E56:
 	push {r4,lr}

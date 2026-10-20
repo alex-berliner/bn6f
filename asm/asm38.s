@@ -838,6 +838,10 @@ off_3006104:
 	.word QueueEightWordAlignedGFXTransfer+1 // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	thumb_func_end sprite_ensureGfxResident
 
+// symdb: Returns the OBJ palette slot index for an object's 16-color palette (applying its color shader first) by matching the byte_3001550 cache; if no match it falls back to sub_3006428 and either marks the sprite dirty or installs the palette in a new slot.
+// symdb: (r5 = object sprite struct; r0 ignored) -> r0 = palette slot index (0xF if all 15 slots are in
+// symdb: use); sets object byte[3] |= 0x10 when a reload is needed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006108.yaml
 	thumb_local_start
 sub_3006108:
 	push {lr}
@@ -2983,6 +2987,10 @@ byte_3006F84:
 	.byte 0x2, 0x2, 0x2, 0x2, 0x4, 0x4, 0x4, 0x4
 	thumb_func_end sub_3006F74
 
+// symdb: Blits a 12xN 4bpp dialog-font glyph (sourced from byte_86ACD60 + idx*0x60, width from byte_8043CA4) into the chatbox scanline buffer in unk_200BEA0 at the current bit offset, OR-ing a per-chatbox color base from dword_3006B84, then advances the chatbox's tile-buffer-offset field and a 5x-scaled offset by the glyph width.
+// symdb: (r1 = glyph/char index, r5 = chatbox struct, r6 = pen position as bit offset (pixelX*4)) -> r0
+// symdb: clobbered; updates [r5+oChatbox_TileBufferOffset] += width and [r5+oChatbox_Unk_7C] += width*5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006F8C.yaml
 	thumb_func_start sub_3006F8C
 sub_3006F8C:
 	push {r1,r4-r7,lr}
@@ -3335,6 +3343,10 @@ off_300720C:
 	.word off_804440C
 	thumb_func_end chatbox_drawCustomBoxTiles_30070B4
 
+// symdb: Applies one collision hit: gates on time-stop and type-flag compatibility, then accumulates damage, element multipliers, status, and hit modifiers into the target's CollisionData; no meaningful return value.
+// symdb: (r0 = target oCollisionData, r1 = attacker oCollisionData) -> r0 = heat-on-grass extra damage
+// symdb: for caller to add; flags from early-exit tst/cmp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007218.yaml
 	thumb_local_start
 sub_3007218:
 	push {r4,r6,r7,lr}
@@ -4414,6 +4426,11 @@ off_3007974:
 	.word ePanelData
 	thumb_func_end _object_getPanelDataOffset
 
+// symdb: Reads a 32-bit entity mask from unk_2034F60 indexed by (r0,r1), walks CollisionData array in 0xA8 strides shifting the mask left; for each set bit, ORs (SelfCollisionTypeFlags & 0xFFFF0000) into r0; exits when the mask shifts to zero.
+// symdb: (r0 = word index (0..7) within a 32-byte entry of unk_2034F60, r1 = entry index) -> r0 = OR of
+// symdb: (oCollisionData_SelfCollisionTypeFlags >> 16) over all flagged entities; clobbers r1-r3, no
+// symdb: flags meaningful.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3007978.yaml
 	thumb_local_start
 sub_3007978:
 	lsl r1, r1, #3

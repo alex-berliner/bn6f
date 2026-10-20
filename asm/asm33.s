@@ -4733,6 +4733,10 @@ off_8125674:
 	.word 0x300
 	thumb_func_end sub_81255F8
 
+// symdb: Per-frame input handler for a battle-sprite submenu: Start/B records selection 0x3C and triggers exit+fade, Right writes state 0x48 or 0x1c based on [r5+0x64], Left writes 0x14 (all play SFX 0x7A); Up/Down delegate to sub_8125820 after swapping in [r5+0x60] as the cursor field at [r5+0x26].
+// symdb: (r0 = context/r5 struct ptr, uses toolkit joypad via r10) -> r0 = clobbered; sets state byte
+// symdb: [r5+2], plays SFX 0x7A, or exits menu
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125678.yaml
 	thumb_local_start
 sub_8125678:
 	push {r4-r7,lr}
@@ -6383,6 +6387,11 @@ bg_drawTileStrip3Wide:
 	pop {r4-r7,pc}
 	thumb_func_end bg_drawTileStrip3Wide
 
+// symdb: Draws one custom-screen chip slot's two BG tilemap strips: reads chip codes from a 4-byte/entry table, blanking each 0x10-byte strip when the code is zero and clear-mode is set, otherwise decoding chip-name glyphs via TextScriptChipNamesPtrs and text_decodeCharTiles8, with a secondary palette for entries whose +2 byte > 1 and a Submenu-state reset on chip-encryption failure.
+// symdb: (r0 = entry index, r1 = entry-table base (4 bytes/entry: u16 chip code+id, u8 color flag at +2),
+// symdb: r2 = tilemap dest strip, r3 = palette A, r4 = palette B, r5 = (entryCount<<4 | clearMode)) ->
+// symdb: writes 8 halfword tilemap entries per strip per entry; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812626C.yaml
 	thumb_local_start
 sub_812626C:
 	push {r4-r7,lr}
@@ -7252,6 +7261,10 @@ dword_81267EC:
 	.word 0xC24C
 	thumb_func_end sprite_queueBattleOamEntry
 
+// symdb: If [r5+0x3a] is non-zero, queues one fixed animated overlay OAM entry (r0=0x43, r1=0xe, r2=0, r3=0x11, r4=byte_8124A98, r6=0x40000000, r7=byte_8124A9E) via battle_queueAnimatedOamEntry; otherwise returns immediately.
+// symdb: (r5 = battle object, flag at [r5+0x3a]) -> none; queues an OAM entry via
+// symdb: battle_queueAnimatedOamEntry when flag != 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81267F0.yaml
 	thumb_local_start
 sub_81267F0:
 	push {r4-r7,lr}
@@ -7867,6 +7880,10 @@ loc_8126E80:
 	.balign 4, 0x00
 	thumb_func_end battle_cursorMoveAndDispatchNext_8126E10
 
+// symdb: Battle-object command step that, if a screen fade is active, marks the object suspended (sets [r5+1]=8 and ORs 1 into [r5+0xC]) and then queues the next command via battle_dispatchNextCmd_81272C4.
+// symdb: (r5 = battle object) -> void; calls battle_dispatchNextCmd_81272C4 to continue the object's
+// symdb: command queue.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8126E88.yaml
 	thumb_local_start
 sub_8126E88:
 	push {lr}
@@ -8336,6 +8353,10 @@ off_81271C8:
 	.word NULL
 	thumb_func_end initTitleScreens_81270D0
 
+// symdb: Only proceeds when chatbox flag bit 0x20 is SET (cutscene/chatbox context active); otherwise returns 0. Builds a 2-bit mask from EVENT_F2/F7, resolves a target (non-default PET navi → 0xc; both flags set with default navi → chatbox_GetState+1; else r7 as-is), calls SetScreenFade(12,12), and writes 8 or 0xc to [r5+2], returning 1.
+// symdb: (r5 = menu/task work struct; writes screen id to [r5+2]) -> r0 = 1 if a screen change was
+// symdb: started, 0 if suppressed by chatbox flag 0x20; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127264.yaml
 	thumb_local_start
 sub_8127264:
 	push {r4-r7,lr}
@@ -9945,6 +9966,10 @@ off_8127E18:
 	.word NULL
 	thumb_func_end battle_setupSceneTiles_8127CB8
 
+// symdb: Picks one of three chatbox text variants (0/1/2) for an NPC: uses variant 2 if the object's story-flag index at +0x1E is zero, otherwise counts matching story flag pairs via sub_8127EF4 and compares the count to [GameState+0x78] (when +0xD bit0 set) or GameState+0x13 byte (equal → variant 1, else variant 0), then dispatches via chatbox_runVariantScript and clears object byte +0x02.
+// symdb: (r5 = ow/NPC object, r10 = toolkit) -> r0 = 0; runs chatbox variant 0/1/2 on the object and
+// symdb: clears object+0x02
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8127E9C.yaml
 	thumb_local_start
 sub_8127E9C:
 	push {r4,lr}
@@ -10176,6 +10201,10 @@ dword_8128004:
 	.word 0x30CA4C
 	thumb_func_end sub_8127FE4
 
+// symdb: Renders up to four NPC entry-selection rows (row gfx, secondary gfx, and a text-script name) into BG tile VRAM from per-row buffers, clamped to 4 rows.
+// symdb: (r5 = state struct: u16 count at +0x1e (clamped <=4), u16 first-row index at +0x24; r0 = 0x201
+// symdb: flag mask for the table build) -> r0 = clobbered; renders 4 rows max
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128008.yaml
 	thumb_local_start
 sub_8128008:
 	push {r4-r7,lr}
@@ -12699,6 +12728,10 @@ dword_8129450:
 	.word 0x5C5D5D
 	thumb_func_end scene_runFadePopTick_8129400
 
+// symdb: Per-frame update for a yes/no-style eStruct menu prompt, gated on IsScreenFadeActive: moves the 3-state cursor (0↔1 left/right, 2 up/down with >>1 shift), shows the chosen option's text via chatbox_runScript from table 0x5C5D5D, and on A/B sets state bytes and fades the screen.
+// symdb: (r0-r4 = scratch; r5 = menu state struct, r10 = toolkit) -> void; writes state bytes
+// symdb: r5+0x01/0x02/0x03, cursor r5+0x0D and mirror r5+0x21, eStruct jump offset, screen fade
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129454.yaml
 	thumb_local_start
 sub_8129454:
 	push {lr}

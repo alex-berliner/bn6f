@@ -2366,6 +2366,9 @@ byte_809AA87:
 
 	thumb_func_end sub_809AA04
 
+// symdb: Generic end-of-state cleanup: clears the PET effect, runs two sub_ helpers, reloads text script index 0xA via chatbox_runScript, re-initializes battle-overlay scene records, and clears a flag at [r5+8].
+// symdb: (r5 = state struct ptr from caller) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AAB8.yaml
 	thumb_local_start
 sub_809AAB8:
 	push {r4-r7,lr}
@@ -2700,6 +2703,10 @@ loc_809AD00:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_animateWindowOpen
 
+// symdb: Per-frame cutscene step: when EVENT_F5 is set, decrements a byte counter at [r5,#4] and slides a 3-id sprite group leftward, then unconditionally ticks entity handlers and eStruct sprite pipeline, returning 1 if chatbox flag bit 0x80 is set.
+// symdb: (r5 = struct with u8 position counter at +4) -> r0 = 1 if chatbox flag 0x80 set else 0; flags
+// symdb: destroyed by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AD0C.yaml
 	thumb_local_start
 sub_809AD0C:
 	push {r4-r7,lr}
@@ -2734,6 +2741,9 @@ dword_809AD48:
 	.word 0xFFFFFFD0
 	thumb_func_end sub_809AD0C
 
+// symdb: Tears down the Beast Out scenario: clears EVENT_F5/1725, queues PET effect 1, reinitializes and deactivates the scenario effect state, zeroes the event work struct, and acks the new-flag byte.
+// symdb: () -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809AD4C.yaml
 	thumb_local_start
 sub_809AD4C:
 	push {r4-r7,lr}
@@ -3016,6 +3026,10 @@ dword_809B050:
 	.word 0x105
 	thumb_func_end sub_809B00C
 
+// symdb: Overworld Beast transform step: from the player's charge timer (>=60 → state 2 else 3) decides the target beast form, early-outs with r0=1 if already there (state 2 also requires work+0x10 cleared), otherwise plays the form's sound (0xE1/0xE2), sets/clears the OW player Navi palette index (0 vs 4), and SpawnOverworldMapObject(0x48020000) at the player's position with object id 0xB, returning 0.
+// symdb: (r0 unused, r5 = beast-out work struct, r10+0x3c = engine struct) -> r0 = 1 if already in the
+// symdb: requested state, 0 after spawning the transform object; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B054.yaml
 	thumb_local_start
 sub_809B054:
 	push {r4-r7,lr}
@@ -3876,6 +3890,10 @@ byte_809BD8E:
 end_cutscenescript_809BDB6:
   .align 2, 0
 
+// symdb: Overworld warp handler: matches player grid position against byte_809BE6C table (or forces index 3 via EVENT_128); for index < 0x10 builds a 0x14-byte spawn request at r5+0x70 from byte_809BA30, calls SpawnOverworldMapObject, sets/clears event flags, and writes camera (r0=1,r1=request); regardless of index, copies player-state+0x24/+0x28/+0x2c into coordinates via owPlayer_indirectlySetPlayerCoordsMaybe.
+// symdb: (r0 = unused/result flag input, r5 = overworld controller struct, r10+0x3c = overworld/player
+// symdb: state struct) -> r0 = 0; sets/clears event flags, writes camera field
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809BDB8.yaml
 	thumb_local_start
 sub_809BDB8:
 	push {r4-r7,lr}

@@ -184,6 +184,10 @@ asm29:
 	.include "asm/asm29.s"
 dat29:
 	.include "data/dat29.s"
+// symdb: Resolves a version-specific virus held-chip table for an enemy, used by the spawn-time drop roller.
+// symdb: (r0 = enemy id / battle enemy entry, r1 = 4-bit RNG roll?) -> r0 = held chip id (or table
+// symdb: pointer); flags unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/asm30_0.yaml
 asm30_0:
 	.include "asm/asm30_0.s"
 BattleSettings:

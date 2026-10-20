@@ -2465,6 +2465,10 @@ checkScrambledCounter_8047366:
 	pop {r0-r2,r4,pc}
 	thumb_func_end checkScrambledCounter_8047366
 
+// symdb: Shop-purchase confirm handler: looks up the highlighted item ID in array A; if absent OR if its +4 byte is absent in table B, zeroes a 0x80-byte work record, clears a shop-state halfword, sets [chatbox_ctx+0xE]=1, returns 1; only when found in both tables returns 0 unchanged.
+// symdb: (r0 = lookup array A (8-byte records), r1 = lookup table B) -> r0 = 1 if item was new and reset
+// symdb: was performed, 0 if item was found in both tables; sets [chatbox_ctx+0xE] = 1 on success
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047384.yaml
 	thumb_local_start
 sub_8047384:
 	push {r0,r1,r4-r7,lr}
@@ -2520,6 +2524,10 @@ loc_80473DC:
 	pop {r0,r1,r4-r7,pc}
 	thumb_func_end sub_8047384
 
+// symdb: If state at [r5+0x1c]!=2, scans 8-byte-stride queue entries at byte_2019A00 for [r7+0xc] entries; for live entries uses findRecordWithHalfwordAtOffset2 and battleFindEntryByFieldByte to compare +2 and +4 fields against a reference array; on a match, ZeroFills 0x80 bytes at byte_2019A00, stores 0 to halfword at 0x2011C22, and returns 1, else 0.
+// symdb: (r5 = owner struct; [r5+0x1c] -> {+0 state, +8 array base, +0xc entry count}) -> r0 = 1 if a
+// symdb: matching entry was found and the queue cleared, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80473E6.yaml
 	thumb_local_start
 sub_80473E6:
 	push {r4-r7,lr}
@@ -3490,6 +3498,10 @@ menu_showDialogOnUnselect_8047A80:
 	pop {pc}
 	thumb_func_end menu_showDialogOnUnselect_8047A80
 
+// symdb: On confirmation in the battle-menu chip browser, looks up the selected entry's 8-byte record and runs the matching chatbox description script (with event-flag-dependent variants); passes halfword+2 as text-id, byte+4, and CDC-scaled halfword+6 to chatbox_setTextParams.
+// symdb: (r5 = battle-menu state struct: u8 cursor@0x14, u16 page@0x18, mode-ptr@0x1C,
+// symdb: TextScriptArchive*@0x24) -> none; selects script index in r7 and plays a sound effect
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8047A96.yaml
 	thumb_local_start
 sub_8047A96:
 	push {r4-r7,lr}
@@ -11394,6 +11406,10 @@ dword_804CBD8:
 	.word 0x3F0B
 	thumb_func_end clear_renderBlendEffect
 
+// symdb: Loads two 0x20-byte tile transfers, configures blend (0x1F09) into toolkit RenderInfo and 0x48/0x37 into Unk2009740, freezes BG scroll, dispatches a per-form handler by AIData Unk_0c (0-2→sub_804CC58, 3→sub_804CC6E, 4-5→sub_804CC7E), runs sub_804CCF0, sets state 4, and calls beastSp_spawnIndexDispatcher_804CC8E.
+// symdb: (r5 = battle/AIData struct (reads Unk_0c, writes Unk_0x10), r10 = toolkit) -> void; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CBDC.yaml
 	thumb_local_start
 sub_804CBDC:
 	push {r4-r7,lr}

@@ -4953,6 +4953,10 @@ off_80A7830:
 	.word sub_80A78AE+1
 	thumb_func_end battleObject_dispatchOnSubtype_80A781C
 
+// symdb: Configure an object's sprite slot for the Falzar Beast-Out form: sprite_load(0x80,0x1c,0x47), set anim to byte[4], no-shadow, palette 0, priority 2 via tail-call.
+// symdb: (r0 = object ptr also in r5, sprite/anim resource ids passed inline) -> r0 = destroyed; sets
+// symdb: object byte fields 0/5/8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A783C.yaml
 	thumb_local_start
 sub_80A783C:
 	push {lr}
@@ -5602,6 +5606,10 @@ off_80A7C98:
 	.word ow_releaseMapObjectCallback+1
 	thumb_func_end battleObject_dispatchCurAction_80A7C84
 
+// symdb: Initializes and spawns the Beast SP overworld encounter object: writes state 3 to [r5], loads/configures its sprite, calls SpawnOverworldMapObject (type 0x7a) at coordinates from [r5+0xc/0x10/0x14], advances local state to 4 at [r5+8], then calls the Beast SP encounter tick.
+// symdb: (r5 = encounter state struct pointer, caller-set) -> void; state byte [r5] = 3 on entry path,
+// symdb: [r5+8] = 4 after spawn
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7CA4.yaml
 	thumb_local_start
 sub_80A7CA4:
 	push {r4-r7,lr}
@@ -5956,6 +5964,10 @@ off_80A7EEC:
 	.word ow_objectFinishEventAndFree+1
 	thumb_func_end battleObject_aiBeastOutStage_80A7EDA
 
+// symdb: Sets the object's sprite to animation index [obj+3]+12, loads that animation's frames, plays sound effect 0x17D, and writes state 4 to byte 9 of another object record.
+// symdb: (r7 = object ptr, reads [obj+3] as anim index base; r5 = object ptr) -> r0 = 0; writes state 4
+// symdb: to [r5+9]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7EF8.yaml
 	thumb_local_start
 sub_80A7EF8:
 	push {r4-r7,lr}
@@ -6242,6 +6254,10 @@ off_80A8228:
 	.word unk_2000B40
 	thumb_func_end battle_dispatchCustomJumptableByIndex_80A8208
 
+// symdb: Initializes a beast entity: loads gfx 0x1c/0x56, calls sub_80A8324, sets priority-by-event-flag, applies animation + noShadow + OAM priority 2, converts three 16-bit coords to upper-word format into [r5+0xC/0x10/0x14], and refreshes the sprite.
+// symdb: (r5 = entity/object struct ptr, preset before entry) -> void; writes state bytes and position
+// symdb: fields into the struct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A822C.yaml
 	thumb_local_start
 sub_80A822C:
 	push {r4-r7,lr}
@@ -6380,6 +6396,10 @@ off_80A8314:
 	.word byte_80A81F0
 	thumb_func_end battleObject_checkSetPriorityByEventFlag_80A82DC
 
+// symdb: When EVENT_9D6 is set, toggles a per-map event-flag pair: tests the first halfword via TestEventFlag, calling SetEventFlag on the second if clear or ClearEventFlag if set; returns early if EVENT_9D6 is not set.
+// symdb: (r5 = map object/entry struct, [r5+4] = id index; r10 = game toolkit pointer) -> r0 = destroyed;
+// symdb: no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8324.yaml
 	thumb_local_start
 sub_80A8324:
 	push {r4-r7,lr}
@@ -6455,6 +6475,10 @@ off_80A83B4:
 	.word unk_2000B40
 	thumb_func_end sub_80A8394
 
+// symdb: Initializes an overworld beast event actor: sets mode byte r5[0]=3, calls sprite_load(0x80,0x1c,0x52) and related setup, applies layer effect and priority, clears EVENT_9FF, and once (gated by EVENT_9D7) converts r6+0x16/+0x18 pixel coords to 16.16 fixed-point into r5+0xc/0x10 then clears the flag; finally sets r5[8]=4 and calls sub_80A8424.
+// symdb: (r0-r2 set before call: 0x80, 0x1c, 0x52 for sprite_load; r5 = actor struct, r6 = source data
+// symdb: with x/y at +0x16/+0x18) -> r0 = void; flags from TestEventFlagFromImmediate consumed internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A83B8.yaml
 	thumb_local_start
 sub_80A83B8:
 	push {r4-r7,lr}
@@ -6652,6 +6676,10 @@ byte_80A8540:
 	.byte 0x1, 0x1, 0x0, 0x3, 0x2, 0x0, 0x0, 0x0
 	thumb_func_end sub_80A8518
 
+// symdb: Reads two halfword arguments from [r6+0x1a] and [r6+0x1c], passes them to sub_80A8518 to derive a direction/animation index, and updates the sprite animation (via sprite_setAnimation, sprite_loadAnimationData, sprite_noShadow) only when that index differs from the cached value at [r5+4]; caches the new index on change.
+// symdb: (r5 = object, r6 = object; args taken from [r6+0x1a] and [r6+0x1c]) -> void; r0 = direction
+// symdb: index from sub_80A8518
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8548.yaml
 	thumb_local_start
 sub_80A8548:
 	push {r4,lr}
@@ -8852,6 +8880,10 @@ loc_80A94EC:
 	.balign 4, 0x00
 	thumb_func_end object_mrWeatherStep_80A94DC
 
+// symdb: Per-frame object step that fades the sprite to bright white via sprite_setColorShader using an RGB555 grayscale color (brightness from byte_80A9558) and accumulates into object+0x14 using a stepped ramp from byte_80A9544; once the ramp ends (0xFF) it clears event flag EVENT_BFC and runs sub_80A9568, then increments object+0x24 and calls sprite_update.
+// symdb: (r5 = object) -> void; increments object+0x24 frame counter, accumulates object+0x14, calls
+// symdb: sprite_setColorShader(r0 = grayscale RGB555 color, r1 = brightness<<5), tail-calls sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A94F8.yaml
 	thumb_local_start
 sub_80A94F8:
 	push {r4-r7,lr}
@@ -9997,6 +10029,10 @@ locret_80A9DFC:
 	pop {r4-r7,pc}
 	thumb_func_end object_timerStateTick
 
+// symdb: Per-frame update for a beastsp object: advances position by velocity and subtracts drag each tick; at frame 12 (if byte@+4==0) plays SFX 0x135 then sets animation 2 + loads anim data + noShadow; at frame 30 resets the counter and stores 8 to +9.
+// symdb: (r5 = object/behavior struct, no args in r0-r3) -> r0 = scratch; mutates fields at +0x14, +0x28,
+// symdb: +0x24 (u16), +9 (u8); no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9DFE.yaml
 	thumb_local_start
 sub_80A9DFE:
 	push {r4-r7,lr}

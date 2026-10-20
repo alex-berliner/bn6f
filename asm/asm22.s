@@ -267,6 +267,9 @@ off_8087114:
 	.word 0x13B
 	thumb_func_end startScreen_runBeastCutscene_8086FD8
 
+// symdb: Starts a beast-SP cutscene by comparing a stored byte (r5 field 0xC) against a normalized counter (r5 field 6, with values >=0x32 reduced by 0x28) and dispatching StartCutscene with one of two scripts: byte_80868C8+0x20 on match, otherwise byte_8086678+0x20.
+// symdb: (r5 = *BeastSpState) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808711C.yaml
 	thumb_local_start
 sub_808711C:
 	push {lr}

@@ -258,6 +258,10 @@ clearMysteryDataEventFlags_809FB04:
 	pop {r4-r7,pc}
 	thumb_func_end clearMysteryDataEventFlags_809FB04
 
+// symdb: Returns the two reward indices for a Mystery Data pickup: BLUE/PURPLE rotate the per-type counter at sub_809FADE by +1 (clamped to len-1) when its event flag is clear, else reuse the stored counters; UNK_2/UNK_4 return 0 (or len-1).
+// symdb: (r0 = mystery data type id, r1 = reward table A (8-byte entries), r2 = reward table B, r3 =
+// symdb: event flag id) -> r0 = index into table A, r1 = index into table B; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FB4C.yaml
 	thumb_local_start
 sub_809FB4C:
 	push {r4-r7,lr}
@@ -390,6 +394,10 @@ InternetMysteryDataMapGroupEntries_p1:
 	.word byte_2000210
 	thumb_func_end mysteryData_resolveMapGroupEntry_809FBF2
 
+// symdb: Looks up the current map's mystery-data table entry for the given NPC id and, on match, indexes its sub-tables via the NPC's work-buffer state bytes before calling sub_809FE36 to bump the matching counter; returns zeros/0xFF padding when no entry matches.
+// symdb: (r0 = npc id / work-buffer offset) -> r0..r3 = entry data forwarded through sub_809FE36, or r0 =
+// symdb: 0 and r1..r3 = 0xFF when no entry matches; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809FC1C.yaml
 	thumb_func_start sub_809FC1C
 sub_809FC1C:
 	push {r4-r7,lr}

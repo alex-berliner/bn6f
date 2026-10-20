@@ -1284,6 +1284,10 @@ drawPanelUnderStrip_800C100:
 	pop {r4-r7,pc}
 	thumb_func_end drawPanelUnderStrip_800C100
 
+// symdb: Writes a 5x1 strip of blank (tile id 0) tiles into BG tile block 2 at the mirrored panel position for the current side, clearing one row of a battle panel slot during the panel animation update.
+// symdb: (r0 = panel column/frame index into byte_800C182, r1 = row index) -> r0 clobbered by call; no
+// symdb: return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800C138.yaml
 	thumb_local_start
 sub_800C138:
 	push {r4-r7,lr}
@@ -5036,6 +5040,11 @@ locret_800E35E:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battleObject_applyHPAndHandleSpecial_800E2FC
 
+// symdb: Battle HP recovery: if r1==0, adds r0 HP via object_addHP and spawns a t1 effect using [r5+0x34..0x40]; else looks up the opposite side in the table at 0x2036720 and, if its first byte is 0xBD, runs a special panel path (sub_80E37D2 on PanelX/Y, battle_queueEffectRequest with id = r6+(0x1E<<16), sub_800ABC6, sub_802CEA6) returning 1; otherwise falls through to the normal recovery. Returns 0 on the normal path, 1 on the 0xBD path.
+// symdb: (r0 = value passed through to object_addHP / scratch, r1 = mode flag) -> r0 = 0 on the normal
+// symdb: path, 1 on the 0xBD path; r5 holds the acting battle object (Alliance/PanelX/PanelY/+0x34 fields
+// symdb: read)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E360.yaml
 	thumb_func_start sub_800E360
 sub_800E360:
 	push {r4,r6,r7,lr}

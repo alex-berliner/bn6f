@@ -83,6 +83,9 @@ locret_8000608:
 	pop {r1-r7,pc}
 	thumb_func_end music_80005F2
 
+// symdb: Loads byte_2010B90 into r1 (substituting 0xFF when unset), sets r3 to a callback thunk (sound_8000822+1), and tail-calls sound_8000808 to append the r0 SFX to the request queue at dword_200A490.
+// symdb: (r0 = sound/SSEQ id for sound_8000808, r1 = ignored, overwritten) -> none; r1 = clamped volume
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800060A.yaml
 	thumb_func_start sub_800060A
 sub_800060A:
 	push {r1-r7,lr}
