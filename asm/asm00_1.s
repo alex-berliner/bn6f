@@ -11910,9 +11910,9 @@ loc_80085DC:
 	bl battle_isTimeStop
 	bne loc_80085E8
 	mov r0, #0xd
-	bl battle_addHudField20
+	bl AddCustGauge
 loc_80085E8:
-	bl battle_shouldPlayDeathAnim_800A21C
+	bl battle_isCustGaugeFull_800A21C
 	cmp r0, #0
 	beq locret_80085FC
 	cmp r0, #1
@@ -12571,7 +12571,7 @@ loc_8008A34:
 	bl battle_playBeastOutSequence_801E15C
 	b locret_8008A60
 loc_8008A4C:
-	bl battle_shouldPlayDeathAnim_800A21C
+	bl battle_isCustGaugeFull_800A21C
 	cmp r0, #0
 	beq locret_8008A60
 	cmp r0, #1
@@ -13151,7 +13151,7 @@ loc_8008E3E:
 	bl battle_playBeastOutSequence_801E15C
 	b locret_8008E6A
 loc_8008E56:
-	bl battle_shouldPlayDeathAnim_800A21C
+	bl battle_isCustGaugeFull_800A21C
 	cmp r0, #0
 	beq locret_8008E6A
 	cmp r0, #1
@@ -16259,16 +16259,16 @@ loc_800A218:
 
 // symdb: Returns 1 when the custom gauge is at its 0x4000 maximum and the battle is running (not time-stopped, not over); otherwise 0.
 // symdb: () -> r0 = 1 if the custom gauge is full, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_shouldPlayDeathAnim_800A21C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_isCustGaugeFull_800A21C.yaml
 	thumb_local_start
-battle_shouldPlayDeathAnim_800A21C:
+battle_isCustGaugeFull_800A21C:
 	push {lr}
 	bl battle_isTimeStop
 	bne loc_800A23A
 	bl battle_isBattleOver
 	tst r0, r0
 	bne loc_800A23A
-	bl battle_getTotalDamageTakenForActor_801DFE4
+	bl GetCustGauge
 	ldr r1, dword_800A240 // =0x4000
 	cmp r0, r1
 	bne loc_800A23A
@@ -16280,7 +16280,7 @@ loc_800A23A:
 	.balign 4, 0
 dword_800A240:
 	.word 0x4000
-	thumb_func_end battle_shouldPlayDeathAnim_800A21C
+	thumb_func_end battle_isCustGaugeFull_800A21C
 
 	thumb_local_start
 sub_800A244:
