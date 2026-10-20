@@ -568,6 +568,11 @@ dword_80B85DC:
 	.word 0x12800
 	thumb_func_end sub_80B8564
 
+// symdb: Battle-object state dispatcher - reads the object's CurState and tail-calls the matching handler (init visuals, sync visuals, or free the object).
+// symdb: void battleObject_dispatchCurState_80B85E0(BattleObject* obj /*r5*/, u32 passthrough /*r10*/);
+// symdb: clobbers r0-r7,r12,lr and nzcv; outputs r5,r8-r12 as left by the invoked handler; returns to the
+// symdb: original caller.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t1_0x2_80B85E0.yaml
 	thumb_func_start t1_0x2_80B85E0
 t1_0x2_80B85E0:
 	push {lr}
@@ -1017,6 +1022,10 @@ dword_80B88CC:
 	.word 0x80110C00
 	thumb_func_end sub_80B8870
 
+// symdb: Battle-object state machine dispatcher that jumps to one of three handlers based on the object's CurState (init default sprite, sync sprite from related object, or free the object).
+// symdb: void t1_0x3_80B88D0(u32 object /*r5*/, u32 r10); outputs r5/r8/r9/r10/r11/r12 depend on the
+// symdb: selected handler
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t1_0x3_80B88D0.yaml
 	thumb_func_start t1_0x3_80B88D0
 t1_0x3_80B88D0:
 	push {lr}
@@ -10025,6 +10034,10 @@ locret_80BC64C:
 	.byte 0, 0
 	thumb_func_end object_endSubObject
 
+// symdb: State dispatcher for a battle object template (t1 0x1b, the beast-over leap/change object) that jumps to the handler selected by the object's CurState byte.
+// symdb: void battle_beastLeapStateDispatch(u32 r2, BattleObject* r5, u32 r10); /* tail-results in r5,
+// symdb: r8-r12; flags clobbered; calls handler with its own return address so incoming lr is unused */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t1_0x1b_80BC650.yaml
 	thumb_func_start t1_0x1b_80BC650
 t1_0x1b_80BC650:
 	push {lr}
@@ -27913,6 +27926,10 @@ dword_80C40D4:
 	.word 0x2110
 	thumb_func_end battle_applyBackRowOffset
 
+// symdb: State dispatcher for battle object template 0x55 (a beast-related object): jumps to the state 0 init / state 1 update / state 2 free handler selected by the object's CurState byte.
+// symdb: void battle_object55_stateDispatch(BattleObject* r5 object, u32 r10 passThrough); // tail-
+// symdb: dispatches via guest call, results carried in r5 r8 r9 r10 r11 r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t1_0x55_80C40D8.yaml
 	thumb_func_start t1_0x55_80C40D8
 t1_0x55_80C40D8:
 	push {lr}
@@ -28436,6 +28453,10 @@ dword_80C452C:
 	.word 0x10000
 	thumb_func_end battle_setExtraVars
 
+// symdb: Task/state-machine step for a battle object that dispatches to the handler selected by the object's CurState byte.
+// symdb: void t1_0x57_80C4530(r5=battleObject, r10=forwarded_arg); effects in r5/r8-r12 come from the
+// symdb: invoked handler, no registers preserved beyond what the callee leaves
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t1_0x57_80C4530.yaml
 	thumb_func_start t1_0x57_80C4530
 t1_0x57_80C4530:
 	push {lr}
@@ -30584,6 +30605,10 @@ off_80C55AC:
 	.word byte_80C54D0
 	thumb_func_end sub_80C5590
 
+// symdb: Per-frame step for a Beast Out battle object — dispatches a state handler from a jump table by the object's CurState, then runs the common sprite update.
+// symdb: void t3_0x5_80C55B0(r5 = battle object ptr) -> r5 = (possibly updated) battle object ptr;
+// symdb: trashes r0-r4, r6, r7, flags NZCV, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x5_80C55B0.yaml
 	thumb_func_start t3_0x5_80C55B0
 t3_0x5_80C55B0:
 	push {lr}
@@ -30869,6 +30894,10 @@ dword_80C57BC:
 	.word 0xFFFFA000
 	thumb_func_end battle_spawnType5ObjectFromSource_80C579E
 
+// symdb: Per-frame update for battle object type 3 (an aura/barrier-type object), dispatching on the object's current state to init, update/destroy, or a third state handler, then running the shared sprite update.
+// symdb: u32 battle_type3AuraObjectUpdate_80C57C0(u32 object /* r5 */) -> r5 = updated object; r8, r10,
+// symdb: r11, r12 pass through untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x6_80C57C0.yaml
 	thumb_func_start t3_0x6_80C57C0
 t3_0x6_80C57C0:
 	push {lr}
@@ -32068,6 +32097,10 @@ byte_80C6038:
 	.byte 0x6, 0x5, 0x3, 0x10, 0xA, 0xC, 0x21, 0x0, 0x1, 0x8, 0x0, 0x0, 0x0, 0x0, 0xA, 0x0
 	thumb_func_end object_spawnType3PanelHit
 
+// symdb: Per-frame dispatcher for a battle "train arrow" object - runs the current state's handler from a 3-entry table, then updates the object's sprite.
+// symdb: void battle_trainArrow_stateDispatch_80C60A8(u32 r5 /*battle object*/); callers also pass r4,
+// symdb: r7, r8, r10, lr; out r5, r8, r9, r10, r11, r12, nz c v clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0xb_80C60A8.yaml
 	thumb_func_start t3_0xb_80C60A8
 t3_0xb_80C60A8:
 	push {lr}
@@ -35977,6 +36010,10 @@ loc_80C7BF2:
 	.balign 4, 0x00
 	thumb_func_end battle_spawnThunderboltsOnQueuedPanels
 
+// symdb: Per-frame step routine for a battle object (apparently the panel-shaker) that dispatches through a CurState-indexed jump table (init / update collisions / destroy) and then refreshes its sprite.
+// symdb: void t3_0x1c_80C7C18(void); // r5 = battle object; callers also carry r4, r7, r8, r10 and lr;
+// symdb: resulting r5, r8-r12 are left in the guest register file for the caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x1c_80C7C18.yaml
 	thumb_func_start t3_0x1c_80C7C18
 t3_0x1c_80C7C18:
 	push {lr}
@@ -39032,6 +39069,10 @@ locret_80C919E:
 	pop {pc}
 	thumb_func_end sub_80C9184
 
+// symdb: Per-frame state dispatcher for a battle object — runs the handler for the object's CurState via a 3-entry jump table, then updates its sprite animation.
+// symdb: u32 battleObject_runStateHandler_80C91A0(u32 r2, u32 r4, BattleObject* r5, u32 r6, u32 r7); /*
+// symdb: also reads r10; returns object ptr in r5, clobbers r8-r12 and flags */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x29_80C91A0.yaml
 	thumb_func_start t3_0x29_80C91A0
 t3_0x29_80C91A0:
 	push {lr}
@@ -39759,6 +39800,10 @@ byte_80C9664:
 	.byte 0xc, 0x0, 0xa, 0xb, 0xe, 0x0
 	thumb_func_end CheckIfThunderObjectFindsOpponentByGoingLeft
 
+// symdb: Per-frame tick handler for the Shield battle object - dispatches its current-state handler, then refreshes the sprite unless time stop is active.
+// symdb: void shield_tick(battleobject* obj /* r5 */, battlectx* ctx /* r10 */); returns r5 = obj as the
+// symdb: state handler left it (r8-r12 also carry handler state)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x2b_80C96A0.yaml
 	thumb_func_start t3_0x2b_80C96A0
 t3_0x2b_80C96A0: // shield
 	push {lr}
@@ -41410,6 +41455,10 @@ byte_80CA26C:
 	.byte 0x0, 0x0, 0x8, 0x0, 0xCD, 0xCC, 0x4, 0x0
 	thumb_func_end sub_80CA234
 
+// symdb: Per-frame update for battle object type 3 (a projectile-like object), dispatching a per-state handler selected by the object's CurState byte and then refreshing its sprite.
+// symdb: battle_objectType3Update(object in r5, work in r4, args in r7, r8, r10) -> sprite setup in r5,
+// symdb: r8, r9, r10, r11, r12; clobbers r0-r4, r6, r7, lr and nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x32_80CA2A8.yaml
 	thumb_func_start t3_0x32_80CA2A8
 t3_0x32_80CA2A8:
 	push {lr}
@@ -44533,6 +44582,10 @@ off_80CB8FC:
 	.word byte_80CB6F0
 	thumb_func_end battle_spawnObject3COnPanel
 
+// symdb: State-machine dispatcher for a battle effect object (beast SP-out template 3, state 0x3D) that jumps to one of three per-state handlers and then runs the shared paused-sprite update.
+// symdb: void t3_0x3d_80CB900(r5=battleObject*); passes r0=CurState to the selected handler; object
+// symdb: pointer persists in r5 through the handler and the sprite-update tail
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x3d_80CB900.yaml
 	thumb_func_start t3_0x3d_80CB900
 t3_0x3d_80CB900:
 	push {lr}
@@ -45653,6 +45706,10 @@ byte_80CC0D8:
 	.byte 0x3C, 0x0, 0xA, 0x0
 	thumb_func_end sub_80CC0B2
 
+// symdb: Per-frame update for the laser-shot battle object type, dispatching its state machine (init laser shot / collision phase / destroy) and then updating its sprite.
+// symdb: (r4=work?, r5=battle object, r7, r8, r10) -> void; leaves r5/r8/r9/r10/r11/r12 as set by the
+// symdb: callees; clobbers flags nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x40_80CC0E8.yaml
 	thumb_func_start t3_0x40_80CC0E8
 t3_0x40_80CC0E8:
 	push {lr}
@@ -46223,6 +46280,10 @@ off_80CC4C0:
 	.word byte_80CC0D0
 	thumb_func_end battle_spawnLinkedLaserShot
 
+// symdb: Per-frame step for a battle object type — dispatches its current-state handler from a 3-entry table, then runs the shared blind-render and sprite-update passes.
+// symdb: void battleObject_runStateStepAndRender_80CC4C4(BattleObject *obj /* r5 */); outputs r5 r8 r9
+// symdb: r10 r11 r12 are whatever the state handler leaves; flags nz c v clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x41_80CC4C4.yaml
 	thumb_func_start t3_0x41_80CC4C4
 t3_0x41_80CC4C4:
 	push {lr}
@@ -48215,6 +48276,10 @@ dword_80CD2E8:
 	.word 0x800000
 	thumb_func_end battle_spawnChipPanelObject
 
+// symdb: Task for battle object type 0x49 (snake-arm head): dispatches on the object's CurState (init / step / destroy) and then refreshes its sprite.
+// symdb: void t3_0x49_80CD2EC(void); // in: r4,r5(object),r7,r8,r10,lr resident state; out: r5,r8-r12
+// symdb: updated state; clobbers nzcv,r0-r7,lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x49_80CD2EC.yaml
 	thumb_func_start t3_0x49_80CD2EC
 t3_0x49_80CD2EC:
 	push {lr}
@@ -50695,6 +50760,10 @@ off_80CE52C:
 	.word byte_8019C34
 	thumb_func_end object_spawnPanelPatternEffect
 
+// symdb: Per-frame update for the type-3 battle object in state 0x50 (a fast-lunge attack): dispatches the object's state handler, then refreshes its sprite.
+// symdb: void update(r5=battleObject /* also r4, r7, r8, r10 live inputs */) -> outputs r5, r8-r12
+// symdb: (object pointer possibly advanced); clobbers r0-r4, r6, r7, lr and nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x50_80CE530.yaml
 	thumb_func_start t3_0x50_80CE530
 t3_0x50_80CE530:
 	push {lr}
@@ -50947,6 +51016,9 @@ dword_80CE708:
 	.word 0x40000
 	thumb_func_end sub_80CE6E6
 
+// symdb: Per-frame tick for battle object type 0x51 (the snake-arm/serpent attack part): dispatches on the object's CurState via a small jump table, then runs the paused-aware sprite update.
+// symdb: void battleObject_tickType51_snakeArm_80CE70C(void); // object ptr in r5, battle context in r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x51_80CE70C.yaml
 	thumb_func_start t3_0x51_80CE70C
 t3_0x51_80CE70C:
 	push {lr}
@@ -54520,6 +54592,10 @@ dword_80D009C:
 	.word 0xC0000
 	thumb_func_end sub_80D008C
 
+// symdb: Battle object "t3" per-frame step — dispatches to the object's current-state handler and then updates its sprite.
+// symdb: void t3_stateStep(BattleObject* r5, u32 r2 passthrough, u32 r10 passthrough); returns r5
+// symdb: (possibly updated object pointer), r8-r12 as left by callees; clobbers r0-r4, r6-r7, lr, NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x5d_80D00A0.yaml
 	thumb_func_start t3_0x5d_80D00A0
 t3_0x5d_80D00A0:
 	push {lr}
@@ -57058,6 +57134,10 @@ object_spawnEffect0AtSelf:
 off_80D1214:
 	.word byte_80D0F84
 
+// symdb: Per-frame update for a bomb-type battle object; runs the state handler for the object's current state, then refreshes its sprite (including the paused/frozen handling).
+// symdb: void battle_bombObject_perFrameUpdate_80D1218(BattleObject* obj /* r5, may be replaced */);
+// symdb: returns the possibly-updated object pointer in r5
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x66_80D1218.yaml
 	thumb_func_start t3_0x66_80D1218
 t3_0x66_80D1218:
 	push {lr}
@@ -58489,6 +58569,11 @@ locret_80D1C10:
 	.byte 0, 0
 	thumb_func_end sub_80D1BF4
 
+// symdb: Per-frame state tick for a battle object — dispatches the handler for the object's current state via a jump table, then refreshes its paused-sprite bookkeeping.
+// symdb: void (r5 = battle object ptr; r4/r6/r7/r8/r10 = live caller state carried through the state
+// symdb: handler) -> r5/r8-r12 = handler-modified object/state values (caller-visible high-register
+// symdb: results), flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x6c_80D1C20.yaml
 	thumb_func_start t3_0x6c_80D1C20
 t3_0x6c_80D1C20:
 	push {lr}
@@ -59406,6 +59491,10 @@ off_80D228C:
 	.word byte_80D202C
 	thumb_func_end battle_sweepPanelStep
 
+// symdb: Per-state dispatcher that jumps to the battle object's handler for its CurState (init/run/destroy).
+// symdb: void battleObject_stateDispatcher(battleObject* obj /* r5 */, ... /* r2, r4, r8-r12 passed
+// symdb: through */); handlers entered with r0 = CurState, r1 = handler address
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x6e_80D2290.yaml
 	thumb_func_start t3_0x6e_80D2290
 t3_0x6e_80D2290:
 	push {lr}
@@ -59654,6 +59743,10 @@ dword_80D245C:
 	.word 0x300000
 	thumb_func_end sub_80D2430
 
+// symdb: Battle-object state machine dispatcher that jumps to the handler for the object's current state (init/enter, active update, or destroy).
+// symdb: void battleObject_stateDispatcher_80D2460(battleObject* obj /* r5 */); tail-call dispatch,
+// symdb: handler results left in r5 r8 r9 r10 r11 r12, flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x6f_80D2460.yaml
 	thumb_func_start t3_0x6f_80D2460
 t3_0x6f_80D2460:
 	push {lr}
@@ -60542,6 +60635,10 @@ dword_80D2A90:
 	.word 0xB333
 	thumb_func_end sub_80D2A68
 
+// symdb: State dispatcher for a type-3 battle object; calls one of three per-state handlers (init/attack pulse/destroy) based on the object's CurState byte.
+// symdb: void battle_type3ObjectStateDispatch(void) /* r5 = battle object; tail-calls handler in
+// symdb: r0=CurState, r1=handler addr; caller-visible results are the handler's r5/r8-r12 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x71_80D2A94.yaml
 	thumb_func_start t3_0x71_80D2A94
 t3_0x71_80D2A94:
 	push {lr}
@@ -65040,6 +65137,10 @@ byte_80D4A24:
 	.byte 0x0, 0x0, 0x30, 0x0
 	thumb_func_end sub_80D49F6
 
+// symdb: Battle-object phase dispatcher that reads the object's current state and jumps to the matching handler (init, destroy-phase, or generic destroy).
+// symdb: void battleObject_runStatePhase_80D4A28(BattleObject* obj /* r5 */); dispatches via `mov lr, pc;
+// symdb: bx r1` into the selected handler, which returns directly to this function's caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x7b_80D4A28.yaml
 	thumb_func_start t3_0x7b_80D4A28
 t3_0x7b_80D4A28:
 	push {lr}
@@ -69473,6 +69574,10 @@ off_80D6A18:
 	.word 0x0
 	thumb_func_end sub_80D6A02
 
+// symdb: Per-frame update for the snake-arm battle object; dispatches a state handler from CurState and then runs the common sprite update.
+// symdb: void t3_0x8c_80D6A20(r5 = battle object pointer); trashes r0-r4,r6,r7,r12,flags; returns via pop
+// symdb: {pc} (state handlers are dispatched with mov lr,pc; bx r1 so they return through this epilogue)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t3_0x8c_80D6A20.yaml
 	thumb_func_start t3_0x8c_80D6A20
 t3_0x8c_80D6A20:
 	push {lr}
@@ -92613,6 +92718,11 @@ loc_80E109E:
 	.balign 4, 0x00
 	thumb_func_end battle_spawnVelocityParticle
 
+// symdb: Dispatcher (trampoline) that tail-calls one of two battle flash-effect update routines chosen by the battle object's Param1 (0 = palette flash, 1 = white flash).
+// symdb: void battle_dispatchFlashUpdate_80E10A4(void) — no typed C signature is possible; r5 = battle
+// symdb: object, r10 = update context on entry, with r5/r10 passed unchanged to the selected routine and
+// symdb: its r5, r8–r12 results returned untouched (flags clobbered, lr consumed).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0xa_80E10A4.yaml
 	thumb_func_start t4_0xa_80E10A4
 t4_0xa_80E10A4:
 	push {lr}
@@ -93240,6 +93350,10 @@ byte_80E1518:
 	.byte 0x0, 0x0, 0x10, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sub_80E1502
 
+// symdb: State dispatcher for the snake-arm battle object — reads the object's CurState byte and tail-jumps to that state's handler (init, per-frame tick, or shared cleanup).
+// symdb: void snakearm_stateDispatcher_80E1520(BattleObject *obj /* r5 */); returns whatever the selected
+// symdb: state handler returns in r5 r8 r9 r10 r11 r12; clobbers flags and r0-r4/r6/r7/lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0xf_80E1520.yaml
 	thumb_func_start t4_0xf_80E1520
 t4_0xf_80E1520:
 	push {lr}
@@ -97572,6 +97686,10 @@ loc_80E32AC:
 	.byte 0x10, 0x0, 0x1, 0x0, 0x0, 0x0, 0x80, 0xF
 	thumb_func_end battle_spawnPairedVariantAtFrontPanel
 
+// symdb: Task step for battle-object task type 0x28 that dispatches to the object's current-state handler via a small state table (init sprite / update mystery data / despawn).
+// symdb: void t4_0x28_80E32B8(battle object in r5, pass-through u32 in r10); clobbers r0-r4, r6, r7, lr
+// symdb: and flags; r5/r8-r12 outputs come from the dispatched handler (tail-call style pop {pc});
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x28_80E32B8.yaml
 	thumb_func_start t4_0x28_80E32B8
 t4_0x28_80E32B8:
 	push {lr}
@@ -101047,6 +101165,11 @@ sub_80E49C4:
 	.balign 4, 0x00
 	thumb_func_end sub_80E49C4
 
+// symdb: Per-frame tick for the arm-attack battle object — runs the current state's handler via a jump table, then advances the object's sprite animation.
+// symdb: u32 battle_armAttackObject_tick_80E4A1C(BattleObject* obj /* r5 */); r10 also read by callees;
+// symdb: returns/propagates r5 (possibly updated by the state handler), clobbers r0-r4, r6-r12, lr and
+// symdb: flags.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x3c_80E4A1C.yaml
 	thumb_func_start t4_0x3c_80E4A1C
 t4_0x3c_80E4A1C:
 	push {lr}
@@ -102247,6 +102370,10 @@ dword_80E5240:
 	.word 0x1C3
 	thumb_func_end battle_orderPairByAllianceFlip
 
+// symdb: Dispatches a battle object to its per-state handler, selecting the routine from a 3-entry jump table indexed by the object's CurState byte.
+// symdb: void battle_runObjectStateHandler(BattleObject* obj in r5, u32 arg2 in r2, u32 arg10 in r10);
+// symdb: returns the handler's r5/r8-r12 pass-through results
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x41_80E5244.yaml
 	thumb_func_start t4_0x41_80E5244
 t4_0x41_80E5244:
 	push {lr}
@@ -102622,6 +102749,10 @@ dword_80E546C:
 	.word 0x80010000
 	thumb_func_end battle_clearDropEntryById
 
+// symdb: Per-tick update for a type-0x42 battle object — dispatches to its state handler (init panel mover / per-state behaviour / free), then updates the object's sprite.
+// symdb: void battle_type42Tick_80E5470(r5=battleObject, r10=callerContext) — object pointer in/out via
+// symdb: r5 (as left by object_updateSprite); state handler's r0 return propagates implicitly
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x42_80E5470.yaml
 	thumb_func_start t4_0x42_80E5470
 t4_0x42_80E5470:
 	push {lr}
@@ -106812,6 +106943,10 @@ locret_80E70C6:
 	pop {pc}
 	thumb_func_end battle_spawnObject59
 
+// symdb: Per-frame update for a battle object — dispatches its state handler, then advances (or freezes) its sprite animation for this frame.
+// symdb: void t4_0x5a_80E70C8(BattleObject* object /* r5 */) -> r5 = object; r8-r12 = whatever the state
+// symdb: handler leaves; clobbers r0-r4, r6, r7, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x5a_80E70C8.yaml
 	thumb_func_start t4_0x5a_80E70C8
 t4_0x5a_80E70C8:
 	push {lr}
@@ -109124,6 +109259,10 @@ locret_80E8078:
 	.balign 4, 0x00
 	thumb_func_end spawnDblHeroSetupObject_80E8058
 
+// symdb: Dispatches a battle object to its per-state handler (init/update/free) selected from a jump table by the object's current-state byte, as a tail call.
+// symdb: void battle_objectDispatchState(battleObject *object /* r5 */); handler outputs (r5, r8-r12)
+// symdb: pass through to caller
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/t4_0x6b_80E807C.yaml
 	thumb_func_start t4_0x6b_80E807C
 t4_0x6b_80E807C:
 	push {lr}

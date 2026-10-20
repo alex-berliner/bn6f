@@ -15697,6 +15697,9 @@ locret_81374C2:
 	pop {pc}
 	thumb_func_end navicust_counterThenShowDialog
 
+// symdb: If chatbox eFlags2009F38 bit 0x80 is clear, writes the byte 0x74 to the caller-supplied byte pointer; otherwise does nothing.
+// symdb: void sub_81374C4(u8* dest /* r5 */)  // no return value, flags not meaningful to callers
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81374C4.yaml
 	thumb_local_start
 sub_81374C4:
 	push {lr}
@@ -15833,6 +15836,9 @@ locret_813759A:
 	pop {pc}
 	thumb_func_end navicust_queueBeastOutDialog
 
+// symdb: If chatbox event flag 0x80 is clear, writes textbox command byte 0x8C to the caller-supplied byte; otherwise does nothing.
+// symdb: void sub_813759C(u8* dest /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813759C.yaml
 	thumb_local_start
 sub_813759C:
 	push {lr}
@@ -15865,6 +15871,9 @@ dword_81375C8:
 	.word 0x1
 	thumb_func_end sub_81375AC
 
+// symdb: No-op stub that reads the byte at r5 and writes it back unchanged, most likely a leftover patch/breakpoint site.
+// symdb: void sub_81375CC(void)  /* r5 = pointer to a byte; returns nothing (r0 and flags clobbered) */
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_81375CC.yaml
 	thumb_local_start
 sub_81375CC:
 	push {lr}

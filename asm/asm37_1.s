@@ -25,6 +25,9 @@ sub_814189A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_814189A
 
+// symdb: Writes 1 to the "event struct active" flag byte (0x200101D, eStruct2001010+0xD) and returns 0 with the Z flag set.
+// symdb: void sub_81418AA(void); // in: lr only; out: r0=0, Z set / N clear; r4-r7 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81418AA.yaml
 	thumb_local_start
 sub_81418AA:
 	push {r4-r7,lr}
@@ -35,6 +38,10 @@ sub_81418AA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_81418AA
 
+// symdb: Zeroes one status byte (offset 0x0D) of the fixed struct at 0x2001010 and returns.
+// symdb: void sub_81418B6(void); // in: lr only; out: Z set, N clear (from "mov r0,#0"); r4-r7 preserved,
+// symdb: r0 clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81418B6.yaml
 	thumb_local_start
 sub_81418B6:
 	push {r4-r7,lr}
@@ -742,6 +749,10 @@ byte_81420A8:
 	.byte 0x91, 0x0, 0x91, 0x1, 0x91, 0x2, 0x0, 0x0
 	thumb_func_end battle_getEnemyIndexFromMapGroup_8142080
 
+// symdb: Looks up a per-enemy byte from a small table (indexed by the enemy index derived from the map group in r10) and returns it shifted left by 16 so it lands in bits 16-23 of r0.
+// symdb: u32 battle_getShiftedEnemyTableByte(void /* index source in r10 */); // in: r10 (passed through
+// symdb: to sub_8142080), lr; out: r0 = table_byte << 16; clobbers r1, lr, flags; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81420B0.yaml
 	thumb_func_start sub_81420B0
 sub_81420B0:
 	push {r4-r7,lr}
@@ -892,6 +903,10 @@ battleScenarioEffect_isActive_814216E:
 	pop {r4-r7,pc}
 	thumb_func_end battleScenarioEffect_isActive_814216E
 
+// symdb: Increments the scenario effect step counter (byte at 0x200078E) by one.
+// symdb: void sub_8142178(void); // no meaningful register inputs; r4-r7 preserved, r0 and flags (nzcvq)
+// symdb: clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142178.yaml
 	thumb_local_start
 sub_8142178:
 	push {r4-r7,lr}
@@ -1837,6 +1852,9 @@ byte_8142980:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
 	thumb_func_end movePackedCoordsByDir
 
+// symdb: Returns the map tile index for the overworld player's current position (reads the player object's coords, then converts them via the cursor-tile-index helper).
+// symdb: u32 ow_getPlayerTileMapIndex(void /* r10 = overworld context */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142990.yaml
 	thumb_func_start sub_8142990
 sub_8142990:
 	push {r4-r7,lr}

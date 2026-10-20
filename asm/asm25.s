@@ -1160,9 +1160,10 @@ off_8090000:
 	.word byte_8143564
 	thumb_func_end getAreaTableEntry_808FFC0
 
-// symdb: Mr. Weather comp: if MegaMan's tile trigger (reqBBS_81409E4) is 0x70..0x79, stores it - 0x70 at eWeatherCompState+0xE and returns 1 (Z clear).
-// symdb: r5 = eWeatherCompState -> r0 = 0/1, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger70_8090004.yaml
+// symdb: Checks the active BBS request ID and, if it is one of the ten weather requests (0x70-0x79), selects the matching weather (0-9) on a weather object.
+// symdb: bool weatherComp_checkBbsRequestWeather(void* weatherObj /*r5*/, u32 extra /*r10*/); sets NZ
+// symdb: flags on the bool result
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger70_8090004.yaml
 	thumb_local_start
 weatherComp_checkTrigger70_8090004:
 	push {r4,lr}
@@ -1181,9 +1182,10 @@ loc_809001A:
 	pop {r4,pc}
 	thumb_func_end weatherComp_checkTrigger70_8090004
 
-// symdb: Mr. Weather comp: if MegaMan's tile trigger is 0x60..0x69, stores it - 0x60 at eWeatherCompState+0xE and returns 1 (Z clear).
-// symdb: r5 = eWeatherCompState -> r0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger60_8090020.yaml
+// symdb: Polls a request/BBS result code; if it is in the 0x60-0x69 trigger range, stores code-0x60 as the weather component's new state and reports a hit.
+// symdb: u32 weatherComp_checkTrigger60(u32 flag /*in/out r4*/, void* stateObj /*in r5*/) -> nz on r4 (1
+// symdb: = trigger hit, else incoming flag); clobbers r0-r3, r9-r12 via callee
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weatherComp_checkTrigger60_8090020.yaml
 	thumb_local_start
 weatherComp_checkTrigger60_8090020:
 	push {r4,lr}
@@ -1430,9 +1432,10 @@ loc_80901E4:
 	.balign 4, 0x00
 	thumb_func_end weatherComp_checkRingCapture_809019C
 
-// symdb: Mr. Weather comp: the first tornado i (0..2) with flag 0xBEC+i set goes to eWeatherCompState+0xC and returns 1: weatherComp_pickScript_8090104 then starts byte_808F748, the capture cutscene ("The Rainbow Power washed the typhoon away.").
-// symdb: r5 = eWeatherCompState -> r0 = 1 / 0, Z
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/weatherComp_findRingCapture_80901EC.yaml
+// symdb: Checks the three ring-capture event flags and reports which one (0-2) is set, or none.
+// symdb: u32 weatherComp_findRingCapture(u8* state /* r5 */) -> u32 found (r0); writes found index (0..2,
+// symdb: or 0 when none) to state[0x0C]; N/Z set from r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/weatherComp_findRingCapture_80901EC.yaml
 	thumb_local_start
 weatherComp_findRingCapture_80901EC:
 	push {r4,r6,lr}

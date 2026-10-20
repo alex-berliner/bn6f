@@ -299,6 +299,10 @@ loc_813B908:
 	.byte 0, 0
 	thumb_func_end ai_getGridMargins
 
+// symdb: Writes the byte value passed in r0 into the work-area byte at 0x20096D8 and returns that address in r1.
+// symdb: void storeWorkByte_813B920(u8 value); // in: r0 = byte value, lr = return addr; out: r1 =
+// symdb: &byte_20096D8 (side effect: byte written); flags untouched
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813B920.yaml
 	thumb_func_start sub_813B920
 sub_813B920:
 	ldr r1, off_813B930 // =byte_20096D8 
@@ -3240,6 +3244,10 @@ sub_813CDB4:
 	pop {r4-r7,pc}
 	thumb_func_end sub_813CDB4
 
+// symdb: Thin fixed-argument wrapper that invokes sub_813CDD8 with r4 = 10 and r6 = 2 and passes the callee's r2 result back to the caller.
+// symdb: u32 wrapper(u32 r10); returns r2 (result of sub_813CDD8); r6 is read back unchanged by callers;
+// symdb: preserves r4-r7; clobbers r0, r1, r3, lr and flags nzcv
+// symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_813CDC0.yaml
 	thumb_local_start
 sub_813CDC0:
 	push {r4-r7,lr}
