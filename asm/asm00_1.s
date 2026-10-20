@@ -1640,7 +1640,7 @@ off_80039F8:
 	.word 0x1, 0x0, 0x0
 	.word 0xFFFFFFFF, 0x0, 0x0, 0x0
 	.word 0xFFFFFFFF, 0x0
-	.word sub_8144048+1
+	.word battle_initMultiEnemyAIAndTick+1
 	.word 0x0, 0x0
 	.word 0x1
 	thumb_func_end e_scenarioEffectStateIdIs
@@ -9450,7 +9450,7 @@ spawnRockCube_80074FA: // (self: * EnemySetup $r6) -> ()
 	ldr r4, byte_80077F4 // =0x0
 	add r4, r4, r3
 	mov r6, #0xc8
-	bl sub_80CFBC4
+	bl battle_spawnFieldPanelObject
 	pop {r4,r6,pc}
 	thumb_func_end spawnRockCube_80074FA
 
@@ -17964,7 +17964,7 @@ loc_800ABAC:
 	ldrh r0, [r4,#0xa] // (word_203CA7A - 0x203ca70)
 	mov r1, #0x3c
 	svc 6
-	bl sub_801E398
+	bl req_sendTextScriptGfx800
 	pop {r4,pc}
 loc_800ABB8:
 	ldr r0, off_800AC1C // =0x800
@@ -19326,9 +19326,9 @@ locret_800B50C:
 // symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from byte_203F5A4 when GetBattleEffects has bit 0x8 set.
 // symdb: () -> void; reads byte_203F4A4 (and byte_203F5A4), writes entry+0x44 (word) and entry+0xE (byte)
 // symdb: of unk_2036120 records 0/1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B50E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBattlerSeed.yaml
 	thumb_local_start
-sub_800B50E:
+battle_loadBattlerSeed:
 	push {lr}
 	mov r0, #0
 	bl getEntryPtr_2036120_1D0_802E070
@@ -19354,7 +19354,7 @@ sub_800B50E:
 	strb r2, [r0,#0xe]
 locret_800B546:
 	pop {pc}
-	thumb_func_end sub_800B50E
+	thumb_func_end battle_loadBattlerSeed
 
 	thumb_local_start
 sub_800B548:
@@ -19700,9 +19700,9 @@ locret_800B732:
 
 // symdb: Sums 12 halfwords from word_2000FA0 and returns a tier: 0 if sum > 10800, 1 if sum > 7200, else 2.
 // symdb: () -> r0 = 0 if sum > 10800, 1 if sum > 7200, else 2; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B734.yaml
-	thumb_func_start sub_800B734
-sub_800B734:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getTimeTierFromSum.yaml
+	thumb_func_start getTimeTierFromSum
+getTimeTierFromSum:
 	ldr r0, off_800B86C // =word_2000FA0
 	mov r1, #1
 	mov r3, #0
@@ -19724,7 +19724,7 @@ loc_800B73A:
 	mov r0, #2
 locret_800B758:
 	mov pc, lr
-	thumb_func_end sub_800B734
+	thumb_func_end getTimeTierFromSum
 
 // symdb: Writes 0xFF to the single byte at byte_203C960, apparently flagging a "cancel / back out" state for whatever menu or screen owns that byte.
 // symdb: void sub_800B75A(void); // clobbers r0, r1 and the NZ flags; returns via lr (never touches lr

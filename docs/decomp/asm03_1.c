@@ -2320,7 +2320,7 @@ signed int MapScriptCmd_8035cd6()
     void *v0; // r7
     int v1; // r0
 
-    sub_800B734();
+    getTimeTierFromSum();
     if ( v1 == ReadMapScriptByte(1, v0) )
         ReadMapScriptWord(2, v0);
     return 1;
@@ -2333,7 +2333,7 @@ signed int MapScriptCmd_8035cf8()
     void *v0; // r7
     int v1; // r0
 
-    sub_800B734();
+    getTimeTierFromSum();
     if ( v1 != ReadMapScriptByte(1, v0) )
         ReadMapScriptWord(2, v0);
     return 1;
@@ -6254,7 +6254,7 @@ signed int init_objBg2DisplayMode()
 
 
 // 0x8039888
-int sub_8039888()
+int object_selectFadeToState8()
 {
     int v0; // r5
     int v1; // r10
@@ -6452,7 +6452,7 @@ signed int battle_initScene()
 
 
 // 0x8039ab8
-int sub_8039AB8()
+int rfu_linkSessionStep()
 {
     int v0; // r5
 
@@ -6467,7 +6467,7 @@ int sub_8039AB8()
         sub_803BB2C(19);
         *(v0 + 1) = 16;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6488,12 +6488,12 @@ int sub_8039AE4()
         sub_803BB2C(19);
         *(v0 + 1) = 16;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
 // 0x8039b0a
-int sub_8039B0A()
+int rfu_tryStartLinkSession()
 {
     int v0; // r5
     int v1; // r0
@@ -6515,7 +6515,7 @@ int sub_8039B0A()
         sub_803BB2C(19);
         *(v0 + 1) = 16;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6535,7 +6535,7 @@ int sub_8039B60()
             *(v0 + 1) = 20;
         }
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6551,7 +6551,7 @@ int sub_8039B82()
         *v0 = 8;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6574,12 +6574,12 @@ int sub_8039B98()
             sub_803BB90(0);
         }
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
 // 0x8039bc0
-int __fastcall sub_8039BC0(int a1)
+int __fastcall object_chatboxStep(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -6617,7 +6617,7 @@ int __fastcall sub_8039BC0(int a1)
             }
         }
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6635,7 +6635,7 @@ int sub_8039C14()
         v0[12] = 4;
         v0[1] = 36;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -6866,7 +6866,7 @@ LABEL_8:
 
 
 // 0x8039e2c
-int __fastcall sub_8039E2C(int a1)
+int __fastcall start_wirelessLinkSession(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -7110,7 +7110,7 @@ int __fastcall sub_803A03A(int a1)
         engine_setScreeneffect(12, 16);
         *(v1 + 1) = 84;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7125,7 +7125,7 @@ int sub_803A054()
 
     IsPaletteFadeActive();
     if ( v0 )
-        return sub_803A1B0();
+        return battle_stepFrame();
     copyMemory_8001850();
     return sub_803CCC0(v1, v2, v3, v4);
 }
@@ -7143,7 +7143,7 @@ int __fastcall sub_803A06C(int a1)
         engine_setScreeneffect(12, 16);
         *(v1 + 1) = 92;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7157,7 +7157,7 @@ int sub_803A086()
 
     IsPaletteFadeActive();
     if ( v0 )
-        return sub_803A1B0();
+        return battle_stepFrame();
     copyMemory_8001850();
     return t1_setMainState1cWithArg(sub_8039570, v1, v2, v3);
 }
@@ -7175,7 +7175,7 @@ int __fastcall sub_803A0A4(int a1)
         engine_setScreeneffect(12, 16);
         *(v1 + 1) = 100;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7191,7 +7191,7 @@ int sub_803A0BE()
         *v0 = 8;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7207,7 +7207,7 @@ int __fastcall sub_803A0D4(int a1)
         engine_setScreeneffect(12, 16);
         *(v1 + 1) = 108;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7223,7 +7223,7 @@ int sub_803A0EE()
         *v0 = 8;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -7256,7 +7256,7 @@ void __noreturn chatbox_waitStepUpdateEntities()
 
 
 // 0x803a1b0
-int sub_803A1B0()
+int battle_stepFrame()
 {
     int v0; // r5
     int result; // r0
@@ -10306,14 +10306,14 @@ int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
 void sub_803C604()
 {
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
 // 0x803c612
 int sub_803C612()
 {
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -11021,7 +11021,7 @@ signed int __fastcall __noreturn start_initBattleScene(int a1)
     resetAllGraphicsState_8005F40(v2, v3, v4, v5);
     runSetupStepAndClearWorkArea_8005F6C();
     v6 = sprite_initBattleFadeGfxState_80027C4();
-    sub_803CD58(v6, v7, v8, v9);
+    clearVramAndTilemap(v6, v7, v8, v9);
     music_80005F2(99, v10, v11);
     engine_setScreeneffect(8, 8);
     result = 4;
@@ -11031,7 +11031,7 @@ signed int __fastcall __noreturn start_initBattleScene(int a1)
 
 
 // 0x803cd40
-int sub_803CD40()
+int tryShowCommErrorAndSetState()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -11056,7 +11056,7 @@ void sub_803CD54()
 
 
 // 0x803cd58
-void __fastcall sub_803CD58(int a1, int a2, int a3, int a4)
+void __fastcall clearVramAndTilemap(int a1, int a2, int a3, int a4)
 {
     zeroFillVRAM();
     ZeroFillGFX30025c0();

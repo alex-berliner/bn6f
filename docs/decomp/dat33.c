@@ -148,7 +148,7 @@ int sub_812C3BC()
                         v11 = sub_8132430(v7);
                         if ( v11 <= 2 )
                         {
-                            sub_812DA60();
+                            rfu_finishCommScreenStep();
                             *(v0 + 27) |= 0x10u;
                             *(v0 + 16) = 4;
                             if ( v12 != 2 )
@@ -167,7 +167,7 @@ int sub_812C3BC()
 LABEL_34:
                             IsPaletteFadeActive();
                             if ( !v15 )
-                                sub_812D690();
+                                submenu_processConfirmCancelInput();
                         }
                         else
                         {
@@ -283,7 +283,7 @@ int sub_812C50C()
             return result;
         }
 LABEL_22:
-        sub_812D8C8(v10, v11, v12, v13);
+        t4_restoreBgTilemapAfterBattle(v10, v11, v12, v13);
     }
     return result;
 }
@@ -353,7 +353,7 @@ void sub_812C5D0()
                         if ( !*(v6 + 8) && *(v6 + 10) == 65243 )
                         {
                             chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
-                            sub_812DA60();
+                            rfu_finishCommScreenStep();
                             return;
                         }
                         if ( *(v6 + 8) != 4 || *(v6 + 10) > 13664 )
@@ -677,7 +677,7 @@ LABEL_14:
                             if ( v23 >= 180 )
                             {
                                 chatbox_runScript_803FD9C_on_eTextScript201BA20(64);
-                                sub_812DA60();
+                                rfu_finishCommScreenStep();
                             }
                             return;
                         }
@@ -1546,7 +1546,7 @@ int sub_812D164()
     {
         result = *(v0 + 3);
         if ( result < 8 )
-            sub_812D8C8(result, v2, v3, v4);
+            t4_restoreBgTilemapAfterBattle(result, v2, v3, v4);
     }
     else if ( result != 16 )
     {

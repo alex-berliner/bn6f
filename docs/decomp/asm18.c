@@ -60,7 +60,7 @@ int sub_807A9FE()
     SetBGScrollCallbacks(*v2, v2[1], v2[2]);
     v3 = GetRenderInfoLCDControl();
     SetRenderInfoLCDControl(v3 | v2[3]);
-    return sub_8030540(off_807AA68[*(v1 + oGameState_MapNumber)]);
+    return bg_decompressAndQueueTiles(off_807AA68[*(v1 + oGameState_MapNumber)]);
 }
 
 

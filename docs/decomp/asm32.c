@@ -1335,7 +1335,7 @@ int battle_regenEnemyUpdate()
 
 
 // 0x810e8da
-int sub_810E8DA()
+int battle_objectRunPhaseHandlerTable()
 {
     int v0; // r5
     int result; // r0
@@ -4221,7 +4221,7 @@ void __fastcall ai_spawnPanelEffect(char a1)
 
 
 // 0x81110c8
-void __fastcall sub_81110C8(char a1)
+void __fastcall spawn_effectAtPanel(char a1)
 {
     Battle *v1; // r5
     int v2; // ST04_4
@@ -8003,9 +8003,9 @@ __int64 __noreturn object_probePanelReserve()
     LODWORD(v1) = sub_8113FC0();
     if ( !v1 )
     {
-        LODWORD(v1) = sub_8113FE8();
+        LODWORD(v1) = battle_pickRandomFilteredPanelAvoidingEnemyRow();
         if ( !v1 )
-            sub_8114030(0, SHIDWORD(v1), v2);
+            battle_pickAllianceRandomPanel(0, SHIDWORD(v1), v2);
     }
     v3 = v1;
     object_removePanelReserve(*(v0 + 18), *(v0 + 19));
@@ -8057,7 +8057,7 @@ int sub_8113FC0()
 
 
 // 0x8113fe8
-int sub_8113FE8()
+int battle_pickRandomFilteredPanelAvoidingEnemyRow()
 {
     int v0; // r5
     int result; // r0
@@ -8088,7 +8088,7 @@ int sub_8113FE8()
 
 
 // 0x8114030
-void __fastcall __noreturn sub_8114030(int a1, int a2, int a3)
+void __fastcall __noreturn battle_pickAllianceRandomPanel(int a1, int a2, int a3)
 {
     int v3; // r0
     int v4; // r1
@@ -8140,12 +8140,12 @@ int __fastcall battleObject_startPanelOffsetList(int a1, int a2, int a3, int a4)
     int v5; // r4
 
     v5 = *(&off_8019B78 + v4);
-    return sub_8114088(a1, a2, a3, a4);
+    return ai_pickRandomPanel(a1, a2, a3, a4);
 }
 
 
 // 0x8114088
-int __fastcall sub_8114088(int a1, int a2, int a3, int a4)
+int __fastcall ai_pickRandomPanel(int a1, int a2, int a3, int a4)
 {
     char *v4; // r4
     int v5; // r5
@@ -11929,7 +11929,7 @@ int sub_81174B8()
 
 
 // 0x81174c0
-signed int sub_81174C0()
+signed int object_dashUpdate()
 {
     int v0; // r5
     unsigned __int16 *v1; // r0
@@ -13322,7 +13322,7 @@ int beastOutOrProgramAdvanceSetTransform_811842C()
 
 
 // 0x811847c
-int sub_811847C()
+int battle_beastOutTransformTick()
 {
     char *v0; // r5
     int v1; // r6
@@ -13792,7 +13792,7 @@ int sub_81188EC()
 
 
 // 0x811891c
-int sub_811891C()
+int object_refreshAnimStateFromFlags()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -13835,7 +13835,7 @@ int sub_811891C()
 
 
 // 0x8118964
-int sub_8118964()
+int object_setupActorVariant()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -13938,7 +13938,7 @@ int sub_81189E0()
 
 
 // 0x8118a00
-int sub_8118A00()
+int objectUpdateAnimByFlag()
 {
     Battle *v0; // r5
     char v1; // r4
@@ -14158,7 +14158,7 @@ signed int sub_8118C84()
 
 
 // 0x8118c8c
-int sub_8118C8C()
+int t3_refreshTextScriptOnChange()
 {
     char *v0; // r5
     int v1; // r6
@@ -14671,7 +14671,7 @@ int __fastcall chipPanel_renderChipGfxAndText_8119438(int a1, int a2, int a3, in
             if ( v19 > &byte_3E8 )
             {
                 if ( *(v4 + 10) && sSubmenu.unk_00 == 24 && sSubmenu.jo_01 == 28 )
-                    v19 = sub_8010CE0(*(v4 + 14));
+                    v19 = getChipField1AOrTableLookup(*(v4 + 14));
                 else
                     v19 = getChipScaleOrRaw(*(v4 + 14));
             }
@@ -17566,7 +17566,7 @@ int __noreturn sub_811BAC4()
     if ( *(v0 + 14) == 144 )
         v1 = 1;
     *v0 = v1;
-    sub_811BB50();
+    sprite_setPaletteFromBattleObject();
     sub_811BBB8();
     v2 = battle_getAdjustedCountFromObject();
     sprite_setAnimation(v0, v2);
@@ -17624,7 +17624,7 @@ void sub_811BB30()
 
 
 // 0x811bb50
-void sub_811BB50()
+void sprite_setPaletteFromBattleObject()
 {
     int v0; // r5
     int *v1; // r0
@@ -18939,7 +18939,7 @@ int object_cycleAnimationTimer()
 
 
 // 0x811cec4
-int __fastcall sub_811CEC4(int a1, int a2, int a3)
+int __fastcall object_tickAnimSound(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -19346,7 +19346,7 @@ int sub_811D20C()
 
 
 // 0x811d248
-int sub_811D248()
+int object_countdownFinishVariantAnim()
 {
     int v0; // r5
     int result; // r0
@@ -20539,12 +20539,12 @@ void __fastcall __noreturn object_initSpriteObjA1(int a1, int a2)
     object_setRandomStateByte();
     v2->currState = 4;
     v2->currAction = 1;
-    sub_811E490();
+    object_updateSpriteObjA1();
 }
 
 
 // 0x811e490
-void __noreturn sub_811E490()
+void __noreturn object_updateSpriteObjA1()
 {
     int v0; // r5
     int v1; // r0
@@ -20731,12 +20731,12 @@ void __fastcall __noreturn object_initSpriteType23(int a1, int a2)
     sprite_setPriority_8002E14(0);
     sprite_setCoordinates(220, 44);
     v2->currState = 4;
-    sub_811E68C();
+    object_initSpriteType23Tail();
 }
 
 
 // 0x811e68c
-void __noreturn sub_811E68C()
+void __noreturn object_initSpriteType23Tail()
 {
     Battle *v0; // r5
 
@@ -24044,7 +24044,7 @@ LABEL_25:
         v27 = *(v26 + 4 * v25);
         SetField16ToSelectedS20047CCStruct(v23, 66, v27);
         v28 = SetField16ToSelectedS20047CCStruct(v23, 62, v27);
-        sub_8121154(v28, v29, v30, v31);
+        pet_reloadCurNaviEffects(v28, v29, v30, v31);
         v32 = GetField16FromSelectedS20047CCStruct(v23);
         result = *(*(v0 + oToolkit_GameStatePtr) + oGameState_MapGroup);
         if ( result < 128 )
@@ -24087,7 +24087,7 @@ void __fastcall zeroFill_8121144(int unused, int unused_1, int a3, int a4)
 
 
 // 0x8121154
-int __fastcall sub_8121154(int a1, int a2, int a3, int a4)
+int __fastcall pet_reloadCurNaviEffects(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // r4
@@ -24099,7 +24099,7 @@ int __fastcall sub_8121154(int a1, int a2, int a3, int a4)
     v6 = getPETNaviSelect();
     for ( i = *(*(&pt_8121200)[v6] + v5 - *&byte_81211B4[2 * v6]); *i != -1; i += 2 )
         (*(off_81211D0 + *i))(i[1]);
-    return sub_8123208();
+    return pet_applyNaviStatUpdates();
 }
 
 

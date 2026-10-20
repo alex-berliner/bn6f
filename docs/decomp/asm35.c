@@ -6,7 +6,7 @@ void __noreturn CopyBackgroundTiles812EAAC()
 
 
 // 0x812eac4
-int sub_812EAC4()
+int battle_collectUnassignedKeyPresses()
 {
     char *v0; // r5
     signed int v1; // r4
@@ -95,7 +95,7 @@ int sub_812EB92()
 
     result = getStructFrom2008450(0);
     if ( v1 )
-        result = sub_812EBD8(byte_812DAC4, 0, 60);
+        result = e_spawnFromTableAndPlaceByAltY(byte_812DAC4, 0, 60);
     return result;
 }
 
@@ -108,13 +108,13 @@ int sub_812EBB8()
 
     result = getStructFrom2008450(1);
     if ( v1 )
-        result = sub_812EBD8(byte_812DACC, 1, 180);
+        result = e_spawnFromTableAndPlaceByAltY(byte_812DACC, 1, 180);
     return result;
 }
 
 
 // 0x812ebd8
-int __fastcall sub_812EBD8(void *a1, int a2, int a3)
+int __fastcall e_spawnFromTableAndPlaceByAltY(void *a1, int a2, int a3)
 {
     int v3; // r6
     int result; // r0
@@ -243,7 +243,7 @@ void sub_812ED58()
 
 
 // 0x812ed94
-void __fastcall __noreturn sub_812ED94(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn battle_restoreMapBackground(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0

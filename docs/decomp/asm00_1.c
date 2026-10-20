@@ -5349,7 +5349,7 @@ int spawnRockCube_80074FA()
     v2 = v1 & 7;
     v3 = v1 >> 4;
     v4 = object_getPanelDataOffset(v1 & 7, v1 >> 4);
-    return sub_80CFBC4(v2, v3, v4[3], *(v0 + 2));
+    return battle_spawnFieldPanelObject(v2, v3, v4[3], *(v0 + 2));
 }
 
 
@@ -11762,7 +11762,7 @@ int sub_800AB7C()
     {
 LABEL_7:
         __asm { SVC         6 }
-        sub_801E398(word_203CA7A);
+        req_sendTextScriptGfx800(word_203CA7A);
     }
     if ( !battle_isBattleOver() )
     {
@@ -12598,7 +12598,7 @@ int __fastcall sub_800B4CE(int a1)
 
 
 // 0x800b50e
-void sub_800B50E()
+void battle_loadBattlerSeed()
 {
     char *v0; // r0
     int v1; // r0
@@ -12792,7 +12792,7 @@ int __fastcall sub_800B6F2(int a1)
 
 
 // 0x800b734
-signed int sub_800B734()
+signed int getTimeTierFromSum()
 {
     __int16 *v0; // r0
     signed int v1; // r1

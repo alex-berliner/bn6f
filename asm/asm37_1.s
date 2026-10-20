@@ -2916,7 +2916,7 @@ loc_81431B4:
 sub_81431C6:
 	push {r4-r7,lr}
 	ldr r5, off_8143398 // =byte_2000D20 
-	bl sub_814339C
+	bl e_initMinigameEffectSlot2
 	mov r0, r5
 	ldr r1, off_81431F4 // =0xa0 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -3192,9 +3192,9 @@ off_8143398:
 
 // symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs sub_81433D2(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
 // symdb: () -> r0 = 0 (success); no flags relied on by caller
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814339C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_initMinigameEffectSlot2.yaml
 	thumb_local_start
-sub_814339C:
+e_initMinigameEffectSlot2:
 	push {r4-r7,lr}
 	mov r0, #2
 	bl initMinigameEffect_8003a64
@@ -3211,7 +3211,7 @@ sub_814339C:
 	bl sub_814343A
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814339C
+	thumb_func_end e_initMinigameEffectSlot2
 
 	thumb_local_start
 sub_81433C2:
@@ -3645,8 +3645,8 @@ loc_81439FC:
 loc_8143A02:
 	ldrb r0, [r7,#1]
 	bl sub_8143F58
-	bl sub_8143C88
-	bl sub_8143C62
+	bl saveGroundmanMinigameData
+	bl ow_switchGroundmanNpcList
 	movflag EVENT_D36
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq loc_8143A2E
@@ -3945,9 +3945,9 @@ sub_8143C30:
 // symdb: Looks up the Groundman minigame result map index, swaps the overworld NPC spawn list to one of two hardcoded lists via npc_freeAllObjectsThenSpawnObjectsFromList, then sets event flag 1721.
 // symdb: () -> r0 = undefined; sets EVENT_1721, replaces overworld NPC list via
 // symdb: npc_freeAllObjectsThenSpawnObjectsFromList
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C62.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_switchGroundmanNpcList.yaml
 	thumb_local_start
-sub_8143C62:
+ow_switchGroundmanNpcList:
 	push {r4-r7,lr}
 	bl GetGroundmanMinigameMapIndex
 	ldr r1, off_8143C7C // =off_8143C80 
@@ -3963,13 +3963,13 @@ off_8143C7C:
 off_8143C80:
 	.word off_8072C10
 	.word off_8073650
-	thumb_func_end sub_8143C62
+	thumb_func_end ow_switchGroundmanNpcList
 
 // symdb: Saves current GroundMan minigame progress for the active map index: sets the BBS request flag (0x7 of event byte 0x17) and EVENT_1BB, then walks the map's 8-byte entry table at off_8143D0C, copying each entry's +4 32-bit value into unk_2011EA0[id*4] and setting event flag 0x16F0+id for each nonzero entry, returning 0.
 // symdb: (no meaningful args) -> r0 = 0; sets EVENT_1BB and event flags 0x16F0+item
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C88.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/saveGroundmanMinigameData.yaml
 	thumb_local_start
-sub_8143C88:
+saveGroundmanMinigameData:
 	push {r4-r7,lr}
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	movflag EVENT_1BB
@@ -3999,13 +3999,13 @@ loc_8143CA0:
 loc_8143CC4:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143C88
+	thumb_func_end saveGroundmanMinigameData
 
 // symdb: Clears BBS flag, event flag 0x1BB, then for the selected groundman minigame map table, zeros per-slot records at unk_2011EA0+index*4 and clears event flags 0x16F0+index for each nonzero entry.
 // symdb: () -> r0 = 0; no flags relevant
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143CC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearGroundmanMinigameState.yaml
 	thumb_local_start
-sub_8143CC8:
+clearGroundmanMinigameState:
 	push {r4-r7,lr}
 	bl reqBBS_clearFlag_8140A0C
 	movflag EVENT_1BB
@@ -4052,7 +4052,7 @@ off_8143D44:
 	.word unk_2011EA0
 dword_8143D48:
 	.word 0x16F1
-	thumb_func_end sub_8143CC8
+	thumb_func_end clearGroundmanMinigameState
 
 // symdb: Counts how many event flags in a dynamic list are currently set, returning the set count (r0) and total list size (r1).
 // symdb: () -> r0 = number of set flags, r1 = total number of flags in the list; Z set if count is 0
@@ -4547,9 +4547,9 @@ byte_8144040:
 
 // symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sub_811E744 step, and a fade+subsystem-4 cleanup before the common tail.
 // symdb: () -> r0 = 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144048.yaml
-	thumb_func_start sub_8144048
-sub_8144048:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initMultiEnemyAIAndTick.yaml
+	thumb_func_start battle_initMultiEnemyAIAndTick
+battle_initMultiEnemyAIAndTick:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
 	bl get_groundmanMinigameSkipCondition
@@ -4592,7 +4592,7 @@ loc_81440A6:
 	bl sub_8143F1C
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8144048
+	thumb_func_end battle_initMultiEnemyAIAndTick
 
 // symdb: Boolean gate for the Groundman minigame: returns 1 (skip/do nothing) once a PET-menu flag or event flag is set or the player isn't on a minigame map, else 0.
 // symdb: () -> r0 = 1 if any completion/skip condition holds (PET menu flag set, map index 0xFF, event

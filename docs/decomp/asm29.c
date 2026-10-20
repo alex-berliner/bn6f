@@ -4737,7 +4737,7 @@ void __noreturn sub_80A88E2()
 {
     int v0; // r5
 
-    sub_80A8988();
+    ow_removeObject();
     createOWObjectInteractionArea_80037ac(*(v0 + 12), *(v0 + 16), *(v0 + 20), 2058);
     *(v0 + 40) = 0;
     sprite_update(v0);
@@ -4775,7 +4775,7 @@ int sub_80A8980()
 
 
 // 0x80a8988
-unsigned int sub_80A8988()
+unsigned int ow_removeObject()
 {
     int v0; // r5
     unsigned int result; // r0
@@ -4956,7 +4956,7 @@ int sub_80A8B2C()
 
 
 // 0x80a8b4c
-void __noreturn sub_80A8B4C()
+void __noreturn object_cybercrowOrbitUpdate()
 {
     int v0; // r5
     char v1; // zf

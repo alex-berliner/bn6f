@@ -943,7 +943,7 @@ byte_8099E90:
   .byte 0x16, 0x0, 0x0, 0x5, 0x16, 0x1, 0x1, 0x5, 0x16, 0x2, 0x2, 0x5, 0xFF
 	.byte 0xFF, 0xFF, 0xFF
 byte_8099EA0:
-	cs_call_native_with_return_value ptr1=sub_8099FFC+1
+	cs_call_native_with_return_value ptr1=e_playPetEffectStoreBugFragsAndSetFlag+1
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
@@ -999,9 +999,9 @@ cutscenescript_8099F7A:
 // symdb: Event-script helper: queues PET effect 0, calls event_playPetEffectAndReloadGfx and stores its r1 byte into [r5+4] and [r5+8], then if that byte is 0x32 stores sub_802D15E's value else stores the Protected BugFrags counter at [r5+0x70], and finally sets a flag bit on eStruct2001010.
 // symdb: (caller must pre-set r5 = event/dialog struct; r0 ignored, forced to 0) -> r0 = 0; no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8099FFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_playPetEffectStoreBugFragsAndSetFlag.yaml
 	thumb_local_start
-sub_8099FFC:
+e_playPetEffectStoreBugFragsAndSetFlag:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl doPETEffect_8033fc0
@@ -1022,7 +1022,7 @@ loc_809A01C:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8099FFC
+	thumb_func_end e_playPetEffectStoreBugFragsAndSetFlag
 
 	thumb_local_start
 sub_809A02C:
@@ -1045,11 +1045,11 @@ sub_809A03C:
 	bgt loc_809A054
 	mov r0, #0x15
 	str r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_809A054:
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #1
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A03C
@@ -1064,7 +1064,7 @@ submenu_chipTraderRunResultScript:
 	ldr r1, [r5,#8]
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #0
 	strb r0, [r5,#9]
 	mov r0, #0
@@ -1129,12 +1129,12 @@ ow_bugfragTraderExchange:
 	b loc_809A0F2
 loc_809A0E8:
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #1
 	pop {r4-r7,pc}
 loc_809A0F2:
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1162,12 +1162,12 @@ loc_809A116:
 	mov r0, #0x20
 	str r0, [r5,#0x74]
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_809A12E:
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #1
 	pop {r4-r7,pc}
 	thumb_func_end sub_809A104
@@ -1220,7 +1220,7 @@ loc_809A15C:
 	pop {r4-r7,pc}
 loc_809A1A4:
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1252,7 +1252,7 @@ loc_809A1CC:
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	movflag EVENT_F5
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_809A1F6
@@ -1295,19 +1295,19 @@ loc_809A238:
 	mov r0, #0
 	strb r0, [r5,#9]
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	b loc_809A24E
 loc_809A244:
 	mov r0, #1
 	strb r0, [r5,#9]
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 loc_809A24E:
 	mov r0, #0
 	pop {r4-r7,pc}
 loc_809A252:
 	ldr r0, [r5,#0x74]
-	bl sub_809A360
+	bl ow_bugfragTraderDrawScreen
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1433,9 +1433,9 @@ initRefs_809A344:
 
 // symdb: Draws the BugFrag trader's result screen: stashes a caller value into toolkit state, copies a 9x5 tile block from byte_86C54D4 and a 7x2 tile block from byte_8099E5C into BG tile block 0 at column r0/row 0 and column r0+1/row 2, then renders the ChipTrader text script (TextScriptChipTrader86C580C) into VRAM at 0x600D400.
 // symdb: (r0 = column/offset j for first tile copy) -> void; stores [r5+0x70] into toolkit->unk200a220+8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A360.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_bugfragTraderDrawScreen.yaml
 	thumb_local_start
-sub_809A360:
+ow_bugfragTraderDrawScreen:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r0, r10
@@ -1487,7 +1487,7 @@ dword_809A3B4:
 	.word 0x600D400
 off_809A3B8:
 	.word dword_86A5D60
-	thumb_func_end sub_809A360
+	thumb_func_end ow_bugfragTraderDrawScreen
 
 	thumb_local_start
 sub_809A3BC:

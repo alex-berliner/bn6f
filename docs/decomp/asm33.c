@@ -1,5 +1,5 @@
 // 0x8123208
-int sub_8123208()
+int pet_applyNaviStatUpdates()
 {
     int v0; // r0
     int v1; // r7
@@ -1959,7 +1959,7 @@ int sub_8124FE0()
 
 
 // 0x812503c
-int sub_812503C()
+int battle_tickChipSendTransition()
 {
     int v0; // r5
     int v1; // r0
@@ -2166,7 +2166,7 @@ int sub_8125198()
 
 
 // 0x81251f4
-int sub_81251F4()
+int battle_runIntroFrame()
 {
     int v0; // r5
     int v1; // r0
@@ -5876,7 +5876,7 @@ void menu_gridCursorScreenUpdate()
 
 
 // 0x81288bc
-int sub_81288BC()
+int chatbox_commitAndResetText()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -6313,7 +6313,7 @@ int sub_8128E2C()
 
 
 // 0x8128ed4
-int sub_8128ED4()
+int chatbox_setMessage()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -7304,7 +7304,7 @@ int sub_8129A20()
 
 
 // 0x8129a28
-int sub_8129A28()
+int battle_dealChipsOnFadeIn()
 {
     int v0; // r5
     int result; // r0
@@ -7701,7 +7701,7 @@ int sub_8129D58()
 
 
 // 0x8129d78
-int __fastcall sub_8129D78(int a1)
+int __fastcall object_allocResourcesStepStateFade(int a1)
 {
     _BYTE *v1; // r5
     int v2; // r4
@@ -8015,7 +8015,7 @@ int __fastcall object_timerDialogueUpdate(int a1)
 
 
 // 0x812a058
-int __fastcall sub_812A058(int a1)
+int __fastcall rfu_initLinkSessionState(int a1)
 {
     int v1; // r5
     int v2; // r0
@@ -8132,7 +8132,7 @@ int __fastcall sub_812A168(int a1)
         v4 = e_packScreenNaviId();
         byte_2023BC0 = v4;
         sub_803EF60(v4);
-        sub_81326D4(0, v5, v6, v7);
+        initAreaScene(0, v5, v6, v7);
     }
     return result;
 }
@@ -8433,7 +8433,7 @@ int __fastcall sub_812A4AC(int a1, int a2, int a3, int a4)
         sub_8132398(0, a2, a3, a4);
         sub_803EA78();
         if ( rfu_shouldRestartWirelessLink() )
-            result = sub_8148540();
+            result = rfu_startLinkTransfer();
         else
             result = sub_8146E60();
     }
@@ -8452,7 +8452,7 @@ int sub_812A4DC()
 
 
 // 0x812a4fc
-int sub_812A4FC()
+int startCompanionInit()
 {
     int v0; // r5
     int v1; // r0
@@ -9168,7 +9168,7 @@ void sub_812AC14()
 
 
 // 0x812ac1a
-signed int sub_812AC1A()
+signed int link_stepCommState()
 {
     int v0; // r5
     int v1; // r4
@@ -9399,7 +9399,7 @@ int sub_812ADFC()
 
 
 // 0x812ae3c
-int sub_812AE3C()
+int chatbox_dispatchEventByOffset()
 {
     int v0; // r5
     char v1; // zf
@@ -9881,7 +9881,7 @@ int sub_812B574()
     int result; // r0
 
     if ( eStruct200BC30_getJumpOffset00() == 4 )
-        result = sub_81475D4(&dword_814FE94);
+        result = rfu_connectionStateUpdate(&dword_814FE94);
     else
         result = sub_8148224();
     return result;
@@ -9940,7 +9940,7 @@ int e_beastLinkGateFrameHandler()
 
 
 // 0x812b608
-signed int sub_812B608()
+signed int pet_updateDefaultNaviSceneStep()
 {
     int v0; // r5
     char v1; // zf
@@ -10169,7 +10169,7 @@ int sub_812B80C()
 
 
 // 0x812b874
-int sub_812B874()
+int battle_runCustomScreenFrame()
 {
     int v0; // r5
     int result; // r0
@@ -10776,7 +10776,7 @@ int sub_812BF6C()
 
 
 // 0x812bf88
-int sub_812BF88()
+int ow_eventStepChatboxCleanup()
 {
     int v0; // r5
     int result; // r0
@@ -10829,7 +10829,7 @@ int sub_812BFF4()
 
 
 // 0x812c010
-int sub_812C010()
+int e_waitFadeThenCloseChat()
 {
     int v0; // r5
     int result; // r0

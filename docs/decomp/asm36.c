@@ -68,12 +68,12 @@ int t4_sceneInit()
 	v7[13] = 0;
 	ZeroFillByEightWords(v2, 128);
 	t4_queueTextChars();
-	sub_8130108();
+	sprite_loadBattleHudAssets();
 	t4_loadSceneBackground();
 	sub_81301DC();
 	sub_8130208();
 	sub_813064C();
-	sub_8130810();
+	t4_drawPlayerBox();
 	t4_refreshChipPackBuffer();
 	battle_drawFolderScreen();
 	*(v0 + 23) = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
@@ -83,7 +83,7 @@ int t4_sceneInit()
 
 
 // 0x8130108
-void sub_8130108()
+void sprite_loadBattleHudAssets()
 {
 	decomp_buildInitRefTable_812AF3C();
 	loadDecompressedAsset_812AF78();
@@ -305,7 +305,7 @@ void npc_startDialogScript()
 
 
 // 0x8130464
-void __fastcall sub_8130464(int a1, int a2, int a3, int a4)
+void __fastcall battle_initBgAndLayers(int a1, int a2, int a3, int a4)
 {
 	int v4; // r5
 
@@ -592,13 +592,13 @@ void sub_81307F4()
 	if ( *(v0 + 1) != 8 && *(v0 + 73) == 4 )
 	{
 		sub_813064C();
-		sub_8130810();
+		t4_drawPlayerBox();
 	}
 }
 
 
 // 0x8130810
-void sub_8130810()
+void t4_drawPlayerBox()
 {
 	char *v0; // r7
 	unsigned int v1; // r0
@@ -637,7 +637,7 @@ void sub_8130864()
 
 
 // 0x813096c
-void sub_813096C()
+void rfu_waitLinkRecordsForCutscene()
 {
 	int v0; // r5
 	int v1; // r0
@@ -778,7 +778,7 @@ void __noreturn e_linkMatchObjectUpdate()
 LABEL_27:
 						IsPaletteFadeActive();
 						if ( !v17 )
-							sub_8131210();
+							chatbox_threeChoiceMenuUpdate();
 						goto LABEL_29;
 					}
 					if ( v11 == 4 )
@@ -1300,7 +1300,7 @@ void sub_8130FC4()
 
 
 // 0x8130fc8
-int sub_8130FC8()
+int e_checkLinkMatchAndStartCutscene()
 {
     int v0; // r5
     int result; // r0
@@ -1513,7 +1513,7 @@ int t3_setStateAndFadeScreen()
 
 
 // 0x8131210
-void sub_8131210()
+void chatbox_threeChoiceMenuUpdate()
 {
     int v0; // r4
     int v1; // r5
@@ -1761,7 +1761,7 @@ void __noreturn e_copyBgTileBlock11x3()
 
 
 // 0x8131588
-int sub_8131588()
+int pet_applyStatModsToCurNavi()
 {
     char v0; // r4
     int v1; // r0
@@ -3071,7 +3071,7 @@ int e_packScreenNaviId()
 
 
 // 0x81326d4
-void __fastcall __noreturn sub_81326D4(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn initAreaScene(int a1, int a2, int a3, int a4)
 {
     ZeroFillGFX30025c0();
     battle_resetEStructRecords_8046664();
@@ -4511,7 +4511,7 @@ int __fastcall sub_8133A68(int a1)
                 else
                 {
                     sub_81207C4(word_202A020, &unk_2039AA0);
-                    sub_8131588();
+                    pet_applyStatModsToCurNavi();
                     chatbox_runScript_803FD9C_on_eTextScript2028A20(24);
                     submenu_setUnk26(4);
                     v1[2] = 4;
@@ -6896,7 +6896,7 @@ int sub_8135968()
 
 
 // 0x81359a0
-int __fastcall sub_81359A0(int a1, int a2, int a3)
+int __fastcall e_confirmSelection(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -6923,8 +6923,8 @@ int __fastcall sub_81359A0(int a1, int a2, int a3)
                 sub_81365F0();
                 if ( v6 || (v8 = *(v4 + oToolkit_GameStatePtr), *(v8 + oGameState_MapGroup) < 128) )
                 {
-                    sub_81366FC();
-                    sub_813658C();
+                    battle_removeObjectTagFromList();
+                    navicust_loadSelectedPartInfo();
                     *(v3 + 17) = 40;
                     *(v3 + 12) = 16;
                 }
@@ -6940,7 +6940,7 @@ int __fastcall sub_81359A0(int a1, int a2, int a3)
         }
         else
         {
-            sub_813658C();
+            navicust_loadSelectedPartInfo();
             *(v3 + 17) = 36;
         }
     }
@@ -7976,7 +7976,7 @@ LABEL_12:
 
 
 // 0x813658c
-signed int sub_813658C()
+signed int navicust_loadSelectedPartInfo()
 {
     int v0; // r5
     int v1; // r4
@@ -8107,7 +8107,7 @@ void sub_81366F4()
 
 
 // 0x81366fc
-int *sub_81366FC()
+int *battle_removeObjectTagFromList()
 {
     int v0; // r5
     int v1; // r0
@@ -9946,7 +9946,7 @@ signed int submenu_handleConfirmCancelCursorInput()
 
 
 // 0x8137a1c
-int sub_8137A1C()
+int chatbox_runSceneStepAndCopy()
 {
     int v0; // r5
     int result; // r0
@@ -10049,7 +10049,7 @@ void __noreturn battle_loadNaviBackground()
 
 
 // 0x8137bf0
-int __fastcall sub_8137BF0(int a1, int a2, int a3, int a4)
+int __fastcall battle_gatherFlaggedTextIds(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     unsigned int v5; // r6

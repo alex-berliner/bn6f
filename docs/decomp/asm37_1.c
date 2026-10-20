@@ -1773,7 +1773,7 @@ unsigned int __fastcall sub_81431C6(int a1, int a2, int a3, int a4)
     int v5; // r1
     unsigned int v6; // r1
 
-    sub_814339C(a1, a2, a3, a4);
+    e_initMinigameEffectSlot2(a1, a2, a3, a4);
     ZeroFillByWord(byte_2000D20, &loc_A0);
     v4 = ow_getEventFlagIds(0);
     ClearEventFlagRange(v4, v5, 8);
@@ -1984,7 +1984,7 @@ int sub_8143314()
 
 
 // 0x814339c
-int __fastcall sub_814339C(int a1, int a2, int a3, int a4)
+int __fastcall e_initMinigameEffectSlot2(int a1, int a2, int a3, int a4)
 {
     initMinigameEffect_8003a64(2u, a2, a3, a4);
     ZeroFillByWord(&byte_2001018, 64);
@@ -2187,8 +2187,8 @@ int ow_groundmanMinigameTick()
             v4 += 4;
         }
         sub_8143F58(v4[1]);
-        sub_8143C88();
-        sub_8143C62();
+        saveGroundmanMinigameData();
+        ow_switchGroundmanNpcList();
         TestEventFlagFromImmediate(13, 54);
         if ( !v2 )
         {
@@ -2396,7 +2396,7 @@ int __fastcall sub_8143C30(int a1, int a2, int a3, int a4)
 
 
 // 0x8143c62
-unsigned int sub_8143C62()
+unsigned int ow_switchGroundmanNpcList()
 {
     unsigned int v0; // r0
 
@@ -2407,7 +2407,7 @@ unsigned int sub_8143C62()
 
 
 // 0x8143c88
-int sub_8143C88()
+int saveGroundmanMinigameData()
 {
     unsigned __int8 *i; // r4
 
@@ -2423,7 +2423,7 @@ int sub_8143C88()
 
 
 // 0x8143cc8
-int sub_8143CC8()
+int clearGroundmanMinigameState()
 {
     _BYTE *i; // r4
 
@@ -2741,7 +2741,7 @@ int sub_8144010()
 
 
 // 0x8144048
-int sub_8144048()
+int battle_initMultiEnemyAIAndTick()
 {
     int v0; // r10
     char v1; // zf

@@ -7238,7 +7238,7 @@ byte_80A88E0:
 	thumb_local_start
 sub_80A88E2:
 	push {r4-r7,lr}
-	bl sub_80A8988
+	bl ow_removeObject
 	push {r4-r7}
 	mov r6, #0x28 
 	add r6, r6, r5
@@ -7313,9 +7313,9 @@ sub_80A8980:
 // symdb: Handles a disappearing overworld object: if bit 0x10000 in the sprite-status word at +0x28 is set, clears its shadow, sets state byte [+8]=8, plays a variant sound (0x73 or 0xA4 chosen by [+5]), and persistently sets the event flag from [+4] (with sub_81433E4(1) called in the second variant).
 // symdb: (r0 = object struct in r5 convention, fields used) -> r0 = SetEventFlag result; side effects:
 // symdb: state byte [+8]=8, shadow cleared, sound played, event flag [+4] set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8988.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_removeObject.yaml
 	thumb_local_start
-sub_80A8988:
+ow_removeObject:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x28]
 	ldr r1, dword_80A89D8 // =0x10000 
@@ -7353,7 +7353,7 @@ locret_80A89D6:
 	.balign 4, 0
 dword_80A89D8:
 	.word 0x10000
-	thumb_func_end sub_80A8988
+	thumb_func_end ow_removeObject
 
 	thumb_func_start sub_80A89DC
 sub_80A89DC:
@@ -7545,16 +7545,16 @@ sub_80A8B2C:
 off_80A8B3C:
 	.word off_80A8B40
 off_80A8B40:
-	.word sub_80A8B4C+1
+	.word object_cybercrowOrbitUpdate+1
 	.word sub_80A8BBC+1
 	.word sub_80A8C08+1
 	thumb_func_end sub_80A8B2C
 
 // symdb: Overworld tick handler for the Cybercrow: on sub_80A8DF0 failing, sleeps via sprite_update; otherwise runs update helpers, uses index from sub_80A8D02(0x85) into cos/sin tables (scaled <<8) to subtract offsets from +0x0C/+0x10, copies player Y into +0x14, then runs remaining helpers and sprite_update.
 // symdb: (r4/r5 = object record) -> void; also calls sprite_update on the object every frame
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8B4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_cybercrowOrbitUpdate.yaml
 	thumb_local_start
-sub_80A8B4C:
+object_cybercrowOrbitUpdate:
 	push {r4-r7,lr}
 	bl sub_80A8DF0
 	bne loc_80A8BA8
@@ -7601,7 +7601,7 @@ off_80A8BB4:
 	.word math_sinTable
 dword_80A8BB8:
 	.word 0x85
-	thumb_func_end sub_80A8B4C
+	thumb_func_end object_cybercrowOrbitUpdate
 
 	thumb_local_start
 sub_80A8BBC:

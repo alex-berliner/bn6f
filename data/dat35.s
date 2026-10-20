@@ -320,7 +320,7 @@ loc_812F28E::
 	b loc_812F290
 loc_812F290::
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_812F29C::
@@ -422,7 +422,7 @@ loc_812F350::
 	tst r0, r0
 	bne locret_812F38C
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 	b locret_812F38C
 loc_812F366::
 	ldrb r0, [r5,#3]
@@ -434,7 +434,7 @@ loc_812F366::
 	strh r0, [r5,#0x26]
 	b loc_812F38A
 loc_812F376::
-	bl sub_8130464
+	bl battle_initBgAndLayers
 	bl sub_8130850
 	mov r0, #4
 	strb r0, [r5,#3]
@@ -765,7 +765,7 @@ loc_812F5EE::
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 	bl battle_drawFolderScreen
 	bl t4_loadSceneBackground
 	mov r0, #4
@@ -1290,7 +1290,7 @@ dword_812FA08::
 sub_812FA0C::
 	push {r4-r7,lr}
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 	mov r0, #0x13
 	strb r0, [r5,#0x10]
 	bl sub_803EAE4

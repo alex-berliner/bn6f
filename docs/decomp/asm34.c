@@ -76,7 +76,7 @@ int sub_812D52E()
 
 	result = getStructFrom2008450(0);
 	if ( v1 )
-		result = sub_812D56C(&byte_812C258, 0, 48);
+		result = battle_spawnEStructGroup(&byte_812C258, 0, 48);
 	return result;
 }
 
@@ -89,13 +89,13 @@ int sub_812D54C()
 
 	result = getStructFrom2008450(3);
 	if ( v1 )
-		result = sub_812D56C(byte_812C268, 3, 192);
+		result = battle_spawnEStructGroup(byte_812C268, 3, 192);
 	return result;
 }
 
 
 // 0x812d56c
-int __fastcall sub_812D56C(void *a1, int a2, int a3)
+int __fastcall battle_spawnEStructGroup(void *a1, int a2, int a3)
 {
 	int v3; // r7
 	int v4; // r6
@@ -199,7 +199,7 @@ int sub_812D668()
 
 
 // 0x812d690
-void sub_812D690()
+void submenu_processConfirmCancelInput()
 {
 	int v0; // r5
 	int v1; // r10
@@ -291,7 +291,7 @@ void submenu_updateCursorAndTiles()
 	sub_812D700();
 	if ( v2 )
 	{
-		sub_812D7A4();
+		battle_confirmSelectionEntry();
 		if ( v2 )
 			*(v1 + 26) = menu_moveCursorUpDown_811FA22(*(*(v0 + oToolkit_JoypadPtr) + 4), 7, 1, *(v1 + 26));
 		copyBgTilesToBlock0();
@@ -321,7 +321,7 @@ void __noreturn copyBgTilesToBlock0()
 
 
 // 0x812d7a4
-signed int sub_812D7A4()
+signed int battle_confirmSelectionEntry()
 {
 	int v0; // r10
 	char *v1; // r5
@@ -443,7 +443,7 @@ int t4_transitionToTextState1C()
 
 
 // 0x812d8c8
-void __fastcall __noreturn sub_812D8C8(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn t4_restoreBgTilemapAfterBattle(int a1, int a2, int a3, int a4)
 {
 	int v4; // r5
 	int v5; // r0
@@ -551,7 +551,7 @@ signed int __fastcall npc_runDialog41(char a1)
 
 
 // 0x812da60
-void sub_812DA60()
+void rfu_finishCommScreenStep()
 {
 	_BYTE *v0; // r5
 

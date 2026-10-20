@@ -22,9 +22,9 @@ off_812EAC0:
 // symdb: Builds a list of (keyItem, remainingPresses) pairs at word_2023FA0 for key items 0x91..0x14B whose presses weren't already claimed in the toolkit's 0x31-entry 8-byte/entry table, skipping pairs whose battle object has byte[3]==0; updates the scroll/entry-count fields of the struct from sub_812ED2C.
 // symdb: () -> void; writes a pair list at word_2023FA0 and cursor fields [r5+0x1e/0x20/0x24] of the
 // symdb: struct returned by sub_812ED2C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EAC4.yaml
-	thumb_func_start sub_812EAC4
-sub_812EAC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_collectUnassignedKeyPresses.yaml
+	thumb_func_start battle_collectUnassignedKeyPresses
+battle_collectUnassignedKeyPresses:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	ldr r0, off_812EB68 // =word_2023FA0 
@@ -116,7 +116,7 @@ off_812EB70:
 	.word 0x14C
 off_812EB74:
 	.word 0xBC
-	thumb_func_end sub_812EAC4
+	thumb_func_end battle_collectUnassignedKeyPresses
 
 	thumb_func_start sub_812EB78
 sub_812EB78:
@@ -156,7 +156,7 @@ loc_812EB9A:
 	pop {r1,r2}
 	bne locret_812EBAC
 	mov r0, r4
-	bl sub_812EBD8
+	bl e_spawnFromTableAndPlaceByAltY
 locret_812EBAC:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -177,7 +177,7 @@ sub_812EBB8:
 	bne locret_812EBD0
 	mov r2, #0xb4
 	ldr r0, off_812EBD4 // =byte_812DACC 
-	bl sub_812EBD8
+	bl e_spawnFromTableAndPlaceByAltY
 locret_812EBD0:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -189,9 +189,9 @@ off_812EBD4:
 // symdb: (r0 = 0xFF-terminated (id,slot,param) spawn table, r1 = eStruct index into eStructArr2008450, r2
 // symdb: = reference coordinate (0x44 or other)) -> r0 = clobbered; sets the struct's x/y via
 // symdb: sprite_setCoordinates
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EBD8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_spawnFromTableAndPlaceByAltY.yaml
 	thumb_local_start
-sub_812EBD8:
+e_spawnFromTableAndPlaceByAltY:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r2, [sp]
@@ -214,7 +214,7 @@ loc_812EBFE:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812EBD8
+	thumb_func_end e_spawnFromTableAndPlaceByAltY
 
 	thumb_func_start sub_812EC04
 sub_812EC04:
@@ -447,9 +447,9 @@ locret_812ED90:
 
 // symdb: Reloads the full-screen map background tilemap from unk_201E920 into tile block 1, zeroes the BG tile buffer, resets the battle-overlay scene record array, and invokes several overlay helpers using a value read from the caller's r5 struct.
 // symdb: () -> void; caller's r5 preserved via r7 round-trip
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812ED94.yaml
-	thumb_func_start sub_812ED94
-sub_812ED94:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_restoreMapBackground.yaml
+	thumb_func_start battle_restoreMapBackground
+battle_restoreMapBackground:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl ZeroFillGFX30025c0
@@ -481,7 +481,7 @@ sub_812ED94:
 	.balign 4, 0
 off_812EDE0:
 	.word unk_201E920
-	thumb_func_end sub_812ED94
+	thumb_func_end battle_restoreMapBackground
 
 	thumb_func_start sub_812EDE4
 sub_812EDE4:

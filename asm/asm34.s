@@ -247,7 +247,7 @@ loc_812D532:
 	pop {r1,r2}
 	bne locret_812D546
 	ldr r0, off_812D548 // =byte_812C258 
-	bl sub_812D56C
+	bl battle_spawnEStructGroup
 locret_812D546:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -266,7 +266,7 @@ sub_812D54C:
 	bne locret_812D564
 	mov r2, #0xc0
 	ldr r0, off_812D568 // =byte_812C268 
-	bl sub_812D56C
+	bl battle_spawnEStructGroup
 locret_812D564:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -277,9 +277,9 @@ off_812D568:
 // symdb: Spawns a group of up to four eStruct records from a 0xFF-terminated (id,slot,param) table, links each spawned record to the first one via a back-pointer at offset 0x14, and gives each one the same sprite position via sprite_setCoordinates.
 // symdb: (r0 = 0xFF-terminated (id,slot,param) spawn table, r1 = first eStructArr2008450 slot index (loop
 // symdb: covers r1..r1+2), r2 = pointer passed on to sprite_setCoordinates) -> void; no return value.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D56C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnEStructGroup.yaml
 	thumb_local_start
-sub_812D56C:
+battle_spawnEStructGroup:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r2, [sp]
@@ -306,7 +306,7 @@ loc_812D594:
 	add sp, sp, #4
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_812D56C
+	thumb_func_end battle_spawnEStructGroup
 
 	thumb_func_start sub_812D5A0
 sub_812D5A0:
@@ -445,9 +445,9 @@ dword_812D68C:
 // symdb: Per-frame input handler for a menu screen: calls sub_812D6F8 to get the menu state, and when its [r7+0x28] flag is set, adjusts a cursor via menu_adjustCursorOrValue_811F7F8, then sets state [r7+0x26]=8 (or |=1 of [r7+0x1b]) on B or A-with-condition, or state 4 on A otherwise, playing SFX 0x81/0x83.
 // symdb: (r0/r5 = menu state struct) -> void; writes state word [r5+0x26] = 4 or 8 and flag byte
 // symdb: [r5+0x1b] |= 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D690.yaml
-	thumb_func_start sub_812D690
-sub_812D690:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_processConfirmCancelInput.yaml
+	thumb_func_start submenu_processConfirmCancelInput
+submenu_processConfirmCancelInput:
 	push {r4-r7,lr}
 	bl submenu_getWork
 	mov r7, r0
@@ -499,7 +499,7 @@ loc_812D6F0:
 locret_812D6F4:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812D690
+	thumb_func_end submenu_processConfirmCancelInput
 
 // symdb: Returns the pointer to the shared work/state struct for the submenu screen cluster at 0x02037780.
 // symdb: () -> r0 = pointer to menu work struct (0x02037780); flags unaffected (returns via mov pc, lr)
@@ -561,7 +561,7 @@ submenu_updateCursorAndTiles:
 	mov r7, r0
 	bl sub_812D700
 	bne locret_812D776
-	bl sub_812D7A4
+	bl battle_confirmSelectionEntry
 	bne loc_812D76E
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -616,9 +616,9 @@ off_812D7A0:
 // symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling sub_812D5A0.
 // symdb: (no args; uses r10 toolkit's s2001c04 battle-work pointer and the entry returned by sub_812D6F8)
 // symdb: -> r0 = 1 if A was newly pressed this frame, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D7A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSelectionEntry.yaml
 	thumb_local_start
-sub_812D7A4:
+battle_confirmSelectionEntry:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r5, [sp]
@@ -676,7 +676,7 @@ off_812D808:
 off_812D80C:
 	.word unk_2023FC0
 	.word 0x64
-	thumb_func_end sub_812D7A4
+	thumb_func_end battle_confirmSelectionEntry
 
 	thumb_local_start
 sub_812D814:
@@ -794,9 +794,9 @@ locret_812D8C6:
 
 // symdb: Refills the BG tile buffer, reinitializes the battle-overlay eStruct record array, then redraws a full 30x20 screen of tile IDs from the snapshot at dword_201E420 and reapplies the saved layer/scroll parameter to the overlay helpers.
 // symdb: () -> void; no return value, r5 (caller's scene pointer) preserved via r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D8C8.yaml
-	thumb_func_start sub_812D8C8
-sub_812D8C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_restoreBgTilemapAfterBattle.yaml
+	thumb_func_start t4_restoreBgTilemapAfterBattle
+t4_restoreBgTilemapAfterBattle:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl ZeroFillGFX30025c0
@@ -829,7 +829,7 @@ sub_812D8C8:
 off_812D914:
 	.word dword_201E420
 	.word byte_812C278
-	thumb_func_end sub_812D8C8
+	thumb_func_end t4_restoreBgTilemapAfterBattle
 // symdb: Wrapper that spawns a batch of eStruct records from one of two hardcoded 0xFF-terminated (id, slot, param) tables.
 // symdb: (r0 = unused/ignored) -> r0 = result of battle_spawnEStructRecordsFromTable; secondary entry at
 // symdb: sub_812D922 selects the second table
@@ -1027,9 +1027,9 @@ npc_runDialog41:
 // symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> sub_803C754 on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
 // symdb: (r0 = unused/clobbered, r5 = *state struct (callee-saved)) -> r0 = return of sub_8120AB8; flags
 // symdb: from bl/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA60.yaml
-	thumb_func_start sub_812DA60
-sub_812DA60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_finishCommScreenStep.yaml
+	thumb_func_start rfu_finishCommScreenStep
+rfu_finishCommScreenStep:
 	push {r0,lr}
 	bl screenFade_80062C8
 	cmp r0, #0xc
@@ -1054,6 +1054,6 @@ loc_812DA84:
 	bl pack_addAllFolderChipsToPack
 	// <endpool> <endfile>
 	pop {r0,pc}
-	thumb_func_end sub_812DA60
+	thumb_func_end rfu_finishCommScreenStep
 
 /*For debugging purposes, connect comment at any range!*/

@@ -1405,7 +1405,7 @@ int reloadCurNaviStatBoosts_813c3ac()
         applyNaviStatsMaybe_813C458();
         v1 = TestEventFlagFromImmediate(1, 99);
         if ( !v5 )
-            sub_8121154(v1, v2, v3, v4);
+            pet_reloadCurNaviEffects(v1, v2, v3, v4);
     }
     if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_MapGroup) >= 128 )
     {

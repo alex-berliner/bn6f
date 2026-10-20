@@ -82,12 +82,12 @@ t4_sceneInit:
 	mov r1, #0x80
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	bl t4_queueTextChars
-	bl sub_8130108
+	bl sprite_loadBattleHudAssets
 	bl t4_loadSceneBackground
 	bl sub_81301DC
 	bl sub_8130208
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 	bl t4_refreshChipPackBuffer
 	bl battle_drawFolderScreen
 	mov r0, #0
@@ -109,9 +109,9 @@ off_8130104:
 
 // symdb: Loads battle HUD sprite tiles, palettes, and compressed graphics by building the init-ref table, fetching two fixed assets, then decompressing an inline 12-byte-entry table into VRAM, OAM sprite slots, and a 0x20-byte palette.
 // symdb: () -> void; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130108.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadBattleHudAssets.yaml
 	thumb_local_start
-sub_8130108:
+sprite_loadBattleHudAssets:
 	push {lr}
 	bl decomp_buildInitRefTable_812AF3C
 	bl loadDecompressedAsset_812AF78
@@ -147,7 +147,7 @@ byte_8130124:
 	.word unk_2024E8C
 	.word eDecompBuffer2013A00
 	.word NULL
-	thumb_func_end sub_8130108
+	thumb_func_end sprite_loadBattleHudAssets
 
 // symdb: Copies a full 30x20-tile (whole-screen) background map from RAM into BG tile block 1 when an overlay cutscene is set up.
 // symdb: () -> void; no input args, all parameters hardcoded
@@ -594,9 +594,9 @@ locret_8130462:
 
 // symdb: Initializes BG tile block 1 with a 30x20 tilemap from unk_201F320, resets the battle-overlay eStruct record array, and sets per-layer/eStruct scroll/fade values (caller struct's halfword at offset 0x2a and 0x80) via sub_8130290/sub_81302B0/sub_81302F4 and a final sub_81304A4.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130464.yaml
-	thumb_func_start sub_8130464
-sub_8130464:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initBgAndLayers.yaml
+	thumb_func_start battle_initBgAndLayers
+battle_initBgAndLayers:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl ZeroFillGFX30025c0
@@ -622,7 +622,7 @@ sub_8130464:
 	.balign 4, 0
 off_81304A0:
 	.word unk_201F320
-	thumb_func_end sub_8130464
+	thumb_func_end battle_initBgAndLayers
 
 // symdb: Wrapper that feeds a fixed (id, slot, param) table into the eStruct table-spawner to create type-9 records in eStructArr2008450.
 // symdb: () -> void; r0 clobbered with table pointer, calls
@@ -1121,7 +1121,7 @@ sub_81307F4:
 	cmp r0, #4
 	bne locret_813080C
 	bl sub_813064C
-	bl sub_8130810
+	bl t4_drawPlayerBox
 locret_813080C:
 	pop {pc}
 	.byte 0, 0
@@ -1130,9 +1130,9 @@ locret_813080C:
 // symdb: Overlay helper that, gated on a scene counter, reads the player object's state nibble and stamps the HP/emotion box tiles (from unk_20347D8) into BG tile block 2 via sub_8120348 + CopyBackgroundTiles.
 // symdb: () -> void; no incoming args — it fetches the scene record via sub_8130404 and reads its byte at
 // symdb: +0xC as a counter, using (counter-1) as the slot for battle_getPlayerCurState_8137884.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130810.yaml
-	thumb_func_start sub_8130810
-sub_8130810:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_drawPlayerBox.yaml
+	thumb_func_start t4_drawPlayerBox
+t4_drawPlayerBox:
 	push {r4-r7,lr}
 	bl t4_getWork
 	mov r7, r0
@@ -1161,7 +1161,7 @@ locret_8130846:
 off_8130848:
 	.word unk_20347D8
 	.word unk_20018EC
-	thumb_func_end sub_8130810
+	thumb_func_end t4_drawPlayerBox
 
 	thumb_func_start sub_8130850
 sub_8130850:
@@ -1214,9 +1214,9 @@ byte_8130884:
 // symdb: Per-frame battle tick: dispatches a sub-state handler from a 13-entry table, then runs entity update handlers and the eStruct sprite pipeline unless bit 0x8 of [r5,#0x1b] is set, and refreshes the custom-screen chip cursor OAM/tile upload when the 0x200BC30 jump offset is nonzero.
 // symdb: (r5 = scene/state context struct, preserved) -> r0 = result of dispatched handler or OAM-call
 // symdb: result; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130904.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_updateFrame.yaml
 	thumb_local_start
-sub_8130904:
+battle_updateFrame:
 	push {lr}
 	ldr r0, off_8130934 // =off_8130938
 	ldrb r1, [r5,#2]
@@ -1242,7 +1242,7 @@ loc_8130930:
 off_8130934:
 	.word off_8130938
 off_8130938:
-	.word sub_813096C+1
+	.word rfu_waitLinkRecordsForCutscene+1
 	.word e_linkMatchObjectUpdate+1
 	.word sub_8130B30+1
 	.word sub_8130BC8+1
@@ -1252,17 +1252,17 @@ off_8130938:
 	.word sub_8130ED4+1
 	.word sub_8130ED8+1
 	.word sub_8130EDC+1
-	.word sub_8130FC8+1
+	.word e_checkLinkMatchAndStartCutscene+1
 	.word sub_8131068+1
 	.word sub_8131150+1
-	thumb_func_end sub_8130904
+	thumb_func_end battle_updateFrame
 
 // symdb: RFU link-sync state handler (state byte 0x20): dispatches the wireless link state, seeds a pending 0xDC transfer entry, waits until two RFU link records both carry id 0xDC matching eLinkState (+0x1C word, +0xA halfword), and once no fade is active launches cutscene script 0x68, advancing the owner state ([r5+2]=4, [r5+0x14]=0, [r5+0x2A]=0xDC).
 // symdb: (r0 = state byte value 0x20, r5 = owner state struct) -> r0 = void; writes owner fields
 // symdb: 0x10/0x26/0x2A/0x32/0x02/0x14
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813096C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_waitLinkRecordsForCutscene.yaml
 	thumb_local_start
-sub_813096C:
+rfu_waitLinkRecordsForCutscene:
 	push {r4-r7,lr}
 	mov r0, #0x20 
 	strb r0, [r5,#0x10]
@@ -1337,7 +1337,7 @@ loc_81309FE:
 locret_8130A00:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813096C
+	thumb_func_end rfu_waitLinkRecordsForCutscene
 
 // symdb: Per-frame state-machine update for an interactive object that matches a looked-up record against the eLinkState global and runs text scripts 0x40/0x41 from eTextScript201BA20.
 // symdb: (r0 = ? (unused), r5 = object work struct, preloaded) -> r0 = ?; sets state bytes
@@ -1467,7 +1467,7 @@ loc_8130AFA:
 loc_8130AFE:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8130B08
-	bl sub_8131210
+	bl chatbox_threeChoiceMenuUpdate
 loc_8130B08:
 	bl e_copyBgTileBlock11x3
 	bl sub_8131458
@@ -2088,9 +2088,9 @@ sub_8130FC4:
 
 // symdb: Event-state routine that clears a flag, sets state 0x21, dispatches via sub_803EAE4; on bit 0x10 copies r5+0x26/0x2a into a sub_81325CC struct, otherwise fetches eLinkState and a 2-entry record (stride 0x10) from sub_81323B0, requiring both entries' offsets 4/2/0xa to match eLinkState+0x1c/+0xa/0xd9. On mode-4 or full match, once IsScreenFadeActive clears it calls init_cutsceneSceneState (fade + chatbox script 0x68), then writes r5+0x02=4, r5+0x14=0, r5+0x2a=0xdc, and sets r5+0x1b bit 0x20 to advance.
 // symdb: () -> void; operates on the event object in r5, sets condition codes via callees only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130FC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_checkLinkMatchAndStartCutscene.yaml
 	thumb_local_start
-sub_8130FC8:
+e_checkLinkMatchAndStartCutscene:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x1b]
 	mov r1, #8
@@ -2170,7 +2170,7 @@ loc_8131062:
 locret_8131064:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8130FC8
+	thumb_func_end e_checkLinkMatchAndStartCutscene
 
 	thumb_local_start
 sub_8131068:
@@ -2404,9 +2404,9 @@ dword_813120C:
 // symdb: Update tick for a three-option chatbox menu: replay the current option's script after the chatbox finishes, move the cursor (0–2) with the d-pad playing each option's script, and confirm/cancel with A/B (B always exits, A re-runs script 0x69 first), setting status bit 0x2 and playing sound 0x83/0x81.
 // symdb: (r5 = dialog state struct, r4 = context struct with u16 at +0xA, r10 = toolkit) -> void; no
 // symdb: meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131210.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_threeChoiceMenuUpdate.yaml
 	thumb_local_start
-sub_8131210:
+chatbox_threeChoiceMenuUpdate:
 	push {r4-r7,lr}
 	mov r7, r5
 	bl sub_81312EC
@@ -2504,7 +2504,7 @@ off_81312D0:
 	.word dword_81312D4
 dword_81312D4:
 	.word 0x6D6C6B
-	thumb_func_end sub_8131210
+	thumb_func_end chatbox_threeChoiceMenuUpdate
 
 	thumb_local_start
 sub_81312D8:
@@ -2889,9 +2889,9 @@ off_8131584:
 // symdb: Re-initializes the current PET navi's stat block at 203CCE0, then applies sentinel-checked stat overrides from unk_2037700 (+0x1C, +0x5C, +0x60 written to bytes 0x2E, 0x56, 0x57), and finally dispatches 7 effect functions from one of three tables selected by sub_81312EC's returned byte <<2.
 // symdb: (no args) -> r0 clobbered by last dispatched function; calls GetCurPETNavi,
 // symdb: initNaviStats203CCE0_8013846, SetNaviStats203CCE0Byte
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131588.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_applyStatModsToCurNavi.yaml
 	thumb_local_start
-sub_8131588:
+pet_applyStatModsToCurNavi:
 	push {r4-r7,lr}
 	bl GetCurPETNavi // () -> u8
 	bl initNaviStats203CCE0_8013846
@@ -2976,7 +2976,7 @@ off_8131644:
 	.word loc_813170A+1
 	.word loc_8131728+1
 	.word 0xFFFF
-	thumb_func_end sub_8131588
+	thumb_func_end pet_applyStatModsToCurNavi
 
 // symdb: Sets byte 0x23 of the currently selected PET navi's stats block to 1.
 // symdb: () -> void; no args used, r0-r3 clobbered by calls
@@ -5104,9 +5104,9 @@ byte_81326C8:
 
 // symdb: Scene-entry init: zero-fills BG tile buffer, resets and respawns eStructArr2008450 records, decompresses BG/sprite asset chain, runs three local setup helpers, clears a state byte at r5+0x48, then triggers a screen fade.
 // symdb: () -> void; r5 = scene/GUI state base whose +0x48 flag byte is cleared
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81326D4.yaml
-	thumb_func_start sub_81326D4
-sub_81326D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initAreaScene.yaml
+	thumb_func_start initAreaScene
+initAreaScene:
 	push {lr}
 	bl ZeroFillGFX30025c0
 	bl battle_resetEStructRecords_8046664 // () -> void
@@ -5154,7 +5154,7 @@ dword_8132718:
 	.word 0x6010600
 	.word eDecompBuffer2013A00
 	.word NULL
-	thumb_func_end sub_81326D4
+	thumb_func_end initAreaScene
 
 	thumb_func_start sub_8132764
 sub_8132764:
@@ -7668,7 +7668,7 @@ loc_8133AC6:
 	ldr r0, off_8133B08 // =word_202A020 
 	ldr r1, off_8133B0C // =unk_2039AA0 
 	bl sub_81207C4
-	bl sub_8131588
+	bl pet_applyStatModsToCurNavi
 	mov r0, #0x18
 	bl chatbox_runScript_803FD9C_on_eTextScript2028A20
 	mov r0, #4
@@ -11680,7 +11680,7 @@ off_81357E0:
 	.word sub_8135938+1
 	.word ow_objectStepSavePos+1
 	.word sub_8135968+1
-	.word sub_81359A0+1
+	.word e_confirmSelection+1
 	.word sub_8135A10+1
 	.word ow_objectStepSavePos+1
 	.word sub_8135A24+1
@@ -11906,12 +11906,12 @@ loc_813599A:
 	pop {pc}
 	thumb_func_end sub_8135968
 
-// symdb: State-machine step that copies the selection index from [r5+0x30] to [r5+0x32], then based on entry 10 of eStructArr2008450 and the current selection (0, 0xFFFF, or other) either sets next state to 8, or — after sub_81365F0 succeeds — plays SOUND_EXIT_SUBMENU, clears entry 10, resets selection to 0xFFFF, runs chatbox script 5, and sets state 0x38 (in cyberspace maps, MapGroup >= 0x80), else calls sub_81366FC/sub_813658C and sets timers [r5+0x11]=0x28, [r5+0xC]=0x10; clears [r5+0x13] and returns 0.
+// symdb: State-machine step that copies the selection index from [r5+0x30] to [r5+0x32], then based on entry 10 of eStructArr2008450 and the current selection (0, 0xFFFF, or other) either sets next state to 8, or — after sub_81365F0 succeeds — plays SOUND_EXIT_SUBMENU, clears entry 10, resets selection to 0xFFFF, runs chatbox script 5, and sets state 0x38 (in cyberspace maps, MapGroup >= 0x80), else calls battle_removeObjectTagFromList/navicust_loadSelectedPartInfo and sets timers [r5+0x11]=0x28, [r5+0xC]=0x10; clears [r5+0x13] and returns 0.
 // symdb: (r5 = handler state struct) -> r0 = 0; writes next-state byte [r5+2], selection copy [r5+0x32],
 // symdb: timers [r5+0xC]/[r5+0x11], clears [r5+0x13]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81359A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_confirmSelection.yaml
 	thumb_local_start
-sub_81359A0:
+e_confirmSelection:
 	push {lr}
 	ldrh r0, [r5,#0x30]
 	strh r0, [r5,#0x32]
@@ -11947,15 +11947,15 @@ loc_81359C2:
 	strb r0, [r5,#2]
 	b loc_8135A08
 loc_81359EE:
-	bl sub_81366FC
-	bl sub_813658C
+	bl battle_removeObjectTagFromList
+	bl navicust_loadSelectedPartInfo
 	mov r0, #0x28 
 	strb r0, [r5,#0x11]
 	mov r0, #0x10
 	strb r0, [r5,#0xc]
 	b loc_8135A08
 loc_8135A00:
-	bl sub_813658C
+	bl navicust_loadSelectedPartInfo
 	mov r0, #0x24 
 	strb r0, [r5,#0x11]
 loc_8135A08:
@@ -11963,7 +11963,7 @@ loc_8135A08:
 	strb r0, [r5,#0x13]
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_81359A0
+	thumb_func_end e_confirmSelection
 
 	thumb_local_start
 sub_8135A10:
@@ -13540,9 +13540,9 @@ locret_8136588:
 // symdb: (r0 = unused on entry; r5 = NaviCust screen-state struct with cursor coords at +0x28/+0x2c) ->
 // symdb: r0 = clobbered; updates struct fields +0xe, +0x10, +0x14, +0x28, +0x2c, +0x38, +0x3a, +0x3c,
 // symdb: +0x3e and byte +2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813658C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_loadSelectedPartInfo.yaml
 	thumb_local_start
-sub_813658C:
+navicust_loadSelectedPartInfo:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x28]
 	ldrh r1, [r5,#0x2c]
@@ -13583,7 +13583,7 @@ sub_813658C:
 	mov r0, #1
 	strb r0, [r5,#0x10]
 	pop {r4-r7,pc}
-	thumb_func_end sub_813658C
+	thumb_func_end navicust_loadSelectedPartInfo
 
 	thumb_local_start
 sub_81365F0:
@@ -13742,9 +13742,9 @@ sub_81366F4:
 // symdb: Removes a battle object's tag byte (descriptor byte +3) from the 6-slot list at unk_2022B70 by shifting later entries left, unless another object in the first N entries of the 2004190 array shares the same tag.
 // symdb: (r5 = battle object/holder with halfwords at +0x28 and +0x2c) -> r0 = destroyed; touches
 // symdb: unk_2022B70[0..6]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81366FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_removeObjectTagFromList.yaml
 	thumb_local_start
-sub_81366FC:
+battle_removeObjectTagFromList:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	ldrh r0, [r5,#0x28]
@@ -13804,7 +13804,7 @@ loc_8136762:
 loc_8136768:
 	add sp, sp, #4
 	pop {r4-r7,pc}
-	thumb_func_end sub_81366FC
+	thumb_func_end battle_removeObjectTagFromList
 
 	thumb_local_start
 sub_813676C:
@@ -16294,7 +16294,7 @@ battle_initRoundState:
 	mov r2, #0x12
 	bl ClearEventFlagRangeFromImmediate // (u8 entryIdx, u8 byteFlagIdx, int numEntries) -> void
 loc_8137906:
-	bl sub_8137BF0
+	bl battle_gatherFlaggedTextIds
 	strh r0, [r5,#0x1e]
 	bl sub_8137D20
 	bl chatbox_renderTextEntry
@@ -16358,7 +16358,7 @@ off_8137980:
 off_8137984:
 	.word sub_8137990+1
 	.word submenu_handleConfirmCancelCursorInput+1
-	.word sub_8137A1C+1
+	.word chatbox_runSceneStepAndCopy+1
 	thumb_func_end submenu_runPromptFrameUpdate
 	thumb_local_start
 sub_8137990:
@@ -16436,9 +16436,9 @@ locret_8137A1A:
 // symdb: Gated by chatbox event flags (requires bit 0x80 set, skips on bit 8, requires bit 0x20 and nonzero chatbox state); copies one halfword table entry indexed by a script-derived byte from unk_201CF00, runs four step helpers, advances the task state byte at [r5+2] to 4.
 // symdb: (r5 = task/state struct) -> void; sets [r5+2] = 4 (next step state) unless chatbox flags say to
 // symdb: bail or the step already ran
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137A1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_runSceneStepAndCopy.yaml
 	thumb_local_start
-sub_8137A1C:
+chatbox_runSceneStepAndCopy:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -16480,7 +16480,7 @@ off_8137A74:
 	.word unk_20018C0
 off_8137A78:
 	.word unk_201CF00
-	thumb_func_end sub_8137A1C
+	thumb_func_end chatbox_runSceneStepAndCopy
 
 	thumb_local_start
 sub_8137A7C:
@@ -16637,9 +16637,9 @@ off_8137BC0:
 // symdb: Collects pairs of (text-bank-1 message index, sub-index) gated by TestEventFlag checks on byte_8137C4C/byte_8137C9C into unk_201CF00, returning the number of entries written.
 // symdb: () -> writes up to 18 halfwords to unk_201CF00 and returns r0 = count written; flags clobbered
 // symdb: by TestEventFlag/ZeroFillByWord calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137BF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_gatherFlaggedTextIds.yaml
 	thumb_local_start
-sub_8137BF0:
+battle_gatherFlaggedTextIds:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_8137C44 // =unk_201CF00 
@@ -16717,7 +16717,7 @@ byte_8137D0C:
 	.byte 0xA, 0xC, 0xE, 0x10, 0x12, 0x16, 0x18, 0x1A, 0x1C
 	.byte 0x1E, 0x14, 0x22, 0x0, 0x2, 0x4, 0x6, 0x8, 0x20
 	.byte 0x0, 0x0
-	thumb_func_end sub_8137BF0
+	thumb_func_end battle_gatherFlaggedTextIds
 
 	thumb_local_start
 sub_8137D20:

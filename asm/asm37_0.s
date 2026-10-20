@@ -1873,7 +1873,7 @@ reloadCurNaviStatBoosts_813c3ac:
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq .loc_813C3CC
     // if (!EVENT_163)
-	bl sub_8121154
+	bl pet_reloadCurNaviEffects
 	b .loc_813C3CC
 .loc_813C3CC:
 	mov r0, r10

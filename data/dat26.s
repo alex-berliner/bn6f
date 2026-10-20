@@ -549,7 +549,7 @@ cutscenescript_8092ADE:
 	cs_wait_screen_fade
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_C67
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D33
-	cs_call_native_with_return_value ptr1=sub_8143CC8+1
+	cs_call_native_with_return_value ptr1=clearGroundmanMinigameState+1
 	cs_stop_cutscene_camera_script
 	cs_chatbox_cmd_8037a70
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04
@@ -705,7 +705,7 @@ cutscenescript_8092CD5:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_C6C
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_11F
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D32
-	cs_call_native_with_return_value ptr1=sub_8143CC8+1
+	cs_call_native_with_return_value ptr1=clearGroundmanMinigameState+1
 	cs_do_pet_effect byte1=0xFF byte2=0x01
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_warp_cmd_8038040_2 byte1=0x1 byte2=0x01 ptr3=unk_8092D10

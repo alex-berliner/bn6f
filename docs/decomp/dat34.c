@@ -278,7 +278,7 @@ int sub_812DD2C()
             return result;
         }
 LABEL_20:
-        sub_812ED94(v10, v11, v12, v13);
+        battle_restoreMapBackground(v10, v11, v12, v13);
     }
     return result;
 }
@@ -1503,7 +1503,7 @@ void __noreturn sub_812E9AC()
     *v7 = -16;
     v7[4] = 14;
     ZeroFillByEightWords(v1, 128);
-    sub_812EAC4();
+    battle_collectUnassignedKeyPresses();
     sub_812EA44();
     CopyBackgroundTiles812EAAC();
 }

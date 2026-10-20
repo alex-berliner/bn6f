@@ -355,12 +355,12 @@
 
 	enum ms_cmd_8035cd6_cmd // 0x18
 // 0x18 byte1 destination2
-// jump if byte1 == sub_800B734()
-// sub_800B734 performs a summation on the 12 halfwords at word_2000FA0
+// jump if byte1 == getTimeTierFromSum()
+// getTimeTierFromSum performs a summation on the 12 halfwords at word_2000FA0
 //  returns 0 if the summation is greater than 0x2a30
 //  returns 1 if 0x1c20 < summation <= 0x2a30
 //  else returns 2
-// byte1 - value to compare the return value of sub_800B734 with
+// byte1 - value to compare the return value of getTimeTierFromSum with
 // destination2 - script to jump to
 	.macro ms_cmd_8035cd6 byte1:req destination2:req
 	.byte ms_cmd_8035cd6_cmd
@@ -370,12 +370,12 @@
 
 	enum ms_cmd_8035cf8_cmd // 0x19
 // 0x19 byte1 destination2
-// jump if byte1 != sub_800B734()
-// sub_800B734 performs a summation on the 12 halfwords at word_2000FA0
+// jump if byte1 != getTimeTierFromSum()
+// getTimeTierFromSum performs a summation on the 12 halfwords at word_2000FA0
 //  returns 0 if the summation is greater than 0x2a30
 //  returns 1 if 0x1c20 < summation <= 0x2a30
 //  else returns 2
-// byte1 - value to compare the return value of sub_800B734 with
+// byte1 - value to compare the return value of getTimeTierFromSum with
 // destination2 - script to jump to
 	.macro ms_cmd_8035cf8 byte1:req destination2:req
 	.byte ms_cmd_8035cf8_cmd

@@ -1815,7 +1815,7 @@ byte_810E7A8:
 off_810E7B0:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_810E8DA+1
+	.word battle_objectRunPhaseHandlerTable+1
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -1945,9 +1945,9 @@ byte_810E8D4:
 // symdb: Per-frame update for a battle object: returns early if time-stopped or paused, branches to sub_8016EC4 when object flag 0x40000000 is set, otherwise either tail-calls one of five custom phase handlers from a local table or defers to the generic phase dispatcher.
 // symdb: (object ptr in r5/fixed reg per project convention) -> void; sets flags from
 // symdb: battle_isPaused/battle_isTimeStop bytes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E8DA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectRunPhaseHandlerTable.yaml
 	thumb_local_start
-sub_810E8DA:
+battle_objectRunPhaseHandlerTable:
 	push {r4,r6,r7,lr}
 	bl object_getFlag // () -> int
 	ldr r1, dword_810EC40 // =0x40000000
@@ -1982,7 +1982,7 @@ off_810E914:
 	.word sub_810E9B6+1
 	.word sub_810E9D4+1
 	.word battle_clearRecordAndResetPhase+1
-	thumb_func_end sub_810E8DA
+	thumb_func_end battle_objectRunPhaseHandlerTable
 
 	thumb_local_start
 sub_810E928:
@@ -5912,7 +5912,7 @@ loc_81109A6:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_81110C8
+	bl spawn_effectAtPanel
 	ldrh r0, [r7,#oAIAttackVars_Unk_32]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r2, #0x78
@@ -5989,7 +5989,7 @@ loc_8110A3E:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_81110C8
+	bl spawn_effectAtPanel
 	ldrh r0, [r7,#oAIAttackVars_Unk_32]
 	strh r0, [r7,#oAIAttackVars_StepTimer]
 	mov r2, #0x78
@@ -6232,7 +6232,7 @@ loc_8110BDE:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_81110C8
+	bl spawn_effectAtPanel
 	mov r2, #0x78
 	ldrb r0, [r5,r2]
 	mov r2, #0x79
@@ -6311,7 +6311,7 @@ loc_8110C7E:
 	strb r0, [r5,#oObjectHeader_Flags]
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
-	bl sub_81110C8
+	bl spawn_effectAtPanel
 	mov r2, #0x78
 	ldrb r0, [r5,r2]
 	mov r2, #0x79
@@ -6868,9 +6868,9 @@ dword_81110C4:
 // symdb: Spawns the type-0 effect object at a battlefield panel, tagging it with the acting object's alliance/direction bits.
 // symdb: (r0 = panel column, r1 = panel row, r5 = source battle object) -> r0 = spawned effect object
 // symdb: pointer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81110C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawn_effectAtPanel.yaml
 	thumb_local_start
-sub_81110C8:
+spawn_effectAtPanel:
 	push {r4-r7,lr}
 	push {r0,r1}
 	ldrb r0, [r5,#oBattleObject_Alliance]
@@ -6951,7 +6951,7 @@ byte_811115C:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_81110C8
+	thumb_func_end spawn_effectAtPanel
 
 // symdb: Dispatcher for the battlesweep AI attack: jumps to the next attack step based on the AI attack vars' HitElement state byte.
 // symdb: (r7 = AI attack vars struct) -> r0 = HitElement value passed to selected handler; returns to
@@ -12725,10 +12725,10 @@ object_probePanelReserve:
 	bl sub_8113FC0
 	tst r0, r0
 	bne loc_8113F86
-	bl sub_8113FE8
+	bl battle_pickRandomFilteredPanelAvoidingEnemyRow
 	tst r0, r0
 	bne loc_8113F86
-	bl sub_8114030
+	bl battle_pickAllianceRandomPanel
 	tst r0, r0
 	bne loc_8113F86
 	ldrb r0, [r5,#0x12]
@@ -12793,9 +12793,9 @@ locret_8113FE6:
 // symdb: Picks a random panel matching a per-team panel-effect parameter, excluding the row of the caller's closest opponent's nearest battleObject, and returns its packed coords (r0 = col, r1 = row).
 // symdb: (r5 = battle object) -> r0 = col (low 3 bits of packed panel byte), r1 = row (high nibble); no
 // symdb: flags guaranteed
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8113FE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomFilteredPanelAvoidingEnemyRow.yaml
 	thumb_local_start
-sub_8113FE8:
+battle_pickRandomFilteredPanelAvoidingEnemyRow:
 	push {r4-r7,lr}
 	sub sp, sp, #0x18
 	ldrb r0, [r5,#0x16]
@@ -12825,14 +12825,14 @@ loc_8114020:
 	pop {r4-r7,pc}
 	.word 0, 0
 	.byte 0, 0, 0, 0
-	thumb_func_end sub_8113FE8
+	thumb_func_end battle_pickRandomFilteredPanelAvoidingEnemyRow
 
 // symdb: Looks up an alliance-dependent panel parameter entry from table byte_8114160 via GetAllianceDependentPanelParamArgs, then calls sub_8015C94 to pick a random non-current panel.
 // symdb: (r0 = battle object/panel context) -> r0 = result of random panel picker (panel coords or
 // symdb: current panel fallback); flags from last callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114030.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickAllianceRandomPanel.yaml
 	thumb_local_start
-sub_8114030:
+battle_pickAllianceRandomPanel:
 	push {r4-r7,lr}
 	ldr r3, off_81143AC // =byte_8114160
 	bl GetAllianceDependentPanelParamArgs
@@ -12840,7 +12840,7 @@ sub_8114030:
 
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8114030
+	thumb_func_end battle_pickAllianceRandomPanel
 // symdb: AI helper: randomly selects one of 16 panel-effect table entries, resolves its alliance-dependent params for the object's panel, and runs the panel flag check on it.
 // symdb: (r5 = battle object, fields oBattleObject_PanelX/PanelY read) -> r0 = result of
 // symdb: panelFlagCheck_8015D80; clobbers r4-r7, lr
@@ -12878,9 +12878,9 @@ battle_pickAllianceParamPanel:
 	pop {r4-r7,pc}
 	thumb_func_end battle_pickAllianceParamPanel
 
-// symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to sub_8114088 to run.
+// symdb: Wrapper that picks a panel-offset list from PanelOffsetListsPointerTable by index and hands it (plus r6) to ai_pickRandomPanel to run.
 // symdb: (r4 = index into PanelOffsetListsPointerTable, r6 = parameter passed through) -> tail-calls
-// symdb: sub_8114088(r4 = list pointer, r6); no direct return value used
+// symdb: ai_pickRandomPanel(r4 = list pointer, r6); no direct return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_startPanelOffsetList.yaml
 	thumb_local_start
 battleObject_startPanelOffsetList:
@@ -12888,7 +12888,7 @@ battleObject_startPanelOffsetList:
 	ldr r7, off_8114084 // =PanelOffsetListsPointerTable
 	lsl r4, r4, #2
 	ldr r4, [r7,r4]
-	bl sub_8114088
+	bl ai_pickRandomPanel
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 off_8114084:
@@ -12899,9 +12899,9 @@ off_8114084:
 // symdb: (r0 = base x, r1 = base y, r2 = required panel-flag mask, r3 = forbidden panel-flag mask; r4 =
 // symdb: list of signed-byte {dx,dy} pairs terminated by dx==0x7F, r5 = object ptr, r6 = alliance id) ->
 // symdb: r0 = x (low 3 bits), r1 = y of a random valid panel; r0 = 0 if none matched
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8114088.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickRandomPanel.yaml
 	thumb_local_start
-sub_8114088:
+ai_pickRandomPanel:
 	push {r4-r7,lr}
 	sub sp, sp, #0x38
 	str r0, [sp,#0x1c]
@@ -12994,7 +12994,7 @@ byte_8114150:
 byte_8114160:
 	.byte 0x10, 0x0, 0x0, 0x0, 0xA0, 0x0, 0x88, 0xF, 0x30, 0x0, 0x0, 0x0, 0x80
 	.byte 0x0, 0x88, 0xF
-	thumb_func_end sub_8114088
+	thumb_func_end ai_pickRandomPanel
 
 // symdb: Snapshots the battle object's panel position into spare fields, then spawns a linked object type 0x27 there and stores its handle.
 // symdb: (r5 = battle object pointer) -> r0 = spawned object handle (also stored at
@@ -19298,7 +19298,7 @@ loc_811748A:
 off_81174A0:
 	.word off_81174A4
 off_81174A4:
-	.word sub_81174C0+1
+	.word object_dashUpdate+1
 	.word sub_811753C+1
 	.word sub_811756C+1
 	.word sub_8117588+1
@@ -19315,9 +19315,9 @@ sub_81174B8:
 // symdb: Per-frame update that moves an object in a configured direction at a set speed for a fixed number of frames, shrinking its sprite scale, returning 1 on the frame the dash ends and 0 otherwise.
 // symdb: (r0 = unused on entry; r5 = object/sprite work struct) -> r0 = 1 while the dash is still running
 // symdb: each frame, 0 on the frame it ends; clobbers lr and r0-r3.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81174C0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dashUpdate.yaml
 	thumb_local_start
-sub_81174C0:
+object_dashUpdate:
 	push {lr}
 	ldrb r0, [r5,#9]
 	tst r0, r0
@@ -19377,7 +19377,7 @@ loc_8117508:
 loc_8117538:
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_81174C0
+	thumb_func_end object_dashUpdate
 
 	thumb_local_start
 sub_811753C:
@@ -21532,7 +21532,7 @@ off_81183E4:
 off_81183E8:
 	.word sub_8118424+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
-	.word sub_811847C+1
+	.word battle_beastOutTransformTick+1
 	.word sub_81184A8+1
 	.word battle_initBeastOutForm+1
 	.word sub_81184EC+1
@@ -21601,9 +21601,9 @@ loc_8118454:
 // symdb: Per-tick handler for the beast-out transformation: writes a state byte (0x23 if chatbox event bit 0x80 clear, else 1) to r5+0x00 and a scroll-active byte (2, or 0 when r6+0x10 nonzero, which also forces state byte to 1) to r5+0x0C, then runs the scroll step, palette refresh and beast-sp slot-mask update on the battle object in r6.
 // symdb: (r5 = beast-out state struct, r6 = battle object) -> r0 = result of battle_beastOutScrollStep
 // symdb: (count of scroll strips arrived); writes bytes r5+0x00 and r5+0x0C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811847C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTransformTick.yaml
 	thumb_local_start
-sub_811847C:
+battle_beastOutTransformTick:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -21624,7 +21624,7 @@ loc_8118496:
 	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl battleObject_updateBeastSpSlotMask_8118604
 	pop {r4-r7,pc}
-	thumb_func_end sub_811847C
+	thumb_func_end battle_beastOutTransformTick
 
 	thumb_local_start
 sub_81184A8:
@@ -22212,14 +22212,14 @@ off_811888C:
 off_8118890:
 	.word object_forceAnimIndex2+1
 	.word sub_81188EC+1
-	.word sub_811891C+1
-	.word sub_8118964+1
+	.word object_refreshAnimStateFromFlags+1
+	.word object_setupActorVariant+1
 	.word npc_updateState23+1
 	.word sub_81189C0+1
-	.word sub_8118A00+1
+	.word objectUpdateAnimByFlag+1
 	.word sub_81189D4+1
 	.word sub_81189E0+1
-	.word sub_811891C+1
+	.word object_refreshAnimStateFromFlags+1
 	.word sub_8118A2C+1
 	.word sub_8118A58+1
 	.word sprite_applyAnimRequest+1
@@ -22279,9 +22279,9 @@ locret_8118918:
 // symdb: (r5 = state struct ptr, r6 = object data ptr) -> r0 = sprite_loadAnimationData result path;
 // symdb: writes state byte to [r5], new anim index to [r5+0xc], old-index flag to [r6+0xd]; no return
 // symdb: value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811891C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_refreshAnimStateFromFlags.yaml
 	thumb_local_start
-sub_811891C:
+object_refreshAnimStateFromFlags:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -22318,14 +22318,14 @@ loc_8118950:
 	bl sprite_loadAnimationData // () -> void
 locret_8118962:
 	pop {r4-r7,pc}
-	thumb_func_end sub_811891C
+	thumb_func_end object_refreshAnimStateFromFlags
 
 // symdb: Picks an actor sprite variant (0x23 if chatbox event flag bit 0x80 is clear, else 0x01), stores it at [r5,#0x00], sets an animation byte to 3 at [r5,#0xc], stores a sub_8118B48 boolean at [r6,#0xd], and (re)loads sprite animation 3.
 // symdb: (r5 = actor struct ptr, r6 = related struct ptr, both prepared by caller) -> void; flags from
 // symdb: sub_8118B48's result are consumed internally
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118964.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setupActorVariant.yaml
 	thumb_local_start
-sub_8118964:
+object_setupActorVariant:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -22351,7 +22351,7 @@ loc_8118982:
 locret_8118994:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8118964
+	thumb_func_end object_setupActorVariant
 
 // symdb: State-0x23 step for an object: writes 0x23 into its state byte, calls sub_8118AB0; if it returns equal, sets a trigger byte in a related struct at +0xd, then requests animation 4 and loads it only when it differs from the currently loaded animation.
 // symdb: (r5 = object/sprite-slot struct, r6 = related struct) -> void; returns via pop {pc}, condition
@@ -22425,9 +22425,9 @@ locret_81189FE:
 // symdb: Object helper that picks an animation id (1 if chatbox/event flag 0x80 is set, else 0x23) into the object's work, has sub_8118AB0 recompute the desired anim into [r5+0xc], and only calls sprite_setAnimation/sprite_loadAnimationData when the new anim differs from the previously-applied one in [r5+0xd].
 // symdb: (r5 = object/sprite struct pointer, r0/r1 clobbered) -> void; flags from the flag test are used
 // symdb: internally only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118A00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/objectUpdateAnimByFlag.yaml
 	thumb_local_start
-sub_8118A00:
+objectUpdateAnimByFlag:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -22448,7 +22448,7 @@ loc_8118A0E:
 locret_8118A28:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8118A00
+	thumb_func_end objectUpdateAnimByFlag
 
 	thumb_local_start
 sub_8118A2C:
@@ -22751,7 +22751,7 @@ off_8118C44:
 off_8118C48:
 	.word sub_8118C84+1
 	.word sub_8118C84+1
-	.word sub_8118C8C+1
+	.word t3_refreshTextScriptOnChange+1
 	.word sub_8118C84+1
 	.word sub_8118C84+1
 	.word sub_8118C84+1
@@ -22777,9 +22777,9 @@ sub_8118C84:
 // symdb: Task tick handler that derives a state byte from a chatbox cutscene flag and an item flag, then re-renders TextScript873EA50 into byte_2017A00/0x6013C00 only when a toolkit version counter changes, before tail-calling sub_8118CF4.
 // symdb: (r0 = entry index for toolkit_getUnk2004190EntryPtr, r5 = task struct, r6 = object/task context)
 // symdb: -> r0 = byte from sub_8118CF4; flags set by that call
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8118C8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_refreshTextScriptOnChange.yaml
 	thumb_local_start
-sub_8118C8C:
+t3_refreshTextScriptOnChange:
 	push {r4-r7,lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -22826,7 +22826,7 @@ off_8118CE4:
 	.word dword_86B7AE0
 dword_8118CE8:
 	.word 0x6013C00
-	thumb_func_end sub_8118C8C
+	thumb_func_end t3_refreshTextScriptOnChange
 
 	thumb_local_start
 sub_8118CEC:
@@ -23856,7 +23856,7 @@ loc_8119520:
 	cmp r1, #0x1c
 	bne loc_8119542
 	ldrh r0, [r5,#0xe]
-	bl sub_8010CE0
+	bl getChipField1AOrTableLookup
 	b loc_8119548
 loc_8119542:
 	ldrh r0, [r5,#0xe]
@@ -29082,7 +29082,7 @@ sub_811BAC4:
 	mov r1, #1
 loc_811BAD2:
 	strb r1, [r5]
-	bl sub_811BB50
+	bl sprite_setPaletteFromBattleObject
 	bl sub_811BBB8
 	bl battle_getAdjustedCountFromObject
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -29161,9 +29161,9 @@ sub_811BB30:
 // symdb: Reads the battle-object index from r5+0xe, subtracts 0x90, looks up the corresponding battle-object descriptor, and applies its 1-based palette id (descriptor byte 3 minus 1) to r5's sprite via sprite_setPalette.
 // symdb: (r5 = source object whose halfword at +0xe holds a battle-object index) -> r0 = undefined; calls
 // symdb: sprite_setPalette
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811BB50.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setPaletteFromBattleObject.yaml
 	thumb_local_start
-sub_811BB50:
+sprite_setPaletteFromBattleObject:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	sub r0, #0x90
@@ -29172,7 +29172,7 @@ sub_811BB50:
 	sub r0, #1
 	bl sprite_setPalette // (int pallete) -> void
 	pop {pc}
-	thumb_func_end sub_811BB50
+	thumb_func_end sprite_setPaletteFromBattleObject
 
 	thumb_local_start
 sub_811BB64:
@@ -31215,7 +31215,7 @@ off_811CDA8:
 	.word sub_811CE34+1
 	.word object_timerBeepTick+1
 	.word object_cycleAnimationTimer+1
-	.word sub_811CEC4+1
+	.word object_tickAnimSound+1
 	.word sub_811CF44+1
 	.word sprite_fadeColorStep+1
 	thumb_func_end sub_811CD94
@@ -31375,9 +31375,9 @@ byte_811CEBC:
 
 // symdb: Object tick that, when its countdown (object+0xC) reaches zero, optionally re-applies a subtype-keyed animation and clears the sprite shadow, then — for object type 5 — sets object+0xB = 0x10, plays one (or two) subtype-keyed sound effects from byte_811CF28/byte_811CF32, and finally re-arms the countdown to 0x28 frames and writes 0x18 to object+0x9.
 // symdb: (r5 = object) -> void; sets object fields +0xC, +0xB, +9
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CEC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_tickAnimSound.yaml
 	thumb_local_start
-sub_811CEC4:
+object_tickAnimSound:
 	push {r4,lr}
 	ldrb r0, [r5,#0xc]
 	sub r0, #1
@@ -31433,7 +31433,7 @@ byte_811CF32:
 	.byte 0xB8, 0x0, 0xFF, 0xFF, 0xFF, 0xFF, 0xC7, 0x1, 0xFF, 0xFF
 byte_811CF3C:
 	.byte 0x12, 0x18, 0x14, 0x16, 0x19, 0x0, 0x0, 0x0
-	thumb_func_end sub_811CEC4
+	thumb_func_end object_tickAnimSound
 
 	thumb_local_start
 sub_811CF44:
@@ -31830,7 +31830,7 @@ off_811D1C8:
 off_811D1CC:
 	.word sub_811D1DC+1
 	.word sub_811D20C+1
-	.word sub_811D248+1
+	.word object_countdownFinishVariantAnim+1
 	.word sub_811D2C0+1
 	thumb_func_end sub_811D1B8
 
@@ -31887,9 +31887,9 @@ byte_811D240:
 // symdb: On countdown expiry at +0xC, sets object state to 0x23, plays the variant's animation (index from byte_811D2B8[+5]) without shadow, resets subtimer +9 to 0xC, and when +4==9 and variant!=5 plays one or two variant-keyed sound effects from byte_811D2A4/byte_811D2AE (skipping a 0xFFFF sentinel).
 // symdb: (r0-r2 unused; works on object pointer in r5: +0xC = countdown, +0 = state, +4 = flag, +5 =
 // symdb: variant, +9 = subtimer) -> r0 = last sound id or leftover; clobbers r4, flags per arithmetic.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D248.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_countdownFinishVariantAnim.yaml
 	thumb_local_start
-sub_811D248:
+object_countdownFinishVariantAnim:
 	push {r4,lr}
 	ldrh r0, [r5,#0xc]
 	sub r0, #1
@@ -31939,7 +31939,7 @@ byte_811D2AE:
 	.byte 0xB8, 0x0, 0xFF, 0xFF, 0xFF, 0xFF, 0xC7, 0x1, 0xFF, 0xFF
 byte_811D2B8:
 	.byte 0x12, 0xB, 0x14, 0x16, 0x19, 0x13, 0x0, 0x0
-	thumb_func_end sub_811D248
+	thumb_func_end object_countdownFinishVariantAnim
 
 	thumb_local_start
 sub_811D2C0:
@@ -34012,12 +34012,12 @@ off_811E428:
 	.word off_811E42C
 off_811E42C:
 	.word object_initSpriteObjA1+1
-	.word sub_811E490+1
+	.word object_updateSpriteObjA1+1
 	.word sub_811E510+1
 	thumb_func_end object_dispatchModeHandler
 
 // symdb: Initializer for a sprite-based object: assigns sprite 0xA1, animation 1, no shadow, palette 0, priority 2, position halfword 0x280, and sets the object's kind/state bytes.
-// symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = sub_811E490's return; no
+// symdb: (r5 = object struct pointer, r1 passthrough to initGuiSprite) -> r0 = object_updateSpriteObjA1's return; no
 // symdb: meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSpriteObjA1.yaml
 	thumb_local_start
@@ -34047,7 +34047,7 @@ object_initSpriteObjA1:
 	strb r0, [r5,#8]
 	mov r0, #1
 	strb r0, [r5,#9]
-	bl sub_811E490
+	bl object_updateSpriteObjA1
 	pop {pc}
 	.balign 4, 0
 off_811E488:
@@ -34058,9 +34058,9 @@ off_811E488:
 // symdb: Per-frame update for the sprite-0xA1 object: when global counter byte_2011E42 >= 0x10 it forces state byte r5+9 to 2 and clears r5+0x1c (via sub_811E558); otherwise in non-state-1 it increments r5+0x14 by 0x8000 and subtracts from r5+0xc, and when the (r5+0xc - r5+0x14)>>16 reaches 0x58 it calls sub_811E51C/sub_811E548 and advances the state; state 1 decrements r5+7 and resets to 0 at zero; state 2 sets r5+8=8 and skips movement. Every frame it writes r5+0xe/r5+0x12 via sprite_setCoordinates then sprite_update.
 // symdb: (r0 = ignored on entry; object state in r5) -> r0 clobbered; updates r5 state fields, writes
 // symdb: sprite coords, calls sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E490.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateSpriteObjA1.yaml
 	thumb_local_start
-sub_811E490:
+object_updateSpriteObjA1:
 	push {lr}
 	ldr r0, off_811E50C // =byte_2011E40
 	ldrb r0, [r0,#0x2] // (byte_2011E42 - 0x2011e40)
@@ -34124,7 +34124,7 @@ byte_811E504:
 	.byte 0x58, 0xFF, 0xFF, 0xFF, 0x5E, 0x1, 0x0, 0x0
 off_811E50C:
 	.word byte_2011E40
-	thumb_func_end sub_811E490
+	thumb_func_end object_updateSpriteObjA1
 
 	thumb_local_start
 sub_811E510:
@@ -34305,12 +34305,12 @@ off_811E62C:
 	.word off_811E630
 off_811E630:
 	.word object_initSpriteType23+1
-	.word sub_811E68C+1
+	.word object_initSpriteType23Tail+1
 	.word sub_811E698+1
 	thumb_func_end sub_811E61C
 
 // symdb: Initializer for a fixed on-screen object of type 0x23: builds its GUI sprite (id 0x39) with animation 0, no shadow, palette 0, priority 0, and places it at (220, 44).
-// symdb: (r0/r1 = caller context, r5 = object struct pointer) -> r0 = result of sub_811E68C; no
+// symdb: (r0/r1 = caller context, r5 = object struct pointer) -> r0 = result of object_initSpriteType23Tail; no
 // symdb: meaningful flags
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSpriteType23.yaml
 	thumb_local_start
@@ -34339,7 +34339,7 @@ object_initSpriteType23:
 	bl sprite_setCoordinates
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811E68C
+	bl object_initSpriteType23Tail
 	pop {pc}
 	.balign 4, 0
 off_811E688:
@@ -34348,14 +34348,14 @@ off_811E688:
 
 // symdb: Tail of object_initSpriteType23: invokes sub_811E6A0 then sprite_update on the freshly built sprite.
 // symdb: (no args) -> r0 = sprite_update result; flags from sub_811E6A0/sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E68C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSpriteType23Tail.yaml
 	thumb_local_start
-sub_811E68C:
+object_initSpriteType23Tail:
 	push {lr}
 	bl sub_811E6A0
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811E68C
+	thumb_func_end object_initSpriteType23Tail
 
 	thumb_local_start
 sub_811E698:
@@ -39942,7 +39942,7 @@ loc_8120EF2:
 	mov r1, #0x3e
 	mov r2, r6
 	bl SetCurPETNaviStatsHword
-	bl sub_8121154
+	bl pet_reloadCurNaviEffects
 	mov r0, r4
 	mov r1, #0x42
 	bl GetCurPETNaviStatsHword // (which_navi: u8, which_stat: u8) -> u16
@@ -40123,12 +40123,12 @@ off_8121150:
 	.word word_200DCF0
 	thumb_func_end clearWorkArea_200DCF0_8121144
 
-// symdb: Rebuilds the current PET navi's effect/stat-modifier list into the work area at 200DCF0 by zeroing it, looking up a per-navi effect table via GetCurPETNavi and a state-derived index, dispatching each 8-byte {handlerId, argument} record (terminated by -1) through off_81211D0, then calling sub_8123208 to recompute derived stats.
+// symdb: Rebuilds the current PET navi's effect/stat-modifier list into the work area at 200DCF0 by zeroing it, looking up a per-navi effect table via GetCurPETNavi and a state-derived index, dispatching each 8-byte {handlerId, argument} record (terminated by -1) through off_81211D0, then calling pet_applyNaviStatUpdates to recompute derived stats.
 // symdb: (no args) -> r0 destroyed; clears work area at 200DCF0 and invokes effect handlers from a table
 // symdb: before returning
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8121154.yaml
-	thumb_func_start sub_8121154
-sub_8121154:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_reloadCurNaviEffects.yaml
+	thumb_func_start pet_reloadCurNaviEffects
+pet_reloadCurNaviEffects:
 	push {r4-r7,lr}
 	bl clearWorkArea_200DCF0_8121144
 	mov r1, r10
@@ -40160,9 +40160,9 @@ loc_812117A:
 	add r4, #8
 	b loc_812117A
 loc_8121192:
-	bl sub_8123208
+	bl pet_applyNaviStatUpdates
 	pop {r4-r7,pc}
-	thumb_func_end sub_8121154
+	thumb_func_end pet_reloadCurNaviEffects
 
 	thumb_func_start sub_8121198
 sub_8121198:

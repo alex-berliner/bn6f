@@ -3008,7 +3008,7 @@ int sub_8146E60()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    sub_8146E90(&byte_20101E0, byte_2010230, 0xCu);
+    rfu_resetRecvSlots(&byte_20101E0, byte_2010230, 0xCu);
     return v1;
 }
 
@@ -3024,7 +3024,7 @@ int sub_8146E78()
 
 
 // 0x8146e90
-int __fastcall sub_8146E90(int a1, int a2, unsigned int a3)
+int __fastcall rfu_resetRecvSlots(int a1, int a2, unsigned int a3)
 {
     void *v3; // r8
     int v4; // r7
@@ -3452,7 +3452,7 @@ int sub_81475B8()
 
 
 // 0x81475d4
-int __fastcall sub_81475D4(unsigned __int16 *a1)
+int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
 {
     unsigned __int16 *v1; // r5
     signed __int16 v2; // r0
@@ -4226,7 +4226,7 @@ LABEL_19:
 
 
 // 0x8148540
-int sub_8148540()
+int rfu_startLinkTransfer()
 {
     unsigned int v0; // r4
     unsigned int v1; // r4

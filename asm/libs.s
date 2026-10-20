@@ -6534,7 +6534,7 @@ sub_8146E60:
 	ldr r0, off_8146E70 // =byte_20101E0 
 	ldr r1, off_8146E74 // =unk_2010230 
 	mov r2, #0xc
-	bl sub_8146E90
+	bl rfu_resetRecvSlots
 	pop {r0}
 	bx r0
 	.balign 4, 0
@@ -6563,9 +6563,9 @@ off_8146E8C:
 // symdb: Resets RFU receive state for up to 4 connection slots: clears queue globals, rebuilds the active-slot bitmask from dword_2010CC0+2, zeroes per-slot/recv state, then for each active slot calls rfu_clearSlot(0xC) and rfu_setRecvBuffer(0x20, slot, r1[slot], size).
 // symdb: (r0 = buffer cleared with size>>1 halfwords, r1 = array[4] of recv buffer pointers, r2 = buffer
 // symdb: size in bytes) -> r0 = 0; sets error bit 0x80 in word_200BC58 if buffer setup fails
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_resetRecvSlots.yaml
 	thumb_local_start
-sub_8146E90:
+rfu_resetRecvSlots:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -6691,7 +6691,7 @@ off_8146F88:
 	.word byte_20101E0
 off_8146F8C:
 	.word eS200BC50
-	thumb_func_end sub_8146E90
+	thumb_func_end rfu_resetRecvSlots
 
 	thumb_local_start
 sub_8146F90:
@@ -7505,7 +7505,7 @@ sub_81475B8:
 
 	push {lr}
 	ldr r0, off_81475D0 // =dword_814FE94 
-	bl sub_81475D4
+	bl rfu_connectionStateUpdate
 	pop {r0}
 	bx r0
 off_81475D0:
@@ -7513,9 +7513,9 @@ off_81475D0:
 // symdb: Per-frame update for the RFU wireless state machine: spin-waits on a busy flag, optionally issues rfu_REQ_disconnect, then dispatches on the 16-bit state at eS200BC50+8 across cases 1/3/4/9/0xB/0x22/0x34/0x40 to drive rfu_clearAllSlot, sub_8144EF8, sub_8145120, sub_813D934, etc.
 // symdb: (r0 = context/handle passed through to sub_8144EF8, saved in r5) -> r0 = none; updates state
 // symdb: word [eS200BC50+8], flags byte_2010368/byte_2010340/byte_2010284
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81475D4.yaml
-	thumb_func_start sub_81475D4
-sub_81475D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_connectionStateUpdate.yaml
+	thumb_func_start rfu_connectionStateUpdate
+rfu_connectionStateUpdate:
 	push {r4,r5,lr}
 	mov r5, r0
 	ldr r1, off_8147630 // =byte_2010368 
@@ -7761,7 +7761,7 @@ def_814762C:
 	bx r0
 off_8147830:
 	.word eS200BC50
-	thumb_func_end sub_81475D4
+	thumb_func_end rfu_connectionStateUpdate
 
 	thumb_local_start
 sub_8147834:
@@ -9435,9 +9435,9 @@ def_814825A:
 
 // symdb: Initializes RFU link state for a multiplayer data transfer: clears per-player/transfer work buffers (CpuSet fill), resets RFU structs, zeroes link-state globals and per-player entries, sets ready/active flags, registers send/receive handlers, configures per-player recv buffers/slots from the connected-player bitmap, then invokes rfu_UNI_setSendData and rfu_UNI_readySendData, writing 0x30 to a timeout word.
 // symdb: () -> r0 = 0 on success, 1 if rfu_UNI_setSendData failed; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148540.yaml
-	thumb_func_start sub_8148540
-sub_8148540:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_startLinkTransfer.yaml
+	thumb_func_start rfu_startLinkTransfer
+rfu_startLinkTransfer:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -9686,7 +9686,7 @@ loc_814872A:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_8148540
+	thumb_func_end rfu_startLinkTransfer
 
 	thumb_local_start
 sub_8148738:

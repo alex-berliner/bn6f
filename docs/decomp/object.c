@@ -674,7 +674,7 @@ void __noreturn battle_updatePanels_800C746()
 
 
 // 0x800c81e
-int __fastcall sub_800C81E(int result, unsigned int a2, char a3)
+int __fastcall battle_setPanelState(int result, unsigned int a2, char a3)
 {
     int v3; // r4
     int v4; // r5
@@ -2005,7 +2005,7 @@ int __fastcall __noreturn sub_800D120(int a1, int a2, int a3, int a4)
 
 
 // 0x800d15a
-int __fastcall __noreturn sub_800D15A(int result, int a2, int a3, int a4)
+int __fastcall __noreturn battle_scanPanelColumnForMatch(int result, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r7
@@ -2087,7 +2087,7 @@ signed int __fastcall __noreturn object_findExtremeMatchingRow(int a1, int a2, i
 
 
 // 0x800d1f0
-int __fastcall sub_800D1F0(int a1, int a2, int a3, int a4)
+int __fastcall battle_findFacingRowPanelsByByte3(int a1, int a2, int a3, int a4)
 {
     int v4; // r7
     int v5; // ST04_4
@@ -2135,7 +2135,7 @@ LABEL_7:
 
 
 // 0x800d270
-int __fastcall sub_800D270(int a1, int a2, int a3, int a4)
+int __fastcall object_findMatchingPanelsAhead(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r7

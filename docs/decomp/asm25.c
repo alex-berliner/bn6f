@@ -258,7 +258,7 @@ char *sub_808FA8C()
 
 
 // 0x808fb18
-void __noreturn sub_808FB18()
+void __noreturn ow_endEventResetPlayer()
 {
     int v0; // r0
 

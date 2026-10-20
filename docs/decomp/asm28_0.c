@@ -99,7 +99,7 @@ int camera_followOverworldPlayer()
 
 
 // 0x8099ffc
-int __fastcall sub_8099FFC(int a1, int a2, int a3)
+int __fastcall e_playPetEffectStoreBugFragsAndSetFlag(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -143,13 +143,13 @@ signed int sub_809A03C()
     *(v0 + 116) = v1;
     if ( v1 > 21 )
     {
-        sub_809A360(v1);
+        ow_bugfragTraderDrawScreen(v1);
         result = 1;
     }
     else
     {
         *(v0 + 116) = 21;
-        sub_809A360(21);
+        ow_bugfragTraderDrawScreen(21);
         result = 0;
     }
     return result;
@@ -162,7 +162,7 @@ int submenu_chipTraderRunResultScript()
     int v0; // r5
 
     chatbox_runScript(TextScriptChipTrader86C580C, *(v0 + 8));
-    sub_809A360(*(v0 + 116));
+    ow_bugfragTraderDrawScreen(*(v0 + 116));
     *(v0 + 9) = 0;
     return 0;
 }
@@ -189,7 +189,7 @@ signed int ow_bugfragTraderExchange()
         chatbox_mask_eFlags2009F38(8);
         if ( v2 )
         {
-            sub_809A360(*(v0 + 116));
+            ow_bugfragTraderDrawScreen(*(v0 + 116));
             return 1;
         }
         if ( !chatbox_GetState_8045F4C() )
@@ -219,7 +219,7 @@ signed int ow_bugfragTraderExchange()
             *(v0 + 9) = 1;
         }
     }
-    sub_809A360(*(v0 + 116));
+    ow_bugfragTraderDrawScreen(*(v0 + 116));
     return 0;
 }
 
@@ -235,13 +235,13 @@ signed int sub_809A104()
     chatbox_mask_eFlags2009F38(8);
     if ( v1 && (chatbox_mask_eFlags2009F38(128), !v1) || (v2 = *(v0 + 116) + 2, *(v0 + 116) = v2, v2 < 32) )
     {
-        sub_809A360(*(v0 + 116));
+        ow_bugfragTraderDrawScreen(*(v0 + 116));
         result = 1;
     }
     else
     {
         *(v0 + 116) = 32;
-        sub_809A360(*(v0 + 116));
+        ow_bugfragTraderDrawScreen(*(v0 + 116));
         result = 0;
     }
     return result;
@@ -283,7 +283,7 @@ signed int sub_809A138()
             __asm { SVC         6 }
         }
     }
-    sub_809A360(*(v0 + 116));
+    ow_bugfragTraderDrawScreen(*(v0 + 116));
     return 1;
 }
 
@@ -310,7 +310,7 @@ signed int sub_809A1B4()
     sprite_setPositionForIdRange3_8119854(v2 - 48, 88, 0);
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_809A360(*(v0 + 116));
+    ow_bugfragTraderDrawScreen(*(v0 + 116));
     TestEventFlagFromImmediate(0, 245);
     if ( v4 )
         result = 0;
@@ -338,7 +338,7 @@ signed int sub_809A1FC()
     chatbox_mask_eFlags2009F38(8);
     if ( v2 )
     {
-        sub_809A360(*(v0 + 116));
+        ow_bugfragTraderDrawScreen(*(v0 + 116));
         result = 1;
     }
     else
@@ -346,12 +346,12 @@ signed int sub_809A1FC()
         if ( gameState_getProtectedBugfrags_803D0F4() < 10 || chatbox_GetState_8045F4C() )
         {
             *(v0 + 9) = 0;
-            sub_809A360(*(v0 + 116));
+            ow_bugfragTraderDrawScreen(*(v0 + 116));
         }
         else
         {
             *(v0 + 9) = 1;
-            sub_809A360(*(v0 + 116));
+            ow_bugfragTraderDrawScreen(*(v0 + 116));
         }
         result = 0;
     }
@@ -395,7 +395,7 @@ void sub_809A334()
 
 
 // 0x809a360
-int __fastcall sub_809A360(int a1)
+int __fastcall ow_bugfragTraderDrawScreen(int a1)
 {
     int v1; // r5
     int v2; // r10

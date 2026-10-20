@@ -3123,7 +3123,7 @@ byte_808F690::
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_decomp_text_archive ptr1=TextScript87E1718
-	cs_call_native_with_return_value ptr1=sub_808FB18+1
+	cs_call_native_with_return_value ptr1=ow_endEventResetPlayer+1
 	cs_pause byte1=0xFF byte2=0x02
 	cs_call_native_with_return_value ptr1=sub_808FB4C+1
 	cs_pause byte1=0xFF byte2=0x02

@@ -400,9 +400,9 @@ off_808FB08:
 
 // symdb: Tears down an overworld event: clears EVENT_BE4 and EVENT_BE5 flags, resets the player/Navi palette index, clears the player's interaction-locked flag, and zeroes the event-state byte at struct +0x1C; returns 0.
 // symdb: () -> r0 = 0; clobbers r0-r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_endEventResetPlayer.yaml
 	thumb_local_start
-sub_808FB18:
+ow_endEventResetPlayer:
 	push {lr}
 	movflag EVENT_BE4
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
@@ -421,7 +421,7 @@ sub_808FB18:
 	.balign 4, 0
 off_808FB48:
 	.word off_808F5D4
-	thumb_func_end sub_808FB18
+	thumb_func_end ow_endEventResetPlayer
 
 	thumb_local_start
 sub_808FB4C:

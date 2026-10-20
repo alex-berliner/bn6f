@@ -2541,7 +2541,7 @@ int sub_8049158()
     int v0; // r5
 
     *(v0 + 1) = 8;
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2562,7 +2562,7 @@ int rfu_idMatchAdvanceState()
         sub_803BB2C(19);
         *(v0 + 1) = 16;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2581,7 +2581,7 @@ int __fastcall sub_804918A(int a1)
     engine_setScreeneffect(8, 16);
     sub_803BB2C(10);
     *(v1 + 1) = 24;
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2601,7 +2601,7 @@ int sub_80491C4()
             *(v0 + 1) = 20;
         }
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2617,7 +2617,7 @@ int sub_80491E6()
         *v0 = 4;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2635,12 +2635,12 @@ int sub_80491FC()
         sub_803BB7C(30);
         sub_803BB90(0);
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
 // 0x804921e
-int sub_804921E()
+int object_netScriptTriggerStep()
 {
     int v0; // r5
     int v1; // r10
@@ -2674,7 +2674,7 @@ int sub_804921E()
             }
         }
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2692,7 +2692,7 @@ int sub_8049272()
         v0[12] = 4;
         v0[1] = 36;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -2726,7 +2726,7 @@ void sub_8049290()
         }
     }
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2812,7 +2812,7 @@ void sub_8049360()
         }
     }
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2844,7 +2844,7 @@ LABEL_9:
         *(v0 + 1) = 68;
 LABEL_10:
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2858,7 +2858,7 @@ void sub_80493FE()
     if ( v1 )
         *(v0 + 1) = 36;
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2901,7 +2901,7 @@ LABEL_8:
     }
 LABEL_11:
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2938,7 +2938,7 @@ void sub_804946E()
         }
     }
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2946,7 +2946,7 @@ void sub_804946E()
 void sub_80494CA()
 {
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -2958,7 +2958,7 @@ int sub_80494D6()
 
 
 // 0x80494de
-void sub_80494DE()
+void submenu_selectNetworkScript()
 {
     int v0; // r5
     char v1; // zf
@@ -2992,7 +2992,7 @@ void sub_80494DE()
         *(v0 + 1) = 68;
     }
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -3025,7 +3025,7 @@ void sub_804952C()
         }
     }
     sub_803A104();
-    sub_8049BC0();
+    submenu_queueSlotIcons();
 }
 
 
@@ -3041,7 +3041,7 @@ int sub_8049582()
         engine_setScreeneffect(12, 16);
         *(v0 + 1) = 80;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3056,7 +3056,7 @@ int sub_804959C()
 
     IsPaletteFadeActive();
     if ( v0 )
-        return sub_803A1B0();
+        return battle_stepFrame();
     copyMemory_8001850();
     return sub_803CCC0(v1, v2, v3, v4);
 }
@@ -3074,7 +3074,7 @@ int sub_80495B4()
         engine_setScreeneffect(12, 16);
         *(v0 + 1) = 88;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3088,7 +3088,7 @@ int sprite_loadTilesDuringFadeOrRun()
 
     IsPaletteFadeActive();
     if ( v0 )
-        return sub_803A1B0();
+        return battle_stepFrame();
     copyMemory_8001850();
     return t1_setMainState1cWithArg(sub_8039570, v1, v2, v3);
 }
@@ -3106,7 +3106,7 @@ int sub_80495EC()
         engine_setScreeneffect(12, 16);
         *(v0 + 1) = 96;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3122,7 +3122,7 @@ int sub_8049606()
         *v0 = 4;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3138,7 +3138,7 @@ int sub_804961C()
         engine_setScreeneffect(12, 16);
         *(v0 + 1) = 104;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3154,7 +3154,7 @@ int sub_8049636()
         *v0 = 4;
         v0[1] = 0;
     }
-    return sub_803A1B0();
+    return battle_stepFrame();
 }
 
 
@@ -3616,7 +3616,7 @@ int __fastcall copyData_8049AAC(int a1, int a2, int a3, int a4)
 
 
 // 0x8049bc0
-void sub_8049BC0()
+void submenu_queueSlotIcons()
 {
     signed int v0; // r4
     char v1; // zf
@@ -4196,7 +4196,7 @@ int __noreturn ChipTraderControl()
     (*(&JumpOffset804A33C + sSubmenu.unk_00))();
     entity_runAllUpdateHandlers_80465BC();
     battle_updateEStructSprites_80465F8();
-    sub_804AFB8();
+    submenu_initChipTraderFolderNameBackground();
     sub_804AFE4();
     GetRNG();
     return v0;
@@ -4250,7 +4250,7 @@ void __noreturn menu_processFrameInput()
         pet_menuCancel();
         if ( !zf || (submenu_toggleStateStartOrB(), !zf) )
 LABEL_11:
-            sub_804A8F4();
+            battle_drawChipSelectNameAndIconRows();
         JoypadKeyPressed();
         if ( !zf )
         {
@@ -4271,12 +4271,12 @@ LABEL_11:
 // 0x804a460
 void __fastcall __noreturn e_giveChipStep(int a1)
 {
-    sub_804A8F4();
+    battle_drawChipSelectNameAndIconRows();
 }
 
 
 // 0x804a4d4
-int sub_804A4D4()
+int chatbox_startFadeOnIdle()
 {
     int v0; // r5
     char v1; // zf
@@ -4316,7 +4316,7 @@ void __fastcall __noreturn sub_804A514(int a1)
     if ( !v3 )
     {
         sub_804AA58();
-        sub_804A8F4();
+        battle_drawChipSelectNameAndIconRows();
     }
     sub_804AE04();
     if ( v3 )
@@ -4465,7 +4465,7 @@ void __noreturn menuCopyBackgroundTiles_804A7C0()
 
 
 // 0x804a8f4
-void __noreturn sub_804A8F4()
+void __noreturn battle_drawChipSelectNameAndIconRows()
 {
     int v0; // r5
     int v1; // r7
@@ -4642,7 +4642,7 @@ signed int submenu_confirmSelection()
         v0[68] = v3;
         sub_804AB4C(v3);
         v0[69] = v0[68];
-        sub_804AB6C();
+        submenu_stageEntry();
         PlaySoundEffect(129, v4, v5);
     }
     return v1;
@@ -4673,7 +4673,7 @@ int __fastcall sub_804AB4C(int result)
 
 
 // 0x804ab6c
-int sub_804AB6C()
+int submenu_stageEntry()
 {
     int v0; // r5
     int *v1; // r1
@@ -5102,7 +5102,7 @@ int __fastcall pet_menuSpinCursorStep(signed int a1)
     *(v1 + 68) = v3;
     sub_804AB4C(v3);
     *(v1 + 69) = *(v1 + 68);
-    sub_804AB6C();
+    submenu_stageEntry();
     --*(v1 + 30);
     if ( v2 > 7 )
         --*(v1 + 36);
@@ -5145,7 +5145,7 @@ int sub_804AF84()
 
 
 // 0x804afb8
-void sub_804AFB8()
+void submenu_initChipTraderFolderNameBackground()
 {
     chatbox_initFolderNameDisplayBuffer_81202FC(10, word_2034814, 11, 12);
     CopyBackgroundTiles(1, 2, 2, word_2034814, 20, &byte_0[2]);
@@ -5197,7 +5197,7 @@ LABEL_3:
     if ( v9 )
         chipTraderGetRewardFromRedraw_804BF94(dword_200ACCC, v11, v7, v8);
     else
-        sub_804BF18(v10, v11, dword_200ACCC);
+        chipTraderPickCode(v10, v11, dword_200ACCC);
 }
 
 
@@ -5398,7 +5398,7 @@ LABEL_9:
 
 
 // 0x804bf18
-void __fastcall sub_804BF18(signed int a1, int a2, unsigned __int16 *a3)
+void __fastcall chipTraderPickCode(signed int a1, int a2, unsigned __int16 *a3)
 {
     int v3; // r5
     unsigned __int16 *v4; // r7

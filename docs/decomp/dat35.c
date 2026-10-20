@@ -277,7 +277,7 @@ void sub_812F2D0()
 	{
 		npc_startDialogScript();
 LABEL_21:
-		sub_8130464(v10, v11, v12, v13);
+		battle_initBgAndLayers(v10, v11, v12, v13);
 		sub_8130850();
 		*(v0 + 3) = 4;
 		engine_setScreeneffect(8, 16);
@@ -332,7 +332,7 @@ LABEL_21:
 			if ( !*(v0 + 3) )
 			{
 				sub_813064C();
-				sub_8130810();
+				t4_drawPlayerBox();
 			}
 		}
 	}
@@ -585,7 +585,7 @@ void sub_812F530()
 											sub_81301DC();
 											sub_8130208();
 											sub_813064C();
-											sub_8130810();
+											t4_drawPlayerBox();
 											battle_drawFolderScreen();
 											t4_loadSceneBackground();
 											*(v0 + 2) = 4;
@@ -1017,7 +1017,7 @@ void __fastcall __noreturn sub_812FA0C(int a1)
     u32 v14; // r0
 
     sub_813064C();
-    sub_8130810();
+    t4_drawPlayerBox();
     *(v1 + 16) = 19;
     v2 = sub_803EAE4();
     if ( v2 == 4 )

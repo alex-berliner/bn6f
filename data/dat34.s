@@ -377,7 +377,7 @@ loc_812DDB6::
 	strh r0, [r5,#0x26]
 	b loc_812DDDC
 loc_812DDCC::
-	bl sub_812ED94
+	bl battle_restoreMapBackground
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #8
@@ -1950,7 +1950,7 @@ sub_812E9AC::
 	mov r0, r7
 	mov r1, #0x80
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
-	bl sub_812EAC4
+	bl battle_collectUnassignedKeyPresses
 	bl sub_812EA44
 	bl CopyBackgroundTiles812EAAC
 	bl submenu_initEntryTable

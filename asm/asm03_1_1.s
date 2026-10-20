@@ -1715,7 +1715,7 @@ off_8039854:
 	.word off_8039858
 off_8039858:
 	.word init_objBg2DisplayMode+1
-	.word sub_8039888+1
+	.word object_selectFadeToState8+1
 	.word sub_80398B0+1
 	thumb_func_end sub_8039846
 
@@ -1746,9 +1746,9 @@ off_8039884:
 // symdb: Object state step that, when Select is pressed or sub_80398DC reports ready, calls SetScreenFade(4,0xFF), plays SE 0xD7, and writes 8 to the object's state byte at r5+2.
 // symdb: (r10 = toolkit, r4/r5 = object struct) -> void; exits with flags from sub_80398DC's return (or
 // symdb: the key test), and writes state byte [r5+2] = 8 on transition
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039888.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_selectFadeToState8.yaml
 	thumb_local_start
-sub_8039888:
+object_selectFadeToState8:
 	push {r4-r7,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_JoypadPtr]
@@ -1768,7 +1768,7 @@ loc_803989C:
 	strb r0, [r5,#2]
 locret_80398AE:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039888
+	thumb_func_end object_selectFadeToState8
 
 	thumb_local_start
 sub_80398B0:
@@ -1953,11 +1953,11 @@ off_80399E8:
   // 0x00
   .word battle_initScene+1
   // 0x04
-	.word sub_8039AB8+1
+	.word rfu_linkSessionStep+1
   // 0x08
 	.word sub_8039AE4+1
   // 0x0C
-	.word sub_8039B0A+1
+	.word rfu_tryStartLinkSession+1
   // 0x10
 	.word sub_8039B60+1
   // 0x14
@@ -1965,7 +1965,7 @@ off_80399E8:
   // 0x18
 	.word sub_8039B98+1
   // 0x1C
-	.word sub_8039BC0+1
+	.word object_chatboxStep+1
   // 0x20
 	.word sub_8039C14+1
   // 0x24
@@ -1979,7 +1979,7 @@ off_80399E8:
   // 0x34
 	.word battle_transitionToStart+1
   // 0x38
-	.word sub_8039E2C+1
+	.word start_wirelessLinkSession+1
   // 0x3C
 	.word battle_runBattleBootState+1
   // 0x40
@@ -2051,12 +2051,12 @@ off_8039AB4:
 	.word byte_8039390
 	thumb_func_end battle_initScene
 
-// symdb: State-machine step that initializes the rfu link session: on success, triggers a fade and script 0x13 and sets [r5+1]=0x10; on failure, sets [r5+1]=8; then calls sub_803A1B0.
-// symdb: (no args; r5 = per-menu state struct set by caller) -> r0 = return of sub_803A1B0; writes state
+// symdb: State-machine step that initializes the rfu link session: on success, triggers a fade and script 0x13 and sets [r5+1]=0x10; on failure, sets [r5+1]=8; then calls battle_stepFrame.
+// symdb: (no args; r5 = per-menu state struct set by caller) -> r0 = return of battle_stepFrame; writes state
 // symdb: byte at [r5+1] (0x10 or 8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039AB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_linkSessionStep.yaml
 	thumb_local_start
-sub_8039AB8:
+rfu_linkSessionStep:
 	push {r4-r7,lr}
 	bl rfu_initLinkSession
 	tst r0, r0
@@ -2074,9 +2074,9 @@ loc_8039ADA:
 	mov r0, #8
 	strb r0, [r5,#1]
 loc_8039ADE:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039AB8
+	thumb_func_end rfu_linkSessionStep
 
 	thumb_local_start
 sub_8039AE4:
@@ -2095,16 +2095,16 @@ loc_8039B00:
 	mov r0, #0xc
 	strb r0, [r5,#1]
 loc_8039B04:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039AE4
 
 // symdb: Initializes the RFU link work area, then calls rfu_initLinkSession; on failure cleans up, fades the screen to script 0x13, and sets phase [r5,#1]=0x10; on success fades to script 0x0A and sets phase [r5,#1]=0x18.
 // symdb: (r0-r3 unused, state object in a register preserved across the call, likely r5) -> void; sets
 // symdb: phase byte [r5,#1] = 0x18 on success, 0x10 on failure
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039B0A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryStartLinkSession.yaml
 	thumb_local_start
-sub_8039B0A:
+rfu_tryStartLinkSession:
 	push {r4-r7,lr}
 	bl sub_8146588
 	mov r0, r5
@@ -2137,9 +2137,9 @@ loc_8039B48:
 	mov r0, #0x18
 	strb r0, [r5,#1]
 loc_8039B5A:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039B0A
+	thumb_func_end rfu_tryStartLinkSession
 
 	thumb_local_start
 sub_8039B60:
@@ -2155,7 +2155,7 @@ sub_8039B60:
 	mov r0, #0x14
 	strb r0, [r5,#1]
 loc_8039B7C:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039B60
 
@@ -2169,7 +2169,7 @@ sub_8039B82:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_8039B92:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039B82
 
@@ -2188,16 +2188,16 @@ sub_8039B98:
 	mov r0, #0
 	bl sub_803BB90
 loc_8039BBA:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039B98
 
 // symdb: Per-frame object state step: skip if not ready, consume a use counter; if B pressed play effect 0x68 and store state 0x68; else if chatbox flag bit 0x8 is on and chatbox is active, close it, set a 0x1E timer, wait on sub_813D638, then run network text phase 0xB and store state 0x20.
-// symdb: (r0 = unused, r5 = object ptr) -> r0 = result of sub_803A1B0; sets [r5+1] to 0x68 or 0x20; flags
+// symdb: (r0 = unused, r5 = object ptr) -> r0 = result of battle_stepFrame; sets [r5+1] to 0x68 or 0x20; flags
 // symdb: from sub_803A558/sub_803BB80/sub_813D638 tests
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039BC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_chatboxStep.yaml
 	thumb_local_start
-sub_8039BC0:
+object_chatboxStep:
 	push {r4-r7,lr}
 	bl sub_803A558
 	bne loc_8039C0E
@@ -2230,9 +2230,9 @@ loc_8039BE6:
 	mov r0, #0x20
 	strb r0, [r5,#1]
 loc_8039C0E:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039BC0
+	thumb_func_end object_chatboxStep
 
 	thumb_local_start
 sub_8039C14:
@@ -2248,7 +2248,7 @@ sub_8039C14:
 	mov r0, #0x24
 	strb r0, [r5,#1]
 loc_8039C2C:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039C14
 
@@ -2496,9 +2496,9 @@ loc_8039E26:
 // symdb: (r5 = network state/work struct, set by caller) -> r0 = 0 after sub_803A104; writes next state
 // symdb: byte to [r5+1] (0x10 success / 0x18 failure); flags used internally from rfu_initLinkSession's
 // symdb: return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039E2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_wirelessLinkSession.yaml
 	thumb_local_start
-sub_8039E2C:
+start_wirelessLinkSession:
 	push {r4-r7,lr}
 	bl t4_dispatchWaitStep
 	beq loc_8039E7A
@@ -2532,7 +2532,7 @@ loc_8039E70:
 loc_8039E7A:
 	bl sub_803A104
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039E2C
+	thumb_func_end start_wirelessLinkSession
 
 // symdb: Per-frame step of the battle-boot state machine: dispatches first, then if a screen fade is active it runs the heavy rebuild (graphics copy, reset, setup, fade-gfx init, toolkit randomize, battleSettingsList0[0], initBattleStructs) and writes 0x40 into byte 1 of the r5 struct; otherwise advances to sub_803A104.
 // symdb: () -> void; r5 is a global battle/state struct; when the fade path runs it sets byte [r5+1] =
@@ -2769,7 +2769,7 @@ sub_803A03A:
 	mov r0, #0x54 
 	strb r0, [r5,#1]
 loc_803A04E:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A03A
 
@@ -2782,7 +2782,7 @@ sub_803A054:
 	bl sub_803CCC0
 	pop {r4-r7,pc}
 loc_803A066:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A054
 
@@ -2797,7 +2797,7 @@ sub_803A06C:
 	mov r0, #0x5c 
 	strb r0, [r5,#1]
 loc_803A080:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A06C
 
@@ -2811,7 +2811,7 @@ sub_803A086:
 	bl t1_setMainState1cWithArg
 	pop {r4-r7,pc}
 loc_803A09A:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803A0A0:
@@ -2829,7 +2829,7 @@ sub_803A0A4:
 	mov r0, #0x64 
 	strb r0, [r5,#1]
 loc_803A0B8:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0A4
 
@@ -2843,7 +2843,7 @@ sub_803A0BE:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_803A0CE:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0BE
 
@@ -2858,7 +2858,7 @@ sub_803A0D4:
 	mov r0, #0x6c 
 	strb r0, [r5,#1]
 loc_803A0E8:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0D4
 
@@ -2872,7 +2872,7 @@ sub_803A0EE:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_803A0FE:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0EE
 
@@ -2967,9 +2967,9 @@ loc_803A194:
 
 // symdb: Per-frame battle tick: calls sub_803A214 once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
 // symdb: (r5 = battle/global state struct) -> r0 = clobbered; returns early if gate sub_803A2A4 returns 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A1B0.yaml
-	thumb_func_start sub_803A1B0
-sub_803A1B0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepFrame.yaml
+	thumb_func_start battle_stepFrame
+battle_stepFrame:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x18]
 	tst r0, r0
@@ -2988,7 +2988,7 @@ loc_803A1C4:
 	bl battle_updateEStructSprites_80465F8 // () -> void
 locret_803A1D6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803A1B0
+	thumb_func_end battle_stepFrame
 
 	thumb_local_start
 sub_803A1D8:
@@ -7640,7 +7640,7 @@ sub_803C604:
 	push {r4-r7,lr}
 	ldr r5, off_803C61C // =eS200A290
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C604
 
@@ -7648,7 +7648,7 @@ sub_803C604:
 sub_803C612:
 	push {r4-r7,lr}
 	ldr r5, off_803C61C // =eS200A290
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C61C:
@@ -8717,7 +8717,7 @@ off_803CCEC:
 	.word off_803CCF0
 off_803CCF0:
 	.word start_initBattleScene+1
-	.word sub_803CD40+1
+	.word tryShowCommErrorAndSetState+1
 	.word sub_803CD54+1
 	thumb_func_end cb_803CCD6
 
@@ -8737,7 +8737,7 @@ start_initBattleScene:
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
 	bl sprite_initBattleFadeGfxState_80027C4
-	bl sub_803CD58
+	bl clearVramAndTilemap
 	mov r0, #0x63
 	bl music_80005F2 // (bg_music_indicator: u8) -> ()
 	mov r0, #8
@@ -8753,9 +8753,9 @@ dword_803CD3C:
 
 // symdb: If no screen fade is active, runs the comm-error text script (index 0xA) and writes 8 as a byte to [r5] (a state field in the caller's context).
 // symdb: (r0 unused on entry; r5 -> error object/context) -> r0 clobbered; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CD40.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/tryShowCommErrorAndSetState.yaml
 	thumb_local_start
-sub_803CD40:
+tryShowCommErrorAndSetState:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_803CD52
@@ -8765,7 +8765,7 @@ sub_803CD40:
 	strb r0, [r5]
 locret_803CD52:
 	pop {r4-r7,pc}
-	thumb_func_end sub_803CD40
+	thumb_func_end tryShowCommErrorAndSetState
 
 	thumb_local_start
 sub_803CD54:
@@ -8775,14 +8775,14 @@ sub_803CD54:
 
 // symdb: Clears VRAM and zeroes the BG tile ID block buffer as part of a graphics reset.
 // symdb: () -> (); no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CD58.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearVramAndTilemap.yaml
 	thumb_local_start
-sub_803CD58:
+clearVramAndTilemap:
 	push {r4-r7,lr}
 	bl zeroFillVRAM // () -> ()
 	bl ZeroFillGFX30025c0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803CD58
+	thumb_func_end clearVramAndTilemap
 
 	thumb_local_start
 RunTextScriptCommError_803CD64:

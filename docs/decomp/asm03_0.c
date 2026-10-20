@@ -791,7 +791,7 @@ signed int battle_endChipSelectionBeginTurn_8026DC4()
         folder_tallyChipsByClass_802A4FC();
         battle_backupStateForRestart_800B3A2();
         if ( sub_802D246() & 8 )
-            sub_801E474(0);
+            battle_setHudVariant(0);
     }
     result = battle_doBothTrackedIdsMatch_800B46C(1450742051);
     if ( result )
@@ -1498,7 +1498,7 @@ char *customScreen_consumeSelectedChipsStep()
 
 
 // 0x802750c
-int sub_802750C()
+int customScreen_confirmChipSelection()
 {
     int v0; // r5
     char *v1; // r0
@@ -1640,7 +1640,7 @@ signed int sub_8027618()
 
 
 // 0x8027624
-int sub_8027624()
+int t4_waitThenFadeScreen()
 {
     int v0; // r5
     int result; // r0
@@ -6271,7 +6271,7 @@ signed int battle_checkActiveSlot8NaviStatReady_802A5DA()
 
 
 // 0x802a61a
-char *sub_802A61A()
+char *battle_clearActiveChipState2()
 {
     int v0; // r5
     int v1; // r4
@@ -6631,7 +6631,7 @@ int sub_802AC10()
 
 
 // 0x802ac6e
-int __fastcall sub_802AC6E(int a1, int a2, int a3)
+int __fastcall battle_panelTargetCursorUpdate(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -9972,7 +9972,7 @@ signed int __fastcall sub_802D3A8(int a1, int a2, int a3)
 
 
 // 0x802d3ca
-void __noreturn sub_802D3CA()
+void __noreturn ai_pickTargetPanelAndStartAttack()
 {
     int v0; // r0
     int v1; // r2
@@ -11278,7 +11278,7 @@ int __fastcall sub_802E1B4(int result)
 
 
 // 0x802e1be
-char *__fastcall sub_802E1BE(int a1)
+char *__fastcall battle_setEntryFieldBAndTimer(int a1)
 {
     char v1; // r4
     int v2; // r5
@@ -11416,7 +11416,7 @@ LABEL_18:
         }
         if ( !v20 )
         {
-            v14 = sub_802E830(v2, *(v3 + 18));
+            v14 = getRemainingChipCount(v2, *(v3 + 18));
             if ( v14 == 255 )
             {
 LABEL_28:
@@ -11844,7 +11844,7 @@ void sub_802E82A()
 
 
 // 0x802e830
-int __fastcall sub_802E830(int a1, int a2)
+int __fastcall getRemainingChipCount(int a1, int a2)
 {
     int v2; // r4
     int v3; // r5
@@ -11965,7 +11965,7 @@ int __fastcall sub_802E8DE(int a1)
 
 
 // 0x802e8fe
-signed int __fastcall sub_802E8FE(int a1, int a2, int a3)
+signed int __fastcall object_scanRowForPanelMask(int a1, int a2, int a3)
 {
     int v3; // r6
     int v4; // r7
@@ -14255,7 +14255,7 @@ void __fastcall LoadBGAnimData(int a1)
 
 
 // 0x8030540
-int __fastcall sub_8030540(_DWORD *a1)
+int __fastcall bg_decompressAndQueueTiles(_DWORD *a1)
 {
     int v1; // r10
     _DWORD *v2; // r5

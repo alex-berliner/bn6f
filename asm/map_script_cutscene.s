@@ -761,16 +761,16 @@ loc_8035CCA:
 
 	thumb_local_start
 // 0x18 byte1 destination2
-// jump if byte1 == sub_800B734()
-// sub_800B734 performs a summation on the 12 halfwords at word_2000FA0
+// jump if byte1 == getTimeTierFromSum()
+// getTimeTierFromSum performs a summation on the 12 halfwords at word_2000FA0
 //  returns 0 if the summation is greater than 0x2a30
 //  returns 1 if 0x1c20 < summation <= 0x2a30
 //  else returns 2
-// byte1 - value to compare the return value of sub_800B734 with
+// byte1 - value to compare the return value of getTimeTierFromSum with
 // destination2 - script to jump to
 MapScriptCmd_cmd_8035cd6: // 8035cd6
 	push {lr}
-	bl sub_800B734
+	bl getTimeTierFromSum
 	mov r6, #1
 	bl ReadMapScriptByte
 	cmp r0, r4
@@ -788,16 +788,16 @@ loc_8035CF2:
 
 	thumb_local_start
 // 0x19 byte1 destination2
-// jump if byte1 != sub_800B734()
-// sub_800B734 performs a summation on the 12 halfwords at word_2000FA0
+// jump if byte1 != getTimeTierFromSum()
+// getTimeTierFromSum performs a summation on the 12 halfwords at word_2000FA0
 //  returns 0 if the summation is greater than 0x2a30
 //  returns 1 if 0x1c20 < summation <= 0x2a30
 //  else returns 2
-// byte1 - value to compare the return value of sub_800B734 with
+// byte1 - value to compare the return value of getTimeTierFromSum with
 // destination2 - script to jump to
 MapScriptCmd_cmd_8035cf8:
 	push {lr}
-	bl sub_800B734
+	bl getTimeTierFromSum
 	mov r6, #1
 	bl ReadMapScriptByte
 	cmp r0, r4

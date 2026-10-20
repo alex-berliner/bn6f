@@ -209,7 +209,7 @@ loc_812C418::
 	bl sub_8132430
 	cmp r0, #2
 	bgt loc_812C480
-	bl sub_812DA60
+	bl rfu_finishCommScreenStep
 	ldrb r1, [r5,#0x1b]
 	mov r2, #0x10
 	orr r1, r2
@@ -260,7 +260,7 @@ loc_812C4B2::
 loc_812C4B8::
 	bl IsScreenFadeActive // () -> zf
 	beq loc_812C4C2
-	bl sub_812D690
+	bl submenu_processConfirmCancelInput
 loc_812C4C2::
 	b loc_812C4CA
 loc_812C4C4::
@@ -386,7 +386,7 @@ loc_812C5A0::
 	strh r0, [r5,#0x26]
 	b loc_812C5C6
 loc_812C5B6::
-	bl sub_812D8C8
+	bl t4_restoreBgTilemapAfterBattle
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #8
@@ -472,7 +472,7 @@ loc_812C62C::
 	bne loc_812C664
 	mov r0, #0x40 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
-	bl sub_812DA60
+	bl rfu_finishCommScreenStep
 	b locret_812C704
 loc_812C664::
 	ldrh r1, [r0,#8]
@@ -876,7 +876,7 @@ loc_812C954::
 	blt loc_812C984
 	mov r0, #0x40 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
-	bl sub_812DA60
+	bl rfu_finishCommScreenStep
 	b locret_812CA58
 loc_812C984::
 	b loc_812CA50
@@ -1952,7 +1952,7 @@ loc_812D1D4::
 	ldrb r0, [r5,#3]
 	cmp r0, #8
 	bge locret_812D1F4
-	bl sub_812D8C8
+	bl t4_restoreBgTilemapAfterBattle
 	b locret_812D1F4
 loc_812D1E4::
 	cmp r0, #0x10

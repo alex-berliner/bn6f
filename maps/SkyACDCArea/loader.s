@@ -137,7 +137,7 @@ sub_807A9FE:
 	ldrb r1, [r5,#oGameState_MapNumber]
 	lsl r1, r1, #2
 	ldr r0, [r0,r1]
-	bl sub_8030540
+	bl bg_decompressAndQueueTiles
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_807AA30:

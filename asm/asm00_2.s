@@ -118,7 +118,7 @@ battle_getEnemyChipAttackParams:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
 	mov r6, r0
-	bl sub_800EE98
+	bl battle_applyEnemyChipDeduction
 	ldrh r0, [r6,#0x34]
 	mov r1, #0
 	bl battle_chipElementWeaknessBonus_800EF34
@@ -171,13 +171,13 @@ locret_800EE96:
 // symdb: (r5 = battle object ptr (Alliance read), r6 = user/attack record: chip ID at +0x34, counter at
 // symdb: +0x28) -> r0 clobbered; writes halfword table value to word_200F3C4-indexed scratch and clamps
 // symdb: [r6,#0x28] down by it; no meaningful return.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EE98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyEnemyChipDeduction.yaml
 	thumb_local_start
-sub_800EE98:
+battle_applyEnemyChipDeduction:
 	push {r0-r4,lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldrh r1, [r6,#0x34]
-	bl sub_802E830
+	bl getRemainingChipCount
 	mov r4, r0
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl battle_networkInvert
@@ -220,7 +220,7 @@ off_800EEF4:
 	.word byte_800EEF8
 byte_800EEF8:
 	.byte 0x0, 0x15, 0x0, 0x2A, 0x0, 0x40, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_800EE98
+	thumb_func_end battle_applyEnemyChipDeduction
 
 	thumb_local_start
 sub_800EF02:
@@ -1785,9 +1785,9 @@ locret_800F8CC:
 // symdb: Per-frame destroy-state step for a battle object: returns 2 if bit 0x40000 is clear, otherwise runs a 20-frame blink timer that clears the visible bit on odd-half frames and returns 1 when the timer expires, else 0.
 // symdb: (r0 = object status/flags word, r5 = battle object pointer, not saved) -> r0 = 2 if bit 0x40000
 // symdb: clear, 0 while counting down, 1 when timer expired; no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800F8CE.yaml
-	thumb_func_start sub_800F8CE
-sub_800F8CE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_objectDestroyBlinkStep.yaml
+	thumb_func_start battle_objectDestroyBlinkStep
+battle_objectDestroyBlinkStep:
 	push {r4,lr}
 	mov r4, #2
 	ldr r1, dword_800F958 // =0x40000
@@ -1823,7 +1823,7 @@ loc_800F900:
 loc_800F90A:
 	mov r0, r4
 	pop {r4,pc}
-	thumb_func_end sub_800F8CE
+	thumb_func_end battle_objectDestroyBlinkStep
 
 // symdb: Packs a spawn parameter word in r4 from the source object: sets bit 0x100 if ObjectFlags2 has 0x200000, ORs in currentAnim<<16 and palette<<24, then forwards sprite record word at 0x2c (r0) and three words from obj+0x34 (r1-r3) to sub_80E996E. Relies on caller already having the object pointer in r5.
 // symdb: (r0 = source battle object, r5 must also hold the same object pointer) -> spawns via
@@ -1999,7 +1999,7 @@ loc_800FA42:
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldr r4, [sp,#4]
-	bl sub_800D15A
+	bl battle_scanPanelColumnForMatch
 loc_800FA50:
 	add sp, sp, #0x18
 	pop {pc}
@@ -3022,7 +3022,7 @@ battle_refreshNaviSpritePaletteFromForm_80100EC:
 	blt loc_8010102
 	cmp r0, #0x18
 	bgt loc_8010102
-	bl sub_8016A38
+	bl battle_applyFormColorCyclingShader
 	b locret_801010A
 loc_8010102:
 	bl battle_pickPaletteIndexForNavi_801002C
@@ -3659,9 +3659,9 @@ loc_80104B6:
 
 // symdb: Triggers a battle object's forward panel movement by computing the target pixel coordinate one panel ahead in its facing direction and invoking the per-step mover sub_80E1D7A, then plays sound effect 0x90.
 // symdb: (r5 = battle object pointer) -> void; corrupts r0-r4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80104E0.yaml
-	thumb_func_start sub_80104E0
-sub_80104E0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepObjectForward.yaml
+	thumb_func_start battle_stepObjectForward
+battle_stepObjectForward:
 	push {r4,r7,lr}
 	ldrb r0, [r5,#oBattleObject_PanelX]
 	ldrb r1, [r5,#oBattleObject_PanelY]
@@ -3681,7 +3681,7 @@ loc_8010500:
 	mov r0, #0x90
 	bl PlaySoundEffect
 	pop {r4,r7,pc}
-	thumb_func_end sub_80104E0
+	thumb_func_end battle_stepObjectForward
 
 	thumb_func_start sub_801050C
 sub_801050C:
@@ -4386,7 +4386,7 @@ off_80109DC:
 	.word sub_8010AE4+1
 	.word sub_8010AE4+1
 	.word sub_8010AE4+1
-	.word sub_8010B78+1
+	.word battle_calcDamageTakenRamp+1
 	.word battle_getMissingHpCapped+1
 	.word battle_getPlayerHpMod100+1
 	.word sub_8010C06+1
@@ -4515,9 +4515,9 @@ byte_8010B54:
 // symdb: Returns a ramp value: if battle flag 0x40 is set, returns (entry at unk_2036120[r1])[0x28] + 0x1500; otherwise maps the actor's TotalDamageTaken (r0) >>7 through piecewise-linear segments (≤0x40: 10+22*t/64; ≤0x70: 32+96*(t-64)/48; <0x80: 128+128*(t-112)/15), or 0xa as fallback. r1 is the unk_2036120 record index, r0 is the actor pointer.
 // symdb: (r0 = actor index/param, r1 = index into the 0x1D0-stride array at 2036120) -> r0 = computed
 // symdb: value; r1 clobbered by BIOS Div.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010B78.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_calcDamageTakenRamp.yaml
 	thumb_local_start
-sub_8010B78:
+battle_calcDamageTakenRamp:
 	push {lr}
 	push {r0,r1}
 	bl battle_testFlag0x40_800A8F8
@@ -4564,7 +4564,7 @@ loc_8010BC2:
 	add r0, #0x80
 locret_8010BCE:
 	pop {pc}
-	thumb_func_end sub_8010B78
+	thumb_func_end battle_calcDamageTakenRamp
 
 // symdb: Returns how much HP the player has lost (MaxHP - HP), capped at 500.
 // symdb: (r0 = unused/ignored, r1 = alliance flag for battle_findPlayer) -> r0 = min(MaxHP - HP, 500);
@@ -4729,9 +4729,9 @@ byte_8010CB8:
 // symdb: Returns the halfword at chip record +0x1A if < 1001, otherwise indexes the lookup table at byte_8020E54 (22-byte entries) using (value-1001) and reads the halfword at +0xA within that entry.
 // symdb: (r0 = chip ID) -> r0 = halfword index (raw chip data field +0x1A if < 1001, else table
 // symdb: byte_8020E54 entry [(field-1001)] halfword at +0xA); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010CE0.yaml
-	thumb_func_start sub_8010CE0
-sub_8010CE0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getChipField1AOrTableLookup.yaml
+	thumb_func_start getChipField1AOrTableLookup
+getChipField1AOrTableLookup:
 	push {r4,lr}
 	bl getChip8021DA8 // (which_chip: i32) -> *const ChipData
 	ldrh r1, [r0,#0x1a]
@@ -4750,7 +4750,7 @@ sub_8010CE0:
 loc_8010D00:
 	mov r0, r1
 	pop {r4,pc}
-	thumb_func_end sub_8010CE0
+	thumb_func_end getChipField1AOrTableLookup
 
 // symdb: Looks up a 2-byte beast power-Atk base entry at byte_80212D4 + 2*idx and forwards (idx, two table bytes) to sub_8012642.
 // symdb: (r0 = beast-power-Atk table index) -> r0 = ... (forwarded from callee, captured as 0x1e) ; no
@@ -6375,7 +6375,7 @@ off_80117D4:
 	.word sub_8012018+1 // 0x30
 	.word sub_8012044+1 // 0x31
 	.word battle_setBeastOutAttackDamage+1 // 0x32
-	.word sub_801208A+1 // 0x33
+	.word ai_setupBeastOutAttack+1 // 0x33
 	.word sub_80120A6+1 // 0x34
 	.word sub_80120CC+1 // 0x35
 	.word sub_80120D6+1 // 0x36
@@ -7504,9 +7504,9 @@ battle_setBeastOutAttackDamage:
 // symdb: AI attack setup for Beast Out: writes chip 0x49 params via loc_80126EA, reads alliance from r5+oBattleObject_Alliance, scales the beast power-Atk base entry via battle_beastPwrAtk_addScaledBaseFromIndex_8010D04 (with r0=0x14), stores the result in oAIAttackVars_Damage and 0x94 in oAIAttackVars_ExtraDamage at r7.
 // symdb: (r0 unused on entry; r5 = battle object, r7 = AI attack vars struct) -> r0 preserved from the
 // symdb: chip-param call; stores damage to oAIAttackVars_Damage and 0x94 to oAIAttackVars_ExtraDamage
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801208A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setupBeastOutAttack.yaml
 	thumb_local_start
-sub_801208A:
+ai_setupBeastOutAttack:
 	push {lr}
 	mov r0, #0x49 
 	bl loc_80126EA
@@ -7519,7 +7519,7 @@ sub_801208A:
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	pop {r0}
 	pop {pc}
-	thumb_func_end sub_801208A
+	thumb_func_end ai_setupBeastOutAttack
 
 	thumb_local_start
 sub_80120A6:
@@ -9628,34 +9628,34 @@ sub_8012D64:
 	push {lr}
 	mov r0, #0
 	mov r1, #1
-	bl sub_8012D8C
+	bl object_transferPanelReserve
 	pop {pc}
 	thumb_func_end sub_8012D64
 
 // symdb: runs three compare/swap passes over entries 0-2 of a small list, likely to (re)sort it after the caller shifts bytes
-// symdb: () -> r0 = undefined; calls sub_8012D8C(idx, idx) with (0,1),(0,2),(1,2)
+// symdb: () -> r0 = undefined; calls object_transferPanelReserve(idx, idx) with (0,1),(0,2),(1,2)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sortThreeEntries.yaml
 	thumb_local_start
 sortThreeEntries:
 	push {lr}
 	mov r0, #0
 	mov r1, #1
-	bl sub_8012D8C
+	bl object_transferPanelReserve
 	mov r0, #0
 	mov r1, #2
-	bl sub_8012D8C
+	bl object_transferPanelReserve
 	mov r0, #1
 	mov r1, #2
-	bl sub_8012D8C
+	bl object_transferPanelReserve
 	pop {pc}
 	thumb_func_end sortThreeEntries
 
 // symdb: Moves a battle panel reservation from the r7[r0] entry to the r7[r1] entry by claiming the panel for the destination, storing sub_8012DB8's result byte into the destination slot, and releasing the source's claim; returns early if source and destination bytes already differ.
 // symdb: (r0 = source index into r7 table, r1 = destination index into r7 table) -> r0 = result of
 // symdb: sub_8012DB8 written to [r7+dest]; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_transferPanelReserve.yaml
 	thumb_local_start
-sub_8012D8C:
+object_transferPanelReserve:
 	push {r4,r6,lr}
 	mov r4, r0
 	mov r6, r1
@@ -9676,7 +9676,7 @@ sub_8012D8C:
 	bl object_removePanelReserve
 locret_8012DB6:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8012D8C
+	thumb_func_end object_transferPanelReserve
 
 	thumb_local_start
 sub_8012DB8:
@@ -16878,9 +16878,9 @@ _GetRandomRelativePanelFiltered:
 // symdb: Battle AI helper: collects all matching panels except the object's own, finds the column nearest to the object, then returns a randomly chosen row in that column.
 // symdb: (r5 = battle object; reads [r5+0x13] own column, [r5+0x16] variant id) -> r0 = packed panel
 // symdb: coord (column in high nibble, row&7 in low bits); r4/r6/r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015EC6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickRandomPanelInNearestColumn.yaml
 	thumb_local_start
-sub_8015EC6:
+ai_pickRandomPanelInNearestColumn:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x10
 	ldrb r0, [r5,#0x16]
@@ -16963,7 +16963,7 @@ byte_8015F84:
 	.byte 0x0, 0xAF, 0xF7, 0xF7, 0x8B, 0xF9, 0x7, 0x1C, 0x8, 0xD0, 0xEB, 0xF7
 	.byte 0xA0, 0xFA, 0x39, 0x1C, 0x6, 0xDF, 0x0, 0xA8, 0x40, 0x5C, 0x1, 0x9
 	.byte 0x40, 0x7, 0x40, 0xF, 0x1, 0xB0, 0x80, 0xBD
-	thumb_func_end sub_8015EC6
+	thumb_func_end ai_pickRandomPanelInNearestColumn
 
 	thumb_func_start sub_8016004
 sub_8016004:
@@ -18274,9 +18274,9 @@ off_8016A34:
 // symdb: For the current battle object's navi sprite, picks a halfword from a 26-entry RGB555 color ramp (alternate ramp when form id == 0x18) indexed by (battleState_Unk_40 mod 26), and stores it via sprite_setColorShader to produce a cycling shader effect.
 // symdb: (r0 = form/variant id; 0x18 selects the alternate shader table) -> r0 = chosen shader id given
 // symdb: to sprite_setColorShader; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016A38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyFormColorCyclingShader.yaml
 	thumb_local_start
-sub_8016A38:
+battle_applyFormColorCyclingShader:
 	push {r4,lr}
 	ldr r4, off_8016A60 // =byte_8016A68
 	cmp r0, #0x18
@@ -18318,7 +18318,7 @@ byte_8016A9C:
 	.word 0x8650866
 	.word 0x4430444
 	.word 0x4210422
-	thumb_func_end sub_8016A38
+	thumb_func_end battle_applyFormColorCyclingShader
 
 // symdb: Each frame, picks one of 26 palette slots from a cycle table and applies it to the current object's sprite, producing a palette-cycling animation driven by the battle-state counter.
 // symdb: () -> r0 = void; reads battle state field Unk_40 as counter, writes object sprite palette index
@@ -19325,21 +19325,21 @@ locret_80171B8:
 off_80171BC:
 	.word off_80171C0
 off_80171C0:
-	.word sub_80171CC+1
+	.word battle_destroyAndMuteMusic+1
 	.word battle_whiteFlashVanishHandler+1
-	.word sub_8017274+1
+	.word object_stepOnFadeEnd+1
 	thumb_func_end sub_80171A6
 
 // symdb: Chains battleObject_destroy_80170E4 (tears down a battle object, clearing collision/charges/chips/AI/sprite and dispatching destroy events) with musicGameState_8000784 (switches sound driver music state and marks BGM as off). A no-arg, no-return thunk.
 // symdb: () -> void; no arguments used, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80171CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_destroyAndMuteMusic.yaml
 	thumb_local_start
-sub_80171CC:
+battle_destroyAndMuteMusic:
 	push {lr}
 	bl battleObject_destroy_80170E4
 	bl musicGameState_8000784 // () -> void
 	pop {pc}
-	thumb_func_end sub_80171CC
+	thumb_func_end battle_destroyAndMuteMusic
 
 // symdb: Battle-object phase handler that kills an object with a white-flash fade: flashes its palette for ~90 frames, then detaches it from the battle (alliance, panel reserve, alive list) with a screen fade and hands off to the destroy phase.
 // symdb: (r5 = battle object) -> void; sets object phase 4 on setup, phase 8 on finish
@@ -19424,9 +19424,9 @@ locret_8017272:
 // symdb: (r0 = fade state bitfield from IsScreenFadeActive, r5 = battle object) -> writes
 // symdb: r5->curStateActionPhase (oBattleObject_CurStateActionPhaseAndPhaseInitialized) =
 // symdb: CUR_STATE_DESTROY, or forces sprite palette white; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017274.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepOnFadeEnd.yaml
 	thumb_local_start
-sub_8017274:
+object_stepOnFadeEnd:
 	push {r4,lr}
 	bl IsScreenFadeActive // () -> zf
 	tst r0, r0
@@ -19440,7 +19440,7 @@ loc_8017284:
 	bl sprite_forceWhitePalette
 locret_801728C:
 	pop {r4,pc}
-	thumb_func_end sub_8017274
+	thumb_func_end object_stepOnFadeEnd
 
 // symdb: Applies a hit-flash darken shader to the sprite of the current acting battle object when the battle is in the "enemy-being-hit" flag state.
 // symdb: void battle_applyHitFlashShadeToActor_801728E(void);   // in:  r5 = battle object; r10 = unknown
@@ -21384,7 +21384,7 @@ loc_80181AA:
 	ldrb r1, [r5,#oBattleObject_PanelY]
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	ldr r6, [r5,#oBattleObject_DamageAndStaminaDamageCounterDisabler]
-	bl sub_80CFBC4
+	bl battle_spawnFieldPanelObject
 	b loc_80181F0
 loc_80181E2:
 	mov r4, #1
@@ -32772,9 +32772,9 @@ off_801E394:
 // symdb: Publishes the fixed TextScript86F0374 graphic to VRAM at 0x6009560 via renderTextGfx_8045F8C using the caller's +3 byte, then sets request bit 0x800 on eStruct2035280 and dispatches it.
 // symdb: (r0 = state struct; +3 passed to renderer) -> r0 = clobbered; sets request bit 0x800 and
 // symdb: dispatches it
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E398.yaml
-	thumb_func_start sub_801E398
-sub_801E398:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_sendTextScriptGfx800.yaml
+	thumb_func_start req_sendTextScriptGfx800
+req_sendTextScriptGfx800:
 	push {r4-r7,lr}
 	mov r7, r0
 	ldr r0, off_801E438 // =TextScript86F0374 
@@ -32794,7 +32794,7 @@ sub_801E398:
 	lsl r0, r0, #0xb
 	bl dispatch_801DA48
 	pop {r4-r7,pc}
-	thumb_func_end sub_801E398
+	thumb_func_end req_sendTextScriptGfx800
 
 	thumb_local_start
 sub_801E3C4:
@@ -32907,9 +32907,9 @@ sub_801E468:
 // symdb: Sets the HUD variant (0..2) in eStruct2035280+0xB, queues the matching GFX transfer list, marks the HUD dirty (0x3F at +0x0), and dispatches bit 0x1000.
 // symdb: (r0 = variant index 0..2) -> r0 = dispatch_801DA48(0x1000) result; touches eStruct2035280 bytes
 // symdb: +0xB and +0x0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E474.yaml
-	thumb_func_start sub_801E474
-sub_801E474:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setHudVariant.yaml
+	thumb_func_start battle_setHudVariant
+battle_setHudVariant:
 	push {lr}
 	ldr r1, off_801E4AC // =eStruct2035280
 	strb r0, [r1,#0xb] // (byte_203528B - 0x2035280)
@@ -32937,7 +32937,7 @@ off_801E4A0:
 	.word off_801EF68
 off_801E4AC:
 	.word eStruct2035280
-	thumb_func_end sub_801E474
+	thumb_func_end battle_setHudVariant
 
 // symdb: Walks the custom-chip slot table on a struct and dispatches each filled slot to the IWRAM chip handler twice (modes 0 and 3), then clears the "0x2000" bit of the global state flag word.
 // symdb: void sub_801E4B0(void);  /* in: r5 = owner struct, r10 and lr pass through; clobbers r0-r3,

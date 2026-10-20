@@ -1342,7 +1342,7 @@ battle_endChipSelectionBeginTurn_8026DC4: // (self: * S20364C0 $r5) -> ()
 	tst r0, r1
 	beq loc_8026DEC
 	mov r0, #0
-	bl sub_801E474
+	bl battle_setHudVariant
 loc_8026DEC:
 	ldr r0, dword_8026E44 // =0x56789123 
 	bl battle_doBothTrackedIdsMatch_800B46C
@@ -2302,7 +2302,7 @@ off_8027424:
 off_8027428:
 	.word sub_8027434+1
 	.word customScreen_consumeSelectedChipsStep+1
-	.word sub_802750C+1
+	.word customScreen_confirmChipSelection+1
 	thumb_func_end sub_8027406
 
 	thumb_local_start
@@ -2409,7 +2409,7 @@ loc_80274E4:
 loc_80274F0:
 	bl battle_compactFolderChipList_802945A
 	bl battle_refillFolderFromDiscardPile
-	bl sub_802A61A
+	bl battle_clearActiveChipState2
 	mov r0, #8
 	strh r0, [r5,#2]
 locret_8027500:
@@ -2424,9 +2424,9 @@ dword_8027508:
 // symdb: Chip-select screen handler that commits the current selection: increments the chip counter, decrements the chips-still-selectable byte for active-chip slot 8, marks entry+7 with 0 (more picks remain) or 2 (selection complete), advances state to 4/0, plays the confirm sound, and starts the exit sequence.
 // symdb: (r0-r3 = unused; r5 = custom screen state struct) -> r0 = clobbered; sets screen state fields
 // symdb: and plays a sound
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802750C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_confirmChipSelection.yaml
 	thumb_local_start
-sub_802750C:
+customScreen_confirmChipSelection:
 	push {lr}
 	ldr r0, [r5,#0x30]
 	add r0, #1
@@ -2450,7 +2450,7 @@ loc_8027526:
 	bl PlaySoundEffect
 	bl customScreen_ExitSequence_8028E32
 	pop {pc}
-	thumb_func_end sub_802750C
+	thumb_func_end customScreen_confirmChipSelection
 
 	thumb_local_start
 sub_802753E: // (self: * S20364C0 $r5) -> ()
@@ -2579,7 +2579,7 @@ off_8027600:
 	.word off_8027604
 off_8027604:
 	.word sub_8027618+1
-	.word sub_8027624+1
+	.word t4_waitThenFadeScreen+1
 	.word sub_8027658+1
 	.word sub_8027672+1
 	.word battle_runFirstTutorialChatboxStep+1
@@ -2598,9 +2598,9 @@ sub_8027618:
 // symdb: Step handler: increments a 32-bit frame counter at [r5+0x40]; when it reaches 0x10, resets it, fades the screen out (SetScreenFade(0x64,8)), invokes sub_80302B6(1,0x28), plays sound effects 0x93 then 0xBC, and writes 8 to the u16 state at [r5+0x02].
 // symdb: (r0 = unused/ignored, r5 = owner object with u16 state at +0x02 and frame counter at +0x40) ->
 // symdb: r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027624.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_waitThenFadeScreen.yaml
 	thumb_local_start
-sub_8027624:
+t4_waitThenFadeScreen:
 	push {lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2624,7 +2624,7 @@ sub_8027624:
 	strh r0, [r5,#2]
 locret_8027656:
 	pop {pc}
-	thumb_func_end sub_8027624
+	thumb_func_end t4_waitThenFadeScreen
 
 	thumb_local_start
 sub_8027658:
@@ -9627,9 +9627,9 @@ loc_802A616:
 
 // symdb: Clears byte 7 of each active-chip entry (when it equals 2), iterating over slots up to the slot limit from the chip context.
 // symdb: (r0 = folder data ptr; r5 = chip context struct) -> r0 = 0; r4, r6 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A61A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearActiveChipState2.yaml
 	thumb_local_start
-sub_802A61A:
+battle_clearActiveChipState2:
 	push {r4,r6,lr}
 	mov r4, #0
 	bl battle_countFolderChips_8027D58
@@ -9653,7 +9653,7 @@ loc_802A63E:
 	cmp r4, r6
 	blt loc_802A62E
 	pop {r4,r6,pc}
-	thumb_func_end sub_802A61A
+	thumb_func_end battle_clearActiveChipState2
 
 // symdb: Clears a battle-state flag at state+0x44 once the state's counter at state+0x45 reaches/exceeds a threshold read from the source object at r5+6.
 // symdb: void Next(uint32_t source /* r5 */, void /* r10 -> oToolkit_BattleStatePtr */);   /* trashes r0,
@@ -10275,7 +10275,7 @@ off_802AC04:
 	.word off_802AC08
 off_802AC08:
 	.word sub_802AC10+1
-	.word sub_802AC6E+1
+	.word battle_panelTargetCursorUpdate+1
 	thumb_func_end sub_802ABF4
 
 	thumb_local_start
@@ -10331,9 +10331,9 @@ locret_802AC6C:
 
 // symdb: D-pad input handler for a battle object: moves a 1..3 / 1..3 panel-target cursor (redrawing via sub_802B5D0), selects up to two panels (rejecting panels with hole/broken flags 0xF800000 or flag 0x10, playing a reject sound), reads a halfword from unk_2031000 at the object's index after the first pick, and runs chatbox_runScript(TextScript8736D74) entering state 0x14 after the second pick, with B unselecting to state 0x10.
 // symdb: (r5 = battle object, joypad via toolkit r10) -> updates object fields; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AC6E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_panelTargetCursorUpdate.yaml
 	thumb_local_start
-sub_802AC6E:
+battle_panelTargetCursorUpdate:
 	push {lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_JoypadPtr]
@@ -10470,7 +10470,7 @@ off_802AD78:
 	.word 0x0
 dword_802AD80:
 	.word 0x2A0000
-	thumb_func_end sub_802AC6E
+	thumb_func_end battle_panelTargetCursorUpdate
 
 	thumb_local_start
 sub_802AD84:
@@ -15706,7 +15706,7 @@ off_802D348:
 off_802D34C:
 	.word playerAI_stepTryAttackChipOnTarget+1
 	.word sub_802D3A8+1
-	.word sub_802D3CA+1
+	.word ai_pickTargetPanelAndStartAttack+1
 	thumb_func_end sub_802D322
 
 // symdb: Player-AI state step: if the target panel is clear of protected actors, fire the attack chip currently in hand and advance the AI state on success.
@@ -15781,9 +15781,9 @@ locret_802D3C8:
 // symdb: AI step that picks a panel from an alliance-dependent param table (selected by object flag bit 0x10), stores sub_802D430's low-byte return into TargetPanelX/Y, clears TargetObjectPtr/ScratchVar, starts AI attack type 5 via aiAttack_initVarsAndStart_80116AE(5,8,2), increments the AI step counter, and returns 3.
 // symdb: (r0 = battle object ptr) -> r0 = 3 (next AI state); uses r6 = AI state struct, r7 = AI attack
 // symdb: vars
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D3CA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_pickTargetPanelAndStartAttack.yaml
 	thumb_local_start
-sub_802D3CA:
+ai_pickTargetPanelAndStartAttack:
 	push {lr}
 	bl object_getFlag // () -> int
 	ldr r3, off_802D62C // =byte_802D410 
@@ -15819,7 +15819,7 @@ byte_802D410:
 byte_802D420:
 	.byte 0x0, 0x0, 0x0, 0x0, 0xA0, 0x0, 0x88, 0xF, 0x20, 0x0, 0x0, 0x0, 0x80
 	.byte 0x0, 0x88, 0xF
-	thumb_func_end sub_802D3CA
+	thumb_func_end ai_pickTargetPanelAndStartAttack
 
 	thumb_local_start
 // choose beast over panel?
@@ -15925,7 +15925,7 @@ off_802D4E0:
 off_802D4E4:
 	.word sub_802D4F0+1
 	.word sub_802D588+1
-	.word sub_802D3CA+1
+	.word ai_pickTargetPanelAndStartAttack+1
 	thumb_func_end sub_802D4C6
 
 	thumb_local_start
@@ -17614,9 +17614,9 @@ locret_802E1BC:
 // symdb: On entry indexed by [r5+Alliance] in the unk_2036120 record table, writes r4 into byte+0xB and a flag-dependent halfword timer (+0x2E): 0x1E0 if battle flag 0x40 is clear, 0x168 if set.
 // symdb: (r0 = [r5+oBattleObject_Alliance] entry index, r4 = byte value to store) -> entry[0xB] = r4,
 // symdb: entry[0x2E] = 0x1E0 or 0x168; r0 = entry pointer (clobbered), no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E1BE.yaml
-	thumb_func_start sub_802E1BE
-sub_802E1BE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setEntryFieldBAndTimer.yaml
+	thumb_func_start battle_setEntryFieldBAndTimer
+battle_setEntryFieldBAndTimer:
 	push {r7,lr}
 	ldr r7, off_802E234 // =0x1e0 
 	bl battle_testFlag0x40_800A8F8
@@ -17629,7 +17629,7 @@ loc_802E1CC:
 	strb r4, [r0,#0xb]
 	strh r7, [r0,#0x2e]
 	pop {r7,pc}
-	thumb_func_end sub_802E1BE
+	thumb_func_end battle_setEntryFieldBAndTimer
 
 // symdb: Ticks down (by one per call) the halfword timer at +0x30 of the record sub_802E070 looks up for the given battle object's alliance, and returns the new timer value in r1.
 // symdb: u16 battle_DecrementAllianceTimer(void) /* caller sets r5 = battle object ptr; returns r1 =
@@ -17885,7 +17885,7 @@ loc_802E396:
 	bne loc_802E3C2
 	mov r0, r6
 	ldrh r1, [r7,#0x24]
-	bl sub_802E830
+	bl getRemainingChipCount
 	cmp r0, #0xff
 	beq loc_802E406
 	push {r0}
@@ -18548,9 +18548,9 @@ sub_802E82A:
 // symdb: Returns the remaining usable count of chip r1 for record r0 by incrementing its per-chip counter (capped at chipdata[0x1E]) in a 0x1D0-stride array at unk_2036120; returns 0xFF if already at cap.
 // symdb: (r0 = record index, r1 = chip ID) -> r0 = max - newCount (remaining), or 0xFF if count already
 // symdb: >= max; r1 = max - newCount on success path exit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E830.yaml
-	thumb_func_start sub_802E830
-sub_802E830:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRemainingChipCount.yaml
+	thumb_func_start getRemainingChipCount
+getRemainingChipCount:
 	push {r4-r7,lr}
 	mov r7, #1
 loc_802E834:
@@ -18577,7 +18577,7 @@ loc_802E858:
 loc_802E85C:
 	mov r0, #0xff
 	pop {r4-r7,pc}
-	thumb_func_end sub_802E830
+	thumb_func_end getRemainingChipCount
 
 	thumb_local_start
 sub_802E860:
@@ -18684,9 +18684,9 @@ loc_802E8F2:
 // symdb: Starting at (r0,r1), walks one row of the 6x3 battle grid in the direction returned by object_getAllianceDirection for the caller, returning 1 if a panel whose status word ANDed with a table mask (selected by r2) is non-zero is encountered, else 0.
 // symdb: (r0 = start column (1-based), r1 = row, r2 = alliance id / flag selector) -> r0 = 1 if a
 // symdb: matching panel is found along the row, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E8FE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_scanRowForPanelMask.yaml
 	thumb_local_start
-sub_802E8FE:
+object_scanRowForPanelMask:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -18733,7 +18733,7 @@ off_802E954:
 	.word 0x170
 off_802E958:
 	.word unk_203A0A0
-	thumb_func_end sub_802E8FE
+	thumb_func_end object_scanRowForPanelMask
 
 	thumb_local_start
 sub_802E95C:
@@ -22850,9 +22850,9 @@ LoadBGAnimData: // (bg_anim_data: BGAnimData) -> ()
 // symdb: Given a BG tileset descriptor, optionally queues a raw GFX block (from descriptor+0x14→descriptor+0x18, size descriptor+0x18), then LZ77-decompresses the sub-struct at +0x8 (+0xC src) into eDecompressionBuf2034A00, and queues width*height*2 bytes from there into iBGTileIdBlocks+descriptor+0xC.
 // symdb: (r0 = *tileset descriptor struct) -> r0 = undefined; queues GFX transfers via
 // symdb: QueueEightWordAlignedGFXTransfer
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030540.yaml
-	thumb_func_start sub_8030540
-sub_8030540:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_decompressAndQueueTiles.yaml
+	thumb_func_start bg_decompressAndQueueTiles
+bg_decompressAndQueueTiles:
 	push {r4-r7,lr}
 	mov r5, r0
 	ldr r0, [r5,#0x10]
@@ -22886,7 +22886,7 @@ off_8030578:
 	.word eDecompressionBuf2034A00
 off_803057C:
 	.word eDecompBuffer2013A00
-	thumb_func_end sub_8030540
+	thumb_func_end bg_decompressAndQueueTiles
 
 // symdb: Each overworld frame, scroll the BG tile map's 32x32 window to the camera: draw the columns, then rows, that came into view.
 // symdb: (r10 = toolkit) -> u16 stores into the BG tile-id blocks through the map's callbacks; restores

@@ -4988,7 +4988,7 @@ off_8049098:
 	.word sub_80491C4+1
 	.word sub_80491E6+1
 	.word sub_80491FC+1
-	.word sub_804921E+1
+	.word object_netScriptTriggerStep+1
 	.word sub_8049272+1
 	.word sub_8049290+1
 	.word sub_8049360+1
@@ -4996,7 +4996,7 @@ off_8049098:
 	.word sub_80493FE+1
 	.word rfu_wirelessConnectStep+1
 	.word sub_804946E+1
-	.word sub_80494DE+1
+	.word submenu_selectNetworkScript+1
 	.word sub_804952C+1
 	.word sub_80494CA+1
 	.word sub_80494D6+1
@@ -5054,12 +5054,12 @@ sub_8049158:
 	push {r4-r7,lr}
 	mov r0, #8
 	strb r0, [r5,#1]
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049158
 
-// symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls sub_803A1B0.
-// symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of sub_803A1B0;
+// symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls battle_stepFrame.
+// symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of battle_stepFrame;
 // symdb: byte [r5+1] set to 0xC or 0x10
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_idMatchAdvanceState.yaml
 	thumb_local_start
@@ -5079,7 +5079,7 @@ loc_8049180:
 	mov r0, #0xc
 	strb r0, [r5,#1]
 loc_8049184:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end rfu_idMatchAdvanceState
 
@@ -5104,7 +5104,7 @@ sub_804918A:
 	bl sub_803BB2C
 	mov r0, #0x18
 	strb r0, [r5,#1]
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_804918A
 
@@ -5122,7 +5122,7 @@ sub_80491C4:
 	mov r0, #0x14
 	strb r0, [r5,#1]
 loc_80491E0:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491C4
 
@@ -5136,7 +5136,7 @@ sub_80491E6:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_80491F6:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491E6
 
@@ -5153,16 +5153,16 @@ sub_80491FC:
 	mov r0, #0
 	bl sub_803BB90
 loc_8049218:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491FC
 
-// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
+// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into battle_stepFrame.
 // symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =
-// symdb: sub_803A1B0 result; updates [r5+1] = 0x20 on trigger
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804921E.yaml
+// symdb: battle_stepFrame result; updates [r5+1] = 0x20 on trigger
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_netScriptTriggerStep.yaml
 	thumb_local_start
-sub_804921E:
+object_netScriptTriggerStep:
 	push {r4-r7,lr}
 	bl sub_803BB80
 	beq loc_804926C
@@ -5195,9 +5195,9 @@ loc_8049244:
 	mov r0, #0x20 
 	strb r0, [r5,#1]
 loc_804926C:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_804921E
+	thumb_func_end object_netScriptTriggerStep
 
 	thumb_local_start
 sub_8049272:
@@ -5213,7 +5213,7 @@ sub_8049272:
 	mov r0, #0x24 
 	strb r0, [r5,#1]
 loc_804928A:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049272
 
@@ -5248,7 +5248,7 @@ loc_80492C2:
 	bx r0
 loc_80492D4:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80492E0:
@@ -5357,7 +5357,7 @@ loc_80493A6:
 	b loc_80493B2
 loc_80493B2:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049360
 
@@ -5393,7 +5393,7 @@ loc_80493EE:
 	b loc_80493F4
 loc_80493F4:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end rfu_linkMenuStateStep
 
@@ -5407,12 +5407,12 @@ sub_80493FE:
 	strb r0, [r5,#1]
 loc_804940C:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_80493FE
 
 // symdb: One step of the wireless-connection state machine: on failure shows network text and sets phase 0x38, on cancel paths sets 0x3C, and on success initializes the wireless session and sets phase 0x44.
-// symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of sub_8049BC0; writes
+// symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of submenu_queueSlotIcons; writes
 // symdb: next phase id into [r5+1]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_wirelessConnectStep.yaml
 	thumb_local_start
@@ -5451,7 +5451,7 @@ loc_8049450:
 	strb r0, [r5,#1]
 loc_8049464:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end rfu_wirelessConnectStep
 
@@ -5490,7 +5490,7 @@ loc_80494B6:
 	strb r0, [r5,#1]
 loc_80494C0:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_804946E
 
@@ -5498,7 +5498,7 @@ loc_80494C0:
 sub_80494CA:
 	push {r4-r7,lr}
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_80494CA
 
@@ -5512,9 +5512,9 @@ sub_80494D6:
 // symdb: Per-frame handler for a submenu page: on the 0x10 key press it clears that key flag and writes 0x44 to [r5+1]; otherwise it may play SOUND_EXIT_SUBMENU, picks one of three text script IDs (0xF/0x10/0x11) based on 0x80/0x20/none inputs, dispatches via sub_803BB2C, and writes 0x40 to [r5+1] before tail calls.
 // symdb: (r0 = unused/0x10 sentinel, r5 = menu state struct) -> stores next-state byte at [r5+1] (0x40 or
 // symdb: 0x44); no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80494DE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_selectNetworkScript.yaml
 	thumb_local_start
-sub_80494DE:
+submenu_selectNetworkScript:
 	push {r4-r7,lr}
 	mov r0, #0x10
 	bl rfu_testStatusFlags
@@ -5546,9 +5546,9 @@ loc_8049516:
 	strb r0, [r5,#1]
 loc_8049522:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
-	thumb_func_end sub_80494DE
+	thumb_func_end submenu_selectNetworkScript
 
 	thumb_local_start
 sub_804952C:
@@ -5583,7 +5583,7 @@ loc_804956E:
 	strb r0, [r5,#1]
 loc_8049578:
 	bl sub_803A104
-	bl sub_8049BC0
+	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
 	thumb_func_end sub_804952C
 
@@ -5598,7 +5598,7 @@ sub_8049582:
 	mov r0, #0x50 
 	strb r0, [r5,#1]
 loc_8049596:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049582
 
@@ -5611,7 +5611,7 @@ sub_804959C:
 	bl sub_803CCC0
 	pop {r4-r7,pc}
 loc_80495AE:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_804959C
 
@@ -5626,13 +5626,13 @@ sub_80495B4:
 	mov r0, #0x58 
 	strb r0, [r5,#1]
 loc_80495C8:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80495B4
 
 // symdb: Reloads an 0x800-byte OBJ tile block (and a 32-byte palette) and defers a follow-up callback until the screen fade ends, otherwise performs the immediate alternative.
 // symdb: () -> r0 = undefined; calls copyMemory_8001850 then sub_803CB8C(callback=sub_8039570+1) when
-// symdb: IsScreenFadeActive, else calls sub_803A1B0; no return value used
+// symdb: IsScreenFadeActive, else calls battle_stepFrame; no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_loadTilesDuringFadeOrRun.yaml
 	thumb_local_start
 sprite_loadTilesDuringFadeOrRun:
@@ -5644,7 +5644,7 @@ sprite_loadTilesDuringFadeOrRun:
 	bl t1_setMainState1cWithArg
 	pop {r4-r7,pc}
 loc_80495E2:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80495E8:
@@ -5662,7 +5662,7 @@ sub_80495EC:
 	mov r0, #0x60 
 	strb r0, [r5,#1]
 loc_8049600:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80495EC
 
@@ -5676,7 +5676,7 @@ sub_8049606:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_8049616:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049606
 
@@ -5691,7 +5691,7 @@ sub_804961C:
 	mov r0, #0x68 
 	strb r0, [r5,#1]
 loc_8049630:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_804961C
 
@@ -5705,7 +5705,7 @@ sub_8049636:
 	mov r0, #0
 	strb r0, [r5,#1]
 loc_8049646:
-	bl sub_803A1B0
+	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_8049636
 
@@ -6425,9 +6425,9 @@ byte_8049AD8:
 
 // symdb: Loops four slots; per active slot, copies a 0x20-word palette block into an IWRAM buffer, DMA-copies a 0x200-byte icon tile set from eTextScript202BA04 into VRAM 0x6016E00+slot*0x200, queues an OAM sprite with the per-slot base 0x40110020+slot*0x20, and records layout data via sub_8132A50.
 // symdb: () -> void; no return value, loops slots 0-3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049BC0.yaml
-	thumb_func_start sub_8049BC0
-sub_8049BC0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_queueSlotIcons.yaml
+	thumb_func_start submenu_queueSlotIcons
+submenu_queueSlotIcons:
 	push {r4-r7,lr}
 	mov r4, #0
 loc_8049BC4:
@@ -6531,7 +6531,7 @@ off_8049CB4:
 	.word eTextScript202BA04 // TextScriptArchive
 dword_8049CB8:
 	.word 0x6016E00
-	thumb_func_end sub_8049BC0
+	thumb_func_end submenu_queueSlotIcons
 
 // symdb: Loads a small block of data (two 0x20-byte chunks + two palette-mapped bytes) from the global ROM table at 0x02001800 into a caller-provided structure in r5, mapping two indices through sub_803C132 to select which 0x10/0x11 byte gets stored.
 // symdb: void sub_8049CBC(struct * r5 /* slot to fill */); // clobbers r0, lr; preserves r4-r7, r5; flags
@@ -7484,7 +7484,7 @@ ChipTraderControl:
 	bx r0
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
-	bl sub_804AFB8
+	bl submenu_initChipTraderFolderNameBackground
 	bl sub_804AFE4
 	bl GetRNG // () -> u32?
 	pop {r0-r2}
@@ -7499,7 +7499,7 @@ off_804A33C:
 	.word sub_804A360+1
 	.word menu_processFrameInput+1
 	.word e_giveChipStep+1
-	.word sub_804A4D4+1
+	.word chatbox_startFadeOnIdle+1
 	.word e_giveChipStep+1
 	.word sub_804A514+1
 	.word sub_804A54C+1
@@ -7620,7 +7620,7 @@ loc_804A436:
 	mov r3, #0xa
 	bl menu_adjustCursorOrValue_811F7F8
 loc_804A44C:
-	bl sub_804A8F4
+	bl battle_drawChipSelectNameAndIconRows
 	bl menuCopyBackgroundTiles_804A7C0
 	bl sub_804A9A0
 	bl sub_804AA58
@@ -7636,7 +7636,7 @@ loc_804A44C:
 e_giveChipStep:
 	push {r4-r7,lr}
 	ldr r7, off_804A4D0 // =eS200AC80 
-	bl sub_804A8F4
+	bl battle_drawChipSelectNameAndIconRows
 	bl menuCopyBackgroundTiles_804A7C0
 	bl sub_804A9A0
 	bl sub_804AA58
@@ -7682,9 +7682,9 @@ off_804A4D0:
 
 // symdb: If chatbox/cutscene flags 0x80 and 0x20 are both set, then either advance sub_804AF20 with [r5+0x1e] while the chatbox is still busy, or set mode 0x10 and call SetScreenFade(0xC, 0x10) when the chatbox is idle, before tail-calling sub_804AA58.
 // symdb: () -> r0 = 0 always; reads/writes state struct at r5, may start a screen fade via SetScreenFade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A4D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_startFadeOnIdle.yaml
 	thumb_local_start
-sub_804A4D4:
+chatbox_startFadeOnIdle:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -7713,7 +7713,7 @@ loc_804A50A:
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_804A4D4
+	thumb_func_end chatbox_startFadeOnIdle
 
 	thumb_local_start
 sub_804A514:
@@ -7735,7 +7735,7 @@ loc_804A534:
 	bl battleObject_queueAnimFrame
 loc_804A53C:
 	bl sub_804AA58
-	bl sub_804A8F4
+	bl battle_drawChipSelectNameAndIconRows
 	bl menuCopyBackgroundTiles_804A7C0
 	mov r0, #0
 	pop {pc}
@@ -8213,9 +8213,9 @@ off_804A8F0:
 // symdb: Renders the chip-select screen's fighter-name row and chip-icon row into background tile block 2, the icon column extent being capped at 7 by a clamped global.
 // symdb: (object ptr left in r5 by caller; r0 = [r5+0x24] halfword param read internally) -> r0
 // symdb: clobbered; draws into tile block 2 via CopyBackgroundTiles
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A8F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawChipSelectNameAndIconRows.yaml
 	thumb_local_start
-sub_804A8F4:
+battle_drawChipSelectNameAndIconRows:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldrh r0, [r7,#0x24]
@@ -8280,7 +8280,7 @@ dword_804A968:
 	.word 0x216
 off_804A96C:
 	.word eS200AC80
-	thumb_func_end sub_804A8F4
+	thumb_func_end battle_drawChipSelectNameAndIconRows
 
 	thumb_local_start
 sub_804A970:
@@ -8552,7 +8552,7 @@ submenu_confirmSelection:
 	add r2, r0, #1
 	ldrb r0, [r5,r1]
 	strb r0, [r5,r2]
-	bl sub_804AB6C
+	bl submenu_stageEntry
 	mov r0, #SOUND_MENU_SELECT
 	bl PlaySoundEffect
 loc_804AB44:
@@ -8587,9 +8587,9 @@ loc_804AB5A:
 // symdb: (r0 = menu-state struct, used as r5: +0x44 list id, +0x46 entry index, +0x28 staged count,
 // symdb: +0x1e/+0x24 counters, +0x2a/+0x2e offsets, +0x3c timer, +0x44/+0x48 anim words) -> r0 = 0; sets
 // symdb: struct state byte +0x00 = 0xC on completion
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AB6C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_stageEntry.yaml
 	thumb_local_start
-sub_804AB6C:
+submenu_stageEntry:
 	push {r4-r7,lr}
 	mov r4, #0x44 
 	mov r0, r4
@@ -8760,7 +8760,7 @@ dword_804ACBC:
 	.word unk_2035C6C
 off_804ACC4:
 	.word eS200AC80
-	thumb_func_end sub_804AB6C
+	thumb_func_end submenu_stageEntry
 
 	thumb_local_start
 sub_804ACC8:
@@ -9175,7 +9175,7 @@ loc_804AF3A:
 	add r2, r0, #1
 	ldrb r0, [r5,r1]
 	strb r0, [r5,r2]
-	bl sub_804AB6C
+	bl submenu_stageEntry
 	ldrh r0, [r5,#0x1e]
 	sub r0, #1
 	strh r0, [r5,#0x1e]
@@ -9234,9 +9234,9 @@ dword_804AFB4:
 
 // symdb: Initializes and renders the current folder-name strip on the chip trader submenu background by expanding the folder name into the tile-index buffer at unk_2034814 and blitting it to BG map block 2.
 // symdb: () -> void; no return value, r0-r4 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AFB8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_initChipTraderFolderNameBackground.yaml
 	thumb_local_start
-sub_804AFB8:
+submenu_initChipTraderFolderNameBackground:
 	push {r4-r7,lr}
 	mov r0, #0xa
 	ldr r1, off_804AFE0 // =unk_2034814 
@@ -9262,7 +9262,7 @@ sub_804AFB8:
 	.balign 4, 0
 off_804AFE0:
 	.word unk_2034814
-	thumb_func_end sub_804AFB8
+	thumb_func_end submenu_initChipTraderFolderNameBackground
 
 	thumb_local_start
 sub_804AFE4:
@@ -9652,7 +9652,7 @@ loc_804BD34:
 	pop {r0,r1}
 	beq loc_804BD68
 	ldr r2, [r5,#0x4c] // (dword_200ACCC - 0x200ac80)
-	bl sub_804BF18
+	bl chipTraderPickCode
 	b locret_804BD6E
 loc_804BD68:
 	ldr r0, [r5,#0x4c] // (dword_200ACCC - 0x200ac80)
@@ -9916,9 +9916,9 @@ off_804BF14:
 // symdb: Given a chip ID, locates it in the chip-code table, partitions its codes into owned vs unowned via GetChipCountOfCode, and weighted-randomly picks one code index/byte favoring unowned codes.
 // symdb: (r0 = chip ID to look up, r1 = unused, r2 = chip-code table pointer, r5 = work buffer) -> r0 =
 // symdb: original chip ID (restored from stack), r1 = chosen code index; trashes r2-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804BF18.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderPickCode.yaml
 	thumb_local_start
-sub_804BF18:
+chipTraderPickCode:
 	push {r0,r5,lr}
 loc_804BF1A:
 	ldrh r7, [r2]
@@ -9988,7 +9988,7 @@ off_804BF8C:
 	.word byte_804B068
 off_804BF90:
 	.word byte_804B06A
-	thumb_func_end sub_804BF18
+	thumb_func_end chipTraderPickCode
 
 // symdb: Chip trader redraw reward: GetRNG % count (svc 6) over the candidate list.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipTraderGetRewardFromRedraw_804BF94.yaml
