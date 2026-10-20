@@ -1033,7 +1033,7 @@ int __fastcall sub_8089CF8(int a1, int a2, int a3, int a4)
     v6 = 0;
     do
     {
-        result = sub_8004822(18, a2, a3, a4);
+        result = map_allocObject_8004822(18, a2, a3, a4);
         *v5 = v4;
         ++v5;
         ++v6;

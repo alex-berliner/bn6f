@@ -3159,7 +3159,7 @@ byte_808F6EC::
 	cs_run_text_script_not_from_mem byte2=0x06
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x1A
 	cs_call_native_with_return_value ptr1=ow_startBeastOutHit+1
-	cs_call_native_with_return_value ptr1=sub_808FD1C+1
+	cs_call_native_with_return_value ptr1=owPlayer_stepOnce_808FD1C+1
 	cs_pause byte1=0xFF byte2=0x0A
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04

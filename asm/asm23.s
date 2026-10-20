@@ -1897,7 +1897,7 @@ sub_8089CF8:
 	mov r4, #0
 loc_8089CFC:
 	mov r0, #0x12
-	bl sub_8004822
+	bl map_allocObject_8004822
 	str r5, [r7]
 	add r7, #4
 	add r4, #1

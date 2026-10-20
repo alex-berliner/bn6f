@@ -3448,7 +3448,7 @@ signed int chatbox_stepUpdateAndContinue_8042820()
 {
     int v0; // r5
 
-    *(v0 + 76) = sub_809CA84();
+    *(v0 + 76) = ow_lookupScenarioTileData_809CA84();
     return 1;
 }
 
@@ -4878,7 +4878,7 @@ signed int __fastcall chatbox_8043A5C(int a1, int a2, int a3)
     }
     else
     {
-        v9 = sub_803D138(v3[2] + 144, v3[7]);
+        v9 = npc_checkKeyItemTrampoline_803D138(v3[2] + 144, v3[7]);
         v10 = v3[3];
         v11 = 0;
         if ( v9 != v10 )

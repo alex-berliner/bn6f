@@ -13195,7 +13195,7 @@ sub_813629C:
 	lsr r0, r4, #2
 	lsl r0, r0, #2
 	ldrb r1, [r2,#3]
-	bl sub_803D138
+	bl npc_checkKeyItemTrampoline_803D138
 	tst r0, r0
 	pop {r4,pc}
 	.balign 4, 0x00
@@ -16166,7 +16166,7 @@ loc_8137774:
 	cmp r0, #0
 	bne loc_813778A
 loc_8137786:
-	bl sub_8120BE4
+	bl pet_copyNaviStatsToCurrent_8120BE4
 loc_813778A:
 	add sp, sp, #4
 	pop {r4-r7,pc}

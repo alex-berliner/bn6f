@@ -4943,9 +4943,9 @@ off_809CA80:
 // symdb: static u32 ow_lookupScenarioTileData_809CA84(u32 toolkit /*r10*/, u32 prevStride /*r2 in/out*/)
 // symdb: -> r0 (scenario byte+1 or 0), r2 (0x18 on hit, prevStride on miss); preserves r4-r7; clobbers
 // symdb: r1, nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_809CA84.yaml
-	thumb_func_start sub_809CA84
-sub_809CA84:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_lookupScenarioTileData_809CA84.yaml
+	thumb_func_start ow_lookupScenarioTileData_809CA84
+ow_lookupScenarioTileData_809CA84:
 	push {r4-r7,lr}
 	ldr r0, off_809CAC4 // =eOWPlayerObject 
 	mov r1, #0x83 // (byte_2009FC3 - 0x2009f40)
@@ -5035,7 +5035,7 @@ cutscenescript_809CB49:
 	cs_jump destination1=byte_809CB40
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_809CA84
+	thumb_func_end ow_lookupScenarioTileData_809CA84
 
 // symdb: Triggers PET effect 0, sets bit 0x80 on eStruct2001010, runs chatbox script 30 of archive 4, then zeroes byte at [r5,#8] and word at [r5,#0x70] of a caller-provided struct.
 // symdb: (r0 unused; r5 from caller = state struct) -> void; r0-r3, r12 clobbered by calls

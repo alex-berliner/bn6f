@@ -628,7 +628,7 @@ off_813BAE8:
 sub_813BAEC:
 	push {lr}
 	push {r0-r3}
-	bl sub_813BB00
+	bl battle_checkPanelPlacement_813BB00
 	pop {r0-r3}
 	bne loc_813BAFC
 	bl navicust_checkPieceOverlap
@@ -642,9 +642,9 @@ loc_813BAFC:
 // symdb: unsigned row /*r2*/, unsigned col /*r3*/); /* returns 1 = blocked or fully clear, 0 = overlaps
 // symdb: non-passable cells;    NZ flags reflect the return; r8–r12 are passed through from
 // symdb: ai_dispatchFromGlobalByte */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813BB00.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelPlacement_813BB00.yaml
 	thumb_local_start
-sub_813BB00:
+battle_checkPanelPlacement_813BB00:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -701,7 +701,7 @@ loc_813BB60:
 	tst r0, r0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813BB00
+	thumb_func_end battle_checkPanelPlacement_813BB00
 
 // symdb: Scans a 7×7 window of the NaviCust board to detect whether a candidate piece's AI-derived footprint overlaps any cell already occupied in the toolkit's placement grid.
 // symdb: u32 navicust_checkPieceOverlap(u32 dispatchArg /*r0*/, u32 col /*r2*/, u32 row /*r3*/, u32 r1,

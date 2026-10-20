@@ -1111,7 +1111,7 @@ loc_8046794:
 	pop {r5,pc}
 	.balign 4, 0
 off_804679C:
-	.word sub_811DF1C+1
+	.word battle_dispatchWeatherCompHandler_811DF1C+1
 	.word battle_dispatchObjectState_811E024+1
 	.word battle_aiState_dispatchStateMachine_811E168+1
 	.word battle_dispatchScenarioEffect_811E248+1
@@ -1280,14 +1280,14 @@ loc_80468A8:
 
 // symdb: Complete initialization of work area 5: sets up the entry structure, then fills each entry.
 // symdb: void initWorkArea5_80468BA(void); /* r0-r3, nzcv out; r4-r7 preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80468BA.yaml
-	thumb_func_start sub_80468BA
-sub_80468BA:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initWorkArea5_80468BA.yaml
+	thumb_func_start initWorkArea5_80468BA
+initWorkArea5_80468BA:
 	push {r4-r7,lr}
 	bl sub_8046900
 	bl initWorkArea5Entries_80467D8
 	pop {r4-r7,pc}
-	thumb_func_end sub_80468BA
+	thumb_func_end initWorkArea5_80468BA
 
 // symdb: Initializes a 0x58-byte AI chip-queue slot in EWRAM at 0x02011860 for a given actor slot index
 // symdb: (r0 = ActorType (1=virus, 2=player), r1 = slot index, r2 = BattleObject ptr) -> r0 = pointer to
@@ -3906,7 +3906,7 @@ dimUnownedChipStrip_8047CFA:
 	mov r0, r1
 	add r0, #0x90
 	mov r1, r2
-	bl sub_803D138
+	bl npc_checkKeyItemTrampoline_803D138
 	tst r0, r0
 	bne locret_8047D68
 	mov r0, r6

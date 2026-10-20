@@ -125,7 +125,7 @@ int battle_performBeastOutBattleAiTick_81419A0()
         if ( byte_2001013 )
         {
             byte_2001013 = 0;
-            sub_80468BA();
+            initWorkArea5_80468BA();
             battleObject_initAIChipQueueSlot_80468C6(1, 0, 0);
             battleObject_initAIChipQueueSlot_80468C6(2, 1, 0);
         }
@@ -658,7 +658,7 @@ int battleObject_perFrameUpdate_8142248()
         if ( byte_2000783 )
         {
             byte_2000783 = 0;
-            sub_80468BA();
+            initWorkArea5_80468BA();
             battleObject_initAIChipQueueSlot_80468C6(3, 0, 0);
         }
         battle_callAIDispatch_8046818();
@@ -1307,7 +1307,7 @@ int sub_8142BB6()
                 v7 = v4;
                 v8 = *(v0 + 2);
                 v9 = GetSoulWeaponCursorCameraCoords();
-                sub_8004822(19, v9, v10, v11);
+                map_allocObject_8004822(19, v9, v10, v11);
                 result = PlaySoundEffect(109, v6, v7);
             }
         }
@@ -1403,7 +1403,7 @@ int __fastcall ow_dealDamageToCurrentNavi(int a1)
     v6 = getPETNaviSelect();
     sub_80010EC(v6, v5);
     v7 = sub_809E1AE();
-    sub_8004822(19, v7, SHIDWORD(v7), v8);
+    map_allocObject_8004822(19, v7, SHIDWORD(v7), v8);
     camera_initShakeEffect_80302a8(1, 20);
     PlaySoundEffect(107, v9, v10);
     return PlaySoundEffect(268, v11, v12);
@@ -1425,12 +1425,12 @@ int init_queueBeastSpGfx()
 
 
 // 0x8142cb0
-int sub_8142CB0()
+int battle_resolveMapTileAddr_8142CB0()
 {
     int v0; // r0
 
-    v0 = sub_8142D58();
-    return sub_8142DA0(v0) + *(dword_200BE7C + 8) + dword_200BE7C;
+    v0 = ow_calcMapTileOffset_8142D58();
+    return map_resolveTileAddress_8142DA0(v0) + *(dword_200BE7C + 8) + dword_200BE7C;
 }
 
 
@@ -1483,7 +1483,7 @@ void ow_redrawMapTilemapsCb()
 
 
 // 0x8142d58
-int sub_8142D58()
+int ow_calcMapTileOffset_8142D58()
 {
     int v0; // r4
     int result; // r0
@@ -1504,7 +1504,7 @@ int sub_8142D58()
 
 
 // 0x8142da0
-int __fastcall sub_8142DA0(int a1)
+int __fastcall map_resolveTileAddress_8142DA0(int a1)
 {
     int result; // r0
 
@@ -2099,7 +2099,7 @@ int sub_8143482()
         if ( byte_2001013 )
         {
             byte_2001013 = 0;
-            sub_80468BA();
+            initWorkArea5_80468BA();
             battleObject_initAIChipQueueSlot_80468C6(8, 0, 0);
             battleObject_initAIChipQueueSlot_80468C6(9, 1, 0);
         }
@@ -2756,7 +2756,7 @@ int battle_initMultiEnemyAIAndTick()
         if ( byte_2001013 )
         {
             byte_2001013 = 0;
-            sub_80468BA();
+            initWorkArea5_80468BA();
             battleObject_initAIChipQueueSlot_80468C6(14, 0, 0);
             battleObject_initAIChipQueueSlot_80468C6(12, 1, 0);
             battleObject_initAIChipQueueSlot_80468C6(13, 2, 0);

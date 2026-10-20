@@ -2323,7 +2323,7 @@ off_8034DAC:
 
 // symdb: Picks and starts one of four cutscene scripts based on the overworld player coord interaction value, when not slip-run and not in a cutscene
 // symdb: () -> r0 = 0 on cutscene-started, 1 on no-op ; side effects: may call
-// symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, sub_8034E88, and StartCutscene to load
+// symdb: IsNotSlipRunningAndNotInCutscene, sub_8034E3C, story_checkEntryAlliance_8034E88, and StartCutscene to load
 // symdb: eS200AC80+4 as script
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_runTriggeredOverworldCutscene_8034DB0.yaml
 	thumb_local_start
@@ -2349,7 +2349,7 @@ loc_8034DCA:
 	bl sub_8034E3C
 	bne loc_8034DEE
 	mov r1, #0
-	bl sub_8034E88
+	bl story_checkEntryAlliance_8034E88
 	bne loc_8034DEE
 	ldr r0, off_8034E2C // =byte_8099EA0 // CutsceneScript
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -2360,7 +2360,7 @@ loc_8034DEE:
 	bl sub_8034E3C
 	bne loc_8034E08
 	mov r1, #1
-	bl sub_8034E88
+	bl story_checkEntryAlliance_8034E88
 	bne loc_8034E08
 	ldr r0, off_8034E34 // =byte_809AA34 // CutsceneScript
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -2371,7 +2371,7 @@ loc_8034E08:
 	bl sub_8034E3C
 	bne loc_8034E22
 	mov r1, #2
-	bl sub_8034E88
+	bl story_checkEntryAlliance_8034E88
 	bne loc_8034E22
 	ldr r0, off_8034E38 // =byte_809CAD8 // CutsceneScript
 	bl StartCutscene // (script: *const CutsceneScript, param: u32) -> ()
@@ -2441,9 +2441,9 @@ dword_8034E84:
 // symdb: u32 story_checkEntryAlliance_8034E88(u32 r0=entry, u32 r1=category, u32 r4=alliance) ->
 // symdb: r1=result(1=selectable, 0=not, or mismatched byte), r2=byte-table pointer; nz flags reflect cmp
 // symdb: of r1 against alliance
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8034E88.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/story_checkEntryAlliance_8034E88.yaml
 	thumb_local_start
-sub_8034E88:
+story_checkEntryAlliance_8034E88:
 	push {r6,r7,lr}
 	mov r7, r1
 	mov r6, r0
@@ -2499,7 +2499,7 @@ byte_8034EEE:
 	.byte 0xF9
 byte_8034EEF:
 	.byte 0xF8
-	thumb_func_end sub_8034E88
+	thumb_func_end story_checkEntryAlliance_8034E88
 
 // symdb: Starts the "object interaction" cutscene (TalkObject script) for the coordinate interaction tile the player is currently standing on, if applicable.
 // symdb: void HandleCoordinateInteractionCutscene(u32 toolkit /* r10 */);     // outputs: r2 unchanged;

@@ -6391,7 +6391,7 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x0
 	.word busterBugChargeShotDamageCalcHappensHere_8011A7E+1 // 0x1
 	.word ai_clearAttackVars+1 // 0x2
-	.word sub_8011AF2+1 // 0x3
+	.word battle_setupAIAttackVars_8011AF2+1 // 0x3
 	.word sub_8011B4A+1 // 0x4
 	.word nullsub_44+1 // 0x5
 	.word battle_beastPwrAtkInitVars+1 // 0x6
@@ -6669,9 +6669,9 @@ ai_clearAttackVars:
 // symdb: Initialises the AI enemy's attack-variables block for the current turn: clamps beast damage to 5, clears auxiliary fields, reads navi-stat-based boosts, and selects a special sub-step/timer for high-status or navi-ID-0x18 allies.
 // symdb: void battle_setupAIAttackVars(u32 r5 battle_obj, u32 r7 ai_attack_vars, u32 r10 alliance_ctx) →
 // symdb: r0=0x1E, r1=timer, flags from final cmp; preserves r4–r7.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8011AF2.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupAIAttackVars_8011AF2.yaml
 	thumb_local_start
-sub_8011AF2:
+battle_setupAIAttackVars_8011AF2:
 	push {lr}
 	bl computeBeastDamageCap_801265A
 	cmp r0, #5
@@ -6715,7 +6715,7 @@ loc_8011B3E:
 	str r1, [r0,#oAIData_TempAttackObjectPtr]
 	mov r0, #0x1e
 	pop {pc}
-	thumb_func_end sub_8011AF2
+	thumb_func_end battle_setupAIAttackVars_8011AF2
 
 	thumb_local_start
 sub_8011B4A:
@@ -7475,7 +7475,7 @@ sub_8011FCE:
 	ldrb r0, [r6,#oAIData_ChargeShotStepIndex]
 	cmp r0, #0
 	bne loc_8011FDC
-	bl sub_8011AF2
+	bl battle_setupAIAttackVars_8011AF2
 	b locret_801200E
 loc_8011FDC:
 	sub r0, #1
@@ -10878,9 +10878,9 @@ off_8013550:
 // symdb: Initialize a 100-byte battle NetNavi struct with default fields, sentinel ranges, and a stat value pulled from the Navi stats table.
 // symdb: void initBattleNaviData_8013554(BattleNaviData *navi /* r0 */); r10 provides the Navi stats
 // symdb: table base; returns with the struct pointer preserved in r4.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8013554.yaml
-	thumb_func_start sub_8013554
-sub_8013554:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initBattleNaviData_8013554.yaml
+	thumb_func_start initBattleNaviData_8013554
+initBattleNaviData_8013554:
 	push {r4,lr}
 	mov r4, r0
 	// memBlock
@@ -10957,7 +10957,7 @@ loc_80135DE:
 	cmp r1, #0x5b 
 	ble loc_80135DE
 	pop {r4,pc}
-	thumb_func_end sub_8013554
+	thumb_func_end initBattleNaviData_8013554
 
 // symdb: Zero-fills the 0x64-byte in-battle chip-select/custom-screen state block, writes hardcoded defaults (chip count/hand fields, sentinel bytes, and 0x99/0x1F markers), stamps the three parallel HP halfwords from GetNaviStatsHword(1, 0x42), and marks the chip-slot arrays empty with 0xFF.
 // symdb: (r0 = *state block (within the per-battle buffer)) -> r0 = *same block; flags clobbered by calls
@@ -13461,17 +13461,17 @@ JumpTable8014550:
 	.word SetObjectSuperArmorFlag+1
 	.word nullsub_4+1
 	.word sub_80145EC+1
-	.word sub_8014606+1
+	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word battle_grantSuperArmorInvulnerability+1
-	.word sub_8014606+1
+	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word sub_801462A+1
-	.word sub_8014606+1
+	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word sub_8014640+1
-	.word sub_8014606+1
+	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word sub_8014674+1
 	thumb_func_end sub_8014536
@@ -13568,7 +13568,7 @@ sub_80145EC:
 	ldr r0, [r7]
 	cmp r0, #0
 	bne locret_8014604
-	bl sub_80E1620
+	bl battle_spawnAndLinkTypeF_80E1620
 locret_8014604:
 	pop {r7,pc}
 	thumb_func_end sub_80145EC
@@ -13576,9 +13576,9 @@ locret_8014604:
 // symdb: Flags the object for collision (0x30), rebuilds its collision geometry with NoCustom+ awareness, and invokes a secondary collision-resolution handler when the object's status dword is zero.
 // symdb: object_updateCollisionAndResolveCleared_8014606(u32 r4, u32 r5 /*object ref*/, u32 r6 /*object
 // symdb: base*/, u32 r10, u32 lr) -> {r0-r7, nz, c, v, lr}
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8014606.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_updateCollisionAndResolveCleared_8014606.yaml
 	thumb_local_start
-sub_8014606:
+object_updateCollisionAndResolveCleared_8014606:
 	push {r7,lr}
 	mov r0, #0x30 
 	bl object_setFlag1 // (int a1) -> void
@@ -13591,10 +13591,10 @@ sub_8014606:
 	ldr r0, [r7]
 	cmp r0, #0
 	bne locret_8014628
-	bl sub_80E1620
+	bl battle_spawnAndLinkTypeF_80E1620
 locret_8014628:
 	pop {r7,pc}
-	thumb_func_end sub_8014606
+	thumb_func_end object_updateCollisionAndResolveCleared_8014606
 
 	thumb_local_start
 sub_801462A:
@@ -13606,7 +13606,7 @@ sub_801462A:
 	beq loc_801463A
 	bl battle_clearObjectStatusFlagsAndTimers_801A264
 loc_801463A:
-	bl sub_8014606
+	bl object_updateCollisionAndResolveCleared_8014606
 	pop {pc}
 	thumb_func_end sub_801462A
 
@@ -13616,7 +13616,7 @@ sub_8014640:
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
 	bl object_setFlag1 // (int a1) -> void
-	bl sub_8014606
+	bl object_updateCollisionAndResolveCleared_8014606
 	pop {pc}
 	thumb_func_end sub_8014640
 
@@ -13634,7 +13634,7 @@ battle_grantSuperArmorInvulnerability:
 	ldr r0, [r7]
 	cmp r0, #0
 	bne loc_8014668
-	bl sub_80E1620
+	bl battle_spawnAndLinkTypeF_80E1620
 loc_8014668:
 	ldr r0, dword_80147D8 // =0xffff 
 	bl object_setInvulnerableTime
@@ -13656,7 +13656,7 @@ sub_8014674:
 	ldr r0, [r7]
 	cmp r0, #0
 	bne loc_8014696
-	bl sub_80E1620
+	bl battle_spawnAndLinkTypeF_80E1620
 loc_8014696:
 	bl battle_clearAIDataStateBlock
 	pop {r7,pc}
@@ -20301,7 +20301,7 @@ byte_8017868:
 	.byte 0xFE, 0xFD, 0xFC, 0xFC, 0xFB, 0xFB, 0xFA, 0xFA, 0xFA, 0xFB, 0xFC, 0xFD, 0xFE, 0xFF, 0x0
 	thumb_func_end battleObject_jumpLandStep_8017768
 
-// symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (sub_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
+// symdb: Turn-end handler for a battle object that optionally runs an enemy AI cleanup (battle_spawnAndLinkTypeF_80E1620) and then marks the object as having acted (CurAction = 8, phase cleared).
 // symdb: void sub_8017888(battle_object *obj /* r5 */); returns r0 = 0; clobbers r0-r3, r7 (scratch,
 // symdb: restored), flags NZ set from "mov r0,#0"
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_endTurnMarkActed_8017888.yaml
@@ -20321,7 +20321,7 @@ battle_endTurnMarkActed_8017888:
 	ldr r0, [r7]
 	cmp r0, #0
 	bne loc_80178AC
-	bl sub_80E1620
+	bl battle_spawnAndLinkTypeF_80E1620
 loc_80178AC:
 	mov r0, #8
 	strb r0, [r5,#oBattleObject_CurAction]
@@ -31464,7 +31464,7 @@ off_801DA6C:
 	.word sub_801E5EC+1
 	.word sub_801E748+1
 	.word e_setFlagBit16+1
-	.word sub_801DE82+1
+	.word battle_loadBgTileset_801DE82+1
 	.word ow_patchBackgroundStrip+1
 	.word sub_801EBDE+1
 	.word ow_drawBackgroundTilePatch+1
@@ -32116,9 +32116,9 @@ sub_801DE64:
 
 // symdb: Loads the battle background tileset into VRAM and marks it as initialized.
 // symdb: void battle_loadBgTileset_801DE82(SceneStruct *scene /*r5*/)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_801DE82.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadBgTileset_801DE82.yaml
 	thumb_local_start
-sub_801DE82:
+battle_loadBgTileset_801DE82:
 	push {r4,r5,lr}
 	ldrb r0, [r5,#0x18]
 	cmp r0, #0
@@ -32160,7 +32160,7 @@ off_801DEC8:
 	.word unk_3001A80
 off_801DECC:
 	.word byte_86E1CD8
-	thumb_func_end sub_801DE82
+	thumb_func_end battle_loadBgTileset_801DE82
 
 // symdb: Resets the custom gauge state, reloads its tile graphics from ROM into VRAM, and starts the custom gauge's init/dispatch routine.
 // symdb: void custGauge_Init(void)

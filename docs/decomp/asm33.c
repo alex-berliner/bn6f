@@ -1667,7 +1667,7 @@ int sub_8124D78()
     *(v0 + 13) = 1;
     *(v0 + 32) = *(v0 + 30);
     *(v0 + 36) = *(v0 + 34);
-    sub_81255F8(10, v1, v2);
+    menu_tickInput_81255F8(10, v1, v2);
     battle_runTransition_8125444();
     submenu_redrawFolderScreen();
     wrapper_sub8126570_fixedArgs_812650C();
@@ -2373,7 +2373,7 @@ int __fastcall menu_handleStartAndDpad_8125594(int a1, int a2, int a3)
 
 
 // 0x81255f8
-int __fastcall sub_81255F8(int a1, int a2, int a3)
+int __fastcall menu_tickInput_81255F8(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10

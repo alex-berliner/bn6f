@@ -7687,7 +7687,7 @@ int __fastcall sub_813629C(int a1)
 
     v1 = a1;
     v2 = battleObject_getByIndex_813B780(a1 - 144);
-    return sub_803D138(4 * (v1 >> 2), *(v2 + 3));
+    return npc_checkKeyItemTrampoline_803D138(4 * (v1 >> 2), *(v2 + 3));
 }
 
 
@@ -9723,7 +9723,7 @@ int __fastcall GiveFolder(signed int a1)
     }
     TestEventFlagFromImmediate(1, 99);
     if ( v8 || (result = getPETNaviSelect()) == 0 )
-        result = sub_8120BE4();
+        result = pet_copyNaviStatsToCurrent_8120BE4();
     return result;
 }
 

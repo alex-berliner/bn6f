@@ -3234,9 +3234,9 @@ SpawnOverworldMapObject:
 // symdb: Allocate the next free overworld map object (type 9) from a 56-slot pool, returning its address or 0 if full.
 // symdb: r0..r4 = init data (byte at +0x01, dwords at +0x04/+0x0C/+0x10/+0x14); r5 out = object pointer
 // symdb: or 0; flags clobbered; r1-r4,r6 preserved across the call.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8004822.yaml
-	thumb_func_start sub_8004822
-sub_8004822:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_allocObject_8004822.yaml
+	thumb_func_start map_allocObject_8004822
+map_allocObject_8004822:
 	push {r0-r4,r6,lr}
 	ldr r5, off_80049DC // =eOverworldMapObject55
 	mov r6, #0x37
@@ -3273,7 +3273,7 @@ loc_8004846:
 loc_8004860:
 	mov r5, #0
 	pop {r0-r4,r6,pc}
-	thumb_func_end sub_8004822
+	thumb_func_end map_allocObject_8004822
 
 	thumb_local_start
 sub_8004864:
@@ -13650,7 +13650,7 @@ battle_runBattlePhase_8009158:
 	bl sound_800065A
 	mov r0, #0x1f
 	ldr r1, dword_80091EC // =0x11a
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 	b locret_80091B6
 loc_800919A:
 	ldrh r0, [r5,#oBattleState_LowHPAlertTimers]
@@ -13664,7 +13664,7 @@ loc_800919A:
 	bl sound_800065A
 	mov r0, #0x1f
 	ldr r1, off_80091E8 // =0x100
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 locret_80091B6:
 	pop {pc}
 	.balign 4, 0
@@ -18932,7 +18932,7 @@ loc_800B1D2:
 loc_800B1DC:
 	mov r0, #0xc
 	add r0, r0, r4
-	bl sub_8013554
+	bl initBattleNaviData_8013554
 	b loc_800B242
 loc_800B1E6:
 	mov r0, #0xc

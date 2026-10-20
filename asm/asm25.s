@@ -705,9 +705,9 @@ byte_808FD14:
 // symdb: owPlayer_stepOnce(r10 /*player ctx*/ , lr) -> nz /*1 stepped, 0 stopped*/ , r2 /*copy flag
 // symdb: 0x00400000 on move*/, r3/r7 /*from owPlayer_copyCoords callee*/ ; clobbers r0 r1 c v lr;
 // symdb: preserves r4 r5 r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808FD1C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/owPlayer_stepOnce_808FD1C.yaml
 	thumb_local_start
-sub_808FD1C:
+owPlayer_stepOnce_808FD1C:
 	push {r4,r5,lr}
 	ldr r5, off_808FD60 // =off_808F5D4 
 	ldr r5, [r5]
@@ -749,7 +749,7 @@ loc_808FD5C:
 	.balign 4, 0
 off_808FD60:
 	.word off_808F5D4
-	thumb_func_end sub_808FD1C
+	thumb_func_end owPlayer_stepOnce_808FD1C
 
 // symdb: Looks up a four-parameter entry for the current map and enqueues it via req_setFourParams, likely weather/ambient-effect parameters.
 // symdb: void sub_808FD64(void); // in: r10 = toolkit; out: r2, r3 as left by req_setFourParams; clobbers
@@ -1021,7 +1021,7 @@ dword_808FF2C:
 	thumb_local_start
 battle_initAIChipQueueSlot:
 	push {lr}
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0
@@ -1043,7 +1043,7 @@ battleObject_togglePlayerAllyLockout_808FF44:
 	ldrb r0, [r5,#5]
 	tst r0, r0
 	beq locret_808FF6C
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #0
 	mov r1, #0
 	mov r2, #0

@@ -4217,7 +4217,7 @@ signed int ai_clearAttackVars()
 
 
 // 0x8011af2
-signed int __fastcall sub_8011AF2(int a1)
+signed int __fastcall battle_setupAIAttackVars_8011AF2(int a1)
 {
     int v1; // r5
     int v2; // r7
@@ -4796,7 +4796,7 @@ signed int sub_8011FCE()
 
     v2 = *(v0 + 13);
     if ( !*(v0 + 13) )
-        return sub_8011AF2(v2);
+        return battle_setupAIAttackVars_8011AF2(v2);
     v4 = v2 - 1;
     *(v0 + 13) = v4;
     *(v1 + 48) = *(v0 + v4 + 108) | (*&byte_80E98C0[2 * (*(v0 + v4 + 108) & 0xF)] << 16);
@@ -7127,7 +7127,7 @@ signed int __fastcall sub_80134C8(int a1, int a2, int a3, int a4)
 
 
 // 0x8013554
-signed int __fastcall sub_8013554(int a1, int a2, int a3, int a4)
+signed int __fastcall initBattleNaviData_8013554(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     __int16 v5; // r0
@@ -9073,13 +9073,13 @@ int sub_80145EC()
     object_setFlag1(0x20000);
     result = *(v0 + 64);
     if ( !result )
-        result = sub_80E1620(0, v1, v2, v3);
+        result = battle_spawnAndLinkTypeF_80E1620(0, v1, v2, v3);
     return result;
 }
 
 
 // 0x8014606
-int sub_8014606()
+int object_updateCollisionAndResolveCleared_8014606()
 {
     int v0; // r6
     int v1; // r0
@@ -9095,7 +9095,7 @@ int sub_8014606()
     object_updateCollisionData(v2, 16, 2, v3);
     result = *(v0 + 64);
     if ( !result )
-        result = sub_80E1620(0, v4, v5, v6);
+        result = battle_spawnAndLinkTypeF_80E1620(0, v4, v5, v6);
     return result;
 }
 
@@ -9107,7 +9107,7 @@ int sub_801462A()
 
     if ( *(*(v0 + oToolkit_S2034880_Ptr) + 7) != 1 )
         battle_clearObjectStatusFlagsAndTimers_801A264();
-    return sub_8014606();
+    return object_updateCollisionAndResolveCleared_8014606();
 }
 
 
@@ -9115,7 +9115,7 @@ int sub_801462A()
 int sub_8014640()
 {
     object_setFlag1(0x20000);
-    return sub_8014606();
+    return object_updateCollisionAndResolveCleared_8014606();
 }
 
 
@@ -9129,7 +9129,7 @@ _DWORD *battle_grantSuperArmorInvulnerability()
 
     object_setFlag1(0x20000);
     if ( !*(v0 + 64) )
-        sub_80E1620(0, v1, v2, v3);
+        battle_spawnAndLinkTypeF_80E1620(0, v1, v2, v3);
     object_setInvulnerableTime(0xFFFF);
     return battle_clearAIDataStateBlock();
 }
@@ -9150,7 +9150,7 @@ _DWORD *sub_8014674()
     v2 = battle_IsNoCustomPlusActive_80107C0(v1);
     object_updateCollisionData(v2, 16, 2, v3);
     if ( !*(v0 + 64) )
-        sub_80E1620(0, v4, v5, v6);
+        battle_spawnAndLinkTypeF_80E1620(0, v4, v5, v6);
     return battle_clearAIDataStateBlock();
 }
 
@@ -13816,7 +13816,7 @@ int __fastcall battle_endTurnMarkActed_8017888(int a1)
 
     battle_testFlag0x40_800A8F8(a1);
     if ( !v2 && GetVerActorTyAndAIIdx_80182B4(*(v1 + 40))[1] == 2 && !*(*(v1 + 88) + 64) )
-        sub_80E1620(0, 2, v3, v4);
+        battle_spawnAndLinkTypeF_80E1620(0, 2, v3, v4);
     *(v1 + 9) = 8;
     result = 0;
     *(v1 + 10) = 0;
@@ -20756,7 +20756,7 @@ int __noreturn sub_801DE64()
 
 
 // 0x801de82
-int sub_801DE82()
+int battle_loadBgTileset_801DE82()
 {
     int v0; // r5
     int v1; // r0

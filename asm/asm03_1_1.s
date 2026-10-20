@@ -354,7 +354,7 @@ battle_initReturnSceneGfx:
 	bl sprite_initBattleFadeGfxState_80027C4
 	bl decomp_initGfx_8038F30 // () -> void
 	bl battle_renderCommErrorTextGfx
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	bl battle_resetEStructRecords_8046664 // () -> void
 	ldr r0, off_8038B60 // =byte_80386E8
 	bl battle_initAIChipQueueList
@@ -666,7 +666,7 @@ sub_8038D94:
 	strh r0, [r5,#4]
 	mov r0, #0x18
 	strb r0, [r5,#2]
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 locret_8038DAA:
 	pop {pc}
 	.balign 4, 0
@@ -9499,16 +9499,16 @@ TakeNaviCustPrograms:
 // symdb: Thin trampoline that stashes a pointer in r4, then sequences sub_803D148 followed by CheckKeyItem to test whether the player holds a given key item.
 // symdb: u32 r0 = keyItemId, u32 r1 = param, u32 r2 = ptrStashedToR4, r10 = toolkit; -> u32 r0 =
 // symdb: checkResult, u32 r2 = data; clobbers r1, condition flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_803D138.yaml
-	thumb_func_start sub_803D138
-sub_803D138:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_checkKeyItemTrampoline_803D138.yaml
+	thumb_func_start npc_checkKeyItemTrampoline_803D138
+npc_checkKeyItemTrampoline_803D138:
 	push {r4,lr}
 	mov r4, r2
 	bl sub_803D148
 	bl CheckKeyItem
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_803D138
+	thumb_func_end npc_checkKeyItemTrampoline_803D138
 
 	thumb_func_start sub_803D148
 sub_803D148:

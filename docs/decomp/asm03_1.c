@@ -1066,7 +1066,7 @@ signed int cutscene_runTriggeredOverworldCutscene_8034DB0()
     v6 = sub_8034E3C(word_200AC84, 0);
     if ( zf )
     {
-        v6 = sub_8034E88(v6, 0);
+        v6 = story_checkEntryAlliance_8034E88(v6, 0);
         if ( zf )
         {
             StartCutscene(byte_8099EA0, v7, v8, v9);
@@ -1076,7 +1076,7 @@ signed int cutscene_runTriggeredOverworldCutscene_8034DB0()
     v10 = sub_8034E3C(v6, 1);
     if ( zf )
     {
-        v10 = sub_8034E88(v10, 1);
+        v10 = story_checkEntryAlliance_8034E88(v10, 1);
         if ( zf )
         {
             StartCutscene(byte_809AA34, v11, v12, v13);
@@ -1086,7 +1086,7 @@ signed int cutscene_runTriggeredOverworldCutscene_8034DB0()
     v14 = sub_8034E3C(v10, 2);
     if ( !zf )
         return 1;
-    sub_8034E88(v14, 2);
+    story_checkEntryAlliance_8034E88(v14, 2);
     if ( !zf )
         return 1;
     StartCutscene(byte_809CAD8, v15, v16, v17);
@@ -1115,7 +1115,7 @@ int __fastcall sub_8034E3C(int a1, int a2)
 
 
 // 0x8034e88
-unsigned int __fastcall sub_8034E88(unsigned int result, int a2)
+unsigned int __fastcall story_checkEntryAlliance_8034E88(unsigned int result, int a2)
 {
     int v2; // r4
     unsigned int v3; // r6
@@ -5619,7 +5619,7 @@ void sub_8038D94()
     {
         *(v0 + 4) = &loc_98;
         *(v0 + 2) = 24;
-        sub_80468BA();
+        initWorkArea5_80468BA();
     }
 }
 
@@ -11557,7 +11557,7 @@ signed int __fastcall TakeNaviCustPrograms(int a1, int a2, int a3)
 
 
 // 0x803d138
-int __fastcall sub_803D138(int a1, int a2)
+int __fastcall npc_checkKeyItemTrampoline_803D138(int a1, int a2)
 {
     int v2; // r0
 

@@ -1452,7 +1452,7 @@ int __fastcall SpawnOverworldMapObject(int result, int a2, int a3, int a4)
 
 
 // 0x8004822
-int __fastcall sub_8004822(int result, int a2, int a3, int a4)
+int __fastcall map_allocObject_8004822(int result, int a2, int a3, int a4)
 {
 	char *v4; // r5
 	signed int v5; // r6
@@ -8387,7 +8387,7 @@ int battle_runBattlePhase_8009158()
             {
                 *(v0 + 32) = 0;
                 sound_800065A(31, 0xFFFF, 0);
-                result = sound_8000672(31, byte_100, v4);
+                result = sound_dispatchSmashHandler_8000672(31, byte_100, v4);
             }
         }
         else
@@ -8397,7 +8397,7 @@ int battle_runBattlePhase_8009158()
             {
                 *(v0 + 32) = 1;
                 sound_800065A(31, 0xFFFF, byte_100);
-                result = sound_8000672(31, 282, v3);
+                result = sound_dispatchSmashHandler_8000672(31, 282, v3);
             }
         }
     }
@@ -12372,7 +12372,7 @@ int battle_initBattleStateBuffer_800B144()
                 *byte_203CC2C = (*(v14 + 64) >> 16 << 16) | (*(v14 + 64) >> 16);
                 break;
             case 7:
-                sub_8013554(&byte_203CBE8[4], v2, v3, v4);
+                initBattleNaviData_8013554(&byte_203CBE8[4], v2, v3, v4);
                 break;
             case 9:
                 battle_initChipSelectState(&byte_203CBE8[4], v2, v3, v4);

@@ -2836,9 +2836,9 @@ off_810F010:
 // symdb: Snapshots the object's HP, then counts allied battle-slot entries of kinds 0x4F–0x54 that precede this object in list order, storing a 0x14-per-count bonus into the object's field at offset 0x6C.
 // symdb: battle_calcPredecessorSlotBonus_810F040(r5 = BattleObject*, r10 = Toolkit*) -> r0=bonus,
 // symdb: r1=0x6C, r3=count, nzcv set; preserves r4-r7,r5
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810F040.yaml
-	thumb_func_start sub_810F040
-sub_810F040:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_calcPredecessorSlotBonus_810F040.yaml
+	thumb_func_start battle_calcPredecessorSlotBonus_810F040
+battle_calcPredecessorSlotBonus_810F040:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#oBattleObject_HP]
 	str r0, [r5,#oBattleObject_ExtraVars+8]
@@ -2881,7 +2881,7 @@ off_810F084:
 off_810F088:
 	.word 0x80
 	.word 0x90
-	thumb_func_end sub_810F040
+	thumb_func_end battle_calcPredecessorSlotBonus_810F040
 
 // symdb: If the BattleObject's CollisionData reports panel damage across multiple slots, set a "hit/cracked" flag in ExtraVars (unless already flagged).
 // symdb: (r5 = BattleObjectPtr) -> no meaningful return ; side effect: writes [r5 +
@@ -3316,15 +3316,15 @@ ai_dispatchStateScript:
 off_810F444:
 	.word off_810F448
 off_810F448:
-	.word sub_810F44C+1
+	.word battle_setupAIAttack0_810F44C+1
 	thumb_func_end ai_dispatchStateScript
 
 // symdb: Configures the AI attack-vars structure from per-version lookup tables and fires attack ID 0x0A for the battle object.
 // symdb: u32 battle_setupAIAttack0_810F44C(u32 aidata /*r4*/, u32 obj /*r5*/, u32 aivars /*r7*/); /*
 // symdb: returns r1; early-exit returns ExtraVars[0], otherwise returns r1 from object_setAttack0 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_810F44C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupAIAttack0_810F44C.yaml
 	thumb_local_start
-sub_810F44C:
+battle_setupAIAttack0_810F44C:
 	push {lr}
 	ldrb r3, [r4,#oAIData_Version_16]
 	ldr r0, off_810F4C8 // =byte_810F3EC
@@ -3431,7 +3431,7 @@ byte_810F510:
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF, 0xFF
 	.byte 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_810F44C
+	thumb_func_end battle_setupAIAttack0_810F44C
 
 	thumb_local_start
 sub_810F5D0:
@@ -8047,7 +8047,7 @@ ai_commitMoveAttack:
 	strb r0, [r7,#oAIAttackVars_AttackBoost2]
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_HitElement]
-	bl sub_8111B06
+	bl battle_setAIAttackVelocity_8111B06
 	bl battle_attackUpdateOnHitFrame_8111A72
 	b locret_8111A70
 loc_8111A68:
@@ -8153,9 +8153,9 @@ locret_8111B04:
 // symdb: Initializes AI enemy attack movement by zeroing velocities, setting step timer and charge cycles, then computing fixed-point per-axis velocity from panel deltas.
 // symdb: void battle_setAIAttackVelocity(BattleObject *obj /* r5 */, AIAttackVars *atk /* r7 */);  //
 // symdb: clobbers r0-r3, flags; preserves r5, r7, lr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8111B06.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setAIAttackVelocity_8111B06.yaml
 	thumb_local_start
-sub_8111B06:
+battle_setAIAttackVelocity_8111B06:
 	push {lr}
 	mov r0, #0
 	str r0, [r5,#oBattleObject_XVelocity]
@@ -8192,7 +8192,7 @@ loc_8111B30:
 	str r0, [r5,#oBattleObject_XVelocity]
 locret_8111B48:
 	pop {pc}
-	thumb_func_end sub_8111B06
+	thumb_func_end battle_setAIAttackVelocity_8111B06
 
 // symdb: Dispatches an in-progress AI attack to the per-hit-element handler selected from a small jump table.
 // symdb: void ai_dispatchHitElementAttack(r2, r5, r7 (AI attack vars), r10, lr); // tail dispatch;
@@ -11649,9 +11649,9 @@ byte_8113620:
 // symdb: sub-type / position index */,     u32 r4 /* additional spawn parameter */,     BattleObject *r5
 // symdb: /* the battle object that receives the child */ ); /* returns r0 = 0; nz, c (cleared), v (from
 // symdb: callee) written back */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8113626.yaml
-	thumb_func_start sub_8113626
-sub_8113626:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_spawnAndStoreLinkedObj3_8113626.yaml
+	thumb_func_start battle_spawnAndStoreLinkedObj3_8113626
+battle_spawnAndStoreLinkedObj3_8113626:
 	push {lr}
 	mov r3, #0
 	bl battle_spawnLinkedType1Obj3
@@ -11662,7 +11662,7 @@ sub_8113626:
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars+8]
 	pop {pc}
-	thumb_func_end sub_8113626
+	thumb_func_end battle_spawnAndStoreLinkedObj3_8113626
 
 // symdb: Per-frame tick for a battle object (r5): on phase 0 fires its ExtraVars one-shot action and rewinds that payload's timer to 8, then hands the object to the shared phase-update dispatcher.
 // symdb: void battle_objectTickExtraVarsThenDispatch_811363C(BattleObject* obj /* r5, tail-passed through
@@ -15041,7 +15041,7 @@ off_81151B4:
 	.word ai_attackVars_runMoveStep_8115272+1
 	.word ai_throwObjectStep+1
 	.word ai_hopStepUpdate+1
-	.word sub_8115404+1
+	.word battle_advanceAttackAnimStep_8115404+1
 	thumb_func_end ai_attackStepDispatch_81151A0
 
 // symdb: Runs an AI battle object's charging/ramming attack across the panels: initializes it on the first call, then advances its scripted move each frame.
@@ -15182,7 +15182,7 @@ loc_81152CA:
 	ldrb r0, [r7,#oAIAttackVars_AttackBoost2]
 	cmp r0, #1
 	bne loc_81152D4
-	bl sub_8115466
+	bl battle_attackSubstepSlashTick_8115466
 loc_81152D4:
 	bl battle_checkCutShortChargeAnimSetGuard_81154B8
 	bl ai_attackVarsTimerTick16
@@ -15334,9 +15334,9 @@ locret_8115402:
 // symdb: Per-frame battle-AI update that checks whether the current attack animation has finished, decrements the step timer, and on expiry refreshes collision data and exits the attack state.
 // symdb: void battle_advanceAttackAnimStep(u32 r5_battleObj, u32 r7_attackVars); /* out r1; clobbers
 // symdb: r0,r2,r3,r6,r7,nzcv,lr; preserves r4 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8115404.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_advanceAttackAnimStep_8115404.yaml
 	thumb_local_start
-sub_8115404:
+battle_advanceAttackAnimStep_8115404:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurAnim]
 	cmp r0, #0
@@ -15359,7 +15359,7 @@ loc_811541A:
 	bl object_exitAttackState
 locret_8115430:
 	pop {pc}
-	thumb_func_end sub_8115404
+	thumb_func_end battle_advanceAttackAnimStep_8115404
 
 // symdb: Ticks a 16-frame countdown in an AI attack-vars block and, when it wraps, respawns the "hop rear" effect for the enemy AI.
 // symdb: void ai_attackVarsTickTimer16_spawnHopRearFx(r5, r7 /*attack vars*/); // in: r5 forwarded to
@@ -15405,9 +15405,9 @@ ai_spawnHopRearEffect:
 // symdb: Decrements an AI attack sub-step counter; on wrap, spawns a slash effect object at the attacker's forward position.
 // symdb: void battle_attackSubstepSlashTick_8115466(u32 attacker /*r5*/, u32 attack_vars /*r7*/)  //
 // symdb: preserves r5,r7; clobbers r0-r3,r4,lr,nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8115466.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_attackSubstepSlashTick_8115466.yaml
 	thumb_local_start
-sub_8115466:
+battle_attackSubstepSlashTick_8115466:
 	push {r4,lr}
 	ldrb r0, [r7,#oAIAttackVars_SubStepIndex]
 	sub r0, #1
@@ -15429,7 +15429,7 @@ sub_8115466:
 	bl spawn_t1_0x0_EffectObject
 locret_8115490:
 	pop {r4,pc}
-	thumb_func_end sub_8115466
+	thumb_func_end battle_attackSubstepSlashTick_8115466
 
 // symdb: Advances an enemy AI attack-step counter every tick and, on the attacking steps (3 of every 8), highlights the panel directly in front of the battle object.
 // symdb: void sub_8115492(r5 battleObject, r7 aiAttackVars) -> r1 (status from the highlight call, or 4
@@ -16043,9 +16043,9 @@ byte_81159AA:
 // symdb: Selects a battle-AI handler from a version-indexed jump table and invokes it for the given battle object, storing the return value in the object's extra-vars slot.
 // symdb: battle_aiDispatchByVersion_81159B0(BattleObject *obj /*r5*/, u32 r2, u32 r3) -> (r0-r3, NZCV) /*
 // symdb: r4-r7 preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81159B0.yaml
-	thumb_func_start sub_81159B0
-sub_81159B0:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiDispatchByVersion_81159B0.yaml
+	thumb_func_start battle_aiDispatchByVersion_81159B0
+battle_aiDispatchByVersion_81159B0:
 	push {r4,r6,lr}
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
 	ldrb r4, [r0,#oAIData_Version_16]
@@ -16055,7 +16055,7 @@ sub_81159B0:
 	bl battle_spawnType2LinkedChild
 	str r0, [r5,#oBattleObject_ExtraVars]
 	pop {r4,r6,pc}
-	thumb_func_end sub_81159B0
+	thumb_func_end battle_aiDispatchByVersion_81159B0
 
 // symdb: Runs one update-dispatch phase for the selected battle object, then invokes the extra-var handler if the object ended at phase 8 with extra vars still pending.
 // symdb: void battle_objectUpdatePhaseThenExtraVars(battleObject r5 /*object, updated in place*/, ...
@@ -17595,7 +17595,7 @@ off_8116754:
 	.word ai_startAction30FrameWait+1
 	thumb_func_end battle_updateCustGauge_8116720
 
-// symdb: AI state handler: on first entry sets substate=1, loads a 30-frame timer, and fires sub_811677A once; subsequent entries decrement the timer and reset substate to 0 when it expires.
+// symdb: AI state handler: on first entry sets substate=1, loads a 30-frame timer, and fires battle_slot_spawnNavPic_811677A once; subsequent entries decrement the timer and reset substate to 0 when it expires.
 // symdb: (r6 = battle object with AI state fields) -> r0 = 0/1 passthrough from callee call; flags not
 // symdb: meaningfully used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_startAction30FrameWait.yaml
@@ -17609,7 +17609,7 @@ ai_startAction30FrameWait:
 	strb r0, [r6,#oAIState_SubState]
 	mov r0, #0x1e
 	strh r0, [r6,#oAIState_Timer]
-	bl sub_811677A
+	bl battle_slot_spawnNavPic_811677A
 loc_811676C:
 	ldrh r0, [r6,#oAIState_Timer]
 	sub r0, #1
@@ -17623,9 +17623,9 @@ locret_8116778:
 
 // symdb: Finds the first empty slot in the battle NavPic table (up to 8), selects a NavPic type via a tier/param table, computes its HP and level from lookup arrays, and spawns object 79 (a NavPic) in that slot.
 // symdb: u32 r5 = battleSlotBase; outputs r5 (post-spawn base), r6 unchanged; preserves r4, r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811677A.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_slot_spawnNavPic_811677A.yaml
 	thumb_local_start
-sub_811677A:
+battle_slot_spawnNavPic_811677A:
 	push {r4,r6,r7,lr}
 	mov r0, #0x60
 	add r0, r0, r5
@@ -17668,7 +17668,7 @@ byte_81167C8:
 	.byte 0x78, 0x64, 0x5A, 0x3C, 0x5A
 byte_81167CD:
 	.byte 0x1E, 0x32, 0x46, 0x5A, 0x0
-	thumb_func_end sub_811677A
+	thumb_func_end battle_slot_spawnNavPic_811677A
 
 // symdb: Rolls a random 0-15 value, combines it with a battle object's Param1 to index a 4x16 tier table (values 0-4), used to pick a randomized effect strength for that object.
 // symdb: int battle_randTierFromParam1Table_81167D2(BattleObject* object /*r5*/); // returns tier value
@@ -20442,7 +20442,7 @@ sub_8117B38:
 	cmp r1, #0
 	beq locret_8117B48
 	add r0, #0x90
-	bl sub_803D138
+	bl npc_checkKeyItemTrampoline_803D138
 	bl copyTwoDigitNumberTiles_8117B94
 locret_8117B48:
 	pop {pc}
@@ -33560,9 +33560,9 @@ locret_811DF18:
 // symdb: Jump-table dispatcher that selects and calls a weather-compensation handler based on a per-object state byte, passing eWeatherCompState as context.
 // symdb: void battle_dispatchWeatherCompHandler(BattleObject* r5); // r1=selector, r6=&eWeatherCompState
 // symdb: passed to handler; r2,r3,r5,r10,r11 returned by handler
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811DF1C.yaml
-	thumb_func_start sub_811DF1C
-sub_811DF1C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchWeatherCompHandler_811DF1C.yaml
+	thumb_func_start battle_dispatchWeatherCompHandler_811DF1C
+battle_dispatchWeatherCompHandler_811DF1C:
 	push {lr}
 	ldr r0, off_811DF2C // =off_811DF30
 	ldrb r1, [r5,#8]
@@ -33576,15 +33576,15 @@ off_811DF2C:
 	.word off_811DF30
 off_811DF30:
 	.word battleObject_initNaviRosterEntry_811DF40+1
-	.word sub_811DF94+1
+	.word battle_rosterIconUpdate_811DF94+1
 	.word sub_811DFCC+1
 off_811DF3C:
 	.word eWeatherCompState
-	thumb_func_end sub_811DF1C
+	thumb_func_end battle_dispatchWeatherCompHandler_811DF1C
 
 // symdb: Initializes a battle object as a navi-type sprite (offscreen staging position), then hands it to a roster-filling helper identified by r6.
 // symdb: void battleObject_initNaviRosterEntry(r1 param, r5 obj, r6 rosterEntry) -> r2, r3, r5 (results
-// symdb: of sub_811DF94); clobbers r0, r1, flags
+// symdb: of battle_rosterIconUpdate_811DF94); clobbers r0, r1, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_initNaviRosterEntry_811DF40.yaml
 	thumb_local_start
 battleObject_initNaviRosterEntry_811DF40:
@@ -33614,7 +33614,7 @@ battleObject_initNaviRosterEntry_811DF40:
 	strb r0, [r5,#9]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811DF94
+	bl battle_rosterIconUpdate_811DF94
 	pop {pc}
 	.balign 4, 0
 off_811DF90:
@@ -33625,9 +33625,9 @@ off_811DF90:
 // symdb: void battle_rosterIconUpdate_811DF94(void) /* in: r5=sprite, r6=roster-entry; out: r2,r3,r5 from
 // symdb: sprite_update; clobbers r0,r1,flags,lr; preserves r4,r5 (r5 overwritten by sprite_update result)
 // symdb: */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811DF94.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_rosterIconUpdate_811DF94.yaml
 	thumb_local_start
-sub_811DF94:
+battle_rosterIconUpdate_811DF94:
 	push {r4,lr}
 	ldrb r0, [r6,#0xb]
 	cmp r0, #0
@@ -33652,7 +33652,7 @@ loc_811DFC4:
 	bl sprite_update
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_811DF94
+	thumb_func_end battle_rosterIconUpdate_811DF94
 
 	thumb_local_start
 sub_811DFCC:
@@ -39854,9 +39854,9 @@ dword_8120BE0:
 // symdb: Copies five PET navi stat bytes (offsets 0x09, 0x2D-0x30) from the default PET slot 0 to the currently active navi slot.
 // symdb: void pet_copyNaviStatsToCurrent_8120BE4(void) /* r10, lr in; r2, r3 out (artifacts of last
 // symdb: callee); clobbers r0,r1,flags,lr; preserves r6,r7 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8120BE4.yaml
-	thumb_func_start sub_8120BE4
-sub_8120BE4:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_copyNaviStatsToCurrent_8120BE4.yaml
+	thumb_func_start pet_copyNaviStatsToCurrent_8120BE4
+pet_copyNaviStatsToCurrent_8120BE4:
 	push {r6,r7,lr}
 	sub sp, sp, #0x14
 	mov r0, #0
@@ -39902,7 +39902,7 @@ sub_8120BE4:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	add sp, sp, #0x14
 	pop {r6,r7,pc}
-	thumb_func_end sub_8120BE4
+	thumb_func_end pet_copyNaviStatsToCurrent_8120BE4
 
 	push {r4-r7,lr}
 	mov r5, r0

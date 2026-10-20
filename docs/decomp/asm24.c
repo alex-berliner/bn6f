@@ -109,7 +109,7 @@ int __fastcall init_beastSpScenario(int a1, int a2, int a3, int a4)
     if ( ai_testMapGroupEventFlag(v6) != 1 )
         init_applyBeastSpScenarioEventFlags();
     init_clearBeastSpEventFlagTable();
-    sound_8000672(31, 256, v7);
+    sound_dispatchSmashHandler_8000672(31, 256, v7);
     return 0;
 }
 
@@ -126,7 +126,7 @@ int __fastcall ow_storyTriggerSpawnJackoutLockScene(int a1)
     if ( !v1 )
     {
         SetEventFlagFromImmediate(9, 215);
-        sub_808CBD8();
+        overworld_leaveArea_808CBD8();
         reqBBS_setFlag_e17b0f7_8140A00();
         gameState_setUnk09_8001172(3);
     }
@@ -156,7 +156,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
         if ( v1 )
             return;
         if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_MapGroup) != 133 )
-            sound_8000672(31, 315, v2);
+            sound_dispatchSmashHandler_8000672(31, 315, v2);
     }
     sub_811EBE0();
     if ( v1 )
@@ -171,7 +171,7 @@ void pet_tryStartRandomEncounterStep_808CB0C()
         v4 = byte_2000B43-- - 1;
         if ( !v4 )
         {
-            sub_808CCAC(0);
+            field_calcFacingTargetTile_808CCAC(0);
             byte_2000B43 = 32;
         }
         v5 = reqBBS_pollTouchTrigger_808CD04();
@@ -223,7 +223,7 @@ int spawnOverworldMapObjects_808CBA0()
 
 
 // 0x808cbd8
-int sub_808CBD8()
+int overworld_leaveArea_808CBD8()
 {
     int v0; // r10
     int v1; // r2
@@ -232,7 +232,7 @@ int sub_808CBD8()
     reqBBS_setFlag_e17b0f7_8140A00();
     gameState_setUnk09_8001172(3);
     if ( *(*(v0 + oToolkit_GameStatePtr) + oGameState_MapGroup) != 133 )
-        sound_8000672(31, 315, v1);
+        sound_dispatchSmashHandler_8000672(31, 315, v1);
     return 0;
 }
 
@@ -321,7 +321,7 @@ int object_snapPosToPlayer()
 
 
 // 0x808ccac
-int __fastcall sub_808CCAC(int a1)
+int __fastcall field_calcFacingTargetTile_808CCAC(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -724,7 +724,7 @@ void ow_setupMapTiles_808D108()
 {
     int v0; // r0
 
-    v0 = sub_8142CB0();
+    v0 = battle_resolveMapTileAddr_8142CB0();
     ow_stampMapTileTemplate(v0, 0);
     ow_redrawMapTilemapsCb();
 }
@@ -745,7 +745,7 @@ unsigned int sub_808D11C()
         {
             byte_2000B48 = v0 + 114;
             byte_2000B49 = v1 + 113;
-            v2 = sub_8142CB0();
+            v2 = battle_resolveMapTileAddr_8142CB0();
             ow_stampMapTileTemplate(v2, 0);
             ow_redrawMapTilemapsCb();
         }

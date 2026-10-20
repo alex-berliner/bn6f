@@ -192,7 +192,7 @@ battle_performBeastOutBattleAiTick_81419A0:
 	beq loc_81419CC
 	mov r0, #0
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #1
 	mov r1, #0
 	mov r2, #0
@@ -1114,7 +1114,7 @@ battleObject_perFrameUpdate_8142248:
 	beq loc_814226A
 	mov r0, #0
 	strb r0, [r5,#0x3] // (byte_2000783 - 0x2000780)
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #3
 	mov r1, #0
 	mov r2, #0
@@ -2178,7 +2178,7 @@ loc_8142BBC:
 	mov r1, r0
 	mov r0, #0x13
 	mov r4, #0
-	bl sub_8004822
+	bl map_allocObject_8004822
 	pop {r0-r7}
 	mov r0, #0x6d 
 	bl PlaySoundEffect
@@ -2272,7 +2272,7 @@ loc_8142C58:
 	mov r1, r0
 	mov r0, #0x13
 	mov r4, #4
-	bl sub_8004822
+	bl map_allocObject_8004822
 	mov r0, #1
 	mov r1, #0x14
 	bl camera_initShakeEffect_80302a8
@@ -2320,20 +2320,20 @@ off_8142CAC:
 // symdb: Resolves the absolute memory address of the current battle-map tile by combining a tile offset with the tile-table base inside MapTilesState.
 // symdb: u32 battle_resolveMapTileAddr_8142CB0(/* r10 = battle context */) -> r0 (absolute tile data
 // symdb: address); r5-r7 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142CB0.yaml
-	thumb_func_start sub_8142CB0
-sub_8142CB0:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_resolveMapTileAddr_8142CB0.yaml
+	thumb_func_start battle_resolveMapTileAddr_8142CB0
+battle_resolveMapTileAddr_8142CB0:
 	push {r4-r7,lr}
 	ldr r5, off_8142D54 // =eMapTilesState200be70 
-	bl sub_8142D58
-	bl sub_8142DA0
+	bl ow_calcMapTileOffset_8142D58
+	bl map_resolveTileAddress_8142DA0
 	ldr r5, [r5,#0xc] // (dword_200BE7C - 0x200be70)
 	ldr r1, [r5,#8]
 	add r1, r1, r5
 	add r0, r0, r1
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8142CB0
+	thumb_func_end battle_resolveMapTileAddr_8142CB0
 
 // symdb: Stamps a fixed tile-pattern template onto an overworld map-tile buffer, remapping rows by the current map width.
 // symdb: void ow_stampMapTileTemplate(u32 dest /* r0 */, u32 tile_type /* r1: 0 or 1 */)
@@ -2427,9 +2427,9 @@ off_8142D54:
 // symdb: Computes a byte offset within the area map tile array by adjusting the current camera offset by the signed distance from the tile-grid center.
 // symdb: u32 ow_calcMapTileOffset_8142D58(void) /* reads [eMapTilesState200be70], [unk_2000B40+8];
 // symdb: clobbers r0-r2, n, c, v; returns offset in r0; r4-r7, r5, r10, lr preserved */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142D58.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_calcMapTileOffset_8142D58.yaml
 	thumb_local_start
-sub_8142D58:
+ow_calcMapTileOffset_8142D58:
 	push {r4-r7,lr}
 	ldr r5, off_8142E04 // =eMapTilesState200be70 
 	ldr r6, off_8142E08 // =unk_2000B40 
@@ -2466,13 +2466,13 @@ loc_8142D84:
 	add r0, r0, r4
 locret_8142D9E:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142D58
+	thumb_func_end ow_calcMapTileOffset_8142D58
 
 // symdb: Resolves a map tile's RAM address by offsetting a base pointer up or down by a row/column delta derived from the current tile index.
 // symdb: u32 resolve(u32 baseAddr /*r0*/) -> r0 = adjusted tile address; preserves r5 = tile-state ptr
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8142DA0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/map_resolveTileAddress_8142DA0.yaml
 	thumb_local_start
-sub_8142DA0:
+map_resolveTileAddress_8142DA0:
 	push {r4-r7,lr}
 	push {r0}
 	ldr r5, off_8142E04 // =eMapTilesState200be70 
@@ -2510,7 +2510,7 @@ loc_8142DCC:
 	sub r0, r0, r4
 locret_8142DE4:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142DA0
+	thumb_func_end map_resolveTileAddress_8142DA0
 
 // symdb: Returns the halfword tile offset (from a 4-entry lookup table) used to draw the current area's overworld map, forcing entry 3 for the Sky Area map group.
 // symdb: u32 ow_getAreaMapTilesOffset(u32 toolkit /* r10 */); -> r0 = tile offset halfword
@@ -3436,7 +3436,7 @@ sub_8143482:
 	beq loc_81434AE
 	mov r0, #0
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #8
 	mov r1, #0
 	mov r2, #0
@@ -4629,7 +4629,7 @@ battle_initMultiEnemyAIAndTick:
 	beq loc_814407E
 	mov r0, #0
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
-	bl sub_80468BA
+	bl initWorkArea5_80468BA
 	mov r0, #0xe
 	mov r1, #0
 	mov r2, #0

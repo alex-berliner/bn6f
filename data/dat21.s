@@ -8056,7 +8056,7 @@ dead_8086CF4:
 	beq loc_8086D0A
 	mov r0, #0x1f
 	ldr r1, =0x100
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 	b loc_8086D10
 loc_8086D0A:
 	mov r0, #0x11

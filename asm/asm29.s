@@ -8761,7 +8761,7 @@ loc_80A933E:
 	b loc_80A935A
 loc_80A9352:
 	bl sprite_setUnk2cToE000000_80A93D8
-	bl sub_80A93E8
+	bl battle_animOscillatePos_80A93E8
 loc_80A935A:
 	bl sprite_update
 	pop {r4-r7,pc}
@@ -8854,9 +8854,9 @@ dword_80A93E4:
 // symdb: Oscillate a battle object's fixed-point animation position back and forth with 24-step phase toggling
 // symdb: void battle_animOscillatePos_80A93E8(u32 r5); /* clobbers r0, r1, flags; reads/writes
 // symdb: r5->byte[6] phase, r5->byte[7] counter, r5->dword[0x14] position */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80A93E8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_animOscillatePos_80A93E8.yaml
 	thumb_local_start
-sub_80A93E8:
+battle_animOscillatePos_80A93E8:
 	push {lr}
 	ldrb r0, [r5,#6]
 	cmp r0, #0
@@ -8897,7 +8897,7 @@ loc_80A9424:
 	str r1, [r5,#0x14]
 locret_80A942E:
 	pop {pc}
-	thumb_func_end sub_80A93E8
+	thumb_func_end battle_animOscillatePos_80A93E8
 
 // symdb: Dispatcher for the Mr. Weather overworld map object; runs the per-state handler selected by the object's state byte.
 // symdb: void sub_80A9430(r5=weather map object, r10=pass-through arg); caller-visible outputs are
@@ -11396,7 +11396,7 @@ loc_80AA648:
 	beq loc_80AA66C
 
 	mov r0, r7
-	bl sub_80AA824
+	bl battle_getEnemyIconFlags_80AA824
 	tst r0, r6
 	beq loc_80AA66C
 	add r4, #1
@@ -11710,9 +11710,9 @@ loc_80AA820:
 // symdb: Walk the battle object's per-enemy state-entry list and accumulate a bitmask of which enemy icons to display in the battle HUD.
 // symdb: u32 battle_getEnemyIconFlags_80AA824(u32 battleObj /* r0 */) -> r0 = iconFlags, r2 =
 // symdb: lastShiftVal; clobbers r1,r3,lr,flags; preserves r4,r6,r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA824.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getEnemyIconFlags_80AA824.yaml
 	thumb_local_start
-sub_80AA824:
+battle_getEnemyIconFlags_80AA824:
 	push {r4,r6,r7,lr}
 	mov r7, #0
 	ldr r6, [r0,#0xc]
@@ -11753,7 +11753,7 @@ loc_80AA86A:
 	mov r0, r7
 locret_80AA86C:
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80AA824
+	thumb_func_end battle_getEnemyIconFlags_80AA824
 
 	thumb_func_start sub_80AA86E
 sub_80AA86E:
@@ -11844,9 +11844,9 @@ dword_80AA8DC:
 	.word 0xFFFF
 	thumb_func_end battle_rollRandomItemDrops_80AA88C
 
-// symdb: Reward-1 wrapper for the result record: when enabled, runs the sub_80AA910 reward roll (sub_80AAA3C enemy-id pick + damage_jitter_80AAA98 / sub_80AAB04) and returns the packed reward in r0 with BattleState+0x36 (reward 2) in r1; disabled it returns (0, 0).
+// symdb: Reward-1 wrapper for the result record: when enabled, runs the battle_pickChipAttr_80AA910 reward roll (sub_80AAA3C enemy-id pick + damage_jitter_80AAA98 / sub_80AAB04) and returns the packed reward in r0 with BattleState+0x36 (reward 2) in r1; disabled it returns (0, 0).
 // symdb: u32x2 sub_80AA8E0(u32 arg0 /*r0*/, u32 enable /*r1*/, u32 arg2 /*r2*/, u32 arg3 /*r3*/, u32 arg4
-// symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of sub_80AA910, r1 =
+// symdb: /*r4*/, u32 arg5 /*r5*/, r10 = toolkit pointer); returns r0 = result of battle_pickChipAttr_80AA910, r1 =
 // symdb: battleState->oBattleState_Unk_36 (halfword, zero-extended); clobbers C/V.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA8E0.yaml
 	thumb_func_start sub_80AA8E0
@@ -11864,7 +11864,7 @@ sub_80AA8E0:
 	str r3, [sp,#0xc]
 	str r4, [sp,#0x10]
 	str r5, [sp,#0x14]
-	bl sub_80AA910
+	bl battle_pickChipAttr_80AA910
 	str r0, [sp,#0x1c]
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
@@ -11881,9 +11881,9 @@ loc_80AA908:
 // symdb: u16 battle_pickChipAttr_80AA910(u32 naviId0 /*r0*/, u32 naviId1 /*r1*/, u32 attrIdx /*r2*/, u32
 // symdb: coordX /*r3*/, u32 coordY /*r4*/, u32 statNavi /*r5*/) → r0; outputs c, v; clobbers nz, r1–r3,
 // symdb: lr; preserves r4–r7
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80AA910.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pickChipAttr_80AA910.yaml
 	thumb_local_start
-sub_80AA910:
+battle_pickChipAttr_80AA910:
 	push {r4-r7,lr}
 	sub sp, sp, #0x2c
 	str r0, [sp]
@@ -12019,7 +12019,7 @@ loc_80AAA0A:
 loc_80AAA18:
 	add sp, sp, #0x2c
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AA910
+	thumb_func_end battle_pickChipAttr_80AA910
 
 // symdb: Builds a 4-bit mask of which reward-entry category values (top 2 bits of each of the 20 halfwords) appear in an enemy's battle reward table row.
 // symdb: (r0 = reward table row index, passed to sub_80AAE98) -> r0 = bitmask, bit n set if some entry's

@@ -4111,7 +4111,7 @@ sub_8097660:
 	bl sound_800065A
 	mov r0, #0x1f
 	mov r1, #0xd0
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool

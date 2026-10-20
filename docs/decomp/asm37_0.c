@@ -505,7 +505,7 @@ int __fastcall sub_813BAEC(int a1, int a2, int a3, int a4)
     v7 = a2;
     v8 = a3;
     v9 = a4;
-    sub_813BB00(a1, a2, a3, a4);
+    battle_checkPanelPlacement_813BB00(a1, a2, a3, a4);
     result = v6;
     if ( v5 )
         result = navicust_checkPieceOverlap(v6, v7, v8, v9);
@@ -514,7 +514,7 @@ int __fastcall sub_813BAEC(int a1, int a2, int a3, int a4)
 
 
 // 0x813bb00
-signed int __fastcall sub_813BB00(int a1, int a2, int a3, int a4)
+signed int __fastcall battle_checkPanelPlacement_813BB00(int a1, int a2, int a3, int a4)
 {
     int v4; // ST04_4
     int v5; // ST08_4

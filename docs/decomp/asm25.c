@@ -374,7 +374,7 @@ int __fastcall ow_startBeastOutHit(int a1)
 
 
 // 0x808fd1c
-signed int sub_808FD1C()
+signed int owPlayer_stepOnce_808FD1C()
 {
     bool v0; // zf
     __int64 v1; // r0
@@ -586,7 +586,7 @@ int spawn_getEncounterTableByte()
 // 0x808ff30
 int battle_initAIChipQueueSlot()
 {
-    sub_80468BA();
+    initWorkArea5_80468BA();
     battleObject_initAIChipQueueSlot_80468C6(0, 0, 0);
     return 0;
 }
@@ -605,7 +605,7 @@ signed int battleObject_togglePlayerAllyLockout_808FF44()
         result = *(v0 + 5);
         if ( *(v0 + 5) )
         {
-            sub_80468BA();
+            initWorkArea5_80468BA();
             battleObject_initAIChipQueueSlot_80468C6(0, 0, 0);
             result = 0;
             *(v0 + 5) = 0;

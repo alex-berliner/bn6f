@@ -2012,7 +2012,7 @@ int __fastcall sub_802794A(int a1, int a2, int a3)
         v10 = v12 + 1;
     }
     while ( v12 + 1 < *(v3 + 24) );
-    sub_80289E4();
+    sprite_pushStrip_80289E4();
     result = *(v3 + 64) + 1;
     *(v3 + 64) = result;
     return result;
@@ -2067,7 +2067,7 @@ void initBackgroundTilemap()
 
 
 // 0x8027a58
-int sub_8027A58()
+int battleObject_tickPhaseDispatch_8027A58()
 {
     int v0; // r5
 
@@ -3348,7 +3348,7 @@ int sub_802899C()
 
 
 // 0x80289e4
-int sub_80289E4()
+int sprite_pushStrip_80289E4()
 {
     int v0; // r5
     int v1; // r4

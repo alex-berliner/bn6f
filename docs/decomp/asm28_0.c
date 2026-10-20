@@ -2111,7 +2111,7 @@ BOOL __fastcall sub_809CA40(signed int a1)
 
 
 // 0x809ca84
-int sub_809CA84()
+int ow_lookupScenarioTileData_809CA84()
 {
     int v0; // r10
     int v1; // r1

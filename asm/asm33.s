@@ -3603,7 +3603,7 @@ sub_8124D78:
 	ldrh r0, [r5,#0x22]
 	strh r0, [r5,#0x24]
 	mov r0, #0xa
-	bl sub_81255F8
+	bl menu_tickInput_81255F8
 	bl battle_runTransition_8125444
 	bl submenu_redrawFolderScreen
 	bl wrapper_sub8126570_fixedArgs_812650C
@@ -4695,9 +4695,9 @@ off_81255F4:
 // symdb: Ticks joypad input each frame for an open menu: handles Start/B exit confirmation, L/R page-turn, and a pending list-navigation operation by temporarily swapping the cursor index before dispatching submenu_moveListCursor.
 // symdb: void menu_tickInput_81255F8(u32 r0_in, u32 r2, MenuState* r5, Toolkit* r10); /* modifies *r5 in-
 // symdb: place; returns via r8=r0_in, r9/r12 set by callees */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81255F8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/menu_tickInput_81255F8.yaml
 	thumb_local_start
-sub_81255F8:
+menu_tickInput_81255F8:
 	push {r4-r7,lr}
 	mov r8, r0
 	mov r7, r10
@@ -4763,7 +4763,7 @@ locret_8125670:
 	.balign 4, 0
 off_8125674:
 	.word 0x300
-	thumb_func_end sub_81255F8
+	thumb_func_end menu_tickInput_81255F8
 
 // symdb: Per-frame input handler for a battle-sprite submenu: Start/B records selection 0x3C and triggers exit+fade, Right writes state 0x48 or 0x1c based on [r5+0x64], Left writes 0x14 (all play SFX 0x7A); Up/Down delegate to sub_8125820 after swapping in [r5+0x60] as the cursor field at [r5+0x26].
 // symdb: (r0 = context/r5 struct ptr, uses toolkit joypad via r10) -> r0 = clobbered; sets state byte

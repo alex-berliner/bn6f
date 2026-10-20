@@ -1835,7 +1835,7 @@ char *sub_810EF40()
 
 
 // 0x810f040
-int sub_810F040()
+int battle_calcPredecessorSlotBonus_810F040()
 {
     int v0; // r5
     int v1; // r10
@@ -2144,7 +2144,7 @@ int ai_dispatchStateScript()
 
 
 // 0x810f44c
-void sub_810F44C()
+void battle_setupAIAttack0_810F44C()
 {
     int v0; // r4
     _DWORD *v1; // r5
@@ -4879,7 +4879,7 @@ void __fastcall ai_commitMoveAttack(int a1)
         v1->currAnimation = 1;
         *(v2 + 12) = 16;
         *v2 = 4;
-        sub_8111B06();
+        battle_setAIAttackVelocity_8111B06();
         battle_attackUpdateOnHitFrame_8111A72();
     }
 }
@@ -4966,7 +4966,7 @@ int ai_animEndResetAttack()
 
 
 // 0x8111b06
-int sub_8111B06()
+int battle_setAIAttackVelocity_8111B06()
 {
     int v0; // r5
     int v1; // r7
@@ -7212,7 +7212,7 @@ int ai_restartAttackAnimOnLoop()
 
 
 // 0x8113626
-int __fastcall sub_8113626(int a1, int a2, int a3)
+int __fastcall battle_spawnAndStoreLinkedObj3_8113626(int a1, int a2, int a3)
 {
     _DWORD *v3; // r5
     int result; // r0
@@ -9270,7 +9270,7 @@ void ai_chargeAttackInitAndStep()
     if ( *(v1 + 1) )
     {
         if ( *(v1 + 12) == 1 )
-            sub_8115466();
+            battle_attackSubstepSlashTick_8115466();
         battle_checkCutShortChargeAnimSetGuard_81154B8();
         ai_attackVarsTimerTick16();
         v0->x += v0->vx;
@@ -9414,7 +9414,7 @@ int ai_hopStepUpdate()
 
 
 // 0x8115404
-void sub_8115404()
+void battle_advanceAttackAnimStep_8115404()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -9464,7 +9464,7 @@ void ai_spawnHopRearEffect()
 
 
 // 0x8115466
-void sub_8115466()
+void battle_attackSubstepSlashTick_8115466()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -9857,7 +9857,7 @@ void __fastcall __noreturn battle_pickRandomOtherPanel(int a1, int a2, int a3)
 
 
 // 0x81159b0
-int __fastcall sub_81159B0(int a1, int a2, int a3, int a4)
+int __fastcall battle_aiDispatchByVersion_81159B0(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -10800,7 +10800,7 @@ int ai_startAction30FrameWait()
     {
         *(v0 + 2) = 1;
         *(v0 + 8) = 30;
-        sub_811677A();
+        battle_slot_spawnNavPic_811677A();
     }
     result = *(v0 + 8) - 1;
     *(v0 + 8) = result;
@@ -10814,7 +10814,7 @@ int ai_startAction30FrameWait()
 
 
 // 0x811677a
-_DWORD *sub_811677A()
+_DWORD *battle_slot_spawnNavPic_811677A()
 {
     int v0; // r5
     _DWORD *result; // r0
@@ -12508,7 +12508,7 @@ void __fastcall sub_8117B38(int a1, int a2)
 
     if ( a2 )
     {
-        v2 = sub_803D138(a1 + 144, a2);
+        v2 = npc_checkKeyItemTrampoline_803D138(a1 + 144, a2);
         copyTwoDigitNumberTiles_8117B94(v2);
     }
 }
@@ -20041,7 +20041,7 @@ int __fastcall e_setStructEntryActive(int a1)
 
 
 // 0x811df1c
-int sub_811DF1C()
+int battle_dispatchWeatherCompHandler_811DF1C()
 {
     int v0; // r5
 
@@ -20067,12 +20067,12 @@ void __noreturn battleObject_initNaviRosterEntry_811DF40()
     sprite_setCoordinates(210, 10);
     v0->currAction = 0;
     v0->currState = 4;
-    sub_811DF94();
+    battle_rosterIconUpdate_811DF94();
 }
 
 
 // 0x811df94
-void __noreturn sub_811DF94()
+void __noreturn battle_rosterIconUpdate_811DF94()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -23780,7 +23780,7 @@ LABEL_7:
 
 
 // 0x8120be4
-int sub_8120BE4()
+int pet_copyNaviStatsToCurrent_8120BE4()
 {
     char v0; // ST00_1
     char v1; // ST04_1

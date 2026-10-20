@@ -6345,7 +6345,7 @@ dword_804281C:
 	.word 0xF
 	thumb_func_end chatbox_8042804
 
-// symdb: Runs the chatbox's per-frame update (sub_809CA84), stores its result into the chatbox control block at +0x4C, advances the state counter by 2, and reports "continue" (r0=1) to the caller.
+// symdb: Runs the chatbox's per-frame update (ow_lookupScenarioTileData_809CA84), stores its result into the chatbox control block at +0x4C, advances the state counter by 2, and reports "continue" (r0=1) to the caller.
 // symdb: u32 chatbox_stepUpdateAndContinue(void); // reads r4 (state counter/ptr), r5 (chatbox control
 // symdb: block), r10; writes result to [r5+0x4C], returns r4+=2 in r4 and constant 1 in r0; clobbers r1,
 // symdb: lr, NZCV
@@ -6353,7 +6353,7 @@ dword_804281C:
 	thumb_local_start
 chatbox_stepUpdateAndContinue_8042820:
 	push {lr}
-	bl sub_809CA84
+	bl ow_lookupScenarioTileData_809CA84
 	mov r1, #0x4c
 	str r0, [r5,r1]
 	add r4, #2
@@ -8950,7 +8950,7 @@ loc_8043ACC:
 	ldrb r0, [r4,#2]
 	ldrb r1, [r4,#7]
 	add r0, #0x90
-	bl sub_803D138
+	bl npc_checkKeyItemTrampoline_803D138
 	pop {r4,r5}
 	ldrb r1, [r4,#3]
 	mov r2, #0

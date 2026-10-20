@@ -949,7 +949,7 @@ off_8026AA4:
 	// 0x58
 	.word battleObject_chipSelectTick+1 // (self: * S20364C0 $r5) -> ()
 	// 0x5C
-	.word sub_8027A58+1 // (self: * S20364C0 $r5) -> ()
+	.word battleObject_tickPhaseDispatch_8027A58+1 // (self: * S20364C0 $r5) -> ()
 	thumb_func_end custMenuMainMaybe_8026A88
 
 // symdb: Battle chip-select sub-state: animates the chip cursor sliding right to the OK column and writes the per-frame BG tile IDs; commits the selected chips on completion by damaging the player and queueing the next menu state.
@@ -3154,7 +3154,7 @@ loc_802799E:
 	ldrb r2, [r5,#0x18]
 	cmp r0, r2
 	blt loc_8027994
-	bl sub_80289E4
+	bl sprite_pushStrip_80289E4
 	ldr r0, [r5,#0x40]
 	add r0, #1
 	str r0, [r5,#0x40]
@@ -3254,9 +3254,9 @@ dword_8027A54:
 // symdb: void battleObject_tickPhaseDispatch_8027A58(void* self /*R5 = battle object at S20364C0*/); in:
 // symdb: R4 R6 R10 passed through to handlers; out: R2 R3 R4 R5 R6 modified by handler + post-passes,
 // symdb: R8-R12 pass through; clobbers: R0 R1 R7 LR NZCV
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8027A58.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_tickPhaseDispatch_8027A58.yaml
 	thumb_local_start
-sub_8027A58: // (self: * S20364C0 $r5) -> ()
+battleObject_tickPhaseDispatch_8027A58: // (self: * S20364C0 $r5) -> ()
 	push {lr}
 	ldr r1, off_8027A70 // =off_8027A74 
 	ldrb r0, [r5,#2]
@@ -3274,7 +3274,7 @@ off_8027A74:
 	.word screenFadeWaitStep+1
 	.word battle_customScreenConfirmSelectedChip+1
 	.word battle_tickTutorialCustomScreen+1
-	thumb_func_end sub_8027A58
+	thumb_func_end battleObject_tickPhaseDispatch_8027A58
 
 // symdb: Resets a battle-actor work counter to 0 and writes 4 into its halfword field at +2, likely a phase/state marker.
 // symdb: void sub_8027A84(void)  /* r5 = actor struct pointer; no return value, flags clobbered */
@@ -5476,9 +5476,9 @@ dword_80289E0:
 
 // symdb: Pushes an 18-sprite OAM strip (one animation frame) for the object pointed to by r5, computing XY origin from the object's column byte and selecting a tile bank from a flag bit.
 // symdb: void sprite_pushStrip_80289E4(uint32_t objPtr); /* r5 in; writes OAM FIFO, clobbers r0-r6 */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_80289E4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_pushStrip_80289E4.yaml
 	thumb_local_start
-sub_80289E4:
+sprite_pushStrip_80289E4:
 	push {r4-r6,lr}
 	mov r0, #8
 	mov r1, #8
@@ -5526,7 +5526,7 @@ byte_8028A30:
 	.byte 0x0, 0x2, 0x0, 0x3B, 0x0, 0xC, 0x0, 0xB, 0x20, 0xC, 0x0, 0x13, 0x20
 	.byte 0xC, 0x0, 0x1B, 0x20, 0xC, 0x0, 0x23, 0x20, 0xC, 0x0, 0x2B, 0x20, 0xC
 	.byte 0x0, 0x33, 0x20, 0xC, 0x0, 0x3B, 0x20
-	thumb_func_end sub_80289E4
+	thumb_func_end sprite_pushStrip_80289E4
 
 	thumb_local_start
 sub_8028A78:

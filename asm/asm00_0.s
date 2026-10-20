@@ -171,11 +171,11 @@ sound_800065A:
 	thumb_func_end sound_800065A
 
 // symdb: Look up a sound-table entry by index and dispatch it to sound_8000808 with the object_setSmashFactor callback, preserving r10 across the call.
-// symdb: void sound_8000672(u32 r0 /* sound-table index */, u32 r1, u32 r2) -> r3 (= saved r10), c/v from
+// symdb: void sound_dispatchSmashHandler_8000672(u32 r0 /* sound-table index */, u32 r1, u32 r2) -> r3 (= saved r10), c/v from
 // symdb: callee; r4-r7, r10, lr preserved; nz, r0 clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_8000672.yaml
-	thumb_func_start sound_8000672
-sound_8000672:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sound_dispatchSmashHandler_8000672.yaml
+	thumb_func_start sound_dispatchSmashHandler_8000672
+sound_dispatchSmashHandler_8000672:
 	push {r4-r7,lr}
 	lsl r0, r0, #2
 	ldr r7, off_8000700 // =off_8000704
@@ -187,7 +187,7 @@ sound_8000672:
 	pop {r3}
 	mov r10, r3
 	pop {r4-r7,pc}
-	thumb_func_end sound_8000672
+	thumb_func_end sound_dispatchSmashHandler_8000672
 
 // symdb: Looks up a sound cue's handler word in the cue table and dispatches it via sound_8000808 with the caller's context and the shared sound callback.
 // symdb: void sound_dispatchCueHandler(u32 cueIndex /*r0*/, u32 arg /*r1*/, u32 context /*r10*/); returns

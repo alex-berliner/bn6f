@@ -1104,7 +1104,7 @@ byte_808CA48:
 	cs_run_text_script_not_from_mem byte2=0x00
 	cs_wait_chatbox byte1=0x80
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_9D8
-	cs_call_native_with_return_value ptr1=sub_808CBD8+1
+	cs_call_native_with_return_value ptr1=overworld_leaveArea_808CBD8+1
 	cs_unlock_player_after_non_npc_dialogue_809e122
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
@@ -1150,7 +1150,7 @@ loc_808CABE:
 	bl init_clearBeastSpEventFlagTable
 	mov r0, #0x1f
 	ldr r1, dword_808CAD0 // =0x100
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 	mov r0, #0
 	pop {r5,pc}
 	.balign 4, 0
@@ -1174,7 +1174,7 @@ ow_storyTriggerSpawnJackoutLockScene:
 	beq loc_808CB06
 	movflag EVENT_9D7
 	bl SetEventFlagFromImmediate
-	bl sub_808CBD8
+	bl overworld_leaveArea_808CBD8
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	mov r0, #3
 	bl gameState_setUnk09_8001172
@@ -1209,7 +1209,7 @@ pet_tryStartRandomEncounterStep_808CB0C:
 	beq loc_808CB3C
 	mov r0, #0x1f
 	ldr r1, dword_808CB98 // =0x13b 
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 loc_808CB3C:
 	mov r0, #1
 	bl TestPETMenuDataFlag
@@ -1229,7 +1229,7 @@ loc_808CB5A:
 	sub r0, #1
 	strb r0, [r5,#0x3] // (byte_2000B43 - 0x2000b40)
 	bne loc_808CB6A
-	bl sub_808CCAC
+	bl field_calcFacingTargetTile_808CCAC
 	mov r0, #0x20 
 	strb r0, [r5,#0x3] // (byte_2000B43 - 0x2000b40)
 loc_808CB6A:
@@ -1299,9 +1299,9 @@ loc_808CBBC:
 // symdb: Handles transitioning out of the current area: spawns the overworld map object, sets a BBS flag, switches game state to mode 3, and plays a departure sound unless the map group is 0x85.
 // symdb: u32 overworld_leaveArea_808CBD8(/* r4 = spawnArg, r10 = toolkit */); // returns r0 = 0, sets nz;
 // symdb: preserves r4-r7, r10
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CBD8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/overworld_leaveArea_808CBD8.yaml
 	thumb_local_start
-sub_808CBD8:
+overworld_leaveArea_808CBD8:
 	push {r4-r7,lr}
 	push {r5}
 	mov r0, #0x11
@@ -1320,14 +1320,14 @@ sub_808CBD8:
 	beq loc_808CC06
 	mov r0, #0x1f
 	ldr r1, dword_808CC0C // =0x13b 
-	bl sound_8000672
+	bl sound_dispatchSmashHandler_8000672
 loc_808CC06:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0
 dword_808CC0C:
 	.word 0x13B
-	thumb_func_end sub_808CBD8
+	thumb_func_end overworld_leaveArea_808CBD8
 
 // symdb: If the given battle actor is in story state 2 and event flag EVENT_9D8 is not yet set, sets that flag and reports that it was just latched.
 // symdb: bool battle_checkPlayerActorStoryFlag_808CC10(void* actor /* r5 */); returns NZ set (r4 = 1)
@@ -1436,9 +1436,9 @@ object_snapPosToPlayer:
 // symdb: Computes the tile coordinate one cell ahead of the player in their facing direction (8-way) and writes it into the target object's position fields.
 // symdb: void field_calcFacingTargetTile_808CCAC(u32 obj /*r5*/, u32 playerCtx /*r10*/); // writes
 // symdb: obj+0x1A (x tile) and obj+0x1C (y tile); r5 preserved
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_808CCAC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/field_calcFacingTargetTile_808CCAC.yaml
 	thumb_local_start
-sub_808CCAC:
+field_calcFacingTargetTile_808CCAC:
 	push {r4-r7,lr}
 	bl GetOWPlayerFacingDirection
 	mov r4, r0
@@ -1489,7 +1489,7 @@ loc_808CCFC:
 	strh r1, [r5,#0x1c]
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_808CCAC
+	thumb_func_end field_calcFacingTargetTile_808CCAC
 
 // symdb: Polls the touch-trigger handler and, if the reported touch id is in the range 0xC0..0xCC, records it in the BBS work area's trigger byte and reports success.
 // symdb: u32 reqBBS_pollTouchTrigger_808CD04(void); // r0 in: none used; r0 out: 1 if a trigger id was
@@ -2040,7 +2040,7 @@ byte_808D105:
 	thumb_local_start
 ow_setupMapTiles_808D108:
 	push {r4-r6,lr}
-	bl sub_8142CB0
+	bl battle_resolveMapTileAddr_8142CB0
 	mov r1, #0
 	bl ow_stampMapTileTemplate
 	bl ow_redrawMapTilemapsCb
@@ -2071,7 +2071,7 @@ loc_808D126:
 	mov r0, r7
 	add r0, #0x71 
 	strb r0, [r5,#0x9] // (byte_2000B49 - 0x2000b40)
-	bl sub_8142CB0
+	bl battle_resolveMapTileAddr_8142CB0
 	mov r1, #0
 	bl ow_stampMapTileTemplate
 	bl ow_redrawMapTilemapsCb

@@ -744,7 +744,7 @@ int battleObject_updateSpriteGfxForAll_8046854()
 
 
 // 0x80468ba
-void sub_80468BA()
+void initWorkArea5_80468BA()
 {
     sub_8046900();
     initWorkArea5Entries_80467D8();
@@ -1980,7 +1980,7 @@ void __fastcall dimUnownedChipStrip_8047CFA(int a1, signed int a2, int a3)
     if ( v4 )
     {
         v5 = a1;
-        if ( sub_803D138(a2 + 144, a3) )
+        if ( npc_checkKeyItemTrampoline_803D138(a2 + 144, a3) )
             return;
         v6 = v5;
     }

@@ -5776,7 +5776,7 @@ void __noreturn boss_updateStateByStoryFlags_80A931C()
     if ( v1 )
     {
         sprite_setUnk2cToE000000_80A93D8();
-        sub_80A93E8();
+        battle_animOscillatePos_80A93E8();
     }
     else
     {
@@ -5840,7 +5840,7 @@ int sprite_setUnk2cToE000000_80A93D8()
 
 
 // 0x80a93e8
-signed int sub_80A93E8()
+signed int battle_animOscillatePos_80A93E8()
 {
     int v0; // r5
     int v1; // r0
@@ -7469,7 +7469,7 @@ int __fastcall pickBattleSettingsEntry_80AA5F4(int a1, int a2, int a3)
     {
         if ( dispatchGameHandlerByIndex_80AA6A4(v8[7]) )
         {
-            if ( sub_80AA824(v8) & v11 )
+            if ( battle_getEnemyIconFlags_80AA824(v8) & v11 )
             {
                 ++v9;
                 *v10 = 1;
@@ -7693,7 +7693,7 @@ signed int get_eventFlag222()
 
 
 // 0x80aa824
-signed int __fastcall sub_80AA824(int a1)
+signed int __fastcall battle_getEnemyIconFlags_80AA824(int a1)
 {
     signed int v1; // r7
     _BYTE *v2; // r6
@@ -7790,7 +7790,7 @@ __int64 __fastcall sub_80AA8E0(int a1, int a2, int a3, int a4)
     v6 = 0LL;
     if ( a2 )
     {
-        LODWORD(v6) = sub_80AA910(a1, a2, a3, a4);
+        LODWORD(v6) = battle_pickChipAttr_80AA910(a1, a2, a3, a4);
         HIDWORD(v6) = *(*(v4 + oToolkit_S2034880_Ptr) + 54);
     }
     return v6;
@@ -7798,7 +7798,7 @@ __int64 __fastcall sub_80AA8E0(int a1, int a2, int a3, int a4)
 
 
 // 0x80aa910
-int __fastcall sub_80AA910(int a1, int a2, int a3, int a4)
+int __fastcall battle_pickChipAttr_80AA910(int a1, int a2, int a3, int a4)
 {
     unsigned int v4; // r4
     int v5; // r5

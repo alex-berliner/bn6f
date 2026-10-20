@@ -103,7 +103,7 @@ int __fastcall sound_800065A(int a1, int a2, int a3)
 
 
 // 0x8000672
-int __fastcall sound_8000672(int a1, int a2, int a3)
+int __fastcall sound_dispatchSmashHandler_8000672(int a1, int a2, int a3)
 {
     return sound_8000808(off_8000704[a1], a2, a3, object_setSmashFactor);
 }
