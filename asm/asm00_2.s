@@ -5052,6 +5052,10 @@ battle_spawnDelayedObject56:
 	pop {r4,pc}
 	thumb_func_end battle_spawnDelayedObject56
 
+// symdb: Spawns a linked type-0x56 battle object via battle_spawnObject56LinkedToOwner_80C44A8 with packed param (r2<<16)|0x0A000003, and stores the returned object pointer into owner's RelatedObject2Ptr.
+// symdb: (r0, r1 = spawn args passed through, r2 = packed param, r5 = owner battle object) -> r0 =
+// symdb: spawned object ptr; owner->RelatedObject2Ptr set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8010F96.yaml
 	thumb_local_start
 sub_8010F96:
 	push {r4,lr}
@@ -5126,6 +5130,10 @@ sub_8010FD8:
 	pop {r4,pc}
 	thumb_func_end sub_8010FD8
 
+// symdb: Builds a ROM pointer from r2 (bank in r2 <<= 16 plus fixed low bits 0x010F) and calls battle_spawnObject56LinkedToOwner to spawn a type-0x56 battle object, storing the returned pointer to owner+oBattleObject_RelatedObject2Ptr.
+// symdb: (r0 = owner battle object ptr, r1 = ?, r2 = 16-bit selector/param) -> r0 = spawned object ptr,
+// symdb: also stored to owner+oBattleObject_RelatedObject2Ptr; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011004.yaml
 	thumb_local_start
 sub_8011004:
 	push {r4,lr}
@@ -5174,6 +5182,10 @@ battle_callActorActionHandler_801102A:
 	pop {pc}
 	thumb_func_end battle_callActorActionHandler_801102A
 
+// symdb: Tails the per-NamesID teardown/cleanup handler for a battle object: indexes a handler table by NameID (r1) within a kind-selected sub-table (r0), passing caller r0-r3 to the handler via mov lr,pc;bx r2.
+// symdb: (r0 = table/event selector, r1 = object NameID index) -> r0 = handler return value; original
+// symdb: r0-r3 passed through to the dispatched handler via mov lr,pc/bx tail-call.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011044.yaml
 	thumb_func_start sub_8011044
 sub_8011044:
 	push {lr}
@@ -6202,6 +6214,10 @@ calledOnBAtkProbInit_8011764:
 	pop {r6,r7,pc}
 	thumb_func_end calledOnBAtkProbInit_8011764
 
+// symdb: Tail-calls a handler from a jump table indexed by NaviBonusIndex, operating on the object's AttackVars; does not modify state itself.
+// symdb: (r5 = battle object) -> calls table[object->AIData->NaviBonusIndex] with r0..r3 preserved;
+// symdb: returns to caller's caller
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801177A.yaml
 	thumb_func_start sub_801177A
 sub_801177A:
 	push {r6,r7,lr}
@@ -14015,6 +14031,10 @@ dword_80149FC:
 	.word 0x4080
 	thumb_func_end battle_runBeastOutIntro_801498E
 
+// symdb: If neither r6 nor r7's battle objects are in any of two special AI states, writes 0xFF to r6+4 and r7+4 (clearing their action bytes) and 0 to r5+4; otherwise returns without writing.
+// symdb: (r5 = some battle/work struct, r6 = struct A, r7 = struct B, each with object pointer at +8 and
+// symdb: byte at +4) -> r0 = undefined; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014A00.yaml
 	thumb_local_start
 sub_8014A00:
 	push {lr}
@@ -16283,6 +16303,10 @@ loc_8015BA2:
 	pop {r4-r6,pc}
 	thumb_func_end possiblyGetBattleEmotion_8015B64
 
+// symdb: Returns the player's emotion/priority code (0/1/2/3/5) for the navi based on AI data flags (poison, anger, counter-hit chain) and navi-stats bytes 0xE and 0x2C, with the 0x21 stats byte returned alongside in r3.
+// symdb: (r0 = ? passed through to battle_findPlayer, likely alliance flag) -> r0 = status priority code
+// symdb: (0/1/2/3/5), r3 = naviStats+0x21 byte; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015BA8.yaml
 	thumb_local_start
 sub_8015BA8:
 	push {r4-r6,lr}
@@ -21313,6 +21337,10 @@ locret_801823A:
 	pop {pc}
 	thumb_func_end hideSummonsWhenBlind_80181F6
 
+// symdb: Jitters a battle object's render X/Z by a small random amount for up to 30 frames, using its original X16/Z16 as scratch and writing the result to r5+0x34..0x3C before restoring the true coordinates.
+// symdb: (r5 = battle object, no args) -> writes jittered X/Y/Z render coords to r5+0x34..0x3C; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801823C.yaml
 	thumb_local_start
 sub_801823C:
 	push {lr}
@@ -25076,6 +25104,9 @@ locret_801AF0C:
 	pop {r4,r7,pc}
 	thumb_func_end battleObject_applyHitModifierFlags_801AEB0
 
+// symdb: Converts a battle object's hit-modifier byte (bits 0 and 1) into sticky flags2 bits (0x4 and 0x2), skipping the bit-0 write when the object's collision flags word has any of bits 0x220000 set.
+// symdb: (r0 = unused; r7 = battle object) -> r0 = clobbered; sets bits in the object's collision flags2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AF0E.yaml
 	thumb_local_start
 sub_801AF0E:
 	push {r4,r7,lr}
@@ -31429,6 +31460,9 @@ off_801DC5C:
 	.word dword_20352E0
 	thumb_func_end releaseSlotByValue_801DC36
 
+// symdb: Clears bit 2 (mask 0x4) of the flag word at eStruct2035280+0x44 by passing mask 1<<2 to flags_clearBits_20352C4_801BEC2.
+// symdb: () -> void; calls flags_clearBits_20352C4_801BEC2 with r0 = 4 (mask for bit 2)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801DC60.yaml
 	thumb_local_start
 sub_801DC60:
 	push {lr}
@@ -32809,6 +32843,10 @@ loc_801E4EA:
 	pop {r4-r6,pc}
 	thumb_func_end sub_801E4B0
 
+// symdb: Helper that copies up to four 2-wide vertical HP/meter tile bars (heights from a 0xFF-terminated u16 table at r5+0x28) into background tile block 3, then sets bit 0x2000 in eStruct2035280+0x44 via flagSetBits_eStruct2035280.
+// symdb: (r0-r3 ignored; r5 = pointer to struct whose +0x28 holds a 0xFF-terminated halfword table of bar
+// symdb: heights) -> r0 = updated flag word from flagSetBits; sets bit 0x2000 in eStruct2035280+0x44
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801E4F4.yaml
 	thumb_local_start
 sub_801E4F4:
 	push {r4-r7,lr}

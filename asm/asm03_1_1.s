@@ -5882,7 +5882,7 @@ off_803BA60:
 	.word word_2006770
 	thumb_func_end sub_803BA28
 
-// symdb: Thin wrapper around chatbox_copyScriptExpandEndMarkers that forwards a constant (0x30, 0x50, 0x20, 0x10) argument tuple.
+// symdb: Thin wrapper around sub_803BA84 that forwards a constant (0x30, 0x50, 0x20, 0x10) argument tuple.
 // symdb: void sub_803BA64(void);  // r5 in; r1,r2,r3,r5 out; r0,lr,nzcv clobbered; r4,r6,r7 preserved
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_803BA64.yaml
 	thumb_func_start sub_803BA64
@@ -6606,6 +6606,11 @@ locret_803C066:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C040
 
+// symdb: Pops the top entry from a 2-byte-per-entry stack backed by a struct at r5, freeing it (writes 0x00,0xE5) and compacting trailing free slots via sub_803C0BE; returns 1 on success or 0 if the top slot is empty/free/terminator (0xE5, 0x00, or 0xE6).
+// symdb: (r0 = offset of the stack-count byte within the struct at r5, r1 = offset of the 2-byte entry
+// symdb: array within the struct) -> r0 = 1 if an occupied entry was popped/freed, 0 if the stack was
+// symdb: already empty; uses r5 as a global struct base.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C068.yaml
 	thumb_local_start
 sub_803C068:
 	push {r4-r7,lr}

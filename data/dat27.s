@@ -5778,6 +5778,9 @@ end_cutscenescript_8098B8A:
 	.byte 0x00
 	.byte 0x00
 
+// symdb: Overworld helper that places the player at given coordinates and sets their facing direction.
+// symdb: (unknown arguments, likely target X/Y/Z and facing direction) -> r0 = unknown; flags unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8098B8C.yaml
 	thumb_local_start
 sub_8098B8C:
 	push {r4, lr}

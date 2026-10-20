@@ -1942,6 +1942,9 @@ locret_808D096:
 	pop {pc}
 	thumb_func_end ai_getAIModeForMapGroup_808D084
 
+// symdb: Returns whether the (r0=x, r1=y) tile coordinate lies inside the AI mode's rectangular bounds in byte_808D0FC (true→1, false→0), with mode 1 having an L-shaped fallback and mode 3 testing y instead of x.
+// symdb: (r0 = coord A, r1 = coord B) -> r0 = 1 if inside the mode's range, else 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808D098.yaml
 	thumb_local_start
 sub_808D098:
 	push {r4-r7,lr}

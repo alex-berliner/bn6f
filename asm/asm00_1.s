@@ -7265,6 +7265,11 @@ off_8006510:
 	.word sub_8006580+1
 	thumb_func_end fade_tick_80064BE
 
+// symdb: Per-frame step of an entity's palette color cycle: looks up the cycle entry from byte_80065BC using [r5+0xd], calls sub_8002378 to write palette slots 0x14 and 0x15 (with arg from [r5+0x10] and [r5+0x14]), raises the 0x40 update flag in dword_20096D0, increments [r5+0xd] modulo 16, and dirties renderInfo halfwords +6/+8/+0xa while storing a replicated-nibble color derived from [r5+6] into renderInfo+2.
+// symdb: (r5 = effect/entity struct; no args in r0-r3) -> r0 = 0 after palette calls; writes palette
+// symdb: slots 0x14/0x15 via sub_8002378, dword_20096D0 = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
+// symdb: +2 = color from [r5+6]>>4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006518.yaml
 	thumb_local_start
 sub_8006518:
 	push {r4-r7,lr}
@@ -15471,6 +15476,9 @@ RunTextScriptDustManUndernetTut_8009E2C:
 	pop {pc}
 	thumb_func_end RunTextScriptDustManUndernetTut_8009E2C
 
+// symdb: Battle state-machine hook: if chatbox flag bit 0x80 is clear, force the battle state to 0xC and reset its phase/init counter; otherwise leave it alone.
+// symdb: (r5 = battle state object) -> none; r0 clobbered, flags set by chatbox_mask_eFlags2009F38 test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009E40.yaml
 	thumb_local_start
 sub_8009E40:
 	push {lr}

@@ -757,6 +757,10 @@ dword_81420C4:
 	.word 0x404080
 	thumb_func_end sub_81420B0
 
+// symdb: Given a group index into byte_8142120, returns how many of its contiguous event flags (base..base+count) are currently set, by tallying TestEventFlag results.
+// symdb: (r0 = index into flag-group table at byte_8142120) -> r0 = number of set flags in that group;
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81420C8.yaml
 	thumb_func_start sub_81420C8
 sub_81420C8:
 	push {r4-r7,lr}
@@ -1493,7 +1497,7 @@ loc_8142730:
 	pop {r4-r7,pc}
 	thumb_func_end getSoulWeaponsUnlockedCount
 
-// symdb: Clears the per-map Soul/Beast event-flag block via getSoulWeaponsMapParam's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from sub_81427F2 is still set.
+// symdb: Clears the per-map Soul/Beast event-flag block via sub_814278C's count, zeroes the 0xA0-byte state buffer at byte_2006670, and conditionally re-invokes sub_814227A if the flag from sub_81427F2 is still set.
 // symdb: (r0 = current map id) -> void; ZF from final TestEventFlag
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearSoulWeaponsMapState.yaml
 	thumb_local_start
@@ -1592,6 +1596,10 @@ byte_81427E0:
 	.byte 0x7, 0xF6, 0x7, 0xF7, 0x7, 0x0, 0x0
 	thumb_func_end battle_getSoulWeaponBase_81427CE
 
+// symdb: Calls GetSoulWeaponsMapIndex and returns a 16-bit per-soul-weapon ID from the byte_8142804 lookup table (halfword stride, 8 entries 0x686-0x68D with a 0x0000 padding).
+// symdb: (r0 = ? passed through to GetSoulWeaponsMapIndex) -> r0 = halfword ID from byte_8142804[index];
+// symdb: no flag use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81427F2.yaml
 	thumb_local_start
 sub_81427F2:
 	push {r4-r7,lr}

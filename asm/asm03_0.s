@@ -2840,6 +2840,10 @@ loc_80277DA:
 	pop {r4,r6,pc}
 	thumb_func_end sub_8027796
 
+// symdb: Polls IsScreenFadeActive; once the fade clears, writes 4 to the state byte at [r5+1] and clears the halfword at [r5+2], and if the substate byte at [r5+0xc] is 3, advances [r5+0xc] and [r5+0xd] to 4 and re-arms the state by writing 0x2c to [r5+1] and 0 to [r5+2].
+// symdb: (-, r5 = event/state struct) -> void; sets [r5+0x1] (state id), [r5+0x2] (counter, halfword),
+// symdb: and conditionally [r5+0xc]/[r5+0xd]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027806.yaml
 	thumb_local_start
 sub_8027806:
 	push {lr}
@@ -7713,6 +7717,10 @@ locret_802996C:
 	pop {pc}
 	thumb_func_end custMenu_80298F4
 
+// symdb: Per-frame check routine for battle tutorial phase 0xA (custom-screen step): returns 0xB/0xC prompts by sub-counter, returns 0 when sorted +0x48/+0x49 pair equals {0,2}, otherwise returns 0x17 nag.
+// symdb: (r0 unused; r5 = tutorial-state struct) -> r0 = message id (0xB, 0xC or 0x17 to display, 0 =
+// symdb: step complete/no message); flags clobbered.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802996E.yaml
 	thumb_local_start
 sub_802996E:
 	push {lr}
@@ -7808,6 +7816,10 @@ locret_80299F8:
 	pop {pc}
 	thumb_func_end battle_getPrepStatus_80299B6
 
+// symdb: Returns the chatbox message id for the current battle-tutorial step: 0x25 for step 0xA, 0x24 for other steps, or 0 if +0x17 latch is set or step is 0xB.
+// symdb: (r5 = tutorial state struct; r0 input unused) -> r0 = message id 0x24/0x25, or 0 if none
+// symdb: pending; flags clobbered by cmp/tst
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80299FA.yaml
 	thumb_local_start
 sub_80299FA:
 	push {lr}
@@ -8403,6 +8415,10 @@ sub_8029D80:
 	pop {r4,r5,pc}
 	thumb_func_end sub_8029D80
 
+// symdb: Queues r1 row-bands of beast graphics (0x240 bytes each) from dword_86E7DCC into VRAM at 0x600A720 (offset by r0 bands, plus 5-band variant shift when r2>=2) and installs the matching 9x2 tile-id block into BG block 3 at column 1, row 1+2*r0.
+// symdb: (r0 = band index 0-4, r1 = number of gfx rows to copy, r2 = variant id (>=2 shifts source by 5
+// symdb: bands)) -> r0/r1 clobbered; queues GFX DMA transfer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8029D94.yaml
 	thumb_local_start
 sub_8029D94:
 	push {r4-r7,lr}
@@ -8735,6 +8751,10 @@ dword_802A03C:
 	.word 0x13F
 	thumb_func_end sub_802A034
 
+// symdb: Resolves a battle form/emotion-dependent base pointer (r6) and stores a byte derived via sub_801E660 into eStruct2035280+0x4C, returning it in r0.
+// symdb: (r0 = base struct ptr or NULL) -> r0 = stored byte; writes eStruct2035280+0x4C, clobbers
+// symdb: r1-r3/r5 flags per bls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A040.yaml
 	thumb_local_start
 sub_802A040:
 	push {r4,r6,r7,lr}
@@ -8873,6 +8893,10 @@ dword_802A118:
 	.word 0x4000
 	thumb_func_end battle_DispatchPendingEvent_802A0F8
 
+// symdb: Returns a navi's signed stat byte at navi-stats offset 0x32 plus a fixed bonus from a 4-byte word table indexed by r0 (nonzero entries are 1 at index 0 and 3 at index 4), saturated to the range 1..9.
+// symdb: (r0 = table index, word-granular: 0 or 4) -> r0 = clamped stat value (0..9); flags from the
+// symdb: final cmp/ble/bge are not meaningful to callers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802A11C.yaml
 	thumb_local_start
 sub_802A11C:
 	push {r4,lr}
@@ -11235,6 +11259,10 @@ byte_802B3F8:
 	.byte 0xA3, 0x0, 0xA9, 0x0, 0xAF, 0x0, 0x1F, 0x0
 	thumb_func_end battle_renderChipSelectNames
 
+// symdb: Renders three 4-digit BCD numbers as digit-glyph tiles into VRAM via queued GFX copies, with leading-zero blanking using glyph 0xA. (r0=tile sheet base, r1=halfword array; uses caller-set r5=UI struct)
+// symdb: (r0 = digit tile-sheet base (0x20 bytes per glyph, glyph 0xA = blank), r1 = halfword array of
+// symdb: entry IDs; uses r5 = UI struct: +0x20 halfword base, +0x24 halfword index) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B438.yaml
 	thumb_func_start sub_802B438
 sub_802B438:
 	push {r4-r7,lr}
@@ -11322,6 +11350,10 @@ dword_802B4D0:
 	.word 0xFFFF
 	thumb_func_end sub_802B438
 
+// symdb: Initializes two interleaved halfword sub-arrays of a sprite-related struct with consecutive IDs starting from r1 across 5 strided blocks, and zero-fills a 0xC80-byte buffer at r2.
+// symdb: (r0 = struct base, r1 = starting index value, r2 = buffer) -> void; writes halfwords at r0+0x40
+// symdb: and r0+0x5E in 5 strided blocks, zeroes 0xC80 bytes at r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B4D4.yaml
 	thumb_func_start sub_802B4D4
 sub_802B4D4:
 	push {r4-r7,lr}
@@ -13736,6 +13768,11 @@ dword_802C758:
 	.word 0x90A0
 	thumb_func_end sub_802C6EC
 
+// symdb: Renders a chip name text graphic and a fixed 2-row tilemap block into the 24-wide row buffer at unk_2034B30, writing to unk_2035320/unk_2035520.
+// symdb: (r0 = (table<<8)|chipIndex packed: low byte chip index 0-0xFF, high byte selects
+// symdb: TextScriptChipNames0/1) -> void; clobbers r5, writes text-render state unk_2035320/unk_2035520
+// symdb: and the row buffer
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802C75C.yaml
 	thumb_local_start
 sub_802C75C:
 	push {r5,lr}
@@ -22248,6 +22285,9 @@ camera_initShakeEffect_80302a8:
 	.word 0x21002000
 	thumb_func_end camera_initShakeEffect_80302a8
 
+// symdb: Stores the shake pattern index (r0) and duration in frames (r1) into the camera struct as halfwords, priming a camera shake applied by later camera-tick code.
+// symdb: (r0 = shake index/pattern, r1 = shake duration in frames) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302B6.yaml
 	thumb_func_start sub_80302B6
 sub_80302B6:
 	mov r2, r10
@@ -22257,6 +22297,10 @@ sub_80302B6:
 	mov pc, lr
 	thumb_func_end sub_80302B6
 
+// symdb: If the new Y candidate (r0) is >= the camera's current Y limit at +0xE, updates camera+0xE with r0 and camera+0xC with r1, allowing the Y bound to only increase.
+// symdb: (r0 = new halfword value, r1 = companion halfword value) -> void; writes [camera+0xC],
+// symdb: [camera+0xE] only if r0 >= [camera+0xE]; no flags returned
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80302C0.yaml
 	thumb_func_start sub_80302C0
 sub_80302C0:
 	mov r2, r10

@@ -1789,6 +1789,10 @@ off_8089CA0:
 	.word byte_80894D4
 	thumb_func_end sub_8089C78
 
+// symdb: Wrapper that forwards r0 (script index) and the TextScriptArchive* at [r5+0x30] to chatbox_runScript, queuing the AI-controlled entity's dialogue script.
+// symdb: (r0 = script index u8; r5 = AI/context struct whose +0x30 holds TextScriptArchive*) -> r0 =
+// symdb: chatbox_runScript return; calls chatbox_runScript(archive=[r5+0x30], idx=r0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089CA4.yaml
 	thumb_local_start
 sub_8089CA4:
 	push {r4-r7,lr}

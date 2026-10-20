@@ -10296,6 +10296,10 @@ off_8134EA4:
 	.word unk_2035C6C
 	thumb_func_end folder_moveChipEntry
 
+// symdb: After a folder/pack editor move, tallies how many 0x20-byte chip entries in word_202A020 share each chip ID and packs each entry's running tally into the upper half of its +0x14 field.
+// symdb: (r0 = number of 0x20-byte entries in the list at word_202A020) -> r0 = number of entries whose
+// symdb: ID halfword was nonzero; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8134EA8.yaml
 	thumb_local_start
 sub_8134EA8:
 	push {r4-r7,lr}
@@ -10544,6 +10548,10 @@ byte_8135030:
 	.byte 0x20, 0x0, 0x0, 0x0, 0x40, 0x0, 0x0, 0x0
 	thumb_func_end sub_8134FE0
 
+// symdb: When a halfword at editor state+0x1C equals one of two indices involved in a chip move, it is rewritten to the other index, otherwise left unchanged.
+// symdb: (r0 = ignored, r1 = scratch, r2 = value A, r3 = value B, r5 = editor state struct) -> halfword
+// symdb: at [r5+0x1C] set to the opposite of A/B if it matched one of them; r0 clobbered, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135038.yaml
 	thumb_local_start
 sub_8135038:
 	push {r4,lr}
@@ -11506,7 +11514,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs battle_loadNaviCustomizerGfx / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -12535,6 +12543,10 @@ off_8135EDC:
 	.word 0x14C
 	thumb_func_end battle_collectKeyItemSurplus
 
+// symdb: Returns a 4-way direction code (0/4/8/0xC) from the Navi Customizer cursor's stored coordinates: returns 0xC when r1 is nonzero, otherwise compares halfwords at [r5+0x24] and [r5+0x26], returning 0xC if their absolute difference is 4, 0 if equal, 8 if [r5+0x24] > [r5+0x26], else 4.
+// symdb: (r0 = unused, r1 = flag/axis selector (nonzero forces 0xC), r5 = board/cursor state struct) ->
+// symdb: r0 = direction code 0/4/8/0xC
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135EEC.yaml
 	thumb_local_start
 sub_8135EEC:
 	push {r4,lr}
@@ -13864,6 +13876,9 @@ byte_8136844:
 	.byte 0x0, 0x0, 0x0, 0x0
 	thumb_func_end beastsp_feedBoardCodeInput
 
+// symdb: Battle-side setup for the Beast Out transformation: initializes object state, spawns the associated eStruct effects from byte_8136828, and programs the toolkit's Unk200f3a0 / RenderInfo / Unk2009740 fields before calling sub_8136B58(0).
+// symdb: (no args used; object in r5, toolkit in r10) -> void; no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813686C.yaml
 	thumb_local_start
 sub_813686C:
 	push {r4-r7,lr}
@@ -14216,6 +14231,10 @@ loc_8136AFE:
 	.byte 0, 0
 	thumb_func_end sub_8136AE8
 
+// symdb: Subtracts r0 from toolkit RenderInfo+0x18, then for each of min(level_byte>>2, 7) cross levels calls battle_beastOutApplyCrossChanges_813C06C(level, 3, (frame&8)>>3) to refresh beast-out chip/anim swaps, with r5 as an implicit caller-supplied context pointer.
+// symdb: (r0 = value subtracted from toolkit RenderInfo+0x18 halfword, r5 = implicit ptr to struct whose
+// symdb: byte+3 holds level count) -> r0 = callee result of last call; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136B10.yaml
 	thumb_local_start
 sub_8136B10:
 	push {r4-r7,lr}
@@ -14264,6 +14283,10 @@ camera_subScrollOffset:
 	.balign 4, 0x00
 	thumb_func_end camera_subScrollOffset
 
+// symdb: Loads one 32-wide background chunk into BG tile block 3 at vertical slot selected by [r5+0xF], with the source tile_ids chosen by r0 indexing into off_8136B90.
+// symdb: (r0 = chunk index selecting tile_ids from table off_8136B90) -> r0 = destroyed; uses global r5
+// symdb: state, field [r5+0xF] selects row via table dword_8136B9C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136B58.yaml
 	thumb_local_start
 sub_8136B58:
 	push {r4-r7,lr}
@@ -14309,6 +14332,9 @@ off_8136B98:
 dword_8136B9C:
 	.word 0xA0B0B
 	thumb_func_end sub_8136B74
+// symdb: Renders a text-graphics string into VRAM tiles at 0x600B800 and copies the resulting 10x6 tile block onto BG3 at map position (0xD, 0x12).
+// symdb: (r0 = text index/param passed to renderTextGfx) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136BA0.yaml
 	thumb_local_start
 sub_8136BA0:
 	push {r4-r7,lr}
@@ -14691,6 +14717,9 @@ locret_8136EF4:
 	.balign 4, 0x00
 	thumb_func_end sub_8136EE4
 
+// symdb: Calls sub_81375D8, runs RunTextScriptNaviCustDialog with script index 0, then stores the byte 8 at the caller-provided [r5]; returns nothing meaningful.
+// symdb: () -> r0 clobbered; reads r5 = pointer to a state/step object, writes byte 8 to [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136EF8.yaml
 	thumb_local_start
 sub_8136EF8:
 	push {lr}
@@ -14782,6 +14811,9 @@ locret_8136FA2:
 	pop {pc}
 	thumb_func_end navicust_runOnceDialog
 
+// symdb: While bit 0x80 of chatbox eFlags2009F38 is clear, force r5+0 to 0x18 (24-frame timer) and r5+4 to 0; once the bit is set, do nothing.
+// symdb: (r5 = object/step struct, base not passed in r0-r3) -> void; flags from flag-mask test
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136FA4.yaml
 	thumb_local_start
 sub_8136FA4:
 	push {lr}
@@ -15082,6 +15114,10 @@ locret_81371AE:
 	pop {pc}
 	thumb_func_end sub_81371A0
 
+// symdb: On releasing a program in the Navi Customizer, runs up to three placement-validation checks against the drop coordinates and the held piece, showing error dialogs 0x17/0x18/0x16 and setting state 0x44 on failure, or clearing the drag offset and setting state 0x48 on success.
+// symdb: ()(r5 = customizer state struct, r7 = drag context with x/y at +0x28/+0x2C) -> sets state byte
+// symdb: [r5] to 0x44 (invalid, show dialog) or 0x48 (placed); no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81371B0.yaml
 	thumb_local_start
 sub_81371B0:
 	push {lr}

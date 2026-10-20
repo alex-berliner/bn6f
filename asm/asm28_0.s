@@ -2983,6 +2983,10 @@ byte_809B004:
 
 	thumb_func_end sub_809AF7C
 
+// symdb: Populates an overworld trigger/dialog request (r5) for the player at a coordinate trigger: looks up the trigger id via checkCoordinateTrigger_8031a7a on player+0x1C, indexes dword_809B050 (after subtracting 0xC0) into r5+4, sets r5+5=0x1A, and stores r5+6=2 / r5+0x1A=0 if player+0x24>>16 >= 0x3C else r5+6=3 / r5+0x1A=0x18; r5+0x18=-1; returns 0.
+// symdb: (r0 unused in, r4/r5 = dialog-request struct) -> fills r5+4 (table byte), r5+5 = 0x1A, r5+6 (2
+// symdb: or 3), r5+0x1A (0 or 0x18), r5+0x18 = -1; r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B00C.yaml
 	thumb_local_start
 sub_809B00C:
 	push {r4-r7,lr}
@@ -3101,6 +3105,10 @@ dword_809B0D4:
 	.word 0x48020000
 	thumb_func_end ow_beastTransformStep
 
+// symdb: Overworld object behavior: decrements a per-entity timer at +0x1a each tick and, when the gating condition holds (state==2 with timer<=0, or state!=2 but variant==2 with timer>0), increments a counter at +0x18 and calls SpawnOverworldMapObject every 8th tick with id 0xB and r4 = 0x48000001 | (variant<<16). Always returns 1.
+// symdb: (r0 = ? unused, r5 = behavior struct: +6 state, +7 variant id, +0x18 spawn counter, +0x1a timer)
+// symdb: -> r0 = 1 always; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B0D8.yaml
 	thumb_local_start
 sub_809B0D8:
 	push {r4-r7,lr}
@@ -3392,6 +3400,9 @@ byte_809B77B:
 
 	thumb_func_end sub_809B130
 
+// symdb: Indexes a 4-byte table via a byte from [r10+0x3c]+4, writes entry[0..1] into r5+4/+5, sets the overworld player facing via entry[0], stores entry[2] as a fixed animation id via owPlayer_setS200ace0_fixedAnimationSelect_809e13c, then clears byte [r10+0x14]+0x10 and returns 0.
+// symdb: (r0 unused; r10 struct supplies index and state pointer, r5 = target struct) -> r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809B7A4.yaml
 	thumb_local_start
 sub_809B7A4:
 	push {r4-r7,lr}
@@ -4516,6 +4527,9 @@ cutscenescript_809C745:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
+// symdb: Backs up the current camera script pointer, builds an 8-byte header-only copy (command IDs of the first three script words plus an 0x08 terminator) in the static buffer byte_20065E0, then calls SetCutsceneCameraScript to restart playback from that stripped header.
+// symdb: (r0 = unused/scratch, r5 = cutscene/camera engine state) -> r0 = 0; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809C7A0.yaml
 	thumb_local_start
 sub_809C7A0:
 	push {r4-r7,lr}

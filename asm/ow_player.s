@@ -1143,6 +1143,9 @@ loc_809D98E:
 	pop {pc}
 	thumb_func_end ow_playerForcedWalkStep
 
+// symdb: Overworld player 'advance forward' step: if the player is on a 0x4C..0x4F trigger tile, add stored X/Y deltas to the player's position; otherwise clear EVENT_1717_PLAYER_ADVANCE_FORWARD and reset the player's action/jumptable state.
+// symdb: (r5 = OW player object, r0 unused) -> r0 = trigger id or 0; touches X/Y and state fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D9A0.yaml
 	thumb_local_start
 sub_809D9A0:
 	push {lr}
@@ -1752,6 +1755,10 @@ locret_809DE5E:
 	pop {pc}
 	thumb_func_end endSlipRunState_809DE30
 
+// symdb: Initializes the overworld player object's per-facing-direction slip-run delta values (Unk_38/Unk_3c) by indexing a map-group-dependent table (byte_809CFBC or byte_809D0DC) with the player's facing direction (dir*12).
+// symdb: (r5 = overworld player object) -> void; writes oOWPlayerObject_Unk_38 and Unk_3c from the
+// symdb: direction-indexed table entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809DE60.yaml
 	thumb_local_start
 sub_809DE60:
 	push {lr}

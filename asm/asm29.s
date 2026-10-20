@@ -5239,6 +5239,11 @@ byte_80A7A38:
 	.byte 0x8, 0x0, 0x0, 0x8, 0xF8, 0x0, 0x0, 0xF8
 	thumb_func_end object_startFacingStep
 
+// symdb: Sine-eased lerp of a camera/scroll position from start to end coordinates across a countdown, snapping to end and returning 1 when done (via sub_80A7BA2), blocked by battle_isInputAllowedOrBattleBusy; used in beast-sp cutscene panning.
+// symdb: (r0 = unused, r6 = move descriptor {u16 counter@6, u32 step@0x24, start x/y@0x14/0x18, end
+// symdb: x/y@0x1c/0x20}, r5 = destination state {x@0xc, y@0x10}) -> r0 = 1 when the move finished, 0
+// symdb: while blocked/in progress; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7A40.yaml
 	thumb_local_start
 sub_80A7A40:
 	push {r4-r7,lr}
@@ -5437,6 +5442,10 @@ readU32Unaligned:
 	mov pc, lr
 	thumb_func_end readU32Unaligned
 
+// symdb: Reads a little-endian signed 16-bit halfword from [r0]/[r0+1] and returns it sign-extended in r1 (r0 is scratch, flags clobbered).
+// symdb: (r0 = pointer to two-byte field) -> r0 = sign-extended 16-bit value of [r0] | [r0+1]<<8; flags
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7B90.yaml
 	thumb_local_start
 sub_80A7B90:
 	ldrb r1, [r0]
@@ -6231,7 +6240,7 @@ byte_80A81F0:
 // symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
 // symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
 // symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `battleObject_setupBeastSprite`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
+// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
@@ -6254,7 +6263,7 @@ off_80A8228:
 	.word unk_2000B40
 	thumb_func_end battle_dispatchCustomJumptableByIndex_80A8208
 
-// symdb: Initializes a beast entity: loads gfx 0x1c/0x56, calls ow_swapMapEventFlags, sets priority-by-event-flag, applies animation + noShadow + OAM priority 2, converts three 16-bit coords to upper-word format into [r5+0xC/0x10/0x14], and refreshes the sprite.
+// symdb: Initializes a beast entity: loads gfx 0x1c/0x56, calls sub_80A8324, sets priority-by-event-flag, applies animation + noShadow + OAM priority 2, converts three 16-bit coords to upper-word format into [r5+0xC/0x10/0x14], and refreshes the sprite.
 // symdb: (r5 = entity/object struct ptr, preset before entry) -> void; writes state bytes and position
 // symdb: fields into the struct
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_setupBeastSprite.yaml
@@ -6599,6 +6608,10 @@ off_80A84C0:
 	.word byte_808C74C
 	thumb_func_end ow_cleanupNpcAfterCutscene
 
+// symdb: Computes an X/Y/Z point offset from the overworld player's position by a given angle (cos/sin * 0x6000) and stores it into a destination structure.
+// symdb: (r5 = dest struct, angle from sub_80A84FC in r0) -> writes [r5+0xC]=x, [r5+0x10]=y, [r5+0x14]=z;
+// symdb: no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A84C4.yaml
 	thumb_local_start
 sub_80A84C4:
 	push {r4-r7,lr}
@@ -6649,6 +6662,10 @@ byte_80A8510:
 	.byte 0x0, 0x1F, 0x3F, 0x7F, 0x9F, 0xBF, 0xDF, 0xFF
 	thumb_func_end getRandomFadeLevel
 
+// symdb: Computes the 0–3 facing direction for the object in r5 toward a target point (r0/r1 shifted to 16-bit), via battle_calcAngleOctant_800118A and the table at 0x080A8540 mapping octants 1..4 to directions {1,1,0,3}; on a zero vector returns the object's own direction byte at r5+0x4.
+// symdb: (r0 = target X (halfword, shifted to 16-bit), r1 = target Y; r5 = object with X at +0xC, Y at
+// symdb: +0x10, default dir at +0x4) -> r0 = direction index 0–3; flags clobbered by call
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8518.yaml
 	thumb_local_start
 sub_80A8518:
 	push {r4,lr}
@@ -6714,6 +6731,10 @@ locret_80A857E:
 	pop {pc}
 	thumb_func_end sub_80A856C
 
+// symdb: Returns a fixed-point scalar (0x24000 normally, 0x12000 when calcAngle of (r6 - r5) yields exactly 0x20 or 0xA0) loaded from byte_80A85AC at offset r4; r4 is 0 or 4 based on the diagonal test.
+// symdb: (r5 = ptr to struct with 16.16 fixed x,y at +0xC/+0x10, r6 = ptr to struct with integer x,y at
+// symdb: +0x1A/+0x1B) -> r0 = 0x24000 (2.25) normally, 0x12000 (1.125) on diagonal; clobbers r0-r3, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8580.yaml
 	thumb_local_start
 sub_80A8580:
 	push {r4,lr}
@@ -6744,6 +6765,10 @@ byte_80A85AC:
 	.byte 0x0, 0x40, 0x2, 0x0, 0x0, 0x20, 0x1, 0x0
 	thumb_func_end sub_80A8580
 
+// symdb: Moves an overworld NPC's fixed-point X/Y one step toward target coordinates read from r6, clamping to avoid overshoot, and writes a moved-flag to [r6+0xC].
+// symdb: (void; r5/r6 = actor & control structs set up by callees) -> r0 = clobbered; stores updated X at
+// symdb: [r5+0xC], Y at [r5+0x10], and moved-flag at [r6+0xC]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A85B4.yaml
 	thumb_local_start
 sub_80A85B4:
 	push {r4-r7,lr}
@@ -8779,7 +8804,7 @@ locret_80A942E:
 	pop {pc}
 	thumb_func_end sub_80A93E8
 
-// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, object_fadeSpriteToWhiteStep) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1C) update: long-calls one of 3 state handlers (off_80A9444 = sub_80A9458, sub_80A94DC, sub_80A94F8) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9430.yaml
 	thumb_func_start sub_80A9430
 sub_80A9430:
@@ -10074,6 +10099,10 @@ locret_80A9E46:
 	pop {r4-r7,pc}
 	thumb_func_end beastsp_updateMotion
 
+// symdb: Object step: increments a u16 at +0x24; when it reaches 8, wraps it to 0 and stores 0xC into the u8 at +9.
+// symdb: (r5 = object struct) -> r0 clobbered; [r5+0x24] (u16) incremented, wraps 0..7; [r5+9] (u8) = 0xC
+// symdb: on wrap
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9E48.yaml
 	thumb_local_start
 sub_80A9E48:
 	push {r4-r7,lr}
@@ -10380,6 +10409,10 @@ off_80AA054:
 	.word byte_2001130
 	thumb_func_end ow_getApproachTarget
 
+// symdb: Dispatches to an object's per-state step handler by indexing a function table with the state byte at [r5,#8] and tail-calling the selected handler.
+// symdb: (r0 = unused/scratch, r5 = object pointer with state id at +0x8) -> r0 = whatever the state
+// symdb: handler returns; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA058.yaml
 	thumb_func_start sub_80AA058
 sub_80AA058:
 	push {lr}

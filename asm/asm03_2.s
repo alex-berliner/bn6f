@@ -291,6 +291,10 @@ off_80461C8:
 	.word byte_200A220
 	thumb_func_end sub_8046154
 
+// symdb: Animation-opcode handler: blits a 0x60-byte tile entry (12 rows of 8 bytes) from the sprite tile-data base at work+0x18 into the bit-packed render buffer, advancing the bit cursor by a per-bank width-table value and a per-row byte stride from work+0.
+// symdb: (r1 = tile/entry index into the 0x60-byte tile data array at work+0x18) -> r0 = destroyed;
+// symdb: updates work at byte_200A220 (bit cursor +0x1c, byte counter +0x3c), no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80461D0.yaml
 	thumb_local_start
 sub_80461D0:
 	push {r0,r3,lr}
@@ -10601,6 +10605,9 @@ off_804C428:
 	.word byte_804C3F0
 	thumb_func_end battle_dispatchJumpByActorSlotAndAction_804C404
 
+// symdb: Clears bits 0x4800 in the halfword at offset 0 of the toolkit RenderInfo pointer and writes it back, with no other observable side effects.
+// symdb: () -> nothing; writes back to [toolkit->renderInfoPtr]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C42C.yaml
 	thumb_local_start
 sub_804C42C:
 	push {r4-r7,lr}
@@ -11363,7 +11370,7 @@ nullsub_804CBA0:
 	pop {r4-r7,pc}
 	thumb_func_end nullsub_804CBA0
 
-// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `beastSp_startTransformSequence` or `sub_804CC8E`.
+// symdb: Indirect dispatch through a 2-entry table indexed by a battle object's byte at +0x10 (typically `CurAnim`), forwarding to either `sub_804CBDC` or `sub_804CC8E`.
 // symdb: (r0 = ptr to a 2-entry fnptr table stored alongside `off_804CBB8`, r1 = u8 dispatch key) -> r0 =
 // symdb: return value forwarded from the chosen handler ; side effects: none in this stub itself; the
 // symdb: dispatched handler runs in r5/r10/lr-saved context.

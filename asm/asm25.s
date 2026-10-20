@@ -956,6 +956,10 @@ loc_808FEE2:
 	pop {r4-r7,pc}
 	thumb_func_end spawnOverworldMapObjects1aLoop
 
+// symdb: Looks up a per-map byte from a 4-entry table using MapNumber (or constant 3 if MapGroup==0x85), stores it at struct offset 0xA and also at 0xB unless story flag EVENT_BFB is set; returns the byte.
+// symdb: (r0 = toolkit (via r10), r5 = target struct) -> r0 = looked-up byte; writes r5+0xA always and
+// symdb: r5+0xB only if EVENT_BFB clear
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF00.yaml
 	thumb_local_start
 sub_808FF00:
 	push {r4,lr}
@@ -987,6 +991,9 @@ dword_808FF2C:
 	.word 0x2020201
 	thumb_func_end sub_808FF00
 
+// symdb: Battle-side wrapper that initializes the AI chip-queue slot (0x58 bytes in EWRAM at 0x02011860) via the AI-chip-queue helper, with r0/r1/r2=0 selecting slot 0 and returning 0.
+// symdb: () -> r0 = 0; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FF30.yaml
 	thumb_local_start
 sub_808FF30:
 	push {lr}

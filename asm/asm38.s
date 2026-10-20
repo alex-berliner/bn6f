@@ -135,6 +135,11 @@ nullsub_38:
 	bx lr
 	thumb_func_end nullsub_38
 
+// symdb: Tail-dispatches via shared state index: calls eStruct200BC30_getJumpOffset00 to fetch an index from field 00 of the struct at 0x200BC30, then tail-calls iJumpTable3005D10[index] so the handler returns directly to this function's caller.
+// symdb: (r0 = don't care/ignored on entry) -> control transferred to handler at
+// symdb: iJumpTable3005D10[index], whose return value passes through and whose return goes to this
+// symdb: function's caller; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005CDA.yaml
 	thumb_local_start
 sub_3005CDA:
 	push {lr}
@@ -1515,6 +1520,11 @@ off_3006590:
 	.word unk_3002400
 	thumb_func_end sprite_queueFramePieces
 
+// symdb: Computes the OAM draw offsets for one sprite piece, applying optional flip-sign plus per-size anchoring (0x100 path) or an affine rotation/scaling using word_200A6F0 (0x300 path), returning (r0=x, r1=y) and updating r6 with the affine index (or 0x02000000 when r7==1).
+// symdb: (r2 = piece struct ptr, r5 = object struct ptr, r6 = piece flags, r7 = flip/variant flag) -> r0,
+// symdb: r1 = transformed piece offsets; r6/r7 preserved (r6 gets 0x02000000 set and rotation index+0x10
+// symdb: when r7==1).
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006594.yaml
 	thumb_local_start
 sub_3006594:
 	mov r3, #3

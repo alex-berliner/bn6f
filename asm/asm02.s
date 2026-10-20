@@ -270,6 +270,10 @@ loc_8021BFE:
 	pop {r7,pc}
 	thumb_func_end GetTotalChipCount
 
+// symdb: Scans the chip-folder table over a count of folder entries from unk_20018EC, returning how many matching id+code slots the player also holds in the pack, used by chatbox chip-script conditions.
+// symdb: (r0 = chip id, r1 = code letter value) -> r0 = number of matching slots found; flags set by
+// symdb: final compare/pop
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8021C02.yaml
 	thumb_func_start sub_8021C02
 sub_8021C02:
 	push {r4-r7,lr}

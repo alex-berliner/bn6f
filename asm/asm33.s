@@ -13718,6 +13718,10 @@ locret_8129AEC:
 	.byte 0, 0
 	thumb_func_end decideBattleAction_8129AC8
 
+// symdb: If both text-slot structs at unk_20251A0 have a zero byte at +7, clears bit31 on both slot pointers, sets the caller's state byte at r5+3 to 8, runs a chatbox script on the second slot via sub_812B3B4, and clears bit0 of r5+0x1b; otherwise returns without side effects.
+// symdb: (r5 = caller context struct, pre-set by caller; r0 unused on entry) -> r0 = script-runner
+// symdb: result; writes bit31 flags of both unk_20251A0 entries, r5[3] = 8, clears bit0 of r5[0x1b]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129AF0.yaml
 	thumb_local_start
 sub_8129AF0:
 	push {r4-r7,lr}
