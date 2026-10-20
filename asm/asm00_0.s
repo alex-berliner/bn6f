@@ -2442,6 +2442,10 @@ loc_800126A:
 	pop {r5,pc}
 	thumb_func_end battle_calcTargetApproach
 
+// symdb: Given a start {x,y} struct and target x/y plus speed params, returns step count in r0 with per-step x/y increments in r1/r2 via signed division with half-rounding.
+// symdb: (r0 = ptr to {x,y} start struct, r1 = target x, r2 = target y, r3 = param A, r4 = param B) -> r0
+// symdb: = step count, r1 = dx/steps, r2 = dy/steps; clobbers r3, r7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8001288.yaml
 	thumb_local_start
 sub_8001288:
 	push {lr}

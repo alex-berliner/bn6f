@@ -1501,6 +1501,10 @@ sub_80A58E0:
 	b loc_80A58FA
 	thumb_func_end sub_80A58E0
 
+// symdb: Steps a camera struct's x ([r5+0xc]→[r5+0x24]) and y ([r5+0x10]→[r5+0x28]) toward their targets by at most the given step, recomputing a derived z/screen value via checkZCoordModifiers_8031612 and storing it at [r5+0x14] and [r5+0x20]; returns 1 if any coordinate moved, else 0.
+// symdb: (r0 = max step amount, r5 = camera/position struct from caller) -> r0 = 1 if any coordinate
+// symdb: changed this call, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A58F4.yaml
 	thumb_local_start
 sub_80A58F4:
 	push {r4-r7,lr}
@@ -2304,6 +2308,10 @@ e_setFlagFromIndexTable:
 	.byte 0, 0
 	thumb_func_end e_setFlagFromIndexTable
 
+// symdb: Reads an index byte from [r5+4], uses it to select one of four 32-bit flag entries from byte_80A5EB8 (0x1641-0x1644), and passes the selected word to ClearEventFlag to clear that flag.
+// symdb: (no register args; r5 = context object, [r5+4] = variant index 0-3) -> r0 = result of
+// symdb: ClearEventFlag; no other outputs
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5EA0.yaml
 	thumb_local_start
 sub_80A5EA0:
 	push {r4,lr}
@@ -7787,6 +7795,10 @@ locret_80A8D00:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8CCC
 
+// symdb: Rotates the u16 angle at [r7+4] toward the direction from the overworld player to the target object at r5 by at most r0 units per call, clamping the signed delta and adding it back without overshoot.
+// symdb: (r0 = max angular step, r5 = target object [x=+0x10, y=+0xc], r7 = struct with u16 angle at +4)
+// symdb: -> r0 = clamped signed delta; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8D02.yaml
 	thumb_local_start
 sub_80A8D02:
 	push {r4-r7,lr}
@@ -7859,6 +7871,10 @@ dword_80A8D78:
 	.word 0x14
 	thumb_func_end sub_80A8D42
 
+// symdb: Appends an overworld interaction area for an OW object using its stored x/y with z lowered by 0x140000 and kind 0x808, then writes 0 to the address formed from the 0x10000 flag constant.
+// symdb: (r5 = OW object struct pointer, carried in) -> r0 = 0; flags from
+// symdb: createOWObjectInteractionArea_80037ac
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8D7C.yaml
 	thumb_local_start
 sub_80A8D7C:
 	push {r4-r7,lr}
@@ -7883,7 +7899,7 @@ sub_80A8D7C:
 	.pool // 80A8DA4
 	thumb_func_end sub_80A8D7C
 
-// symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs init_setRandomTimer and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
+// symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs sub_8143204 and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
 // symdb: (r0..r3 = unused; r5 = Cybercrow/NPC state struct) -> r0 = clobbered; only acts when player may
 // symdb: advance, sub_8002E04 passes, and bit 0x10000 of +0x24 is set
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_triggerCutscene.yaml
@@ -12298,7 +12314,7 @@ off_80AAC88:
 	.word 0x201
 	thumb_func_end sub_80AABA4
 
-// symdb: Picks a random chip-drop for the battle-result record: returns 0xFFFF if an RNG byte <8 and sub_80AAE36 returns 0; otherwise builds a 6-entry halfword pool, scans circularly from sub_80AAB68's starting index, picks via SWI 6 Div on a fresh RNG, and returns getRandomChipBonusOfKindFromTable's pair packed as (r1<<9)|r0 (or 0 if the pool is empty).
+// symdb: Picks a random chip-drop for the battle-result record: returns 0xFFFF if an RNG byte <8 and sub_80AAE36 returns 0; otherwise builds a 6-entry halfword pool, scans circularly from sub_80AAB68's starting index, picks via SWI 6 Div on a fresh RNG, and returns sub_80AAD04's pair packed as (r1<<9)|r0 (or 0 if the pool is empty).
 // symdb: (r0 = battle-result record ptr) -> r0 = packed drop: 0xFFFF = none, 0 = none found, else low
 // symdb: field | (r1<<9); clobbers r4,r6,r7
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_rollRandomChipDrop.yaml

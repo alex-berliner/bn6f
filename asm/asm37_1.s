@@ -4104,6 +4104,10 @@ loc_8143D68:
 	pop {r4-r7,pc}
 	thumb_func_end countSetEventFlags
 
+// symdb: Converts a world position into a flat grid cell index for the Groundman minigame: adds the map's grid offsets (returned in r0/r1), shifts the saved input right by 5 to convert pixels to 32-px cells, recenters by adding 0x80, then returns x_cell + y_cell * 256.
+// symdb: (r0 = x pos, r1 = y pos) -> r0 = grid cell index (x_tile + y_tile*256); flags clobbered by
+// symdb: mul/mult-cycle
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143D7A.yaml
 	thumb_local_start
 sub_8143D7A:
 	push {r4-r7,lr}
@@ -4567,7 +4571,7 @@ byte_8144040:
 	.byte 0x1B, 0x35, 0x4A, 0x5A, 0x64, 0x0, 0x0, 0x0
 	thumb_func_end sub_8144010
 
-// symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sprite_buildGaugeTiles step, and a fade+subsystem-4 cleanup before the common tail.
+// symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sub_811E744 step, and a fade+subsystem-4 cleanup before the common tail.
 // symdb: () -> r0 = 0; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initMultiEnemyAIAndTick.yaml
 	thumb_func_start battle_initMultiEnemyAIAndTick

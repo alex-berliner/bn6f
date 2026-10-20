@@ -7129,6 +7129,10 @@ loc_800640E:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80063C0
 
+// symdb: Loads two palette records (selected by [r5+0x18]/[r5+0x1C] indices) from arrays at [r5+0x10]/[r5+0x14] into software palette slots [r5+0xC]+0x14 (2 entries) and [r5+0xC]+0x15 (4 entries).
+// symdb: (r5 = sprite resource struct: [0x10]/[0x14] palette array ptrs, [0x18]/[0x1C] entry indices,
+// symdb: [0xC] base slot; r6 = arg passed to palette filler) -> void; r0-r3 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006414.yaml
 	thumb_local_start
 sub_8006414:
 	push {r4-r7,lr}
@@ -7583,6 +7587,9 @@ off_800698C:
 	.word req_enqueueTask+1
 	thumb_func_end chatbox_initWindowReqAndEnqueue
 
+// symdb: Per-frame coroutine that projects an overworld point to screen, conditionally queues its OAM marker when visible, fills an Unk2009740 buffer, advances two fixed-point animation fields clamped to per-axis targets, and returns 1 when the progress byte reaches 0xFF.
+// symdb: () -> r0 = 1 when anim field 0x20096A4 reaches 0xFF, else 0; clobbers r0-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006990.yaml
 	thumb_func_start sub_8006990
 sub_8006990:
 	push {r4-r7,lr}
@@ -11557,6 +11564,11 @@ locret_8008388:
 	pop {pc}
 	thumb_func_end object_wait60FramesThenDispatchEvent
 
+// symdb: State object: on first entry it fetches both players' total damage taken and forwards both values to sub_802CB38, then waits; on subsequent frames sub_802CB78's return picks between advancing the battle phase step (result 1 -> state 0xc), incrementing the custom-gauge charge (result 2 -> state 0x10), or defaulting to state 0x14.
+// symdb: (r5 = state/controller object: +0 next-state word, +3 substate byte; r10 = toolkit) -> none;
+// symdb: advances oBattleState_PhaseStepIndex or oBattleState_CustGaugeChargeLevel and picks next state
+// symdb: via [r5].
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800838A.yaml
 	thumb_local_start
 sub_800838A:
 	push {lr}
@@ -11900,8 +11912,8 @@ locret_80085FC:
 	pop {pc}
 	thumb_func_end battle_dispatchNextPhase
 
-// symdb: Runs the same routine (object_syncField24ToMinOrReset) over the alive player-actor list and the alive opponent-actor list during battle phase dispatch.
-// symdb: (r0 = battleState via r10) -> r0 = result of last object_syncField24ToMinOrReset call; calls object_syncField24ToMinOrReset(listHead,
+// symdb: Runs the same routine (sub_8008622) over the alive player-actor list and the alive opponent-actor list during battle phase dispatch.
+// symdb: (r0 = battleState via r10) -> r0 = result of last sub_8008622 call; calls sub_8008622(listHead,
 // symdb: listHead+4, index) twice
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_forEachAliveActor.yaml
 	thumb_local_start
@@ -19290,6 +19302,11 @@ battle_linkSendTaggedPacketMode3:
 	pop {r4,r5,pc}
 	thumb_func_end battle_linkSendTaggedPacketMode3
 
+// symdb: Scans BattleState's alive-opponent actor list and battle-object list for an actor pointer and returns the field offset (in r4) of the matching slot, or 0 if not found or if GetBattleEffects bit 0x8 is set on a first-slot match.
+// symdb: (r0 = actor pointer) -> r0 = offset of the matching slot in BattleState (relative to
+// symdb: oBattleState_AliveOpponentActors / oBattleState_BattleObjectList), or 0 if not found; flags
+// symdb: clobbered by bl.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B4CE.yaml
 	thumb_local_start
 sub_800B4CE:
 	push {lr}

@@ -5336,6 +5336,10 @@ byte_800E4E8:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0xFF, 0x1, 0x0, 0x0, 0x1, 0x1, 0x0, 0xFF, 0x0, 0x1
 	.byte 0x0, 0x1, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0
 
+// symdb: Returns the slide delta (dx, dy, speed) for a battle object's panel when its panel type is 9-12, otherwise returns (0,0,0).
+// symdb: (r5 = battle object) -> r0 = dx (signed byte), r1 = dy (signed byte), r2 = third table byte
+// symdb: (always 1); flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E500.yaml
 	thumb_local_start
 sub_800E500:
 	push {r4,lr}

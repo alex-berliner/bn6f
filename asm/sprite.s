@@ -1133,6 +1133,10 @@ sprite_makeScalable:
 	b loc_8002D22
 	thumb_func_end sprite_makeScalable
 
+// symdb: Grants a battle actor slot to a sprite object: returns 0 if SpriteFlags bits 0-1 are already set or no slot is free, otherwise marks the sprite as owning an actor (sets those bits) and stores the slot id shifted left by 1 into SpriteFlags3, returning 1. The object pointer is passed in r5.
+// symdb: (r5 = sprite object pointer) -> r0 = 1 if a slot was assigned, 0 if already assigned or
+// symdb: allocation failed; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8002D20.yaml
 	thumb_local_start
 sub_8002D20:
 	push {r5,lr}

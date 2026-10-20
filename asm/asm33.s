@@ -2959,6 +2959,10 @@ locret_81246D4:
 	.balign 4, 0x00
 	thumb_func_end npc_showTextByStoryFlag
 
+// symdb: Stores r0 into [r5,#0x10] and (in some branches) into chatbox+0x4C, then picks a chatbox script (7, 0xB, or 0xD) from archive 201C100 based on the S2001c04 gamestate fields at offsets 0x28 and 0x1C, updating [r5,#2]/[r5,#3] state bytes as it advances a small state machine.
+// symdb: (r0 = byte value (text param/speaker id), r5 = state struct, r10 = toolkit) -> void; runs a
+// symdb: chatbox script and updates [r5,#2]/[r5,#3] state bytes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81246D8.yaml
 	thumb_local_start
 sub_81246D8:
 	push {r4,lr}
@@ -13679,6 +13683,11 @@ locret_8129A52:
 	pop {pc}
 	thumb_func_end battle_dealChipsOnFadeIn
 
+// symdb: Polls 3 entity pointers in unk_20251A0 (stripping bit31); if any slot's byte+7 is nonzero, returns immediately to keep waiting. Once all are clear, rewrites each pointer with bit31 cleared, then sets r5+3 = 8 and calls sub_812B3FC to show chatbox line 8, finally clearing bit0 of r5+0x1b.
+// symdb: (r4 = &unk_20251A0 [3-pointer slot array], r5 = script/chatbox context struct) -> r0 = last
+// symdb: value written to r5[0x1b] on success, or the slot flag byte when bailing early; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8129A54.yaml
 	thumb_local_start
 sub_8129A54:
 	push {lr}
@@ -15465,7 +15474,7 @@ off_812A6F4:
 	.word byte_8129150
 	thumb_func_end initScreenSceneAndFadeIn
 
-// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs submenu_resetState. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
+// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
 // symdb: (r5 = link connection state struct, set by caller) -> r0 = clobbered; updates struct fields +0x1
 // symdb: (state=0x10), +0x2 (sub-state=0), +0x28 (retry count), +0xC (state=0x18 in alternate branch)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryInitSessionStateStep.yaml

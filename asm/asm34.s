@@ -202,7 +202,7 @@ dword_812D4F8:
 
 // symdb: Fetches the shared submenu work struct (0x02037780) and invokes a fixed draw/queue call with constant coordinates and a ROM data blob (byte_8129178), then a follow-up commit call, as part of the per-frame update of this screen's state handlers.
 // symdb: () -> void; no caller consumes a return value (r0-r3, r4=byte_8129178, r6=0x40000000, r7=0x20002
-// symdb: are preloaded as extra args for battleObject_queueOamFrameAndAdvanceAnim)
+// symdb: are preloaded as extra args for sub_812D600)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_drawScreenElement.yaml
 	thumb_func_start submenu_drawScreenElement
 submenu_drawScreenElement:

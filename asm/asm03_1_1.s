@@ -83,6 +83,10 @@ off_8038688:
 	.word 0xB4
 	thumb_func_end sub_8038674
 
+// symdb: Decrements a u16 countdown at [r5+4]; once it underflows, polls joypad for A/B/Start press and on press calls SetScreenFade(0xC, 8) and writes 0xC to [r5] to advance the caller state machine.
+// symdb: (r5 = state struct: +0 u8 state, +4 u16 timer; r10 = toolkit for joypad) -> void; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803868C.yaml
 	thumb_local_start
 sub_803868C:
 	push {r4-r7,lr}
@@ -1128,6 +1132,10 @@ off_80390F4:
 	.word 0x108
 	thumb_func_end battle_initEmotionEntriesType3A
 
+// symdb: Preloads EmotionData slots in the 0x58-byte EWRAM array at 0x02008450: loops r4 from 4 down to 0 calling battle_initEmotionTableEntry_8046670 twice per iteration with type 0x3A into slots 3+2*r4 and 2+2*r4 (filling slots 2-11) using packed words from byte_803913C (tag 0x09) and byte_8039154 (tag 0x0A), and when r4==1 additionally initializes slot 12 with the packed value 0x50D.
+// symdb: () -> r0 = undefined (void); no flags, writes EmotionData slots in the 0x58-byte EWRAM array at
+// symdb: 0x02008450
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80390F8.yaml
 	thumb_local_start
 sub_80390F8:
 	push {r4,lr}
@@ -2884,6 +2892,10 @@ loc_803A0FE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0EE
 
+// symdb: Each frame, draws up to 4 lines of wireless-connect info (codes 0x27, 0x7b via sub_803B814 and 0x21 via sub_803B9C0) indexed by [r5,#0xb]+i and stride 0x20, marks entries active, then ticks sprite/entity updates; may early-return if sub_803A2A4 signals done.
+// symdb: (r5 = connection-state struct: +0xb base index, +0x24/+0x26 draw params, +0x18 flag) -> r0
+// symdb: destroyed; draws text per entry via sub_803B814/sub_803B9C0.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A104.yaml
 	thumb_func_start sub_803A104
 sub_803A104:
 	push {r4-r7,lr}
@@ -3312,6 +3324,10 @@ sub_803A410:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A410
 
+// symdb: Decrements [r5+0x19] each call and writes two 4-row BG tile-id strips from unk_202A204 and word_202A604 into the BG map at columns 4 and 12, with the strips' rows offset by the counter and 32-counter respectively so they animate apart.
+// symdb: (r5 = work struct; byte at +0x19 = scroll counter, decremented each call) -> r0 = last row
+// symdb: passed to bg_writeTileIdRow; updates tile-id maps at unk_202A204 and word_202A604
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A422.yaml
 	thumb_local_start
 sub_803A422:
 	push {r4-r7,lr}
@@ -3483,6 +3499,10 @@ dword_803A554:
 	.word 0x585000
 	thumb_func_end sub_803A524
 
+// symdb: If dispatch_803C620 returns nonzero index and zero busy flag, loads a table entry (stride 8) from dword_803A5C4, copies its low byte into [r5+1], and long-calls its second word as a state handler, returning 1; otherwise returns 0 (sub_8148214 runs in both paths).
+// symdb: (r0/r1 set by dispatch_803C620; r5 = work struct ptr supplied by caller) -> r0 = 1 if a state
+// symdb: handler ran, 0 if finished/blocked; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A558.yaml
 	thumb_local_start
 sub_803A558:
 	push {r4-r7,lr}
@@ -5596,6 +5616,10 @@ off_803B638:
 	.word byte_86ACD60
 	thumb_func_end sub_803B522
 
+// symdb: Stashes four caller values into the toolkit's text-renderer state struct, indexes a 12-byte entry in table off_803B66C by r0, unpacks its fields, and invokes renderTextGfx_8045F8C to render the selected glyph chunk.
+// symdb: (r0 = entry index into 12-byte-entry table TextScript87E36F8, r1..r4 = values saved to [toolkit
+// symdb: unk200a220]+8/+0xC/+0x10/+0x14) -> r0 = result of renderTextGfx_8045F8C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B63C.yaml
 	thumb_local_start
 sub_803B63C:
 	push {r4-r7,lr}
@@ -7057,6 +7081,10 @@ sub_803C2A0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2A0
 
+// symdb: Stashes four caller-supplied buffers (r0=0x20, r1=0x20, r2=0x10, r3=0x10) into unk_200A400, unk_200A420, unk_200A3A0, and unk_200A3B0, so overworld state can be saved before a jack-in.
+// symdb: (r0 = src buf A, r1 = src buf B, r2 = src buf C, r3 = src buf D) -> r0 destroyed; copies caller
+// symdb: buffers into unk_200A400/unk_200A420 (0x20 each) and unk_200A3A0/unk_200A3B0 (0x10 each)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C2AA.yaml
 	thumb_func_start sub_803C2AA
 sub_803C2AA:
 	push {r4-r7,lr}
@@ -7509,6 +7537,10 @@ off_803C52C:
 	.word eS200A290
 	thumb_func_end rfu_isStatus100Set
 
+// symdb: Calls sub_803CB18(0x200) as a gate; if it returns nonzero, calls LoadGFXAnim with the GFXAnimScript at off_8039370 and returns 1, otherwise returns 0.
+// symdb: () -> r0 = 1 if LoadGFXAnim ran, else 0; uses r5 = eS200A290 as implicit state pointer for
+// symdb: callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C530.yaml
 	thumb_local_start
 sub_803C530:
 	push {r4-r7,lr}
@@ -8098,6 +8130,9 @@ loc_803C8E0:
 	.balign 4, 0x00
 	thumb_func_end rfu_updateLinkManager
 
+// symdb: Per-frame wireless link dispatch: clears finished peer slots, then routes execution to one of two sub-handlers based on the link-state byte at +0x1 and a sub-structure flag at +0xC.
+// symdb: () -> r0 = clobbered; no meaningful return; flags set by the cmp/tst of the state bytes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C8E8.yaml
 	thumb_local_start
 sub_803C8E8:
 	push {r4,lr}
@@ -11559,6 +11594,10 @@ locret_803E7A0:
 	.balign 4, 0x00
 	thumb_func_end sub_803E78C
 
+// symdb: Returns a 16-bit per-slot value from byte_2009940 at offset 8*slot plus a per-link-mode base (0x02 for modes 0, 0x04 for mode 3); for unsupported modes (1,2) returns r0=0, r1=1 as an error indicator.
+// symdb: (r0 = slot index 0..7) -> r0 = halfword byte_2009940[8*slot + offset[mode]], r1 = 0 on success;
+// symdb: r0 = 0, r1 = 1 if the current link mode has no table entry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803E7A4.yaml
 	thumb_local_start
 sub_803E7A4:
 	push {r4-r7,lr}
@@ -12560,6 +12599,10 @@ dword_803ED18:
 	.word 0xFE
 	thumb_func_end sub_803ECFC
 
+// symdb: Dispatches via the byte at eStruct200BC30+5 to one of two thumb routines, then if that byte is 0 and it returned 4, surfaces 4; otherwise returns the original r0 argument.
+// symdb: (r0 = value passed through to caller) -> r0 = same value, or 4 when mode byte is 0 and the
+// symdb: handler returned 4; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803ED1C.yaml
 	thumb_local_start
 sub_803ED1C:
 	push {r4-r7,lr}
@@ -13029,6 +13072,9 @@ sub_803F004:
 	mov pc, lr
 	thumb_func_end sub_803F004
 
+// symdb: Copies a caller-supplied data block (r0=src, r1=size in bytes) into the current 0x100-byte slot of an 8-slot ring buffer at unk_2009AC0, then advances the slot index modulo 8 in byte_200AC20.
+// symdb: (r0 = src pointer, r1 = size in bytes) -> void; destroys r4-r7, calls BIOS CpuSet via CopyWords.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F00C.yaml
 	thumb_local_start
 sub_803F00C:
 	push {r4-r7,lr}
@@ -13139,6 +13185,11 @@ sub_803F090:
 	pop {r5,pc}
 	thumb_func_end sub_803F090
 
+// symdb: If config flags at [r0] and [r0+0xC] are both clear, calls sub_803EF48(1); then copies the current animated tile frame (index [r2+3], stride 0x40 bytes from r3 frame bank) into the dest buffer (r1) via CopyByEightWords, advances the frame index modulo 8, and increments the call counter at [r2+8].
+// symdb: (r0 = config struct (u8 flag@0x0, u8 flag@0xC), r1 = dest ptr, r2 = state struct (u8
+// symdb: frameIdx@0x3, u16 count@0x8), r3 = src frame bank base) -> r0 = new frame count; no meaningful
+// symdb: flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F0A4.yaml
 	thumb_local_start
 sub_803F0A4:
 	push {r4-r7,lr}
@@ -14053,6 +14104,10 @@ sub_803F664:
 	.byte 0x0, 0x0
 	thumb_func_end sub_803F664
 
+// symdb: Counts linked-battle players whose sub_8144D04 status is 1 (r0) or 2 (r1), iterating i=0..(eLinkState+0x48 bits 4:2)-1.
+// symdb: () -> r0 = count of players with status 1, r1 = count of players with status 2; flags from final
+// symdb: mov r1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803F674.yaml
 	thumb_func_start sub_803F674
 sub_803F674:
 	push {r4-r7,lr}

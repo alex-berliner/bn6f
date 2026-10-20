@@ -4239,6 +4239,9 @@ off_80108F8:
 	.word 0x400
 	thumb_func_end battleObject_setupSecondaryElementWeaknessFromNaviStats_801086C
 
+// symdb: Scans a battle hand slot's halfword card list from its starting index, and for every card whose ID is in 0x190..0x19A calls sub_801092C with the slot index; terminates on 0xFFFF, advancing the list cursor by 1 on non-matching entries and relying on the callee to mutate the entry otherwise.
+// symdb: (r0 = hand slot index for getBattleHandAddr) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80108FC.yaml
 	thumb_func_start sub_80108FC
 sub_80108FC:
 	push {r4,r6,r7,lr}
@@ -7066,6 +7069,10 @@ sub_8011D9C:
 	pop {pc}
 	thumb_func_end sub_8011D9C
 
+// symdb: Initializes an AI attack-vars struct for a Beast-Out power attack: clears ChargeReadyFlag, ChipUseDelay, and AttackBoost; sets ExtraDamage=0x9E; computes Damage via battle_beastPwrAtk_addScaledBase(base=0x32, mult=0x14); sets InitFlag=4; returns 0x4E.
+// symdb: (no args; uses r7 = AI attack vars struct) -> r0 = 0x4E (next state/step); writes oAIAttackVars
+// symdb: fields
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011DBC.yaml
 	thumb_local_start
 sub_8011DBC:
 	push {lr}
@@ -7332,6 +7339,11 @@ sub_8011F44:
 	pop {pc}
 	thumb_func_end sub_8011F44
 
+// symdb: Initializes a specific beast-out attack record: computes base damage via battle_beastPwrAtk_addScaledBase_8012642(0x32, 0xa), hardcodes ExtraDamage=0x94 and InitFlag=0x10, clears ChargeReadyFlag/AttackBoost/ChipUseDelay, and returns 0x57.
+// symdb: (r0 = base damage 0x32, r1 = multiplier 0xA, r7 = AI attack vars struct) -> writes
+// symdb: oAIAttackVars_Damage/ExtraDamage/InitFlag/ChargeReadyFlag/AttackBoost/ChipUseDelay; r0 = 0x57
+// symdb: (returned state/next value)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8011F64.yaml
 	thumb_local_start
 sub_8011F64:
 	push {lr}
@@ -17508,6 +17520,10 @@ locret_801649E:
 	pop {pc}
 	thumb_func_end battle_objectIntroEntryAndActedSetup_8016460
 
+// symdb: Dispatches a battle object's spawn-animation step to one of three handlers chosen by its current phase byte, via a tail call through the off_80164B4 table.
+// symdb: (r5 = battle object pointer, implicit) -> tail-jumps to phase handler; r0-r3 may be clobbered by
+// symdb: handler
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80164A0.yaml
 	thumb_local_start
 sub_80164A0:
 	push {lr}
@@ -30968,6 +30984,10 @@ dword_801D6D4:
 	.word 0xFFFF
 	thumb_func_end battle_drawHandEmptySlotMarker
 
+// symdb: Adjusts an (x,y) coordinate pair by a per-entry offset selected from a small table using byte 0x16 of the battle NaviStats record.
+// symdb: (r0 = base X, r1 = base Y; r5 = battle-side struct whose +0x48 points at NaviStats) -> r0 = X +
+// symdb: 2*stat + tableX, r1 = Y + tableY; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D6D8.yaml
 	thumb_local_start
 sub_801D6D8:
 	push {lr}

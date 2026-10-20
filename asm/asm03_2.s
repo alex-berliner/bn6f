@@ -5740,6 +5740,10 @@ dword_804967C:
 	.word 0x544C00
 	thumb_func_end sub_804964C
 
+// symdb: Pops the next RFU/wireless request id, invokes its handler from dword_80496EC[id*8] while storing a state byte at [r5+1], and returns whether a request was dispatched.
+// symdb: (r0/r1 = scratch, r5 = context struct ptr) -> r0 = 1 if a request was dispatched else 0; flags
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049680.yaml
 	thumb_local_start
 sub_8049680:
 	push {r4-r7,lr}
@@ -8296,6 +8300,10 @@ off_804A96C:
 	.word eS200AC80
 	thumb_func_end battle_drawChipSelectNameAndIconRows
 
+// symdb: Drains a player's chip pack by iterating over a request table: for each entry it takes the chip id from the low 7 bits of word at entry+0x1c, derives the amount via arithmetic shift of the upper halfword, calls TakeChips to remove that many, then logs the surrendered chip id via sub_8048D60 with code 9.
+// symdb: (r5 = request record with count at +0x1e) -> r0 = last TakeChips/sub_8048D60 result; loops
+// symdb: [r5+0x1e] times over table at word_202A020
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A970.yaml
 	thumb_local_start
 sub_804A970:
 	push {r4-r7,lr}
@@ -8445,6 +8453,10 @@ dword_804AA70:
 	.word 0x182
 	thumb_func_end sub_804AA58
 
+// symdb: Thin wrapper that packs two halfwords into r0 (hi<<16 | lo), then forwards attribute/table parameters as halfword loads at byte offsets r2 and r3 from an object pointer in r5 to object_computeAndQueueOamEntry_811FA98, with fixed r1=0x20002, r4=7, r6=0xC24C, r7=0x64.
+// symdb: (r0 = two halfwords packed as (hi<<16)|lo, r1..r3 = indices/params, r5 = object struct pointer)
+// symdb: -> queues one OAM entry via object_computeAndQueueOamEntry
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AA74.yaml
 	thumb_local_start
 sub_804AA74:
 	push {r4-r7,lr}
@@ -8776,6 +8788,9 @@ off_804ACC4:
 	.word eS200AC80
 	thumb_func_end submenu_stageEntry
 
+// symdb: Tallies how many 0x20-byte records at word_202A020 share each halfword ID into a 30-slot {id,count} table, then writes the duplicate count into each record's upper halfword at +0x16, keyed by the halfword already present at +0x14.
+// symdb: (r0 = record count) -> r0 = number of records with a nonzero ID field; no flags defined
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804ACC8.yaml
 	thumb_local_start
 sub_804ACC8:
 	push {r4-r7,lr}
@@ -9097,6 +9112,10 @@ off_804AEC0:
 	.word dword_804A2AC
 	thumb_func_end battleObject_queueAnimFrame
 
+// symdb: Queues a denial text string into the chatbox (when flag), maps a reason code to a chatbox ID and calls sub_804AF10, plays SOUND_CANT_JACK_IN, backs up the overworld object's prior state byte (+3) into +0xD and sets its state to 8.
+// symdb: (r0 = show-message flag, r1 = text pointer, r2 = reason code, r5 = object ptr) -> r0 = result of
+// symdb: sub_804AF10; destroys r4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804AEC4.yaml
 	thumb_local_start
 sub_804AEC4:
 	push {r4,lr}
@@ -10867,6 +10886,10 @@ off_804C5BC:
 	.word dword_804C4E0
 	thumb_func_end sub_804C53C
 
+// symdb: Sets the 0x800 bit in RenderInfo, calls a hook from a 2-entry table indexed by state byte +0xC, then a second hook from a 3-entry table indexed by +0xD, then copies a 32x32 tilemap (from a 2-entry table also indexed by +0xC) into BG block 3.
+// symdb: (r0 = object/state pointer, fields +0xC and +0xD select variants) -> r0 = clobbered; sets 0x800
+// symdb: bit in toolkit RenderInfo word
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C5C0.yaml
 	thumb_local_start
 sub_804C5C0:
 	push {r4-r7,lr}
@@ -11402,6 +11425,10 @@ off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
+// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
+// symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;
+// symdb: writes RenderInfo flags and struct byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CB64.yaml
 	thumb_local_start
 sub_804CB64:
 	push {r4-r7,lr}

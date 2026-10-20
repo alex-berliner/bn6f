@@ -2577,6 +2577,10 @@ locret_80275EA:
 	pop {pc}
 	thumb_func_end state_waitFadeEndThenAdvance
 
+// symdb: Per-frame step for a battle object: dispatches to a state handler selected by the object's state byte from a 5-entry Thumb table, then ticks the chip-select pulse animation on the same self pointer.
+// symdb: (r0 unused; r5 = self *S20364C0) -> r0 = whatever the state handler leaves; calls handler then
+// symdb: anim tick, no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80275EC.yaml
 	thumb_local_start
 sub_80275EC: // (self: * S20364C0 $r5) -> ()
 	push {lr}
@@ -4541,6 +4545,10 @@ locret_802833E:
 	pop {pc}
 	thumb_func_end battle_loadGfxChunkBySelector_8028320
 
+// symdb: Queues a 0x180-byte graphics transfer from an indexed buffer into the battle gfx queue, advancing the destination cursor by 0x180.
+// symdb: (r0 = dest cursor (*mut, set up by caller), r1 = cursor copy, r4 = object whose byte at +7
+// symdb: selects the chunk) -> r0 = source pointer; r1 advanced by 0x180
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8028340.yaml
 	thumb_local_start
 sub_8028340:
 	push {lr}
@@ -11778,6 +11786,10 @@ locret_802B7DE:
 	pop {pc}
 	thumb_func_end battle_subEffectFadeOutDispatch
 
+// symdb: Per-frame handler that, once per battle, calls comm_checkCrossNetBattleReady and latches the result, then waits 20 frames (counter at +0x10) before setting owner state (+1) to 8 and clearing the ready halfword (+2) and dword (+0xc).
+// symdb: (r5 = task/state struct: +1 state byte, +2 ready flag byte, +0xc dword cleared, +0x10 frame
+// symdb: counter) -> r0 clobbered; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B7E0.yaml
 	thumb_local_start
 sub_802B7E0:
 	push {lr}
@@ -15710,6 +15722,10 @@ battle_clearAIDataStateBlock:
 	mov pc, lr
 	thumb_func_end battle_clearAIDataStateBlock
 
+// symdb: Per-frame tick for the player battle object's custom AI state: lazily initializes AIDataPtr+0xF0 (sets flag, halfword=8), reads state id, jumps via a 3-entry Thumb table (sub_802D358/sub_802D3A8/sub_802D3CA) with r6 holding the state block; r7 is computed as AIDataPtr+0xA0 and preserved across the call.
+// symdb: (r5 = battle object, reads oBattleObject_AIDataPtr) -> r0 = state id passed to handler; r1 =
+// symdb: pointer to state block (AIDataPtr+0xF0) for handlers
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D322.yaml
 	thumb_func_start sub_802D322
 sub_802D322:
 	push {r4,r6,r7,lr}
@@ -15787,6 +15803,10 @@ locret_802D3A6:
 	pop {r4,pc}
 	thumb_func_end playerAI_stepTryAttackChipOnTarget
 
+// symdb: AI step that loops (up to 3 attempts) calling a row-object picker using the actor's PanelY and returns 0 to retry or 2 after resetting the attempt counter.
+// symdb: (r0 = unused, r5 = battle object, r6 = AI work struct) -> r0 = 0 if an object was picked, 2 if
+// symdb: the attempts were exhausted; no flags of interest
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D3A8.yaml
 	thumb_local_start
 sub_802D3A8:
 	push {lr}
@@ -16040,6 +16060,10 @@ locret_802D586:
 	pop {r4,pc}
 	thumb_func_end sub_802D4F0
 
+// symdb: Battle-AI step: picks a random object in the row matching the actor's PanelY; if none picked or a halfword retry counter at [r6,#6] underflows, writes state 8 to [r6] and returns 0; otherwise returns 2 to keep trying.
+// symdb: (r5 = battle object whose PanelY selects the row, r6 = AI state/work struct) -> r0 = next AI
+// symdb: state (2 to continue picking, 0 when done/failed); no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D588.yaml
 	thumb_local_start
 sub_802D588:
 	push {lr}

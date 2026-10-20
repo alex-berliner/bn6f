@@ -585,6 +585,9 @@ off_808927C:
 	.word byte_30016F0
 	thumb_func_end submenu_loadSelectedEntryGfx
 
+// symdb: Selects one of two structurally identical script command tables based on (frame & 0x1F) < 8, runs it via scriptListRun_8001158, then always runs a fixed third table — driving a frame-gated, blink-like sprite animation.
+// symdb: () -> void; r0-r2 scratch, no meaningful return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089280.yaml
 	thumb_local_start
 sub_8089280:
 	push {r4-r7,lr}

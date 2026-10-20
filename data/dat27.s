@@ -824,6 +824,9 @@ sub_80950C8:
 	pop {pc}
 	thumb_func_end sub_80950C8
 
+// symdb: Likely a thin wrapper around copyOamEntry_80AA004 that copies a 16-byte OAM/template row from byte_80AA01C into the chip/PET header buffer at byte_2001130, selected by the low nybble of r0; the full 166-instruction body is unknown so additional behavior cannot be confirmed.
+// symdb: (r0 = entry selector/index, low nybble) -> r0 = 0 after the copy; other flags unknown
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80950D4.yaml
 	thumb_local_start
 sub_80950D4:
 	push {lr}

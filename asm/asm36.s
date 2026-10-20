@@ -4719,6 +4719,11 @@ off_813242C:
 	.word unk_2033800
 	thumb_func_end sub_81323B0
 
+// symdb: Compares two eLinkState records' state halfwords at offset +8; returns 0xFF if neither exceeds 2, else uses sub_803DD60's result to pick priority and returns 1-4 ranking (8 on priority side = 1, 8 on other = 2, 4 on other = 3, 4 on both = 4).
+// symdb: (r0 = pointer to two consecutive 16-byte state records, state halfword at +8 in each) -> r0 =
+// symdb: 0xFF if both states <= 2, else 1..4 ranking the two states (8 beats 4); calls sub_803DD60 to
+// symdb: pick which record is checked first
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132430.yaml
 	thumb_func_start sub_8132430
 sub_8132430:
 	push {r4-r7,lr}

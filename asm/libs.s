@@ -1744,6 +1744,9 @@ off_8144D00:
 	.word byte_200F454
 	thumb_func_end sub_8144CF8
 
+// symdb: Returns the byte at offset 0x2A + index within the engine timer-enable struct eTimerEnable200F460, used by link-battle state code to gate timer behavior.
+// symdb: (r0 = index (byte)) -> r0 = byte at eTimerEnable200F460 + 0x2A + index; flags set by final LDRB
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D04.yaml
 	thumb_func_start sub_8144D04
 sub_8144D04:
 	lsl r0, r0, #0x18
@@ -1859,6 +1862,10 @@ off_8144DAC:
 	.word eStruct200FE00
 	thumb_func_end rfu_softResetLinkState
 
+// symdb: Wireless link action: transmits a 0/1 state flag to the peer via rfu_REQ_sendData, either clearing a pending byte and sending 0 (when a session-level flag in dword_2010CC0 is set) or sending 0/1 derived from eStruct200FE00 byte 0x2.
+// symdb: (r0 = link command/event byte) -> r0 = result of rfu_REQ_sendData(r0 = 0/1 flag, r1 = inherited,
+// symdb: r2 = 0/1); flags from callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144DB0.yaml
 	thumb_local_start
 sub_8144DB0:
 	push {lr}
@@ -2003,6 +2010,9 @@ off_8144EA0:
 	.word eStruct200FE00
 	thumb_func_end sub_8144E70
 
+// symdb: Clears the RFU link-connection state struct eStruct200FE00, resetting connection state fields and slot tables.
+// symdb: () -> void; clobbers r0-r5, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144EA4.yaml
 	thumb_local_start
 sub_8144EA4:
 	push {r4,r5,lr}
@@ -8178,6 +8188,9 @@ off_8147B20:
 	.word byte_2010340
 	thumb_func_end rfu_pollSlotDisconnect
 
+// symdb: Parameter-less wrapper that loads byte_2010390 and unk_20103A0 as r0/r1, sets r2=0xC, and tail-calls rfu_initCommState, returning its result.
+// symdb: (no args) -> r0 = return value of rfu_initCommState; no flags used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147B24.yaml
 	thumb_func_start sub_8147B24
 sub_8147B24:
 	push {lr}
@@ -21794,6 +21807,10 @@ loc_814E14E:
 	.balign 4, 0x00
 	thumb_func_end sub_814E12C
 
+// symdb: Thunk that fetches the next script opcode byte via battleObject_runUpdateRoutineAndAdvancePC_814E0D0 and stores it as a single byte into the battle object at offset 0x1D, returning through its own saved lr.
+// symdb: (r0 = battle object ptr?, r1 = battle object ptr) -> r0 = script byte written; no meaningful
+// symdb: return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814E15C.yaml
 	thumb_func_start sub_814E15C
 sub_814E15C:
 	mov r12, lr
