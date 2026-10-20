@@ -3310,6 +3310,9 @@ battleObject_copyPositionToStruct:
 	pop {pc}
 	thumb_func_end battleObject_copyPositionToStruct
 
+// symdb: Spawns an overworld NPC sprite matching the PET's currently selected navi at the player's position, then forwards mode 2 to sub_80A6E70 and returns 1.
+// symdb: (r0 = object/state pointer, saved and passed on; r5 = object) -> r0 = 1; clobbers r1-r3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A6CFC.yaml
 	thumb_local_start
 sub_80A6CFC:
 	push {lr}
@@ -4667,6 +4670,10 @@ locret_80A763C:
 	.byte 0, 0
 	thumb_func_end owMapObject_event5F1Trigger_80A75DC
 
+// symdb: State-machine driver (states 0..3 at [r5+9]) that animates a request-board overworld sprite through a two-stage cutscene (anim 0x0A then 9 with SFX 0xE1), then clears the BBS completion flag, zeroes [r5+0x24], writes 2 to [r6+9], and hands control back via sub_80A7398.
+// symdb: (r5 = object state struct ptr, r6 = config/marker struct ptr) -> r0 = destroyed; advances state
+// symdb: byte [r5+9] 0..3 and loops back to 0 when done
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A7640.yaml
 	thumb_local_start
 sub_80A7640:
 	push {r4-r7,lr}
@@ -6463,6 +6470,10 @@ off_80A8384:
 	.word byte_80A81F0
 	thumb_func_end ow_swapMapEventFlags
 
+// symdb: Dispatches an NPC/actor handler by indexing a 3-entry thumb jump table at off_80A83A8 with a byte from [r5,#8], passing unk_2000B40 in r6 to the chosen handler.
+// symdb: (r5 = actor object, [r5+8] = handler/state index) -> r0 = handler's return value; calls table
+// symdb: entry with r6 = unk_2000B40 work area
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8394.yaml
 	thumb_func_start sub_80A8394
 sub_80A8394:
 	push {lr}
@@ -9610,6 +9621,10 @@ off_80A9A20:
 	.word sub_80A9A96+1
 	thumb_func_end sprite_dispatchAnimStateHandler
 
+// symdb: Refreshes an overworld object's visual state: recalculates Z/layer draw data, reloads its sprite and animation, and re-applies priority, palette, shadow, and animation index before tail-calling sub_80A9A76.
+// symdb: (r5 = object pointer, implicit; no args read from r0-r3) -> r0 = undefined; sets object state
+// symdb: bytes
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9A2C.yaml
 	thumb_local_start
 sub_80A9A2C:
 	push {lr}
@@ -10587,6 +10602,9 @@ sub_80AA160:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA160
 
+// symdb: Object update: when its mapped event flag is set, plays a reveal sequence (animation 1, camera shake, SFX 0x17B) and sets state to 8; otherwise just runs sprite_update.
+// symdb: () -> void; uses r5 = object pointer; sets ZF from TestEventFlag internally
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA194.yaml
 	thumb_local_start
 sub_80AA194:
 	push {r4-r7,lr}
@@ -10678,6 +10696,10 @@ sub_80AA204:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80AA204
 
+// symdb: Decrements an actor's fixed-point timer field by 5.0 per frame; when it goes negative, clamps to 0, switches the sprite to animation 1, triggers a 1-magnitude/10-frame camera shake, plays sound effects 0xDA and 0xC0, writes 0x08 to the actor's state byte, and finally calls sprite_update.
+// symdb: (r5 = actor/object struct, fields at +0x08, +0x14) -> r0 = destroyed/void; no meaningful return;
+// symdb: r0-r3, r12 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AA248.yaml
 	thumb_local_start
 sub_80AA248:
 	push {r4-r7,lr}

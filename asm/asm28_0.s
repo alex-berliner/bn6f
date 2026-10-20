@@ -1797,6 +1797,10 @@ byte_809A628:
 	.byte 0x80, 0x81, 0x82, 0x83, 0x84, 0x85, 0xFF, 0x0
 	thumb_func_end sub_809A520
 
+// symdb: State-step handler on a per-object pointer in r5: while EVENT_F6 is set it counts a halfword timer down at r5+0xc and updates a word at r5+0x70 by a byte at r5+0xf each tick; on expiry it re-reads r5+0x70 via sub_802D15E and, if EVENT_F5 is set, performs a one-shot scene setup (writes 0x20 to r5+0x04, resets and respawns the battle eStruct records from byte_8099E90, patches three table entries via r5+0x7c/r5+0x80, moves three sprites to (-0x30, 0x58, 0), clears EVENT_F6) and returns 0; otherwise it calls sub_809A80C on r5+0x74 and returns 1.
+// symdb: (r0-r4 unused; r5 = this-object with fields 0x04, 0x0c, 0x0f, 0x70, 0x74, 0x7c, 0x80) -> r0 = 0
+// symdb: once the setup has fired, 1 while still waiting; flags clobbered by bls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A630.yaml
 	thumb_local_start
 sub_809A630:
 	push {r4-r7,lr}
@@ -5012,6 +5016,10 @@ pet_runEffect0AndChatbox30:
 	pop {r4-r7,pc}
 	thumb_func_end pet_runEffect0AndChatbox30
 
+// symdb: Per-frame step of the PET navi-select dialog: gates on chatbox flag 0x8, then runs script 0x20 from the script archive; when chatbox text completes, branches on EVENT_163 to either run the prompt script 0x1f or commit by writing the current PET navi to the toolkit struct and clearing CurPETNavi plus a dialog field.
+// symdb: (r5 = dialog state struct) -> r0 = 1 while waiting (chatbox flag bit 3 clear), 0 once a step
+// symdb: advanced; stores substate 0/1/2 into [r5,#8]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CB88.yaml
 	thumb_local_start
 sub_809CB88:
 	push {r4-r7,lr}
@@ -5125,6 +5133,10 @@ off_809CC5C:
 	.word word_200AD04
 	thumb_func_end battle_waitLink
 
+// symdb: PET menu confirm: when the picked ID falls in one of seven 0x1E-wide navi windows, assigns that navi, sets EVENT_163, plays sound 0x8D and chatbox script 0x23; otherwise, if a 'cancelable' bit is set, plays SOUND_UNSELECT and rejection script 0x20.
+// symdb: (r0..: no args read; r5 = menu/state obj, r10 = game-state ptr) -> r0 = 0 when a choice was
+// symdb: consumed, 1 when the screen should stay/wait; also writes [r5,#8] done-byte
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CC60.yaml
 	thumb_local_start
 sub_809CC60:
 	push {r4-r7,lr}
@@ -5223,6 +5235,10 @@ chatbox_runGlobalScript21:
 	.balign 4, 0x00
 	thumb_func_end chatbox_runGlobalScript21
 
+// symdb: Tears down the active scenario effect: queues PET effect 1, reinitializes scenario effect state at 0x2000780, zeroes the 0x48-byte work struct at 0x2001010, clears the active flag (bit 7) at 0x2000780, and acks the pending-event flag byte at eStruct2001010.
+// symdb: (no args) -> r0 = 0; queues PET effect 1, clears effect state at 0x2000780 bit 7 and
+// symdb: eStruct2001010 event bit 7
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CD44.yaml
 	thumb_local_start
 sub_809CD44:
 	push {r4-r7,lr}
@@ -5298,6 +5314,9 @@ sub_809CDC4:
 	.balign 4, 0x00
 	thumb_func_end sub_809CDC4
 
+// symdb: Reloads the current PET navi's stats and, if petNaviTryGiveElementFolder reports a count, runs one of three chatbox scripts (idx 0x33 default, 0x34 when count==0xf, 0x32 when count==0x10) from archive 4, then returns 0.
+// symdb: () -> r0 = 0 always; r0-r1 clobbered by callees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CDD4.yaml
 	thumb_local_start
 sub_809CDD4:
 	push {lr}

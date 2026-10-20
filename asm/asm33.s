@@ -11829,6 +11829,10 @@ off_8128CD0:
 	.word sub_8128DCC+1
 	thumb_func_end sub_8128CBC
 
+// symdb: Init for a story-event scene state: sets EVENT_197/1AD, resets VRAM/palette/BG tile buffer, loads BG/text GFX, spawns scene eStructs, optionally decompresses a text script, then transitions to state 4.
+// symdb: (r5 = scene state struct, preserved from caller) -> void; sets r5+0x1e = event flag list handle,
+// symdb: r5+0xc/0xd = resolved state, r5+1 = 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128CD8.yaml
 	thumb_local_start
 sub_8128CD8:
 	push {r4-r7,lr}
@@ -15033,6 +15037,10 @@ locret_812A420:
 	.balign 4, 0x00
 	thumb_func_end sub_812A3FC
 
+// symdb: Deferred screens3 screen (re)initialization: gated on the fade being active and a flag at 0x200BC50+5 being clear; it toggles sub_811B010 0/1, rebuilds the battle scene, draws the screens3 background tiles, DMA-loads one entity's GFX slot, sets r5+1=8, zero-fills 0x10 bytes at unk_20251A0, clears r5+0x1c/0x1e, picks a function based on r5+0xe to store a byte at r5+2, spawns eStruct records from byte_8129150, then calls SetScreenFade(8,0x10).
+// symdb: (r5 = screen/scene state struct) -> void; returns early if flag at 0x200BC50 bit 5 is set or no
+// symdb: screen fade is active
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A424.yaml
 	thumb_local_start
 sub_812A424:
 	push {lr}
@@ -15352,6 +15360,10 @@ locret_812A690:
 	.balign 4, 0x00
 	thumb_func_end ow_beginScreenFadeUnlessFlagSet
 
+// symdb: One-shot handler that runs after a screen fade-out completes: it clears the 0x200BC50 flag and IsScreenFadeActive guard, calls battle_initScene_8129248, screens3_loadBackgroundTiles, and loadEntityJumpOffset00Gfx_812B530; sets state 8 on the r5 struct, zeroes r5+0x1C/0x1E and a 16-byte block at unk_20251A0; chooses r5+2 from sub_81325F4 or sub_81325E4 per the r5+0xE flag (clearing r5+3); spawns eStruct records from the byte_8129150 table; and finally calls SetScreenFade(8, 0x10) to start the fade-in.
+// symdb: (r5 = screen/state struct) -> void; gates on IWRAM 0x200BC50 flag bit 5 and IsScreenFadeActive,
+// symdb: ends with SetScreenFade(8, 0x10)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A694.yaml
 	thumb_local_start
 sub_812A694:
 	push {lr}
@@ -16400,6 +16412,9 @@ locret_812AE6C:
 	.word 0xFFFFFFFF
 	thumb_func_end sub_812AE3C
 
+// symdb: Fade-gated scene initializer: clears VRAM/GFX, loads entity slot-0 graphics, primes the chatbox, sets a speed/timer field on the caller's state struct, clears a flag, zero-fills a small EWRAM block, loads the screens3 background tiles, spawns eStruct records from a table, and conditionally stops the RFU wireless mode.
+// symdb: (r5 = cutscene/screen state struct, set by caller) -> r0 = undefined; no meaningful flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AE74.yaml
 	thumb_local_start
 sub_812AE74:
 	push {lr}

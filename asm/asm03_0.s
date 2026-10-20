@@ -1220,6 +1220,10 @@ locret_8026D04:
 	pop {r7,pc}
 	thumb_func_end custMenuUpdateWaitSelectionState_8026CCC
 
+// symdb: Per-frame state machine (states 0/1/2) for the chip-select object that opens a 15x20 tile overlay in tile block 3, holds while polling joypad/L+R swap, then closes by restoring background tiles and finalizing the parent state.
+// symdb: (self: *S20364C0 in r5, toolkit in r10) -> void; advances self+0x02 substate (0=enter, 1=wait,
+// symdb: 2=close) and writes self+0x01=4 on close; preserves r4-r5
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026D06.yaml
 	thumb_local_start
 sub_8026D06: // (self: * S20364C0 $r5) -> ()
 	push {r4,r5,lr}
@@ -1838,6 +1842,10 @@ loc_802714A:
 	pop {pc}
 	thumb_func_end triggerScreenFadeOut
 
+// symdb: Shifts the chip-selection ordering array at r5+0x48 toward higher indices while reloading OBJ tiles for each moved chip, inserts 0xB at the front, marks active-chip entry 0's byte+7 as 2, runs the custom-screen exit with a fade and SFX 0x92, sets state 0x18, then idles each frame.
+// symdb: (r0 = unused on entry; r5 = custom-screen state struct) -> r0 = return of sub_80298D8; sets
+// symdb: [r5+2] halfword to 0x18, marks active-chip entry, starts fade and SFX 0x92
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027150.yaml
 	thumb_local_start
 sub_8027150:
 	push {r4,lr}
@@ -2320,6 +2328,10 @@ loc_8027444:
 	pop {pc}
 	thumb_func_end sub_8027434
 
+// symdb: Per-frame update of the battle custom screen's confirm phase: every 25 frames pops one selected chip (sound 0x196, chip-picker effect, slot redraw), tracks a 20-frame animation timer on activeChip[8].byte7, and when the queue is done compacts the folder and advances state via [r5+2]=8.
+// symdb: (r5 = custom-screen state object) -> void; increments [r5+0x40], updates [r5+8] remaining-chip
+// symdb: count, [r5+0x5F] used-chip count, [r5+0x44] frame timer, and sets [r5+2] = 8 when done
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027458.yaml
 	thumb_local_start
 sub_8027458:
 	push {r4,r6,lr}
@@ -4861,6 +4873,10 @@ loc_80285FA:
 	pop {r4,pc}
 	thumb_func_end battleObject_loadChipPanelGfx_80284E2
 
+// symdb: Renders a chip preview (name text + tile/palette graphics) for the custom screen's chip picker, then reloads Beast Out selection sprite sheets.
+// symdb: (r0 = chip id, masked with 0x1FF) -> r0 = undefined; queues GFX to VRAM 0x6009360 (name text)
+// symdb: and 0x6009560 (chip tiles), writes palette to unk_3001AA0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80285FE.yaml
 	thumb_local_start
 sub_80285FE:
 	push {r4,lr}
@@ -16228,6 +16244,10 @@ off_802D72C:
 	.word sub_802D8F0+1
 	thumb_func_end battle_applyHitElementEffect
 
+// symdb: AI attack step that finalizes the object's landing panel on first call (commits FuturePanelX/Y, releases panel reserve, recomputes coords/collision, plays anim 4, clears related pointers, sets collision region 1) and then after a 4-frame delay activates the hit element.
+// symdb: (r5 = battle object ptr, r7 = AI attack vars ptr) -> r0 = 1 (object_setCollisionRegion arg);
+// symdb: updates object state fields.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D738.yaml
 	thumb_local_start
 sub_802D738:
 	push {lr}
@@ -16278,6 +16298,10 @@ dword_802D79C:
 	.word 0x10
 	thumb_func_end sub_802D738
 
+// symdb: Initializes a navi battle actor for its selected NaviStats entry: syncs the alliance's live NaviStats from the eBattleNaviStats2034A60 snapshot (via sub_802DCCC/init_8013B64), sets NameID from AIIndex, loads sprite/animation 3/palette, sets HP/MaxHP, dispatches by type/AIIdx, clears status flags, and sets secondary element weakness.
+// symdb: (r5 = battle object, r7 = AIData vars) -> r0 = ...; sets up oBattleObject_NameID, HP/MaxHP,
+// symdb: CurAnim, AIIndex; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D7A0.yaml
 	thumb_local_start
 sub_802D7A0:
 	push {r4,lr}
@@ -16508,6 +16532,10 @@ locret_802D9AE:
 	pop {pc}
 	thumb_func_end sub_802D950
 
+// symdb: Initializes a navi battle object on its first entry: copies the alliance's NaviStats record into the local slot, sets AI index, name ID, HP/MaxHP, loads the chip-class sprite and anims, picks palette/flip, clears status/flags/invuln, sets element weakness and HitElement=8, then finalizes the spawn via begin-turn and arm-pos refresh.
+// symdb: (r5 = battle object, uses its oBattleObject_Alliance) -> r0 = ?; builds the navi from the
+// symdb: alliance's NaviStats entry at 0x2034A60
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D9B0.yaml
 	thumb_local_start
 sub_802D9B0:
 	push {r4,lr}
@@ -17711,6 +17739,11 @@ off_802E290:
 	.word byte_802194C
 	thumb_func_end sub_802E284
 
+// symdb: Per-battle-entity updater that waits out the selected chip's use delay and then either fires it (player side, with denial sound on failure) or queues it (non-player side after a 0x1500-frame wait), writing chip state at +0x24/+0x26/+0x28/+0x2A and +2/+4/+5.
+// symdb: (r0 = battle side/entity index) -> r0 = varies (0/0xff/queued chip via callees); writes
+// symdb: selected-chip state to the side's entry at 0x2036120 (+0x24 selected, +0x26 prev, +0x28 timer,
+// symdb: +0x2A queued chip)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E2C4.yaml
 	thumb_local_start
 sub_802E2C4:
 	push {r4-r7,lr}

@@ -37,6 +37,9 @@ off_8038620:
 	.word sub_80386B2+1
 	thumb_func_end sub_8038606
 
+// symdb: Initializes a battle scene: clears chatbox, applies palette 0xd, sets DISPCNT 0x1340, resets graphics/fade state, starts BGM 0x63 and a (8,8) screen fade, then writes 4 to a scene-state byte.
+// symdb: (r0 = palette index 0xd, r5 = pointer to scene-state byte) -> r0 = clobbered; sets [r5] = 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038630.yaml
 	thumb_local_start
 sub_8038630:
 	push {r4-r7,lr}
@@ -875,6 +878,9 @@ dword_8038F08:
 	.word 0x3FF
 	thumb_func_end t3_waitForAnyKeyStartFade
 
+// symdb: Per-frame update for the start/logo screen: while a screen fade is active it re-inits the logo screen, clears the IWRAM fade-related field, resets the start-screen animation control block to state 0xB4, and forces DISPCNT to 0x40 (OBJ layer only).
+// symdb: () -> void; sets flags via IsScreenFadeActive (beq skips the body when no fade is active)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038F0C.yaml
 	thumb_local_start
 sub_8038F0C:
 	push {lr}
@@ -1468,6 +1474,10 @@ off_8039674:
 	.word sub_8039846+1
 	thumb_func_end battle_dispatchModeAndRunUpdates
 
+// symdb: Resets all graphics state (render info, BG tile buffer, LCD control 0x1F40), clears shared scratch, applies overlay palette 0x11 and a screen fade, then re-inits battle eStruct records and chatbox; stores mode byte 3 at [r5+5] and branches to one of three next states via [r5+0x14]/[r5+0x17].
+// symdb: (r5 = scene/task work struct, inherited from caller, not set here) -> r0 = clobbered; writes
+// symdb: state byte [r5+1] (0x1C, 8, or 4) and mode byte [r5+5]=3; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039694.yaml
 	thumb_local_start
 sub_8039694:
 	push {r4-r7,lr}
@@ -1994,6 +2004,9 @@ off_80399E8:
 	.word sub_803A0EE+1
 	thumb_func_end sub_80399CE
 
+// symdb: Battle scene initialization: configures DISPCNT (0x1F40), clears render-info counters, applies overlay palette 0x12, reinitializes chatbox, resets eStruct record array and spawns type-9 records from byte_8039390, runs setup routines sub_803C40C/sub_803C1A8/sub_803C320/sub_803C26A, and stores 4 at [r5,#1].
+// symdb: () -> void; r5 must already point to a state struct whose byte at +1 receives 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039A58.yaml
 	thumb_local_start
 sub_8039A58:
 	push {r4-r7,lr}
@@ -2500,6 +2513,10 @@ loc_8039E7A:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039E2C
 
+// symdb: Per-frame step of the battle-boot state machine: dispatches first, then if a screen fade is active it runs the heavy rebuild (graphics copy, reset, setup, fade-gfx init, toolkit randomize, battleSettingsList0[0], initBattleStructs) and writes 0x40 into byte 1 of the r5 struct; otherwise advances to sub_803A104.
+// symdb: () -> void; r5 is a global battle/state struct; when the fade path runs it sets byte [r5+1] =
+// symdb: 0x40, r0 clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039E80.yaml
 	thumb_local_start
 sub_8039E80:
 	push {r4-r7,lr}
@@ -8680,6 +8697,9 @@ off_803CCF0:
 	.word sub_803CD54+1
 	thumb_func_end cb_803CCD6
 
+// symdb: Initialises a fresh battle scene: resets graphics state, starts bgm 0x63, sets up battle fade gfx state, arms a screen fade-in, and stores 4 to [r5] as the new scene/flow state.
+// symdb: () -> void; r5 must point to the scene-state byte (assumed set by caller); writes 4 to [r5]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CCFC.yaml
 	thumb_local_start
 sub_803CCFC:
 	push {r4-r7,lr}

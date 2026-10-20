@@ -5147,6 +5147,11 @@ locret_800572A:
 	pop {pc}
 	thumb_func_end gameState_tickFrameAndHandleFadeTransition
 
+// symdb: Per-tick handler that runs the normal overworld frame pipeline (PET dispatcher, scenario effect jumptable, object dispatch, sprite flush/palette, map object render, NPC draws, sprite queueing, armed callback) and, once a screen fade becomes active, tears the scene down (frees all objects of types 0x21, clears the 16 overworld NPC state words, resets all graphics, re-runs setup step, reinitializes fade/effect/extra-toolkit state, reloads current navi's stat boosts) then writes 0x3C as the next main jumptable index.
+// symdb: (r0 unused; fetches GameState via oToolkit_GameStatePtr) -> r0 = 0 discarded; writes 0x3C to
+// symdb: *oToolkit_MainJumptablePtr, clears all object type 0x21, reinitializes graphics/scenario/NPC
+// symdb: state
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800572C.yaml
 	thumb_local_start
 sub_800572C: // (self: * GameState $r5) -> ()
 	push {lr}
@@ -6195,6 +6200,9 @@ clear_gameStateForNewScene:
 	pop {r4-r7,pc}
 	thumb_func_end clear_gameStateForNewScene
 
+// symdb: Resets game state by zeroing oGameState_Ptr_20, freeing type-0x25 objects, resetting all graphics, running a setup step, reinitialising the battle-fade GFX state, zero-filling global structs (eStruct200a6a0 and the scenario effect state block at 0x2000780), and finally refreshing the current PET navi's HP.
+// symdb: () -> r0 = 0 written to GameState->field20; no return value, flags from last callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005E22.yaml
 	thumb_local_start
 sub_8005E22:
 	push {r4-r7,lr}
@@ -11440,6 +11448,11 @@ locret_80082DA:
 	pop {r4,pc}
 	thumb_func_end battle_runLoserSequence_800825A
 
+// symdb: Per-battle step that clears flags 0xE4C53, dispatches battle effect kind 0x1C, counts down 0x66 frames while polling comm_checkCrossNetBattleReady, then either branches on battle-effects bit 0x400 (sub_800AF50 result 1 → step 0xC, other nonzero → step 0x10) or records battle result 3 and writes 3 to oGameState_BattleEndSubState and [r5,#4].
+// symdb: (r0 = unused; r5 = battle step/state struct: +0 = step dword, +3 = phase byte, +4 = result byte,
+// symdb: +8 = frame counter halfword; r10 = toolkit) -> r0 = destroyed; writes [r5] step (0xC/0x10),
+// symdb: [r5+4] = 3, oGameState_BattleEndSubState = 3
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80082DC.yaml
 	thumb_local_start
 sub_80082DC:
 	push {lr}
@@ -11971,6 +11984,10 @@ off_8008678:
 	.word e_battleEndWaitCountdown+1
 	thumb_func_end e_dispatchUpdateByState
 
+// symdb: Battle-flow state that records the losing side on first entry, plays the winner jingle (or ACDC Town music when phase==1), kicks off battle effect 0x14, and ticks a halfword timer down before writing 0xc to the next-state field.
+// symdb: (r0 = unused; r5 = battle flow state struct: +3 state byte, +2 next-state halfword, +8 countdown
+// symdb: halfword) -> r0 = void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008688.yaml
 	thumb_local_start
 sub_8008688:
 	push {r4,r6,lr}
@@ -13138,6 +13155,10 @@ off_8008E90:
 	.word sub_8008F52+1
 	thumb_func_end battle_dispatchStateUpdate
 
+// symdb: Battle-flow step that runs the player-defeat sub-sequence: clears dispatches/event bits 0x4C43, marks the player as loser, plays the defeat jingle (overridden to 0x24 in phase-1/cross-net), ticks player HP regen, dispatches kind-effect 0x14, then counts down substep+8 before writing next-state 0xC.
+// symdb: (r0 = this, battle sub-state struct: byte+0x03 = substep, halfword+0x02 = next state,
+// symdb: halfword+0x08 = timer) -> void; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008EA0.yaml
 	thumb_local_start
 sub_8008EA0:
 	push {r4,r6,lr}
@@ -13841,6 +13862,9 @@ locret_8009312:
 	pop {pc}
 	thumb_func_end battle_stateIntroEffectWait
 
+// symdb: Battle sub-phase: on first entry, initialize a 10-frame countdown timer; each subsequent frame decrements it, and when the signed value goes negative (after 11 decrements) advance the battle to state 8 and clear the phase/init flags.
+// symdb: (r0 = battleStatePtr (also r5)) -> r0 = clobbered; no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009314.yaml
 	thumb_local_start
 sub_8009314:
 	push {lr}
@@ -14574,6 +14598,10 @@ locret_800980C:
 	pop {pc}
 	thumb_func_end battle_stateWaitFinishPhase
 
+// symdb: Battle-end sub-phase: runs once-only init, then sub_80084F0 + the end-of-battle check; classifies the outcome (1=win, 2=loss, 7=other), records it via setTwoStructs_800A840, computes/stores BustingLevelCategory for wins/losses, syncs into the 200A008 overworld-player struct, and advances the sub-state machine by writing Index_01 (0x10/0x14) and clearing StatePhaseAndInitFlag.
+// symdb: (r5 = battle state struct) -> r0 = 0; writes BustingLevelCategory, Index_01 (0x10 or 0x14),
+// symdb: clears StatePhaseAndInitFlag; no return value used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800980E.yaml
 	thumb_local_start
 sub_800980E:
 	push {r4,lr}
@@ -14940,6 +14968,10 @@ off_8009A9C:
 	.word battle_stateWait10FramesThenGotoPhaseC+1
 	thumb_func_end sub_8009A88
 
+// symdb: Per-state handler for battle state 4: on first entry, if State4EventCount is nonzero arm a 10-frame CountdownTimer and set SubPhaseInitFlag; on subsequent ticks decrement it and once negative latch StatePhaseAndInitFlag=4; if no events are pending, write Index_01=0xC and clear StatePhaseAndInitFlag.
+// symdb: (r5 = battle state struct) -> r0 = undefined; updates oBattleState_CountdownTimer,
+// symdb: SubPhaseInitFlag, StatePhaseAndInitFlag, Index_01
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009AA8.yaml
 	thumb_local_start
 sub_8009AA8:
 	push {lr}

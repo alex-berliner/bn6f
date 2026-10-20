@@ -5934,6 +5934,10 @@ loc_80115C8:
 	pop {pc}
 	thumb_func_end basicHandleBattleObjectDamage_801156A
 
+// symdb: Applies summed panel collision damage to the current battle object's HP at [r5+0x24] (via object_spawnHiteffect + calcFinalDamage) and returns -1 if HP depletes, 1 if the caller-supplied flag in r0 skips damage application, 0 if damaged with sound 85 played, and 0 if no panel damage.
+// symdb: (r0 = flag; nonzero suppresses the hit sound and makes the return 1; current object pointer
+// symdb: expected in r5) -> r0 = -1 if HP depleted, 1 if damaged with flag set, else 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80115CE.yaml
 	thumb_local_start
 sub_80115CE:
 	push {lr}
@@ -12738,6 +12742,10 @@ locret_8014214:
 	pop {pc}
 	thumb_func_end battle_EnableAIUnk0x48FlagForNonstandardBoard_80141F4
 
+// symdb: Per-side turn-start: clears an AIData flag, zeroes 12 halfwords of the side's hand region, optionally frees the opposing player from a 6-slot table when battle-effects bit 0x8 matches, then dispatches via a 12-entry jump table keyed by NaviStats byte 0x29.
+// symdb: (r5 = battle object whose alliance byte selects the side) -> r0 = result of dispatched handler;
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014216.yaml
 	thumb_func_start sub_8014216
 sub_8014216:
 	push {lr}
@@ -13228,6 +13236,10 @@ battle_beginTurnOpenProcess_80144C0:
 	bl battle_beginTurnResetObject
 	b loc_80144CE
 
+// symdb: Body of battle_beginTurnOpenProcess_80144C0: zeroes the 12-halfword hand field, clears AIData 0x20, conditionally releases the opposite-alliance player slot under battle-effect bit 8, sets NoCustom+ hit modifier and collision region 1, resets PwrAtk state, optionally inits AIData, then runs sub_8014536, secondary-element weakness setup, and battle-effect self damage.
+// symdb: (r5 = battle object) -> r0 = result of battle_applySelfDamageFromBattleEffect_80142C2; r7 flags
+// symdb: whether AIData init is skipped
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80144CA.yaml
 	thumb_local_start
 sub_80144CA:
 	push {r4,r7,lr}
@@ -14836,6 +14848,10 @@ dword_801503C:
 	.word 0x80000
 	thumb_func_end ai_attackStepRiseUp
 
+// symdb: Per-frame handler for an AI navi's forward-charge/dash attack: on the first frame it flashes the sprite white, loads anim + sound + extra-vars spawn, updates alliance byte, and arms a custom-gauge panel with chip-class delta; subsequent frames decrement a step timer and, on expiry, reopen the turn, mark action used, set navi stats 0x0E, clear invuln, and store HitElement = 0xC.
+// symdb: (r5 = battle object actor, r7 = AI attack vars struct) -> r0 = void; sets
+// symdb: oAIAttackVars_AttackElement = 4 when setup completes, HitElement = 0xC when the timer expires
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015040.yaml
 	thumb_local_start
 sub_8015040:
 	push {r4,lr}
@@ -15379,6 +15395,11 @@ locret_80154C6:
 	pop {r4,r6,pc}
 	thumb_func_end battle_aiAttackWhiteFlashUpdate
 
+// symdb: Two-phase navi-chip attack intro: flashes the actor white, loads the navi's chip-class sprite/anim, queues the summon text, logs in, then after a 10-frame timer marks the action used and signals the strike phase via HitElement=0xc.
+// symdb: (r5 = battle object, r7 = AI attack-vars struct) -> void; sets oAIAttackVars_AttackElement to 4
+// symdb: (waiting phase) on entry, then to HitElement 0xc and marks the action used when the timer
+// symdb: expires
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80154C8.yaml
 	thumb_local_start
 sub_80154C8:
 	push {r4,lr}
@@ -17439,6 +17460,9 @@ off_80164B4:
 	.word sub_801657E+1
 	thumb_func_end sub_80164A0
 
+// symdb: Initializes a battle object's burrowed state: clears bit 1 of its flags, reserves its current panel via FuturePanel fields, drops it from collision, plays SE 0x94, arms timers 0x14/0x1E, applies a full-bright white shader, gives it 0xFFFF invulnerable time, spawns a small effect from its +0x34 position data, and sets CurPhase and PhaseInitialized to 4.
+// symdb: (r5 = battle object header, implied) -> r0 = 0 (phase value stored); no meaningful return
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80164C0.yaml
 	thumb_local_start
 sub_80164C0:
 	push {lr}
@@ -17537,6 +17561,9 @@ locret_801657C:
 	pop {pc}
 	thumb_func_end sub_8016520
 
+// symdb: Resets a battle object to its neutral standing state, clearing its battle-status list entry when applicable, and post-hit invulnerability, panel reserve, collision region, action, and phase fields.
+// symdb: (r5 = battle object pointer; r10 = toolkit) -> r0 = destroyed; flags from alliance check
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801657E.yaml
 	thumb_local_start
 sub_801657E:
 	push {lr}
@@ -18862,6 +18889,10 @@ loc_8016F0C:
 	pop {pc}
 	thumb_func_end battle_defeatObject
 
+// symdb: Tears down a battle object: spawns the deletion poof effect at its position, releases its panel reserve, detaches allies' targets and its AI source, removes it from the alive-actor list, and sets its state to destroy.
+// symdb: (r5 = battle object to delete) -> r0 = spawned effect object (if not time-stopped); flags
+// symdb: clobbered by calls
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8016F1A.yaml
 	thumb_local_start
 sub_8016F1A:
 	push {r4,lr}
@@ -22727,9 +22758,9 @@ byte_8019C7C:
 	.word 0xc0044080, 0xc0044080
 	thumb_func_end object_freeCollisionData
 
-// symdb: Applies SelfDamage flag bits to a battle object's CollisionData: clears/clamps SelfDamage, doubles it on DAMAGE_DOUBLE, sets status/hit modifiers on DAMAGE_PARALYZE/DAMAGE_UNINSTALL, and dispatches battle_collisionSetPackedParam for DAMAGE_ERASECROSS_SKULL_HIT/DAMAGE_NOTHING.
+// symdb: Applies SelfDamage flag bits to a battle object's CollisionData: clears/clamps SelfDamage, doubles it on DAMAGE_DOUBLE, sets status/hit modifiers on DAMAGE_PARALYZE/DAMAGE_UNINSTALL, and dispatches sub_801A4D0 for DAMAGE_ERASECROSS_SKULL_HIT/DAMAGE_NOTHING.
 // symdb: (r0 = CollisionData* @0x02XXXXXX, r1 = ???) -> r0 = ??? ; side effects: mutates CollisionData
-// symdb: fields SelfDamage (0x2e), StatusEffectBase (0x10), HitModifierBase (0x0e); calls battle_collisionSetPackedParam.
+// symdb: fields SelfDamage (0x2e), StatusEffectBase (0x10), HitModifierBase (0x0e); calls sub_801A4D0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_applySelfCollision_8019F44.yaml
 	thumb_local_start
 object_applySelfCollision_8019F44:
@@ -24257,6 +24288,11 @@ off_801A7C8:
 	.word 0x4B0
 	thumb_func_end battle_applyPanelEventF6Status
 
+// symdb: Installs a barrier type on a battle entity: writes the type id to oCollisionData_Barrier, copies BarrierIndex from byte_8020B8C, and copies HP, related value, and counter halfwords at offsets 0/2/4 from byte_8020B2C[r0*6] into the collision data.
+// symdb: (r0 = barrier type id, r5 = battle object) -> writes
+// symdb: oCollisionData_Barrier/BarrierIndex/BarrierHP/BarrierRelatedValue/BarrierCounterU16; no return
+// symdb: value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801A7CC.yaml
 	thumb_func_start sub_801A7CC
 sub_801A7CC:
 	ldr r3, [r5,#oBattleObject_CollisionDataPtr]
@@ -24927,6 +24963,10 @@ locret_801AD68:
 	pop {r4,r7,pc}
 	thumb_func_end object_finishCollisionHitReaction_801AD12
 
+// symdb: Finishes processing a queued collision on a battle object: clears the sprite's final palette, tears down the collision data if the state flag is set, recomputes the (holy-panel-adjusted) final damage, and spawns the hit effect — unless the battle is over or the object has flag 0x100 set.
+// symdb: (r5 = battle object pointer, r0 unused) -> r0 = clobbered; returns early if battle-state flag
+// symdb: bit0 clear, battle is over, or object flag 0x100 set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801AD6A.yaml
 	thumb_func_start sub_801AD6A
 sub_801AD6A:
 	push {r4,r7,lr}
@@ -24994,6 +25034,10 @@ locret_801ADF8:
 	pop {r4,r7,pc}
 	thumb_func_end object_applyCollisionHit_801AD9E
 
+// symdb: Per-object battle step that resets the sprite's final palette, tears down this object's collision data if the battle is live, updates ObjectFlags2/ContactState based on hit flags, recomputes pending damage, and spawns the hit effect.
+// symdb: (r5 = battle object) -> r0 = clobbered; updates object flags, oBattleObject_ContactState,
+// symdb: collision data, and spawns hit effect
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801ADFA.yaml
 	thumb_func_start sub_801ADFA
 sub_801ADFA:
 	push {r4,r7,lr}
@@ -26056,6 +26100,10 @@ dword_801B60C:
 	.word 0x8000
 	thumb_func_end sub_801B4D4
 
+// symdb: Per-frame battle object update: applies pending hit damage, manages death/invuln/idle state transitions, then dispatches the CurAction handler from the function table in r0.
+// symdb: (r0 = pointer to action-handler function table indexed by CurAction*4; r5 = battle object) -> r0
+// symdb: clobbered by dispatch; returns early via sub_8018002/801813A/801823C paths
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801B610.yaml
 	thumb_func_start sub_801B610
 sub_801B610:
 	push {r4,r6,r7,lr}

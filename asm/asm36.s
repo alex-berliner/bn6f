@@ -13592,6 +13592,10 @@ off_8136640:
 	.word 0x100
 	thumb_func_end sub_813660C
 
+// symdb: For six slot IDs in unk_2022B70, reads a halfword from one of two 16-byte OAM attr0 tables (selected by r0) and stores it at unk_30019E0+0xF4..0xFE; when i>=4 and ID==0, uses a fixed 'slot off' entry from the same table instead.
+// symdb: (r0 = table set, 0 or 1) -> writes 6 halfwords to unk_30019E0 + 0xF4..0xFE; r0,r1,r2-r4,r7
+// symdb: clobbered, flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136644.yaml
 	thumb_local_start
 sub_8136644:
 	push {r4-r7,lr}
@@ -13946,6 +13950,10 @@ off_81368C4:
 byte_81368C8:
 	.byte 0xF6, 0x0, 0x0, 0x0, 0xFC, 0x0, 0x0, 0x0, 0xFC, 0x0, 0x0, 0x0
 	thumb_func_end object_beastOutSetup
+// symdb: Dispatches one step of the beast-SP cutscene state machine by tail-calling the handler selected from off_81368E8 by the step index at [r5+3]; entries 0-6 idle in sub_813691C, then run battle_beginInit, pet_naviHealCutsceneStep, battle_beastOutTimerTick, sub_8136A74, e_waitChatboxThenFadeOut, and sub_8136AE8.
+// symdb: (r5 = cutscene/object state struct, r5+3 = step index) -> calls handler via lr, returns
+// symdb: handler's r0; no flags guaranteed
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81368D4.yaml
 	thumb_local_start
 sub_81368D4:
 	push {lr}
@@ -18194,6 +18202,10 @@ dword_81387D4:
 	.word 0x6006000
 	thumb_func_end sub_8138768
 
+// symdb: Prepares the engine for the credits overworld scene: zeroes GameState+0x20, runs the full overworld reset chain, decompresses coord event 2 data, initializes the field camera for map group 0xD0 / map 0 at (0,0,0), clears effect/scenario state and event-flag ranges at 0x2DE/0x2C8, force-ends any active cutscene, clears stale script positions and pending battle state for event 0x1708, then frees all type-0x25 objects.
+// symdb: () -> r0 = FreeAllObjectsOfSpecifiedTypes result; clears GameState field at +0x20 and many
+// symdb: engine work areas
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81387D8.yaml
 	thumb_local_start
 sub_81387D8:
 	push {lr}

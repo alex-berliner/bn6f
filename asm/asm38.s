@@ -1223,6 +1223,11 @@ off_3006388:
 	.word checkZCoordModifiers_8031612+1
 	thumb_func_end sub_300631C
 
+// symdb: Projects an entity's world X/Y/Z position to a sprite entry's screen X/Y and depth using the camera's next position plus X shake, inverting X and toggling hflip/vflip bits when the invert flag is set.
+// symdb: (r0 = entity position struct: x halfword @+2, y @+6, z @+0xA; r5 = sprite/render entry; r4 =
+// symdb: flag (invert X when nonzero); r10 = toolkit for camera ptr) -> writes screen X to r5+0xC, screen
+// symdb: Y to r5+0xA, depth to r5+0xE/0xF; updates flip bits 0x30 at r5+0x13
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_300638C.yaml
 	thumb_local_start
 sub_300638C:
 	mov r6, r4

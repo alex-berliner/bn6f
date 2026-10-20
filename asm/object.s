@@ -470,6 +470,10 @@ off_800BBA4:
 	.word dword_200F3B8
 	thumb_func_end battleObject_stepSnakeArm_800BA8A
 
+// symdb: Battle-object action step that dispatches the chip-use sub-effect (kind 0x4C, or 0x50 if the linked ally used the same chip) with the chip's ID and damage/state data, plays the chip-use sound, then waits for cross-net readiness and advances CurAction by 4 or 8 depending on the ally's status.
+// symdb: (r0 = unused, r5 = battle object ptr) -> r0 = 0/1; updates object PhaseInitialized, Param2,
+// symdb: CurAction, CurPhaseAndPhaseInitialized; clears/dispatches flag 0x10000 in eStruct2035280
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BBA8.yaml
 	thumb_func_start sub_800BBA8
 sub_800BBA8:
 	push {lr}
@@ -5613,6 +5617,10 @@ IsR2BetweenR0AndR1:
 	mov pc, lr
 	thumb_func_end IsR2BetweenR0AndR1
 
+// symdb: Returns 1 if r2 is between r0 and r1 inclusive (either order), else 0.
+// symdb: (r0 = bound A, r1 = bound B, r2 = value) -> r0 = 1 if min(A,B) <= value <= max(A,B), else 0;
+// symdb: flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800E708.yaml
 	thumb_func_start sub_800E708
 sub_800E708:
 	mov r3, #0

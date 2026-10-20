@@ -1839,6 +1839,10 @@ sub_8142990:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8142990
 
+// symdb: Returns 1 if two packed (x,y) tile positions are the same or 4-neighbors (Manhattan distance <= 1), else 0.
+// symdb: (r0 = packed pos A (hi=x<<8|lo? hi byte x, lo byte y), r1 = packed pos B) -> r0 = 1 if |dx|+|dy|
+// symdb: <= 1 else 0; sets flags via tst
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814299C.yaml
 	thumb_local_start
 sub_814299C:
 	push {r4-r7,lr}
@@ -2373,6 +2377,9 @@ off_8142D44:
 	.word byte_8619B90
 	thumb_func_end ow_stampMapTileTemplate
 
+// symdb: Register-saving trampoline (push r4-r7/lr, bl sub_80307D8, pop) used as a callback that triggers sub_80307D8 to repaint both tilemap layers of the overworld map window centered on the camera.
+// symdb: () -> r0 = result of sub_80307D8 (unknown); r4-r7 clobbered (saved/restored)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142D4C.yaml
 	thumb_func_start sub_8142D4C
 sub_8142D4C:
 	push {r4-r7,lr}

@@ -25542,6 +25542,10 @@ dword_814F9A8:
 	.word 0x68736D53
 	thumb_func_end object_setSmashFactor
 
+// symdb: Iterates the Smsh-tagged structure's entries and, for each bit set in r1 whose +0x00 flag has bit 0x80, stores r2>>2 at +0x13 and ORs 0x3 into +0x00, guarded by a re-entrancy key at +0x34.
+// symdb: (r0 = Smash-manager struct, r1 = 16-bit entry bitmask, r2 = packed state/param byte) -> r0 =
+// symdb: void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814F9AC.yaml
 	thumb_func_start sub_814F9AC
 sub_814F9AC:
 	push {r4-r7,lr}

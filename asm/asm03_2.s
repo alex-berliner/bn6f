@@ -4945,6 +4945,9 @@ off_8049054:
 	.word 0x40
 	thumb_func_end sub_804900C
 
+// symdb: After the screen fade gate passes, wipes VRAM, zero-fills the BG tile buffer at 0x30025c0, reloads the 0x800-byte GFX block to VRAM 0x600D400 plus the 32-byte IWRAM block at 0x3001B40, reinitializes the chatbox, sets DISPCNT-equivalent to 0x40, and calls battle_resetAndInitScene to tear down and restart the battle scene.
+// symdb: () -> (); early-returns via ZF from IsScreenFadeActive, no return value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049058.yaml
 	thumb_local_start
 sub_8049058:
 	push {r4-r7,lr}
@@ -5007,6 +5010,10 @@ off_8049098:
 	.word sub_8049636+1
 	thumb_func_end sub_8049080
 
+// symdb: Scene init step run after returning from battle: configures LCD control, clears render counters, applies overlay palette 0x12, resets eStruct records, reinitializes chatbox/sub-objects, redraws RNG, and sets scene state byte to 4.
+// symdb: (r5 = pointer to large scene/work struct, set by caller; no args used) -> r0 clobbered by calls;
+// symdb: writes byte 4 to [r5+1]; flags not meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049104.yaml
 	thumb_local_start
 sub_8049104:
 	push {r4-r7,lr}
@@ -6804,6 +6811,9 @@ off_8049E58:
 	.word 0x40
 	thumb_func_end chatbox_initNewScreen_8049E28
 
+// symdb: During an active screen transition, fully reinitializes video (VRAM clear, BG tilemap zero, base GFX reload, chatbox reset, LCD forced-blank via 0x40) and then restores the submenu snapshot to resume at main jumptable 0x28.
+// symdb: () -> (); returns early via flags if IsScreenFadeActive reports a fade in progress
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049E5C.yaml
 	thumb_local_start
 sub_8049E5C:
 	push {r4-r7,lr}
@@ -7607,6 +7617,10 @@ loc_804A44C:
 	pop {pc}
 	thumb_func_end menu_processFrameInput
 
+// symdb: Per-tick step of a scenario effect: if a state byte equals 0x10, grants a chip via GiveChips and queues a return-to-overworld fade (EnterMapFadeParam1=0xC), returning 1; otherwise resets the effect state and acks the new-event flag, returning 0.
+// symdb: () -> r0 = 1 when the chip was granted and the exit fade was queued, 0 otherwise; no flag
+// symdb: guarantees
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A460.yaml
 	thumb_local_start
 sub_804A460:
 	push {r4-r7,lr}

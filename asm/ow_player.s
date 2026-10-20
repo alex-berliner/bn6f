@@ -1071,6 +1071,10 @@ off_809D928:
 	.word off_809D91C
 	thumb_func_end owPlayer_jumpTableDispatchWithAdvanceClear_809D8F4
 
+// symdb: Overworld player object: remap direction counter (≤3→+4) to select from an 8-entry table of facing byte + two word fields, apply the facing byte to AnimationSelect/FacingDirection/Unk_11, copy the two words to Unk_38/Unk_3C, set ActionSubState=4, and set Unk_5C=1.
+// symdb: (r0 = scratch, r5 = oOWPlayerObject) -> r0 = 1; writes fields 0x0B, 0x0D, 0x11, 0x38, 0x3C,
+// symdb: 0x5C, 0x66 of the player object; no flags meaningful
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809D92C.yaml
 	thumb_local_start
 sub_809D92C:
 	push {lr}
