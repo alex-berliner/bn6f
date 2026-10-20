@@ -382,7 +382,7 @@ off_810C6F0::
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_810C72E+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_810C524+1
@@ -658,7 +658,7 @@ off_810C9CC::
 	.word sub_810CB78+1
 	.word sub_810CC0A+1
 	.word sub_810CC54+1
-	.word sub_810CCDC+1
+	.word object_releasePanelAndEffect+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810C9B8
 
@@ -1069,9 +1069,9 @@ locret_810CCDA::
 // symdb: Releases a battle object's reserved panel, toggles its collision flags/region, and spawns a type-0 effect object at the released panel's screen coordinates.
 // symdb: unknown argument layout; probably r0 = battle object or CollisionData pointer -> r0 possibly the
 // symdb: spawned effect object; flags unknown
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CCDC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_releasePanelAndEffect.yaml
 	thumb_local_start
-sub_810CCDC::
+object_releasePanelAndEffect::
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	cmp r0, #3
@@ -1113,7 +1113,7 @@ loc_810CCFA::
 	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_810CD36::
 	pop {pc}
-	thumb_func_end sub_810CCDC
+	thumb_func_end object_releasePanelAndEffect
 
 	thumb_local_start
 sub_810CD38::
@@ -1144,7 +1144,7 @@ off_810CD60::
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word battleObject_aiActionStep_810CE1A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word genericAI_movementRelated_8109952+1
@@ -1478,7 +1478,7 @@ off_810D0F4::
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_810D130+1
 
 	thumb_local_start
@@ -2073,7 +2073,7 @@ sub_810D5F6::
 	beq loc_810D608
 	bl sub_810D4E8
 loc_810D608::
-	bl sub_8016B72
+	bl battle_hoverBobObjectUpdate
 	ldrb r0, [r5,#oBattleObject_CurAction]
 	cmp r0, #7
 	beq locret_810D61C
@@ -2398,7 +2398,7 @@ off_810D910::
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_810D998+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_8109804+1

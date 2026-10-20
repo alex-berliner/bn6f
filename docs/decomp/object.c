@@ -2409,12 +2409,12 @@ int object_getEdgePanelMatchingRow()
 {
     unsigned __int8 *v0; // r5
 
-    return sub_800D4D0(v0[22], v0[23], v0[19]);
+    return object_getPanelInFlipDirection(v0[22], v0[23], v0[19]);
 }
 
 
 // 0x800d4d0
-int __fastcall sub_800D4D0(int a1, int a2, int a3)
+int __fastcall object_getPanelInFlipDirection(int a1, int a2, int a3)
 {
     int v3; // ST04_4
     int result; // r0
@@ -3507,7 +3507,7 @@ int battle_settleCollisionCounters()
 
 
 // 0x800eada
-int sub_800EADA()
+int battle_recoverFromHit()
 {
     int v0; // r5
     int v1; // r2

@@ -268,7 +268,7 @@ loc_812C4C4::
 	bl npc_runDialog41
 loc_812C4CA::
 	bl sub_812D5A0
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -733,7 +733,7 @@ loc_812C846::
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812D528
 	bl sub_812D378
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	mov r0, #0
 	bl sub_812D99C
@@ -1094,7 +1094,7 @@ loc_812CB0A::
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812D528
 	bl sub_812D378
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	b loc_812CB62
 loc_812CB46::
@@ -1675,7 +1675,7 @@ loc_812CFB2::
 	mov r0, #0x20 
 	bl npc_runDialog41
 loc_812CFBC::
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1798,7 +1798,7 @@ loc_812D0AC::
 	mov r0, #0x10
 	tst r1, r0
 	beq locret_812D0BE
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	b locret_812D0BE
 locret_812D0BE::
@@ -1943,7 +1943,7 @@ loc_812D1C0::
 	cmp r0, #0x20 
 	bne loc_812D1D4
 	bl copyBgTilesToBlock0
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	b locret_812D1F4
 loc_812D1D4::
@@ -1958,7 +1958,7 @@ loc_812D1E4::
 	cmp r0, #0x10
 	beq locret_812D1F4
 	bl sub_812D5A0
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 locret_812D1F4::
 	pop {pc}
@@ -2073,7 +2073,7 @@ sub_812D298::
 	bl battle_initChipSearchList
 	bl sub_812D310
 	bl sub_812D378
-	bl sub_812D3E4
+	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	bl sub_812D528
 	mov r0, #0

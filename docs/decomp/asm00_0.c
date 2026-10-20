@@ -1127,7 +1127,7 @@ signed int sub_8000EE4()
 
 
 // 0x8000f86
-int __fastcall sub_8000F86(int a1)
+int __fastcall init_saveFresh(int a1)
 {
     int v1; // r10
     int v2; // r4

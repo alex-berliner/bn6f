@@ -89,7 +89,7 @@ t4_sceneInit:
 	bl sub_813064C
 	bl sub_8130810
 	bl t4_refreshChipPackBuffer
-	bl sub_81304EC
+	bl battle_drawFolderScreen
 	mov r0, #0
 	ldr r1, off_8130104 // =dword_8129180
 	bl battleObject_advanceAnimTableBy0xFF_8120CC8
@@ -491,7 +491,7 @@ loc_81303A2:
 	strb r0, [r5,#0xc]
 	bl t4_refreshChipPackBuffer
 loc_81303C4:
-	bl sub_81304EC
+	bl battle_drawFolderScreen
 
 	mov r0, #JOYPAD_B
 	bl IsButtonPressed
@@ -675,9 +675,9 @@ off_81304E8:
 // symdb: Renders the in-battle chip-select folder panel (chip name, chip gfx, OAM pack, icon slots, chip-pack entries) into background tile block 2 from the current state struct fetched via sub_8130404.
 // symdb: () -> r0 = destroyed; renders tiles into background tile block 2; uses global state from
 // symdb: sub_8130404
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81304EC.yaml
-	thumb_func_start sub_81304EC
-sub_81304EC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawFolderScreen.yaml
+	thumb_func_start battle_drawFolderScreen
+battle_drawFolderScreen:
 	push {r4-r7,lr}
 	bl t4_getWork
 	mov r7, r0
@@ -824,7 +824,7 @@ off_8130614:
 	.word dword_8130618
 dword_8130618:
 	.word 0x382E24
-	thumb_func_end sub_81304EC
+	thumb_func_end battle_drawFolderScreen
 
 	thumb_local_start
 sub_813061C:
@@ -1971,16 +1971,16 @@ off_8130F08:
 	.word off_8130F0C
 off_8130F0C:
 	.word sub_812AC14+1
-	.word sub_8130F1C+1
+	.word rfu_stopOrFadeScene+1
 	.word battle_initScenarioScene+1
 	.word sub_8130FC4+1
 	thumb_func_end sub_8130EDC
 // symdb: Scene-exit dispatcher: if eStruct200BC30[0xE]==2, sets scene state 0xC and tears down RFU; otherwise, when permitted by r5[0x1B] bit 1 or chatbox flags 0x80|0x8, clears/restores the eStruct200BC30 work record and starts a screen fade (SetScreenFade 8,0x10).
 // symdb: (r5 = scene state struct, eStruct200BC30 as shared work area) -> void; no meaningful return
 // symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130F1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_stopOrFadeScene.yaml
 	thumb_local_start
-sub_8130F1C:
+rfu_stopOrFadeScene:
 	push {r4-r7,lr}
 	bl eStruct200BC30_getRef
 	ldrb r0, [r0,#0xe]
@@ -2019,7 +2019,7 @@ loc_8130F4E:
 	bl SetScreenFade // (int a1, int a2) -> void
 locret_8130F76:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8130F1C
+	thumb_func_end rfu_stopOrFadeScene
 
 // symdb: Initializes one specific battle scene variant: leaves RFU mode if active, runs the full battle-scene init, loads entity GFX and a menu-style background, and spawns eStruct records from a fixed table.
 // symdb: () -> void; early-returns (via ZF from IsScreenFadeActive) while a screen fade is active; writes
@@ -3963,7 +3963,7 @@ sub_8131FA0:
 off_8131FB0:
 	.word off_8131FB4
 off_8131FB4:
-	.word sub_8131FC4+1
+	.word e_setupE5rbSceneAfterFade+1
 	.word t4_tickSubsystemE290+1
 	.word sub_813202C+1
 	.word submenu_linkResultHandler+1
@@ -3972,9 +3972,9 @@ off_8131FB4:
 // symdb: Event phase that waits for the screen fade to finish (ZF set), then sets up the E5RB scene: initialises camera/screen block, writes tag 'E5RB'/0x2000 into eLinkState, dispatches via sub_81322E8, advances state to phase 4, and sets the main jumptable index to 0x28.
 // symdb: (r5 = event state record) -> r0 = 0; writes state+0x03 = 4, state+0x0C = 0, sets
 // symdb: *mainJumptableIndexPtr = 0x28
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131FC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setupE5rbSceneAfterFade.yaml
 	thumb_local_start
-sub_8131FC4:
+e_setupE5rbSceneAfterFade:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8132010
@@ -4011,7 +4011,7 @@ dword_8132014:
 	.word 0x42523545
 dword_8132018:
 	.word 0x2000
-	thumb_func_end sub_8131FC4
+	thumb_func_end e_setupE5rbSceneAfterFade
 
 // symdb: Update-callback wrapper that ticks the subsystem state at eS200A290, which fires event 0xDA(2) once the subsystem is no longer in use.
 // symdb: () -> none; calls cb_8048FD4 with r0 = eS200A290; no return value used
@@ -6985,7 +6985,7 @@ off_8133600:
 	.word sub_8133618+1
 	.word sub_8133648+1
 	.word chatbox_stateRunScript12Once+1
-	.word sub_81336C4+1
+	.word submenu_chatboxInputHandler+1
 	.word chatbox_stepRunScript12IfFlag80Clear+1
 	.word sub_813375C+1
 	thumb_func_end object_dispatchState
@@ -7093,9 +7093,9 @@ dword_81336C0:
 // symdb: Handles input for a chatbox-driven submenu: guards on eFlags2009F38 bit 0x80, adjusts a 0..7 selection via menu_adjustCursorOrValue, and on A/B runs eTextScript2028A20 scripts 0xD, 0xA or 0x1B while updating r5+0x68 state and r5+3 flag.
 // symdb: (r0 = joypad held mask source via r10 toolkit, r5 = screen object) -> r0 = none; updates r5+0x68
 // symdb: state, r5+0x03 flag, runs chatbox scripts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81336C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_chatboxInputHandler.yaml
 	thumb_local_start
-sub_81336C4:
+submenu_chatboxInputHandler:
 	push {r4,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -7154,7 +7154,7 @@ locret_8133738:
 	.balign 4, 0
 dword_813373C:
 	.word 0xFFFF
-	thumb_func_end sub_81336C4
+	thumb_func_end submenu_chatboxInputHandler
 
 // symdb: Cutscene/chatbox step that, unless event-flag bit 0x80 is set, performs sub_8134FE0, sets a state field to 0xC in the context struct, and runs text script 0x12.
 // symdb: (r5 = cutscene/chatbox context struct) -> r0 = script result; flags from flag test are consumed
@@ -17131,7 +17131,7 @@ sub_813802C:
 	push {lr}
 	ldr r3, off_813803C // =byte_8138040
 	ldrh r0, [r3,r0]
-	bl sub_8010C76
+	bl getChipScaleOrRaw
 	bl memory_bcdConvert
 	pop {pc}
 	.balign 4, 0
@@ -18116,7 +18116,7 @@ sub_8138730:
 	bl IsScreenFadeActive // () -> zf
 	beq locret_813874E
 	ldr r0, [r5,#0x20]
-	bl sub_8000F86
+	bl init_saveFresh
 	bl sub_8138758
 	bl sub_803578C
 locret_813874E:

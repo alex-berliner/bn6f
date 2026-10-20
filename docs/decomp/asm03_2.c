@@ -2546,7 +2546,7 @@ int sub_8049158()
 
 
 // 0x8049164
-int sub_8049164()
+int rfu_idMatchAdvanceState()
 {
     int v0; // r5
     char v1; // zf
@@ -3352,7 +3352,7 @@ void __fastcall sub_8049808(int a1, int a2, int a3)
 
 
 // 0x8049844
-void __noreturn sub_8049844()
+void __noreturn battle_waitChatboxThenInit()
 {
     int v0; // r5
     char v1; // zf
@@ -3375,7 +3375,7 @@ void __noreturn sub_8049844()
 
 
 // 0x804986e
-void __noreturn sub_804986E()
+void __noreturn init_battleModule()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -4235,7 +4235,7 @@ void __fastcall __noreturn sub_804A360(int a1, int a2, int a3, int a4)
 
 
 // 0x804a3fc
-void __noreturn sub_804A3FC()
+void __noreturn menu_processFrameInput()
 {
     MenuControl *menu; // r5
     Toolkit *tk; // r10

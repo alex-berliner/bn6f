@@ -69,9 +69,9 @@ off_812D3E0:
 // symdb: Renders six sections (folder chips, folder OAM pack, icon slots, pack entries, panel entries, plus a header) into tilemap buffers and copies each into BG tile block 2 as 2-column x 14-row strips (columns 3,1,0xB,0xD,0xE,0x10), then calls sub_812D5EC.
 // symdb: () -> r0 = 0 via callees; reads screen-state struct from sub_812D6F8, writes tilemap data
 // symdb: buffers at 202DFA0..202E144 and copies them into BG tile block 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D3E4.yaml
-	thumb_func_start sub_812D3E4
-sub_812D3E4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderChipPackScreenTilemap.yaml
+	thumb_func_start battle_renderChipPackScreenTilemap
+battle_renderChipPackScreenTilemap:
 	push {r4-r7,lr}
 	bl submenu_getWork
 	mov r7, r0
@@ -198,7 +198,7 @@ off_812D4F4:
 	.word byte_202E144
 dword_812D4F8:
 	.word 0x200
-	thumb_func_end sub_812D3E4
+	thumb_func_end battle_renderChipPackScreenTilemap
 
 // symdb: Fetches the shared submenu work struct (0x02037780) and invokes a fixed draw/queue call with constant coordinates and a ROM data blob (byte_8129178), then a follow-up commit call, as part of the per-frame update of this screen's state handlers.
 // symdb: () -> void; no caller consumes a return value (r0-r3, r4=byte_8129178, r6=0x40000000, r7=0x20002

@@ -3438,7 +3438,7 @@ off_8124C44:
 	.word battle_objTickTimerAndRefreshSpritePairs_8124D30+1
 	.word sub_8124D78+1
 	.word sprite_shieldUpdate_8124DCC+1
-	.word sub_8124E24+1
+	.word battle_tickChipFolderScreen+1
 	.word sprite_stage2InitBattleState_8124E7C+1
 	.word battle_updateSceneFrame+1
 	.word battle_updateIntroState+1
@@ -3448,7 +3448,7 @@ off_8124C44:
 	.word battle_runIntro_812508C_812509C+1
 	.word battle_runUpdatesAndCheckFade_81250E0+1
 	.word battle_transitionStepWaitForFade+1
-	.word sub_8125128+1
+	.word battle_drawIntroScene+1
 	.word battle_transitionAnimUpdate+1
 	.word battle_transitionTick_8125170+1
 	.word sub_8125198+1
@@ -3664,9 +3664,9 @@ loc_8124E1A:
 // symdb: Per-frame handler for the in-battle chip-folder/select screen: advances the frame counter (clamping to 0x8E and transitioning to state 0xC), pumps the battle transition and redraws the folder-select and arena-floor tiles, then writes chip-slot animation halfword pairs to up to three pool structs.
 // symdb: (r0 = 0 mode passed to the slot-buffer init; r5 = battle context struct) -> r0 = 0/1 status from
 // symdb: last callee; mutates r5 state, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8124E24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickChipFolderScreen.yaml
 	thumb_local_start
-sub_8124E24:
+battle_tickChipFolderScreen:
 	push {lr}
 	mov r0, #0
 	bl battleObject_initChipSpriteSlotBuffer_8126818
@@ -3708,7 +3708,7 @@ loc_8124E72:
 	bl sprite_setStructHalfwordPairOnThree_8117084
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8124E24
+	thumb_func_end battle_tickChipFolderScreen
 
 // symdb: Stage-2 initialization for a battle sprite struct pointed to by R5.
 // symdb: void sub_8124E7C(void) /* R5 = sprite struct base; flags clobbered */
@@ -3777,7 +3777,7 @@ loc_8124EEE:
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	mov r1, #0
 	ldr r0, [r5,#0x5c]
 	cmp r0, #0x27 
@@ -3829,7 +3829,7 @@ loc_8124F4A:
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
 	bl bg_drawArenaTiles_8125E78
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	mov r1, #0
 	ldr r0, [r5,#0x64]
 	cmp r0, #0xf
@@ -3873,7 +3873,7 @@ sub_8124F8C:
 	bl submenu_handleEntryScreenInput
 	bl sub_81268D8
 	bl battle_runTransition_8125444
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	bl battle_transitionAnimQueueOam
 	mov r1, #0
 	ldr r0, [r5,#0x60]
@@ -3914,7 +3914,7 @@ loc_8124FFA:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	bl sub_8126114
 	mov r1, #0
 	ldr r0, [r5,#0x60]
@@ -3962,7 +3962,7 @@ loc_8125056:
 	mov r0, #0xff
 	str r0, [r5,#0x70]
 	bl battle_runTransition_8125444
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	bl sub_8126114
 	mov r1, #0
 	ldr r0, [r5,#0x68]
@@ -4073,9 +4073,9 @@ locret_8125124:
 // symdb: Battle intro scene draw: blits the progressive intro tile graphic, queues an OAM entry, pumps the battle transition (reloading tilemaps when flagged), draws the arena floor, and runs a fixed-arg overlay; when no screen fade is active it writes 8 to the state byte at r5+1 to advance the phase.
 // symdb: (r5 = battle-scene/state object) -> r0 = 8 stored to [r5+1] when screen fade finished; no return
 // symdb: value otherwise; flags clobbered by bls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125128.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawIntroScene.yaml
 	thumb_local_start
-sub_8125128:
+battle_drawIntroScene:
 	push {lr}
 	bl sub_812674C
 	bl sprite_queueBattleOamEntry
@@ -4089,7 +4089,7 @@ sub_8125128:
 locret_8125148:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8125128
+	thumb_func_end battle_drawIntroScene
 
 // symdb: Per-frame update of the battle transition/intro animation: blits the progressive graphic, queues its OAM sprite, pumps the transition, and once the screen fade finishes advances the state to 8.
 // symdb: () -> r0 = result of last callee (unused); writes state byte [r5+1] = 8 when no screen fade is
@@ -4101,7 +4101,7 @@ battle_transitionAnimUpdate:
 	bl sub_812674C
 	bl sprite_queueBattleOamEntry
 	bl battle_runTransition_8125444
-	bl sub_8125F5C
+	bl battle_redrawChipSelectScrollColumn
 	bl battle_transitionAnimQueueOam
 	bl IsScreenFadeActive // () -> zf
 	beq locret_812516C
@@ -6000,9 +6000,9 @@ off_8125F58:
 
 // symdb: After a chip-select scroll step, redraws the BG tile block 2 column strips (3-wide left strip, an 8-wide right strip, a 2x14 middle strip and a 3x14 patch) and reloads up to 7 chip icon GFX plus the 7 selection-slot structs; chooses between a standard and a 0xF/15-variant tile-offset layout.
 // symdb: (r5 = chip-select screen work struct; r0-r4 clobbered) -> r0 = destroyed; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8125F5C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_redrawChipSelectScrollColumn.yaml
 	thumb_local_start
-sub_8125F5C:
+battle_redrawChipSelectScrollColumn:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, [r7,#0x64]
@@ -6097,7 +6097,7 @@ loc_8125FD8:
 locret_812602C:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8125F5C
+	thumb_func_end battle_redrawChipSelectScrollColumn
 
 // symdb: Redraws the battle chip-selection screen (slot frame, chip icons, packed slot data) in one of two layouts depending on a mode field.
 // symdb: (r5 = screen/work struct ptr) -> void; r7 = r5 internally
@@ -12404,7 +12404,7 @@ byte_81291B0:
 sub_81291D8:
 	push {r5,lr}
 	ldr r5, off_81291E4 // =sSubmenu 
-	bl sub_812A76C
+	bl battle_tutorialStepCheckChipSelection
 	pop {r5,pc}
 	.balign 4, 0
 off_81291E4:
@@ -12438,7 +12438,7 @@ CommMenuJumpTable81291FC:
   // 0x0C
 	.word sub_8129F04+1
   // 0x10
-	.word sub_812A76C+1
+	.word battle_tutorialStepCheckChipSelection+1
   // 0x14
 	.word object_tickChipCursorSprite+1
   // 0x18
@@ -12541,7 +12541,7 @@ off_81292BC:
 	.word scene_runFadePopTick_8129400+1
 	.word menu_yesNoPromptUpdate+1
 	.word battle_updateEntitiesAndStartFadeOut+1
-	.word sub_812954C+1
+	.word battle_endBattleSave+1
 	.word battle_frameUpdateAndStopRfuAfterFade+1
 	thumb_func_end dispatchBattleState_81292A8
 
@@ -12871,9 +12871,9 @@ locret_8129548:
 // symdb: Battle-end step: runs entity and e-struct sprite pipelines, waits for the screen fade to end, then closes the chatbox, sets state byte +2 to 8, and hands off to the extra-save flow (initSaveStateBlock with save_arg=1, which clears eS200A290, writes its header, and sets the main jumptable index to 0x30).
 // symdb: (r5 = state/context struct, r0-r3 unused on entry) -> r0 = 1 passed to initSaveStateBlock; sets
 // symdb: state->byte_2 = 8; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812954C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_endBattleSave.yaml
 	thumb_local_start
-sub_812954C:
+battle_endBattleSave:
 	push {lr}
 	bl entity_runAllUpdateHandlers_80465BC
 	bl battle_updateEStructSprites_80465F8 // () -> void
@@ -12886,7 +12886,7 @@ sub_812954C:
 	bl initSaveStateBlock_8048F9C
 locret_812956A:
 	pop {pc}
-	thumb_func_end sub_812954C
+	thumb_func_end battle_endBattleSave
 
 // symdb: Per-frame battle-side update that runs all entity and sprite updates, then once the screen fade has finished marks its task state done and shuts the wireless adapter down.
 // symdb: (r5 = task/state struct: +2 state byte, +0xD done flag; r0 = scratch) -> void
@@ -15466,9 +15466,9 @@ locret_812A76A:
 // symdb: Tutorial-battle step that polls the chip-selection screen each tick and, when the player picks chips matching the singleton's required chip (compared against sub_803EF74's record terminated by 0xFFFFFFFF), fires the success chatbox and sets the singleton flag; on sub_803EAE4==4 or counter expiry at [r5+0x28]>=0x168, fires the timeout chatbox.
 // symdb: (r0 = battle/step entity, r5 = its state struct) -> r0 = step result; updates state fields
 // symdb: [r5+0x01/02/03/0x10/0x26/0x28/0x2a]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A76C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tutorialStepCheckChipSelection.yaml
 	thumb_local_start
-sub_812A76C:
+battle_tutorialStepCheckChipSelection:
 	push {r4-r7,lr}
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
@@ -15622,7 +15622,7 @@ dword_812A89C:
 	.word 0x2000
 off_812A8A0:
 	.word 0x168
-	thumb_func_end sub_812A76C
+	thumb_func_end battle_tutorialStepCheckChipSelection
 
 // symdb: Per-frame update for a chip-cursor/custom-screen sprite object: runs its state handler, keeps uploading cursor tiles while the subsystem is active, and either fires the 0xDA completion event or draws the sprite once finished.
 // symdb: (r0/r1 unused on entry; uses global object eS200A290 and state byte at 0x200BC30) -> no return
@@ -15662,7 +15662,7 @@ off_812A8E0:
 	.word off_812A8E4
 off_812A8E4:
 	.word sub_812A8EC+1
-	.word sub_812AAC0+1
+	.word chatbox_runLinkPairSceneStep+1
 	thumb_func_end object_tickChipCursorSprite
 
 	thumb_local_start
@@ -15907,9 +15907,9 @@ loc_812AAB8:
 // symdb: Per-frame chatbox-driven scene step that polls chatbox flags, runs scenario text scripts based on flag/state, then compares two 0x10-byte entries against eLinkState fields (+0x1c, +0xa) to dispatch menu/script actions and update state bytes.
 // symdb: (r0 = unused (0 written), r5 = scene state record) -> r0 = preserved-ish; writes state byte
 // symdb: [r5+0x10], sub-state [r5+0x11], halfword [r5+0x26], bytes [r5+1..3]; runs chatbox scripts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812AAC0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_runLinkPairSceneStep.yaml
 	thumb_local_start
-sub_812AAC0:
+chatbox_runLinkPairSceneStep:
 	push {r4-r7,lr}
 	mov r0, #0
 	strb r0, [r5,#0x10]
@@ -16060,7 +16060,7 @@ loc_812ABE2:
 	.balign 4, 0
 dword_812ABE8:
 	.word 0xFFFFFFFF
-	thumb_func_end sub_812AAC0
+	thumb_func_end chatbox_runLinkPairSceneStep
 
 // symdb: Battle entity step routine that calls one of four per-entity handlers selected by a byte at [r5,#2], then runs the standard wait-for-state battle update.
 // symdb: (r5 = entity/work struct) -> r0 = result of battle_stepWaitForStateRunUpdate; no flags
@@ -17514,7 +17514,7 @@ loc_812B620:
 	bge locret_812B63E
 	cmp r1, #0x16
 	bge locret_812B63E
-	bl sub_812B768
+	bl battle_startBattle
 	mov r0, #4
 	strb r0, [r5,#2]
 	b locret_812B63E
@@ -17668,9 +17668,9 @@ sub_812B758:
 // symdb: Loads battle settings via getBattleSettingsFromList1/copyBattleSettingsTo_200AF60, conditionally applies stage flag-mask from table 0x812B7AC and background, then fades screen, turns off music, and plays SOUND_BATTLE_START to begin the battle.
 // symdb: (r0 = battleSettings list index, r1 = background/stage id) -> r0 = PlaySoundEffect result;
 // symdb: r5[0x12]/r5[0x13] index the flag-mask table
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B768.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_startBattle.yaml
 	thumb_local_start
-sub_812B768:
+battle_startBattle:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r1, [sp]
@@ -17704,7 +17704,7 @@ off_812B7AC:
 	.word 0x200
 	.byte 0x2, 0x0, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x2, 0x4, 0x0, 0x0, 0x0, 0x2, 0x20, 0x0
 	.byte 0x2, 0x0, 0x20, 0x0
-	thumb_func_end sub_812B768
+	thumb_func_end battle_startBattle
 
 	thumb_local_start
 sub_812B7C4:
@@ -18306,7 +18306,7 @@ off_812BC24:
 	.word off_812BC28
 off_812BC28:
 	.word sub_812AC14+1
-	.word sub_812BC38+1
+	.word submenu_chipLibraryMergeNewFlags+1
 	.word sub_812BD34+1
 	.word sub_812BD60+1
 	thumb_func_end sub_812BC14
@@ -18314,9 +18314,9 @@ off_812BC28:
 // symdb: Merges per-chip 'newly obtained' flags (0x2020) into the 'registered' flag block (0x2220), snapshots/restores 0x2020, scans chips to detect newly registered entries (state 0x12) vs none (state 0x11), clears 0x2020 for invalid chips, then recomputes save checksum (and conditionally triggers sub_803F798 when nothing new was found).
 // symdb: (r5 = menu/task object with state byte at +0x10) -> r0 = next state in [r5+0x10] (0x11 = no new
 // symdb: chips, 0x12 = new chips); writes [r5+0xC]=8, [r5+0x28]=0x96
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BC38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_chipLibraryMergeNewFlags.yaml
 	thumb_local_start
-sub_812BC38:
+submenu_chipLibraryMergeNewFlags:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x10]
 	cmp r0, #0xf
@@ -18443,7 +18443,7 @@ dword_812BD2C:
 	.word 0x2220
 off_812BD30:
 	.word 0x200
-	thumb_func_end sub_812BC38
+	thumb_func_end submenu_chipLibraryMergeNewFlags
 
 	thumb_local_start
 sub_812BD34:
@@ -18532,7 +18532,7 @@ off_812BDD4:
 	.word sub_812AC14+1
 	.word sub_812BDE4+1
 	.word sub_812BEEC+1
-	.word sub_812BF10+1
+	.word rfu_menuHandleCancelBtn+1
 	thumb_func_end sub_812BDC0
 
 	thumb_local_start
@@ -18635,9 +18635,9 @@ locret_812BF0E:
 
 // symdb: A/B button handler for an RFU/wireless menu state: on press, advances the menu state machine (to handler 0x14, or 0x18 in state 0x11 with an active wireless mode) and tears down the RFU link while fading the screen.
 // symdb: (r5 = menu state record) -> void; sets record fields and global screen fade
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BF10.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_menuHandleCancelBtn.yaml
 	thumb_local_start
-sub_812BF10:
+rfu_menuHandleCancelBtn:
 	push {lr}
 	mov r0, #JOYPAD_B | JOYPAD_A
 	bl IsButtonPressed
@@ -18677,7 +18677,7 @@ loc_812BF64:
 locret_812BF68:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812BF10
+	thumb_func_end rfu_menuHandleCancelBtn
 
 	thumb_local_start
 sub_812BF6C:

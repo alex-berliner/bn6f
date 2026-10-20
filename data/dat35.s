@@ -766,7 +766,7 @@ loc_812F5EE::
 	bl sub_8130208
 	bl sub_813064C
 	bl sub_8130810
-	bl sub_81304EC
+	bl battle_drawFolderScreen
 	bl t4_loadSceneBackground
 	mov r0, #4
 	strb r0, [r5,#2]
@@ -1256,7 +1256,7 @@ loc_812F9A6::
 	bl sub_8130208
 	bl sub_8130250
 	bl t4_refreshChipPackBuffer
-	bl sub_81304EC
+	bl battle_drawFolderScreen
 	bl t4_loadSceneBackground
 	b loc_812F9FA
 loc_812F9DE::

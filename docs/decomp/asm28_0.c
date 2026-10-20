@@ -696,7 +696,7 @@ signed int sub_809A630()
 
 
 // 0x809a6a4
-signed int sub_809A6A4()
+signed int object_updateChatboxProgressSprites()
 {
     int v0; // r5
     int v1; // r10
@@ -809,7 +809,7 @@ signed int sub_809A784()
 
 
 // 0x809a7b0
-signed int sub_809A7B0()
+signed int npc_chipTraderStep()
 {
     int v0; // r5
     int v1; // r0
@@ -2128,7 +2128,7 @@ int sub_809CA84()
 
 
 // 0x809cb68
-int __fastcall sub_809CB68(int a1, int a2, int a3)
+int __fastcall pet_runEffect0AndChatbox30(int a1, int a2, int a3)
 {
     void *v3; // r5
     int result; // r0
@@ -2191,7 +2191,7 @@ LABEL_10:
 
 
 // 0x809cc00
-signed int sub_809CC00()
+signed int battle_waitLink()
 {
     int v0; // r5
     int v1; // r1

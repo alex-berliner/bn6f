@@ -990,7 +990,7 @@ byte_8099F75:
 cutscenescript_8099F7A:
 	.word 0x09A44D4B, 0x01091C08, cutscenescript_8099F5F, 0x09A5214B, 0x00091C08, 0x08099F7A, 0xAF01091C, 0x4B08099F
 	.word sub_809A784+1, 0x4B01FF02, sub_809A4EC+1, 0x4B043F3B, chatbox_uncompMapTextArchives_803FD54+1, 0x4B880400, sub_809A75C+1, 0xD001091C
-	.word 0x4B08099F, sub_809A7B0+1, 0x9901091C, 0x1C08099F, 0x9F750009, 0x314B0809, 0x4B0809A6, sub_809A6A4+1
+	.word 0x4B08099F, npc_chipTraderStep+1, 0x9901091C, 0x1C08099F, 0x9F750009, 0x314B0809, 0x4B0809A6, object_updateChatboxProgressSprites+1
 	.word 0x09A6ED4B, 0x01091C08, byte_8099F75, 0x09A4B94B, 0x01FF0208, 0x09A4ED4B, 0x043F3B08, 0x03FD554B
 	.byte 0x08
 	.byte 0x00
@@ -1852,9 +1852,9 @@ off_809A6A0:
 // symdb: Per-frame object update: bumps a step byte at [r5+4] by 0x10 up to 0x60, then on reaching the cap snapshots the chatbox's 0x4C halfword/0x50 byte into [r5+6]/[r5+5], slides three sprites at id (counter-0x30), runs entity/sprite updates plus sub_809A80C on [r5+0x74], and returns 0 until EVENT_F5 is set (1 after).
 // symdb: (r5 = object record, preloaded by caller) -> r0 = 0 while EVENT_F5 clear, 1 once set; no other
 // symdb: outputs
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A6A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateChatboxProgressSprites.yaml
 	thumb_local_start
-sub_809A6A4:
+object_updateChatboxProgressSprites:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	add r0, #0x10
@@ -1887,7 +1887,7 @@ loc_809A6E6:
 	mov r0, #1
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_809A6A4
+	thumb_func_end object_updateChatboxProgressSprites
 
 	thumb_local_start
 sub_809A6EC:
@@ -1994,9 +1994,9 @@ loc_809A7A6:
 // symdb: Per-frame step handler for the Chip Trader NPC object: counts down obj+0xC by tick while updating an animation counter at obj+0x70 and stepping sub_809A80C; once expired, waits for chatbox bit 0x20 to clear, then runs the Chip Trader text script, clears EVENT_1725, sets state byte 8 at obj+0x84, and returns 0.
 // symdb: (r5 = chip trader object) -> r0 = 0 when it just started/finished the chatbox interaction, 1
 // symdb: while still waiting; no flags of use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809A7B0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_chipTraderStep.yaml
 	thumb_local_start
-sub_809A7B0:
+npc_chipTraderStep:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0xc]
 	sub r0, #1
@@ -2039,7 +2039,7 @@ loc_809A802:
 	bl sub_809A80C
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_809A7B0
+	thumb_func_end npc_chipTraderStep
 
 	thumb_local_start
 sub_809A80C:
@@ -4944,7 +4944,7 @@ byte_809CAD8:
 	cs_nop_80377d0
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_1731
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
-	cs_call_native_with_return_value ptr1=sub_809CB68+1
+	cs_call_native_with_return_value ptr1=pet_runEffect0AndChatbox30+1
 	cs_call_native_with_return_value ptr1=sub_809CB88+1
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809CB0D
 	cs_jump_if_var_equal byte1=0x08 byte2=0x02 destination3=cutscenescript_809CB03
@@ -4957,7 +4957,7 @@ cutscenescript_809CB03:
 	cs_end_for_map_reload_maybe_8037c64
 
 byte_809CB0D:
-	cs_call_native_with_return_value ptr1=sub_809CC00+1
+	cs_call_native_with_return_value ptr1=battle_waitLink+1
 	cs_pause byte1=0xFF byte2=0x01
 	cs_jump_if_var_equal byte1=0x08 byte2=0x01 destination3=byte_809CB28
 
@@ -4995,9 +4995,9 @@ cutscenescript_809CB49:
 
 // symdb: Triggers PET effect 0, sets bit 0x80 on eStruct2001010, runs chatbox script 30 of archive 4, then zeroes byte at [r5,#8] and word at [r5,#0x70] of a caller-provided struct.
 // symdb: (r0 unused; r5 from caller = state struct) -> void; r0-r3, r12 clobbered by calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CB68.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_runEffect0AndChatbox30.yaml
 	thumb_local_start
-sub_809CB68:
+pet_runEffect0AndChatbox30:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl doPETEffect_8033fc0
@@ -5010,7 +5010,7 @@ sub_809CB68:
 	strb r0, [r5,#8]
 	str r0, [r5,#0x70]
 	pop {r4-r7,pc}
-	thumb_func_end sub_809CB68
+	thumb_func_end pet_runEffect0AndChatbox30
 
 	thumb_local_start
 sub_809CB88:
@@ -5072,9 +5072,9 @@ dword_809CBFC:
 // symdb: Per-frame wait step on a battle object: on first call clears IWRAM state, resets battle state, and seeds sub_803F512; subsequently polls link state and ticks a halfword countdown at word_200AD06 until ready, then stores a flag at object +0x08, mirrors it into IWRAM via setByte_200AD04, and (if set) queues chatbox script index 0x22 via chatbox_runScript; returns 1 while waiting, 0 once done.
 // symdb: (r5 = object/state pointer, r0 unused) -> r0 = 1 while still waiting/initializing, 0 once the
 // symdb: script was queued; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CC00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitLink.yaml
 	thumb_local_start
-sub_809CC00:
+battle_waitLink:
 	push {r4-r7,lr}
 	ldr r0, [r5,#0x70]
 	tst r0, r0
@@ -5123,7 +5123,7 @@ locret_809CC58:
 	.balign 4, 0
 off_809CC5C:
 	.word word_200AD04
-	thumb_func_end sub_809CC00
+	thumb_func_end battle_waitLink
 
 	thumb_local_start
 sub_809CC60:

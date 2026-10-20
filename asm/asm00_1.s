@@ -6262,9 +6262,9 @@ ow_startWarpTransition:
 
 // symdb: Starts a map warp: snapshots the current map group and player position into game state, triggers a screen fade, and sets the subsystem index so the next reload restores the destination scene.
 // symdb: () -> void; no args or return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8005EA2.yaml
-	thumb_func_start sub_8005EA2
-sub_8005EA2:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startMapTransition.yaml
+	thumb_func_start startMapTransition
+startMapTransition:
 	push {r4-r7,lr}
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -6284,7 +6284,7 @@ sub_8005EA2:
 
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_8005EA2
+	thumb_func_end startMapTransition
 
 // symdb: Hands off the overworld player's position and facing to the game state, then requests the mail subsystem (0x34) and starts a screen fade.
 // symdb: void subsystem_launchMail(int r0, void *r10); // returns 0 in r0; r10 is the toolkit pointer;
@@ -10872,7 +10872,7 @@ off_8007EA8:
 off_8007EAC:
 	.word battle_showCommError+1
 	.word sub_8007F14+1
-	.word sub_8007F2C+1
+	.word battle_initNextState+1
 	thumb_func_end battle_runFrame
 
 // symdb: Aborts an ongoing battle as a link/communication error: pauses the battle, resets the link hardware, shows the appropriate comm-error message, and switches the battle state to 4.
@@ -10940,9 +10940,9 @@ locret_8007F2A:
 // symdb: Waits for the screen fade to clear, then stops the battle BGM, frees type-0x1A objects, and writes oBattleState_Index_00=8 / oBattleState_Index_01=4 with a zeroed phase field to defer into the next battle state.
 // symdb: (r0 = unused/scratch, r5 = battle state struct pointer set by caller) -> r0 = clobbered; sets
 // symdb: battle state fields, no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8007F2C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNextState.yaml
 	thumb_local_start
-sub_8007F2C:
+battle_initNextState:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	tst r0, r0
@@ -10963,7 +10963,7 @@ sub_8007F2C:
 	strh r0, [r5,#oBattleState_StatePhaseAndInitFlag]
 locret_8007F4C:
 	pop {pc}
-	thumb_func_end sub_8007F2C
+	thumb_func_end battle_initNextState
 
 	thumb_local_start
 sub_8007F4E: // (self: * BattleState $r5) -> ()
@@ -11768,7 +11768,7 @@ off_8008508:
 	.word battle_dispatchNextPhase+1
 	.word e_dispatchUpdateByState+1
 	.word sub_8008764+1
-	.word sub_80087D8+1
+	.word battle_effectWaitDispatch+1
 	.word battle_introStepDispatch+1
 	.word npc_checkRecordFlagFinish+1
 off_8008524:
@@ -12161,9 +12161,9 @@ locret_80087D6:
 // symdb: Battle-state handler that, on first entry dispatches battle sub-effect kind 0x1C and arms a ~102-frame counter (phase 4), then waits while the cross-net partner is not ready; once the wait elapses it branches on GetBattleEffects bit 0x400 to either route to next state 8/0xC via sub_800AF50's result, or write phase 3 to [r5+4] and the battle-end substate.
 // symdb: (r5 = battle state struct {+0 next-state word, +3 phase byte, +4 phase byte, +8 frame counter
 // symdb: halfword}; r10 = toolkit) -> writes next state; flags unused
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80087D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_effectWaitDispatch.yaml
 	thumb_local_start
-sub_80087D8:
+battle_effectWaitDispatch:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12214,7 +12214,7 @@ loc_8008834:
 	strb r0, [r1,#oGameState_BattleEndSubState]
 locret_800883E:
 	pop {pc}
-	thumb_func_end sub_80087D8
+	thumb_func_end battle_effectWaitDispatch
 
 // symdb: Runs the next step of the battle intro/end state machine by dispatching the handler selected from a step table.
 // symdb: (r0 = state struct in r5, step id at [r5,#2]) -> jumps to handler table entry
@@ -12824,7 +12824,7 @@ sub_8008C58:
 off_8008C68:
 	.word off_8008C6C
 off_8008C6C:
-	.word sub_8008C7C+1
+	.word battle_stepCrossNetBattleStart+1
 	.word sub_8008CAC+1
 	.word battle_effectWaitCrossNetReady+1
 	.word sub_8008CEE+1
@@ -12833,9 +12833,9 @@ off_8008C6C:
 // symdb: Battle step state machine that on first entry dispatches effect 0x54 and clears flag bits 0x4C43, then polls comm_checkCrossNetBattleReady and writes 4 to r5+2 while the linked partner is not ready, returning once the partner is ready.
 // symdb: (no args; r5 = battle step/state struct) -> r0 clobbered; writes state fields and returns when
 // symdb: partner ready or not, flags from tst/cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008C7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepCrossNetBattleStart.yaml
 	thumb_local_start
-sub_8008C7C:
+battle_stepCrossNetBattleStart:
 	push {lr}
 	ldrb r0, [r5,#3]
 	tst r0, r0
@@ -12858,7 +12858,7 @@ loc_8008C9E:
 	strh r0, [r5,#2]
 locret_8008CAA:
 	pop {pc}
-	thumb_func_end sub_8008C7C
+	thumb_func_end battle_stepCrossNetBattleStart
 
 	thumb_local_start
 sub_8008CAC:

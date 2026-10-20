@@ -586,7 +586,7 @@ void sub_812F530()
 											sub_8130208();
 											sub_813064C();
 											sub_8130810();
-											sub_81304EC();
+											battle_drawFolderScreen();
 											t4_loadSceneBackground();
 											*(v0 + 2) = 4;
 										}
@@ -983,7 +983,7 @@ void sub_812F920()
                                         sub_8130208();
                                         sub_8130250();
                                         t4_refreshChipPackBuffer();
-                                        sub_81304EC();
+                                        battle_drawFolderScreen();
                                         t4_loadSceneBackground();
                                     }
                                 }

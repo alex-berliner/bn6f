@@ -1723,7 +1723,7 @@ int sprite_shieldUpdate_8124DCC()
 
 
 // 0x8124e24
-int sub_8124E24()
+int battle_tickChipFolderScreen()
 {
     int v0; // r5
     int v1; // r0
@@ -1818,7 +1818,7 @@ int battle_updateSceneFrame()
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     v2 = 0;
     v3 = *(v0 + 92);
     if ( v3 == 39 )
@@ -1860,7 +1860,7 @@ int battle_updateIntroState()
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
     bg_drawArenaTiles_8125E78();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     v2 = 0;
     v3 = *(v0 + 100);
     if ( v3 == 15 )
@@ -1899,7 +1899,7 @@ int sub_8124F8C()
     submenu_handleEntryScreenInput(30, v1, v2);
     sub_81268D8();
     battle_runTransition_8125444();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     battle_transitionAnimQueueOam();
     v3 = 0;
     v4 = *(v0 + 96);
@@ -1936,7 +1936,7 @@ int sub_8124FE0()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     sub_8126114();
     v2 = 0;
     v3 = *(v0 + 96);
@@ -1978,7 +1978,7 @@ int sub_812503C()
     }
     *(v0 + 112) = 255;
     battle_runTransition_8125444();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     sub_8126114();
     v2 = 0;
     v3 = *(v0 + 104);
@@ -2057,7 +2057,7 @@ int __fastcall battle_transitionStepWaitForFade(int a1)
 
 
 // 0x8125128
-int __fastcall sub_8125128(int a1)
+int __fastcall battle_drawIntroScene(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -2088,7 +2088,7 @@ int __fastcall battle_transitionAnimUpdate(int a1)
     sub_812674C();
     sprite_queueBattleOamEntry();
     battle_runTransition_8125444();
-    sub_8125F5C();
+    battle_redrawChipSelectScrollColumn();
     battle_transitionAnimQueueOam();
     result = IsPaletteFadeActive();
     if ( !v3 )
@@ -3187,7 +3187,7 @@ int bg_drawArenaTiles_8125E78()
 
 
 // 0x8125f5c
-int sub_8125F5C()
+int battle_redrawChipSelectScrollColumn()
 {
     int v0; // r5
     int result; // r0
@@ -6453,7 +6453,7 @@ int __fastcall sub_8129104(int result, __int16 a2)
 // 0x81291d8
 int sub_81291D8()
 {
-    return sub_812A76C();
+    return battle_tutorialStepCheckChipSelection();
 }
 
 
@@ -6739,7 +6739,7 @@ int battle_updateEntitiesAndStartFadeOut()
 
 
 // 0x812954c
-int sub_812954C()
+int battle_endBattleSave()
 {
     int v0; // r5
     int result; // r0
@@ -8721,7 +8721,7 @@ int sub_812A758()
 
 
 // 0x812a76c
-int sub_812A76C()
+int battle_tutorialStepCheckChipSelection()
 {
     int v0; // r5
     int v1; // r0
@@ -9029,7 +9029,7 @@ LABEL_47:
 
 
 // 0x812aac0
-int sub_812AAC0()
+int chatbox_runLinkPairSceneStep()
 {
     int v0; // r5
     char v1; // zf
@@ -9958,7 +9958,7 @@ signed int sub_812B608()
     v4 = v2 >> 8;
     if ( v2 < 192 && v4 < 22 )
     {
-        sub_812B768(v2, v4);
+        battle_startBattle(v2, v4);
         result = 4;
         *(v0 + 2) = 4;
     }
@@ -10083,7 +10083,7 @@ int sub_812B758()
 
 
 // 0x812b768
-int __fastcall sub_812B768(int a1, int a2)
+int __fastcall battle_startBattle(int a1, int a2)
 {
     int v2; // r5
     char *v3; // r0
@@ -10497,7 +10497,7 @@ int sub_812BC14()
 
 
 // 0x812bc38
-void sub_812BC38()
+void submenu_chipLibraryMergeNewFlags()
 {
     int v0; // r5
     int v1; // r10
@@ -10728,7 +10728,7 @@ int __fastcall sub_812BEEC(int a1, int a2, int a3)
 
 
 // 0x812bf10
-void sub_812BF10()
+void rfu_menuHandleCancelBtn()
 {
     _BYTE *v0; // r5
     char v1; // zf

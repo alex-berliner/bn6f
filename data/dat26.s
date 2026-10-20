@@ -468,7 +468,7 @@ cutscenescript_8092940:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D31
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
-	cs_call_native_with_return_value ptr1=sub_8143978+1
+	cs_call_native_with_return_value ptr1=ow_groundmanMinigameTick+1
 	cs_call_native_with_return_value ptr1=e_setCutsceneActive+1
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
@@ -502,7 +502,7 @@ cutscenescript_8092A34:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D31
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
-	cs_call_native_with_return_value ptr1=sub_8143978+1
+	cs_call_native_with_return_value ptr1=ow_groundmanMinigameTick+1
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_play_music hword1=0xFFFF
 	cs_call_native_with_return_value ptr1=call_8143F3C+1
@@ -621,7 +621,7 @@ cutscenescript_8092B24:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D31
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
-	cs_call_native_with_return_value ptr1=sub_8143978+1
+	cs_call_native_with_return_value ptr1=ow_groundmanMinigameTick+1
 	cs_call_native_with_return_value ptr1=e_setCutsceneActive+1
 	cs_ow_player_sprite_special_with_arg byte1=0x04 byte2=0xFF byte3=0x04
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x04
@@ -652,7 +652,7 @@ cutscenescript_8092C20:
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D31
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_D30
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_D36
-	cs_call_native_with_return_value ptr1=sub_8143978+1
+	cs_call_native_with_return_value ptr1=ow_groundmanMinigameTick+1
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_play_music hword1=0xFFFF
 	cs_call_native_with_return_value ptr1=call_8143F3C+1

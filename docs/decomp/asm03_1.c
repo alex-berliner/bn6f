@@ -157,7 +157,7 @@ void __noreturn ow_drawHudOverlays()
 
 
 // 0x8033b6e
-void __noreturn sub_8033B6E()
+void __noreturn ow_drawOverworldHud()
 {
     internet_drawHpDigits_8033E0C();
 }
@@ -6080,7 +6080,7 @@ signed int __fastcall __noreturn sub_8039694(int a1, int a2, int a3, int a4)
 
 
 // 0x803970c
-void __noreturn sub_803970C()
+void __noreturn network_advanceScriptAfterFade()
 {
     int v0; // r5
     char v1; // zf
@@ -6263,7 +6263,7 @@ int sub_8039888()
     int v4; // r1
     int v5; // r2
 
-    if ( *(*(v1 + oToolkit_JoypadPtr) + 2) & 4 || (result = sub_80398DC(), v3) )
+    if ( *(*(v1 + oToolkit_JoypadPtr) + 2) & 4 || (result = battle_stepEventScript(), v3) )
     {
         engine_setScreeneffect(4, 255);
         PlaySoundEffect(215, v4, v5);
@@ -6294,7 +6294,7 @@ int sub_80398B0()
 
 
 // 0x80398dc
-signed int sub_80398DC()
+signed int battle_stepEventScript()
 {
     int v0; // r5
     signed int v1; // r4
@@ -6814,7 +6814,7 @@ int __fastcall sub_8039D9A(int a1)
 
 
 // 0x8039db4
-int __fastcall sub_8039DB4(int a1)
+int __fastcall battle_transitionToStart(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -8137,7 +8137,7 @@ signed int jackInPetMenuSelectState_803AAA0()
 
 
 // 0x803aad8
-signed int __fastcall sub_803AAD8(int a1, int a2, int a3)
+signed int __fastcall submenu_showNetworkResultText(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r4
@@ -8362,7 +8362,7 @@ void __noreturn battle_startInit()
 
 
 // 0x803ac78
-void __noreturn sub_803AC78()
+void __noreturn battle_initStateAndModule()
 {
     _BYTE *v0; // r5
     char v1; // zf
@@ -8505,7 +8505,7 @@ signed int handleMenuAction90_803AD80()
 
 
 // 0x803adb8
-signed int __fastcall sub_803ADB8(int a1, int a2, int a3)
+signed int __fastcall submenu_showScriptAndSetPhase2C(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r4
@@ -8717,7 +8717,7 @@ void __noreturn sub_803AF1C()
 
 
 // 0x803af46
-void __noreturn sub_803AF46()
+void __noreturn battle_chatboxWaitAndFade()
 {
     int v0; // r5
     char v1; // zf
@@ -8757,7 +8757,7 @@ void __noreturn battle_condInitModule()
 
 
 // 0x803af90
-void __noreturn sub_803AF90()
+void __noreturn battle_waitFadeThenInit()
 {
     _BYTE *v0; // r5
     char v1; // zf

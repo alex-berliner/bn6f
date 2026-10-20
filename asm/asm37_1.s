@@ -3569,9 +3569,9 @@ byte_8143960:
 // symdb: Groundman minigame overworld tick: sets event flags 0x1670..0x169F, returns early if sub_8143C18's flag is set, updates a coordinate state, spawns overworld map object 0x2B for each per-map grid entry whose flag is unset, and if EVENT_D36 is set starts the cutscene script at byte_8093358 (param 0) before clearing D30/D34/D35/D36.
 // symdb: () -> r0 = 0; no flags guaranteed — clears event flags 0x1670..0x169F, D30, D34, D35, D36 and
 // symdb: spawns overworld map objects
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143978.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_groundmanMinigameTick.yaml
 	thumb_local_start
-sub_8143978:
+ow_groundmanMinigameTick:
 	push {r4-r7,lr}
 	movflag EVENT_1670
 	mov r2, #0x30 
@@ -3661,14 +3661,14 @@ off_8143A4C:
 	.word off_8143804
 off_8143A50:
 	.word byte_8093358 // CutsceneScript
-	thumb_func_end sub_8143978
+	thumb_func_end ow_groundmanMinigameTick
 
 // symdb: GroundMan minigame cutscene dispatcher: checks the player may auto-advance, progresses event flags D34/D35, then selects and starts one of several cutscenes (byte_8092DE8/byte_80933B8/dword_8143B1C table/byte_809326C) gated by sub_8143BB0, sub_8143D4C and sub_8143F72, always clearing D34/D35 on exit.
 // symdb: () -> void; flags: event flags D34/D35 modified, ZF from check_playerCanAdvanceForward controls
 // symdb: early exit
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143A54.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_groundmanStartCutscene.yaml
 	thumb_local_start
-sub_8143A54:
+ow_groundmanStartCutscene:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq loc_8143B04
@@ -3754,7 +3754,7 @@ off_8143B28:
 	.word byte_809326C // CutsceneScript
 off_8143B2C:
 	.word byte_80933B8 // CutsceneScript
-	thumb_func_end sub_8143A54
+	thumb_func_end ow_groundmanStartCutscene
 
 	thumb_local_start
 GetGroundmanMinigameMapIndex:

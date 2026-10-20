@@ -31,7 +31,7 @@ signed int __fastcall battle_initChipSearchList(int a1, int a2, int a3, int a4)
 
 
 // 0x812d3e4
-int sub_812D3E4()
+int battle_renderChipPackScreenTilemap()
 {
 	char *v0; // r7
 

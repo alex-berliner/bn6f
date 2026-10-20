@@ -3668,7 +3668,7 @@ signed int ow_startWarpTransition()
 
 
 // 0x8005ea2
-int sub_8005EA2()
+int startMapTransition()
 {
     int v0; // r10
     int v1; // r5
@@ -6333,7 +6333,7 @@ int sub_8007F14()
 
 
 // 0x8007f2c
-int sub_8007F2C()
+int battle_initNextState()
 {
     int v0; // r5
     int result; // r0
@@ -7271,7 +7271,7 @@ int sub_8008764()
 
 
 // 0x80087d8
-int sub_80087D8()
+int battle_effectWaitDispatch()
 {
     int v0; // r5
     int v1; // r10
@@ -7784,7 +7784,7 @@ int sub_8008C58()
 
 
 // 0x8008c7c
-int sub_8008C7C()
+int battle_stepCrossNetBattleStart()
 {
     int v0; // r5
     int result; // r0

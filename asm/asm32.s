@@ -989,7 +989,7 @@ off_810E120:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_updateBehavior+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word ai_finishAttackByElement+1
@@ -1817,7 +1817,7 @@ off_810E7B0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchSweepState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_810E4D4+1
@@ -2815,7 +2815,7 @@ off_810F010:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_810F0C0+1
 	.word sub_81097D6+1
 	.word battle_aiAttackDispatch_810ED70+1
@@ -3211,7 +3211,7 @@ off_810F39C:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchStateScript+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_810F2EC+1
@@ -4384,7 +4384,7 @@ dword_810FDAC:
 	thumb_func_end sub_810FD90
 
 // symdb: Clears a battle object's collision region when its collision flags indicate a hit, then performs an unknown follow-up call.
-// symdb: (r5 = battle object) -> r0 = return of sub_8016B72; no flags of interest
+// symdb: (r5 = battle object) -> r0 = return of battle_hoverBobObjectUpdate; no flags of interest
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_clearRegionIfCollided.yaml
 	thumb_local_start
 object_clearRegionIfCollided:
@@ -4398,7 +4398,7 @@ object_clearRegionIfCollided:
 	beq loc_810FDC4
 	bl object_clearCollisionRegion // () -> void
 loc_810FDC4:
-	bl sub_8016B72
+	bl battle_hoverBobObjectUpdate
 	pop {pc}
 	.balign 4, 0
 dword_810FDCC:
@@ -5308,7 +5308,7 @@ off_81104D4:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_snakearmDispatchTick+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_dispatchAttackState+1
@@ -6485,7 +6485,7 @@ off_8110DC0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_scriptDispatch+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_dispatchAttackHandlerByElement+1
@@ -7096,7 +7096,7 @@ off_8111330:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_battlesweepUpdate+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word ai_sweepAttackDispatch+1
@@ -8486,7 +8486,7 @@ off_8111DC0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_8111DFC+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_dispatchAttackStep+1
@@ -8974,7 +8974,7 @@ off_81121F0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_runStateDispatch+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_81120E4+1
@@ -9932,7 +9932,7 @@ off_81129A0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word snakearm_dispatchScriptStep+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_81127C8+1
@@ -10898,7 +10898,7 @@ sub_81130FC:
 sub_8113108:
 	push {lr}
 	bl sub_8113114
-	bl sub_8016B72
+	bl battle_hoverBobObjectUpdate
 	pop {pc}
 	thumb_func_end sub_8113108
 
@@ -11486,7 +11486,7 @@ off_81135CC:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_811365A+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_8113330+1
@@ -12426,7 +12426,7 @@ off_8113D50:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_8113DD8+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_8113840+1
@@ -13638,7 +13638,7 @@ snakearmAttackTable_8114710:
 	.word battleObject_initAndRunAI_8016B02+1 // 0x4
 	.word battleObjectStateDispatcher_8016CE8+1 // 0x5
 	.word battle_objectStatePendingCommit+1 // 0x6
-	.word sub_8016B72+1 // 0x7
+	.word battle_hoverBobObjectUpdate+1 // 0x7
 	.word snakearmAI_main_update_81147F4+1 // 0x8
 	.word snakearmAI_attack0x9_8114EFC+1 // 0x9
 	.word snakearmAI_attack0xa_81144B4+1 // 0xa
@@ -15302,7 +15302,7 @@ off_81154F0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchScriptState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word sub_8109804+1
@@ -15825,7 +15825,7 @@ off_8115950:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchBeastSpHandler+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	.word ai_attackDispatchByHitElement6+1
@@ -16364,7 +16364,7 @@ off_8115DE0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word sub_8115E4C+1
 	.word genericAI_exitAttackStateAffterDelay_81097B4+1
 	.word sub_8115CD8+1
@@ -17031,7 +17031,7 @@ off_81163F0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word battle_runAiStateScriptAndGauge+1
 	thumb_func_end battle_despawnObject
 
@@ -17295,7 +17295,7 @@ off_81166B0:
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
 	.word battle_objectStatePendingCommit+1
-	.word sub_8016B72+1
+	.word battle_hoverBobObjectUpdate+1
 	.word battle_updateCustGauge_8116720+1
 // symdb: Hides the battle object off-field at panel X=7 and stores a 0x4000/MaxHP fixed-point reciprocal at object+0x80.
 // symdb: (r5 = battle object, no args) -> r0 = 0x4000/MaxHP stored to [r5+0x80]; object moved to panel
@@ -19672,7 +19672,7 @@ sub_8117780:
 off_8117790:
 	.word off_8117794
 off_8117794:
-	.word sub_81177A4+1
+	.word initSpawnedObject+1
 	.word object_updateSpriteAnimState+1
 	.word sub_8117818+1
 off_81177A0:
@@ -19682,9 +19682,9 @@ off_81177A0:
 // symdb: Initializer handler for an object: sets type/state byte to 0x23, attaches sprite 0xF from byte_202FA04 via initGuiSprite, clears field +0xC, configures sprite (setAnimation, loadAnimationData, noShadow, palette bank 8, sub-record field A = 1, OAM priority 0), stores halfword 0x40 into a slot, sets field +8 = 4, then tail-calls sub_81177EC.
 // symdb: (r5 = current object struct) -> void; calls initGuiSprite with (0xF, &byte_202FA04) to attach
 // symdb: sprite data
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81177A4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initSpawnedObject.yaml
 	thumb_local_start
-sub_81177A4:
+initSpawnedObject:
 	push {lr}
 	mov r1, #0x23
 	strb r1, [r5]
@@ -19713,7 +19713,7 @@ off_81177E4:
 	.word byte_202FA04
 off_81177E8:
 	.word 0x40
-	thumb_func_end sub_81177A4
+	thumb_func_end initSpawnedObject
 
 // symdb: Per-frame update for a fixed-position sprite object: recomputes an animation index each frame, applies it only when it changed, then runs the sprite update.
 // symdb: () -> void; uses r5 as object struct (field 0xC = cached animation index), no return value used
@@ -21476,7 +21476,7 @@ off_81183E8:
 	.word battle_beastOutTransformUpdate+1
 	.word sub_81184A8+1
 	.word sub_8118550+1
-	.word sub_811857C+1
+	.word battle_beastOutTransformEndStep+1
 	.word battle_beastOutTransformUpdate+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_81185A8+1
@@ -21677,9 +21677,9 @@ loc_811855E:
 // symdb: Final step of the beast-out transformation: clear byte [r5+0xC], pick next state 1 or 0x23 based on cutscene flag bit 0x80 (set→1, clear→0x23), set sprite alpha 0xA, reset color shader, advance the scrolling strips, refresh palette from the 0x0201DA80 table, and return sub_8118658's result.
 // symdb: (r0 = work struct in r5, r0 = flag mask 0x80 passed to mask_eFlags2009F38) -> r0 = result of
 // symdb: sub_8118658; writes [r5]=next state (1 or 0x23), [r5+0xC]=0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811857C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beastOutTransformEndStep.yaml
 	thumb_local_start
-sub_811857C:
+battle_beastOutTransformEndStep:
 	push {lr}
 	mov r4, #1
 	mov r0, #0x80
@@ -21697,7 +21697,7 @@ loc_811858A:
 	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl battle_beastSpBuildSpriteMaskFromFlagTable
 	pop {pc}
-	thumb_func_end sub_811857C
+	thumb_func_end battle_beastOutTransformEndStep
 
 	thumb_local_start
 sub_81185A8:
@@ -23776,7 +23776,7 @@ loc_8119520:
 	b loc_8119548
 loc_8119542:
 	ldrh r0, [r5,#0xe]
-	bl sub_8010C76
+	bl getChipScaleOrRaw
 loc_8119548:
 	ldr r1, [sp]
 	bl sub_8119594
@@ -24917,7 +24917,7 @@ off_8119D64:
 	.word off_8119D68
 off_8119D68:
 	.word sub_8119D74+1
-	.word sub_8119DE8+1
+	.word ow_updateEventObjectSprite+1
 	.word sub_8119E38+1
 	thumb_func_end sub_8119D54
 
@@ -24948,7 +24948,7 @@ loc_8119D86:
 	bl sprite_setSubRecordFieldA_8003060
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_8119DE8
+	bl ow_updateEventObjectSprite
 	pop {pc}
 	.balign 4, 0
 dword_8119DBC:
@@ -24966,9 +24966,9 @@ byte_8119DC8:
 // symdb: (r0 = 0 hardcoded entry index; r5 = pointer receiving the object's status byte, likely its own
 // symdb: struct+0) -> r0 = sprite_update result; status byte written with bit 0x80 set, or 1 when neither
 // symdb: event flag is set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8119DE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_updateEventObjectSprite.yaml
 	thumb_local_start
-sub_8119DE8:
+ow_updateEventObjectSprite:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl getStructFrom2008450
@@ -25000,7 +25000,7 @@ loc_8119E1A:
 	bl sprite_update
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8119DE8
+	thumb_func_end ow_updateEventObjectSprite
 
 	thumb_local_start
 sub_8119E38:
@@ -25786,7 +25786,7 @@ sub_811A358:
 	push {lr}
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811A3AC
+	bl initGuiSprite_subEntry
 	mov r0, #0
 	strb r0, [r5,#0xc]
 	strb r0, [r5,#0xd]
@@ -25838,9 +25838,9 @@ sub_811A3A4:
 
 // symdb: Initializes a fixed GUI sprite at unk_201D700 for the caller-supplied object: sets object state byte 0x23, attaches the sprite via initGuiSprite_8002770, then sets animation 0 (plus loadAnimationData), no shadow, palette 0, OAM priority 2, and via slotList_storeHalfwordAndClearField_800306C writes 0 to dword_811A3E8, then sub-entry palette bank 8 and sub-record field A 3.
 // symdb: (r5 = object/base pointer, r0-r3 clobbered) -> r0 = 0; sets [r5]=0x23
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A3AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initGuiSprite_subEntry.yaml
 	thumb_local_start
-sub_811A3AC:
+initGuiSprite_subEntry:
 	push {r4,r5,lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -25867,7 +25867,7 @@ dword_811A3E8:
 	.word 0x0
 off_811A3EC:
 	.word unk_201D700
-	thumb_func_end sub_811A3AC
+	thumb_func_end initGuiSprite_subEntry
 
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
@@ -26561,16 +26561,16 @@ sub_811A858:
 off_811A868:
 	.word off_811A86C
 off_811A86C:
-	.word sub_811A878+1
+	.word initSpriteObj23+1
 	.word sub_811A8D0+1
 	.word sub_811A8EC+1
 	thumb_func_end sub_811A858
 
 // symdb: Initializes GUI sprite object 0x23 using graphic eGuiSprite2022FA0 (sprite 0x2B): runs a sub-init (sub_811A940 with 0,6), then sets palette 0, OAM priority 2, slot halfword 0x1D0, sub-entry palette bank 0xA, sub-record +0xA=4, positions at (0x78,0x50,6), runs sub_811A914(0,6), writes state 4 to [r5+8], and finishes via sub_811A8D0.
 // symdb: () -> void; operates on a global object pointer in r5 (no args)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A878.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initSpriteObj23.yaml
 	thumb_local_start
-sub_811A878:
+initSpriteObj23:
 	push {lr}
 	mov r4, #0x23
 	strb r4, [r5]
@@ -26606,7 +26606,7 @@ off_811A8C8:
 	.word 0x1D0
 off_811A8CC:
 	.word eGuiSprite2022FA0
-	thumb_func_end sub_811A878
+	thumb_func_end initSpriteObj23
 
 	thumb_local_start
 sub_811A8D0:
@@ -28203,16 +28203,16 @@ off_811B4BC:
 	thumb_func_end sub_811B4AC
 
 jt_811B4C0:
-	.word sub_811B4CC+1
+	.word object_initVariantRowSprite+1
 	.word sprite_updateStateDispatch+1
 	.word sub_811B6D8+1
 
 // symdb: Initializes an object as type 0x23 with sprite resource 0x25; variant index in [r5+4] (0-8) selects a halfword from a 9-entry table passed to slotList_storeHalfwordAndClearField_800306C, a palette bank from the same index, and a y-coordinate from a 9-entry table for sprite_setCoordinates with x=0xB0.
 // symdb: (r5 = object ptr, [r5+4] = variant index 0-8) -> r0 = 0; sets sprite, palette, coordinates and
 // symdb: state fields on the object
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B4CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initVariantRowSprite.yaml
 	thumb_local_start
-sub_811B4CC:
+object_initVariantRowSprite:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -28270,7 +28270,7 @@ off_811B558:
 byte_811B55C:
 	.byte 0x2, 0x0, 0x14, 0x0, 0x26, 0x0, 0x38, 0x0, 0x4A, 0x0, 0x5C, 0x0
 	.byte 0x6E, 0x0, 0x80, 0x0, 0x92, 0x0, 0x0, 0x0
-	thumb_func_end sub_811B4CC
+	thumb_func_end object_initVariantRowSprite
 
 // symdb: Per-frame update for a sprite object: dispatches to one of two state handlers selected by the object's state byte, then runs shared post-update logic and sprite_update.
 // symdb: (r5 = object/sprite struct; state = [r5+9]) -> r0 destroyed; updates object state via handler,
@@ -28855,7 +28855,7 @@ sub_811B9B4:
 off_811B9C4:
 	.word off_811B9C8
 off_811B9C8:
-	.word sub_811B9D8+1
+	.word object_initGuiSprite+1
 	.word object_updateStateAndSprite+1
 	.word sub_811BAEC+1
 off_811B9D4:
@@ -28865,9 +28865,9 @@ off_811B9D4:
 // symdb: Initializes a GUI sprite object (resource 0x12): sets state 0x23, configures animation 6/no-shadow/priority 3, programs a slot halfword (0x300 or 0x260) selected by byte +3 and gated by byte +4, sets palette bank 0xB (or byte+3+0xB when the flag is set), writes +8=4, +9=4 or 0, +0xC=6, then tail-calls sub_811BA58.
 // symdb: (r5 = object struct; no register args) -> void; object state byte set to 0x23, fields +8/+9/+0xC
 // symdb: initialized
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B9D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initGuiSprite.yaml
 	thumb_local_start
-sub_811B9D8:
+object_initGuiSprite:
 	push {r4,lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -28924,7 +28924,7 @@ off_811BA4C:
 	.word 0x260
 off_811BA54:
 	.word unk_2025AE8
-	thumb_func_end sub_811B9D8
+	thumb_func_end object_initGuiSprite
 
 // symdb: Per-frame object update: runs a state handler from a jump table keyed by the object's state byte, then re-applies the state's animation and updates the sprite, unless the state is 4.
 // symdb: (r5 = object struct, byte #9 = state/animation id; r0/r1 scratch) -> r0 = undefined; called as
@@ -31175,7 +31175,7 @@ object_timerSfxTick:
 	strb r0, [r5,#5]
 	b loc_811CE18
 loc_811CE14:
-	bl sub_811D5F8
+	bl object_spawnCenteredSprite
 loc_811CE18:
 	mov r0, #0xf
 	strb r0, [r5,#0xc]
@@ -32189,9 +32189,9 @@ byte_811D5F2:
 
 // symdb: Decompresses a sprite resource into a static buffer, initializes it as a GUI sprite with resource 0x8F, sets animation 0, disables shadow, and positions it at (0x80, 0x80) on screen.
 // symdb: () -> void; r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D5F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_spawnCenteredSprite.yaml
 	thumb_local_start
-sub_811D5F8:
+object_spawnCenteredSprite:
 	push {r7,lr}
 	// src
 	ldr r0, off_811D62C // =comp_82FCA14
@@ -32218,7 +32218,7 @@ off_811D62C:
 	.word comp_82FCA14
 off_811D630:
 	.word unk_201AA00
-	thumb_func_end sub_811D5F8
+	thumb_func_end object_spawnCenteredSprite
 
 	thumb_func_start sub_811D634
 sub_811D634:
@@ -34274,7 +34274,7 @@ e_dispatchByState:
 off_811E6D0:
 	.word off_811E6D4
 off_811E6D4:
-	.word sub_811E6E4+1
+	.word initObjectSpriteType35+1
 	.word sprite_resetToCenter+1
 	.word sub_811E73C+1
 off_811E6E0:
@@ -34283,9 +34283,9 @@ off_811E6E0:
 
 // symdb: Initializes an object's sprite state for type 0x23: sets type byte, calls loc_8002774 with 0x63, animation 0 with data loaded, no shadow, palette bank 0xB, slot halfword 0x1F0, sub-record cleared, OAM priority 0, palette 0, byte 8 = 4, then calls sub_811E72C before returning.
 // symdb: (r5 = object pointer, implicit) -> void; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E6E4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initObjectSpriteType35.yaml
 	thumb_local_start
-sub_811E6E4:
+initObjectSpriteType35:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -34312,7 +34312,7 @@ sub_811E6E4:
 	.balign 4, 0
 off_811E728:
 	.word 0x1F0
-	thumb_func_end sub_811E6E4
+	thumb_func_end initObjectSpriteType35
 
 // symdb: Moves the current object's sprite to (120, 120) and refreshes it, a place-at-center-and-update helper.
 // symdb: () -> void; no arguments, acts on the engine's current object; no meaningful return
@@ -34483,7 +34483,7 @@ sub_811E858:
 off_811E868:
 	.word off_811E86C
 off_811E86C:
-	.word sub_811E87C+1
+	.word sprite_initObjectSprite+1
 	.word sprite_stepSetPos22462+1
 	.word sub_811E8D8+1
 off_811E878:
@@ -34492,9 +34492,9 @@ off_811E878:
 
 // symdb: One-shot initializer that sets object type byte 0x23, attaches sprite id 0x65 via loc_8002774, configures default render state (animation 0 with animation data load, no shadow, palette bank 0xF, slot halfword 0x290, sub-record field A 0, OAM priority 0, palette 0), then sets object byte 8 to 4 and tail-calls sub_811E8C4.
 // symdb: (r5 = object pointer, implicit) -> void; r0-r3 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E87C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initObjectSprite.yaml
 	thumb_local_start
-sub_811E87C:
+sprite_initObjectSprite:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -34521,7 +34521,7 @@ sub_811E87C:
 	.balign 4, 0
 off_811E8C0:
 	.word 0x290
-	thumb_func_end sub_811E87C
+	thumb_func_end sprite_initObjectSprite
 
 // symdb: Sprite-object step that runs an unknown action, snaps the object's sprite to the fixed position (224, 62) and refreshes it.
 // symdb: (no args, operates on current sprite object) -> void
@@ -34582,7 +34582,7 @@ sub_811E914:
 off_811E924:
 	.word off_811E928
 off_811E928:
-	.word sub_811E938+1
+	.word object_initKind23Entity+1
 	.word sub_811E980+1
 	.word sub_811E998+1
 off_811E934:
@@ -34592,9 +34592,9 @@ off_811E934:
 // symdb: Initializes a kind-0x23 object: writes kind byte, calls loc_8002774 with 0x66, runs the standard sprite init block (animation 0, load anim data, no shadow, palette bank 0xF, subrecord A=0, priority 0, palette 0), stores selector 0x2A8 via slotList, and sets byte [r5+8]=4 before tail-calling sub_811E980.
 // symdb: (r5 = object ptr, clobbers r0) -> r0 = result of last callee; object fields at [r5], [r5+8]
 // symdb: written
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E938.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initKind23Entity.yaml
 	thumb_local_start
-sub_811E938:
+object_initKind23Entity:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -34621,7 +34621,7 @@ sub_811E938:
 	.balign 4, 0
 off_811E97C:
 	.word 0x2A8
-	thumb_func_end sub_811E938
+	thumb_func_end object_initKind23Entity
 
 	thumb_local_start
 sub_811E980:
@@ -34657,7 +34657,7 @@ sub_811E9A0:
 off_811E9B0:
 	.word off_811E9B4
 off_811E9B4:
-	.word sub_811E9C4+1
+	.word object_initType23+1
 	.word sub_811EA0C+1
 	.word sub_811EA20+1
 off_811E9C0:
@@ -34667,9 +34667,9 @@ off_811E9C0:
 // symdb: Initializes a type-0x23 object in r5: sets kind byte, attaches sprite 0x67, selects animation 0, loads its animation data, disables shadow, sets sub-entry palette bank 0xF, stores halfword 0x250 into a slot list, clears sub-record field A, sets OAM priority 0 and palette 0, writes 4 to r5+8, then tail-calls sub_811EA0C.
 // symdb: (r5 = object struct pointer, preloaded by caller) -> r0 = value from tail-called sub_811EA0C; no
 // symdb: meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E9C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initType23.yaml
 	thumb_local_start
-sub_811E9C4:
+object_initType23:
 	push {lr}
 	mov r0, #0x23
 	strb r0, [r5]
@@ -34696,7 +34696,7 @@ sub_811E9C4:
 	.balign 4, 0
 off_811EA08:
 	.word 0x250
-	thumb_func_end sub_811E9C4
+	thumb_func_end object_initType23
 
 	thumb_local_start
 sub_811EA0C:
@@ -37525,7 +37525,7 @@ sub_811FF80:
 	cmp r2, r1
 	ble loc_811FFA8
 	mov r0, r4
-	bl sub_8010C76
+	bl getChipScaleOrRaw
 	mov r2, r0
 loc_811FFA8:
 	mov r1, #0

@@ -1885,9 +1885,9 @@ loc_8000F80:
 // symdb: When the save work area is reported invalid, sets EVENT_E00 and EVENT_1001, stores the incoming r0 at toolkit->S2001c04+0x18, and commits the 0x6710-byte EWRAM save buffer to SRAM via save_writeAndVerifyEWRAMToSRAM_803F79E.
 // symdb: (r0 = value stored into toolkit->S2001c04->field_0x18, likely a save/option word) -> r0 =
 // symdb: clobbered; flags from callees; returns early (bne) if init reports the existing save as valid
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8000F86.yaml
-	thumb_func_start sub_8000F86
-sub_8000F86:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_saveFresh.yaml
+	thumb_func_start init_saveFresh
+init_saveFresh:
 	push {r4-r7,lr}
 	mov r4, r0
 	bl toolkit_initAndVerifyWorkArea_0803F838 // () -> !zf
@@ -1904,7 +1904,7 @@ sub_8000F86:
 	bl save_writeAndVerifyEWRAMToSRAM_803F79E
 locret_8000FAA:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8000F86
+	thumb_func_end init_saveFresh
 
 // symdb: On entering a map, if the destination differs from the last map, or event flag 0x170C is set, clear the current battle data pointer and three overworld walk-step counters, then always clear flag 0x170C.
 // symdb: () -> ; side effects: may zero GameState.CurBattleDataPtr and three counters in S2001c04; clears

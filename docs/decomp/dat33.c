@@ -190,7 +190,7 @@ LABEL_34:
         }
     }
     sub_812D5A0();
-    sub_812D3E4();
+    battle_renderChipPackScreenTilemap();
     return submenu_drawScreenElement();
 }
 
@@ -1311,7 +1311,7 @@ LABEL_23:
         goto LABEL_22;
     }
 LABEL_24:
-    sub_812D3E4();
+    battle_renderChipPackScreenTilemap();
     return submenu_drawScreenElement();
 }
 
@@ -1417,7 +1417,7 @@ LABEL_32:
     result = 16;
     if ( *(v0 + 27) & 0x10 )
     {
-        sub_812D3E4();
+        battle_renderChipPackScreenTilemap();
         result = submenu_drawScreenElement();
     }
     return result;
@@ -1551,7 +1551,7 @@ int sub_812D164()
     else if ( result != 16 )
     {
         sub_812D5A0();
-        sub_812D3E4();
+        battle_renderChipPackScreenTilemap();
         result = submenu_drawScreenElement();
     }
     return result;

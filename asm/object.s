@@ -4139,16 +4139,16 @@ object_getEdgePanelMatchingRow:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	ldrb r1, [r5,#oBattleObject_DirectionFlip]
 	ldrb r2, [r5,#oBattleObject_PanelY]
-	bl sub_800D4D0
+	bl object_getPanelInFlipDirection
 	pop {pc}
 	thumb_func_end object_getEdgePanelMatchingRow
 
 // symdb: From a starting battle panel, scans along a direction keyed by the second entity's facing through a 2-entry {dx,dy} table, applies a flip-direction offset, and validates the resulting panel against the 6x3 grid.
 // symdb: (r0 = facing flag A (also direction-table index), r1 = facing flag B, r2 = starting panel) -> r0
 // symdb: = resulting panel (0 if none/check fails); Z flag = object_isValidPanel result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800D4D0.yaml
-	thumb_func_start sub_800D4D0
-sub_800D4D0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_getPanelInFlipDirection.yaml
+	thumb_func_start object_getPanelInFlipDirection
+object_getPanelInFlipDirection:
 	push {r4,lr}
 	sub sp, sp, #0x14
 	str r0, [sp]
@@ -4195,7 +4195,7 @@ off_800D528:
 byte_800D52C:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x20, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0
-	thumb_func_end sub_800D4D0
+	thumb_func_end object_getPanelInFlipDirection
 
 // symdb: Scans one row of the battle grid from an edge and returns the column of the first panel whose alliance differs from the given one (the alliance boundary / front line column).
 // symdb: (r0 = row, r1 = alliance id, r2 = direction/flip flag) -> r0 = column of first panel with
@@ -6174,9 +6174,9 @@ battle_settleCollisionCounters:
 
 // symdb: Ends the object's hit/stun/status state by clearing the 0x301FE ObjectFlags2 collision bits, zeroing the 14-byte status block at CollisionDataPtr+0x80, and resetting HitStunTimer and StatusEffectTimer1 to 0.
 // symdb: (r0 = scratch; uses r5 = battle object pointer from caller) -> r0 = destroyed; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800EADA.yaml
-	thumb_func_start sub_800EADA
-sub_800EADA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_recoverFromHit.yaml
+	thumb_func_start battle_recoverFromHit
+battle_recoverFromHit:
 	push {lr}
 	ldr r0, dword_800ECD8 // =0x301fe 
 	bl object_clearFlag2
@@ -6189,7 +6189,7 @@ sub_800EADA:
 	strh r1, [r0,#oCollisionData_HitStunTimer]
 	strh r1, [r0,#oCollisionData_StatusEffectTimer1]
 	pop {pc}
-	thumb_func_end sub_800EADA
+	thumb_func_end battle_recoverFromHit
 
 	thumb_local_start
 sub_800EAF6:

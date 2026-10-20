@@ -968,7 +968,7 @@ byte_808C930:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
 	cs_nop_80377d0
 	cs_do_pet_effect byte1=0xFF byte2=0x00
-	cs_call_native_with_return_value ptr1=sub_808C948+1
+	cs_call_native_with_return_value ptr1=camera_runScriptedMove+1
 	cs_clear_event_flag byte1=0xFF event16_2=EVENT_9D4
 	cs_stop_cutscene_camera_script
 	cs_do_pet_effect byte1=0xFF byte2=0x01
@@ -981,9 +981,9 @@ end_cutscenescript_808C947:
 // symdb: Ticks a scripted camera move driven by a halfword bitmask at [r10+4]: on the first call it initializes state via camera_writeUnk03_14_80301b2 and sub_8089244(1), then each call dispatches on one of 8 mask bits via byte_808CA18 to pick X/Y deltas from byte_808CA24, tests the new point with sub_80303FC (else calls sub_8089370), and commits via SetCameraXYZ; returns 1 while running and 0 when bit 0x200 terminates it (clears EVENT_9D4, plays SFX 0x83).
 // symdb: () -> r0 = 1 while the pan sequence is still running, 0 when it finishes; reads global state at
 // symdb: unk_2000B40 and the word at [r10+4]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808C948.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_runScriptedMove.yaml
 	thumb_local_start
-sub_808C948:
+camera_runScriptedMove:
 	push {r4-r7, lr}
 	mov r0, r8
 	push {r0}
@@ -1084,7 +1084,7 @@ loc_808C9FE:
 	mov r8, r1
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_808C948
+	thumb_func_end camera_runScriptedMove
 
 byte_808CA18:
 	.byte 0x50, 0x90, 0xA0, 0x60, 0x40, 0x10, 0x80, 0x20

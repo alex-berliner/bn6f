@@ -75,7 +75,7 @@ int t4_sceneInit()
 	sub_813064C();
 	sub_8130810();
 	t4_refreshChipPackBuffer();
-	sub_81304EC();
+	battle_drawFolderScreen();
 	*(v0 + 23) = battleObject_advanceAnimTableBy0xFF_8120CC8(0, &dword_8129180);
 	*(v0 + 24) = v8;
 	return engine_setScreeneffect(8, 16);
@@ -264,7 +264,7 @@ void __noreturn sub_8130370()
 			t4_refreshChipPackBuffer();
 		}
 	}
-	sub_81304EC();
+	battle_drawFolderScreen();
 	JUMPOUT(loc_81303C8);
 }
 
@@ -344,7 +344,7 @@ void t4_refreshChipPackBuffer()
 
 
 // 0x81304ec
-void sub_81304EC()
+void battle_drawFolderScreen()
 {
 	char *v0; // r7
 
@@ -1229,7 +1229,7 @@ void sub_8130EDC()
 
 
 // 0x8130f1c
-int sub_8130F1C()
+int rfu_stopOrFadeScene()
 {
     int v0; // r5
     int result; // r0
@@ -2323,7 +2323,7 @@ int sub_8131FA0()
 
 
 // 0x8131fc4
-int sub_8131FC4()
+int e_setupE5rbSceneAfterFade()
 {
     int v0; // r5
     _BYTE **v1; // r10
@@ -4113,7 +4113,7 @@ int chatbox_stateRunScript12Once()
 
 
 // 0x81336c4
-void sub_81336C4()
+void submenu_chatboxInputHandler()
 {
     int v0; // r5
     int v1; // r10
@@ -10385,7 +10385,7 @@ signed int __fastcall sub_813802C(int a1)
 {
     int v1; // r0
 
-    v1 = sub_8010C76(*&byte_8138040[a1]);
+    v1 = getChipScaleOrRaw(*&byte_8138040[a1]);
     return memory_bcdConvert(v1);
 }
 
@@ -11003,7 +11003,7 @@ _BYTE *sub_8138730()
         result = IsPaletteFadeActive();
         if ( !v2 )
         {
-            sub_8000F86(*(v0 + 32));
+            init_saveFresh(*(v0 + 32));
             sub_8138758();
             result = sub_803578C();
         }

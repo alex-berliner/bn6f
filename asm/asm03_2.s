@@ -4980,7 +4980,7 @@ off_8049094:
 off_8049098:
 	.word sub_8049104+1
 	.word sub_8049158+1
-	.word sub_8049164+1
+	.word rfu_idMatchAdvanceState+1
 	.word sub_804918A+1
 	.word sub_80491C4+1
 	.word sub_80491E6+1
@@ -5054,9 +5054,9 @@ sub_8049158:
 // symdb: RFU link state step: calls rfu_checkIdMatch, stores phase 0xC on success or fades screen and shows text 0x13 then stores phase 0x10 on failure, then tail-calls sub_803A1B0.
 // symdb: (r5 = connection/state struct, byte at r5+1 is the phase field) -> r0 = return of sub_803A1B0;
 // symdb: byte [r5+1] set to 0xC or 0x10
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049164.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_idMatchAdvanceState.yaml
 	thumb_local_start
-sub_8049164:
+rfu_idMatchAdvanceState:
 	push {r4-r7,lr}
 	bl rfu_checkIdMatch
 	beq loc_8049180
@@ -5074,7 +5074,7 @@ loc_8049180:
 loc_8049184:
 	bl sub_803A1B0
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049164
+	thumb_func_end rfu_idMatchAdvanceState
 
 	thumb_local_start
 sub_804918A:
@@ -5823,8 +5823,8 @@ off_8049730:
 	.word sub_80497D0+1
 	.word sub_80497EE+1
 	.word sub_8049808+1
-	.word sub_8049844+1
-	.word sub_804986E+1
+	.word battle_waitChatboxThenInit+1
+	.word init_battleModule+1
 	.word chatbox_inputHandler_8049888+1
 	.word battle_preInitSetupState+1
 	.word sub_80498D4+1
@@ -5953,9 +5953,9 @@ dword_804982C:
 // symdb: Waits for chatbox to become idle (or skip if bit 0x80 set), kicks off a screen fade, writes the next state (0xC while waiting, 0x14 after fade), then calls battle_moduleInit_803A820.
 // symdb: (-, r5 = state struct ptr) -> void; stores next state byte at [r5+1] (0xC wait, 0x14 after fade
 // symdb: start); calls battle_moduleInit_803A820 before returning
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8049844.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_waitChatboxThenInit.yaml
 	thumb_local_start
-sub_8049844:
+battle_waitChatboxThenInit:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -5975,13 +5975,13 @@ loc_804985C:
 loc_8049868:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_8049844
+	thumb_func_end battle_waitChatboxThenInit
 
 // symdb: Initializes the battle module (battle_moduleInit_803A820), and when no screen fade is active, additionally primes the caller-supplied r5 work structure with bytes 4 and 0 via sub_8049CBC.
 // symdb: () -> r0 = 0 result of battle_moduleInit_803A820; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804986E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_battleModule.yaml
 	thumb_local_start
-sub_804986E:
+init_battleModule:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8049882
@@ -5993,7 +5993,7 @@ sub_804986E:
 loc_8049882:
 	bl battle_moduleInit_803A820
 	pop {r4-r7,pc}
-	thumb_func_end sub_804986E
+	thumb_func_end init_battleModule
 
 // symdb: Chatbox input-handler dispatcher: advances the chatbox sub-state based on a flag check and the current chatbox sub-state, then ticks the chatbox state machine.
 // symdb: void chatbox_inputHandler_8049888(void); /* in: r5=chatbox state, r10, lr; out: c,v flags,
@@ -7476,7 +7476,7 @@ off_804A338:
 	.word off_804A33C
 off_804A33C:
 	.word sub_804A360+1
-	.word sub_804A3FC+1
+	.word menu_processFrameInput+1
 	.word sub_804A460+1
 	.word sub_804A4D4+1
 	.word sub_804A460+1
@@ -7560,9 +7560,9 @@ off_804A3F4:
 // symdb: Per-frame menu input handler: gates on screen fade and two predicates, branches RIGHT into an exit transition with sound 0x9c, otherwise advances sub-state to 4 and calls sub_804AB10; when halfword [r5+0x28] is set, runs the D-pad/mask-7 cursor adjust over range 0..10, then redraws and returns 0.
 // symdb: (r5 = menu state struct) -> r0 = 0 always; touches struct bytes [r5+0], [r5+1], [r5+3], halfword
 // symdb: [r5+0x28]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A3FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/menu_processFrameInput.yaml
 	thumb_local_start
-sub_804A3FC:
+menu_processFrameInput:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_804A436
@@ -7605,7 +7605,7 @@ loc_804A44C:
 	bl sub_804AA58
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_804A3FC
+	thumb_func_end menu_processFrameInput
 
 	thumb_local_start
 sub_804A460:

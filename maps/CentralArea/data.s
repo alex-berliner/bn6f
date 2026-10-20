@@ -226,7 +226,7 @@ mapscript_8071FD3:
 
 mapscript_8071FDF:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_D31 destination4=mapscript_8071FF0
-	ms_call_native_function ptr1=sub_8143978+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_groundmanMinigameTick+1 word5=0x00000000
 
 mapscript_8071FF0:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_C68 destination4=byte_8072072
@@ -420,7 +420,7 @@ mapscript_8072302:
 
 mapscript_807230E:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_D31 destination4=byte_8072373
-	ms_call_native_function ptr1=sub_8143A54+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_groundmanStartCutscene+1 word5=0x00000000
 	ms_jump destination1=byte_8072373
 
 mapscript_8072324:
@@ -497,7 +497,7 @@ mapscript_807243D:
 
 byte_8072449:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_D31 destination4=mapscript_807245A
-	ms_call_native_function ptr1=sub_8143978+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_groundmanMinigameTick+1 word5=0x00000000
 
 mapscript_807245A:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_C64 destination4=mapscript_80724B7
@@ -596,7 +596,7 @@ mapscript_80725EA:
 
 mapscript_80725F6:
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_D31 destination4=byte_807263D
-	ms_call_native_function ptr1=sub_8143A54+1 word5=0x00000000
+	ms_call_native_function ptr1=ow_groundmanStartCutscene+1 word5=0x00000000
 	ms_jump destination1=byte_807263D
 
 byte_807260C:

@@ -3238,7 +3238,7 @@ int chatbox_80425A0()
     if ( !*(v1 + 4) )
     {
         v2 = *(v0 + 2);
-        sub_8005EA2();
+        startMapTransition();
         *(v1 + 4) = 1;
     }
     return 0;

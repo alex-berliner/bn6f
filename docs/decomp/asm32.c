@@ -2744,7 +2744,7 @@ int object_clearRegionIfCollided()
     v1 = *(*(v0 + 84) + 112);
     if ( v1 && v1 & 0xC000000 )
         object_clearCollisionRegion();
-    return sub_8016B72();
+    return battle_hoverBobObjectUpdate();
 }
 
 
@@ -6881,7 +6881,7 @@ int sub_81130FC()
 int sub_8113108()
 {
     sub_8113114();
-    return sub_8016B72();
+    return battle_hoverBobObjectUpdate();
 }
 
 
@@ -12197,7 +12197,7 @@ int sub_8117780()
 
 
 // 0x81177a4
-void __noreturn sub_81177A4()
+void __noreturn initSpawnedObject()
 {
     int v0; // r5
 
@@ -13456,7 +13456,7 @@ int sub_8118550()
 
 
 // 0x811857c
-int sub_811857C()
+int battle_beastOutTransformEndStep()
 {
     char *v0; // r5
     char v1; // r4
@@ -14673,7 +14673,7 @@ int __fastcall chipPanel_renderChipGfxAndText_8119438(int a1, int a2, int a3, in
                 if ( *(v4 + 10) && sSubmenu.unk_00 == 24 && sSubmenu.jo_01 == 28 )
                     v19 = sub_8010CE0(*(v4 + 14));
                 else
-                    v19 = sub_8010C76(*(v4 + 14));
+                    v19 = getChipScaleOrRaw(*(v4 + 14));
             }
             sub_8119594(v19, v23, v20, v18);
         }
@@ -15395,12 +15395,12 @@ void __noreturn sub_8119D74()
     slotList_storeHalfwordAndClearField_800306C(32);
     sprite_setSubRecordFieldA_8003060(3);
     *(v0 + 8) = 4;
-    sub_8119DE8();
+    ow_updateEventObjectSprite();
 }
 
 
 // 0x8119de8
-void __noreturn sub_8119DE8()
+void __noreturn ow_updateEventObjectSprite()
 {
     Battle *v0; // r5
     int v1; // r1
@@ -15830,7 +15830,7 @@ void __noreturn sub_811A358()
     int v0; // r5
 
     *(v0 + 8) = 4;
-    sub_811A3AC();
+    initGuiSprite_subEntry();
 }
 
 
@@ -15864,7 +15864,7 @@ int sub_811A3A4()
 
 
 // 0x811a3ac
-int __noreturn sub_811A3AC()
+int __noreturn initGuiSprite_subEntry()
 {
     Battle *v0; // r5
 
@@ -16226,7 +16226,7 @@ int sub_811A858()
 
 
 // 0x811a878
-void __noreturn sub_811A878()
+void __noreturn initSpriteObj23()
 {
     _BYTE *v0; // r5
 
@@ -17477,7 +17477,7 @@ int __fastcall sub_811B990(int a1, int a2)
 
 
 // 0x811b9d8
-void __noreturn sub_811B9D8()
+void __noreturn object_initGuiSprite()
 {
     int v0; // r5
     int v1; // r4
@@ -18852,7 +18852,7 @@ int __fastcall object_timerSfxTick(int a1, int a2, int a3)
     if ( !result )
     {
         if ( v3[4] == 1 )
-            sub_811D5F8();
+            object_spawnCenteredSprite();
         *v3 &= 0xFDu;
         v3[5] += 5;
         v3[12] = 15;
@@ -19559,7 +19559,7 @@ int __noreturn sub_811D530()
 
 
 // 0x811d5f8
-int __noreturn sub_811D5F8()
+int __noreturn object_spawnCenteredSprite()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -20772,7 +20772,7 @@ int e_dispatchByState()
 
 
 // 0x811e6e4
-void __noreturn sub_811E6E4()
+void __noreturn initObjectSpriteType35()
 {
     Battle *v0; // r5
 
@@ -20901,7 +20901,7 @@ int sub_811E858()
 
 
 // 0x811e87c
-void __noreturn sub_811E87C()
+void __noreturn sprite_initObjectSprite()
 {
     Battle *v0; // r5
 
@@ -20959,7 +20959,7 @@ int sub_811E914()
 
 
 // 0x811e938
-void __noreturn sub_811E938()
+void __noreturn object_initKind23Entity()
 {
     Battle *v0; // r5
 
@@ -21007,7 +21007,7 @@ int sub_811E9A0()
 
 
 // 0x811e9c4
-void __noreturn sub_811E9C4()
+void __noreturn object_initType23()
 {
     Battle *v0; // r5
 
@@ -22537,7 +22537,7 @@ signed int __fastcall sub_811FF80(int a1)
         return 5;
     v3 = *(v2 + 13);
     if ( v3 > 999 )
-        v3 = sub_8010C76(v1);
+        v3 = getChipScaleOrRaw(v1);
     return v3;
 }
 

@@ -7540,7 +7540,7 @@ sub_80A8B4C:
 	push {r4-r7,lr}
 	bl sub_80A8DF0
 	bne loc_80A8BA8
-	bl sub_80A8DB0
+	bl npc_triggerCutscene
 	bl sub_80A8D42
 	bl sub_80A8CCC
 	ldr r0, dword_80A8BB8 // =0x85 
@@ -7590,7 +7590,7 @@ sub_80A8BBC:
 	push {r4-r7,lr}
 	bl sub_80A8DF0
 	bne loc_80A8BFC
-	bl sub_80A8DB0
+	bl npc_triggerCutscene
 	ldr r0, off_80A8C04 // =0x400 
 	bl sub_80A8D02
 	ldr r0, off_80A8C04 // =0x400 
@@ -7868,9 +7868,9 @@ sub_80A8D7C:
 // symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs sub_8143204 and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
 // symdb: (r0..r3 = unused; r5 = Cybercrow/NPC state struct) -> r0 = clobbered; only acts when player may
 // symdb: advance, sub_8002E04 passes, and bit 0x10000 of +0x24 is set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8DB0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_triggerCutscene.yaml
 	thumb_local_start
-sub_80A8DB0:
+npc_triggerCutscene:
 	push {r4-r7,lr}
 	bl check_playerCanAdvanceForward_8034C36
 	beq locret_80A8DE6
@@ -7898,7 +7898,7 @@ dword_80A8DE8:
 	.word 0x10000
 dword_80A8DEC:
 	.word 0x808C315
-	thumb_func_end sub_80A8DB0
+	thumb_func_end npc_triggerCutscene
 
 	thumb_local_start
 sub_80A8DF0:

@@ -844,7 +844,7 @@ LABEL_4:
 
 
 // 0x8026e78
-int sub_8026E78()
+int battleObject_chipSelectTick()
 {
     int v0; // r5
     int v1; // r1
@@ -5961,7 +5961,7 @@ int sound_stepFadeSequence()
 
 
 // 0x802a33e
-int sub_802A33E()
+int chipSelect_startFadeForSlotChip()
 {
     int v0; // r5
     int result; // r0
@@ -6371,7 +6371,7 @@ void __noreturn sub_802A8A4()
 
 
 // 0x802a934
-signed int sub_802A934()
+signed int battle_runNextPhase()
 {
     int v0; // r5
     int v1; // r10
@@ -6840,7 +6840,7 @@ int sub_802AE5C()
 
 
 // 0x802ae84
-int sub_802AE84()
+int object_drawNextArrowOam()
 {
     int v0; // r5
     char v1; // zf
@@ -8170,7 +8170,7 @@ int submenu_dispatchPendingSelection()
 
 
 // 0x802c170
-int sub_802C170()
+int battle_updateHealEffect()
 {
     int v0; // r5
     int v1; // r10
@@ -10187,7 +10187,7 @@ int __fastcall sub_802D658(int result, unsigned __int8 a2)
 
 
 // 0x802d65e
-int __fastcall sub_802D65E(int a1)
+int __fastcall battle_clearObjectIndexedByte(int a1)
 {
     int v1; // r4
     int result; // r0
@@ -10962,7 +10962,7 @@ signed int battle_getObjectHandCardId()
 
 
 // 0x802ded8
-int sub_802DED8()
+int battle_dispatchHandSlotChip()
 {
     int v0; // r5
     char *v1; // r6

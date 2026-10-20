@@ -1172,7 +1172,7 @@ signed int __fastcall sub_800F8CE(int a1)
 
 
 // 0x800f90e
-int __fastcall sub_800F90E(int a1)
+int __fastcall battle_buildSpawnAttrsFromObject(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -2622,7 +2622,7 @@ int __fastcall ai_useChipAttack(int a1, char a2, char a3)
     *(v7 + 5) = v4;
     *(v7 + 3) = v5;
     if ( battle_networkInvert(*(v3 + 22)) && *(v7 + 20) )
-        sub_801EB18(*(v7 + 20), *(v7 + 8), *(v7 + 6));
+        submenu_refreshChipListLine(*(v7 + 20), *(v7 + 8), *(v7 + 6));
     if ( v12 & byte_200 )
     {
         object_setAttack0();
@@ -2669,7 +2669,7 @@ void __fastcall ai_beginAttack(int a1, char a2, char a3, int a4)
     *(v9 + 5) = v5;
     *(v9 + 3) = v6;
     if ( battle_networkInvert(*(v4 + 22)) && *(v9 + 20) )
-        sub_801EB18(*(v9 + 20), *(v9 + 8), *(v9 + 6));
+        submenu_refreshChipListLine(*(v9 + 20), *(v9 + 8), *(v9 + 6));
     object_setAttack0();
 }
 
@@ -3146,7 +3146,7 @@ int __fastcall battle_chargePwrAtk_8010C50(int a1, int a2)
 
 
 // 0x8010c76
-int __fastcall sub_8010C76(int a1)
+int __fastcall getChipScaleOrRaw(int a1)
 {
     unsigned __int16 *v1; // r0
     signed int v2; // r1
@@ -5980,7 +5980,7 @@ LABEL_16:
 
 
 // 0x80128fc
-int __fastcall sub_80128FC(int a1, int a2)
+int __fastcall battleConvertPanelIfFormMatches(int a1, int a2)
 {
     int v2; // r5
     int v3; // r6
@@ -7735,7 +7735,7 @@ int __fastcall battleObject_applyStatusEffectOnTurnEnd_80139F6(char *a1)
                     a1 = sub_8013754(v5, 19, 4);
                     return sub_800FF5E(a1);
                 case 251:
-                    a1 = sub_8014080(a1);
+                    a1 = battle_resetNaviBattleState(a1);
                     return sub_800FF5E(a1);
                 case 250:
                     v6 = sub_8013754(a1, 18, 4);
@@ -8387,7 +8387,7 @@ int __fastcall battle_playerHPRegenTick_8014040(int a1)
 
 
 // 0x8014080
-int __fastcall sub_8014080(int a1)
+int __fastcall battle_resetNaviBattleState(int a1)
 {
     int v1; // r5
     int result; // r0
@@ -10696,7 +10696,7 @@ void ai_attackEmergeAtTargetPanel()
         v12 = object_getFlip(v0);
         sprite_setFlip(v0, v12);
         sprite_forceWhitePallete();
-        v13 = sub_80158CC();
+        v13 = ai_attackEmergeSetNaviStatsFlag();
         sub_8013754(v13, 44, 0);
         battle_setObjectTextId_8015B22(0);
         v14 = battle_beginTurnOpenProcess_80144C0();
@@ -10853,7 +10853,7 @@ signed int ai_attackRushForward()
 
 
 // 0x80158cc
-char *sub_80158CC()
+char *ai_attackEmergeSetNaviStatsFlag()
 {
     int v0; // r5
     char *result; // r0
@@ -12104,7 +12104,7 @@ signed int __fastcall battle_teardownObject_80165F8(int a1)
     if ( !v2[1] )
     {
         if ( *v2 >= 4 )
-            sub_802D65E(v2[2]);
+            battle_clearObjectIndexedByte(v2[2]);
         else
             battleObject_incrementCollisionRegion_802D644(v2[2]);
     }
@@ -12585,7 +12585,7 @@ int battle_objectStatePendingCommit()
 
 
 // 0x8016b72
-int sub_8016B72()
+int battle_hoverBobObjectUpdate()
 {
     int v0; // r5
     int v1; // r4
@@ -14910,9 +14910,9 @@ int __fastcall object_applySelfCollision_8019F44(int a1, int a2)
     v5 = __CFSHL__(v7, 1);
     v8 = 2 * v7;
     if ( v5 )
-        return sub_801A4D0(248, a2);
+        return battle_collisionSetPackedParam(248, a2);
     if ( __CFSHL__(v8, 1) )
-        result = sub_801A4D0(247, a2);
+        result = battle_collisionSetPackedParam(247, a2);
     return result;
 }
 
@@ -15674,7 +15674,7 @@ Battle *battle_spawnArmHitEffect_801A4A6()
 
 
 // 0x801a4d0
-signed int __fastcall sub_801A4D0(int a1, int a2)
+signed int __fastcall battle_collisionSetPackedParam(int a1, int a2)
 {
     int v2; // r5
     int v3; // r1
@@ -19825,7 +19825,7 @@ int sub_801CF9E()
 
 
 // 0x801d048
-void sub_801D048()
+void eBgCounterDrawStep()
 {
     unsigned __int8 *v0; // r7
     int v1; // r1
@@ -20192,7 +20192,7 @@ int __fastcall battle_queueDigitTileGfx(int a1)
 
 
 // 0x801d65c
-char *sub_801D65C()
+char *battle_drawHandEmptySlotMarker()
 {
     int v0; // r5
     char *v1; // r0
@@ -21759,7 +21759,7 @@ int e_setFlagBit16()
 
 
 // 0x801eb18
-void __fastcall __noreturn sub_801EB18(int a1, unsigned int a2, int a3)
+void __fastcall __noreturn submenu_refreshChipListLine(int a1, unsigned int a2, int a3)
 {
     word_2036852 = 8312;
     byte_2036858 = byte_801F556[0];

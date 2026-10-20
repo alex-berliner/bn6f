@@ -4968,7 +4968,7 @@ void __noreturn sub_80A8B4C()
     sub_80A8DF0();
     if ( v1 )
     {
-        sub_80A8DB0();
+        npc_triggerCutscene();
         sub_80A8D42();
         sub_80A8CCC();
         v2 = 2 * (sub_80A8D02(133) >> 8);
@@ -4999,7 +4999,7 @@ void __noreturn sub_80A8BBC()
     sub_80A8DF0();
     if ( v2 )
     {
-        sub_80A8DB0();
+        npc_triggerCutscene();
         sub_80A8D02(&byte_400);
         v4 = v3 << 8;
         if ( v4 < 0 )
@@ -5195,7 +5195,7 @@ int sub_80A8D7C()
 
 
 // 0x80a8db0
-int sub_80A8DB0()
+int npc_triggerCutscene()
 {
     int v0; // r5
     int result; // r0

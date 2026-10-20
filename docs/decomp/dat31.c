@@ -720,7 +720,7 @@ int sub_810CC54()
 
 
 // 0x810ccdc
-int sub_810CCDC()
+int object_releasePanelAndEffect()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -1359,7 +1359,7 @@ int sub_810D5F6()
 
     if ( !*(v0 + 11) && *(v0 + 96) )
         sub_810D4E8();
-    sub_8016B72();
+    battle_hoverBobObjectUpdate();
     result = *(v0 + 9);
     if ( result != 7 )
     {

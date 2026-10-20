@@ -346,7 +346,7 @@ JumpTableInternet8033A4C:
 	.word internet_updateOverworldHud+1 // (self: * S2011E30 $r5) -> ()
 	.word internet_redrawOverworldUi+1 // (self: * S2011E30 $r5) -> ()
 	.word ow_drawHudOverlays+1 // (self: * S2011E30 $r5) -> ()
-	.word sub_8033B6E+1 // (self: * S2011E30 $r5) -> ()
+	.word ow_drawOverworldHud+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
 	.word onUpdateInInternet_8033B1E+1 // (self: * S2011E30 $r5) -> ()
 	.word ow_drawInternetHud+1 // (self: * S2011E30 $r5) -> ()
@@ -537,16 +537,16 @@ ow_drawHudOverlays: // (self: * S2011E30 $r5) -> ()
 // symdb: Overworld HUD wrapper: draws the PET navi HP digits, then the battle-start overlay frame with flag=1, then the current map name.
 // symdb: (r0 = self *S2011E30, unused by body) -> r0 = return of RenderMapName_8033EE8; no meaningful
 // symdb: flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8033B6E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_drawOverworldHud.yaml
 	thumb_local_start
-sub_8033B6E: // (self: * S2011E30 $r5) -> ()
+ow_drawOverworldHud: // (self: * S2011E30 $r5) -> ()
 	push {lr}
 	bl internet_drawHpDigits_8033E0C
 	mov r0, #1
 	bl battle_drawBattleStartOverlay_8033F80
 	bl RenderMapName_8033EE8
 	pop {pc}
-	thumb_func_end sub_8033B6E
+	thumb_func_end ow_drawOverworldHud
 
 // symdb: Queues one OAM entry per call, picking tile offset from a 0x18-entry periodic table using frame counter at [r5+5].
 // symdb: (r0 = OAM tile-id-ish arg / 24-frame slot, r5 = some struct base) -> r0 = next-frame index used

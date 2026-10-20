@@ -850,7 +850,7 @@ jt_80895C0:
 	.word sub_808997E+1
 	.word sub_808999C+1
 	.word sub_80899D8+1
-	.word sub_80899F2+1
+	.word object_stepRunCameraScriptOnLastActor+1
 	.word battleObject_beastOutActivate_8089A10+1
 	.word battle_handleChipLockoutTransition_8089A60+1
 	.word ai_chipLockoutWaitState+1
@@ -1401,9 +1401,9 @@ loc_80899EE:
 // symdb: Step that, when only one actor remains alive on team 0 (battleScenarioEffect_isActive_814216E returns 1), runs camera_startCutsceneScript and writes 0x18 into the byte at r5; otherwise does nothing; always returns 1.
 // symdb: (r5 = cutscene/camera object pointer, fields read/written via [r5]) -> r0 = 1 always; sets [r5]
 // symdb: = 0x18 and launches camera script when counts match, else nothing.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80899F2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepRunCameraScriptOnLastActor.yaml
 	thumb_local_start
-sub_80899F2:
+object_stepRunCameraScriptOnLastActor:
 	push {r4-r7,lr}
 	mov r0, #0
 	bl battle_countAliveActorsOnTeam_8142C20
@@ -1417,7 +1417,7 @@ sub_80899F2:
 loc_8089A0C:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80899F2
+	thumb_func_end object_stepRunCameraScriptOnLastActor
 
 // symdb: Beast-Out activation handler for a battle object: when its chip-lockout flag clears, look up the soul-weapon script and start its Beast-Out camera/AI.
 // symdb: (r5 = BattleObjectAIDataPtr) -> r0 = 1 ; sets AIData Unk_3c / Unk_13 / Unk_18 / byte0, calls

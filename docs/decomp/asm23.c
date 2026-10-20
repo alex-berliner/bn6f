@@ -633,7 +633,7 @@ signed int sub_80899D8()
 
 
 // 0x80899f2
-signed int sub_80899F2()
+signed int object_stepRunCameraScriptOnLastActor()
 {
     _BYTE *v0; // r5
     int v1; // r4

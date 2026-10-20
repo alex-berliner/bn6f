@@ -2134,7 +2134,7 @@ BOOL sub_81434BA()
 
 
 // 0x8143978
-int sub_8143978()
+int ow_groundmanMinigameTick()
 {
     int v0; // r10
     int v1; // r0
@@ -2205,7 +2205,7 @@ int sub_8143978()
 
 
 // 0x8143a54
-int sub_8143A54()
+int ow_groundmanStartCutscene()
 {
     int v0; // r10
     int v1; // r0

@@ -5975,7 +5975,7 @@ chatbox_80425A0:
 	b loc_80425BA
 loc_80425B0:
 	ldrb r0, [r4,#oChatbox_CurrLine]
-	bl sub_8005EA2
+	bl startMapTransition
 	mov r0, #1
 	strb r0, [r5,#oChatbox_TextScriptState_04]
 loc_80425BA:
