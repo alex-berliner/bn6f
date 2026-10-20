@@ -2454,9 +2454,9 @@ off_8040DD8:
 // symdb: void chatbox_clearWorkBuffers_8040DDC(u32 sizeIndex) — in: r0 = size/index; out: r4, r5 recorded
 // symdb: as read back by callers, but the function's push {r0-r5,lr}/pop {r0-r5,pc} actually preserves
 // symdb: r0-r5 unchanged; clobbers flags only.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8040DDC.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_clearWorkBuffers_8040DDC.yaml
 	thumb_local_start
-chatbox_8040DDC:
+chatbox_clearWorkBuffers_8040DDC:
 	push {r0-r5,lr}
 	mov r4, r0
 	mov r1, #0x10
@@ -2516,7 +2516,7 @@ TextScriptBytecodeJumptable:
 	.word chatbox_FD_sound+1
 	.word chatbox_FE_numberinput+1
 	.word chatbox_FF_copytext+1
-	thumb_func_end chatbox_8040DDC
+	thumb_func_end chatbox_clearWorkBuffers_8040DDC
 
 // Description: do nothing (but make the script go on)
 // Parameters: 0
@@ -6080,7 +6080,7 @@ off_8042624:
 	.word chatbox_80427E4+1
 	.word NULL
 	.word chatbox_8042804+1
-	.word chatbox_8042820+1
+	.word chatbox_stepUpdateAndContinue_8042820+1
 	thumb_func_end chatbox_FC_interface
 
 // symdb: Processes one chatbox text-script entry - plays the text blip if the chatbox core is idle, then either starts the entry's script or skips past the 5-byte end-marker record.
@@ -6349,9 +6349,9 @@ dword_804281C:
 // symdb: u32 chatbox_stepUpdateAndContinue(void); // reads r4 (state counter/ptr), r5 (chatbox control
 // symdb: block), r10; writes result to [r5+0x4C], returns r4+=2 in r4 and constant 1 in r0; clobbers r1,
 // symdb: lr, NZCV
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042820.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_stepUpdateAndContinue_8042820.yaml
 	thumb_local_start
-chatbox_8042820:
+chatbox_stepUpdateAndContinue_8042820:
 	push {lr}
 	bl sub_809CA84
 	mov r1, #0x4c
@@ -6359,7 +6359,7 @@ chatbox_8042820:
 	add r4, #2
 	mov r0, #1
 	pop {pc}
-	thumb_func_end chatbox_8042820
+	thumb_func_end chatbox_stepUpdateAndContinue_8042820
 
 // symdb: Chatbox state-machine dispatcher — reads the chatbox object's state byte and tail-jumps to one of ten per-state update handlers.
 // symdb: void chatbox_dispatchState(Chatbox* r4) — r4 = chatbox object; returns whatever/wherever the
@@ -8152,7 +8152,7 @@ chatbox_80434E0:
 	bl chatbox_setflags_3e // (int mask) -> void
 	mov r0, #0x80
 	ldrb r0, [r5,r0]
-	bl chatbox_8040DDC // (int v3) ->
+	bl chatbox_clearWorkBuffers_8040DDC // (int v3) ->
 	ldrb r0, [r5,#oChatbox_ChoiceCursorPos]
 	mov r1, #0xa0
 	mov r2, #0x10

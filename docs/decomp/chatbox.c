@@ -1103,7 +1103,7 @@ void __fastcall chatbox_8040DBC(int a1, int a2, int a3, int a4)
 
 // 0x8040ddc
 // (int v3) ->
-void __fastcall chatbox_8040DDC(int a1, int a2, int a3, int a4)
+void __fastcall chatbox_clearWorkBuffers_8040DDC(int a1, int a2, int a3, int a4)
 {
     unsigned int v4; // r4
     char *v5; // r0
@@ -3444,7 +3444,7 @@ signed int chatbox_8042804()
 
 
 // 0x8042820
-signed int chatbox_8042820()
+signed int chatbox_stepUpdateAndContinue_8042820()
 {
     int v0; // r5
 
@@ -4409,7 +4409,7 @@ signed int __noreturn chatbox_80434E0()
     unsigned int v30; // [sp-4h] [bp-8h]
 
     chatbox_setflags_3e(17);
-    chatbox_8040DDC(*(v1 + 128), v3, v4, v5);
+    chatbox_clearWorkBuffers_8040DDC(*(v1 + 128), v3, v4, v5);
     v6 = 16 * *(v1 + 19);
     v30 = *(v1 + v6 + 164);
     *(v1 + 112) = *(v1 + v6 + 168);
