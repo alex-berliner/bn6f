@@ -8971,7 +8971,7 @@ jt_8043B00:
 	.word sub_802D158+1
 	.word reqBBS_813E660+1
 	.word owPlayer_setS2000AA0Param0x4_809e314+1
-	.word sub_813FA24+1
+	.word reqBBS_addRangeRequests+1
 	.word sub_809FE5E+1
 	.word npc_freeAllObjectsIfDifferentMap_80351b4+1
 	.word npc_spawnOverworldNPCObjectsForMap+1

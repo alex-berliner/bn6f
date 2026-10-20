@@ -923,7 +923,7 @@ sub_8092EC4::
 sub_8092F1E::
 	push {r4-r7,lr}
 	bl sub_8093258
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8092F54
 	bl sub_8143EA4
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
@@ -991,7 +991,7 @@ loc_8092FA2::
 	strb r0, [r5]
 	b loc_8092FBA
 loc_8092FB6::
-	bl sub_8143FC4
+	bl e_bounceValue
 loc_8092FBA::
 	mov r0, #1
 	pop {r4-r7,pc}
@@ -1000,7 +1000,7 @@ loc_8092FBA::
 	thumb_local_start
 sub_8092FBE::
 	push {r4-r7,lr}
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8092FCE
 	mov r0, #1
 	strb r0, [r5,#8]
@@ -1014,7 +1014,7 @@ loc_8092FCE::
 	thumb_local_start
 sub_8092FD2::
 	push {r4-r7,lr}
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_809300E
 	bl sub_809322A
 	ldr r0, [r7]
@@ -1043,7 +1043,7 @@ loc_809300E::
 sub_8093012::
 	push {r4-r7,lr}
 	bl sub_8093258
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8093022
 	mov r0, #0x1c
 	strb r0, [r5]
@@ -1055,7 +1055,7 @@ loc_8093022::
 	thumb_local_start
 sub_8093026::
 	push {r4-r7,lr}
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8093044
 	bl GetOWPlayerFacingDirection
 	ldr r1, off_8093048 // =byte_809304C 
@@ -1078,7 +1078,7 @@ byte_809304C::
 	thumb_local_start
 sub_8093054::
 	push {r4-r7,lr}
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8093070
 	bl sub_8093074
 	bl owPlayer_disableWallCollision_809e254
@@ -1137,7 +1137,7 @@ sub_80930A4::
 	mov r0, r4
 	bl SetEventFlag
 loc_80930DC::
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_8093168
 	ldrb r0, [r5,#9]
 	sub r0, #1
@@ -1199,7 +1199,7 @@ loc_8093168::
 sub_809316C::
 	push {r4-r7,lr}
 	bl sub_8093258
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_809318C
 	bl GetOWPlayerFacingDirection
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
@@ -1220,7 +1220,7 @@ byte_8093194::
 	thumb_local_start
 sub_809319C::
 	push {r4-r7,lr}
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_80931C6
 	ldr r0, [r7]
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
@@ -1243,7 +1243,7 @@ loc_80931C6::
 sub_80931CA::
 	push {r4-r7,lr}
 	bl sub_8093258
-	bl sub_8093202
+	bl e_countdownExpired
 	beq loc_80931EA
 	bl GetOWPlayerFacingDirection
 	bl owPlayer_setS200ace0_fixedAnimationSelect_809e13c
@@ -1277,9 +1277,9 @@ dword_80931FE::
 // symdb: Decrements the halfword frame counter at [r5,#0x18] and returns 1 when it underflows (timer expired), else 0; used by Groundman minigame callers to gate per-frame sequencing.
 // symdb: (r5 = minigame state struct) -> r0 = 1 once the halfword counter at [r5,#0x18] underflows, else
 // symdb: 0 (and the counter is decremented); flags clobbered by bl/branch usage
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8093202.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_countdownExpired.yaml
 	thumb_local_start
-sub_8093202::
+e_countdownExpired::
 	ldrh r0, [r5,#0x18]
 	sub r0, #1
 	blt loc_809320E
@@ -1289,7 +1289,7 @@ sub_8093202::
 loc_809320E::
 	mov r0, #1
 	mov pc, lr
-	thumb_func_end sub_8093202
+	thumb_func_end e_countdownExpired
 
 	thumb_local_start
 sub_8093212::

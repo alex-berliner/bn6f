@@ -85,7 +85,7 @@ signed int __fastcall sub_8092F1E(int a1)
     int v7; // r0
 
     sub_8093258(a1);
-    sub_8093202();
+    e_countdownExpired();
     if ( !v3 )
     {
         sub_8143EA4();
@@ -142,7 +142,7 @@ signed int __fastcall sub_8092F76(int a1, int a2, int a3)
     }
     else
     {
-        sub_8143FC4(1, a2, a3);
+        e_bounceValue(1, a2, a3);
     }
     return 1;
 }
@@ -154,7 +154,7 @@ signed int __fastcall sub_8092FBE(int a1)
     int v1; // r5
     char v2; // zf
 
-    sub_8093202();
+    e_countdownExpired();
     if ( v2 )
         return 1;
     *(v1 + 8) = 1;
@@ -177,7 +177,7 @@ signed int __fastcall sub_8092FD2(int a1)
     int v10; // r1
     int v11; // r2
 
-    sub_8093202();
+    e_countdownExpired();
     if ( !v3 )
     {
         sub_809322A();
@@ -204,7 +204,7 @@ signed int __fastcall sub_8093012(int a1)
     char v2; // zf
 
     sub_8093258(a1);
-    sub_8093202();
+    e_countdownExpired();
     if ( !v2 )
         *v1 = 28;
     return 1;
@@ -218,7 +218,7 @@ signed int __fastcall sub_8093026(int a1)
     char v2; // zf
     int v3; // r0
 
-    sub_8093202();
+    e_countdownExpired();
     if ( !v2 )
     {
         v3 = sub_809E2B8();
@@ -239,7 +239,7 @@ signed int __fastcall sub_8093054(int a1)
     int v4; // r1
     int v5; // r2
 
-    v2 = sub_8093202();
+    v2 = e_countdownExpired();
     if ( !v3 )
     {
         sub_8093074(v2);
@@ -303,7 +303,7 @@ signed int __fastcall sub_80930A4(int a1)
     if ( (dword_80931FE)(v3) != 5 )
     {
 LABEL_7:
-        sub_8093202();
+        e_countdownExpired();
         if ( !v4 )
         {
             v9 = v1[9];
@@ -372,7 +372,7 @@ signed int __fastcall sub_809316C(int a1)
     char v3; // r0
 
     sub_8093258(a1);
-    sub_8093202();
+    e_countdownExpired();
     if ( v2 )
         return 1;
     v3 = sub_809E2B8();
@@ -396,7 +396,7 @@ signed int __fastcall sub_809319C(int a1)
     int v8; // r0
     int v9; // r1
 
-    sub_8093202();
+    e_countdownExpired();
     if ( !v3 )
     {
         v4 = *v2;
@@ -420,7 +420,7 @@ signed int __fastcall sub_80931CA(int a1)
     char v3; // r0
 
     sub_8093258(a1);
-    sub_8093202();
+    e_countdownExpired();
     if ( v2 )
         return 1;
     v3 = sub_809E2B8();
@@ -451,7 +451,7 @@ int __fastcall sub_80931FA(int result)
 
 
 // 0x8093202
-signed int sub_8093202()
+signed int e_countdownExpired()
 {
     int v0; // r5
     int v1; // r0

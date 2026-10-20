@@ -970,7 +970,7 @@ sub_812D9F0:
 	mov r1, #0x1c
 	mov r2, #0x28 
 	mov r3, #0x2e 
-	bl sub_812DA08
+	bl object_submitOamFromStruct
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_812D9F0
@@ -978,9 +978,9 @@ sub_812D9F0:
 // symdb: Parameterized helper that packs r0 into the low half of a word, sets the high half to a fixed 0x20002 flag word, reads two halfwords from the caller-supplied object in r5 at the offsets given in r2 and r3, and calls object_computeAndQueueOamEntry_811FA98 with fixed extras (r4=7, r6=0xC24C, r7=0x64) to submit one OAM entry.
 // symdb: (r0 = value A (16-bit), r1 = value B (16-bit), r2 = offset of field 1 in [r5], r3 = offset of
 // symdb: field 2 in [r5]) -> r0 = result of object_computeAndQueueOamEntry; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_submitOamFromStruct.yaml
 	thumb_local_start
-sub_812DA08:
+object_submitOamFromStruct:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r1, [sp]
@@ -1007,7 +1007,7 @@ dword_812DA34:
 	.word 0x20002
 dword_812DA38:
 	.word 0xC24C
-	thumb_func_end sub_812DA08
+	thumb_func_end object_submitOamFromStruct
 
 	thumb_func_start sub_812DA3C
 sub_812DA3C:
@@ -1037,7 +1037,7 @@ npc_runDialog41:
 	pop {pc}
 	thumb_func_end npc_runDialog41
 
-// symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> sub_803C754 on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
+// symdb: Completes a comm-screen state step: optionally restarts a screen fade when fade mode is 0xC, dispatches on the 200BC30 record (0 -> reset link hardware/buffers, else -> battle_initWaitTimer on S200BC50), then advances the state machine to id 0x1C and clears two state fields before calling sub_8120AB8.
 // symdb: (r0 = unused/clobbered, r5 = *state struct (callee-saved)) -> r0 = return of sub_8120AB8; flags
 // symdb: from bl/cmp
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_finishCommScreenStep.yaml
@@ -1057,7 +1057,7 @@ loc_812DA72:
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_812DA84
 loc_812DA80:
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 loc_812DA84:
 	mov r1, #0x1c
 	strb r1, [r5,#2]

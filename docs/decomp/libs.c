@@ -355,7 +355,7 @@ int sio_linkStateUpdate()
     byte_200F462 = *&SIOControlRegister << 26 >> 30;
     if ( byte_200F461 == 2 )
     {
-        if ( sub_814475C() << 24 )
+        if ( rfu_multiStartProbe() << 24 )
         {
             if ( eTimerEnable200F460 )
             {
@@ -381,7 +381,7 @@ int sio_linkStateUpdate()
     }
     else if ( byte_200F461 == 4 )
     {
-        sub_8144920();
+        sio_processMultiPayloads();
         sub_8144AFC();
         sio_timer3EnableUpdate();
     }
@@ -405,7 +405,7 @@ __int16 *libSIOControlStart()
 
 
 // 0x814475c
-signed int sub_814475C()
+signed int rfu_multiStartProbe()
 {
     unsigned int v0; // r9
     unsigned int v1; // r12
@@ -501,7 +501,7 @@ LABEL_38:
 
 
 // 0x8144920
-int sub_8144920()
+int sio_processMultiPayloads()
 {
     unsigned int v0; // r4
     unsigned int i; // r4
@@ -2438,14 +2438,14 @@ int __fastcall sub_81466F4(unsigned __int8 a1)
 
 
 // 0x8146714
-char *__fastcall sub_8146714(int a1)
+char *__fastcall ow_getOverworldEntry(int a1)
 {
     return &unk_20098B0 + (16 * a1 & 0xFFF);
 }
 
 
 // 0x8146724
-int __fastcall sub_8146724(int a1)
+int __fastcall getStruct0BHalfptr(int a1)
 {
     return a1 + 11;
 }
@@ -2466,7 +2466,7 @@ int __fastcall sub_8146738(int a1)
 
 
 // 0x814673c
-int sub_814673C()
+int populateLookupEntriesFromStaging()
 {
     _BYTE *v0; // r7
     _BYTE *v1; // r6
@@ -3173,14 +3173,14 @@ LABEL_8:
     if ( ((v4 | 1) & byte_2010292) == byte_2010292 )
     {
         *(v2 + 1) = 1;
-        sub_813D7B8(4 * byte_2010328 + v3);
+        t1StepSequence(4 * byte_2010328 + v3);
     }
     return v9;
 }
 
 
 // 0x81471d8
-int __fastcall sub_81471D8(_BYTE *a1, int a2)
+int __fastcall rfu_requestSendData(_BYTE *a1, int a2)
 {
     _BYTE *v2; // r4
     int v4; // [sp+4h] [bp-4h]
@@ -3288,7 +3288,7 @@ LABEL_3:
             {
                 sub_814728C();
 LABEL_5:
-                sub_81471D8(v3, v4);
+                rfu_requestSendData(v3, v4);
             }
             break;
         default:
@@ -3314,7 +3314,7 @@ int __fastcall sub_8147350(int a1, int a2, int a3, int a4)
     v5 = 0;
     SWI_CpuSet(&v5, &byte_2010290, 16777248);
     sub_81465FC(&unk_2010350);
-    rfu_initREQ(sub_81473EC, sub_81475B8);
+    rfu_initREQ(rfu_dispatchLinkEvent, sub_81475B8);
     Timer2Counter_Reload = 0;
     Timer2Control = 131;
     word_200BC58 = 1;
@@ -3324,7 +3324,7 @@ int __fastcall sub_8147350(int a1, int a2, int a3, int a4)
 
 
 // 0x81473ec
-int __fastcall sub_81473EC(signed int a1)
+int __fastcall rfu_dispatchLinkEvent(signed int a1)
 {
     unsigned int v1; // r2
     int v2; // r0
@@ -3474,7 +3474,7 @@ int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
         byte_2010368 = 1;
         rfu_sendLinkState(1u);
     }
-    sub_8147834();
+    rfu_syncWirelessState();
     rfu_pollSlotDisconnect();
     switch ( word_200BC58 )
     {
@@ -3541,7 +3541,7 @@ LABEL_27:
 
 
 // 0x8147834
-signed int sub_8147834()
+signed int rfu_syncWirelessState()
 {
     signed int v0; // r7
     char v2; // r1
@@ -3798,7 +3798,7 @@ int __fastcall sub_8147DE0(int a1, int a2)
             {
                 rfu_clearSlot(8, byte_20103E0);
                 *(v2 + 1) = 1;
-                sub_813D7B8(v3);
+                t1StepSequence(v3);
                 return v6;
             }
             if ( v4 != 72 )
@@ -3813,7 +3813,7 @@ int __fastcall sub_8147DE0(int a1, int a2)
 
 
 // 0x8147e44
-int __fastcall sub_8147E44(_BYTE *a1, int a2)
+int __fastcall rfu_niSendPacket(_BYTE *a1, int a2)
 {
     _BYTE *v2; // r4
     int v4; // [sp+4h] [bp-4h]
@@ -3920,7 +3920,7 @@ int __fastcall sub_8147F50(unsigned __int8 *a1, int a2, unsigned int a3)
     {
         sub_8147F00(a2, a3);
 LABEL_10:
-        sub_8147E44(v3, v4);
+        rfu_niSendPacket(v3, v4);
     }
     return v7;
 }
@@ -4336,7 +4336,7 @@ int __fastcall sub_8148738(signed int a1)
                     if ( a1 != 80 )
                         return v3;
                     sub_8148B80();
-                    sub_8148BCC();
+                    rfu_uniPollPeerValueChanges();
                     byte_2010368 = 0;
                     goto LABEL_24;
                 }
@@ -4480,7 +4480,7 @@ int sub_8148A80()
     {
         v0 = byte_201021C;
         if ( byte_20101B4 == 1 && byte_20103F0 == 1 )
-            sub_803F334(&byte_20101E0, 0x40u);
+            rfu_prepareLinkState(&byte_20101E0, 0x40u);
         byte_2010430 = 0;
         v3 = 0;
         SWI_CpuSet(&v3, &byte_20101E0, 16777248);
@@ -4533,7 +4533,7 @@ int sub_8148B80()
 
 
 // 0x8148bcc
-int sub_8148BCC()
+int rfu_uniPollPeerValueChanges()
 {
     unsigned int v0; // r4
     unsigned int v1; // r3
@@ -4830,7 +4830,7 @@ signed int rfu_uniProcessRecvChunk()
         rfu_UNI_clearRecvNewDataFlag(byte_20103E0);
         if ( ((byte_2010220[0] + 1) & 0xFF) == byte_20103DC )
         {
-            sub_803F334(&unk_20103A0, 0x40u);
+            rfu_prepareLinkState(&unk_20103A0, 0x40u);
             byte_20101B4 = 1;
             if ( rfu_queuePushEntry(&byte_2010390, 0xCu) )
             {
@@ -9080,7 +9080,7 @@ int __cdecl SWI_Sqrt(int result)
 
 
 // 0x814d8cc
-int __fastcall sub_814D8CC(_BYTE *a1, _BYTE *a2, int a3)
+int __fastcall copyBytes(_BYTE *a1, _BYTE *a2, int a3)
 {
     _BYTE *v3; // r4
     int v4; // r3
@@ -9114,7 +9114,7 @@ int __fastcall sub_814D8F0(int a1, int a2, int a3)
     v3 = a1;
     v4 = a3;
     LOWORD(GamePakWaitstateControl) = GamePakWaitstateControl & 0xFFFC | 3;
-    v5 = (sub_814D8CC & 0xFFFFFFFE);
+    v5 = (copyBytes & 0xFFFFFFFE);
     v6 = &v9;
     for ( i = 1179648; i >> 16; i = ((i >> 16) - 1) << 16 )
     {
@@ -9144,7 +9144,7 @@ int __fastcall libSave_CopyToGamePak(_BYTE *a1, _BYTE *a2, int a3)
 
 
 // 0x814d994
-unsigned __int8 *__fastcall sub_814D994(unsigned __int8 *a1, unsigned __int8 *a2, int a3)
+unsigned __int8 *__fastcall copy_compareToFirstMismatch(unsigned __int8 *a1, unsigned __int8 *a2, int a3)
 {
     unsigned __int8 *v3; // r5
     unsigned __int8 *v4; // r3
@@ -9184,7 +9184,7 @@ int __fastcall sub_814D9C4(int a1, int a2, int a3)
     v3 = a1;
     v4 = a3;
     LOWORD(GamePakWaitstateControl) = GamePakWaitstateControl & 0xFFFC | 3;
-    v5 = (sub_814D994 & 0xFFFFFFFE);
+    v5 = (copy_compareToFirstMismatch & 0xFFFFFFFE);
     v6 = &v9;
     for ( i = 1572864; i >> 16; i = ((i >> 16) - 1) << 16 )
     {
@@ -9197,7 +9197,7 @@ int __fastcall sub_814D9C4(int a1, int a2, int a3)
 
 
 // 0x814da28
-int __fastcall sub_814DA28(_BYTE *a1, _BYTE *a2, int a3, int a4)
+int __fastcall copy_saveWriteVerify3(_BYTE *a1, _BYTE *a2, int a3, int a4)
 {
     _BYTE *v4; // r6
     _BYTE *v5; // r5
@@ -9438,14 +9438,14 @@ void __fastcall m4a_814DC84(int a1, int a2, int a3, int a4, int a5, int a6, int 
     v12 = v11 << 24;
     v13 = BYTE1(dword_4[0x400000 * v11]);
     if ( BYTE1(dword_4[0x400000 * v11]) )
-        sub_814DC94(v12, sub_814DC94, a3, v13);
+        sound_eeMixEcho(v12, sound_eeMixEcho, a3, v13);
     else
         sub_814DCE8(v12, a2, a3, v13, a5, a6, a7, a8, a9, a10, a11);
 }
 
 
 // 0x814dc94
-void __fastcall sub_814DC94(int a1, int a2, int a3, int a4)
+void __fastcall sound_eeMixEcho(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     char *v5; // r5
@@ -12340,7 +12340,7 @@ int __fastcall sub_814FA88(int a1, unsigned __int16 a2, char a3)
 
 
 // 0x814faf0
-int __fastcall sub_814FAF0(_BYTE *a1)
+int __fastcall setEntryStateFromFlag(_BYTE *a1)
 {
     _BYTE *v1; // r2
     char v2; // r0
@@ -12392,7 +12392,7 @@ int __fastcall sub_814FB14(int a1, unsigned __int16 a2, unsigned __int8 a3)
                 {
                     v7[23] = v5;
                     if ( !v5 )
-                        sub_814FAF0(v7);
+                        setEntryStateFromFlag(v7);
                 }
             }
             --v6;
@@ -12431,7 +12431,7 @@ int __fastcall sub_814FB88(int a1, unsigned __int16 a2, unsigned __int8 a3)
                 {
                     v7[25] = v5;
                     if ( !v5 )
-                        sub_814FAF0(v7);
+                        setEntryStateFromFlag(v7);
                 }
             }
             --v6;

@@ -259,7 +259,7 @@ int sub_809F942()
 
 
 // 0x809f9be
-void sub_809F9BE()
+void getMysteryDataId()
 {
     ;
 }

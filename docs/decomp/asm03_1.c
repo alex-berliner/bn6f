@@ -1809,7 +1809,7 @@ int __fastcall req_enqueue(int result, int a2)
 
 
 // 0x8035714
-int __fastcall sub_8035714(int result)
+int __fastcall clearActiveEntryById(int result)
 {
     int *v1; // r5
     int v2; // r4
@@ -1886,7 +1886,7 @@ int claimNextPendingRequest_8035756()
 
 
 // 0x803578c
-_BYTE *sub_803578C()
+_BYTE *start_postFadeSceneJump()
 {
     int v0; // r10
     _BYTE *result; // r0
@@ -7285,7 +7285,7 @@ int sub_803A1D8()
     sprite_drawGlyphString(39, 32 * v1 + 35, 6, v2);
     v6 = *(v0 + 38);
     sprite_drawGlyphString(123, 32 * v1 + 35, 7, v4);
-    return sub_803A238(v1, 0);
+    return submenu_setRowStyleFlag(v1, 0);
 }
 
 
@@ -7304,14 +7304,14 @@ void __noreturn sub_803A214()
 
 
 // 0x803a238
-int __fastcall sub_803A238(char a1, int a2)
+int __fastcall submenu_setRowStyleFlag(char a1, int a2)
 {
     int result; // r0
 
     if ( a2 )
         result = sub_803C302(1 << a1);
     else
-        result = sub_803C30C(1 << a1);
+        result = e_clearStatusFlags(1 << a1);
     return result;
 }
 
@@ -9560,7 +9560,7 @@ int __fastcall dispatchTableOp(unsigned __int16 *a1, unsigned __int8 *a2)
             break;
         v5 = get_tableEntryIndexByKey(*(&off_803C208 + result), *v2);
         if ( v5 != 255 )
-            return sub_803C034(v5, *(&off_803C208 + i[1]), v2);
+            return copy_tableEntryHalfword(v5, *(&off_803C208 + i[1]), v2);
     }
     return result;
 }
@@ -9584,7 +9584,7 @@ signed int __fastcall get_tableEntryIndexByKey(int a1, int a2)
 
 
 // 0x803c034
-int __fastcall sub_803C034(int a1, int a2, _WORD *a3)
+int __fastcall copy_tableEntryHalfword(int a1, int a2, _WORD *a3)
 {
     int result; // r0
 
@@ -9970,7 +9970,7 @@ int __fastcall sub_803C302(int result)
 
 
 // 0x803c30c
-int __fastcall sub_803C30C(int result)
+int __fastcall e_clearStatusFlags(int result)
 {
     word_200A2B0 &= ~result;
     return result;
@@ -10181,7 +10181,7 @@ void *sub_803C4C0()
 
 
 // 0x803c4dc
-int sub_803C4DC()
+int rfu_endSession()
 {
     rfu_setStateEnded();
     return rfu_orFlags(8);
@@ -10189,7 +10189,7 @@ int sub_803C4DC()
 
 
 // 0x803c4ec
-int sub_803C4EC()
+int rfu_shutdown()
 {
     rfu_setStateEnded();
     rfu_orFlags(8);
@@ -10406,7 +10406,7 @@ signed __int64 rfu_countdownToLinkPhase9()
 
 
 // 0x803c754
-signed __int64 sub_803C754()
+signed __int64 battle_initWaitTimer()
 {
     _BYTE *v0; // r7
 
@@ -10423,7 +10423,7 @@ __int64 sub_803C76C()
 
     rfu_orFlags(2);
     sub_814665C();
-    sub_814673C();
+    populateLookupEntriesFromStaging();
     *(v0 + 3) = 0;
     *(v0 + 10) = byte_12C;
     return 0LL;
@@ -10441,7 +10441,7 @@ __int64 sub_803C790()
 
 
 // 0x803c7b4
-int sub_803C7B4()
+int rfu_advanceLinkState()
 {
     int v0; // r7
     int result; // r0
@@ -10465,7 +10465,7 @@ int sub_803C7B4()
 
 
 // 0x803c7e8
-void __fastcall sub_803C7E8(int a1)
+void __fastcall rfu_maintainLink(int a1)
 {
     int v1; // r7
     int v2; // r0
@@ -10537,7 +10537,7 @@ __int64 rfu_setFlag2()
 
 
 // 0x803c86a
-int sub_803C86A()
+int rfu_stepLinkState()
 {
     int v0; // r7
 
@@ -10558,7 +10558,7 @@ signed __int64 sub_803C888()
         clearStatusBits(2);
         *(v0 + 3) = 4;
     }
-    return sub_803C90C();
+    return rfu_pollLinkState();
 }
 
 
@@ -10572,7 +10572,7 @@ signed __int64 __fastcall rfu_updateLinkManager(int a1, int a2, int a3, int a4)
         rfu_setLinkPhase(34);
         rfu_setLinkCommand(0);
     }
-    return sub_803C90C();
+    return rfu_pollLinkState();
 }
 
 
@@ -10585,13 +10585,13 @@ int __fastcall rfu_linkDispatch(int a1, int a2, int a3, int a4)
     if ( unk_200AF81 == 1 && *unk_200AF8C )
         result = rfu_setStateEnded();
     else
-        result = sub_803C90C();
+        result = rfu_pollLinkState();
     return result;
 }
 
 
 // 0x803c90c
-signed __int64 sub_803C90C()
+signed __int64 rfu_pollLinkState()
 {
     int v0; // r7
     char v2; // zf
@@ -10766,7 +10766,7 @@ char *__fastcall sub_803CAC4(int a1)
         do
         {
             v4 = sub_81466E4(v3);
-            v5 = sub_8146714(v3);
+            v5 = ow_getOverworldEntry(v3);
             storeIndexedPair(v3, v4, v5);
             result = v5;
             ++v3;
@@ -12596,7 +12596,7 @@ signed int sub_803E598()
     v7 = (v2 + 4);
     do
     {
-        sub_803E608(v6, v4, v3);
+        e_updateChecksumCopy2(v6, v4, v3);
         v7 += v8;
         v5 += 2;
         v10 = __OFSUB__(v9, 2);
@@ -12620,7 +12620,7 @@ signed int sub_803E598()
 
 
 // 0x803e608
-void __fastcall sub_803E608(int a1, int a2, int a3)
+void __fastcall e_updateChecksumCopy2(int a1, int a2, int a3)
 {
     int v3; // r4
     unsigned __int8 *v4; // r5
@@ -12684,7 +12684,7 @@ signed int __fastcall sub_803E628(int a1, int a2)
     v12 = (v4 + 4);
     do
     {
-        sub_803E608(v11, v9, v8);
+        e_updateChecksumCopy2(v11, v9, v8);
         v12 += v13;
         v10 += 2;
         v15 = __OFSUB__(v14, 2);
@@ -13228,7 +13228,7 @@ int rfu_shouldRestartWirelessLink()
 
 
 // 0x803ea58
-int __fastcall sub_803EA58(int result)
+int __fastcall eStruct200BC30_setByte01(int result)
 {
     byte_200BC31 = result;
     return result;
@@ -13291,7 +13291,7 @@ int __fastcall sub_803EABC(int a1)
 
     v1 = sub_8146CFC();
     battle_clearScratchBuffers_803EFCC(v1, v2, v3, v4);
-    return sub_803EA58(1);
+    return eStruct200BC30_setByte01(1);
 }
 
 
@@ -13305,7 +13305,7 @@ int __fastcall sub_803EAD0(int a1)
 
     v1 = sub_8146CFC();
     battle_clearScratchBuffers_803EFCC(v1, v2, v3, v4);
-    return sub_803EA58(1);
+    return eStruct200BC30_setByte01(1);
 }
 
 
@@ -13505,7 +13505,7 @@ signed int sub_803EC54()
     int v13; // r0
 
     v2 = 8;
-    sub_803F158();
+    get_eLinkDiffState();
     v0[9] = v3;
     if ( !v3 || v3 != 2 )
     {
@@ -13590,7 +13590,7 @@ signed int __fastcall e_dispatchStateHandler(signed int a1)
 
 
 // 0x803ed4c
-signed int sub_803ED4C()
+signed int e_checkLinkStateTable()
 {
     int v0; // r4
     int v1; // r7
@@ -13983,7 +13983,7 @@ int __fastcall sub_803F118(int a1, unsigned int a2)
 
 
 // 0x803f158
-int sub_803F158()
+int get_eLinkDiffState()
 {
     int result; // r0
 
@@ -14166,7 +14166,7 @@ int testAndClearWorkFlag()
 
 
 // 0x803f334
-int __fastcall sub_803F334(int a1, unsigned int a2)
+int __fastcall rfu_prepareLinkState(int a1, unsigned int a2)
 {
     _BYTE *v2; // r7
     unsigned int v3; // r6

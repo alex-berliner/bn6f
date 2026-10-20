@@ -685,9 +685,9 @@ off_804646C:
 	.word sub_8117218+1
 	.word sprite_dispatchStateHandler+1
 	.word sprite_dispatchVariantObjectState+1
-	.word sub_81175D0+1
+	.word object_scaleStateStep+1
 	.word sub_8117690+1
-	.word sub_8117780+1
+	.word object_dispatchHandler+1
 	.word object_dispatchModeHandler_81178D8+1
 	.word sub_8117BC8+1
 	.word objectStateDispatcher_8117D2C+1
@@ -705,14 +705,14 @@ off_804646C:
 	.word entity_RunStateHandler_8119E40+1
 	.word sub_811A338+1
 	.word sub_811A414+1
-	.word sub_811A78C+1
+	.word spriteDispatchState+1
 	.word sub_811A858+1
 	.word sub_811A978+1
 	.word sub_811AB5C+1
 	.word sub_811AD38+1
 	.word 0x0
 	.word battle_runObjectStateHandler_811B1EC+1
-	.word sub_811B338+1
+	.word submenuDispatchTypeUpdate+1
 	.word sub_811B3F4+1
 	.word sub_811B4AC+1
 	.word sub_811B9B4+1
@@ -4532,9 +4532,9 @@ locret_8048D9A:
 
 // symdb: Returns a pointer into the per-shop data buffer for the entry at the given index, computed as entry[shop].offsetIntoData + Toolkit_ShopDataPtr.
 // symdb: (r0 = shop entry index) -> r0 = pointer into shop data at (entry+0x08 offset); clobbers r1, r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8048D9C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/shop_getEntryDataPtr.yaml
 	thumb_local_start
-sub_8048D9C:
+shop_getEntryDataPtr:
 	ldr r2, off_8048F98 // =dword_8046B98
 	mov r1, #0x10
 	mul r0, r1
@@ -4544,7 +4544,7 @@ sub_8048D9C:
 	ldr r1, [r1,#oToolkit_ShopDataPtr]
 	add r0, r0, r1
 	mov pc, lr
-	thumb_func_end sub_8048D9C
+	thumb_func_end shop_getEntryDataPtr
 
 	thumb_local_start
 sub_8048DAE:
@@ -7516,7 +7516,7 @@ off_804A33C:
 	.word chatbox_startFadeOnIdle+1
 	.word e_giveChipStep+1
 	.word submenu_updateCursorLoop+1
-	.word sub_804A54C+1
+	.word object_dispatchAnimState+1
 	.word eS200AC80
 off_804A35C:
 	.word sSubmenu
@@ -7761,9 +7761,9 @@ loc_804A53C:
 // symdb: Dispatches to one of four sprite animation state handlers from off_804A564, selected by the state byte at [r5+1], then calls sub_804AA58 and returns via pop {pc}.
 // symdb: (r5 = object struct) -> jumps to handler table off_804A564[state] with r0 = state index and r1 =
 // symdb: state index, then calls sub_804AA58 before returning
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A54C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchAnimState.yaml
 	thumb_local_start
-sub_804A54C:
+object_dispatchAnimState:
 	push {lr}
 	ldr r0, off_804A560 // =off_804A564 
 	ldrb r1, [r5,#1]
@@ -7780,7 +7780,7 @@ off_804A564:
 	.word sprite_advanceGroupStepClamped+1
 	.word sub_804A5D4+1
 	.word object_riseOffscreenAndClear+1
-	thumb_func_end sub_804A54C
+	thumb_func_end object_dispatchAnimState
 
 // symdb: Looks up a 0x20-byte entry in unk_202A3E0 using two halfwords from the caller's object struct, splits the entry's +0x1c word into two 7-bit values, configures three consecutive sprite-table entries (ids 0xFFFFFFD8..0xFFFFFFDA) with those values plus zero fields, repositions the trio to (0x58, 0), then sets the object's state to 4 and clears its frame counter.
 // symdb: (r0 = unused on entry; r5 = object struct: +0x2a/+0x2e halfword table index, +0x01 state byte,
@@ -10554,7 +10554,7 @@ off_804C31C:
 	.word off_804C320
 off_804C320:
 	.word sub_804C348+1
-	.word sub_804C3BC+1
+	.word chatbox_redrawTextWindow+1
 	thumb_func_end sub_804C30C
 
 	thumb_local_start
@@ -10616,7 +10616,7 @@ sub_804C348:
 	bl t3_loadTextWindowTiles
 	mov r0, #4
 	strb r0, [r5,#0x10] // (dword_30 - 0x20)
-	bl sub_804C3BC
+	bl chatbox_redrawTextWindow
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C3A0:
@@ -10637,14 +10637,14 @@ dword_804C3B8:
 
 // symdb: parameterless wrapper that re-invokes t3_loadTextWindowTiles to redraw the fixed 12x6 chatbox text window; takes no args, returns r0 as the callee's result.
 // symdb: (no args) -> r0 = result of t3_loadTextWindowTiles; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C3BC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_redrawTextWindow.yaml
 	thumb_local_start
-sub_804C3BC:
+chatbox_redrawTextWindow:
 	push {r4-r7,lr}
 	bl t3_loadTextWindowTiles
 locret_804C3C2:
 	pop {r4-r7,pc}
-	thumb_func_end sub_804C3BC
+	thumb_func_end chatbox_redrawTextWindow
 
 // symdb: Draws a fixed 12x6 tile window (tile data at byte_86A13F0) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
 // symdb: () -> r0 = destroyed; sets bit 0x800 of toolkit->RenderInfo->field0 (halfword)

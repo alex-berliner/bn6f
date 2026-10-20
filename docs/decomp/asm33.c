@@ -1458,7 +1458,7 @@ void __fastcall npc_conditionalChat(char a1)
     int v3; // r10
 
     v1[16] = a1;
-    sub_809F9BE();
+    getMysteryDataId();
     if ( v2 )
     {
         v1[2] = 12;
@@ -6274,7 +6274,7 @@ int sub_8128DF4()
     IsPaletteFadeActive();
     if ( !v2 )
         *(v0 + 2) = 4;
-    sub_8128FF0();
+    chatbox_drawWindow();
     return sub_812907C();
 }
 
@@ -6307,7 +6307,7 @@ int sub_8128E2C()
             *(v0 + 2) = 8;
         }
     }
-    sub_8128FF0();
+    chatbox_drawWindow();
     return sub_812907C();
 }
 
@@ -6319,7 +6319,7 @@ int chatbox_setMessage()
     int result; // r0
     char v2; // zf
 
-    sub_8128FF0();
+    chatbox_drawWindow();
     sub_812907C();
     result = IsPaletteFadeActive();
     if ( !v2 )
@@ -6350,7 +6350,7 @@ void __noreturn e_renderBgTilemapLayers()
 
 
 // 0x8128ff0
-int sub_8128FF0()
+int chatbox_drawWindow()
 {
     int v0; // r5
     int result; // r0
@@ -8269,7 +8269,7 @@ int sub_812A2EC()
         v3 = sub_81468E0(1u);
         v4 = v3;
         chatbox_convertTwoByteStringsToCharCodes(__PAIR__(&unk_201FD60, v2), __PAIR__(&unk_201FD80, v3));
-        word_2023BB0 = *sub_8146724(v4);
+        word_2023BB0 = *getStruct0BHalfptr(v4);
         byte_2023BC8 = sub_8146738(v4);
         chatbox_runScript_803FD9C_on_eTextScript201BA20(46);
         result = 8;
@@ -9183,7 +9183,7 @@ signed int link_stepCommState()
             goto LABEL_15;
         if ( !*(v0 + 3) )
         {
-            sub_803C754();
+            battle_initWaitTimer();
             result = 4;
             *(v0 + 3) = 4;
             return result;
@@ -10857,7 +10857,7 @@ int sub_812C034()
     int v3; // r2
     int v4; // r3
 
-    result = sub_81378B4();
+    result = battle_runStateHandler();
     if ( result )
     {
         battle_initScene_8129248(result, v2, v3, v4);

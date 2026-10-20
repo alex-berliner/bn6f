@@ -3011,7 +3011,7 @@ locret_812471A:
 npc_conditionalChat:
 	push {r4,r7,lr}
 	strb r0, [r5,#0x10]
-	bl sub_809F9BE
+	bl getMysteryDataId
 	tst r7, r7
 	beq loc_8124740
 	mov r0, #0xc
@@ -12012,7 +12012,7 @@ loc_8128E14:
 	mov r0, #4
 	strb r0, [r5,#2]
 loc_8128E1E:
-	bl sub_8128FF0
+	bl chatbox_drawWindow
 	bl sub_812907C
 	pop {pc}
 	.balign 4, 0
@@ -12087,7 +12087,7 @@ loc_8128EA4:
 	mov r0, #8
 	strb r0, [r5,#2]
 loc_8128EB8:
-	bl sub_8128FF0
+	bl chatbox_drawWindow
 	bl sub_812907C
 	pop {pc}
 	.balign 4, 0
@@ -12108,7 +12108,7 @@ off_8128ED0:
 	thumb_local_start
 chatbox_setMessage:
 	push {lr}
-	bl sub_8128FF0
+	bl chatbox_drawWindow
 	bl sub_812907C
 	bl IsScreenFadeActive // () -> zf
 	beq locret_8128EFE
@@ -12221,9 +12221,9 @@ off_8128F84:
 
 // symdb: Per-frame redraw of the 32x12-tile chatbox window by calling sub_8129018 with a tilemap/data pointer while the active flag at [r5,#0x1e] is set; shared across multiple state-machine callers.
 // symdb: (r5 = message-state struct; no args) -> void; reads flag halfword [r5,#0x1e]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128FF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_drawWindow.yaml
 	thumb_local_start
-sub_8128FF0:
+chatbox_drawWindow:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x1e]
 	tst r0, r0
@@ -12245,7 +12245,7 @@ dword_8129010:
 	.word 0x10002
 dword_8129014:
 	.word 0x40000000
-	thumb_func_end sub_8128FF0
+	thumb_func_end chatbox_drawWindow
 
 	thumb_local_start
 sub_8129018:
@@ -14962,7 +14962,7 @@ sub_812A2EC:
 	ldr r3, off_812A344 // =unk_201FD80 
 	bl chatbox_convertTwoByteStringsToCharCodes
 	mov r0, r7
-	bl sub_8146724
+	bl getStruct0BHalfptr
 	ldrh r0, [r0]
 	ldr r1, off_812A348 // =word_2023BB0 
 	strh r0, [r1]
@@ -16196,7 +16196,7 @@ loc_812AC2A:
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_812AC4C
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 	mov r0, #4
 	strb r0, [r5,#3]
 	b locret_812AC7E
@@ -18917,7 +18917,7 @@ sub_812C034:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r5, off_812C06C // =unk_2037780 
-	bl sub_81378B4
+	bl battle_runStateHandler
 	tst r0, r0
 	beq locret_812C06A
 	mov r5, r7

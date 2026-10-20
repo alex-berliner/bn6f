@@ -46097,9 +46097,9 @@ LibInfoText_aNintendosio32i:: .asciz "NINTENDOSio32ID_030820"
 	.byte 0x0
 LibInfoText_SRAM_V113:: .asciz "SRAM_V113"
 	.balign 4, 0x00
-	.word sub_814D8CC+1
+	.word copyBytes+1
 	.word sub_814D8F0+1
-	.word sub_814D994+1
+	.word copy_compareToFirstMismatch+1
 	.word sub_814D9C4+1
 off_81C0418::
 	.word ply_fine+1

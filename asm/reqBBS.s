@@ -2750,9 +2750,9 @@ reqBBS_dead_initMemory_813F9F8:
 
 // symdb: Iterates over the 2-entry base-id table at 0x813FA50 and calls reqBBS_addRequest for each id in base..base+0x2F, registering 96 total requests.
 // symdb: () -> r0 = result of last reqBBS_addRequest call; no other visible effect
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813FA24.yaml
-	thumb_func_start sub_813FA24
-sub_813FA24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/reqBBS_addRangeRequests.yaml
+	thumb_func_start reqBBS_addRangeRequests
+reqBBS_addRangeRequests:
 	push {r4,r5,lr}
 	ldr r3, off_813FA4C // =dword_813FA50 
 	mov r1, #0
@@ -2778,7 +2778,7 @@ off_813FA4C:
 	.word dword_813FA50
 dword_813FA50:
 	.word 0x1B60
-	thumb_func_end sub_813FA24
+	thumb_func_end reqBBS_addRangeRequests
 
 	thumb_local_start
 reqBBS_813FA54:

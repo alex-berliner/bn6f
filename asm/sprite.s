@@ -277,9 +277,9 @@ battle_initSpriteProjection:
 
 // symdb: Initializes the global sprite-placement block (byte_20098A8=0x10, byte_20098A9=0 [isometric projection], halfword at 0x20098AA=0xFF) during overworld scene reset.
 // symdb: () -> r0 = undefined; writes globals byte_20098A8..A9 and word_20098AA, clobbers flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80027F4.yaml
-	thumb_func_start sub_80027F4
-sub_80027F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_initPlacementSettings.yaml
+	thumb_func_start sprite_initPlacementSettings
+sprite_initPlacementSettings:
 	ldr r1, off_8002804 // =byte_20098A8
 	mov r0, #0
 	strb r0, [r1,#0x1] // (byte_20098A9 - 0x20098a8)
@@ -297,7 +297,7 @@ dword_800280C:
 	.word 0x2FF
 byte_8002810:
 	.byte 0xFF, 0x2, 0x0, 0x0, 0xFF, 0x2, 0x0, 0x0
-	thumb_func_end sub_80027F4
+	thumb_func_end sprite_initPlacementSettings
 
 // symdb: Copy the sprite's 16-colour palette into its slot of the sprite palette buffer byte_3001550 (slot = high nibble of byte 0x15), applying the colour effect in halfword 6.
 // symdb: (r5 = sprite) -> source = field 0x34, or [[0x1C] + 4] + 4 + [0x18]; skip (byte 4 + byte 5) *

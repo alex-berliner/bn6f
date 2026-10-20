@@ -219,9 +219,9 @@ loc_812EBFE:
 // symdb: Loads the halfword at word_2023FA0 indexed by (cursor+scrollOffset)*4 into slot 9 via sub_811BC00, using submenu state at 0x2037780 fields +0x20 and +0x24.
 // symdb: () -> r0 = destroyed; uses submenu state at 0x2037780 fields +0x20/+0x24; no return value used
 // symdb: by callers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EC04.yaml
-	thumb_func_start sub_812EC04
-sub_812EC04:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_loadSelectedEntry.yaml
+	thumb_func_start submenu_loadSelectedEntry
+submenu_loadSelectedEntry:
 	push {r4-r7,lr}
 	bl submenu_getStatePtr
 	mov r5, r0
@@ -241,7 +241,7 @@ sub_812EC04:
 	.balign 4, 0
 off_812EC28:
 	.word word_2023FA0
-	thumb_func_end sub_812EC04
+	thumb_func_end submenu_loadSelectedEntry
 
 	thumb_func_start sub_812EC2C
 sub_812EC2C:
@@ -715,7 +715,7 @@ renderTextWindowToBg:
 	mov r7, #0
 	bl renderTextGfx_8045F8C
 
-	bl sub_812EFA4
+	bl t3_fillTextWindowTilemap
 	mov r0, #3
 	mov r1, #0xd
 	mov r2, #3
@@ -739,9 +739,9 @@ off_812EFA0:
 	thumb_func_end renderTextWindowToBg
 // symdb: Fills a 4x10 tilemap buffer at unk_2025A70 with consecutive halfword tile indices starting at 0x21C0, used as the text window's tile map blitted to BG block 3.
 // symdb: () -> writes 0x78 bytes of halfword tile indices into unk_2025A70; r0-r4,r7 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EFA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_fillTextWindowTilemap.yaml
 	thumb_local_start
-sub_812EFA4:
+t3_fillTextWindowTilemap:
 	push {r4-r7,lr}
 	ldr r7, dword_812EFCC // =0x21c0 
 	ldr r6, off_812EFD0 // =unk_2025A70 
@@ -768,7 +768,7 @@ dword_812EFCC:
 	.word 0x21C0
 off_812EFD0:
 	.word unk_2025A70
-	thumb_func_end sub_812EFA4
+	thumb_func_end t3_fillTextWindowTilemap
 
 	thumb_func_start sub_812EFD4
 sub_812EFD4:

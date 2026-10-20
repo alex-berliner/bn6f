@@ -770,7 +770,7 @@ off_800BDC0:
 	.word off_800BDC4
 off_800BDC4:
 	.word sub_800BDD0+1
-	.word sub_800BE0C+1
+	.word battle_phaseWait30Frames+1
 	.word sub_800BE2C+1
 	thumb_func_end sub_800BDB2
 
@@ -815,9 +815,9 @@ locret_800BE08:
 // symdb: Battle object phase that waits 30 frames on first entry (initializing Timer=0x1E, PhaseInitialized=4) then advances CurPhaseAndPhaseInitialized to 8.
 // symdb: (r5 = battle object) -> r0 = 1 if timer still running, 0 if phase advanced; writes
 // symdb: oBattleObject_Timer, oBattleObject_PhaseInitialized, oBattleObject_CurPhaseAndPhaseInitialized
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800BE0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_phaseWait30Frames.yaml
 	thumb_local_start
-sub_800BE0C:
+battle_phaseWait30Frames:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -836,7 +836,7 @@ loc_800BE1E:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_800BE2A:
 	pop {pc}
-	thumb_func_end sub_800BE0C
+	thumb_func_end battle_phaseWait30Frames
 
 	thumb_local_start
 sub_800BE2C:

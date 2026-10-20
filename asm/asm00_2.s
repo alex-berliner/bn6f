@@ -6426,7 +6426,7 @@ off_80117D4:
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x4f
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x50
 	.word megamanChargeShotBPwrAtk_init_8011A26+1 // 0x51
-	.word sub_8012326+1 // 0x52
+	.word ai_setBoostAttackVars+1 // 0x52
 	.word loc_801232A+1 // 0x53
 	.word writeChipParams3+1 // 0x54
 	.word sub_8012346+1 // 0x55
@@ -7982,9 +7982,9 @@ sub_801230C:
 // symdb: Initializes an AI attack-vars struct (caller-supplied via r7) with an attack boost of 0x100 or 0x300, base damage 30, extra damage 148, and returns 0x5c; selected by entering at the top for boost 1x or at loc_801232A for boost 3x.
 // symdb: (r7 = pointer to AI attack-vars struct; entered at top for boost=1, at loc_801232A for boost=3)
 // symdb: -> r0 = 0x5c; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012326.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_setBoostAttackVars.yaml
 	thumb_local_start
-sub_8012326:
+ai_setBoostAttackVars:
 	mov r0, #1
 	b loc_801232C
 loc_801232A:
@@ -7998,7 +7998,7 @@ loc_801232C:
 	strh r0, [r7,#oAIAttackVars_ExtraDamage]
 	mov r0, #0x5c 
 	mov pc, lr
-	thumb_func_end sub_8012326
+	thumb_func_end ai_setBoostAttackVars
 
 // symdb: Wrapper that invokes the chip-parameter-writing routine with argument 3.
 // symdb: (no args) -> r0 = return value of somethingWriteChipParams_80126E4; no flags relevant
@@ -9591,7 +9591,7 @@ battle_beastPwrAtkHitEnemies:
 	beq loc_8012D20
 	mov r0, #0x10
 	add r0, r0, r6
-	bl sub_8012D24
+	bl battle_sortPanelCoords
 	add r6, #0x10
 	mov r4, #3
 loc_8012CEC:
@@ -9627,9 +9627,9 @@ loc_8012D20:
 // symdb: (r0 = output byte array >=4 bytes, r4 = object count <=3, r6 = array of battle-object pointers,
 // symdb: caller's r6/r4 reused) -> r0 clobbered; writes zero word then count packed panel-coord bytes,
 // symdb: pads to 3 and sorts via sortThreeEntries
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8012D24.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_sortPanelCoords.yaml
 	thumb_local_start
-sub_8012D24:
+battle_sortPanelCoords:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r0, #0
@@ -9665,7 +9665,7 @@ loc_8012D5C:
 loc_8012D5E:
 	bl sortThreeEntries
 	pop {r4-r7,pc}
-	thumb_func_end sub_8012D24
+	thumb_func_end battle_sortPanelCoords
 
 	thumb_local_start
 sub_8012D64:
@@ -15635,9 +15635,9 @@ dword_8015610:
 // symdb: Loads the HitElement byte from the AI attack vars at r7, uses it to index off_8015628, and bx-dispatches to the selected handler (Thumb set bit); r0 holds the HitElement index and control passes via lr set to pc, so the handler must return with bx lr.
 // symdb: (r7 = AI attack vars; reads oAIAttackVars_HitElement) -> calls table[HitElement] as ARM routine,
 // symdb: returns to caller via pop {pc}
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8015614.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_dispatchHitElementHandler.yaml
 	thumb_local_start
-sub_8015614:
+ai_dispatchHitElementHandler:
 	push {lr}
 	ldr r1, off_8015624 // =off_8015628 
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -15650,7 +15650,7 @@ off_8015624:
 	.word off_8015628
 off_8015628:
 	.word ai_attackEmergeAtTargetPanel+1
-	thumb_func_end sub_8015614
+	thumb_func_end ai_dispatchHitElementHandler
 
 // symdb: Enemy AI attack step that makes the object emerge/warp onto its reserved target panel (white-flash, sound, effect), then waits ~30 frames before releasing AI flags and leaving the attack state.
 // symdb: (r5 = battle object, r7 = AI attack vars context) -> void; sets r0 result of
@@ -20638,7 +20638,7 @@ off_8017BB8:
 
 // symdb: AI attack dispatcher: branches on the queued-AttackUnk_48 flag/word to run one of several attack routines, often leaving the queued 0x1c AttackVars slot to run.
 // symdb: (r5 = battle object pointer) -> r0 = 0 ; side effects: clobbers AIData flag bits, clears/queues
-// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / sub_8015614 / sub_802D714 /
+// symdb: an AttackVars slot, calls an attack routine (sub_8014A38 / ai_dispatchHitElementHandler / sub_802D714 /
 // symdb: sub_802D926 / object_setAttack0) depending on the queued flag, then returns 0.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ai_dispatchQueuedAttacks_8017BC0.yaml
 	thumb_local_start
@@ -20658,7 +20658,7 @@ loc_8017BD8:
 	ldr r1, off_8017C9C // =0x100 
 	tst r0, r1
 	beq loc_8017BE8
-	bl sub_8015614
+	bl ai_dispatchHitElementHandler
 	pop {r4,r6,r7,pc}
 loc_8017BE8:
 	bl GetAIDataUnk0x48Flag
@@ -20756,9 +20756,9 @@ byte_8017CB0:
 // symdb: Dispatches the battle object's MoveSubState byte through a 3-entry function-pointer table (off_8017CD4) to one of object_continuePanelMoveStep, sub_8017D64, or sub_8017E0A, then returns to the caller.
 // symdb: (r5 = battle object; r0 = [r5+oBattleObject_MoveSubState] as table index) -> tail-dispatches to
 // symdb: handler in off_8017CD4, no direct return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8017CC0.yaml
-	thumb_func_start sub_8017CC0
-sub_8017CC0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runMoveSubState.yaml
+	thumb_func_start battle_runMoveSubState
+battle_runMoveSubState:
 	push {lr}
 	ldr r1, off_8017CD0 // =off_8017CD4 
 	ldrb r0, [r5,#oBattleObject_MoveSubState]
@@ -20773,7 +20773,7 @@ off_8017CD4:
 	.word object_continuePanelMoveStep+1
 	.word sub_8017D64+1
 	.word sub_8017E0A+1
-	thumb_func_end sub_8017CC0
+	thumb_func_end battle_runMoveSubState
 
 // symdb: Continues a battle object's multi-panel move: snaps the object onto its reached panel, then either launches the next step (velocity toward the following panel, panel reserved, MoveSubState=4) or ends the move (CurPhase=0x18, MoveSubState=8).
 // symdb: (r5 = battle object, no register args) -> r0 = 0/1-like status unused by callers visible;
@@ -21373,9 +21373,9 @@ nullsub_57:
 // symdb: Advances a battle object's animation by dispatching through a 2-entry table indexed by [r5+oBattleObject_PreventAnim]: entry 0 (set) starts the erase animation, entry 1 (clear) runs the normal per-frame animation step.
 // symdb: (r5 = battle object) -> r0 = result of the dispatched handler; calls through a 2-entry dispatch
 // symdb: table indexed by [r5+oBattleObject_PreventAnim]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801813A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepAnim.yaml
 	thumb_local_start
-sub_801813A:
+object_stepAnim:
 	push {lr}
 	ldr r1, off_8018148 // =off_801814C 
 	ldrb r0, [r5,#oBattleObject_PreventAnim]
@@ -21388,7 +21388,7 @@ off_8018148:
 off_801814C:
 	.word object_startErase+1
 	.word sub_8018186+1
-	thumb_func_end sub_801813A
+	thumb_func_end object_stepAnim
 
 // symdb: Begins a battle object's removal: flags it as erased, disables its collision, frees its reserved panel, and starts a 60-frame vanish timer with PreventAnim 4.
 // symdb: (r0 = battle object pointer, also in r5) -> void; flags preserved/irrelevant
@@ -25991,7 +25991,7 @@ loc_801B43E:
 	tst r0, r1
 	beq loc_801B44E
 loc_801B448:
-	bl sub_801813A
+	bl object_stepAnim
 	b loc_801B4B6
 loc_801B44E:
 	bl battle_isTimeStop
@@ -26148,7 +26148,7 @@ loc_801B57A:
 	tst r0, r1
 	beq loc_801B58A
 loc_801B584:
-	bl sub_801813A
+	bl object_stepAnim
 	b loc_801B5F2
 loc_801B58A:
 	bl battle_isTimeStop
@@ -26311,7 +26311,7 @@ loc_801B6BA:
 	tst r0, r1
 	beq loc_801B6CA
 loc_801B6C4:
-	bl sub_801813A
+	bl object_stepAnim
 	b loc_801B732
 loc_801B6CA:
 	bl battle_isTimeStop
@@ -26470,7 +26470,7 @@ loc_801B7FA:
 	tst r0, r1
 	beq loc_801B80A
 loc_801B804:
-	bl sub_801813A
+	bl object_stepAnim
 	b loc_801B86C
 loc_801B80A:
 	bl battle_isTimeStop
@@ -26627,7 +26627,7 @@ loc_801B928:
 	tst r0, r1
 	beq loc_801B938
 loc_801B932:
-	bl sub_801813A
+	bl object_stepAnim
 	b loc_801B9A0
 loc_801B938:
 	bl battle_isTimeStop

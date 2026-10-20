@@ -139,7 +139,7 @@ int __fastcall e_spawnFromTableAndPlaceByAltY(void *a1, int a2, int a3)
 
 
 // 0x812ec04
-int sub_812EC04()
+int submenu_loadSelectedEntry()
 {
     char *v0; // r0
 
@@ -352,7 +352,7 @@ void __fastcall __noreturn renderTextWindowToBg(int a1)
 
 
 // 0x812efa4
-__int64 sub_812EFA4()
+__int64 t3_fillTextWindowTilemap()
 {
     int v0; // r7
     signed int v1; // r4

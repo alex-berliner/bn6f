@@ -1979,7 +1979,7 @@ off_810E910:
 off_810E914:
 	.word sub_810E928+1
 	.word sub_810E97A+1
-	.word sub_810E9B6+1
+	.word battle_tickTimerThenAdvancePhase+1
 	.word sub_810E9D4+1
 	.word battle_clearRecordAndResetPhase+1
 	thumb_func_end battle_objectRunPhaseHandlerTable
@@ -2053,9 +2053,9 @@ locret_810E9B4:
 // symdb: Per-frame routine: decrements the object's halfword Timer; when it underflows, sets CurAnim=5, writes 9 to byte +0x10 of the struct at oBattleObject_ExtraVars+4, reloads Timer=0x20, and moves the object to phase 0xC.
 // symdb: (r5 = battle object, no args) -> r0 = final/new Timer value; updates object Timer, CurAnim,
 // symdb: ExtraVars+4 struct, and phase fields
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E9B6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickTimerThenAdvancePhase.yaml
 	thumb_local_start
-sub_810E9B6:
+battle_tickTimerThenAdvancePhase:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
@@ -2072,7 +2072,7 @@ sub_810E9B6:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_810E9D2:
 	pop {pc}
-	thumb_func_end sub_810E9B6
+	thumb_func_end battle_tickTimerThenAdvancePhase
 
 	thumb_local_start
 sub_810E9D4:
@@ -19495,9 +19495,9 @@ off_81175CC:
 // symdb: Tail-calling state dispatcher that selects one of three Thumb handlers via the object's r5+8 state byte and the table at off_81175E4, including the sprite-scale-clear routine as state 2.
 // symdb: (r5 = object work area; r5+8 = state index 0..2) -> tail-calls handler, returns its result; no
 // symdb: flags set by dispatcher itself
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81175D0.yaml
-	thumb_func_start sub_81175D0
-sub_81175D0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_scaleStateStep.yaml
+	thumb_func_start object_scaleStateStep
+object_scaleStateStep:
 	push {lr}
 	ldr r0, off_81175E0 // =off_81175E4
 	ldrb r1, [r5,#8]
@@ -19512,7 +19512,7 @@ off_81175E4:
 	.word sub_81175F0+1
 	.word sub_8117680+1
 	.word sprite_makeUnscalableAndClearScaleCycle+1
-	thumb_func_end sub_81175D0
+	thumb_func_end object_scaleStateStep
 
 	thumb_local_start
 sub_81175F0:
@@ -19741,9 +19741,9 @@ locret_811777E:
 // symdb: Dispatches a per-object handler selected by a byte at offset 8 of the object struct in r5, passing the handler a pointer to shared IWRAM byte_2011C10 (also held in r6) via a fake ARM/Thumb interwork call.
 // symdb: (r5 = object struct, r0 = pointer to byte_2011C10 on entry) -> calls handler from
 // symdb: off_8117794[r1] with r0=&byte_2011C10; r6 set to the same pointer, clobbers r6/lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8117780.yaml
-	thumb_func_start sub_8117780
-sub_8117780:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchHandler.yaml
+	thumb_func_start object_dispatchHandler
+object_dispatchHandler:
 	push {lr}
 	ldr r6, off_81177A0 // =byte_2011C10
 	ldr r0, off_8117790 // =off_8117794
@@ -19760,7 +19760,7 @@ off_8117794:
 	.word sub_8117818+1
 off_81177A0:
 	.word byte_2011C10
-	thumb_func_end sub_8117780
+	thumb_func_end object_dispatchHandler
 
 // symdb: Initializer handler for an object: sets type/state byte to 0x23, attaches sprite 0xF from byte_202FA04 via initGuiSprite, clears field +0xC, configures sprite (setAnimation, loadAnimationData, noShadow, palette bank 8, sub-record field A = 1, OAM priority 0), stores halfword 0x40 into a slot, sets field +8 = 4, then tail-calls sub_81177EC.
 // symdb: (r5 = current object struct) -> void; calls initGuiSprite with (0xF, &byte_202FA04) to attach
@@ -26553,9 +26553,9 @@ dword_811A788:
 // symdb: Thumb dispatch stub that jumps to one of three functions in a 3-entry table at off_811A7A0, selected by the state byte [r5,#8], using a tail call (pop {pc}) so the handler's return passes through.
 // symdb: (r5 = gui sprite object, no r0 args) -> dispatches to handler with r5 context; handler result
 // symdb: passes through as return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811A78C.yaml
-	thumb_func_start sub_811A78C
-sub_811A78C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spriteDispatchState.yaml
+	thumb_func_start spriteDispatchState
+spriteDispatchState:
 	push {lr}
 	ldr r0, off_811A79C // =off_811A7A0
 	ldrb r1, [r5,#8]
@@ -26570,7 +26570,7 @@ off_811A7A0:
 	.word initGuiSpriteObject+1
 	.word sub_811A818+1
 	.word sub_811A830+1
-	thumb_func_end sub_811A78C
+	thumb_func_end spriteDispatchState
 
 // symdb: Initializes a GUI sprite object (resource 0x2A) with fixed anim/palette/priority and places it at one of three preset positions chosen by a variant byte.
 // symdb: (r5 = object struct; variant in [r5+4]) -> void; sets [r5]=0x23, [r5+8]=4
@@ -27790,7 +27790,7 @@ sub_811B098:
 	ldr r2, off_811B0FC // =dword_811B100
 	lsr r3, r3, #2
 	ldrb r2, [r2,r3]
-	bl sub_8132A9E
+	bl sprite_queueOamEntryFromTable
 	add sp, sp, #8
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -28118,9 +28118,9 @@ locret_811B336:
 // symdb: Dispatches to a per-type update handler for a submenu object, tail-calling one of three handlers from off_811B34C based on the type byte at [r5,#8].
 // symdb: (r5 = object struct; type id at [r5,#8]) -> tail-calls handler from off_811B34C with r6 =
 // symdb: sSubmenu
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B338.yaml
-	thumb_func_start sub_811B338
-sub_811B338:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenuDispatchTypeUpdate.yaml
+	thumb_func_start submenuDispatchTypeUpdate
+submenuDispatchTypeUpdate:
 	push {lr}
 	ldr r6, off_811B358 // =sSubmenu
 	ldr r0, off_811B348 // =off_811B34C
@@ -28138,7 +28138,7 @@ off_811B34C:
 	.word sub_811B3EC+1
 off_811B358:
 	.word sSubmenu
-	thumb_func_end sub_811B338
+	thumb_func_end submenuDispatchTypeUpdate
 
 // symdb: Initializer for an object of type 0x23: loads sprite resource 0x14 from unk_2026A00 via initGuiSprite_8002770, sets animation 0 with no shadow and priority 0, claims slot 0x210, writes sub-record field A=2 and sub-entry palette bank 0xA with palette 0, then sets coordinates to (0x20, 0x50) and tail-calls sub_811B3B0. Finally stores state byte 4 at [r5,#8].
 // symdb: (r5 = object state struct) -> void; r0/r1 clobbered
@@ -28523,7 +28523,7 @@ sub_811B5FC:
 	ldrsh r0, [r5,r4]
 	mov r6, #0x14
 	ldrsh r1, [r5,r6]
-	bl sub_811B990
+	bl eEaseToward
 	strh r0, [r5,r6]
 	ldrsh r0, [r5,r4]
 	ldrsh r1, [r5,r6]
@@ -28986,9 +28986,9 @@ sub_811B984:
 // symdb: Returns current value moved halfway toward a target (r1), leaving it unchanged when the halved distance rounds to 0 or 1; used by callers to ease a field toward a target until convergence.
 // symdb: (r0 = current value, r1 = target value) -> r0 = current moved by diff/2 toward target; unchanged
 // symdb: if |diff| <= 3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B990.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eEaseToward.yaml
 	thumb_local_start
-sub_811B990:
+eEaseToward:
 	mov r2, r0
 	sub r0, r1, r0
 	cmp r0, #0
@@ -29009,7 +29009,7 @@ loc_811B9A2:
 loc_811B9B0:
 	mov r0, r2
 	mov pc, lr
-	thumb_func_end sub_811B990
+	thumb_func_end eEaseToward
 
 	thumb_func_start sub_811B9B4
 sub_811B9B4:
@@ -30617,7 +30617,7 @@ loc_811C6B6:
 	strb r0, [r5,#9]
 	strh r0, [r5,#0xa]
 loc_811C6C2:
-	bl sub_811C784
+	bl sprite_advancePointersByVelocity
 	bl sub_811C7A0
 	bl sprite_update
 	pop {pc}
@@ -30676,9 +30676,9 @@ off_811C780:
 
 // symdb: Per-frame step that advances the two 32-bit pointer fields at r5+0x18 and r5+0x1c by the sprite's signed x/y velocity from r5+0x14/r5+0x16, each scaled by 16.
 // symdb: (r0 = unused/scratch, r5 = sprite object) -> void; r5+0x18 and r5+0x1c incremented in place
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811C784.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_advancePointersByVelocity.yaml
 	thumb_local_start
-sub_811C784:
+sprite_advancePointersByVelocity:
 	ldr r0, [r5,#0x18]
 	mov r2, #0x14
 	ldrsh r1, [r5,r2]
@@ -30693,7 +30693,7 @@ sub_811C784:
 	str r0, [r5,#0x1c]
 	mov pc, lr
 	.byte 0, 0
-	thumb_func_end sub_811C784
+	thumb_func_end sprite_advancePointersByVelocity
 
 	thumb_local_start
 sub_811C7A0:
@@ -31255,14 +31255,14 @@ off_811CD28:
 	.word sub_811CD94+1
 	.word sub_811CD60+1
 	.word sub_811CD94+1
-	.word sub_811CFA4+1
+	.word object_behaviorDispatch+1
 	.word sub_811D0AC+1
 	.word sub_811D124+1
-	.word sub_811D1B8+1
-	.word sub_811D1B8+1
+	.word objectDispatch+1
+	.word objectDispatch+1
 	.word sub_811D2C4+1
 	.word object_waitTimerGotoState23+1
-	.word sub_811D1B8+1
+	.word objectDispatch+1
 	thumb_func_end object_runStateHandler
 
 	thumb_local_start
@@ -31313,7 +31313,7 @@ off_811CDA4:
 off_811CDA8:
 	.word sub_811CDC8+1
 	.word object_timerSfxTick+1
-	.word sub_811CE34+1
+	.word battle_emotionUpdate+1
 	.word object_timerBeepTick+1
 	.word object_cycleAnimationTimer+1
 	.word object_tickAnimSound+1
@@ -31391,9 +31391,9 @@ off_811CE30:
 // symdb: Periodic battle task that runs every 16 frames: in mode 1 it sets a state byte to 0x1C and records an emotion change via battle_recordEmotionChange, then clears field +0xE; otherwise it sets the byte to 0xC and calls sub_811D6F4.
 // symdb: (r5 = battle object/state struct, not passed in r0-r3) -> r0 = 0 (clobbered by calls); no
 // symdb: meaningful return value, flags from the counter test
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CE34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_emotionUpdate.yaml
 	thumb_local_start
-sub_811CE34:
+battle_emotionUpdate:
 	push {lr}
 	ldrb r0, [r5,#0xc]
 	sub r0, #1
@@ -31418,7 +31418,7 @@ loc_811CE52:
 	strb r0, [r5,#0xe]
 locret_811CE62:
 	pop {pc}
-	thumb_func_end sub_811CE34
+	thumb_func_end battle_emotionUpdate
 
 // symdb: Object behavior tick: counts a frame timer down, and on expiry resets the sprite color shader, rearms the timer, and plays SFX 0x100.
 // symdb: (r5 = object work area, no args in r0-r3) -> void; sets [r5+9]=0x10, reloads [r5+0xC]=20, plays
@@ -31605,9 +31605,9 @@ locret_811CFA2:
 // symdb: Trampoline that reads a behavior selector byte at [r5,#9], indexes into the 6-entry Thumb jump table at off_811CFB8, and tail-calls the matching object behavior handler.
 // symdb: (r5 = object ptr) -> r0 = whatever the selected handler returns; lr trick preserves return
 // symdb: address for Thumb callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811CFA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_behaviorDispatch.yaml
 	thumb_local_start
-sub_811CFA4:
+object_behaviorDispatch:
 	push {lr}
 	ldr r0, off_811CFB4 // =off_811CFB8
 	ldrb r1, [r5,#9]
@@ -31625,7 +31625,7 @@ off_811CFB8:
 	.word object_animCycleTimerStep+1
 	.word sub_811D080+1
 	.word sub_811D0A8+1
-	thumb_func_end sub_811CFA4
+	thumb_func_end object_behaviorDispatch
 
 	thumb_local_start
 sub_811CFD0:
@@ -31935,9 +31935,9 @@ sub_811D1B4:
 // symdb: Tail-calls one of four Thumb handlers (sub_811D1DC, sub_811D20C, sub_811D248, sub_811D2C0) selected by the byte at [r5,#9].
 // symdb: (r5 = object/state struct, r1..r3 passthrough) -> tail-calls handler, returns its result; no
 // symdb: return value consumed at this level
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811D1B8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/objectDispatch.yaml
 	thumb_local_start
-sub_811D1B8:
+objectDispatch:
 	push {lr}
 	ldr r0, off_811D1C8 // =off_811D1CC
 	ldrb r1, [r5,#9]
@@ -31953,7 +31953,7 @@ off_811D1CC:
 	.word sub_811D20C+1
 	.word object_countdownFinishVariantAnim+1
 	.word sub_811D2C0+1
-	thumb_func_end sub_811D1B8
+	thumb_func_end objectDispatch
 
 	thumb_local_start
 sub_811D1DC:
@@ -36619,7 +36619,7 @@ JumpTable811F7A0:
   // 0x28
 	.word battleObject_runBeastSpFunction_8136DE0+1
   // 0x2C
-	.word sub_81378B4+1
+	.word battle_runStateHandler+1
   // 0x30
 	.word sub_8128CBC+1
   // 0x34

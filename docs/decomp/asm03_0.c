@@ -13773,7 +13773,7 @@ void battle_clampCameraToBounds_80300AC()
 
 
 // 0x8030104
-void sub_8030104()
+void camera_applyNextPosToScroll()
 {
     int v0; // r5
 

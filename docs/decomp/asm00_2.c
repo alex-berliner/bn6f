@@ -5214,7 +5214,7 @@ signed int sub_801230C()
 
 
 // 0x8012326
-signed int sub_8012326()
+signed int ai_setBoostAttackVars()
 {
     int v0; // r7
 
@@ -6350,7 +6350,7 @@ int battle_beastPwrAtkHitEnemies()
     result = object_getEnemyByNameRange(&v11 + v1, byte_100, 451, *(v0 + 22) ^ 1);
     if ( v2 + result )
     {
-        sub_8012D24(&v12);
+        battle_sortPanelCoords(&v12);
         v5 = &v12;
         v6 = 3;
         do
@@ -6372,7 +6372,7 @@ int battle_beastPwrAtkHitEnemies()
 
 
 // 0x8012d24
-unsigned int __fastcall sub_8012D24(_DWORD *a1)
+unsigned int __fastcall battle_sortPanelCoords(_DWORD *a1)
 {
     int v1; // r4
     int v2; // r6
@@ -10620,7 +10620,7 @@ void ai_attackTimerFinishStep()
 
 
 // 0x8015614
-int sub_8015614()
+int ai_dispatchHitElementHandler()
 {
     unsigned __int8 *v0; // r7
 
@@ -14081,7 +14081,7 @@ void battle_ai_dispatchQueuedAttacks_8017BC0()
     }
     else if ( GetAIDataUnk0x48Flag() & byte_100 )
     {
-        sub_8015614();
+        ai_dispatchHitElementHandler();
     }
     else if ( GetAIDataUnk0x48Flag() & &loc_1000 )
     {
@@ -14123,7 +14123,7 @@ void battle_ai_dispatchQueuedAttacks_8017BC0()
 
 
 // 0x8017cc0
-int sub_8017CC0()
+int battle_runMoveSubState()
 {
     int v0; // r5
 
@@ -14588,7 +14588,7 @@ void nullsub_57()
 
 
 // 0x801813a
-int sub_801813A()
+int object_stepAnim()
 {
     int v0; // r5
 
@@ -17178,10 +17178,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
-            return sub_801813A();
+            return object_stepAnim();
         }
         if ( object_getFlag() & 0x30000000 )
-            return sub_801813A();
+            return object_stepAnim();
         battle_isTimeStop();
         if ( v9 )
         {
@@ -17260,10 +17260,10 @@ int __fastcall sub_801B4D4(int a1)
     if ( object_getFlag2() & &loc_3000 )
     {
         *(v1 + 24) = 0;
-        return sub_801813A();
+        return object_stepAnim();
     }
     if ( object_getFlag() & 0x30000000 )
-        return sub_801813A();
+        return object_stepAnim();
     battle_isTimeStop();
     if ( v9 )
     {
@@ -17352,10 +17352,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
-            return sub_801813A();
+            return object_stepAnim();
         }
         if ( object_getFlag() & 0x30000000 )
-            return sub_801813A();
+            return object_stepAnim();
         battle_isTimeStop();
         if ( v9 )
         {
@@ -17445,10 +17445,10 @@ LABEL_8:
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
-            return sub_801813A();
+            return object_stepAnim();
         }
         if ( object_getFlag() & 0x30000000 )
-            return sub_801813A();
+            return object_stepAnim();
         battle_isTimeStop();
         if ( !v9 )
             return battle_shakeRenderCoords();
@@ -17533,10 +17533,10 @@ LABEL_9:
         if ( object_getFlag2() & &loc_3000 )
         {
             *(v1 + 24) = 0;
-            return sub_801813A();
+            return object_stepAnim();
         }
         if ( object_getFlag() & 0x30000000 )
-            return sub_801813A();
+            return object_stepAnim();
         battle_isTimeStop();
         if ( v9 )
         {

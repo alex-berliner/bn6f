@@ -4285,9 +4285,9 @@ byte_813D7A0:
 // symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls sub_813D5E8(1); clears byte_200AF81 each tick.
 // symdb: (r0 = ptr to state struct; [r0+1] = step counter 0..0x14) -> r0 = 0 (or finalize result); r5/r7
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D7B8.yaml
-	thumb_func_start sub_813D7B8
-sub_813D7B8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1StepSequence.yaml
+	thumb_func_start t1StepSequence
+t1StepSequence:
 	push {r5,r7,lr}
 	mov r7, r0
 	mov r0, #0
@@ -4321,7 +4321,7 @@ off_813D7E8:
 	.word sub_813D8AC+1
 off_813D800:
 	.word byte_200AF80
-	thumb_func_end sub_813D7B8
+	thumb_func_end t1StepSequence
 
 	thumb_local_start
 sub_813D804:
@@ -4639,9 +4639,9 @@ off_813D9A8:
 
 // symdb: Dispatches via a 2-entry thumb handler table indexed by eS200BC50+1, returns sub_813D9F4's value (4 = done), otherwise calls sub_8146B70 as a per-step wait.
 // symdb: (no args) -> r0 = new state/task value (4 appears to mean finished); no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D9AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_stepState.yaml
 	thumb_local_start
-sub_813D9AC:
+e_stepState:
 	push {r4,lr}
 	ldr r0, off_813D9CC // =eS200BC50 
 	ldrb r2, [r0,#0x1] // (byte_200BC51 - 0x200bc50)
@@ -4665,7 +4665,7 @@ off_813D9D0:
 off_813D9D4:
 	.word sub_813D9DC+1
 	.word sub_813D9E8+1
-	thumb_func_end sub_813D9AC
+	thumb_func_end e_stepState
 
 	thumb_local_start
 sub_813D9DC:
@@ -4709,7 +4709,7 @@ sub_813DA0C:
 	ldrb r0, [r4]
 	tst r0, r0
 	beq loc_813DA22
-	bl sub_813D9AC
+	bl e_stepState
 	strb r0, [r4,#0x1] // (eStruct203F7D8+1 - 0x203f7d8)
 	b locret_813DA36
 loc_813DA22:

@@ -2220,7 +2220,7 @@ int __fastcall shop_incrementPurchaseCount(int a1, int a2)
 
 
 // 0x8048d9c
-int __fastcall sub_8048D9C(int a1)
+int __fastcall shop_getEntryDataPtr(int a1)
 {
     int v1; // r10
 
@@ -4326,7 +4326,7 @@ void __fastcall __noreturn submenu_updateCursorLoop(int a1)
 
 
 // 0x804a54c
-int sub_804A54C()
+int object_dispatchAnimState()
 {
     int v0; // r5
 
@@ -5874,12 +5874,12 @@ int sub_804C348()
     call_sub_3005EBA(0, 0, 3, 0);
     t3_loadTextWindowTiles();
     LOBYTE(dword_30[0]) = 4;
-    return sub_804C3BC();
+    return chatbox_redrawTextWindow();
 }
 
 
 // 0x804c3bc
-void sub_804C3BC()
+void chatbox_redrawTextWindow()
 {
     t3_loadTextWindowTiles();
 }

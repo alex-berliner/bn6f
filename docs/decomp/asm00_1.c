@@ -1897,7 +1897,7 @@ LABEL_11:
 
 
 // 0x8004c62
-void __fastcall sub_8004C62(int a1, _WORD *a2, _BYTE *a3)
+void __fastcall copyStringToFontTiles(int a1, _WORD *a2, _BYTE *a3)
 {
     signed int v3; // r5
     signed int v4; // r8
@@ -4214,7 +4214,7 @@ signed int __fastcall chatbox_initWindowReqAndEnqueue(int *a1, int a2, int a3, i
     dword_20096C8 = v4[7];
     dword_20096CC = v4[8];
     *byte_20096A3 = v4[9];
-    sub_8006B94(&unk_2008980, 1280, 160);
+    win_buildDiagonalEdgeTable(&unk_2008980, 1280, 160);
     return req_enqueueTask(&unk_2008980, &Window0HorizontalDimensions, 4, -1570766848);
 }
 
@@ -4353,17 +4353,17 @@ LABEL_12:
             {
                 v19 = (v6 + v21) & 0xFFFF;
                 if ( v19 - 160 < 0 )
-                    result = sub_8006B94(&unk_2008980 + 8 * v19, 8 * (160 - v19), 160);
+                    result = win_buildDiagonalEdgeTable(&unk_2008980 + 8 * v19, 8 * (160 - v19), 160);
                 return result;
             }
         }
     }
     if ( v6 - 160 < 0 )
     {
-        sub_8006B94(&unk_2008980, 8 * v6, a2 - a3);
+        win_buildDiagonalEdgeTable(&unk_2008980, 8 * v6, a2 - a3);
         goto LABEL_5;
     }
-    return sub_8006B94(&unk_2008980, 1280, 160);
+    return win_buildDiagonalEdgeTable(&unk_2008980, 1280, 160);
 }
 
 
@@ -4403,7 +4403,7 @@ int __fastcall sub_8006B3A(int a1, int a2, int a3)
 
 
 // 0x8006b94
-int __fastcall sub_8006B94(int result, int a2, int a3)
+int __fastcall win_buildDiagonalEdgeTable(int result, int a2, int a3)
 {
     unsigned int v3; // r2
     int v4; // r1
@@ -6071,7 +6071,7 @@ int __fastcall sub_8007C50(int a1)
     if ( !*(v1 + 3) )
     {
         *(v1 + 3) = 4;
-        return sub_803C754();
+        return battle_initWaitTimer();
     }
     result = test0x200bc50_0x5_813D60C();
     if ( !result )
@@ -6739,7 +6739,7 @@ int battle_stepEndCountdownToResult()
 
 
 // 0x800834a
-int sub_800834A()
+int object_dispatchByState()
 {
     int v0; // r5
 
@@ -7775,7 +7775,7 @@ int sub_8008BF0()
 
 
 // 0x8008c58
-int sub_8008C58()
+int battle_effectStepByType()
 {
     int v0; // r5
 
@@ -10083,7 +10083,7 @@ LABEL_15:
 
 
 // 0x8009ee2
-int sub_8009EE2()
+int battle_dispatchStatePhase()
 {
     int v0; // r5
 

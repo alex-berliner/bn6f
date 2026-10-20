@@ -491,7 +491,7 @@ int e_disableScenarioEffect()
 
 
 // 0x814215a
-int sub_814215A()
+int e_scenarioEffectEnable()
 {
     byte_200078D = 1;
     return 0;
@@ -1895,7 +1895,7 @@ int t3_tickCrows()
 
 
 // 0x81432d8
-int sub_81432D8()
+int getCybercrowCrowsState3()
 {
     int v0; // r6
     signed int v1; // r4
@@ -2688,7 +2688,7 @@ signed int e_resetStateFields()
 
 
 // 0x8143fc4
-int __fastcall sub_8143FC4(int a1, int a2, int a3)
+int __fastcall e_bounceValue(int a1, int a2, int a3)
 {
     int result; // r0
     int v4; // r1

@@ -3100,7 +3100,7 @@ cutscenescript_8096ABC:
 	cs_disable_cutscene_skip_script
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_E4B
 	cs_pause byte1=0xFF byte2=0x14
-	cs_call_native_with_return_value ptr1=sub_8096B00+1
+	cs_call_native_with_return_value ptr1=get_areAllKeyIconsEarned+1
 	cs_jump_if_var_equal byte1=0x04 byte2=0x01 destination3=byte_8096ADC
 	cs_start_fixed_battle hword1=0x0084
 	cs_jump destination1=byte_8096ADF
@@ -3131,9 +3131,9 @@ end_cutscenescript_8096AFF:
 // symdb: Masks the earned title-screen icon bitmask with 0xF6 and stores 1 at [r5+4] if all five of those icons are earned, else 0; always returns 0 in r0.
 // symdb: (no args; r5 = ptr to result struct, set by caller) -> r0 = 0; [r5+4] = 1 if (earnedIconMask &
 // symdb: 0xF6) == 0xF6 else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8096B00.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/get_areAllKeyIconsEarned.yaml
 	thumb_local_start
-sub_8096B00:
+get_areAllKeyIconsEarned:
 	push {r4-r7, lr}
 	mov r4, #0
 	bl GetTitleScreenIconCount
@@ -3147,7 +3147,7 @@ loc_8096B12:
 	mov r0, #0
 	pop {r4-r7, pc}
 	.pool
-	thumb_func_end sub_8096B00
+	thumb_func_end get_areAllKeyIconsEarned
 
 byte_8096B1C::
 	ccs_set_camera_pos hword1=0x06C0 hword3=0xEC40 hword5=0x0180

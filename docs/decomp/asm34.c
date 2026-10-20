@@ -509,12 +509,12 @@ void __fastcall sub_812D99C(int a1)
 int sub_812D9F0()
 {
 	submenu_getWork();
-	return sub_812DA08(146, 28, 40, 46);
+	return object_submitOamFromStruct(146, 28, 40, 46);
 }
 
 
 // 0x812da08
-signed int __fastcall sub_812DA08(int a1, int a2, int a3, int a4)
+signed int __fastcall object_submitOamFromStruct(int a1, int a2, int a3, int a4)
 {
 	int v4; // r5
 
@@ -558,7 +558,7 @@ void rfu_finishCommScreenStep()
 	if ( sub_80062C8() == 12 )
 		engine_setScreeneffect(8, 16);
 	if ( eStruct200BC30_getJumpOffset00() )
-		sub_803C754();
+		battle_initWaitTimer();
 	else
 		link_resetHardwareAndClearLinkBuffers_81440D8();
 	v0[2] = 28;

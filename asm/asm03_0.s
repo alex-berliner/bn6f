@@ -22048,7 +22048,7 @@ off_8030068:
 	.word camera_updateDerivedOffsets_803007C+1
 	.word camera_updateDerivedOffsets_803007C+1
 	.word battle_clampCameraToBounds_80300AC+1
-	.word sub_8030104+1
+	.word camera_applyNextPosToScroll+1
 	.word camera_updateDerivedOffsets_803007C+1
 	thumb_func_end camera_dispatchUpdate_8030054
 
@@ -22145,9 +22145,9 @@ locret_8030102:
 
 // symdb: Converts oCamera_nextX/nextY fixed-point follow position to integer, applies offsets (+0x88 X, +0xB0 Y), and stores to oCamera_ScrollX and oCamera_CameraYInt.
 // symdb: (r5 = oCamera struct pointer) -> void; writes oCamera_ScrollX and oCamera_CameraYInt
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8030104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_applyNextPosToScroll.yaml
 	thumb_local_start
-sub_8030104:
+camera_applyNextPosToScroll:
 	ldr r4, [r5,#oCamera_nextX_3c]
 	asr r4, r4, #0x10
 	add r4, #0x80
@@ -22159,7 +22159,7 @@ sub_8030104:
 	add r4, #0x30 
 	strh r4, [r5,#oCamera_CameraYInt]
 	mov pc, lr
-	thumb_func_end sub_8030104
+	thumb_func_end camera_applyNextPosToScroll
 
 // symdb: Copies the camera's current x/y position into its saved-position fields (Unk_04->Unk_08, Unk_06->Unk_0a).
 // symdb: void camera_SavePosition(Camera* cam /* r5 */) /* returns r1 = saved y; lr = return */

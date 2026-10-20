@@ -190,7 +190,7 @@ signed int battle_initSpriteProjection()
 
 
 // 0x80027f4
-signed int sub_80027F4()
+signed int sprite_initPlacementSettings()
 {
     signed int result; // r0
 

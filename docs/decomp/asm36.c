@@ -159,7 +159,7 @@ int sub_8130208()
 
 
 // 0x8130250
-signed int sub_8130250()
+signed int sprite_queueStaticOamBatch8()
 {
 	__int16 v0; // r6
 	signed int v1; // r4
@@ -408,7 +408,7 @@ signed int object_queueChoiceOam()
 	signed int result; // r0
 
 	v0 = t4_getWork();
-	sub_8130250();
+	sprite_queueStaticOamBatch8();
 	result = v0[12];
 	if ( v0[12] )
 		result = object_computeAndQueueOamEntry_811FA98(12189757, 0x20002u, 30, *&v0[*(&dword_8130688 + result - 1)]);
@@ -627,7 +627,7 @@ void sub_8130864()
 	_BYTE *v0; // r5
 
 	if ( eStruct200BC30_getJumpOffset00() )
-		sub_803C754();
+		battle_initWaitTimer();
 	else
 		link_resetHardwareAndClearLinkBuffers_81440D8();
 	v0[2] = 28;
@@ -1252,7 +1252,7 @@ int rfu_stopOrFadeScene()
         v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
-        sub_803EA58(v4);
+        eStruct200BC30_setByte01(v4);
         *(v0 + 12) = 8;
         result = engine_setScreeneffect(12, 16);
     }
@@ -2065,7 +2065,7 @@ void sub_81318B0()
     _BYTE *v0; // r5
 
     if ( eStruct200BC30_getJumpOffset00() )
-        sub_803C754();
+        battle_initWaitTimer();
     else
         link_resetHardwareAndClearLinkBuffers_81440D8();
     v0[22] = v0[2];
@@ -2314,7 +2314,7 @@ int eStruct200BC30_dispatchByFirstByte()
 
 
 // 0x8131fa0
-int sub_8131FA0()
+int submenu_dispatchStateHandler()
 {
     int v0; // r5
 
@@ -9837,7 +9837,7 @@ int __fastcall get_sChipEntryAt(int a1)
 
 
 // 0x81378b4
-int sub_81378B4()
+int battle_runStateHandler()
 {
     int v0; // r5
 
@@ -10184,13 +10184,13 @@ void __fastcall __noreturn sub_8137E4C(int a1, int a2, int a3, int a4)
     int v4; // r5
 
     ZeroFillByHalfword(&unk_2017BA4, 0xE0u, a3, a4);
-    sub_8137E7C(*(v4 + 36), byte_201CF00, &unk_2017BA4, 7);
+    battle_renderTimeBcdDigits(*(v4 + 36), byte_201CF00, &unk_2017BA4, 7);
     copy_bgTilesToBlock2(18, 4, &unk_2017BA4);
 }
 
 
 // 0x8137e7c
-_WORD *__fastcall sub_8137E7C(int a1, int a2, int a3, int a4)
+_WORD *__fastcall battle_renderTimeBcdDigits(int a1, int a2, int a3, int a4)
 {
     int v4; // r4
     int v5; // r7
@@ -10301,13 +10301,13 @@ void __fastcall __noreturn sprite_renderCharGlyph(int a1, int a2, int a3, int a4
     int v4; // r5
 
     ZeroFillByHalfword(&unk_2017C68, 0x54u, a3, a4);
-    sub_8137F8C(*(v4 + 36), byte_201CF00, &unk_2017C68, 7);
+    sprite_renderGlyphStack7(*(v4 + 36), byte_201CF00, &unk_2017C68, 7);
     sprite_copyGlyphTiles3x14(26, 4, &unk_2017C68);
 }
 
 
 // 0x8137f8c
-_WORD *__fastcall sub_8137F8C(int a1, int a2, int a3, int a4)
+_WORD *__fastcall sprite_renderGlyphStack7(int a1, int a2, int a3, int a4)
 {
     _BYTE *v4; // r5
     signed int v5; // r4
@@ -11005,7 +11005,7 @@ _BYTE *sub_8138730()
         {
             init_saveFresh(*(v0 + 32));
             sub_8138758();
-            result = sub_803578C();
+            result = start_postFadeSceneJump();
         }
     }
     return result;
@@ -11075,7 +11075,7 @@ unsigned int __fastcall __noreturn ow_initCreditsOverworld(int a1, int a2, int a
     resetOverworldScene_800260C();
     resetAllGraphicsState_8005F40(v5, v6, v7, v8);
     runSetupStepAndClearWorkArea_8005F6C();
-    sub_80027F4();
+    sprite_initPlacementSettings();
     copy_8002668();
     t3_setMapTilesSize64();
     decompressCoordEventData_8030aa4(0, 2);

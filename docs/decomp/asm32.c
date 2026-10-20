@@ -1422,7 +1422,7 @@ int __fastcall sub_810E97A(int a1, int a2, int a3)
 
 
 // 0x810e9b6
-int sub_810E9B6()
+int battle_tickTimerThenAdvancePhase()
 {
     int v0; // r5
     int v1; // r0
@@ -12059,7 +12059,7 @@ int sub_81175C4()
 
 
 // 0x81175d0
-int sub_81175D0()
+int object_scaleStateStep()
 {
     int v0; // r5
 
@@ -12188,7 +12188,7 @@ int battle_clampEnemyCountByBattleStartProgress_8117768()
 
 
 // 0x8117780
-int sub_8117780()
+int object_dispatchHandler()
 {
     int v0; // r5
 
@@ -16147,7 +16147,7 @@ signed int __fastcall sub_811A768(int a1, int a2)
 
 
 // 0x811a78c
-int sub_811A78C()
+int spriteDispatchState()
 {
     int v0; // r5
 
@@ -16981,7 +16981,7 @@ int __fastcall sub_811B314(int a1, char a2)
 
 
 // 0x811b338
-int sub_811B338()
+int submenuDispatchTypeUpdate()
 {
     int v0; // r5
 
@@ -17453,7 +17453,7 @@ unsigned int sub_811B984()
 
 
 // 0x811b990
-int __fastcall sub_811B990(int a1, int a2)
+int __fastcall eEaseToward(int a1, int a2)
 {
     int v2; // r2
     int v3; // r0
@@ -18452,7 +18452,7 @@ void sub_811C654()
             *(v0 + 10) = 0;
         }
     }
-    sub_811C784();
+    sprite_advancePointersByVelocity();
     sub_811C7A0();
     sprite_update(v0);
 }
@@ -18470,7 +18470,7 @@ BOOL sprite_isWithinScreenBounds()
 
 
 // 0x811c784
-int sub_811C784()
+int sprite_advancePointersByVelocity()
 {
     int v0; // r5
     int result; // r0
@@ -18865,7 +18865,7 @@ int __fastcall object_timerSfxTick(int a1, int a2, int a3)
 
 
 // 0x811ce34
-int sub_811CE34()
+int battle_emotionUpdate()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -19034,7 +19034,7 @@ int sub_811CF94()
 
 
 // 0x811cfa4
-int sub_811CFA4()
+int object_behaviorDispatch()
 {
     int v0; // r5
 
@@ -19297,7 +19297,7 @@ void sub_811D1B4()
 
 
 // 0x811d1b8
-int sub_811D1B8()
+int objectDispatch()
 {
     int v0; // r5
 

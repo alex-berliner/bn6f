@@ -2895,7 +2895,7 @@ int __fastcall rfu_setEntryFlagBit(int a1, int a2)
 
 
 // 0x813d7b8
-int __fastcall sub_813D7B8(int a1)
+int __fastcall t1StepSequence(int a1)
 {
     int v1; // r7
     signed int v2; // r0
@@ -3134,7 +3134,7 @@ int __fastcall rfu_setLinkPhase(int result)
 
 
 // 0x813d9ac
-int sub_813D9AC()
+int e_stepState()
 {
     int result; // r0
 
@@ -3180,7 +3180,7 @@ void sub_813DA0C()
     eStruct203F7D8[1] = 2;
     if ( eStruct203F7D8[0] )
     {
-        eStruct203F7D8[1] = sub_813D9AC();
+        eStruct203F7D8[1] = e_stepState();
     }
     else
     {

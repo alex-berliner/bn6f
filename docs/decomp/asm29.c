@@ -4700,7 +4700,7 @@ int ow_clearEventFlagAndFreeObject()
 
 
 // 0x80a8870
-int sub_80A8870()
+int dispatchTableCall()
 {
     int v0; // r5
 
@@ -6319,7 +6319,7 @@ int sub_80A98CC()
 
 
 // 0x80a98d4
-int sub_80A98D4()
+int object_storyExplosionUpdate()
 {
     int v0; // r5
 

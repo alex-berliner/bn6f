@@ -192,7 +192,7 @@ LABEL_34:
             }
         }
     }
-    sub_812EC04();
+    submenu_loadSelectedEntry();
     sub_812EFD4();
 }
 
@@ -1113,7 +1113,7 @@ int sub_812E61C()
         v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
-        sub_803EA58(v4);
+        eStruct200BC30_setByte01(v4);
         *(v0 + 12) = 12;
         result = engine_setScreeneffect(12, 16);
     }
@@ -1156,7 +1156,7 @@ LABEL_8:
         v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
-        sub_803EA58(v4);
+        eStruct200BC30_setByte01(v4);
         *(v0 + 12) = 8;
         result = engine_setScreeneffect(12, 16);
     }
@@ -1424,7 +1424,7 @@ void sub_812E898()
     }
     if ( *(v0 + 31) == 4 )
     {
-        sub_812EC04();
+        submenu_loadSelectedEntry();
         sub_812EFD4();
     }
 }

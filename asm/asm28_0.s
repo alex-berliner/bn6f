@@ -914,7 +914,7 @@ byte_8099E2C:
 	thumb_local_start
 mysteryData_gatherForNavi:
 	push {r4-r7, lr}
-	bl sub_809F9BE
+	bl getMysteryDataId
 	mov r2, #0x90
 	ldr r0, [r7, r2]
 	mov r6, r10

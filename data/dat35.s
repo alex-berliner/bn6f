@@ -50,7 +50,7 @@ loc_812F026::
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_812F038
 loc_812F034::
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 loc_812F038::
 	mov r1, #0x1c
 	strb r1, [r5,#2]
@@ -1254,7 +1254,7 @@ loc_812F9A6::
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_81301DC
 	bl sub_8130208
-	bl sub_8130250
+	bl sprite_queueStaticOamBatch8
 	bl t4_refreshChipPackBuffer
 	bl battle_drawFolderScreen
 	bl t4_loadSceneBackground
@@ -1697,7 +1697,7 @@ sub_812FD10::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -1754,7 +1754,7 @@ loc_812FD96::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #8
 	strb r0, [r5,#0xc]
 	mov r0, #0xc

@@ -1433,7 +1433,7 @@ void __fastcall reqBBS_dead_initMemory_813F9F8(int a1)
 
 
 // 0x813fa24
-unsigned int sub_813FA24()
+unsigned int reqBBS_addRangeRequests()
 {
     int *v0; // r3
     int v1; // r1

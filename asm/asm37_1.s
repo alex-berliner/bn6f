@@ -857,16 +857,16 @@ e_disableScenarioEffect:
 
 // symdb: Sets the byte at offset 0x0D of eScenarioEffectState2000780 to 1 and returns 0.
 // symdb: () -> r0 = 0; writes byte_200078D = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814215A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_scenarioEffectEnable.yaml
 	thumb_local_start
-sub_814215A:
+e_scenarioEffectEnable:
 	push {r4-r7,lr}
 	ldr r5, off_8142308 // =eScenarioEffectState2000780 
 	mov r0, #1
 	strb r0, [r5,#0xd] // (byte_200078D - 0x2000780)
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_814215A
+	thumb_func_end e_scenarioEffectEnable
 
 // symdb: Writes a one-byte value (likely a cutscene/scenario effect parameter) into the global scenario effect state, as part of Beast Out / Soul Unleash application.
 // symdb: (r0 = byte value to store) -> r0 = destroyed; no flags meaningful
@@ -3103,9 +3103,9 @@ loc_81432CE:
 
 // symdb: Returns the count of Cybercrow lesson crow records whose state byte equals 3 (iterates 8 slots of 0x14 bytes at byte_2000D20).
 // symdb: () -> r0 = count of slots at byte_2000D20 with +0 state byte == 3; sets flags via final tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81432D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getCybercrowCrowsState3.yaml
 	thumb_local_start
-sub_81432D8:
+getCybercrowCrowsState3:
 	push {r4-r7,lr}
 	mov r6, #0
 	mov r4, #0
@@ -3125,7 +3125,7 @@ loc_81432EC:
 	mov r0, r6
 	tst r0, r0
 	pop {r4-r7,pc}
-	thumb_func_end sub_81432D8
+	thumb_func_end getCybercrowCrowsState3
 
 // symdb: Writes a new state byte into one of the eight Cybercrow crow records unless it is locked at state 3.
 // symdb: (r0 = crow record index, r1 = new state value) -> r0 = record pointer (side-effect only); no
@@ -4504,9 +4504,9 @@ dword_8143FC0:
 // symdb: Advances a 16.16 fixed-point counter stored in eStruct2001010 by its velocity (which is then incremented by acceleration). When the new value would fall below 0 it is clamped to 0; when it would exceed 0x64<<16 it is clamped to 0x64<<16. In both clamp paths velocity is negated then has acceleration added once. If the value on entry is 0, PlaySoundEffect is called with ID 440.
 // symdb: () -> void; no args, no return; operates on eStruct2001010+0x14 (value, 16.16 fixed), +0x18
 // symdb: (velocity), +0x1C (acceleration)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143FC4.yaml
-	thumb_func_start sub_8143FC4
-sub_8143FC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_bounceValue.yaml
+	thumb_func_start e_bounceValue
+e_bounceValue:
 	push {r4-r7,lr}
 	ldr r5, off_81440D4 // =eStruct2001010 
 	ldr r0, [r5,#0x14] // (dword_2001024 - 0x2001010)
@@ -4545,7 +4545,7 @@ loc_8143FFE:
 	.hword 0x0
 	.word 0x0
 	.word 0x2000
-	thumb_func_end sub_8143FC4
+	thumb_func_end e_bounceValue
 
 	thumb_func_start sub_8144010
 sub_8144010:

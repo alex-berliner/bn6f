@@ -120,7 +120,7 @@ loc_812DB94::
 	ldr r0, byte_812DCFC // =0xdc 
 	strh r0, [r5,#0x2a]
 	bl sub_812E9AC
-	bl sub_812EC04
+	bl submenu_loadSelectedEntry
 	b loc_812DBDA
 loc_812DBD6::
 	bl sub_812ED58
@@ -264,7 +264,7 @@ loc_812DCE8::
 	mov r0, #4
 	bl sub_812F000
 loc_812DCEE::
-	bl sub_812EC04
+	bl submenu_loadSelectedEntry
 	bl sub_812EFD4
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -1465,7 +1465,7 @@ sub_812E61C::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -1522,7 +1522,7 @@ loc_812E6A2::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #8
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -1823,7 +1823,7 @@ loc_812E8F4::
 	ldrb r0, [r5,#0x1f]
 	cmp r0, #4
 	bne locret_812E902
-	bl sub_812EC04
+	bl submenu_loadSelectedEntry
 	bl sub_812EFD4
 locret_812E902::
 	pop {pc}

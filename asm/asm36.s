@@ -281,9 +281,9 @@ off_813024C:
 // symdb: Queues 8 OAM entries from a static template array in a fixed loop, using one shared u16 attribute word for every call.
 // symdb: () -> void; no inputs (r0 only used as zero index), no return value; calls sprite_queueOamEntry
 // symdb: 8 times
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130250.yaml
-	thumb_func_start sub_8130250
-sub_8130250:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueStaticOamBatch8.yaml
+	thumb_func_start sprite_queueStaticOamBatch8
+sprite_queueStaticOamBatch8:
 	push {r4-r7,lr}
 	mov r0, #0
 	ldr r4, off_813027C // =dword_8130280 
@@ -316,7 +316,7 @@ off_8130288:
 	.word dword_813028C
 dword_813028C:
 	.word 0xB860
-	thumb_func_end sub_8130250
+	thumb_func_end sprite_queueStaticOamBatch8
 
 // symdb: Refills battle eStruct slot 0 from a fixed spawn table whenever slot 0 is currently unused.
 // symdb: (r0 = unused/0 passed through, r1 = unused) -> r0 = spawned eStruct or 0; flags NZ from slot-0
@@ -875,7 +875,7 @@ object_queueChoiceOam:
 	push {r4-r7,lr}
 	bl t4_getWork
 	mov r5, r0
-	bl sub_8130250
+	bl sprite_queueStaticOamBatch8
 	ldrb r0, [r5,#0xc]
 	tst r0, r0
 	beq locret_8130676
@@ -1197,7 +1197,7 @@ sub_8130864:
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_8130878
 loc_8130874:
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 loc_8130878:
 	mov r1, #0x1c
 	strb r1, [r5,#2]
@@ -2041,7 +2041,7 @@ loc_8130F4E:
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #8
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -3411,7 +3411,7 @@ sub_81318B0:
 	bl link_resetHardwareAndClearLinkBuffers_81440D8 // static () -> void
 	b loc_81318C4
 loc_81318C0:
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 loc_81318C4:
 	ldrb r0, [r5,#2]
 	strb r0, [r5,#0x16]
@@ -3995,15 +3995,15 @@ off_8131F90:
 	.word byte_8131F94
 byte_8131F94:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
-	.word sub_8131FA0+1
+	.word submenu_dispatchStateHandler+1
 	thumb_func_end eStruct200BC30_dispatchByFirstByte
 
 // symdb: Dispatches a submenu state tick: reads a phase byte at [r5,#3] and tail-calls one of four Thumb handlers from off_8131FB4 (sub_8131FC4, t4_tickSubsystemE290, sub_813202C, submenu_linkResultHandler), all sharing the r5 context.
 // symdb: (r5 = state object; handler index = byte [r5,#3]) -> calls table[off_8131FB4][index] as Thumb;
 // symdb: no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131FA0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchStateHandler.yaml
 	thumb_local_start
-sub_8131FA0:
+submenu_dispatchStateHandler:
 	push {lr}
 	ldr r0, off_8131FB0 // =off_8131FB4 
 	ldrb r1, [r5,#3]
@@ -4019,7 +4019,7 @@ off_8131FB4:
 	.word t4_tickSubsystemE290+1
 	.word submenu_step+1
 	.word submenu_linkResultHandler+1
-	thumb_func_end sub_8131FA0
+	thumb_func_end submenu_dispatchStateHandler
 
 // symdb: Event phase that waits for the screen fade to finish (ZF set), then sets up the E5RB scene: initialises camera/screen block, writes tag 'E5RB'/0x2000 into eLinkState, dispatches via sub_81322E8, advances state to phase 4, and sets the main jumptable index to 0x28.
 // symdb: (r5 = event state record) -> r0 = 0; writes state+0x03 = 4, state+0x0C = 0, sets
@@ -5645,9 +5645,9 @@ dword_8132A9C:
 // symdb: Tail-calls sprite_queueOamEntry with a 16-bit attr2 loaded from a hardcoded tile/palette table at 0x08132ABC indexed by (r0<<16)|r1, with r2 supplying the palette field and fixed args 2 and 7.
 // symdb: (r0:r1 = byte offset into table byte_8132ABC (r0<<16|r1), r2 = palette number) -> r0 = void;
 // symdb: calls sprite_queueOamEntry(table+offset, attr2 | palette<<12, 2, 7).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132A9E.yaml
-	thumb_func_start sub_8132A9E
-sub_8132A9E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueOamEntryFromTable.yaml
+	thumb_func_start sprite_queueOamEntryFromTable
+sprite_queueOamEntryFromTable:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x10
 	orr r0, r1
@@ -5681,7 +5681,7 @@ byte_8132ABC:
 	.byte 0x9C, 0xB2, 0x91, 0xB2, 0x93, 0xB2, 0x95, 0xB2, 0x97, 0xB2, 0x99, 0xB2
 	.byte 0x9B, 0xB2, 0x9D, 0xB2, 0xA0, 0xB2, 0xA1, 0xB2, 0xA2, 0xB2, 0xA4, 0xB2
 	.byte 0xA3, 0xB2, 0xA5, 0xB2, 0xA6, 0xB2, 0xA8, 0xB2, 0xA7, 0xB2, 0xA9, 0xB2
-	thumb_func_end sub_8132A9E
+	thumb_func_end sprite_queueOamEntryFromTable
 
 // symdb: Dispatcher for the save-menu (save/erase save data screen) scene state machine; jumps to the open/update/exit handler selected by the state byte.
 // symdb: void saveMenu_DispatchState(void* work /*r5*/) — state read from work+1; all registers and flags
@@ -16309,9 +16309,9 @@ byte_81378AC:
 // symdb: Dispatches through a 3-entry function table at off_81378C8 indexed by [r5+1], tail-calling handlers like battle_initRoundState or submenu_runPromptFrameUpdate and returning their result; the caller uses a nonzero return to advance the pre-battle scene state.
 // symdb: (r0 = unused/trashed, r5 = pointer to state struct) -> r0 = result of the dispatched handler
 // symdb: (nonzero = state finished); clobbers lr.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81378B4.yaml
-	thumb_func_start sub_81378B4
-sub_81378B4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runStateHandler.yaml
+	thumb_func_start battle_runStateHandler
+battle_runStateHandler:
 	push {lr}
 	ldr r0, off_81378C4 // =off_81378C8 
 	ldrb r1, [r5,#1]
@@ -16326,7 +16326,7 @@ off_81378C8:
 	.word battle_initRoundState+1
 	.word submenu_runPromptFrameUpdate+1
 	.word sub_8137A7C+1
-	thumb_func_end sub_81378B4
+	thumb_func_end battle_runStateHandler
 
 // symdb: Initializes a battle-overlay scene/round state: wipes video buffers, resets scene records, clears a run of event flags, and sets up the first object's animation with a screen fade.
 // symdb: (r0-r3 unused; r5 = scene state struct base, r10[8] = render-state struct) -> r0 = 0; writes
@@ -16972,7 +16972,7 @@ sub_8137E4C:
 	ldr r2, off_8137E74 // =unk_2017BA4 
 	mov r3, #7
 	mov r4, #8
-	bl sub_8137E7C
+	bl battle_renderTimeBcdDigits
 	mov r0, #0x12
 	mov r1, #4
 	ldr r2, off_8137E74 // =unk_2017BA4 
@@ -16988,9 +16988,9 @@ off_8137E78:
 // symdb: Renders 7 BCD time digits into per-digit display buffer slots using enable flags, packing two position/attr words with a constant 0x200 flag.
 // symdb: (r0 = time-slot index, r1 = table of halfword enable flags, r2 = digit buffer base, r3/r4 =
 // symdb: packed position/attr values) -> r0 = last sub_8137F08 result; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137E7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderTimeBcdDigits.yaml
 	thumb_local_start
-sub_8137E7C:
+battle_renderTimeBcdDigits:
 	push {r4-r7,lr}
 	ldr r6, off_8137EDC // =0x200 
 	lsl r3, r3, #0xc
@@ -17041,7 +17041,7 @@ off_8137ED8:
 	.word unk_20018C0
 off_8137EDC:
 	.word 0x200
-	thumb_func_end sub_8137E7C
+	thumb_func_end battle_renderTimeBcdDigits
 
 // symdb: Thin wrapper that blits a caller-supplied tile array as a 7x14-tile rectangle into background tile block 2.
 // symdb: (r0 = dst i, r1 = dst j, r2 = tile_ids *const u16) -> void; corrupts r2-r5, calls
@@ -17147,7 +17147,7 @@ sprite_renderCharGlyph:
 	ldr r2, off_8137F84 // =unk_2017C68 
 	mov r3, #7
 	mov r4, #0
-	bl sub_8137F8C
+	bl sprite_renderGlyphStack7
 	mov r0, #0x1a
 	mov r1, #4
 	ldr r2, off_8137F84 // =unk_2017C68 
@@ -17163,9 +17163,9 @@ off_8137F88:
 // symdb: Queues 7 stacked 6-px-tall OAM sprites (one per 2-byte entry) into an OAM work buffer, advancing Y by 12 px per row and skipping rows whose first byte is zero.
 // symdb: (r0 = stride/base?, r1 = glyph entry array ptr, r2 = base Y, r3 = X base value) -> void;
 // symdb: clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137F8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_renderGlyphStack7.yaml
 	thumb_local_start
-sub_8137F8C:
+sprite_renderGlyphStack7:
 	push {r4-r7,lr}
 	ldr r6, off_8137FD8 // =0x200 
 	lsl r3, r3, #0xc
@@ -17207,7 +17207,7 @@ loc_8137FC0:
 	.balign 4, 0
 off_8137FD8:
 	.word 0x200
-	thumb_func_end sub_8137F8C
+	thumb_func_end sprite_renderGlyphStack7
 
 	thumb_local_start
 sub_8137FDC:
@@ -18256,7 +18256,7 @@ sub_8138730:
 	ldr r0, [r5,#0x20]
 	bl init_saveFresh
 	bl sub_8138758
-	bl sub_803578C
+	bl start_postFadeSceneJump
 locret_813874E:
 	pop {pc}
 	thumb_func_end sub_8138730
@@ -18348,7 +18348,7 @@ ow_initCreditsOverworld:
 	bl resetOverworldScene_800260C
 	bl resetAllGraphicsState_8005F40
 	bl runSetupStepAndClearWorkArea_8005F6C
-	bl sub_80027F4
+	bl sprite_initPlacementSettings
 	bl copy_8002668
 	bl t3_setMapTilesSize64
 

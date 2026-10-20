@@ -3552,9 +3552,9 @@ locret_8035712:
 
 // symdb: Iterates the 32-entry, 8-byte-per-entry table at 0x020000DC0; on the first active slot (word at +0 nonzero) whose id byte at +6 equals r0, clears the slot's word at +4 and active word at +0. On match r0 is set to 0; otherwise the scan runs to the end and r0 is left as the input id.
 // symdb: (r0 = entry id byte) -> r0 = clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8035714.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearActiveEntryById.yaml
 	thumb_local_start
-sub_8035714:
+clearActiveEntryById:
 	push {r4-r7,lr}
 	ldr r5, off_8035784 // =dword_2000DC0
 	mov r4, #0
@@ -3576,7 +3576,7 @@ loc_803572E:
 	blt loc_803571A
 locret_8035736:
 	pop {r4-r7,pc}
-	thumb_func_end sub_8035714
+	thumb_func_end clearActiveEntryById
 
 // symdb: Ticks a table of 32 countdown timers, decrementing each active entry once per call.
 // symdb: void sub_8035738(void); // inputs r4-r7 (preserved), lr; outputs r3 = last computed value,
@@ -3646,9 +3646,9 @@ off_8035788:
 // symdb: After a fade completes, sets the main jumptable index to 4 and resets GameState to MapGroup=0, MapNumber=0, SubsystemIndex=0, GameProgress=0x65, MapSubArea=0x62 to force a scene transition.
 // symdb: () -> void; writes Toolkit.MainJumptableIndex = 4 and GameState
 // symdb: MapGroup/MapNumber/SubsystemIndex/GameProgress(0x65)/MapSubArea(0x62)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803578C.yaml
-	thumb_func_start sub_803578C
-sub_803578C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/start_postFadeSceneJump.yaml
+	thumb_func_start start_postFadeSceneJump
+start_postFadeSceneJump:
 	push {r4-r7,lr}
 
 	// trigger startscreen_render_802F544 via main_
@@ -3676,7 +3676,7 @@ sub_803578C:
 	strb r1, [r0,#oGameState_MapSubArea]
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_803578C
+	thumb_func_end start_postFadeSceneJump
 
 	thumb_func_start sub_80357AE
 sub_80357AE:

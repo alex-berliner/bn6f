@@ -38,7 +38,7 @@ void sub_812F014()
 	if ( sub_80062C8() == 12 )
 		engine_setScreeneffect(8, 16);
 	if ( eStruct200BC30_getJumpOffset00() )
-		sub_803C754();
+		battle_initWaitTimer();
 	else
 		link_resetHardwareAndClearLinkBuffers_81440D8();
 	v0[2] = 28;
@@ -981,7 +981,7 @@ void sub_812F920()
                                         battle_resetEStructRecords_8046664();
                                         sub_81301DC();
                                         sub_8130208();
-                                        sub_8130250();
+                                        sprite_queueStaticOamBatch8();
                                         t4_refreshChipPackBuffer();
                                         battle_drawFolderScreen();
                                         t4_loadSceneBackground();
@@ -1320,7 +1320,7 @@ int sub_812FD10()
         v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
-        sub_803EA58(v4);
+        eStruct200BC30_setByte01(v4);
         *(v0 + 12) = 12;
         result = engine_setScreeneffect(12, 16);
     }
@@ -1363,7 +1363,7 @@ LABEL_8:
         v4 = rfu_shouldRestartWirelessLink();
         clearStruct200BC30_803EBAC(v4, v5, v6, v7);
         eStruct200BC30_setJumpOffset00(v3);
-        sub_803EA58(v4);
+        eStruct200BC30_setByte01(v4);
         *(v0 + 12) = 8;
         result = engine_setScreeneffect(12, 16);
     }

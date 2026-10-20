@@ -375,7 +375,7 @@ byte_808C2F0:
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x32
 	cs_play_sound hword1=0x01A5
 	cs_call_native_with_return_value ptr1=sub_808C378+1
-	cs_call_native_with_return_value ptr1=sub_81432D8+1
+	cs_call_native_with_return_value ptr1=getCybercrowCrowsState3+1
 	cs_wait_if_player_sprite_cur_frame_not_equal_maybe byte1=0xC0
 	cs_offset_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x00
 	cs_unlock_player_after_non_npc_dialogue_809e122

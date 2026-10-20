@@ -1466,7 +1466,7 @@ sub_812CDF4::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #0xc
 	strb r0, [r5,#0xc]
 	mov r0, #0xc
@@ -1523,7 +1523,7 @@ loc_812CE7A::
 	mov r0, r4
 	bl eStruct200BC30_setJumpOffset00
 	mov r0, r6
-	bl sub_803EA58
+	bl eStruct200BC30_setByte01
 	mov r0, #8
 	strb r0, [r5,#0xc]
 	mov r0, #0xc

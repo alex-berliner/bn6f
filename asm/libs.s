@@ -850,7 +850,7 @@ sio_linkStateUpdate:
 	beq loc_81446DC
 	cmp r0, #4
 	bne loc_8144714
-	bl sub_8144920
+	bl sio_processMultiPayloads
 	bl sub_8144AFC
 	bl sio_timer3EnableUpdate
 	b loc_8144714
@@ -860,7 +860,7 @@ off_81446D4:
 off_81446D8:
 	.word eTimerEnable200F460
 loc_81446DC:
-	bl sub_814475C
+	bl rfu_multiStartProbe
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	beq loc_81446FC
@@ -937,9 +937,9 @@ off_8144758:
 // symdb: Performs one RFU/SIO multiplayer start-detection handshake step: sends 0x8FFF/0xA6C0 sync word, snapshots all 4 players' SIODATA32, counts responders, and returns 1 if the expected player count acknowledged.
 // symdb: (no args; uses link phase byte_200F454 and comm struct at 0x200F460) -> r0 = 1 when the expected
 // symdb: number of players acknowledged the handshake, else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814475C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_multiStartProbe.yaml
 	thumb_local_start
-sub_814475C:
+rfu_multiStartProbe:
 	push {r4-r7,lr}
 	mov r7, r10
 	mov r6, r9
@@ -1187,14 +1187,14 @@ dword_8144918:
 	.word 0xA6C0
 off_814491C:
 	.word SIOData0_Parent__Multi_PlayerMode_
-	thumb_func_end sub_814475C
+	thumb_func_end rfu_multiStartProbe
 
 // symdb: Processes 4 per-player halfword payloads from a multiplayer SIO packet into eTimer struct and per-player record arrays, with mode 0 clearing/flagging state and non-zero modes accumulating per-slot OR/sum values across a 30-entry frame window.
 // symdb: () -> void; reads SIOData0_Parent/SIOData2_2ndChild multi-mode packets, writes struct 0x200F460
 // symdb: (+0x13,+0x14,+0x16,+0x18,+0x20,+0x28/+0x29,+0x2A+i,+0x214+), word_2006E04, byte_2006E01
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144920.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sio_processMultiPayloads.yaml
 	thumb_local_start
-sub_8144920:
+sio_processMultiPayloads:
 	push {r4-r7,lr}
 	mov r7, r9
 	mov r6, r8
@@ -1448,7 +1448,7 @@ off_8144AF4:
 	.word word_2006E04
 dword_8144AF8:
 	.word 0x995
-	thumb_func_end sub_8144920
+	thumb_func_end sio_processMultiPayloads
 
 	thumb_local_start
 sub_8144AFC:
@@ -5456,9 +5456,9 @@ off_8146710:
 
 // symdb: returns the address of the 16-byte record at unk_20098B0[index] (r0 masked to 8 bits, scaled by 16).
 // symdb: (r0 = entry index) -> r0 = &unk_20098B0[index*16]; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146714.yaml
-	thumb_func_start sub_8146714
-sub_8146714:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_getOverworldEntry.yaml
+	thumb_func_start ow_getOverworldEntry
+ow_getOverworldEntry:
 	lsl r0, r0, #0x18
 	ldr r1, off_8146720 // =unk_20098B0 
 	lsr r0, r0, #0x14
@@ -5467,16 +5467,16 @@ sub_8146714:
 	bx lr
 off_8146720:
 	.word unk_20098B0
-	thumb_func_end sub_8146714
+	thumb_func_end ow_getOverworldEntry
 
 // symdb: Returns a pointer to the halfword at offset 0xB of the struct produced by sub_8049DC4; the caller dereferences it and stores the halfword into word_2023BB0 before calling sub_8146738 for the adjacent field.
 // symdb: (r0 = pointer to result struct) -> r0 = pointer to halfword at struct+0xB; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146724.yaml
-	thumb_func_start sub_8146724
-sub_8146724:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getStruct0BHalfptr.yaml
+	thumb_func_start getStruct0BHalfptr
+getStruct0BHalfptr:
 	add r0, #0xb
 	bx lr
-	thumb_func_end sub_8146724
+	thumb_func_end getStruct0BHalfptr
 
 	thumb_func_start sub_8146728
 sub_8146728:
@@ -5499,9 +5499,9 @@ sub_8146738:
 // symdb: For byte_2010288 iterations, copies 13 bytes from the 0x10-strided staging buffer unk_20098B0 into sub_81466F4(index), then 8 bytes from unk_2009750 into the entry's field-0x15 via get_lookupEntryField15Ptr; writes the final iteration count to byte_2009470.
 // symdb: () -> r0 clobbered; byte_2009470 = entry count, list records and their field15 filled from
 // symdb: unk_20098B0/unk_2009750 staging buffers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814673C.yaml
-	thumb_func_start sub_814673C
-sub_814673C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/populateLookupEntriesFromStaging.yaml
+	thumb_func_start populateLookupEntriesFromStaging
+populateLookupEntriesFromStaging:
 	push {r4-r7,lr}
 	ldr r7, off_8146790 // =unk_20098B0 
 	ldr r6, off_8146794 // =unk_2009750 
@@ -5550,7 +5550,7 @@ off_8146798:
 	.word byte_2009470
 off_814679C:
 	.word byte_2010288
-	thumb_func_end sub_814673C
+	thumb_func_end populateLookupEntriesFromStaging
 
 	thumb_func_start sub_81467A0
 sub_81467A0:
@@ -6967,7 +6967,7 @@ loc_814719C:
 	ldrb r0, [r0]
 	lsl r0, r0, #2
 	add r0, r9
-	bl sub_813D7B8
+	bl t1StepSequence
 loc_81471C4:
 	pop {r3,r4}
 	mov r8, r3
@@ -6984,9 +6984,9 @@ off_81471D4:
 // symdb: RFU wrapper that issues a 3-byte-offset sendData via rfu_NI_setSendData; on success stores 4 (pending) at [r0], sets 0x80 in word_200BC58, writes 0x83 to byte_20101B4; on failure stores 2 and the result code at [r0+2].
 // symdb: (r0 = status struct ptr, r1 = payload byte/count base (sent as r1+3 to setSendData)) -> r0 = 0;
 // symdb: writes status byte [r0] (4 = busy/sent, 2 = failed) and byte [r0+2] = result code
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81471D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_requestSendData.yaml
 	thumb_local_start
-sub_81471D8:
+rfu_requestSendData:
 	push {r4,lr}
 	mov r4, r0
 	mov r3, r1
@@ -7029,7 +7029,7 @@ loc_8147222:
 	pop {r4}
 	pop {r0}
 	bx r0
-	thumb_func_end sub_81471D8
+	thumb_func_end rfu_requestSendData
 
 // symdb: Handles RFU link close: on status 0x26 with matching +0x2C/+0x1A checksum, clears the slot, writes state 3, and dispatches a table entry callback; otherwise (mismatch or status 0x27) clears the slot and writes state 4.
 // symdb: (r0 = *u8 out state, r1 = connection struct) -> r0 = clobbered; writes 3 (clean close) or 4
@@ -7186,7 +7186,7 @@ loc_814732C:
 loc_8147336:
 	mov r0, r4
 	mov r1, r5
-	bl sub_81471D8
+	bl rfu_requestSendData
 	b def_814730E
 loc_8147340:
 	mov r0, r4
@@ -7227,7 +7227,7 @@ sub_8147350:
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_81473D4 // =unk_2010350 
 	bl sub_81465FC
-	ldr r0, off_81473D8 // =sub_81473EC+1 
+	ldr r0, off_81473D8 // =rfu_dispatchLinkEvent+1 
 	ldr r1, off_81473DC // =sub_81475B8+1 
 	bl rfu_initREQ
 	ldr r0, off_81473E0 // =Timer2Counter_Reload 
@@ -7265,7 +7265,7 @@ dword_81473D0:
 off_81473D4:
 	.word unk_2010350
 off_81473D8:
-	.word sub_81473EC+1
+	.word rfu_dispatchLinkEvent+1
 off_81473DC:
 	.word sub_81475B8+1
 off_81473E0:
@@ -7278,9 +7278,9 @@ off_81473E8:
 
 // symdb: Wireless link-event dispatcher: on a link event id, updates the wireless session state word (eS200BC50+8), drives rfu_setLinkCommand/sub_813D94C, copies ready-flag bitmasks between word_200FE14 and byte_2010280/byte_2010284, and clears byte_2010368.
 // symdb: (r0 = link event id, byte) -> r0 = undefined; no flags used by callers known
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81473EC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_dispatchLinkEvent.yaml
 	thumb_local_start
-sub_81473EC:
+rfu_dispatchLinkEvent:
 	push {r4,r5,lr}
 	lsl r0, r0, #0x18
 	lsr r0, r0, #0x18
@@ -7538,7 +7538,7 @@ off_81475B0:
 	.word eS200BC50
 off_81475B4:
 	.word byte_2010368
-	thumb_func_end sub_81473EC
+	thumb_func_end rfu_dispatchLinkEvent
 
 	thumb_local_start
 sub_81475B8:
@@ -7591,7 +7591,7 @@ loc_81475FC:
 	mov r0, #1
 	bl rfu_sendLinkState
 loc_8147610:
-	bl sub_8147834
+	bl rfu_syncWirelessState
 	bl rfu_pollSlotDisconnect
 	ldr r0, off_8147640 // =eS200BC50 
 	ldrh r0, [r0,#0x8] // (word_200BC58 - 0x200bc50)
@@ -7811,9 +7811,9 @@ off_8147830:
 
 // symdb: Polls RFU wireless state; on state-byte change (byte_2010280 vs byte_201033C), sets dirty bit, calls sub_814794C then rfu_NI_setSendData(cmd=0x43, buf=byte_2010290, size=0x40), and on success stores the lowest set bit index of dword_2010CC0->field+2 into byte_2010328/byte_200AF84, returning 1 if a send was queued.
 // symdb: () -> r0 = 1 if a send was queued this call, 0 otherwise; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147834.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_syncWirelessState.yaml
 	thumb_local_start
-sub_8147834:
+rfu_syncWirelessState:
 	push {r4-r7,lr}
 	mov r7, r8
 	push {r7}
@@ -7961,7 +7961,7 @@ off_8147944:
 	.word dword_2010CC0
 off_8147948:
 	.word byte_2010328
-	thumb_func_end sub_8147834
+	thumb_func_end rfu_syncWirelessState
 
 	thumb_local_start
 sub_814794C:
@@ -8559,7 +8559,7 @@ sub_8147DE0:
 	mov r0, #1
 	strb r0, [r4,#1]
 	mov r0, r5
-	bl sub_813D7B8
+	bl t1StepSequence
 	b loc_8147E38
 	.balign 4, 0
 off_8147E18:
@@ -8591,9 +8591,9 @@ off_8147E40:
 // symdb: Calls rfu_NI_setSendData to queue a packet (size=r1+2, from byte_2010390) to the linked peer; on rejection writes 2 to *r0, and if the peer's state word at eS200BC50+8 is 0x31 writes 4; sets byte_20101B4=0x83.
 // symdb: (r0 = status out ptr (u8*), r1 = size base) -> *r0 = 2 if send rejected, 4 if peer state ==
 // symdb: 0x31, else unchanged; byte_20101B4 = 0x83 on queued send; returns void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147E44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_niSendPacket.yaml
 	thumb_local_start
-sub_8147E44:
+rfu_niSendPacket:
 	push {r4,lr}
 	mov r4, r0
 	mov r3, r1
@@ -8639,7 +8639,7 @@ loc_8147E90:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_8147E44
+	thumb_func_end rfu_niSendPacket
 
 	thumb_local_start
 sub_8147E98:
@@ -8768,7 +8768,7 @@ loc_8147F72:
 loc_8147F80:
 	mov r0, r4
 	mov r1, r5
-	bl sub_8147E44
+	bl rfu_niSendPacket
 	b loc_8147F90
 loc_8147F8A:
 	mov r0, r4
@@ -9801,7 +9801,7 @@ loc_8148786:
 	b loc_814886C
 loc_8148794:
 	bl sub_8148B80
-	bl sub_8148BCC
+	bl rfu_uniPollPeerValueChanges
 	ldr r1, off_81487AC // =byte_2010368 
 	mov r0, #0
 	strb r0, [r1]
@@ -10155,7 +10155,7 @@ sub_8148A80:
 	bne loc_8148AB6
 	mov r0, r1
 	mov r1, #0x40 
-	bl sub_803F334
+	bl rfu_prepareLinkState
 loc_8148AB6:
 	ldr r1, off_8148B6C // =byte_2010430 
 	mov r0, #0
@@ -10308,9 +10308,9 @@ off_8148BC8:
 // symdb: Wireless link watchdog: per active peer slot, compares current received value to last seen, tallies match/increment/decrement/other into per-slot counters, stores new value, and once all masked peers have reported, either sets connection state to 1, transitions to 0x83, or increments a mismatch counter.
 // symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), byte_20101B0
 // symdb: change flags, and state byte byte_20101B4 (=1 or 0x83 on transition)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8148BCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniPollPeerValueChanges.yaml
 	thumb_local_start
-sub_8148BCC:
+rfu_uniPollPeerValueChanges:
 	push {r4-r7,lr}
 	ldr r0, off_8148C30 // =byte_20101B4 
 	ldrb r0, [r0]
@@ -10497,7 +10497,7 @@ off_8148D1C:
 	.word byte_20101D4
 off_8148D20:
 	.word byte_20101B4
-	thumb_func_end sub_8148BCC
+	thumb_func_end rfu_uniPollPeerValueChanges
 
 // symdb: Resets the wireless-link working buffers, registers the link callbacks, sets the recv buffer/slot and starts a 14-byte periodic send, returning 0 with error code 0x31 on failure.
 // symdb: (r0 = unused) -> r0 = 1 on success, 0 on rfu_UNI_setSendData failure; writes error/state 0x31 to
@@ -11050,7 +11050,7 @@ loc_8149164:
 	bne loc_81491F0
 	mov r0, r3
 	mov r1, #0x40 
-	bl sub_803F334
+	bl rfu_prepareLinkState
 	strb r6, [r5]
 	ldr r4, off_81491C4 // =byte_2010390 
 	mov r0, r4
@@ -20601,9 +20601,9 @@ SWI_Sqrt:
 
 // symdb: Copies r2 bytes from src r0 to dst r1; loop counts down from count-1 to -1, copying one byte per iteration.
 // symdb: (r0 = src ptr, r1 = dest ptr, r2 = byte count) -> void; clobbers r0-r4, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814D8CC.yaml
-	thumb_func_start sub_814D8CC
-sub_814D8CC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyBytes.yaml
+	thumb_func_start copyBytes
+copyBytes:
 	push {r4,lr}
 	mov r4, r0
 	sub r3, r2, #1
@@ -20624,7 +20624,7 @@ loc_814D8E8:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_814D8CC
+	thumb_func_end copyBytes
 
 	thumb_func_start sub_814D8F0
 sub_814D8F0:
@@ -20640,12 +20640,12 @@ sub_814D8F0:
 	mov r1, #3
 	orr r0, r1
 	strh r0, [r2]
-	ldr r3, off_814D924 // =sub_814D8CC+1 
+	ldr r3, off_814D924 // =copyBytes+1 
 	mov r0, #1
 	bic r3, r0
 	mov r2, sp
 	ldr r0, off_814D928 // =sub_814D8F0+1 
-	ldr r1, off_814D924 // =sub_814D8CC+1 
+	ldr r1, off_814D924 // =copyBytes+1 
 	sub r0, r0, r1
 	lsl r0, r0, #0xf
 	b loc_814D938
@@ -20655,7 +20655,7 @@ off_814D91C:
 dword_814D920:
 	.word 0xFFFC
 off_814D924:
-	.word sub_814D8CC+1
+	.word copyBytes+1
 off_814D928:
 	.word sub_814D8F0+1
 loc_814D92C:
@@ -20727,9 +20727,9 @@ dword_814D990:
 // symdb: Compares two byte buffers for up to n bytes and returns the address in buffer B of the first mismatching byte, or 0 if all n bytes are equal.
 // symdb: (r0 = buffer A ptr, r1 = buffer B ptr, r2 = length in bytes) -> r0 = 0 if all length bytes
 // symdb: equal, else pointer into buffer B at first differing byte; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814D994.yaml
-	thumb_func_start sub_814D994
-sub_814D994:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_compareToFirstMismatch.yaml
+	thumb_func_start copy_compareToFirstMismatch
+copy_compareToFirstMismatch:
 	push {r4,r5,lr}
 	mov r5, r0
 	mov r3, r1
@@ -20758,7 +20758,7 @@ loc_814D9BC:
 	pop {r1}
 	bx r1
 	.balign 4, 0x00
-	thumb_func_end sub_814D994
+	thumb_func_end copy_compareToFirstMismatch
 
 	thumb_func_start sub_814D9C4
 sub_814D9C4:
@@ -20774,12 +20774,12 @@ sub_814D9C4:
 	mov r1, #3
 	orr r0, r1
 	strh r0, [r2]
-	ldr r3, off_814D9F8 // =sub_814D994+1 
+	ldr r3, off_814D9F8 // =copy_compareToFirstMismatch+1 
 	mov r0, #1
 	bic r3, r0
 	mov r2, sp
 	ldr r0, off_814D9FC // =sub_814D9C4+1 
-	ldr r1, off_814D9F8 // =sub_814D994+1 
+	ldr r1, off_814D9F8 // =copy_compareToFirstMismatch+1 
 	sub r0, r0, r1
 	lsl r0, r0, #0xf
 	b loc_814DA0C
@@ -20789,7 +20789,7 @@ off_814D9F0:
 dword_814D9F4:
 	.word 0xFFFC
 off_814D9F8:
-	.word sub_814D994+1
+	.word copy_compareToFirstMismatch+1
 off_814D9FC:
 	.word sub_814D9C4+1
 loc_814DA00:
@@ -20818,9 +20818,9 @@ loc_814DA0C:
 // symdb: Writes r2 bytes from r0 to Game Pak address r1 and verifies via sub_814D9C4, retrying up to 3 times; returns the last verify result in r0.
 // symdb: (r0 = src ptr, r1 = dst Game Pak addr, r2 = byte count) -> r0 = verify result of last attempt (0
 // symdb: = success); flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DA28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_saveWriteVerify3.yaml
 	thumb_local_start
-sub_814DA28:
+copy_saveWriteVerify3:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r5, r1
@@ -20852,7 +20852,7 @@ loc_814DA58:
 	bx r1
 	bx r0
 	nop 
-	thumb_func_end sub_814DA28
+	thumb_func_end copy_saveWriteVerify3
 
 // symdb: One-instruction Thumb tail-call stub that just `bx r1` to whatever the caller parked in r1 — used as an RFU library indirect-call trampoline.
 // symdb: (r0 = scratch, r1 = target function pointer to `bx` into) -> returns whatever the callee returns
@@ -21237,7 +21237,7 @@ SoundMainRAM:
 	ldrb r3, [r0,#5]
 	cmp r3, #0
 	beq sub_814DCE8
-	adr r1, sub_814DC94
+	adr r1, sound_eeMixEcho
 	bx r1
 	thumb_func_end SoundMainRAM
 
@@ -21245,9 +21245,9 @@ SoundMainRAM:
 // symdb: (r0 = sound buffer base, r3 = gain coefficient 8.9 fixed point, r5 = current PCM buffer, r6 =
 // symdb: delay phase offset, r8 = sample count, r4 = mode/reverb select) -> filtered bytes written back
 // symdb: to r5 (and r7 buffer); falls through into sub_814DCE8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814DC94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_eeMixEcho.yaml
 	arm_local_start
-sub_814DC94:
+sound_eeMixEcho:
 	cmp r4, #2
 	addeq r7, r0, #0x350
 	addne r7, r5, r8
@@ -21270,7 +21270,7 @@ loc_814DCA4:
 	bgt loc_814DCA4
 	adr r0, (loc_814DD16+1)
 	bx r0
-	arm_func_end sub_814DC94
+	arm_func_end sound_eeMixEcho
 
 	thumb_local_start
 sub_814DCE8:
@@ -25828,9 +25828,9 @@ dword_814FAEC:
 
 // symdb: Zeros bytes +0x16 and +0x1A of a 0x50-byte entry, then ORs its header byte (+0x00) with 0xC if +0x18 is zero, else with 0x03, selecting one of two 2-bit states.
 // symdb: (r0 = pointer to 0x50-byte entry) -> void; r0, r1 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814FAF0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/setEntryStateFromFlag.yaml
 	thumb_local_start
-sub_814FAF0:
+setEntryStateFromFlag:
 	push {lr}
 	mov r2, r0
 	mov r1, #0
@@ -25851,7 +25851,7 @@ loc_814FB0C:
 	strb r0, [r2]
 	pop {r0}
 	bx r0
-	thumb_func_end sub_814FAF0
+	thumb_func_end setEntryStateFromFlag
 
 	thumb_local_start
 sub_814FB14:
@@ -25895,7 +25895,7 @@ loc_814FB44:
 	cmp r0, #0
 	bne loc_814FB66
 	mov r0, r4
-	bl sub_814FAF0
+	bl setEntryStateFromFlag
 loc_814FB66:
 	sub r5, #1
 	add r4, #0x50 
@@ -25960,7 +25960,7 @@ loc_814FBB8:
 	cmp r0, #0
 	bne loc_814FBDA
 	mov r0, r4
-	bl sub_814FAF0
+	bl setEntryStateFromFlag
 loc_814FBDA:
 	sub r5, #1
 	add r4, #0x50 

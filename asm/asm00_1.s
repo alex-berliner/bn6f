@@ -3164,7 +3164,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A8728+1
 	.word sub_80A87F0+1
 	.word 0x0
-	.word sub_80A8870+1
+	.word dispatchTableCall+1
 	.word sub_80A89DC+1
 	.word sub_80A8AB4+1
 	.word 0x0
@@ -3173,7 +3173,7 @@ OverworldMapObjectUpdateJumptable:
 	.word sub_80A9430+1
 	.word sub_80A9658+1
 	.word sub_80A9824+1
-	.word sub_80A98D4+1
+	.word object_storyExplosionUpdate+1
 	.word sprite_dispatchAnimStateHandler+1
 	.word 0x0
 	.word 0x0
@@ -3664,8 +3664,8 @@ off_8004AC0:
 	.word sub_8004B72+1
 	.word sub_8004BC8+1
 	.word sub_8004BC8+1
-	.word sub_8004C62+1
-	.word sub_8004C62+1
+	.word copyStringToFontTiles+1
+	.word copyStringToFontTiles+1
 	.word sub_8004CAE+1
 	.word text_accumDigit+1
 	.word text_accumDigit+1
@@ -3855,9 +3855,9 @@ locret_8004C60:
 // symdb: Converts a NUL-terminated ASCII string at r2 into 16-bit font tile indices (byte - 0x20) stored as halfwords at r1, looping up to r5 entries or 0xFF iterations, leaving r4=1.
 // symdb: (r0 = padding/unused, r1 = dest halfword buffer, r2 = source string, r5 = max entries) -> r0
 // symdb: unchanged, r4 = 1; clobbers r8 (counter, set to 0xFF if it was 0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8004C62.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copyStringToFontTiles.yaml
 	thumb_local_start
-sub_8004C62:
+copyStringToFontTiles:
 	push {r0,r5-r7,lr}
 	mov r7, r8
 	cmp r7, #0
@@ -3883,7 +3883,7 @@ loc_8004C6E:
 loc_8004C8C:
 	mov r4, #1
 	pop {r0,r5-r7,pc}
-	thumb_func_end sub_8004C62
+	thumb_func_end copyStringToFontTiles
 
 // symdb: Accumulates one ASCII digit from a string into a running decimal number kept in r8 (r8 = r8*10 + digit).
 // symdb: (r0 = pointer to current ASCII digit char) -> r0 = same pointer; r8 = r8*10 + (*r0 - '0'); r3/r4
@@ -7528,7 +7528,7 @@ off_800691C:
 	.word byte_20081B0
 	thumb_func_end sub_8006910
 
-// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
+// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via win_buildDiagonalEdgeTable(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
 // symdb: (r0 = pointer to an 11-field task descriptor) -> r0 = result of req_enqueueTask; r4-r7 clobbered
 // symdb: (saved/restored)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initWindowReqAndEnqueue.yaml
@@ -7571,7 +7571,7 @@ chatbox_initWindowReqAndEnqueue:
 	mov r1, #0xa0
 	lsl r1, r1, #3
 	mov r2, #0xa0
-	bl sub_8006B94
+	bl win_buildDiagonalEdgeTable
 	ldr r0, off_8006B88 // =unk_2008980
 	ldr r1, off_8006980 // =Window0HorizontalDimensions
 	mov r2, #4
@@ -7741,14 +7741,14 @@ sub_8006A6C:
 	ldr r0, off_8006B88 // =unk_2008980
 	mov r2, #0xa0
 	lsl r1, r2, #3
-	bl sub_8006B94
+	bl win_buildDiagonalEdgeTable
 	add sp, sp, #8
 	pop {r5,r7,pc}
 loc_8006A9C:
 	ldr r0, off_8006B88 // =unk_2008980
 	mov r2, r7
 	lsl r1, r2, #3
-	bl sub_8006B94
+	bl win_buildDiagonalEdgeTable
 loc_8006AA6:
 	ldr r2, [sp,#4]
 	mov r1, r9
@@ -7826,7 +7826,7 @@ loc_8006B06:
 	sub r1, r1, r7
 	lsl r1, r1, #3
 	mov r2, #0xa0
-	bl sub_8006B94
+	bl win_buildDiagonalEdgeTable
 loc_8006B36:
 	add sp, sp, #8
 	pop {r5,r7,pc}
@@ -7888,9 +7888,9 @@ off_8006B8C:
 // symdb: Fills an 8-byte-per-scanline table with window-register pairs: per row writes a dword encoding WIN0H=(n,n+1) with WIN0V=0xFFFF (a 1-pixel-wide vertical window) followed by 0xFFFFFF00 (full-screen WIN1H/WIN1V), stepping n by -0x101 each row to draw a diagonal window edge.
 // symdb: (r0 = scanline table buffer, r1 = table size in bytes (rows*8), r2 = starting x for the window
 // symdb: line) -> fills table; clobbers r2, r3, r5.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006B94.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/win_buildDiagonalEdgeTable.yaml
 	thumb_local_start
-sub_8006B94:
+win_buildDiagonalEdgeTable:
 	push {r5,lr}
 	add r3, r2, #1
 	lsl r2, r2, #8
@@ -7915,7 +7915,7 @@ dword_8006BB8:
 	.word 0xFFFFFF00
 off_8006BBC:
 	.word 0x101
-	thumb_func_end sub_8006B94
+	thumb_func_end win_buildDiagonalEdgeTable
 
 // symdb: Boot-time initializer that copies the 15-entry toolkit globals pointer table from ROM into eToolkit (the toolkit's working RAM) and sets r10 to eToolkit as the frame pointer base for subsequent toolkit code.
 // symdb: sig: SetPrimaryToolkitPointers(void) -> (void); in: lr: return address (also handed back to
@@ -10649,7 +10649,7 @@ loc_8007C74:
 	bne loc_8007C84
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
-	bl sub_803C754 // (self: * S200BC50 $r7) -> (u32?, bool)
+	bl battle_initWaitTimer // (self: * S200BC50 $r7) -> (u32?, bool)
 	b locret_8007C98
 loc_8007C84:
 	bl test0x200bc50_0x5_813D60C
@@ -11134,7 +11134,7 @@ off_8008038:
 	.word battle_runVictorySequence_80081A4+1
 	.word battle_runLoserSequence_800825A+1
 	.word battle_stepEndCountdownToResult+1
-	.word sub_800834A+1
+	.word object_dispatchByState+1
 	.word sub_80083E4+1
 	.word battle_stepIntroPhase+1
 	.word battle_objAdvanceStateTimer_8008492+1
@@ -11531,9 +11531,9 @@ locret_8008348:
 // symdb: Per-object state dispatcher: reads the state byte at [r5,#2], indexes off_800835C, and calls the matching handler (object_wait60FramesThenDispatchEvent for 0, sub_800838A for 1) with r0 = state byte.
 // symdb: (r5 = object pointer, r0 = state byte at [r5,#2] passed through) -> jumps to handler
 // symdb: off_800835C[state], returns to caller; flags from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800834A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_dispatchByState.yaml
 	thumb_local_start
-sub_800834A:
+object_dispatchByState:
 	push {lr}
 	ldr r1, off_8008358 // =off_800835C
 	ldrb r0, [r5,#2]
@@ -11546,7 +11546,7 @@ off_8008358:
 off_800835C:
 	.word object_wait60FramesThenDispatchEvent+1
 	.word battle_showDamageTotalsPrompt+1
-	thumb_func_end sub_800834A
+	thumb_func_end object_dispatchByState
 
 // symdb: Per-frame object update that initializes a 60-frame timer on first run, then dispatches object event 0x800 and sets state 4 when the timer expires.
 // symdb: (r0 unused on entry; r5 = object/actor struct) -> void; updates r5 fields at +2 (halfword), +3
@@ -12467,7 +12467,7 @@ off_800896C:
 	.word sub_8008A7C+1
 	.word battle_updateLoseSequence+1
 	.word sub_8008BF0+1
-	.word sub_8008C58+1
+	.word battle_effectStepByType+1
 	.word sub_8008D18+1
 off_8008988:
 	.word dword_203CA70
@@ -12863,9 +12863,9 @@ locret_8008C56:
 // symdb: Reads a type byte at [r5,#2] from an effect state struct, uses it to index a 4-entry dispatch table, and tail-calls the matching per-type handler with r5 in place.
 // symdb: (r5 = pointer to effect/state struct; dispatch index = [r5,#2]) -> tail-calls handler(r5); no
 // symdb: direct return value, flags from handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008C58.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_effectStepByType.yaml
 	thumb_local_start
-sub_8008C58:
+battle_effectStepByType:
 	push {lr}
 	ldr r1, off_8008C68 // =off_8008C6C
 	ldrb r0, [r5,#2]
@@ -12881,7 +12881,7 @@ off_8008C6C:
 	.word sub_8008CAC+1
 	.word battle_effectWaitCrossNetReady+1
 	.word sub_8008CEE+1
-	thumb_func_end sub_8008C58
+	thumb_func_end battle_effectStepByType
 
 // symdb: Battle step state machine that on first entry dispatches effect 0x54 and clears flag bits 0x4C43, then polls comm_checkCrossNetBattleReady and writes 4 to r5+2 while the linked partner is not ready, returning once the partner is ready.
 // symdb: (no args; r5 = battle step/state struct) -> r0 clobbered; writes state fields and returns when
@@ -15330,7 +15330,7 @@ off_8009CA8:
 	.word sub_8009D78+1
 	.word battle_dispatchPhaseHandler+1
 	.word battle_resolveBattleOutcome+1
-	.word sub_8009EE2+1
+	.word battle_dispatchStatePhase+1
 	.word battle_fadeOutPhase+1
 	.word NULL
 	.word NULL
@@ -15649,9 +15649,9 @@ locret_8009EE0:
 
 // symdb: Reads StatePhase from battle state in r5 and tail-calls the corresponding handler from jump table off_8009EF4 (phase 0 = waitLinkResultsSyncPhase, phase 1 = stateChipSelectOpen).
 // symdb: (r5 = battle state struct) -> tail-call to table[StatePhase] handler; returns handler's result
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8009EE2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchStatePhase.yaml
 	thumb_local_start
-sub_8009EE2:
+battle_dispatchStatePhase:
 	push {lr}
 	ldr r1, off_8009EF0 // =off_8009EF4
 	ldrb r0, [r5,#oBattleState_StatePhase]
@@ -15664,7 +15664,7 @@ off_8009EF0:
 off_8009EF4:
 	.word battle_waitLinkResultsSyncPhase+1
 	.word battle_stateChipSelectOpen+1
-	thumb_func_end sub_8009EE2
+	thumb_func_end battle_dispatchStatePhase
 
 // symdb: Battle-state handler that waits for link sync of post-battle results, then restores result records and advances to phase 4 (with a 180-frame timeout fallback).
 // symdb: (r5 = battle state struct) -> r0 = 0/unused; flags from tst/cmp

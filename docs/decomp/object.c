@@ -67,7 +67,7 @@ signed int sub_800BDD0()
 
 
 // 0x800be0c
-int sub_800BE0C()
+int battle_phaseWait30Frames()
 {
     int v0; // r5
     int result; // r0

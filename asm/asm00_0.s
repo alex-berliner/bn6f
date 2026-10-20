@@ -2355,9 +2355,9 @@ loc_80011EC:
 // symdb: Returns 1 if the point (x,y) is within radius r of center (cx,cy), else 0, using squared comparison.
 // symdb: (r0 = point x, r1 = point y, r2 = center x, r3 = center y, r4 = radius) -> r0 = 1 if (x-cx)^2 +
 // symdb: (y-cy)^2 <= r^2, else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80011F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getPointInCircle.yaml
 	thumb_local_start
-sub_80011F0:
+getPointInCircle:
 	sub r0, r0, r2
 	sub r1, r1, r3
 	mov r2, r4
@@ -2374,7 +2374,7 @@ sub_80011F0:
 loc_800120A:
 	mov r0, #0
 	mov pc, lr
-	thumb_func_end sub_80011F0
+	thumb_func_end getPointInCircle
 
 // symdb: Math helper that computes, from a target descriptor and current position, how many frames an approach takes and the per-frame step toward it.
 // symdb: (r0 = target struct ptr: +0 dx, +4 dy, +8 target coord, all 8.8 fixed point; r1 = cur x, r2 =

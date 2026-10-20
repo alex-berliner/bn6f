@@ -7189,9 +7189,9 @@ ow_clearEventFlagAndFreeObject:
 // symdb: Loads a byte from [r5,#8], uses it to index a 4-entry Thumb function table at off_80A8884, and tail-calls the selected entry via 'mov lr,pc; bx r0' so the callee returns directly to the caller.
 // symdb: (no args in r0-r3; caller must hold the object pointer in r5) -> calls table handler indexed by
 // symdb: [r5,#8]; returns to caller via the handler's return path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8870.yaml
-	thumb_func_start sub_80A8870
-sub_80A8870:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dispatchTableCall.yaml
+	thumb_func_start dispatchTableCall
+dispatchTableCall:
 	push {r4-r7,lr}
 	ldr r0, off_80A8880 // =off_80A8884 
 	ldrb r1, [r5,#8]
@@ -7207,7 +7207,7 @@ off_80A8884:
 	.word sub_80A88E2+1
 	.word sub_80A8918+1
 	.word sub_80A8980+1
-	thumb_func_end sub_80A8870
+	thumb_func_end dispatchTableCall
 
 	thumb_local_start
 sub_80A8894:
@@ -9493,9 +9493,9 @@ sub_80A98CC:
 // symdb: Per-frame dispatcher for a story-script explosion object: reads the state byte at work+0x08, indexes off_80A98E8 to fetch a handler, and tail-calls it via 'mov lr,pc; bx r0' so execution returns to this function's caller; handlers receive r0 = handler fn pointer and r1 = state index and re-obtain the work pointer from r5.
 // symdb: (r5 = story explosion object work, r0 = unused/ignored) -> tail-jumps to handler from
 // symdb: off_80A98E8 indexed by [r5,#8]; handler receives r0 = table-entry value, r1 = state index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A98D4.yaml
-	thumb_func_start sub_80A98D4
-sub_80A98D4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_storyExplosionUpdate.yaml
+	thumb_func_start object_storyExplosionUpdate
+object_storyExplosionUpdate:
 	push {lr}
 	ldr r0, off_80A98E4 // =off_80A98E8 
 	ldrb r1, [r5,#8]
@@ -9510,7 +9510,7 @@ off_80A98E8:
 	.word object_storyExplosionInit+1
 	.word sub_80A9908+1
 	.word sub_80A9A04+1
-	thumb_func_end sub_80A98D4
+	thumb_func_end object_storyExplosionUpdate
 
 // symdb: Initializes a story-explosion map object: sets its state byte and copies two params into counters, then runs one update step.
 // symdb: (r0 unused, r5 = map object struct) -> r0 from callee; writes obj+8, obj+0x24, obj+0x28
