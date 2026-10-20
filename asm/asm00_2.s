@@ -1032,10 +1032,11 @@ off_800F3C0:
 	.word off_80EAACC
 	thumb_func_end sub_800F3B0
 
-// symdb: Tail-calls the actor-type/AI-index dispatcher with a fixed 3-entry handler table, selecting one behavior for an actor.
-// symdb: (r0 = clobbered, no meaningful input) -> none; dispatches to one of three handler addresses
-// symdb: taken from the built-in table
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchActorAIHandlers.yaml
+// symdb: Pure thunk that points r0 at the battle AI handler table and tail-calls the dispatcher that runs the current actor's AI handler.
+// symdb: void battle_dispatchActorAIHandlers(void); // passes r4, r5, r8, r10 through to
+// symdb: indexByActorTypeAndAIIdxThenDispatch_800F420 along with r0 = &off_800F3DC; all returned
+// symdb: registers/flags are whatever the dispatcher leaves behind
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchActorAIHandlers.yaml
 	thumb_local_start
 battle_dispatchActorAIHandlers:
 	push {lr}
@@ -6323,11 +6324,10 @@ battle_dispatchBusterAtkHandler:
 	pop {r6,r7,pc}
 	thumb_func_end battle_dispatchBusterAtkHandler
 
-// symdb: Dispatches the per-chip Beast Out attack-power handler selected by the index in r0, with r7 preloaded with the object's AI attack vars.
-// symdb: (r0 = attack/chip handler index, r5 = battle object) -> tail-calls table handler
-// symdb: (off_80117D4[r0]); r6 = oBattleObject_AIDataPtr, r7 = aiData + oAIData_AttackVars on entry to
-// symdb: handler
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchBPwrAtkHandler.yaml
+// symdb: Battle AI dispatcher that runs the per-step "B+power attack" handler for a battle object, selected by the attack step id in r0 from a ~0x93-entry jump table.
+// symdb: u32 battle_dispatchBPwrAtkHandler(u32 step /*r0*/, u32 object /*r5*/, void* r10, ...); preserves
+// symdb: r6/r7; returns the selected handler's r0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchBPwrAtkHandler.yaml
 	thumb_local_start
 battle_dispatchBPwrAtkHandler:
 	push {r6,r7,lr}
@@ -13458,10 +13458,10 @@ nullsub_56:
 	mov pc, lr
 	thumb_func_end nullsub_56
 
-// symdb: Battle hook that clears an object's status/affliction flags and collision timers unless the battle is in phase 1 (likely the custom screen, where status timers should be frozen).
-// symdb: (r0 = battle object or state passed through implicitly via r10; no explicit args used) -> r0 =
-// symdb: result of battle_clearObjectStatusFlagsAndTimers; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearObjectStatusUnlessPhase1.yaml
+// symdb: Runs the per-battle-object status/timer cleanup unless the battle is in phase 1, in which case it does nothing.
+// symdb: void battle_clearObjectStatusUnlessPhase1(battleobj_t* obj /* r5 */, toolkit_t* toolkit /* r10
+// symdb: */); returns callee's r3 passthrough (u32), otherwise void
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearObjectStatusUnlessPhase1.yaml
 	thumb_local_start
 battle_clearObjectStatusUnlessPhase1:
 	push {lr}
@@ -32114,9 +32114,10 @@ battle_customGaugeResetGfxAndRequest:
 	pop {pc}
 	thumb_func_end battle_customGaugeResetGfxAndRequest
 
-// symdb: Resets the in-battle custom gauge for the next turn: clears gauge state, reloads its tile graphics, and flags the HUD for redraw.
-// symdb: () -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_customGaugeResetForNewTurn.yaml
+// symdb: At the start of a new battle turn, empties the custom gauge, redraws its GUI, and resets the gauge's per-turn state.
+// symdb: void battle_customGaugeResetForNewTurn(void); // in: r10 (unused, caller scratch); preserves
+// symdb: r5-r7; r1-r12 and NZCV flags are whatever the callees leave behind (no meaningful typed outputs)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_customGaugeResetForNewTurn.yaml
 	thumb_func_start battle_customGaugeResetForNewTurn
 battle_customGaugeResetForNewTurn:
 	push {lr}
@@ -32261,9 +32262,9 @@ loc_801DFDC:
 	.word 0x4000
 	thumb_func_end battle_hudSubtractValueAt20
 
-// symdb: Returns the cumulative damage-taken counter (TotalDamageTaken) for the actor's AIData.
-// symdb: () -> r0 = u16 TotalDamageTaken for the currently-bound AIData record
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getTotalDamageTakenForActor_801DFE4.yaml
+// symdb: Getter returning the total damage the player has taken in the current battle.
+// symdb: u16 battle_getTotalDamageTakenForActor(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getTotalDamageTakenForActor_801DFE4.yaml
 	thumb_func_start battle_getTotalDamageTakenForActor_801DFE4
 battle_getTotalDamageTakenForActor_801DFE4:
 	ldr r0, off_801E0D8 // =eStruct2035280

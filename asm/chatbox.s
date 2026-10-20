@@ -2450,6 +2450,11 @@ off_8040DD8:
 	thumb_func_end chatbox_8040DBC
 
 // (int v3) ->
+// symdb: Zero-fills the chatbox script-engine work area at unk_200BEA0 (14 slots of 0x60 bytes), each fill sized from a caller-supplied value scaled x8.
+// symdb: void chatbox_clearWorkBuffers_8040DDC(u32 sizeIndex) — in: r0 = size/index; out: r4, r5 recorded
+// symdb: as read back by callers, but the function's push {r0-r5,lr}/pop {r0-r5,pc} actually preserves
+// symdb: r0-r5 unchanged; clobbers flags only.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8040DDC.yaml
 	thumb_local_start
 chatbox_8040DDC:
 	push {r0-r5,lr}
@@ -6340,6 +6345,11 @@ dword_804281C:
 	.word 0xF
 	thumb_func_end chatbox_8042804
 
+// symdb: Runs the chatbox's per-frame update (sub_809CA84), stores its result into the chatbox control block at +0x4C, advances the state counter by 2, and reports "continue" (r0=1) to the caller.
+// symdb: u32 chatbox_stepUpdateAndContinue(void); // reads r4 (state counter/ptr), r5 (chatbox control
+// symdb: block), r10; writes result to [r5+0x4C], returns r4+=2 in r4 and constant 1 in r0; clobbers r1,
+// symdb: lr, NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_8042820.yaml
 	thumb_local_start
 chatbox_8042820:
 	push {lr}

@@ -111,12 +111,11 @@ off_808F8FC:
 	.word off_808F5D4
 	thumb_func_end weatherComp_spawnPlayerAfterReset_808F8AC
 
-// symdb: Overworld bus-station state machine that drives MegaMan into the bus, the bus animates away, and MegaMan is teleported onto the next map at the destination stop.
-// symdb: (no explicit in regs - uses toolkit via r10) -> r0 = 0 when the whole sequence is finished, 1
-// symdb: while still running ; side effects: clears/raises event flags, mutates EWRAM struct at 0x2000310
-// symdb: (state + cached coords/anims), moves and recolours the OWPlayer Navi, calls
-// symdb: request_BBS_clear_8140A0C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/busStation_runBusMoveSequence_controller_808F900.yaml
+// symdb: Per-frame controller for the bus-ride cutscene state machine at the bus station - walks the player to the bus, seats them, then walks them off at the destination and reports whether the ride is still running.
+// symdb: void busStation_tickBusRideCutscene(void); // in: r6, r7 (pass-through to
+// symdb: sub_808FA7C/sub_808FA84), r10, lr; out: r0 = 0 when the ride finished, 1 while still in progress
+// symdb: (NZ set from r0); r2-r5 hold callee garbage; r4-r7 restored on exit
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/busStation_runBusMoveSequence_controller_808F900.yaml
 	thumb_local_start
 busStation_runBusMoveSequence_controller_808F900:
 	push {r4-r7,lr}
@@ -899,10 +898,11 @@ off_808FEA0:
 	.word off_808FDB8
 	thumb_func_end cutsceneWeather_update_808FE74
 
-// symdb: Per-frame battle update gated to a specific cyberworld map (0x83 or 0x85:0x02)
-// symdb: (r10 = toolkit) -> void ; side effects: dispatches AI and refreshes battle-object sprite gfx
-// symdb: when the gate is open
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBattleFrameForCyberWorld_808FEA4.yaml
+// symdb: Per-frame Cyber World battle update - checks the current map is a Cyber World map, then re-applies the player-ally lockout, dispatches enemy AI, and refreshes all battle-object sprite graphics.
+// symdb: void battle_runBattleFrameForCyberWorld_808FEA4(u32 r10 /* toolkit */); preserves
+// symdb: r4-r7,r8,r9,r12; leaves r8-r12 as left by battleObject_updateSpriteGfxForAll_8046854 on the full
+// symdb: path; flags NZCV clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runBattleFrameForCyberWorld_808FEA4.yaml
 	thumb_func_start battle_runBattleFrameForCyberWorld_808FEA4
 battle_runBattleFrameForCyberWorld_808FEA4:
 	push {r4-r7,lr}
@@ -1009,9 +1009,10 @@ battle_initAIChipQueueSlot:
 	pop {pc}
 	thumb_func_end battle_initAIChipQueueSlot
 
-// symdb: Toggles/clears a player's ally lockout flag and resets its associated counters during battle.
-// symdb: (r5 = ptr to battle-related struct) -> r5 preserved ; r1/r2/r3 clobbered ; NZ flags updated
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_togglePlayerAllyLockout_808FF44.yaml
+// symdb: Toggles the player battle object's ally-lockout byte (+5): locks the ally out when the PET menu data flag is set, otherwise clears the ally's AI chip queue and unlocks it.
+// symdb: void battleObject_togglePlayerAllyLockout_808FF44(u32 object /* r5 */) /* returns r5 = object
+// symdb: unchanged */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_togglePlayerAllyLockout_808FF44.yaml
 	thumb_local_start
 battleObject_togglePlayerAllyLockout_808FF44:
 	push {lr}

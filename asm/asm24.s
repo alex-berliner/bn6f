@@ -1324,9 +1324,11 @@ dword_808CC0C:
 	.word 0x13B
 	thumb_func_end sub_808CBD8
 
-// symdb: If the battle actor at r5 is a player actor (Unk_04 == 2) and story flag EVENT_9D8 is unset, sets the flag and marks the result true; otherwise returns false.
-// symdb: (r5 = SomeBattleActorPtr, r10 = toolkit) -> flags only (r4 holds result)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPlayerActorStoryFlag_808CC10.yaml
+// symdb: If the given battle actor is in story state 2 and event flag EVENT_9D8 is not yet set, sets that flag and reports that it was just latched.
+// symdb: bool battle_checkPlayerActorStoryFlag_808CC10(void* actor /* r5 */); returns NZ set (r4 = 1)
+// symdb: only on the call that sets the flag; r3/r4/r5/r6 also live on return (r3 is leftover from the
+// symdb: flag helper, r4-r6 are pass-through).
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkPlayerActorStoryFlag_808CC10.yaml
 	thumb_local_start
 battle_checkPlayerActorStoryFlag_808CC10:
 	push {r4-r7,lr}
@@ -1560,10 +1562,11 @@ byte_808CDAA:
 	.byte 0xD0, 0xF, 0xD1, 0xF, 0x0, 0x0
 	thumb_func_end pet_randomEncounterRewardStep_808CD24
 
-// symdb: Walk an event-flag table whose pointer is selected by sub_808D084; return a packed index (group*3 + entry) when the event and the subsequent event-flag range both pass.
-// symdb: () -> r0 = match flag (0/1), r1 = group index (0..N), r2 = (3*group + entry) ; side effects: r10
-// symdb: (Toolkit) read-only, NZ/CV flags preserved by TestEventFlag calls
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkLockedEventTable_808CDC4.yaml
+// symdb: Scans the battle AI's per-map-group locked-event table and reports (via flags/index) whether any gated event-flag condition currently matches.
+// symdb: u32 battle_checkLockedEventTable_808CDC4(r10 battle_ctx) -> bool /* Z clear = match */; out r1 =
+// symdb: ai_mode*3 + matched entry index (0 if none), r2 = saved r8 value passed in, r3 = leftover from
+// symdb: last flag test; r4/r6 preserved-but-touched (push/pop), r5/r7/r8 preserved
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkLockedEventTable_808CDC4.yaml
 	thumb_local_start
 battle_checkLockedEventTable_808CDC4:
 	push {r4-r7,lr}
@@ -1778,10 +1781,10 @@ byte_808CF84:
 	.byte 0xDA, 0x9, 0xDB, 0x9, 0xDC, 0x9, 0xC5, 0xF
 	thumb_func_end sub_808CF50
 
-// symdb: If event flag EVENT_9D9 is set in battle, writes a u16 from the battle object's slot data into the chatbox `Unk_4C` and plays SFX 0x122 (battle-tied cue line)
-// symdb: (r5 = battle object, r10 = toolkit) -> r0 = 1 if the flag was set, else 0; side effects: writes
-// symdb: to chatbox+0x4C and calls PlaySoundEffect(0x122)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chatbox_setCursorTextFromEventFlag_808CF8C.yaml
+// symdb: If event flag EVENT_9D9 is set, copies a text id from the caller's object into the battle chatbox's cursor-text field and plays sound 0x122; returns whether it did so.
+// symdb: bool battle_chatbox_setCursorTextFromEventFlag(void *textSource /* r5 */, struct Toolkit
+// symdb: *toolkit /* r10 */); result also carried out in N/Z
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_chatbox_setCursorTextFromEventFlag_808CF8C.yaml
 	thumb_local_start
 battle_chatbox_setCursorTextFromEventFlag_808CF8C:
 	push {r4,lr}

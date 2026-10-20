@@ -6462,9 +6462,11 @@ locret_8110D7A:
 	pop {r4-r7,pc}
 	thumb_func_end ai_checkNextPanelFlags
 
-// symdb: If a battle object's panel position changed, update the cached X/Y and re-set its collision region to region 1.
-// symdb: (r5 = battle object pointer; reads panelX/panelY) -> void; clobbers r0-r3, flags from compare
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_refreshCollisionRegionOnPanelChange.yaml
+// symdb: Rebuilds a battle object's collision region (type 1) only when its panel position has changed since the last build.
+// symdb: void battle_refreshCollisionRegionOnPanelChange(battleObject* obj /* r5 */); returns r1 =
+// symdb: object_setCollisionRegion's r1 if rebuilt, else obj->panelY (callers per contract read r1,
+// symdb: ignore flags)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_refreshCollisionRegionOnPanelChange.yaml
 	thumb_local_start
 battle_refreshCollisionRegionOnPanelChange:
 	push {r4-r7,lr}
@@ -6539,9 +6541,10 @@ byte_8110E70:
 	.byte 0x1E, 0x1B, 0x18, 0x15, 0x18, 0x12
 	thumb_func_end battle_refreshCollisionRegionOnPanelChange
 
-// symdb: Marks the current battle object as guarding and unable to slide, then stores a random 0-3 value in one of its extra vars (likely a timer/counter for the status).
-// symdb: (r5 = battle object pointer, object-script context) -> void; r0 clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_applyGuardStatus.yaml
+// symdb: Puts a battle object into its Guard state — sets the guarding and cannot-slide flags and rolls a 0-3 guard value into its extra vars.
+// symdb: void battle_applyGuardStatus(BattleObject* obj /* r5 */) -> returns roll (r0 = roll 0..3, r1 =
+// symdb: 3); sets n/z from the roll, c/v left as GetPositiveSignedRNG left them
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_applyGuardStatus.yaml
 	thumb_func_start battle_applyGuardStatus
 battle_applyGuardStatus:
 	push {lr}
@@ -8703,11 +8706,11 @@ loc_8111F34:
 	pop {r4,r7,pc}
 	thumb_func_end ai_setupSweepDirection
 
-// symdb: Checks whether the panel at a caller-given X offset from a battle object's current panel satisfies an alliance-dependent panel condition.
-// symdb: (r0 = base X offset, r5 = battle object; r3 auto = table byte_8111F60) -> r0 = nonzero (the
-// symdb: absolute X) if the panel at (base+objPanelX, objPanelY) matches the alliance's entry, else 0;
-// symdb: flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelAtObjectOffset.yaml
+// symdb: Checks whether the panel at (object panel X + x offset, object panel Y) is usable for the object's side, returning the checked X (0 on failure) and Y.
+// symdb: int battle_checkPanelAtObjectOffset(u32 x_offset /* r0 */, BattleObject* object /* r5 */);
+// symdb: returns r0 = checked panel X (0 if blocked), r1 = panel Y, r4/r5 = side results from
+// symdb: object_checkPanelParameters; preserves r4/r5, clobbers r2/r3 and flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkPanelAtObjectOffset.yaml
 	thumb_local_start
 battle_checkPanelAtObjectOffset:
 	push {lr}
@@ -9459,10 +9462,10 @@ locret_8112560:
 	pop {r4,r6,r7,pc}
 	thumb_func_end ai_pickTargetObjectFromRow
 
-// symdb: Picks a random panel near a battle object's position using an alliance-dependent candidate list, filtering by a panel flag.
-// symdb: (r5 = battle object) -> r0/r1 = chosen panel coords (via tail-call); r0 = object PanelX, r1 =
-// symdb: PanelY, r3 = table byte_81125E0 on entry to callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomPanelByAlliance.yaml
+// symdb: Picks a random battle panel for a battle object, with the search window/parameters chosen according to the object's current alliance.
+// symdb: void battle_pickRandomPanelByAlliance(u32 flagCheckContext /* r4 */, BattleObject* obj /* r5
+// symdb: */); results are whatever panelFlagCheck_8015D80 leaves in r0/r1 (plus r5 passthrough)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pickRandomPanelByAlliance.yaml
 	thumb_local_start
 battle_pickRandomPanelByAlliance:
 	push {lr}
@@ -9543,9 +9546,9 @@ loc_811262C:
 	pop {r4,r6,pc}
 	thumb_func_end battleObject_tryStartChipAttack_8112600
 
-// symdb: Clears a battle object's current animation and frees/disarms its extra-vars timer slot.
-// symdb: (r5 = BattleObject*) -> void ; clobbers r0, r1, flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearAnimationAndFreeTimer_8112630.yaml
+// symdb: Clears a battle object's current animation id and, if it holds an extra timer slot, resets that timer and releases the slot.
+// symdb: void battle_clearAnimationAndFreeTimer_8112630(BattleObject* object /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_clearAnimationAndFreeTimer_8112630.yaml
 	thumb_local_start
 battle_clearAnimationAndFreeTimer_8112630:
 	push {r4,lr}
@@ -9562,10 +9565,10 @@ locret_8112646:
 	pop {r4,pc}
 	thumb_func_end battle_clearAnimationAndFreeTimer_8112630
 
-// symdb: Anim/step helper for a battle object that spawns (once) its tethered auxiliary object 0x54 and remembers it.
-// symdb: (r5 = self battle object) -> r0 = spawned object pointer (also stored at
-// symdb: self+oBattleObject_ExtraVars+0x10); no flag semantics
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_ensureAuxObject54.yaml
+// symdb: Sets a battle object to animation 1 and lazily spawns its owned aux/helper object (id 0x11504, kind 5), caching the helper's handle.
+// symdb: void battle_ensureAuxObject54(battleObject* obj /*r5*/); clobbers r0-r3, lr and flags; preserves
+// symdb: r4-r7 (r4 returned unchanged)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_ensureAuxObject54.yaml
 	thumb_local_start
 battle_ensureAuxObject54:
 	push {r4,lr}
@@ -9983,10 +9986,10 @@ byte_81129E8:
 	.byte 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E
 	thumb_func_end ai_queueAttackFromFrontPanel
 
-// symdb: If any of the five hit/contact flags in the battle object's collision data is set, sets the object's ExtraVars hit flag to 1.
-// symdb: (r5 = battle object) -> r0 clobbered; sets oBattleObject_ExtraVars = 1 if collision data fields
-// symdb: 0x82,0x84,0x86,0x88,0x8A are nonzero, else leaves them
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_checkAnyHitFlag.yaml
+// symdb: Tests a battle object's five collision hit-flag halfwords and sets the object's "was hit" marker if any is set.
+// symdb: void battle_checkAnyHitFlag(BattleObject* self /*r5*/); out r1 = sum of the five hit-flag
+// symdb: halfwords (pass-through if skipped), flags nzcv clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkAnyHitFlag.yaml
 	thumb_func_start battle_checkAnyHitFlag
 battle_checkAnyHitFlag:
 	push {lr}
@@ -10064,9 +10067,10 @@ off_8112A5C:
 	.word battle_aiSnakeArmTickStep_8112A78+1
 	thumb_func_end snakearm_dispatchScriptStep
 
-// symdb: SnakeArm AI step handler that sets a version-dependent timer, selects AI script 4, and runs the SnakeArm AI tick.
-// symdb: (r4 = AI data object, r6 = AI state object) -> r0 = tick result; sets Timer and ScriptId
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_aiSnakeArmStepInitStage4.yaml
+// symdb: Stage-4 initializer for the snake-arm AI: loads a per-version step timer into the AI state and switches it to script id 4 before entering the shared tick step.
+// symdb: Next battle_aiSnakeArmStepInitStage4(u32 r4 aiData, u32 r5, u32 r6 aiState, u32 r7 /* r10, lr
+// symdb: also inputs */); returns r1, r5 (passthrough from battle_aiSnakeArmTickStep_8112A78)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_aiSnakeArmStepInitStage4.yaml
 	thumb_local_start
 battle_aiSnakeArmStepInitStage4:
 	push {lr}
@@ -17408,10 +17412,10 @@ locret_811670C:
 	pop {pc}
 	thumb_func_end ai_clearFlagAndSetCurAction
 
-// symdb: Tears down a battle actor: decrements its alliance count, clears it from the alive-actor list, and marks its state as destroy
-// symdb: (r0 = unused; actor pointer expected in r5) -> r0 = destroyed; sets object state to
-// symdb: CUR_STATE_DESTROY
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_deleteBattleObject.yaml
+// symdb: Deletes a battle object by running battle-over bookkeeping, unlinking it from the alive-actor list, and setting its state to "destroyed".
+// symdb: battle_deleteBattleObject(r5 = battle object, r10 = battle state); returns r1 (result carried
+// symdb: back from RemoveGivenAliveBattleActorFromList); clobbers r0-r3, flags, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_deleteBattleObject.yaml
 	thumb_local_start
 battle_deleteBattleObject:
 	push {lr}
@@ -17555,10 +17559,10 @@ byte_81167F4:
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x2, 0x2, 0x2, 0x1, 0x1, 0x1, 0x0, 0x0
 	thumb_func_end sub_81167D2
 
-// symdb: Scans an 8-entry pointer array at [r5+0x60]; if enough entries are active and none is flagged, rolls a 1/8 RNG chance and returns 4, otherwise 0.
-// symdb: (r5 = base of a structure holding 8 pointers at +0x60, r0 unused) -> r0 = 4 if all conditions
-// symdb: pass and (RNG & 7) == 4, else r0 = 0; clobbers r0-r4,r6
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_conditionalRngRoll.yaml
+// symdb: Scans the 8 battle-entity slots at base+0x60 and, only if the field is crowded (>=5 entities, >=3 of a certain sub-type) and no blocking type-4 entity exists, rolls an RNG check for a 1-in-8 event and returns 4 on success.
+// symdb: u32 battle_conditionalSpecialRoll(u32 base /* r5 */); /* returns r0: 4 on the winning roll, 0
+// symdb: otherwise; r7 must be 0 on entry and is returned via the callee path */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_conditionalRngRoll.yaml
 	thumb_local_start
 battle_conditionalRngRoll:
 	push {r4,r6,r7,lr}
@@ -17599,9 +17603,10 @@ loc_8116874:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_conditionalRngRoll
 
-// symdb: Decrements a battle object's HP by 1 if it is still positive
-// symdb: (r0 = battle object pointer) -> r0 = undefined; sets flags from the HP compare
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_decrementHp.yaml
+// symdb: Decrements one battle object's HP by 1, leaving it untouched if already 0 or negative.
+// symdb: battle_decrementHp(battleObject r0) -> r1 = HP after decrement (u16 in low bits); flags
+// symdb: clobbered (nzcv), lr used as return
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_decrementHp.yaml
 	thumb_func_start battle_decrementHp
 battle_decrementHp:
 	push {lr}
@@ -33489,10 +33494,10 @@ sub_811DFCC:
 	pop {pc}
 	thumb_func_end sub_811DFCC
 
-// symdb: Sets a Navi roster icon's shade level from its roster index, writing a 1.0/0.5/0.25/... float into the object and its sprite struct.
-// symdb: (r0 = unused on entry; index read from [r6,#4], object base in r6) -> r0 = shade value passed to
-// symdb: sprite_setUnk0x2c; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_rosterIconSetShade.yaml
+// symdb: Applies a shade/darkness level (from the battle object at r6) to a roster icon sprite, building the shade bitmask and handing it to the sprite renderer.
+// symdb: void battle_rosterIconSetShade(u32 sprite /* r5 */, BattleObj* obj /* r6 */); clobbers
+// symdb: r0,r2,r3,lr,NZCV
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_rosterIconSetShade.yaml
 	thumb_local_start
 battle_rosterIconSetShade:
 	push {lr}

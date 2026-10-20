@@ -6147,10 +6147,10 @@ locret_800EA8E:
 	pop {pc}
 	thumb_func_end sub_800EA4E
 
-// symdb: Halves five halfword timers in the object's AI/collision work area and decrements a master counter at +0x80 by their sum, returning whether the master did not change.
-// symdb: (r0 = unused/scratch, r5 = battle object) -> r0 = 1 if master timer at [collisionData+0x80] was
-// symdb: unchanged (all timers empty), else 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_slowTickTimers.yaml
+// symdb: Halves every per-hit collision timer on a battle object each slow tick, banking the lost odd ticks into the master slow timer, and reports whether anything actually ticked down.
+// symdb: void battle_slowTickTimers(BattleObject* self /* r5 */) -> u16 unchanged (r0), CollisionData*
+// symdb: coll (r2); clobbers r1, r3 and flags; preserves r4
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_slowTickTimers.yaml
 	thumb_func_start battle_slowTickTimers
 battle_slowTickTimers:
 	push {r4,lr}

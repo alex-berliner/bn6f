@@ -12713,10 +12713,10 @@ locret_8008B50:
 	pop {pc}
 	thumb_func_end battle_waitCrossNetReadyStep
 
-// symdb: Per-frame countdown (30 frames) that, on expiry, advances the battle-end substate and clears a flag in the overworld player struct.
-// symdb: (r5 = battle-side struct with state at +3, timer at +8 halfword, result flag at +4; r10 =
-// symdb: toolkit) -> r0 = overworld struct base from callee; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_battleEndDelayStep.yaml
+// symdb: Runs the post-battle delay state of the battle object, counting down 30 frames before flagging the battle-end sequence as started.
+// symdb: void battle_battleEndDelayStep(u32 battleObj /*r5*/, u32 toolkit /*r10*/) — no return value;
+// symdb: updates N/Z/C/V via the countdown test
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_battleEndDelayStep.yaml
 	thumb_local_start
 battle_battleEndDelayStep:
 	push {lr}
@@ -14864,9 +14864,11 @@ off_80099A0:
 	.word TextScriptCommError87370C0
 	thumb_func_end sub_8009966
 
-// symdb: Dispatches to a battle-state handler based on `BattleState.Index_01`.
-// symdb: (r5 = BattleState* via toolkit r10) -> r0 = target-subroutine-return ; clobbers r0/r1, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchByIndex_80099A4.yaml
+// symdb: Dispatches to the current battle phase's handler, selected by the battle state's phase index into a jump table.
+// symdb: void battle_dispatchPhaseHandler_80099A4(BattleState* r5); // tail-calls handler(r0=index,
+// symdb: r1=table entry) with caller's r2-r7,r10 live; results returned as pass-through registers
+// symdb: r2-r6,r8-r12
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchByIndex_80099A4.yaml
 	thumb_local_start
 battle_dispatchByIndex_80099A4:
 	push {lr}
@@ -14965,10 +14967,11 @@ locret_8009A66:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_advanceIndexFromPauseIntro_80099E0
 
-// symdb: Per-frame handler for the battle state entered after the mid-intro pause: refreshes request bits and the battle scene, then posts a null event.
-// symdb: (no args) -> r0 = 0 after postEvent call; no meaningful return; sets eStruct2035280 request/flag
-// symdb: dword |= 0x404
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pauseIntroResumeStateStep.yaml
+// symdb: One state-machine step of the battle-intro pause sequence: tells the battle event system to advance (request bits 0x404), runs the matching dispatch, refreshes the scene frame, and posts the 'step done' event.
+// symdb: Next battle_pauseIntroResumeStateStep(void); in: r10, lr (untyped context); out: r2, r3, r5,
+// symdb: r8-r12 (from the final postEvent call); clobbers flags and r0, r1, r4, lr; preserves r5-r7 per
+// symdb: the frame's own convention
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_pauseIntroResumeStateStep.yaml
 	thumb_local_start
 battle_pauseIntroResumeStateStep:
 	push {lr}
@@ -15244,9 +15247,11 @@ locret_8009C28:
 	pop {pc}
 	thumb_func_end battle_stateResultScreenHandler
 
-// symdb: Battle sub-phase that fades the screen out, then on fade completion stops the music, frees object type 0x1A, and advances the battle state to 8.
-// symdb: (r5 = battle state struct) -> void; sets oBattleState_SubPhaseInitFlag, oBattleState_Index_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_subphaseFadeOut.yaml
+// symdb: Battle transition fade-out subphase: starts a screen fade once, then when it completes stops the battle music, frees the battle objects, and advances battle main to state 8.
+// symdb: void battle_subphaseFadeOut(void); // battle state ptr in r5; reads
+// symdb: oBattleState_SubPhaseInitFlag (byte) and writes oBattleState_Index_00 (word); returns via caller
+// symdb: trampoline preserving r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_subphaseFadeOut.yaml
 	thumb_local_start
 battle_subphaseFadeOut:
 	push {lr}
@@ -17306,9 +17311,10 @@ setTwoStructs_800A840:
 	pop {pc}
 	thumb_func_end setTwoStructs_800A840
 
-// symdb: Returns the current battle phase byte from the active battle state.
-// symdb: () -> r0 = oBattleState_BattlePhase of the current battle; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getPhase.yaml
+// symdb: Returns the current battle phase byte from the battle state pointed to by the toolkit.
+// symdb: u32 battle_getPhase(void) — takes r10 = toolkit pointer, returns r0 = phase byte; no flags read
+// symdb: or written
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_getPhase.yaml
 	thumb_local_start
 battle_getPhase:
 	mov r0, r10

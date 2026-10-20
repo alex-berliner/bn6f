@@ -147,6 +147,11 @@ byte_8026544:
 
 	thumb_func_start battle_beastJumpLockOn_8026554
 // exe6g: 8026964
+// symdb: Dispatches a Beast Out jump lock-on check by id for a panel coordinate, jumping table-style into one of ~19 battle panel/handling routines.
+// symdb: void battle_beastJumpLockOn_8026554(u32 x /*r0*/, u32 y /*r1*/, u32 checkId /*r2*/); // tail-
+// symdb: dispatch: selected handler's results (r0, r1, r5, r8-r12) are this function's outputs; r6/r7
+// symdb: preserved; clobbers r2-r4, flags, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_beastJumpLockOn_8026554.yaml
 battle_beastJumpLockOn_8026554:
 	push {r6,r7,lr}
 	mov r6, r0
@@ -4434,11 +4439,10 @@ nullsub_14:
 	mov pc, lr
 	thumb_func_end nullsub_14
 
-// symdb: Queues a 0x100-byte VRAM graphics transfer, picking one of two 256-byte tile blocks in ROM based on a flag byte in the caller's work struct.
-// symdb: (r1 = dest VRAM address set by caller; r4 = work struct, byte [r4,#7] selects variant) -> queues
-// symdb: GFX transfer of byte_86E79CC (flag==0) or byte_86E79CC+0x100 (flag!=0), 0x100 bytes; no return
-// symdb: value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_queueGfxVariant.yaml
+// symdb: Queues a 0x100-byte VRAM graphics transfer for a battle object, picking the first or second 0x100-byte tileset variant based on the object's palette/variant flag at +7.
+// symdb: void battle_queueGfxVariant(u32 dest /* r1 */, BattleObject* object /* r4 */) — returns
+// symdb: QueueEightWordAlignedGFXTransfer's r3/r4/r7 and nz/c/v flags unchanged
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_queueGfxVariant.yaml
 	thumb_local_start
 battle_queueGfxVariant:
 	push {lr}
@@ -5075,10 +5079,10 @@ off_8028714:
 	.word dword_87257F4
 	thumb_func_end beastout_QueuePaletteGFXAndSheets_80286D4
 
-// symdb: Custom-screen chip-use GFX loader: queues a fixed graphics block plus one per-chip tile into VRAM/buffer, then reloads the Beast Out selection sprite sheets.
-// symdb: () -> (); queues a 0x540-byte ROM block to VRAM 0x6009560 and a 0x20-byte per-chip tile to
-// symdb: unk_3001AA0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastout_loadSelectionScreenChipUseGfx.yaml
+// symdb: Queues the chip-use tile art and the selected chip's icon sheet for the Beast-Out selection screen, then reloads its sprite sheets.
+// symdb: void beastout_loadSelectionScreenChipUseGfx(void); (in: lr only; r2-r7 and flags clobbered by
+// symdb: callees)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/beastout_loadSelectionScreenChipUseGfx.yaml
 	thumb_local_start
 beastout_loadSelectionScreenChipUseGfx:
 	push {lr}
@@ -7873,10 +7877,10 @@ locret_80299F8:
 	pop {pc}
 	thumb_func_end battle_getPrepStatus_80299B6
 
-// symdb: Returns the chatbox message id for the current battle-tutorial step: 0x25 for step 0xA, 0x24 for other steps, or 0 if +0x17 latch is set or step is 0xB.
-// symdb: (r5 = tutorial state struct; r0 input unused) -> r0 = message id 0x24/0x25, or 0 if none
-// symdb: pending; flags clobbered by cmp/tst
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleTutorial_getMessageId.yaml
+// symdb: Chooses which battle-tutorial text message to show based on the tutorial kind and a "already seen" flag, returning the message id (0x24, 0x25, or 0 for none).
+// symdb: u32 battleTutorial_pickMessageId(u8* state /* in r5 */) /* returns message id in r0; clobbers
+// symdb: NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleTutorial_getMessageId.yaml
 	thumb_local_start
 battleTutorial_getMessageId:
 	push {lr}
@@ -7902,10 +7906,10 @@ locret_8029A1C:
 	pop {pc}
 	thumb_func_end battleTutorial_getMessageId
 
-// symdb: Tutorial-check routine for the cust tutorial: in state 0xB, when the player's emotion is clear, yields message id 0x26 to be played by the caller.
-// symdb: (r5 = tutorial state struct, reads [r5,#7]) -> r0 = message id (0x26) or 0; r3 flags from
-// symdb: emotion call also inspected
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tutorialCheckEmotionMsg.yaml
+// symdb: Returns tutorial message id 0x26 for an actor only if it is in state/type 0x0B and currently shows no emotion, else 0.
+// symdb: u32 battle_tutorialCheckEmotionMsg(u32 r5 /* actor object */); /* r10 = battle context, passed
+// symdb: through unused by this function; r0 = 0x26 message id or 0 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_tutorialCheckEmotionMsg.yaml
 	thumb_local_start
 battle_tutorialCheckEmotionMsg:
 	push {lr}

@@ -10679,10 +10679,12 @@ byte_804C3F0:
 	.word 0x106060
 	thumb_func_end t3_loadTextWindowTiles
 
-// symdb: Dispatcher that calls one of two AIData sub-handlers based on an actor slot index and an action selector from a 0x14-byte AIData entry.
-// symdb: (r5 = AIData table base?, r5+0xc = slot index, r5+0x10 = action selector) -> returns whatever
-// symdb: the dispatched callee returns ; side effects: tail-calls into sub_804C43C or sub_804C478
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchJumpByActorSlotAndAction_804C404.yaml
+// symdb: Per-actor battle jump/blink dispatcher: reads the actor's slot and current action, and tail-invokes the matching handler from a two-entry action table.
+// symdb: void battle_dispatchJumpByActorSlotAndAction_804C404(actorBlock in r5, battleCtx in r10); passes
+// symdb: r0=handler addr, r1=action byte, r5=actor block, r7=slot record, r10=battle context into the
+// symdb: chosen handler; returns the handler's live results (r2, r8-r12) to its own caller; preserves
+// symdb: r4-r7, clobbers flags and r0/r1/r3/lr.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchJumpByActorSlotAndAction_804C404.yaml
 	thumb_local_start
 battle_dispatchJumpByActorSlotAndAction_804C404:
 	push {r4-r7,lr}
@@ -10754,10 +10756,10 @@ dword_804C474:
 	.word 0x1F82
 	thumb_func_end sub_804C43C
 
-// symdb: Enables OBJ blur (0x4800) on RenderInfo then drives a GFX anim frame for the current battle object
-// symdb: (r5 = ptr to AIData-like struct, r7 = GFX anim state ptr, r10 = Toolkit) -> no return; side
-// symdb: effect: RenderInfo word 0 ORed with 0x4800
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_render_setBlurAndAnimUpdate_804C478.yaml
+// symdb: Enables the blur/animation redraw flag in the render-info control word and submits one sprite draw with a z position offset by the blur object's subpixel value.
+// symdb: void battle_render_setBlurAndAnimUpdate_804C478(r5 blur_obj, r7 sprite, r10 toolkit) — outputs
+// symdb: r2 r8 r9 (leftovers of the draw callee); clobbers r0 r1 r3 lr and nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_render_setBlurAndAnimUpdate_804C478.yaml
 	thumb_local_start
 battle_render_setBlurAndAnimUpdate_804C478:
 	push {r4-r7,lr}
@@ -11107,10 +11109,10 @@ sub_804C71C:
 	pop {r4-r7,pc}
 	thumb_func_end sub_804C71C
 
-// symdb: Loads battle background tile data into VRAM and stage-related palette data into an EWRAM buffer as one step of the battle scene's graphics init sequence.
-// symdb: (r0-r3 unused, relies on r5 = battle object, r10 = toolkit) -> r0 clobbered; r5+0x10 set to 4 as
-// symdb: a state/step marker
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundGfx.yaml
+// symdb: Queues the battle background GFX and palette transfers, sets the render-info blend word, advances the battle setup state to step 4, and initialises the battlefield tiles/SFX timer.
+// symdb: void battle_setupBackgroundGfx(battleState* r5, toolkit* r10); // outputs r2, r8-r12 pass
+// symdb: through from battleObject_initBattleFieldTilesAndSfxTimer_804C770; clobbers r0-r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_setupBackgroundGfx.yaml
 	thumb_local_start
 battle_setupBackgroundGfx:
 	push {r4-r7,lr}

@@ -7462,10 +7462,11 @@ loc_81338C6:
 	bl object_resolveTableEntryWrapper_8134548
 	pop {pc}
 	thumb_func_end folderEdit_step_813388C
-// symdb: Per-frame tick for the in-battle submenu folder-edit screen: animates the folder panel, then redraws the scrolling background, submenu bg, folder/chip graphics and dispatches chip-select AI ticks for slots 5/6.
-// symdb: (r5 = submenu state ptr, r10 = toolkit ptr, lr = return) -> no meaningful return; side effects
-// symdb: mutate submenu state, BG, submenu GFX, dispatch chip-select AI updates
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuFolderEditTick_81338D4.yaml
+// symdb: Per-frame tick of the in-battle folder-edit submenu object, animating the panel's slide-in/slide-out and driving the submenu render/update pipeline each frame.
+// symdb: u32 battle_submenuFolderEditAnimateTick_81338D4(u32 r5 /* battle/submenu object, updated by
+// symdb: callees */, u32 r10); // returns r5 unchanged (r7 copy is clobbered by callees; caller's r5
+// symdb: restored via pop {r4-r7}); clobbers nzcv, r0-r3, lr; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battleObject_submenuFolderEditTick_81338D4.yaml
 	thumb_local_start
 battleObject_submenuFolderEditTick_81338D4:
 	push {r4-r7,lr}

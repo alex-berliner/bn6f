@@ -6252,11 +6252,11 @@ byte_80A81F0:
 	.byte 0xD0, 0xF, 0xD1, 0xF
 	thumb_func_end ow_animVariantToAnimId
 
-// symdb: Trampoline that dispatches to one of three handlers based on an indexed byte from `r5`.
-// symdb: (r5 = pointer to a struct whose +0x8 is a 3-entry jumptable index, r6 = EWRAM pointer
-// symdb: unk_2000B40, r0/r1/r4 passed through to the handler) -> (no return); side effects: jumps to
-// symdb: `sub_80A822C`, `sub_80A827C`, or `sub_80A829C` (selected by index byte)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
+// symdb: Tail-dispatches a battle object (r5) through a 3-entry state jumptable selected by its byte at +8 (setup beast sprite / update sprite / delete).
+// symdb: void battle_beastObjectDispatchState_80A8208(BeastObject *obj /* r5 */, u32 passthrough /* r10
+// symdb: */) /* tail-calls table[obj->state08]; results left by the handler in r2-r5,r8-r12 are this
+// symdb: function's outputs; clobbers r0,r1,r6,r7,lr,NZCV */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCustomJumptableByIndex_80A8208.yaml
 	thumb_func_start battle_dispatchCustomJumptableByIndex_80A8208
 battle_dispatchCustomJumptableByIndex_80A8208:
 	push {lr}
