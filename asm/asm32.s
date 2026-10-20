@@ -15012,7 +15012,7 @@ off_81151B0:
 	.word off_81151B4
 off_81151B4:
 	.word ai_chargeAttackInitAndStep+1
-	.word sub_811523C+1
+	.word ai_attackLungeStep_811523C+1
 	.word ai_attackVars_runMoveStep_8115272+1
 	.word ai_throwObjectStep+1
 	.word ai_hopStepUpdate+1
@@ -15064,7 +15064,7 @@ loc_811520A:
 	strb r0, [r7,#oAIAttackVars_SubStepIndex]
 	mov r0, #4
 	strh r0, [r7,#oAIAttackVars_HitElement]
-	bl sub_8115492
+	bl ai_attackStepHighlightFrontPanel_8115492
 locret_8115228:
 	pop {pc}
 	.word 0
@@ -15076,11 +15076,11 @@ off_8115234:
 	thumb_func_end ai_chargeAttackInitAndStep
 
 // symdb: One step of an AI-controlled enemy's lunge/dash attack - counts down a wind-up timer, then launches the object forward onto its current panel with a sound and element tag.
-// symdb: sub_811523C(r5 = battle object, r7 = oAIAttackVars state block) -> r1, r5 from sub_8115492; r10
+// symdb: ai_attackLungeStep_811523C(r5 = battle object, r7 = oAIAttackVars state block) -> r1, r5 from ai_attackStepHighlightFrontPanel_8115492; r10
 // symdb: as left by PlaySoundEffect on the lunge path
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811523C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackLungeStep_811523C.yaml
 	thumb_local_start
-sub_811523C:
+ai_attackLungeStep_811523C:
 	push {lr}
 	bl ai_attackVarsTimerTick16
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
@@ -15102,9 +15102,9 @@ sub_811523C:
 	mov r0, #8
 	strh r0, [r7,#oAIAttackVars_HitElement]
 loc_811526C:
-	bl sub_8115492
+	bl ai_attackStepHighlightFrontPanel_8115492
 	pop {pc}
-	thumb_func_end sub_811523C
+	thumb_func_end ai_attackLungeStep_811523C
 
 // symdb: One step of an AI battle object's scripted panel-by-panel move along the field
 // symdb: (r5 = battleObject, r7 = aiAttackVars) -> void ; advances PanelXY/XY, decrements step counter,
@@ -15159,7 +15159,7 @@ loc_81152CA:
 	bne loc_81152D4
 	bl sub_8115466
 loc_81152D4:
-	bl sub_81154B8
+	bl battle_checkCutShortChargeAnimSetGuard_81154B8
 	bl ai_attackVarsTimerTick16
 	ldr r1, [r5,#oBattleObject_XVelocity]
 	ldr r0, [r5,#oBattleObject_X]
@@ -15195,7 +15195,7 @@ loc_811531A:
 	mov r0, #0xc
 	strh r0, [r7,#oAIAttackVars_HitElement]
 loc_8115322:
-	bl sub_8115492
+	bl ai_attackStepHighlightFrontPanel_8115492
 	pop {pc}
 	.word 0
 	.byte 0, 0, 0, 0
@@ -15219,7 +15219,7 @@ ai_throwObjectStep:
 	beq loc_8115350
 	bl object_clearCollisionRegion // () -> void
 loc_8115350:
-	bl sub_81154B8
+	bl battle_checkCutShortChargeAnimSetGuard_81154B8
 	bl ai_attackVarsTimerTick16
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
@@ -15398,11 +15398,11 @@ locret_8115490:
 	thumb_func_end sub_8115466
 
 // symdb: Advances an enemy AI attack-step counter every tick and, on the attacking steps (3 of every 8), highlights the panel directly in front of the battle object.
-// symdb: void sub_8115492(r5 battleObject, r7 aiAttackVars) -> r1 (status from the highlight call, or 4
+// symdb: void ai_attackStepHighlightFrontPanel_8115492(r5 battleObject, r7 aiAttackVars) -> r1 (status from the highlight call, or 4
 // symdb: on off-steps); r5 returned from highlightPanelIfSomeCondition_8109660 on the attacking path
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8115492.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ai_attackStepHighlightFrontPanel_8115492.yaml
 	thumb_local_start
-sub_8115492:
+ai_attackStepHighlightFrontPanel_8115492:
 	push {lr}
 	ldrb r0, [r7,#oAIAttackVars_AttackStepIndex]
 	add r0, #1
@@ -15421,14 +15421,14 @@ sub_8115492:
 	bl highlightPanelIfSomeCondition_8109660
 locret_81154B6:
 	pop {pc}
-	thumb_func_end sub_8115492
+	thumb_func_end ai_attackStepHighlightFrontPanel_8115492
 
 // symdb: Per-frame check that cuts a battle object's charge/release animation short at a marked frame, forcing it into the follow-up animation and raising the object's guard flag.
-// symdb: void sub_81154B8(battleObject* r5)  /* r1 passes through to the return value; clobbers r0-r3,
+// symdb: void battle_checkCutShortChargeAnimSetGuard_81154B8(battleObject* r5)  /* r1 passes through to the return value; clobbers r0-r3,
 // symdb: lr, flags */
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81154B8.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_checkCutShortChargeAnimSetGuard_81154B8.yaml
 	thumb_local_start
-sub_81154B8:
+battle_checkCutShortChargeAnimSetGuard_81154B8:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurAnim]
 	cmp r0, #2
@@ -15477,7 +15477,7 @@ byte_8115550:
 	.byte 0x1E, 0x1E, 0x1E, 0x1E, 0x1E, 0x1E
 byte_8115556:
 	.byte 0x3, 0x4, 0x4, 0x4, 0x4, 0x5
-	thumb_func_end sub_81154B8
+	thumb_func_end battle_checkCutShortChargeAnimSetGuard_81154B8
 
 // symdb: Writes 0xA to the object's StaminaDamageCounterDisabler, stores a random +1/-1 (from (GetPositiveSignedRNG()&2)-1) into ExtraVars, zeroes the halfword at +0x6C, then resets the object's action to 8 via battle_ResetObjectActionState_80165B8.
 // symdb: (r5 = battle object) -> r0 = 0 (from battle_ResetObjectActionState); sets collisionData disabler
@@ -15984,7 +15984,7 @@ off_811594C:
 off_8115950:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_81159C4+1
+	.word battle_objectUpdatePhaseThenExtraVars_81159C4+1
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -16023,9 +16023,9 @@ sub_81159B0:
 // symdb: void battle_objectUpdatePhaseThenExtraVars(battleObject r5 /*object, updated in place*/, ...
 // symdb: /*r2-r4, r6-r9, r11-r12 forwarded to the dispatch callee*/); outputs r1, r5, r8-r12 from
 // symdb: callees; entry carry/overflow pass through untouched
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81159C4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_objectUpdatePhaseThenExtraVars_81159C4.yaml
 	thumb_local_start
-sub_81159C4:
+battle_objectUpdatePhaseThenExtraVars_81159C4:
 	push {lr}
 	bl battle_objectUpdateDispatchPhase_80165C2
 	ldr r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
@@ -16037,7 +16037,7 @@ sub_81159C4:
 	bl sub_80B87A6
 loc_81159DA:
 	pop {pc}
-	thumb_func_end sub_81159C4
+	thumb_func_end battle_objectUpdatePhaseThenExtraVars_81159C4
 
 // symdb: Per-frame counter that decrements a BattleObject ExtraVar and, every 2nd tick while the battle is running and not paused, refreshes sprite color-shader id 0xF.
 // symdb: (r5 = BattleObject*) -> (void) ; side effect: writes oBattleObject_ExtraVars+4 and calls
@@ -17599,7 +17599,7 @@ loc_8116782:
 	b locret_81167B6
 loc_8116790:
 	mov r7, r0
-	bl sub_81167D2
+	bl battle_randTierFromParam1Table_81167D2
 	ldr r4, off_81167C0 // =byte_81167C8
 	ldrb r4, [r4,r0]
 	lsl r4, r4, #8
@@ -17632,9 +17632,9 @@ byte_81167CD:
 // symdb: Rolls a random 0-15 value, combines it with a battle object's Param1 to index a 4x16 tier table (values 0-4), used to pick a randomized effect strength for that object.
 // symdb: int battle_randTierFromParam1Table_81167D2(BattleObject* object /*r5*/); // returns tier value
 // symdb: in r0; r7 is passed through from the RNG callees to the caller
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81167D2.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_randTierFromParam1Table_81167D2.yaml
 	thumb_local_start
-sub_81167D2:
+battle_randTierFromParam1Table_81167D2:
 	push {lr}
 	bl battle_conditionalRngRoll
 	cmp r0, #4
@@ -17657,7 +17657,7 @@ byte_81167F4:
 	.byte 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x2, 0x2
 	.byte 0x2, 0x2, 0x2, 0x2, 0x2, 0x2, 0x1, 0x1, 0x1, 0x1, 0x0, 0x0, 0x0, 0x0, 0x3, 0x3, 0x3
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x2, 0x2, 0x2, 0x1, 0x1, 0x1, 0x0, 0x0
-	thumb_func_end sub_81167D2
+	thumb_func_end battle_randTierFromParam1Table_81167D2
 
 // symdb: Scans the 8 battle-entity slots at base+0x60 and, only if the field is crowded (>=5 entities, >=3 of a certain sub-type) and no blocking type-4 entity exists, rolls an RNG check for a 1-in-8 event and returns 4 on success.
 // symdb: u32 battle_conditionalSpecialRoll(u32 base /* r5 */); /* returns r0: 4 on the winning roll, 0
@@ -21661,7 +21661,7 @@ battle_beastOut_runBattleStep_81183C4:
 off_81183E4:
 	.word off_81183E8
 off_81183E8:
-	.word sub_8118424+1
+	.word setFlagByteTrue_8118424+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word battle_beastOutTransformTick+1
 	.word sub_81184A8+1
@@ -21673,21 +21673,21 @@ off_81183E8:
 	.word battle_beastOutTransformEndStep+1
 	.word battle_beastOutTransformUpdate+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
-	.word sub_81185A8+1
+	.word chatbox_setByteIfFlag80_81185A8+1
 	.word beastOutOrProgramAdvanceSetTransform_811842C+1
 	.word sub_81184A8+1
 	thumb_func_end battle_beastOut_runBattleStep_81183C4
 
 // symdb: Writes 1 to the flag byte pointed to by r5, acting as a tiny "set to true" callback.
-// symdb: void sub_8118424(u8 *flag /* in r5 */) // returns r0 = 1, nz flags set from the mov r0,
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118424.yaml
+// symdb: void setFlagByteTrue_8118424(u8 *flag /* in r5 */) // returns r0 = 1, nz flags set from the mov r0,
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setFlagByteTrue_8118424.yaml
 	thumb_local_start
-sub_8118424:
+setFlagByteTrue_8118424:
 	push {lr}
 	mov r0, #1
 	strb r0, [r5]
 	pop {pc}
-	thumb_func_end sub_8118424
+	thumb_func_end setFlagByteTrue_8118424
 
 // symdb: BeastOut/ProgramAdvance sprite initialization step: writes a state byte and CurAnim into the beast-sprite object, then snaps its position and resets palette/alpha effects.
 // symdb: (r5 = beast sprite object ptr, r6 = parent battle object / AIData ptr, r10 = toolkit) -> void
@@ -21901,10 +21901,10 @@ loc_811858A:
 	thumb_func_end battle_beastOutTransformEndStep
 
 // symdb: Sets the byte pointed to by r5 to 1 when chatbox eFlags bit 0x80 is set, otherwise leaves it unchanged.
-// symdb: void sub_81185A8(u8* dest /* r5 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81185A8.yaml
+// symdb: void chatbox_setByteIfFlag80_81185A8(u8* dest /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setByteIfFlag80_81185A8.yaml
 	thumb_local_start
-sub_81185A8:
+chatbox_setByteIfFlag80_81185A8:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -21913,7 +21913,7 @@ sub_81185A8:
 	strb r0, [r5]
 locret_81185B6:
 	pop {pc}
-	thumb_func_end sub_81185A8
+	thumb_func_end chatbox_setByteIfFlag80_81185A8
 
 	thumb_local_start
 sub_81185B8:
@@ -22678,7 +22678,7 @@ sub_8118AB0:
 	sub sp, sp, #8
 	mov r0, #0
 	str r0, [sp,#4]
-	bl sub_8118B98
+	bl table_getNextLinkedRecord_8118B98
 	mov r7, r0
 	ldr r4, off_8118B3C // =byte_8118B40
 	ldrb r0, [r6,#0xf]
@@ -22724,7 +22724,7 @@ loc_8118B06:
 	thumb_func_end sub_8118AB0
 
 	push {r4-r7,lr}
-	bl sub_8118B98
+	bl table_getNextLinkedRecord_8118B98
 	mov r7, r0
 	ldr r4, off_8118B3C // =byte_8118B40
 	ldrb r0, [r6,#0xf]
@@ -22754,7 +22754,7 @@ sub_8118B48:
 	sub sp, sp, #8
 	mov r0, #0
 	str r0, [sp,#4]
-	bl sub_8118B98
+	bl table_getNextLinkedRecord_8118B98
 	mov r7, r0
 	mov r0, #0x88
 	str r0, [sp]
@@ -22794,16 +22794,16 @@ loc_8118B8E:
 // symdb: Steps to the next entry of a self-linked record chain, using the record's own stride field to advance the pointer.
 // symdb: Next record pointer table_getNextLinkedRecord(void* record /* r5 */); returns r0 = record +
 // symdb: stride
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118B98.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/table_getNextLinkedRecord_8118B98.yaml
 	thumb_local_start
-sub_8118B98:
+table_getNextLinkedRecord_8118B98:
 	ldrb r0, [r5,#2]
 	lsr r0, r0, #4
 	lsl r0, r0, #4
 	add r0, r0, r5
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_8118B98
+	thumb_func_end table_getNextLinkedRecord_8118B98
 
 // symdb: Battle object per-frame dispatcher that selects one of three update routines by the object's type byte at [r5+8] (BattleObject.CurState).
 // symdb: (r5 = BattleObjectPtr) -> side effects via the called routine; no value returned (void-like;
@@ -22897,33 +22897,33 @@ battleObject_updateByType_8118C2C:
 off_8118C44:
 	.word off_8118C48
 off_8118C48:
-	.word sub_8118C84+1
-	.word sub_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
 	.word t3_refreshTextScriptOnChange+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
-	.word sub_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
+	.word setFlagTrue_8118C84+1
 	thumb_func_end battleObject_updateByType_8118C2C
 
 // symdb: Stores 1 (true/set) into the byte whose address the caller passes in r5; a trivial boolean-flag setter.
 // symdb: void setFlagTrue(u8 *flag /* r5 */) — returns nothing callers use; clobbers r0 and NZ flags
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118C84.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/setFlagTrue_8118C84.yaml
 	thumb_local_start
-sub_8118C84:
+setFlagTrue_8118C84:
 	push {lr}
 	mov r0, #1
 	strb r0, [r5]
 	pop {pc}
-	thumb_func_end sub_8118C84
+	thumb_func_end setFlagTrue_8118C84
 
 // symdb: Task tick handler that derives a state byte from a chatbox cutscene flag and an item flag, then re-renders TextScript873EA50 into byte_2017A00/0x6013C00 only when a toolkit version counter changes, before tail-calling sub_8118CF4.
 // symdb: (r0 = entry index for toolkit_getUnk2004190EntryPtr, r5 = task struct, r6 = object/task context)
@@ -23246,7 +23246,7 @@ off_8118E94:
 	.word off_8118E98
 off_8118E98:
 	.word battleObject_initBeastOutSprite_8118EA8+1
-	.word sub_8118F14+1
+	.word sprite_updateWrapper_8118F14+1
 	.word sprite_resetScaling+1
 off_8118EA4:
 	.word sSubmenu
@@ -23288,7 +23288,7 @@ battleObject_initBeastOutSprite_8118EA8:
 	ldrb r0, [r2]
 	ldrb r1, [r2,#1]
 	bl sprite_setCoordinates
-	bl sub_8118F14
+	bl sprite_updateWrapper_8118F14
 	pop {pc}
 	.balign 4, 0
 off_8118F00:
@@ -23304,13 +23304,13 @@ byte_8118F0C:
 // symdb: Trivial wrapper that tail-invokes sprite_update on the object pointer passed in r5 and returns its results unchanged.
 // symdb: void sprite_updateWrapper(u32 object /* r5 */) — but it is a pure passthrough: r0-r5 and the
 // symdb: NZCV flags as sprite_update leaves them are all returned to its caller.
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8118F14.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sprite_updateWrapper_8118F14.yaml
 	thumb_local_start
-sub_8118F14:
+sprite_updateWrapper_8118F14:
 	push {lr}
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_8118F14
+	thumb_func_end sprite_updateWrapper_8118F14
 
 // symdb: One-line wrapper that clears a sprite's scale counter and rebuilds it as unscalable.
 // symdb: (r0 = sprite object) -> r0 = callee's return; no flag contract of its own
@@ -30120,9 +30120,9 @@ sub_811C10E:
 // symdb: State dispatcher for a BeastOut-related battle/overworld GUI object that jumps to one of three per-state handlers selected by the byte at object+8.
 // symdb: void battle_dispatchBeastOutGuiState_811C11C(Object* r5 /* object */); // tail-calls handler via
 // symdb: mov lr,pc/bx r0; handler's outputs surface as r2 r3 r5 r10 r11
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811C11C.yaml
-	thumb_func_start sub_811C11C
-sub_811C11C:
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchBeastOutGuiState_811C11C.yaml
+	thumb_func_start battle_dispatchBeastOutGuiState_811C11C
+battle_dispatchBeastOutGuiState_811C11C:
 	push {lr}
 	ldr r0, off_811C12C // =off_811C130
 	ldrb r1, [r5,#8]
@@ -30135,9 +30135,9 @@ off_811C12C:
 	.word off_811C130
 off_811C130:
 	.word battleObject_initBeastOutOverworldGui_811C13C+1
-	.word sub_811C18C+1
+	.word reqBBS_updateFrame_811C18C+1
 	.word sub_811C1A4+1
-	thumb_func_end sub_811C11C
+	thumb_func_end battle_dispatchBeastOutGuiState_811C11C
 
 // symdb: Initialise the GUI/overworld object used to visualise the Navi's beast-out form, configuring its sprite/animation/palette/priority and absolute on-battlefield coordinates.
 // symdb: (r5 = battle object ptr) -> side effects only; no value returned to callers
@@ -30168,7 +30168,7 @@ battleObject_initBeastOutOverworldGui_811C13C:
 	mov r0, #0xd8
 	mov r1, #7
 	bl sprite_setCoordinates
-	bl sub_811C18C
+	bl reqBBS_updateFrame_811C18C
 	pop {pc}
 	.balign 4, 0
 off_811C188:
@@ -30176,11 +30176,11 @@ off_811C188:
 	thumb_func_end battleObject_initBeastOutOverworldGui_811C13C
 
 // symdb: Per-frame update for the request BBS screen — refreshes the eReqBBSGui object and then runs the sprite update.
-// symdb: void sub_811C18C(u32 r5 /* sprite update arg / GUI object list */); outputs r2, r3 (from
+// symdb: void reqBBS_updateFrame_811C18C(u32 r5 /* sprite update arg / GUI object list */); outputs r2, r3 (from
 // symdb: sprite_update), r5 preserved; clobbers r0, r1, lr and nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_811C18C.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_updateFrame_811C18C.yaml
 	thumb_local_start
-sub_811C18C:
+reqBBS_updateFrame_811C18C:
 	push {lr}
 	push {r5}
 	ldr r5, off_811C1A0 // =eReqBBSGui
@@ -30191,7 +30191,7 @@ sub_811C18C:
 	.balign 4, 0
 off_811C1A0:
 	.word eReqBBSGui
-	thumb_func_end sub_811C18C
+	thumb_func_end reqBBS_updateFrame_811C18C
 
 	thumb_local_start
 sub_811C1A4:

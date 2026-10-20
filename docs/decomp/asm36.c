@@ -3924,7 +3924,7 @@ LABEL_14:
 
 
 // 0x8133540
-int sub_8133540()
+int battle_dispatchModeHandler_8133540()
 {
     int v0; // r5
 
@@ -8168,7 +8168,7 @@ int *battle_removeObjectTagFromList()
 
 
 // 0x813676c
-int sub_813676C()
+int battle_copyWorkBlockToBattleWork_813676C()
 {
     return CopyBytes(&unk_2000090, byte_2022B70, 8);
 }
@@ -8679,7 +8679,7 @@ int battleObject_runBeastSpFunction_8136DE0()
 
 
 // 0x8136ee4
-int sub_8136EE4()
+int npc_tickTimerPhaseEnd4_8136EE4()
 {
     int v0; // r5
     int result; // r0
@@ -8910,7 +8910,7 @@ int beastOutDialogDelayStep()
 
 
 // 0x81370c4
-int sub_81370C4()
+int chatbox_writeState30IfFlag80Clear_81370C4()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -9019,7 +9019,7 @@ int sub_8137170()
 
 
 // 0x81371a0
-int sub_81371A0()
+int chatbox_store40IfFlag80Clear_81371A0()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -9120,7 +9120,7 @@ int navicust_delayedDialogTimer()
 
 
 // 0x813725c
-int sub_813725C()
+int chatbox_setState50IfFlag80Clear_813725C()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -9234,7 +9234,7 @@ int sub_8137334()
 
 
 // 0x8137368
-int sub_8137368()
+int chatbox_resetCounterIfFlag80Clear_8137368()
 {
     _BYTE *v0; // r5
     int result; // r0

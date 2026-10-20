@@ -9271,7 +9271,7 @@ void ai_chargeAttackInitAndStep()
     {
         if ( *(v1 + 12) == 1 )
             sub_8115466();
-        sub_81154B8();
+        battle_checkCutShortChargeAnimSetGuard_81154B8();
         ai_attackVarsTimerTick16();
         v0->x += v0->vx;
         if ( *(v1 + 16) == *(v1 + 18) )
@@ -9300,7 +9300,7 @@ void ai_chargeAttackInitAndStep()
                 *v1 = 12;
             }
         }
-        sub_8115492();
+        ai_attackStepHighlightFrontPanel_8115492();
     }
     else
     {
@@ -9323,7 +9323,7 @@ void ai_chargeAttackInitAndStep()
             *(v1 + 13) = 1;
             *(v1 + 14) = 1;
             *v1 = 4;
-            sub_8115492();
+            ai_attackStepHighlightFrontPanel_8115492();
         }
     }
 }
@@ -9344,7 +9344,7 @@ int ai_throwObjectStep()
 
     if ( *(*(v0 + 84) + 112) & 0xC000000 )
         object_clearCollisionRegion();
-    sub_81154B8();
+    battle_checkCutShortChargeAnimSetGuard_81154B8();
     ai_attackVarsTimerTick16();
     v2 = v1[8];
     v3 = __OFSUB__(v2, 1);
@@ -9483,7 +9483,7 @@ void sub_8115466()
 
 
 // 0x8115492
-int sub_8115492()
+int ai_attackStepHighlightFrontPanel_8115492()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -9502,7 +9502,7 @@ int sub_8115492()
 
 
 // 0x81154b8
-int sub_81154B8()
+int battle_checkCutShortChargeAnimSetGuard_81154B8()
 {
     int v0; // r5
     int result; // r0
@@ -10830,7 +10830,7 @@ _DWORD *sub_811677A()
     {
         if ( !*result )
         {
-            v3 = sub_81167D2();
+            v3 = battle_randTierFromParam1Table_81167D2();
             v5 = (byte_81167C8[v3] << 8) | v3;
             v6 = byte_81167CD[v3];
             sub_8015C94(v3, v4, 0x10000, 260571264);
@@ -10844,7 +10844,7 @@ _DWORD *sub_811677A()
 
 
 // 0x81167d2
-int sub_81167D2()
+int battle_randTierFromParam1Table_81167D2()
 {
     int v0; // r5
     int result; // r0
@@ -13286,7 +13286,7 @@ void battle_beastOut_runBattleStep_81183C4()
 
 
 // 0x8118424
-signed int sub_8118424()
+signed int setFlagByteTrue_8118424()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -13477,7 +13477,7 @@ int battle_beastOutTransformEndStep()
 
 
 // 0x81185a8
-int sub_81185A8()
+int chatbox_setByteIfFlag80_81185A8()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -14047,7 +14047,7 @@ signed int sub_8118AB0()
     signed int v9; // [sp+4h] [bp-18h]
 
     v9 = 0;
-    v1 = sub_8118B98();
+    v1 = table_getNextLinkedRecord_8118B98();
     v2 = v1;
     v3 = &byte_8118B40[2 * *(v0 + 15)];
     v4 = 20 * *(v0 + 40) + *v3;
@@ -14076,7 +14076,7 @@ signed int sub_8118B48()
     signed int v7; // [sp+4h] [bp-18h]
 
     v7 = 0;
-    v1 = sub_8118B98();
+    v1 = table_getNextLinkedRecord_8118B98();
     v2 = v1;
     v3 = sub_8118320(136, *(v1 + 12));
     *(v2 + 12) = v3;
@@ -14092,7 +14092,7 @@ signed int sub_8118B48()
 
 
 // 0x8118b98
-unsigned int sub_8118B98()
+unsigned int table_getNextLinkedRecord_8118B98()
 {
     int v0; // r5
 
@@ -14146,7 +14146,7 @@ void __noreturn battleObject_updateByType_8118C2C()
 
 
 // 0x8118c84
-signed int sub_8118C84()
+signed int setFlagTrue_8118C84()
 {
     _BYTE *v0; // r5
     signed int result; // r0
@@ -14375,12 +14375,12 @@ void __noreturn battleObject_initBeastOutSprite_8118EA8()
     sprite_setObjWindowMode();
     v0->currState = 4;
     sprite_setCoordinates(byte_8118F0C[2 * *(v1 + 15)], byte_8118F0C[2 * *(v1 + 15) + 1]);
-    sub_8118F14();
+    sprite_updateWrapper_8118F14();
 }
 
 
 // 0x8118f14
-void __noreturn sub_8118F14()
+void __noreturn sprite_updateWrapper_8118F14()
 {
     Battle *v0; // r5
 
@@ -18082,7 +18082,7 @@ int sub_811C10E()
 
 
 // 0x811c11c
-int sub_811C11C()
+int battle_dispatchBeastOutGuiState_811C11C()
 {
     int v0; // r5
 
@@ -18107,12 +18107,12 @@ void __fastcall __noreturn battleObject_initBeastOutOverworldGui_811C13C(int a1,
     sprite_setSubRecordFieldA_8003060(0);
     v2->currState = 4;
     sprite_setCoordinates(216, 7);
-    sub_811C18C();
+    reqBBS_updateFrame_811C18C();
 }
 
 
 // 0x811c18c
-void __noreturn sub_811C18C()
+void __noreturn reqBBS_updateFrame_811C18C()
 {
     Battle *v0; // [sp+0h] [bp-8h]
 

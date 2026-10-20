@@ -6878,7 +6878,7 @@ off_81334B4:
 	.word off_81334B8
 off_81334B8:
 	.word beastsp_handleInputAndScripts+1
-	.word sub_8133540+1
+	.word battle_dispatchModeHandler_8133540+1
 	.word object_dispatchState+1
 	.word sub_8133770+1
 	thumb_func_end battleObject_submenuDispatchByBeastSpIndex_8133484
@@ -6945,9 +6945,9 @@ locret_8133534:
 // symdb: void battle_dispatchModeHandler_8133540(void); // in: r4 (passed through), r5 = object pointer,
 // symdb: r10 (passed through), lr = return; out: r5, r8-r12 as left by the selected handler; clobbers
 // symdb: r0-r3, r6, r7, nzcv
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8133540.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_dispatchModeHandler_8133540.yaml
 	thumb_local_start
-sub_8133540:
+battle_dispatchModeHandler_8133540:
 	push {lr}
 	ldr r0, off_8133550 // =off_8133554 
 	ldr r1, [r5,#0x68]
@@ -6963,7 +6963,7 @@ off_8133554:
 	.word battle_confirmSpawnPanelWrap+1
 	.word sub_81335C0+1
 	.word sub_81335D8+1
-	thumb_func_end sub_8133540
+	thumb_func_end battle_dispatchModeHandler_8133540
 
 // symdb: Per-frame input handler for an open submenu: adjusts its cursor on D-pad input, advances to state 4 on A, and on B plays the exit sound, runs a closing text script, and closes itself.
 // symdb: (r5 = submenu state struct, r10 = toolkit) -> void; also uses global event flag word and joypad
@@ -11620,7 +11620,7 @@ off_81356E8:
 // symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
 // symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
 // symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
+// symdb: then runs sub_8135B94 / sub_813BAA8 / battle_copyWorkBlockToBattleWork_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
 // symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
 // symdb: SONG_NAVI_CUSTOMIZER.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
@@ -11694,7 +11694,7 @@ battle_initNaviCustomizerScene_81356F4:
 	bl battle_loadNaviCustomizerGfx
 
 	bl sub_813BAA8
-	bl sub_813676C
+	bl battle_copyWorkBlockToBattleWork_813676C
 	mov r0, #0
 	bl sub_813660C
 	mov r0, #0
@@ -13873,10 +13873,10 @@ loc_8136768:
 	thumb_func_end battle_removeObjectTagFromList
 
 // symdb: Copies an 8-byte block from the work/save buffer at 0x2000090 into the battle work area at 0x2022B70.
-// symdb: void sub_813676C(void)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813676C.yaml
+// symdb: void battle_copyWorkBlockToBattleWork_813676C(void)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_copyWorkBlockToBattleWork_813676C.yaml
 	thumb_local_start
-sub_813676C:
+battle_copyWorkBlockToBattleWork_813676C:
 	push {lr}
 	ldr r0, off_813679C // =unk_2000090 
 	ldr r1, off_8136798 // =unk_2022B70 
@@ -13884,7 +13884,7 @@ sub_813676C:
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813676C
+	thumb_func_end battle_copyWorkBlockToBattleWork_813676C
 
 // symdb: Copies 8 bytes from the battle state buffer at 0x2022B70 into the work buffer at 0x2000090.
 // symdb: void sub_813677C(void)
@@ -14792,7 +14792,7 @@ battleObject_runBeastSpFunction_8136DE0:
 off_8136E28:
 	.word off_8136E2C
 off_8136E2C:
-	.word sub_8136EE4+1
+	.word npc_tickTimerPhaseEnd4_8136EE4+1
 	.word navicust_showDialogStore8+1
 	.word navicust_advanceBeastEventDialog+1
 	.word sub_8136F40+1
@@ -14803,20 +14803,20 @@ off_8136E2C:
 	.word sub_8137028+1
 	.word sub_813709C+1
 	.word beastOutDialogDelayStep+1
-	.word sub_81370C4+1
+	.word chatbox_writeState30IfFlag80Clear_81370C4+1
 	.word navicust_checkEquipDialogs+1
 	.word sub_8137160+1
 	.word sub_8137170+1
-	.word sub_81371A0+1
+	.word chatbox_store40IfFlag80Clear_81371A0+1
 	.word navicust_finalizePieceDrop+1
 	.word sub_8137234+1
 	.word navicust_delayedDialogTimer+1
-	.word sub_813725C+1
+	.word chatbox_setState50IfFlag80Clear_813725C+1
 	.word sub_813726C+1
 	.word sub_81372E4+1
 	.word sub_81372F4+1
 	.word sub_8137334+1
-	.word sub_8137368+1
+	.word chatbox_resetCounterIfFlag80Clear_8137368+1
 	.word navicust_checkPiecePlacement+1
 	.word sub_813749C+1
 	.word navicust_counterThenShowDialog+1
@@ -14844,10 +14844,10 @@ off_8136EC8:
 	thumb_func_end battleObject_runBeastSpFunction_8136DE0
 
 // symdb: Counts 20 frames in the object's current phase, then switches its state byte to 4 to end the phase.
-// symdb: void sub_8136EE4(u8 *obj /* r5 */); no return value; flags clobbered
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8136EE4.yaml
+// symdb: void npc_tickTimerPhaseEnd4_8136EE4(u8 *obj /* r5 */); no return value; flags clobbered
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/npc_tickTimerPhaseEnd4_8136EE4.yaml
 	thumb_local_start
-sub_8136EE4:
+npc_tickTimerPhaseEnd4_8136EE4:
 	push {lr}
 	ldrh r0, [r5,#0xe]
 	add r0, #1
@@ -14859,7 +14859,7 @@ sub_8136EE4:
 locret_8136EF4:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8136EE4
+	thumb_func_end npc_tickTimerPhaseEnd4_8136EE4
 
 // symdb: Calls sub_81375D8, runs RunTextScriptNaviCustDialog with script index 0, then stores the byte 8 at the caller-provided [r5]; returns nothing meaningful.
 // symdb: () -> r0 clobbered; reads r5 = pointer to a state/step object, writes byte 8 to [r5]
@@ -15129,11 +15129,11 @@ locret_81370C2:
 	thumb_func_end beastOutDialogDelayStep
 
 // symdb: Stores state byte 0x30 at *r5, but only while chatbox flag eFlags2009F38 bit 0x80 is still clear.
-// symdb: void sub_81370C4(u8* dest /* r5 */)  // reads no other inputs, returns nothing, no flags read
+// symdb: void chatbox_writeState30IfFlag80Clear_81370C4(u8* dest /* r5 */)  // reads no other inputs, returns nothing, no flags read
 // symdb: back
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81370C4.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_writeState30IfFlag80Clear_81370C4.yaml
 	thumb_local_start
-sub_81370C4:
+chatbox_writeState30IfFlag80Clear_81370C4:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15142,7 +15142,7 @@ sub_81370C4:
 	strb r0, [r5]
 locret_81370D2:
 	pop {pc}
-	thumb_func_end sub_81370C4
+	thumb_func_end chatbox_writeState30IfFlag80Clear_81370C4
 
 // symdb: NaviCust menu handler that validates the player's part setup, pops the matching warning dialog (script 0x10/0x11/0x12/0x14) and writes the next menu state (0x34/0x38) to [r5].
 // symdb: (r5 = state-out byte ptr, r7 = naviCust menu context) -> r0 = last dialog/param result; [r5] =
@@ -15252,9 +15252,9 @@ locret_813719E:
 
 // symdb: Tests chatbox eFlags bit 0x80 and writes 0x40 to a caller-supplied byte only when that flag is clear.
 // symdb: void chatbox_store40IfFlag80Clear_81371A0(u8* dest /* r5 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_81371A0.yaml
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_store40IfFlag80Clear_81371A0.yaml
 	thumb_local_start
-sub_81371A0:
+chatbox_store40IfFlag80Clear_81371A0:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15263,7 +15263,7 @@ sub_81371A0:
 	strb r0, [r5]
 locret_81371AE:
 	pop {pc}
-	thumb_func_end sub_81371A0
+	thumb_func_end chatbox_store40IfFlag80Clear_81371A0
 
 // symdb: On releasing a program in the Navi Customizer, runs up to three placement-validation checks against the drop coordinates and the held piece, showing error dialogs 0x17/0x18/0x16 and setting state 0x44 on failure, or clearing the drag offset and setting state 0x48 on success.
 // symdb: ()(r5 = customizer state struct, r7 = drag context with x/y at +0x28/+0x2C) -> sets state byte
@@ -15367,10 +15367,10 @@ locret_813725A:
 	thumb_func_end navicust_delayedDialogTimer
 
 // symdb: If chatbox flag 0x80 is not set, writes the state code 0x50 into a caller-supplied object byte.
-// symdb: void sub_813725C(u8* obj /* r5 */); clobbers r0 and NZ flags, preserves r1; no return value
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_813725C.yaml
+// symdb: void chatbox_setState50IfFlag80Clear_813725C(u8* obj /* r5 */); clobbers r0 and NZ flags, preserves r1; no return value
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_setState50IfFlag80Clear_813725C.yaml
 	thumb_local_start
-sub_813725C:
+chatbox_setState50IfFlag80Clear_813725C:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15379,7 +15379,7 @@ sub_813725C:
 	strb r0, [r5]
 locret_813726A:
 	pop {pc}
-	thumb_func_end sub_813725C
+	thumb_func_end chatbox_setState50IfFlag80Clear_813725C
 
 	thumb_local_start
 sub_813726C:
@@ -15505,10 +15505,10 @@ locret_8137366:
 	thumb_func_end sub_8137334
 
 // symdb: If chatbox flag 0x80 in eFlags2009F38 is clear, resets the byte counter at *r5 to 100.
-// symdb: void sub_8137368(u8* counter /* r5 */)
-// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8137368.yaml
+// symdb: void chatbox_resetCounterIfFlag80Clear_8137368(u8* counter /* r5 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_resetCounterIfFlag80Clear_8137368.yaml
 	thumb_local_start
-sub_8137368:
+chatbox_resetCounterIfFlag80Clear_8137368:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15517,7 +15517,7 @@ sub_8137368:
 	strb r0, [r5]
 locret_8137376:
 	pop {pc}
-	thumb_func_end sub_8137368
+	thumb_func_end chatbox_resetCounterIfFlag80Clear_8137368
 
 // symdb: Navi Customizer screen: validates placing the held part at the cursor's grid cell, showing the appropriate dialog on each failure type, and advances the state machine on success.
 // symdb: (r5 = screen state struct, r7 = cursor/held-part struct; r0 momentarily 0x3f8 to sub_8137670) ->
