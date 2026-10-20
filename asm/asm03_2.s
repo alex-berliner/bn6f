@@ -4598,11 +4598,10 @@ loc_8048DEC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8048DAE
 
-// symdb: Splits one shop's chip stock list into two packed display regions based on per-chip event flags (bought/sold/unlocked state), compacts the empty slots, and hands both region pointers back to the caller.
-// symdb: void sub_8048DF8(u32 list_index r0, void* region_a r1, void* region_b r2, u32 capacity r4,
-// symdb: struct Toolkit* r10) -> r2 = region_a ptr (packed path) / unchanged (skip path), r3 = region_b
-// symdb: ptr / shop data ptr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/packShopChipLists_8048DF8.yaml
+// symdb: For event-gated (type-2) shops, split the chip inventory into a normal list and a special list using progression event flags, then compact both to remove gaps.
+// symdb: void packShopChipLists_8048DF8(u32 shop_index /*r0*/, u32 dest_normal /*r1*/, u32 dest_special
+// symdb: /*r2*/, u32 toolkit /*r10, [oToolkit_ShopDataPtr]*)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/packShopChipLists_8048DF8.yaml
 	thumb_local_start
 packShopChipLists_8048DF8:
 	push {r4-r7,lr}

@@ -349,10 +349,10 @@ loc_809915E:
 	.balign 4, 0
 	thumb_func_end start_battle_809913C
 
-// symdb: Loads a cutscene setup entry by ID: resolves its text archive and, if flagged, places the player (facing, animation, coords) and camera for the scene start.
-// symdb: (r5 = cutscene state struct, cutscene entry id at +6) -> r0 = 0; writes text archive ptr to
-// symdb: +0x30, entry byte to +6, bit7 of entry flags to +8
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_cutsceneLoadEntry.yaml
+// symdb: Loads and applies one overworld cutscene entry: decompresses its text archive, advances the sequence index, and optionally repositions the player and camera based on the entry's flag byte.
+// symdb: s32 ow_cutsceneLoadEntry(u32 context /* r5, cutscene state struct ptr */); /* returns 0, sets Z;
+// symdb: preserves r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_cutsceneLoadEntry.yaml
 	thumb_local_start
 ow_cutsceneLoadEntry:
 	push {r4-r7, lr}
@@ -782,9 +782,10 @@ byte_8099D23:
 end_cutscene_8099D41:
   .align 2, 0
 
-// symdb: Applies a location/spawn entry from a 20-byte-per-entry table: restores a saved word, sets the overworld player's facing and coordinates, and positions the camera.
-// symdb: (r5 = state struct, entry id in [r5+4]) -> r0 = 0; r7 = table entry base
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_applySpawnEntry.yaml
+// symdb: Applies one scripted transition/teleport entry from the spawn table to the overworld player and camera state.
+// symdb: ow_applySpawnEntry(r5 /* OWState* */) -> r0=0; clobbers r1, r2, r3, c, v; preserves r4-r7, r10,
+// symdb: lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_applySpawnEntry.yaml
 	thumb_local_start
 ow_applySpawnEntry:
 	push {r4-r7,lr}
@@ -837,9 +838,10 @@ off_8099DA8:
 	.word byte_809929C
 	thumb_func_end ow_applySpawnEntry
 
-// symdb: Cutscene-called native that points the camera's tracking struct at the overworld player object (value 1), presumably re-locking the camera onto the player.
-// symdb: (r0 unused on entry) -> r0 = 0; reads r10 toolkit, no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_followOverworldPlayer.yaml
+// symdb: Commands the camera subsystem to follow the overworld player by passing mode 1 and the player-object position field (+0x1C) to the camera write helper.
+// symdb: void camera_followOverworldPlayer(r10 = toolkit); -> r0 = 0, nz set, r2 from callee; clobbers c
+// symdb: v r0 r1 lr; preserves r4 r5 r6 r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_followOverworldPlayer.yaml
 	thumb_local_start
 camera_followOverworldPlayer:
 	push {r4-r7,lr}
@@ -4555,9 +4557,10 @@ cutscenescript_809C745:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-// symdb: Backs up the current camera script pointer, builds an 8-byte header-only copy (command IDs of the first three script words plus an 0x08 terminator) in the static buffer byte_20065E0, then calls SetCutsceneCameraScript to restart playback from that stripped header.
-// symdb: (r0 = unused/scratch, r5 = cutscene/camera engine state) -> r0 = 0; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_restartWithScriptHead.yaml
+// symdb: Prepares an 8-byte cutscene camera script head (three 16-bit coordinates packed as byte pairs with a <<4 shift, plus trigger byte 8) in a global buffer, flags the camera struct for restart, and calls SetCutsceneCameraScript to load it.
+// symdb: camera_restartWithScriptHead(r5 = camera*): void  /* clobbers r0,r1,lr; sets flags; r2,r3
+// symdb: scratch; r4-r7 pushed */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/camera_restartWithScriptHead.yaml
 	thumb_local_start
 camera_restartWithScriptHead:
 	push {r4-r7,lr}

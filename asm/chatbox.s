@@ -6581,9 +6581,11 @@ loc_8042972:
 	thumb_func_end chatbox_placeCenteredTextRun_804293C
 	.balign 4, 0
 
-// symdb: Chatbox text-script handler that positions the current text run centered on screen: width = 11*n+8, X base is 240 (or 176 if chatbox flag 0x2 set), shifted left by TextScriptCharIdx when flag is clear; result is stored at chatbox+0x94 and a pointer at chatbox+0x7C is advanced by width*4. Returns 1.
-// symdb: (r4 = text script cursor, r5 = chatbox object) -> r0 = 1; advances r4 past a 3-byte command
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_centerTextX.yaml
+// symdb: Compute the centered horizontal pixel offset for the current character in a chatbox text script and write it into the chatbox state.
+// symdb: void chatbox_centerTextX_08042990(u32 *r4 /*in: script entry, out: next entry, +3*/, u32 r5
+// symdb: /*chatbox struct ptr*/); r0=1, r2=record byte-step (offset<<2), r3=centered x byte, flags
+// symdb: clobbered.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_centerTextX.yaml
 	thumb_local_start
 chatbox_centerTextX: // 0x8042990
 	push {r6,r7,lr}

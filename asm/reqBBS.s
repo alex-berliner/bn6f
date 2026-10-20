@@ -2354,6 +2354,10 @@ loc_813F74A:
 	.balign 4, 0x00
 	thumb_func_end reqBBS_813F6F8
 
+// symdb: Sets up screen-fade transition parameters in the toolkit's fade block and, when no fade is already running, injects a fast-forward command and stamps request code 0x0C into the caller buffer before dispatching the BBS transition.
+// symdb: void reqBBS_813F754(u32 r5 /* caller request buffer */, u32 r10 /* toolkit base */); /* returns
+// symdb: r0=0, r10/r11 propagated from dispatch callee */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_813F754.yaml
 	thumb_local_start
 reqBBS_813F754:
 	push {lr}
@@ -2403,6 +2407,10 @@ loc_813F7A6:
 	.byte 0, 0
 	thumb_func_end reqBBS_813F754
 
+// symdb: Prepare a BBS request in the toolkit's f3a0 buffer, skip the pending mark during screen fades, then dispatch the request via reqBBS_813F8F0.
+// symdb: void reqBBS_setupAndDispatch(u32 slot /*r5*/, u32 toolkit /*r10*/) -> r0=0; r10,r11 clobbered by
+// symdb: callee; nz set
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_813F7B0.yaml
 	thumb_local_start
 reqBBS_813F7B0:
 	push {lr}
@@ -3441,6 +3449,10 @@ byte_813FFC8:
 	.byte 0x37, 0x52, 0x0, 0x3A, 0x2, 0x2
 	thumb_func_end sub_813FF30
 
+// symdb: Draws or blanks the 8 BBS request-entry tiles on the current sub-screen, cycling their tile block based on the animation frame, then redraws the bottom border row.
+// symdb: u32 reqBBS_drawRequestTiles(u32 bbs_state /*r5*/, u32 toolkit /*r10*/) -> bbs_state /*r5*/; Z,
+// symdb: N, C, V, LR clobbered; r0-r7 preserved by caller-saves push/pop.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_anim_814004C.yaml
 	thumb_local_start
 reqBBS_anim_814004C:
 	push {r0-r7,lr}
@@ -3797,6 +3809,10 @@ dword_8140354:
 	.word 0x60936092
 	thumb_func_end reqBBS_814030C
 
+// symdb: Routes a BBS joypad press (R/A/B/Start+Select) to the matching sub-handler, gated by the per-slot action counter.
+// symdb: void bbsDispatchJoypadReq(u32 ignored_r0, u32 r2 /* forward param */, BbsStateBlock *r5, Toolkit
+// symdb: *r10); /* preserves r4-r7; r5,r10,r11 memory may be modified by sub-handlers */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_8140358.yaml
 	thumb_local_start
 reqBBS_8140358:
 	push {r4-r7,lr}
@@ -3860,6 +3876,10 @@ reqBBS_81403A8:
 	.byte 0, 0
 	thumb_func_end reqBBS_81403A8
 
+// symdb: Opens a BBS (Buddy Battle System) menu entry: stamps the state as 'opening', configures the window-animation slot, plays SELECT, runs the easing/layout pass, redraws the header text, and resets the message-box pointer.
+// symdb: void reqBBS_openEntry_81403C0(void) // in: r2, r5 (entry-state struct ptr), r10 (toolkit ptr),
+// symdb: lr; out: r10 (updated toolkit ptr), r11 (header-render result); clobbers: r0-r4, r7, r12, nzcv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81403C0.yaml
 	thumb_local_start
 reqBBS_81403C0:
 	push {lr}
@@ -4287,6 +4307,9 @@ locret_8140686:
 	pop {r0-r7,pc}
 	thumb_func_end sub_814063C
 
+// symdb: Animates one frame of the blinking cursor sprite shown in the BBS request dialog
+// symdb: void reqBBS_animateCursor_8140688(ReqBBSGui *r5)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_animateCursor.yaml
 	thumb_local_start
 reqBBS_animateCursor:
 	push {r0-r7,lr}
@@ -4341,6 +4364,10 @@ dword_81406E4:
 	.word 0x1010101, 0x2020101, 0x2020202, 0xFF
 	thumb_func_end reqBBS_animateCursor
 
+// symdb: Builds a 30-bit sprite animation-state mask from HP (offset 0x1E) and stock/charge (offset 0x5) by banding each value into five tiers and XOR-ing tier-bit plus intra-tier-progress-bit into 0x3FFFFFFF, then writes the mask onto the eStructArr2008450 sprite array via sprite_setUnk0x2c.
+// symdb: reqBBS_81406FC(r5: sprite_data*) -> void; preserves r5; clobbers r0-r3, nzcv, lr; tail-calls
+// symdb: sprite_setUnk0x2c(r0=mask, r5=eStructArr2008450)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81406FC.yaml
 	thumb_func_start reqBBS_81406FC
 reqBBS_81406FC:
 	push {r5,lr}
@@ -4681,6 +4708,11 @@ dword_81408EC:
 	.word 0xF
 	thumb_func_end reqBBS_81408DC
 
+// symdb: BBS request that validates PET/Navi slot availability and chatbox state, then sets event flags 0x173A/0x173C and chains sub-request helpers to register the slot for Broadcast Beacon System use.
+// symdb: u32 reqBBS_validatePetNaviRegistration_81408F0(u32 r5 /* BBS toolkit ptr */) -> r0 /* result
+// symdb: code 0x00,0x0D,0x0E,0x0F,0x10 */; r10 and lr are inputs; r5 is read through helper calls but
+// symdb: preserved on return.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/reqBBS_81408F0.yaml
 	thumb_local_start
 reqBBS_81408F0:
 	push {r4-r7,lr}

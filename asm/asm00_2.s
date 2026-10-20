@@ -3894,9 +3894,10 @@ loc_801065C:
 	pop {r7,pc}
 	thumb_func_end ai_beginAttack
 
-// symdb: When the battle-effects low-HP flag and navi stats low-HP bit are set and HP has dropped to 25% or less of max, clears the navi stats flag and fires a panel tile effect at the object's position.
-// symdb: u32 battle_lowHPTileTrigger_8010660(u32 objPtr /*r5*/, u32 r2, u32 r3) -> r0..r3, C, V
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_lowHPTileTrigger_8010660.yaml
+// symdb: One-shot handler that fires a special navi panel-tile effect when a battle object's HP drops to 25% or below.
+// symdb: u32 battle_lowHPTileTrigger_8010660(BattleObject *obj /*r5*/, u32 callerCtx /*r10*/) → r0 = 1 if
+// symdb: trigger fired / 0 if conditions unmet; clobbers nzcv, r1-r3; preserves r4-r6
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_lowHPTileTrigger_8010660.yaml
 	thumb_func_start battle_lowHPTileTrigger_8010660
 battle_lowHPTileTrigger_8010660:
 	push {r4,r6,r7,lr}
@@ -14134,11 +14135,10 @@ locret_801498C:
 	pop {pc}
 	thumb_func_end activateCrossHappensHere_8014944
 
-// symdb: Triggers and runs the fade/screen transition for the Beast Out pet-transformation intro and dispatches the next battle step.
-// symdb: (r5 = beast-state scratch, r10 = toolkit) -> r0 = 1 if fade is still active (exits early),
-// symdb: otherwise void-like ; side effects: starts a screen fade, writes [r5,#0] and [r5,#3], dispatches
-// symdb: a battle step
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBeastOutIntro_801498E.yaml
+// symdb: Drives the two-tick Beast-Out battle-intro state machine: starts a screen fade on the first tick, then dispatches the appropriate intro variant once the fade completes and advances the battle object to the next phase.
+// symdb: void battle_runBeastOutIntro_801498E(u32 r5 /* battleObject */); /* r10, lr passed through;
+// symdb: r5,r6,r7 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runBeastOutIntro_801498E.yaml
 	thumb_local_start
 battle_runBeastOutIntro_801498E:
 	push {lr}
@@ -14235,10 +14235,10 @@ locret_8014A36:
 	pop {pc}
 	thumb_func_end battle_clearObjectActionIfNoAiFlags
 
-// symdb: Dispatch handler for an AIData beast-out/transform action: picks the per-state sub-routine based on Alliance/NaviStats, clears the action flag if not applicable.
-// symdb: side effects only (no return value to callers); reads r5 = AIData*, r7 = AIAttackVars*,
-// symdb: reads/writes AIData->Unk_48 flag, Alliance via r5, AIAttackVars->Unk_00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runBeastTransformationAction_8014A38.yaml
+// symdb: Dispatches the per-actor-type AI step for a beast/cross-process transformation attack, selecting a handler table by actor type and hit element, then refreshes the sprite animation unless suppressed by an AI-data flag.
+// symdb: void Next(void)  /* r5 = battleObject*, r7 = AIAttackVars*; preserves r5 r8 r9 r10 r11 r12
+// symdb: through callees */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_runBeastTransformationAction_8014A38.yaml
 	thumb_local_start
 battle_runBeastTransformationAction_8014A38:
 	push {lr}
@@ -28697,10 +28697,10 @@ locret_801C5F2:
 	pop {r4-r6,pc}
 	thumb_func_end battle_drawGaugeOverlay
 
-// symdb: Plays a "counter hit" SFX from a small lookup table when the AIData's Anger/Timer tier increases between ticks, but only if battle flag 0x40 is set.
-// symdb: (r5 = AIData*, r10 = Toolkit*, lr) -> no meaningful r0 return; side effects:
-// symdb: PlaySoundEffect(r0=???)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_playCounterHitSound_801C5F4.yaml
+// symdb: Plays an escalating hit-combo sound when the consecutive-hit counter crosses into a higher threshold during a counter-hit sequence.
+// symdb: void battle_playCounterHitSound_801C5F4(u32 r5_battleObj, u32 r10_toolkit); clobbers r0 r1 r2
+// symdb: flags; preserves r3 r4 r5 r6 r7 r10
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_playCounterHitSound_801C5F4.yaml
 	thumb_local_start
 battle_playCounterHitSound_801C5F4:
 	push {lr}

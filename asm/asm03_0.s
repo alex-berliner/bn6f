@@ -3195,9 +3195,9 @@ loc_80279E6:
 	.word 0x1FF
 	thumb_func_end battle_customScreen_clearSelection_80279C8
 
-// symdb: Initializes a 15x20 background tilemap in unk_2035000 by copying a base grid from byte_86E64B4, stamping rectangle entries from byte_8027B2C via sub_8027CCC, and uploading the result to BG tile block 3.
-// symdb: () -> void; no args, writes tilemap VRAM via callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initBackgroundTilemap.yaml
+// symdb: Copies the compressed tileset into the work buffer, builds 16-bit tile attributes from a 6-byte attribute table (chained via sub_8027CCC), then blits the 15x20 tile block 3 into the background tilemap.
+// symdb: void initBackgroundTilemap(void /* preserves r4 r5 r6; clobbers r0-r3; reads r10 lr */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initBackgroundTilemap.yaml
 	thumb_local_start
 initBackgroundTilemap:
 	push {lr}
@@ -5950,10 +5950,11 @@ loc_8028D5A: // endif
 	pop {pc}
 	thumb_func_end custMenuPressOK_8028D3A
 
-// symdb: Custom screen chip-selection handler: commits the chip under the cursor as the next of up to 5 selected chips, redraws its slot, and plays the select sound; bounces with an error sound if 5 chips are already selected.
-// symdb: (r4 = custom-screen state ptr, r5 = oS20364C0 cust-menu object) -> r0 = 0 if chip accepted, 1 if
-// symdb: selection full; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_confirmChipSelect.yaml
+// symdb: Confirm the chip under the selection cursor, append it to the battle chip list (max 5), redraw its slot, and arm the jettison animation tick
+// symdb: u32 customScreen_confirmChipSelect(u32 r2, u32 r4 /* toolkit struct ptr */, u32 r5 /* selection
+// symdb: state block 0x20364C0 */, u32 r10) -> r0 (0=added, 1=rejected); clobbers r1 r2 r3; preserves r4
+// symdb: r5 r6 r7 r10; clobbers NZCV lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/customScreen_confirmChipSelect.yaml
 	thumb_local_start
 customScreen_confirmChipSelect:
 	push {lr}

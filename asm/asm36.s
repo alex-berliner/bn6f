@@ -6884,10 +6884,11 @@ off_81334B8:
 	.word object_dispatchState+1
 	.word sub_8133770+1
 	thumb_func_end battleObject_submenuDispatchByBeastSpIndex_8133484
-// symdb: Input/state step handler for a beast-SP-related text sequence: reacts to B+Select and chatbox progress, playing sounds and advancing scripts 0xb/0x10/0x11 while updating a context's state bytes.
-// symdb: (r5 = context struct, caller-provided) -> r0 = last call's return; writes state bytes [r5+2],
-// symdb: [r5+3] and word [r5+0x68]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastsp_handleInputAndScripts.yaml
+// symdb: Per-frame tick handler for the Beast SP sub-menu: dispatches menu selection (OK/Cancel), chatbox script advancement, and exit-on-SELECT+B logic.
+// symdb: void beastsp_handleInputAndScripts(u32 r2 /*sound arg*/, u32 r4 /*battle state*/, u32 r5
+// symdb: /*submenu state ptr*/, u32 r10 /*passthrough*/) → preserves r4, r6, r7, r10; outputs r5, r10;
+// symdb: clobbers r0-r3, lr, flags
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/beastsp_handleInputAndScripts.yaml
 	thumb_local_start
 beastsp_handleInputAndScripts:
 	push {r4,lr}
@@ -10192,10 +10193,9 @@ loc_8134CDE:
 	.byte 0, 0
 	thumb_func_end sub_8134ADC
 
-// symdb: Folder/pack editor action handler: moves a 0x20-byte chip entry between the two chip lists, or swaps two entries within one list, with error sounds for invalid moves.
-// symdb: (r0..r3 unused; r5 = editor state struct) -> r0 = 0; writes entry tables word_202A020 /
-// symdb: unk_202A3E0, state fields [r5+0x17,0x28,0x3c,0x44,0x46,0x48,0x4a]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folder_moveChipEntry.yaml
+// symdb: Handle a chip-move command in the folder UI: jack copies between folders or swap two slots within one folder
+// symdb: void folder_moveChipEntry(struct FolderState *state /*r5*/, u32 context /*r10*/) -> r2
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/folder_moveChipEntry.yaml
 	thumb_local_start
 folder_moveChipEntry:
 	push {r4-r7,lr}
@@ -11617,15 +11617,10 @@ off_81356E8:
 	.word battle_beastSpExitOrFinishBattle_8135B54+1
 	thumb_func_end beastsp_dispatchHandler_81356D4
 
-// symdb: Initialize / boot the Navi Customizer battle scene: clear VRAM/palette/GFX, configure fade, reset e-struct records, install the BattleObject table, and play the customizer BGM.
-// symdb: () -> void ; side effects: clears VRAM (0x6000000-0x600DFFF), zeroes IWRAM 0x3001960 and BG tile
-// symdb: block at 0x30025C0, configures toolkit RenderInfo, zeroes toolkit->Unk2009740, configures
-// symdb: toolkit->Unk200f3a0, installs screen fade (mode 4,0x10), resets battle e-struct records, zeroes
-// symdb: a large battle-state block in [r5], stores the indexed table pointer at sub-state offset 0x44,
-// symdb: then runs sub_8135B94 / sub_813BAA8 / sub_813676C / sub_813660C / sub_813C1C0 / sub_81362F8 /
-// symdb: sub_8135D8C / sub_8135D9C, spawns the e-struct records at byte_8135628, and starts BGM
-// symdb: SONG_NAVI_CUSTOMIZER.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
+// symdb: Initializes the in-battle Navi Customizer overlay: clears display buffers, sets up BG0 render info, loads customizer tile graphics, draws the 6x6 board tilemap, resets E-Struct records, and starts the customizer BGM with a fade-in.
+// symdb: void battle_initNaviCustomizerScene_81356F4(/* r5 = screenStateStruct*, r9–r12 = toolkit/caller
+// symdb: context */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_initNaviCustomizerScene_81356F4.yaml
 	thumb_local_start
 battle_initNaviCustomizerScene_81356F4:
 	push {lr}
@@ -11763,10 +11758,10 @@ locret_813582C:
 	.byte 0, 0
 	thumb_func_end sub_813581C
 
-// symdb: Per-frame input handler for the Navi Customizer board screen: dispatches button presses (select/confirm/cancel/compress actions) and cursor movement, then updates the selected-cell state.
-// symdb: (r5 = navicust screen state struct, no r0 args) -> r0 = 0/bool; updates struct fields 0x02,
-// symdb: 0x0c, 0x0d, 0x13, 0x22, 0x26, 0x38, 0x3a
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardInput.yaml
+// symdb: Per-frame joypad input dispatcher for the in-battle NavCust board; routes SELECT/START/A/B/D-pad to cursor movement, cell confirm/cancel, beast-spirit code input, or sub-menu, then snapshots coordinates to the draw back-buffer.
+// symdb: void navicust_handleBoardInput(u32 r2 /* initial cursor param */, u32 r5 /* board object */, u32
+// symdb: r10 /* toolkit */); outputs r5 r8-r12; clobbers r0-r3, flags, lr
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardInput.yaml
 	thumb_local_start
 navicust_handleBoardInput:
 	push {r4,lr}
@@ -12238,10 +12233,10 @@ locret_8135B90:
 	.balign 4, 0x00
 	thumb_func_end battle_beastSpExitOrFinishBattle_8135B54
 
-// symdb: Loads the Navi Customizer scene's palettes, tiles and BG maps: resolves a 3-entry key/pointer table into unk_20096E0 for decompAndCopyData, copies a second hard-coded table into VRAM/buffers, block-copies 0x100 bytes, then blits three BG tilemaps (r5 = scene struct, byte[r5+0xf] selects a variant tilemap).
-// symdb: (r0 = pointer to a scene-state struct; byte [r0+0xf] selects a graphics variant) -> r0 =
-// symdb: clobbered; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadNaviCustomizerGfx.yaml
+// symdb: Initialises the Navi Customizer screen by decompressing tile/asset data, copying the palette to IWRAM, and drawing three background tile layers (full panel, per-Navi artwork, and button strip).
+// symdb: void battle_loadNaviCustomizerGfx(u32 *customizer_obj /* r5 */); /* r10 caller-provided, unused;
+// symdb: preserves r4-r7 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_loadNaviCustomizerGfx.yaml
 	thumb_local_start
 battle_loadNaviCustomizerGfx:
 	push {r4-r7,lr}
@@ -13428,10 +13423,10 @@ locret_813644C:
 	.byte 0, 0
 	thumb_func_end navicust_handlePlacementCancelInput
 
-// symdb: Navi Customizer screen: attempts to confirm the currently selected part placement, redrawing the board and playing select/error sounds.
-// symdb: (r0 = selection value stored to state+0x18, likely part ID or cell index; r5 = Navi Cust screen
-// symdb: state struct) -> r0 = 0; flags from sub_81364BC choose valid vs invalid path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_confirmPartPlacement.yaml
+// symdb: Commits a part/chip placement on the NavICust board after validating the target slot; opens a submenu or repaints the board depending on navigation depth.
+// symdb: void navicust_confirmPartPlacement(void); // r5 = NavICust state ptr (in), r2/r10 passed to
+// symdb: callees (in); r8-r12 side-effected (out)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_confirmPartPlacement.yaml
 	thumb_local_start
 navicust_confirmPartPlacement:
 	push {lr}

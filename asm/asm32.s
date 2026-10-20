@@ -6436,10 +6436,9 @@ battle_setObjectToArmAnchorPos_8110D18:
 	pop {r4-r7,pc}
 	thumb_func_end battle_setObjectToArmAnchorPos_8110D18
 
-// symdb: Returns 1 if the battle panel at the object's next X position (X + XVelocity) has the panel-status bit masked by byte_8110DB0 set, else 0; r5 = battle object pointer.
-// symdb: (r0 unused; r5 = battle object pointer) -> r0 = 1 if flagged panel at next position, else 0;
-// symdb: flags clobbered by callees
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_hasNextXPanelProperty.yaml
+// symdb: Returns 1 if the panel one X-velocity-step ahead of the battle object carries any property masked by 0x3800000 (e.g. a wall, hazard, or special panel flag), 0 otherwise.
+// symdb: r5 = battle object pointer -> r0 = 0 or 1; clobbers r0-r3, lr, NZCV; preserves r4-r7
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/object_hasNextXPanelProperty.yaml
 	thumb_local_start
 object_hasNextXPanelProperty:
 	push {r4-r7,lr}

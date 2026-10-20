@@ -1738,11 +1738,10 @@ loc_8089C12:
 	pop {r4-r7,pc}
 	thumb_func_end ai_setupStateTimer1C
 
-// symdb: Beast-mode overworld AI step: drives transform/fail handling by inspecting the current PET navi and HP, sets the OW player animation, then writes a new state byte.
-// symdb: (r5 = AIData ptr, r10 = Toolkit ptr) -> r0 = 1 ; side effects: writes AIData+0x00, AIData+0x08,
-// symdb: AIData+0x13, anim field in s200ace0, possibly raises event 0x1719 via
-// symdb: owPlayer_setS200ace0_fixedAnimationSelect_809e13c
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastOverworldAi_decideTransformOrIdle_8089C16.yaml
+// symdb: Decides whether the player enters the beast-overworld transformation, plays a hurt/KO reaction animation, or returns to idle after taking overworld damage.
+// symdb: beastOverworldAi_decideTransformOrIdle_8089C16(u32 player_obj /* r5 */, u32 ai_context /* r10,
+// symdb: unused */) -> u32 handled /* r0, always 1 */; flags clobbers nz cv
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/beastOverworldAi_decideTransformOrIdle_8089C16.yaml
 	thumb_local_start
 beastOverworldAi_decideTransformOrIdle_8089C16:
 	push {r4-r7,lr}

@@ -697,10 +697,11 @@ loc_813BB60:
 	.balign 4, 0x00
 	thumb_func_end sub_813BB00
 
-// symdb: Returns whether the placed NaviCust part, anchored with its 7x7 shape's top-left at (gridX-3, gridY-3), overlaps any occupied cell of the 7x7 customizer board; on hit returns 1 with the obstructing board cell's byte in r1, otherwise 0.
-// symdb: (r0 = passes through to ai_dispatchFromGlobalByte, r1 = unused, r2 = grid x, r3 = grid y) -> r0
-// symdb: = 1 with r1 = overlapping board cell value, else r0 = 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPieceOverlap.yaml
+// symdb: Scans a 7×7 window of the NaviCust board to detect whether a candidate piece's AI-derived footprint overlaps any cell already occupied in the toolkit's placement grid.
+// symdb: u32 navicust_checkPieceOverlap(u32 dispatchArg /*r0*/, u32 col /*r2*/, u32 row /*r3*/, u32 r1,
+// symdb: struct* toolkit /*r10*/) -> nz r0 /*1=overlap,0=none*/ r1 /*hit byte or col residue*/ r2 /*row
+// symdb: residue*/
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_checkPieceOverlap.yaml
 	thumb_func_start navicust_checkPieceOverlap
 navicust_checkPieceOverlap:
 	push {r4-r7,lr}
@@ -1319,10 +1320,11 @@ loc_813BF38:
 	strb r2, [r1,r0]
 	mov pc, lr
 	.byte 0, 0
-// symdb: Scans the 7x7 Navi Customizer grid and returns whether any occupied cell lies on the middle row within ±3 columns of the given column.
-// symdb: (r0 = unused/dispatch seed, r1 = column, r2 = row) -> r0 = 1 if a nonzero grid byte is found in
-// symdb: row 3 with column in [r1-3, r1+3], else 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkRowOccupied.yaml
+// symdb: Checks whether the centre row (index 3) of the Navi Customizer's 7×7 placement grid contains any occupied cell.
+// symdb: u32 navicust_checkRowOccupied(u32 gridByte /*r0, passed to ai_dispatchFromGlobalByte*/, u32 col
+// symdb: /*r1*/, u32 row /*r2*/); /* returns 1 or 0 in r0; sets Z on return; r4-r7 preserved per callee
+// symdb: convention */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_checkRowOccupied.yaml
 	thumb_func_start navicust_checkRowOccupied
 navicust_checkRowOccupied:
 	push {r4-r7,lr}
@@ -2670,6 +2672,9 @@ navicust_NCP_AutoHeal:
 	.byte 0, 0
 	thumb_func_end navicust_NCP_AutoHeal
 
+// symdb: Bust Pack NaviCust Program: raises the PET's ATK/DEF/SPD stat caps by 3, clamped at 4.
+// symdb: void navicust_NCP_BustPack(void); /* PET index 0; clobbers r0-r3, flags, lr; reads r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/navicust_NCP_BustPack.yaml
 	thumb_local_start
 navicust_NCP_BustPack:
 	push {lr}

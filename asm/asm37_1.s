@@ -174,10 +174,13 @@ e_getField18Ptr:
 	pop {r4-r7, pc}
 	thumb_func_end e_getField18Ptr
 
-// symdb: Beast-SP Battle AI per-frame dispatch (init sub-mode, run AI, conditionally run sub-routines) returning 0.
-// symdb: (r10 = ToolkitPtr) -> r0 = 0 ; updates r4–r7/r8/r9/r12, calls many subsystems, may call
-// symdb: chatbox_mask_eFlags2009F38
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_performBeastOutBattleAiTick_81419A0.yaml
+// symdb: Per-frame Beast Out AI tick: initialises pet chip queues on first entry, runs battle helpers, gates on cutscene/fade/chatbox/subsystem, then advances SP evolution or ticks the action cooldown.
+// symdb: // void battle_beastOutAiFrameTick_81419A0( //   u32 r4, u32 r6, u32 r7, u32 r10, u32 lr); // in
+// symdb: : r4 (caller context), r6 (caller context), r7 (caller context), //       r10 (toolkit pointer),
+// symdb: lr // out : r8, r9, r10, r11, r12 (written by sub-calls) // clobbers: r0-r3, lr, all flags //
+// symdb: preserved: r4, r5, r6, r7, r8, r9, r12 (r5 saved/restored via push {r4-r7,lr}) // always returns
+// symdb: r0=0
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_performBeastOutBattleAiTick_81419A0.yaml
 	thumb_func_start battle_performBeastOutBattleAiTick_81419A0
 battle_performBeastOutBattleAiTick_81419A0:
 	push {r4-r7,lr}
@@ -1372,10 +1375,10 @@ byte_8142610:
 	.byte 0x2D, 0x2D, 0x2D, 0x3C, 0x3C, 0x3C, 0x96, 0x96
 	thumb_func_end soulWeapons_apply_8142510
 
-// symdb: Overworld per-frame cutscene dispatcher: checks soul-weapon / beast / cross-progress event flags and fires the matching cutscene scripts, clearing them once handled.
-// symdb: (in r10 = *Toolkit, lr = return) -> no caller-visible result; side effects = sets/clears
-// symdb: EVENT_742/743/746/747 and may StartCutscene with one of three scripts
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/cutscene_dispatchEventFlags_8142618.yaml
+// symdb: Starts one of several overworld cutscenes gated on event flags 742–747, using soul-weapon and advance-forward checks as prerequisites.
+// symdb: void cutscene_dispatchEventFlags_8142618(u32 context_r10); /* modifies event flags and may call
+// symdb: StartCutscene; no register outputs (r4–r7 restored, r0/r1/lr clobbered by subcalls) */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cutscene_dispatchEventFlags_8142618.yaml
 	thumb_local_start
 cutscene_dispatchEventFlags_8142618:
 	push {r4-r7,lr}
@@ -2328,10 +2331,9 @@ sub_8142CB0:
 	.balign 4, 0x00
 	thumb_func_end sub_8142CB0
 
-// symdb: Stamps one tile-block pattern, selected by index, from a template table into the overworld map-tile grid.
-// symdb: (r0 = destination tile-grid buffer (eMapTilesState-style struct), r1 = template index) -> r0 =
-// symdb: none; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_stampMapTileTemplate.yaml
+// symdb: Stamps a fixed tile-pattern template onto an overworld map-tile buffer, remapping rows by the current map width.
+// symdb: void ow_stampMapTileTemplate(u32 dest /* r0 */, u32 tile_type /* r1: 0 or 1 */)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/ow_stampMapTileTemplate.yaml
 	thumb_func_start ow_stampMapTileTemplate
 ow_stampMapTileTemplate:
 	push {r4-r7,lr}

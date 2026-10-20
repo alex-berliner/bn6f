@@ -1113,10 +1113,9 @@ byte_808CA48:
 
 	thumb_func_end ow_teleportPlayerToMapEntrySpot
 
-// symdb: Initializer for the Beast+ special-scenario mode: wipes its work buffer, clears related story flags, restores player control, and starts the scene's sound.
-// symdb: () -> r0 = 0; flags clobbered; zeroes 0x98 bytes at [dword_808CA44], sets state byte 0x3 = 0x20,
-// symdb: sets GameState Unk_09 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_beastSpScenario.yaml
+// symdb: Initializes a Beast Spirit encounter scenario on the overworld: zeroes the encounter buffer, clears start event flags, snapshots player position, queues graphics, and plays the encounter-start sound.
+// symdb: void ow_initBeastSpScenario(void); /* r10,lr in; clobbers r0,r1,lr,nzcv; preserves r4-r8,r10 */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_beastSpScenario.yaml
 	thumb_local_start
 init_beastSpScenario:
 	push {r5,lr}
@@ -1185,10 +1184,12 @@ loc_808CB06:
 	.balign 4, 0x00
 	thumb_func_end ow_storyTriggerSpawnJackoutLockScene
 
-// symdb: Overworld per-frame step that drives the random-encounter progress (PET-Navi footsteps / "LocEnemy" state) and may start the encounter cutscene.
-// symdb: (no input args, r10 = Toolkit) -> side effects: may set state in 0x2000B40 area, play SE 0x13B,
-// symdb: start a cutscene via StartCutscene; nothing returned in r0/r1.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_tryStartRandomEncounterStep_808CB0C.yaml
+// symdb: Per-step state machine that drives random encounters in the PET area: gates on event flags, ticks a 32-step countdown, snapshots player position on first activation, then on expiry (or BBS touch trigger) either rewards a Net PET encounter or attempts a jack-in battle.
+// symdb: /* r10 = toolkit pointer (toolkit+oToolkit_GameStatePtr → GameState), lr = return addr */ /* r2,
+// symdb: r3, r10, r11 written back to caller; r4–r9, r12 preserved via push/pop */ /* no return-value
+// symdb: register; side-effects via globals and event flags */ void pet_randomEncounterStepTick(u32 r10
+// symdb: /* toolkit */);
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_tryStartRandomEncounterStep_808CB0C.yaml
 	thumb_func_start pet_tryStartRandomEncounterStep_808CB0C
 pet_tryStartRandomEncounterStep_808CB0C:
 	push {r4-r7,lr}
@@ -1511,10 +1512,10 @@ loc_808CD1C:
 	.balign 4, 0x00
 	thumb_func_end reqBBS_pollTouchTrigger_808CD04
 
-// symdb: Overworld random-encounter "step" that, on the first run per map group, sets a story flag, marks the per-day LocEnemy flag (0x0F__ range), and plays the SE 0xD4 jingle once.
-// symdb: () -> r0/flags caller-don't-care ; side effects: sets one story flag and one daily progress
-// symdb: flag, plays sound effect 0xD4 on first encounter per area
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_randomEncounterRewardStep_808CD24.yaml
+// symdb: Grants the per-area pet random-encounter reward flag for the current AI mode, and plays a one-time jingle on the very first reward ever collected.
+// symdb: void pet_randomEncounterRewardStep_808CD24(u32 r2, u32 r10); // preserves r2, r4–r7, r10;
+// symdb: clobbers r0, r1, r3, lr, flags; r5 is preserved but internally overwritten (pushed/popped)
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/pet_randomEncounterRewardStep_808CD24.yaml
 	thumb_local_start
 pet_randomEncounterRewardStep_808CD24:
 	push {r4-r7,lr}
@@ -1627,9 +1628,10 @@ loc_808CE14:
 	.balign 4, 0x00
 	thumb_func_end battle_checkLockedEventTable_808CDC4
 
-// symdb: In Beast+ scenario setup, looks up a per-AI-mode table and, for each entry whose gate flag is set, clears a consecutive range of event flags.
-// symdb: () -> void; reads current map group's AI mode, no args; clobbers r0-r3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_clearBeastSpEventFlagTable.yaml
+// symdb: Clears ranges of Beast special-event flags whose gate flag is set, selecting the flag table by the current map-group AI mode.
+// symdb: void init_clearBeastSpEventFlagTable(void); /* in: r10 (caller ctx), lr; out: r2=3 (stale loop
+// symdb: constant); r4-r8 preserved */
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_clearBeastSpEventFlagTable.yaml
 	thumb_local_start
 init_clearBeastSpEventFlagTable:
 	push {r4-r7,lr}
@@ -1671,9 +1673,10 @@ loc_808CE68:
 	pop {r4-r7,pc}
 	thumb_func_end init_clearBeastSpEventFlagTable
 
-// symdb: Applies a per-AI-mode preset of Beast+ scenario event flags: sets one flag and clears a run of flags for each entry of the table selected by the current map group's AI mode.
-// symdb: () -> void; reads current map-group AI mode via ai_getAIModeForMapGroup_808D084
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_applyBeastSpScenarioEventFlags.yaml
+// symdb: Sets one event flag and clears a small range of flags per entry, choosing the table by the current map-group AI mode, to initialise Beast Spread scenario progression.
+// symdb: void (void) — reads r8, calls ai_getAIModeForMapGroup; clobbers r0-r3 lr; returns r7 (loop
+// symdb: counter) to caller; preserves r4-r8.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/init_applyBeastSpScenarioEventFlags.yaml
 	thumb_local_start
 init_applyBeastSpScenarioEventFlags:
 	push {r4-r7,lr}
