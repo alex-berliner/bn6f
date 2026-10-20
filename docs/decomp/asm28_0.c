@@ -2366,7 +2366,7 @@ int petNaviGrantElementFolderEvent()
     if ( getPETNaviSelect() )
         reloadCurNaviBaseStats_8120df0();
     else
-        sub_809CE40();
+        pet_copyNaviStatsFieldsToFirstNavi();
     reloadCurNaviStatBoosts_813c3ac();
     petNaviTryGiveElementFolder_8120D10(0);
     if ( v1 )
@@ -2406,7 +2406,7 @@ signed int battle_checkLinkPartnerCamera()
 
 
 // 0x809ce40
-signed int sub_809CE40()
+signed int pet_copyNaviStatsFieldsToFirstNavi()
 {
     int v0; // r10
     int v1; // r4

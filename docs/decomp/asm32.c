@@ -5248,7 +5248,7 @@ int __fastcall ai_attackGetAlliancePanelRegion(int a1, int a2, int a3)
 
 
 // 0x8111d46
-int __fastcall sub_8111D46(int a1, int a2, int a3)
+int __fastcall ai_getPanelRegionFromAllianceParam(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r6
@@ -15857,7 +15857,7 @@ void __noreturn sprite_cyclePaletteAnim()
 
 
 // 0x811a3a4
-int sub_811A3A4()
+int sprite_rebuildUnscalable()
 {
     return sprite_clearScaleCounterAndMakeUnscalable_804668A();
 }
@@ -16280,7 +16280,7 @@ int __fastcall object_setPositionIfActive(int a1, __int16 a2, int a3)
 
 
 // 0x811a914
-int __fastcall sub_811A914(int a1, int a2)
+int __fastcall battle_applyObjOamAttrByIndex(int a1, int a2)
 {
     int v2; // r4
     unsigned __int8 *v3; // r1
@@ -16456,12 +16456,12 @@ void __noreturn object_initSpriteResource8()
     sprite_setSubEntryPaletteBank_800304A(0);
     sprite_setSubRecordFieldA_8003060(2);
     v0->currState = 4;
-    sub_811ABC8();
+    object_stepSpriteResource8();
 }
 
 
 // 0x811abc8
-void sub_811ABC8()
+void object_stepSpriteResource8()
 {
     int v0; // r5
     signed int v1; // r0
@@ -16477,7 +16477,7 @@ void sub_811ABC8()
 
 
 // 0x811abf8
-int __noreturn sub_811ABF8()
+int __noreturn submenu_renderFolderName()
 {
     int v0; // r5
     char *v1; // r4
@@ -16510,7 +16510,7 @@ int __noreturn sub_811ABF8()
 
 
 // 0x811aca8
-signed int __noreturn sub_811ACA8()
+signed int __noreturn sprite_queueHorizontalStrip()
 {
     int v0; // r5
     int v1; // r0
@@ -16608,12 +16608,12 @@ void __noreturn gui_initSpriteWithPosition()
     sprite_setSubRecordFieldA_8003060(3);
     v0->currState = 4;
     sprite_setCoordinatesIfActive(*&byte_811ADB8[4 * v0->objMemIndex], *&byte_811ADB8[4 * v0->objMemIndex + 2], v0->objMemIndex);
-    sub_811ADC0();
+    sprite_updateGui68();
 }
 
 
 // 0x811adc0
-void __noreturn sub_811ADC0()
+void __noreturn sprite_updateGui68()
 {
     Battle *v0; // r5
 
@@ -16631,7 +16631,7 @@ void sub_811AE00()
 
 
 // 0x811ae04
-int sub_811AE04()
+int sprite_shrinkStep()
 {
     int v0; // r5
     int v1; // r2
@@ -16870,7 +16870,7 @@ void __noreturn sub_811B194()
     v1 = sprite_getCoordinates();
     v3 = *(v0 + 3);
     v4 = *&byte_811B1D0[4 * v3];
-    sub_8132A14(v1 - 92, v2 - 14, 0, **&byte_811B1DC[4 * v3]);
+    sprite_drawBcdNumber(v1 - 92, v2 - 14, 0, **&byte_811B1DC[4 * v3]);
 }
 
 
@@ -17136,13 +17136,13 @@ void sprite_updateStateDispatch()
     Battle *v0; // r5
 
     (*(jt_811B58C + v0->currAction))();
-    sub_811B8C8();
+    sprite_updateFlashShader();
     sprite_update(v0);
 }
 
 
 // 0x811b594
-signed int sub_811B594()
+signed int battle_stateSpriteSetupHandler()
 {
     int v0; // r5
     signed int result; // r0
@@ -17379,7 +17379,7 @@ int battle_setupObjectSpriteFromEntry()
 
 
 // 0x811b8c8
-int sub_811B8C8()
+int sprite_updateFlashShader()
 {
     int v0; // r5
     int v1; // r10
@@ -17550,7 +17550,7 @@ int sub_811BA88()
     v0[12] = 6;
     sprite_disableAlpha();
     sprite_zeroColorShader();
-    sub_811BB30();
+    sprite_setPaletteFromObject();
     return sub_811BB64();
 }
 
@@ -17613,7 +17613,7 @@ int battle_getAdjustedCountFromObject()
 
 
 // 0x811bb30
-void sub_811BB30()
+void sprite_setPaletteFromObject()
 {
     int v0; // r6
     int *v1; // r0
@@ -19061,7 +19061,7 @@ int sub_811CFD0()
 
 
 // 0x811cfec
-int sub_811CFEC()
+int object_advanceOnTimerExpired()
 {
     int v0; // r5
     int v1; // r0
@@ -19174,7 +19174,7 @@ int sub_811D0AC()
 
 
 // 0x811d0cc
-int sub_811D0CC()
+int object_centerAndArmTimer()
 {
     int v0; // r5
     int v1; // r1
@@ -20700,7 +20700,7 @@ int sub_811E600()
 {
     char v0; // r0
 
-    v0 = sub_8143198();
+    v0 = e_countSetEventFlags();
     return sprite_setUnk0x2c(~(0x20000000u >> v0) & 0x3FF00000);
 }
 
@@ -20809,7 +20809,7 @@ int sub_811E73C()
 
 
 // 0x811e744
-int __fastcall sub_811E744(int a1, int a2, int a3, int a4)
+int __fastcall sprite_buildGaugeTiles(int a1, int a2, int a3, int a4)
 {
     int v4; // r6
     char *v5; // r7
@@ -23719,7 +23719,7 @@ int __fastcall countNaviFolderChipsWithElement_8120AE8(int a1)
 
 
 // 0x8120b28
-int __fastcall sub_8120B28(int a1, int a2)
+int __fastcall get_countChipsWithByte7(int a1, int a2)
 {
     int v2; // r4
     signed int v3; // r7
@@ -23915,10 +23915,10 @@ signed int __fastcall petNaviCheckElementChipLimits(int a1)
     v2 = 1;
     v6 = getPETNaviSelect();
     v3 = GetCurPETNaviStatsByte(v6);
-    if ( sub_8120B28(1, v1) <= v3 )
+    if ( get_countChipsWithByte7(1, v1) <= v3 )
     {
         v4 = GetCurPETNaviStatsByte(v6);
-        if ( sub_8120B28(2, v1) <= v4 )
+        if ( get_countChipsWithByte7(2, v1) <= v4 )
             v2 = 0;
     }
     return v2;

@@ -273,7 +273,7 @@ int __fastcall sub_812EDFC(int a1, int a2)
 
 
 // 0x812ee20
-void __noreturn sub_812EE20()
+void __noreturn copy_drawEntry8x2()
 {
     int v0; // r5
     int v1; // r2

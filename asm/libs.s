@@ -2979,10 +2979,10 @@ loc_81455B4:
 	cmp r0, #0
 	bne loc_81455DA
 loc_81455CA:
-	bl sub_8145DD8
+	bl rfu_processConnectionState
 	bl rfu_handleConnTimeout
 	bl rfu_advanceConnState
-	bl sub_81462D8
+	bl rfu_updateSendRecvTargets
 loc_81455DA:
 	pop {r4}
 	pop {r0}
@@ -4044,9 +4044,9 @@ off_8145DD4:
 // symdb: Per-tick maintenance of the RFU parent/child link: detects new child joins (0x10), times out and drops stale slots (0x11), force-disconnects when last child leaves (0x12), or resets state when no children remain (0x14); only runs when link-state byte is 5..8 and advances the +0x7 sub-state to drive the connection FSM.
 // symdb: () -> void; no return value, operates on eStruct200FE00 link state and fires the registered
 // symdb: connection callback with reason codes 0x10/0x11/0x12/0x14
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8145DD8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_processConnectionState.yaml
 	thumb_local_start
-sub_8145DD8:
+rfu_processConnectionState:
 	push {r4-r7,lr}
 	mov r7, r10
 	mov r6, r9
@@ -4334,7 +4334,7 @@ loc_8145FEA:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_8145DD8
+	thumb_func_end rfu_processConnectionState
 
 // symdb: RFU link-state watchdog: times out a pending-connection slot, then forces a disconnect and fires the connection callback with error 0x25.
 // symdb: (r0 = unused/ignored) -> r0 = undefined; saves/restores IME, mutates eStruct200FE00 state
@@ -4770,9 +4770,9 @@ dword_81462D4:
 
 // symdb: Wireless link maintenance: toggles per-peer send-target bits and stops receiving from peers whose local counters exceed the global timeout counter in eStruct200FE00
 // symdb: () -> r0 = destroyed; touches rfu peer table dword_2010CB0[4] and eStruct200FE00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81462D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateSendRecvTargets.yaml
 	thumb_local_start
-sub_81462D8:
+rfu_updateSendRecvTargets:
 	push {r4-r7,lr}
 	mov r7, r10
 	mov r6, r9
@@ -4905,7 +4905,7 @@ off_81463C8:
 	.word dword_2010CC0
 off_81463CC:
 	.word dword_2010CB0
-	thumb_func_end sub_81462D8
+	thumb_func_end rfu_updateSendRecvTargets
 
 // symdb: Stores a caller-supplied value into the wireless-link work struct and registers the MSC callback that will receive it.
 // symdb: (r0 = arg stored in eStruct200FE00+0x44, passed on to the MSC callback) -> r0 = destroyed; no
@@ -7002,9 +7002,9 @@ loc_8147222:
 // symdb: Handles RFU link close: on status 0x26 with matching +0x2C/+0x1A checksum, clears the slot, writes state 3, and dispatches a table entry callback; otherwise (mismatch or status 0x27) clears the slot and writes state 4.
 // symdb: (r0 = *u8 out state, r1 = connection struct) -> r0 = clobbered; writes 3 (clean close) or 4
 // symdb: (failed/error) to *r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8147228.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_processLinkClose.yaml
 	thumb_local_start
-sub_8147228:
+rfu_processLinkClose:
 	push {r4-r6,lr}
 	mov r5, r0
 	mov r6, r1
@@ -7055,7 +7055,7 @@ loc_8147284:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_8147228
+	thumb_func_end rfu_processLinkClose
 
 	thumb_local_start
 sub_814728C:
@@ -7159,7 +7159,7 @@ loc_8147336:
 loc_8147340:
 	mov r0, r4
 	mov r1, r3
-	bl sub_8147228
+	bl rfu_processLinkClose
 def_814730E:
 	pop {r4,r5}
 	pop {r0}

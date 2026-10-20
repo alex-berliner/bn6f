@@ -2091,7 +2091,7 @@ int sub_80B951E()
 
 
 // 0x80b954c
-int __fastcall sub_80B954C(int a1, int a2, int a3)
+int __fastcall battle_landingPhase(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -2456,7 +2456,7 @@ int battle_runCurActionHandler()
 
 
 // 0x80b9848
-int __fastcall sub_80B9848(int a1, int a2, int a3)
+int __fastcall battle_phaseCheckPanelHole(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -3446,7 +3446,7 @@ int sub_80BA054()
     else
     {
         *(v0 + 10) = 4;
-        v1 = sub_80BA1D6();
+        v1 = battle_findNearestColumnInFront();
         if ( v1 )
         {
             *(v0 + 5) = v1;
@@ -3670,7 +3670,7 @@ int __fastcall sub_80BA1B0(char a1, int a2, int a3, int a4)
 
 
 // 0x80ba1d6
-int sub_80BA1D6()
+int battle_findNearestColumnInFront()
 {
     Battle *v0; // r5
     int v1; // r4
@@ -3837,7 +3837,7 @@ int battle_dispatchCurActionHandler()
 
 
 // 0x80ba414
-int __fastcall sub_80BA414(int a1, int a2, int a3)
+int __fastcall battle_checkPanelAction(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -4317,7 +4317,7 @@ int sub_80BA772()
 
 
 // 0x80ba7a0
-int __fastcall sub_80BA7A0(int a1, int a2, int a3)
+int __fastcall battle_phaseCheckPanel(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -4447,7 +4447,7 @@ int object_planOpenPanelAttack()
     {
         *(v0 + 10) = 4;
         *(v0 + 16) = 7;
-        sub_80BA946();
+        object_spawn3ForwardDimmingCollisionRegions();
         PlaySoundEffect(186, v1, v2);
         result = 30;
         *(v0 + 32) = 30;
@@ -4571,7 +4571,7 @@ int __fastcall sub_80BA920(char a1, int a2, int a3, int a4)
 
 
 // 0x80ba946
-_BYTE *sub_80BA946()
+_BYTE *object_spawn3ForwardDimmingCollisionRegions()
 {
     int v0; // r5
     char v1; // r0
@@ -5781,7 +5781,7 @@ int __fastcall sub_80BB42E(int a1, int a2, int a3)
 
 
 // 0x80bb46a
-int sub_80BB46A()
+int battle_decrementAndDespawnObjectOnTimerExpiry()
 {
     int v0; // r5
     int v1; // r0
@@ -6204,7 +6204,7 @@ int battle_objectPlayAnimDelayPhaseHandler()
     {
         *(v0 + 10) = 4;
         *(v0 + 16) = 18;
-        sub_80BB8B0();
+        battle_hitForwardRay();
         PlaySoundEffect(186, v1, v2);
         result = 60;
         *(v0 + 32) = 60;
@@ -6344,7 +6344,7 @@ signed int battle_isTimeStopMirrorActive()
 
 
 // 0x80bb8b0
-int sub_80BB8B0()
+int battle_hitForwardRay()
 {
     int v0; // r5
     int v1; // r6
@@ -6472,7 +6472,7 @@ int sub_80BB9F0()
     if ( !*(v0 + 10) )
     {
         *(v0 + 10) = 4;
-        sub_80BBB38();
+        battle_attackPanelLine();
     }
     result = *(v0 + 32) - 1;
     *(v0 + 32) = result;
@@ -6653,7 +6653,7 @@ _BYTE *battle_slideXSpawnDimmingRegion()
 
 
 // 0x80bbb38
-signed int __noreturn sub_80BBB38()
+signed int __noreturn battle_attackPanelLine()
 {
     int v0; // r5
     signed int v1; // r4
@@ -6723,7 +6723,7 @@ int sub_80BBC04()
 
 
 // 0x80bbc2c
-int __fastcall sub_80BBC2C(int a1, int a2, int a3)
+int __fastcall objectHoverPhase(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -6760,7 +6760,7 @@ int __fastcall sub_80BBC2C(int a1, int a2, int a3)
 
 
 // 0x80bbc80
-int __fastcall sub_80BBC80(int a1, int a2, int a3)
+int __fastcall battle_objectStepBack(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -6894,7 +6894,7 @@ int __fastcall battle_earthquakeAttackUpdate(int a1, int a2, int a3)
         result = v6 - 1;
         *(v3 + 34) = result;
         if ( ((result < 0) ^ v5) | (result == 0) )
-            sub_80BBE58();
+            battle_relocateToRandomFilteredPanel();
     }
     return result;
 }
@@ -7001,7 +7001,7 @@ _BYTE *battle_spawnOwnPanelAttackRegion()
 
 
 // 0x80bbe58
-int __noreturn sub_80BBE58()
+int __noreturn battle_relocateToRandomFilteredPanel()
 {
     int v0; // r5
     int v1; // r1
@@ -7796,12 +7796,12 @@ void __noreturn copy_initFromRelatedObject()
     object_setCoordinatesFromPanels(v0);
     *(v0 + 8) = 4;
     sprite_update(v0);
-    sub_80BC56E();
+    copy_update();
 }
 
 
 // 0x80bc56e
-int sub_80BC56E()
+int copy_update()
 {
     int v0; // r5
 
@@ -8520,7 +8520,7 @@ signed int object_phaseWaitParam4Zero()
 
 
 // 0x80bcc96
-int sub_80BCC96()
+int battle_delayedSwapRelatedActor()
 {
     int v0; // r5
     int v1; // r0
@@ -8952,7 +8952,7 @@ int sub_80BD064()
 
 
 // 0x80bd084
-int sub_80BD084()
+int battle_phaseBlinkOut()
 {
     int v0; // r5
     int v1; // r1
@@ -9458,7 +9458,7 @@ int battle_blinkOutHandler()
 
 
 // 0x80bd538
-int sub_80BD538()
+int object_stepForwardOrFall()
 {
     int v0; // r5
     int result; // r0
@@ -9597,7 +9597,7 @@ int sub_80BD644()
         *(v0 + 76) = 0;
         *(v0 + 32) = 3;
         if ( *(v0 + 6) == 1 )
-            sub_80BDA7C(0);
+            battle_spawnIllusionObjects(0);
         result = 4;
         *(v0 + 11) = 4;
     }
@@ -9687,7 +9687,7 @@ int battle_frontPanelAttackPhase()
         spawn_t1_0x5_tempAttackObject_80B8E30(6);
         PlaySoundEffect(176, v1, v2);
         *(v0 + 32) = 10;
-        sub_80BDA7C(5);
+        battle_spawnIllusionObjects(5);
         result = 4;
         *(v0 + 11) = 4;
     }
@@ -10100,7 +10100,7 @@ __int64 battle_findMatchingPanelForward()
 
 
 // 0x80bda7c
-int __fastcall sub_80BDA7C(int a1)
+int __fastcall battle_spawnIllusionObjects(int a1)
 {
     Battle *v1; // r5
     int v2; // r4
@@ -10472,7 +10472,7 @@ int __fastcall battle_enemyShootProjectilePhase(int a1, int a2, int a3)
 
 
 // 0x80bde58
-int sub_80BDE58()
+int battle_objectTimedSelfDestructPhase()
 {
     int v0; // r5
     int v1; // r0
@@ -11108,7 +11108,7 @@ int battle_objectDelay4ThenDestroy()
 
 
 // 0x80be3c4
-int sub_80BE3C4()
+int object_freeAndClearExtraVars()
 {
     int v0; // r5
     int v1; // r0
@@ -12676,7 +12676,7 @@ int sub_80BF3B0()
 
 
 // 0x80bf3cc
-int __fastcall sub_80BF3CC(int a1, int a2, int a3)
+int __fastcall battle_objPhase3To4Transition(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -14749,7 +14749,7 @@ unsigned int sub_80C0584()
 
 
 // 0x80c05c6
-signed int sub_80C05C6()
+signed int battle_alphaFadeOutDestroy()
 {
     int v0; // r5
     int v1; // r0
@@ -15889,7 +15889,7 @@ void sub_80C0EE2()
             if ( *(v0 + 96) == 2 )
                 battle_killObjectWithDependents(v3);
             else
-                sub_80E14AC(v3);
+                battle_flagSelfAndRelatedForRemoval(v3);
         }
         *(v0 + 8) = 8;
     }
@@ -16774,7 +16774,7 @@ signed int sub_80C1734()
 
 
 // 0x80c174a
-int sub_80C174A()
+int battle_phaseWaitFlagFrameThenSfx()
 {
     int v0; // r5
     int result; // r0
@@ -16795,7 +16795,7 @@ int sub_80C174A()
     {
         *(v0 + 16) = 2;
         spawnEffectAtFront();
-        sub_80C188C();
+        object_spawnDimmingCollisionRegionInFront();
         PlaySoundEffect(266, v2, v3);
         result = 12;
         *(v0 + 10) = 12;
@@ -16939,7 +16939,7 @@ void spawnEffectAtFront()
 
 
 // 0x80c188c
-_BYTE *sub_80C188C()
+_BYTE *object_spawnDimmingCollisionRegionInFront()
 {
     int v0; // r5
     int v1; // r6
@@ -18789,7 +18789,7 @@ int object_phaseHandlerWait3FramesToPhase8()
 
 
 // 0x80c2934
-int sub_80C2934()
+int battle_stepBackOnePanelOnFutureX()
 {
     int v0; // r5
     int result; // r0
@@ -19261,7 +19261,7 @@ int battle_phaseHandleFuturePanelEffect()
 
 
 // 0x80c2d56
-int sub_80C2D56()
+int battle_stepAppearOnPanel()
 {
     int v0; // r5
     int v1; // r7
@@ -20271,7 +20271,7 @@ int sub_80C35CE()
 
 
 // 0x80c3630
-int sub_80C3630()
+int battle_objectPhaseSwitchOnFrameFlag()
 {
     int v0; // r5
     int result; // r0
@@ -22240,12 +22240,12 @@ void __noreturn sub_80C4848()
     *(v0 + 16) = 0;
     *(v0 + 17) = -1;
     *(v0 + 8) = 4;
-    sub_80C48FC();
+    object_runBehaviorAndTick();
 }
 
 
 // 0x80c48fc
-void sub_80C48FC()
+void object_runBehaviorAndTick()
 {
     _BYTE *v0; // r5
 
@@ -22306,7 +22306,7 @@ int sub_80C4958()
 
 
 // 0x80c49a4
-int sub_80C49A4()
+int battle_delayedKillLinkedObject()
 {
     int v0; // r5
     int v1; // r0
@@ -22373,7 +22373,7 @@ int battle_whiteFlashCopyState()
         battle_killObjectWithDependents(*(v0 + 76));
         v6 = v0;
         v7 = *(v0 + 76);
-        sub_80101AE(480);
+        battle_startHitCountdown(480);
         PlaySoundEffect(147, v8, v9);
         **(v6 + 96) = 0;
         result = 8;
@@ -22459,7 +22459,7 @@ int battle_delayedKillRelatedObject()
 
 
 // 0x80c4aec
-int __fastcall sub_80C4AEC(_BYTE *a1, int a2, int a3, int a4)
+int __fastcall battle_spawnAlliedLinkedObject(_BYTE *a1, int a2, int a3, int a4)
 {
     int v4; // r5
     bool v5; // zf
@@ -24005,7 +24005,7 @@ signed int sub_80C5B40()
 
 
 // 0x80c5b76
-int __fastcall sub_80C5B76(char a1, int a2, int a3, int a4)
+int __fastcall spawnBattleObjectType3Kind7(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -24700,7 +24700,7 @@ signed int battle_objectLandOnPanel()
 
 
 // 0x80c62b0
-int sub_80C62B0()
+int battle_updateWaitForRelatedAction()
 {
     int v0; // r5
     int result; // r0
@@ -24757,7 +24757,7 @@ _BYTE *sub_80C62F8()
         if ( ((result < 0) ^ v2) | (result == 0) )
         {
             *(v0 + 34) = 12;
-            result = sub_80C63AE();
+            result = object_spawnCollisionRegionByParam3();
         }
     }
     return result;
@@ -24832,7 +24832,7 @@ int battle_foreachAdjacentPanel()
 
 
 // 0x80c63ae
-_BYTE *sub_80C63AE()
+_BYTE *object_spawnCollisionRegionByParam3()
 {
     int v0; // r5
     int v1; // r0
@@ -25139,7 +25139,7 @@ signed int battle_bombBreakPanelPhase()
 
 
 // 0x80c66e4
-int __fastcall sub_80C66E4(int a1, int a2, int a3)
+int __fastcall object_bombBlastTick(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r0
@@ -28710,7 +28710,7 @@ int __fastcall sub_80C89AC(int a1, int a2, int a3, int a4)
 
 
 // 0x80c89c8
-int sub_80C89C8()
+int battle_spawnCollisionAndCrackPanels()
 {
     int v0; // r5
     int v1; // r4
@@ -33966,7 +33966,7 @@ signed int __fastcall object_releaseLinkAndMove(int a1)
 
 
 // 0x80cbf8c
-int sub_80CBF8C()
+int object_enterPhase4Moving()
 {
     int v0; // r5
     int result; // r0
@@ -35307,7 +35307,7 @@ int sub_80CCD30()
 
 
 // 0x80ccd42
-int sub_80CCD42()
+int object_free()
 {
     return object_freeMemory();
 }
@@ -38134,7 +38134,7 @@ int sub_80CEA0A()
 
 
 // 0x80cea24
-int sub_80CEA24()
+int battle_setPhase4RevealExtraVarsOrDestroy()
 {
     int v0; // r5
     int result; // r0
@@ -38198,7 +38198,7 @@ signed int battle_moveAcrossPanelsThenDestroy()
 
 
 // 0x80cea88
-int sub_80CEA88()
+int object_unlinkExtraListAndFree()
 {
     int v0; // r5
     _DWORD *v1; // r7
@@ -38212,7 +38212,7 @@ int sub_80CEA88()
 
 
 // 0x80ceaa2
-int __fastcall sub_80CEAA2(char a1, int a2, int a3, int a4)
+int __fastcall battle_spawnType52(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r7
@@ -39111,7 +39111,7 @@ int __fastcall __noreturn sub_80CF332(int a1, int a2)
 
 
 // 0x80cf374
-int __fastcall sub_80CF374(char a1, int a2, int a3, int a4)
+int __fastcall spawnFieldBattleObject55(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -40606,7 +40606,7 @@ int battle_spawnSelfPanelCollisionRegion()
 
 
 // 0x80d0230
-void __fastcall sub_80D0230(int a1)
+void __fastcall spawn_facingOffsetEffect(int a1)
 {
     int v1; // r5
     int v2; // r6
@@ -40946,7 +40946,7 @@ signed int __noreturn battle_initObjectSpriteForUpdate()
 
 
 // 0x80d0566
-int sub_80D0566()
+int object_runBattleAction()
 {
     int v0; // r5
     int result; // r0
@@ -44423,7 +44423,7 @@ int battle_objectWaitPhase()
 
 
 // 0x80d2780
-void __noreturn sub_80D2780()
+void __noreturn object_setMovePanelAndAction()
 {
     sub_80D29BA();
 }
@@ -44602,7 +44602,7 @@ int battle_crackPanelAttackPhase()
             if ( result )
             {
                 sub_80D2A14();
-                result = sub_80E4FCA(*(v0 + 6), *(v0 + 7), 16, 0);
+                result = battle_setupCrackPanelEffect(*(v0 + 6), *(v0 + 7), 16, 0);
             }
         }
         else
@@ -45144,7 +45144,7 @@ LABEL_28:
 
 
 // 0x80d2e38
-int sub_80D2E38()
+int battle_playerAtOrPastColumn()
 {
     int v0; // r5
     int v1; // r10
@@ -46106,7 +46106,7 @@ int sub_80D36CE()
 
 
 // 0x80d3742
-int __fastcall sub_80D3742(char a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObjectWithAlliance(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -47411,7 +47411,7 @@ int sub_80D4392()
 
 
 // 0x80d43c0
-int sub_80D43C0()
+int battle_spawnCollisionHitRegion()
 {
     int v0; // r5
 
@@ -50294,7 +50294,7 @@ int object_actionSlideForward()
     {
         *(v0 + 10) = 4;
         v1 = object_getFrontDirection(v0);
-        *(v0 + 64) = sub_80D61D2(2 * v1 + *(v0 + 18), *&byte_80D6088[4 * *(v0 + 4)]);
+        *(v0 + 64) = object_getPanelXStepDirAndQuot(2 * v1 + *(v0 + 18), *&byte_80D6088[4 * *(v0 + 4)]);
         *(v0 + 32) = v2;
     }
     *(v0 + 52) += *(v0 + 64);
@@ -50366,7 +50366,7 @@ int object_hopSidewaysAction()
         *(v0 + 10) = 4;
         *(v0 + 62) = 0;
         sub_80D61FC();
-        *(v0 + 64) = sub_80D61D2(*(&dword_80D6160 + *(v0 + 22)), *&byte_80D614C[4 * *(v0 + 4)]);
+        *(v0 + 64) = object_getPanelXStepDirAndQuot(*(&dword_80D6160 + *(v0 + 22)), *&byte_80D614C[4 * *(v0 + 4)]);
         *(v0 + 32) = v1;
     }
     *(v0 + 52) += *(v0 + 64);
@@ -50411,7 +50411,7 @@ int object_hopSidewaysAction()
 
 
 // 0x80d6164
-int sub_80D6164()
+int object_phaseTeleportAndAdvanceToAction8()
 {
     int v0; // r5
     char v1; // r1
@@ -50480,7 +50480,7 @@ int __fastcall sub_80D61A8(char a1, int a2, int a3, int a4)
 
 
 // 0x80d61d2
-int __fastcall sub_80D61D2(int a1, int a2)
+int __fastcall object_getPanelXStepDirAndQuot(int a1, int a2)
 {
     int v2; // r5
     int v3; // r2
@@ -55053,7 +55053,7 @@ int sub_80D90AE()
 
 
 // 0x80d90c8
-signed int sub_80D90C8()
+signed int battle_panelAuraPhase()
 {
     int v0; // r5
     char v1; // r4
@@ -55107,7 +55107,7 @@ int battle_timerWaitThenResetPhase()
 
 
 // 0x80d9130
-int __fastcall sub_80D9130(char a1, int a2, int a3, int a4)
+int __fastcall ai_spawnStrikeAttackObject(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -56712,7 +56712,7 @@ int sub_80DA1C6()
 
 
 // 0x80da1f8
-int sub_80DA1F8()
+int battle_delayedElementSpawn()
 {
     int v0; // r5
     int result; // r0
@@ -57099,7 +57099,7 @@ LABEL_11:
 
 
 // 0x80da58c
-int sub_80DA58C()
+int object_panelHighlightUpdate()
 {
     int v0; // r5
     int result; // r0
@@ -58135,7 +58135,7 @@ LABEL_11:
     }
     object_setPanelsFromCoordinates(v0);
     if ( *(v0 + 18) != v2 )
-        sub_80DB078();
+        object_spawnCollisionRegionAtBattleObject();
     v5 = *(v0 + 32);
     v6 = __OFSUB__(v5, 1);
     result = v5 - 1;
@@ -58215,7 +58215,7 @@ int object_startFrontLunge()
 
 
 // 0x80db078
-_BYTE *sub_80DB078()
+_BYTE *object_spawnCollisionRegionAtBattleObject()
 {
     int v0; // r5
     int v1; // r6
@@ -58809,7 +58809,7 @@ int sub_80DB726()
 
 
 // 0x80db75c
-int sub_80DB75C()
+int battle_stepMoveToPanel()
 {
     Battle *v0; // r5
     int v1; // r0
@@ -58862,7 +58862,7 @@ int battle_objFallAndShatter()
         *(v0 + 32) = result;
         if ( result == 25 )
         {
-            sub_80DB890();
+            battle_spawnTimelessCollisionRegion();
             object_isCurrentPanelSolid();
         }
         if ( result <= 0 )
@@ -58955,7 +58955,7 @@ signed int __noreturn sub_80DB864()
 
 
 // 0x80db890
-_BYTE *sub_80DB890()
+_BYTE *battle_spawnTimelessCollisionRegion()
 {
     int v0; // r5
     int v1; // r6
@@ -60850,7 +60850,7 @@ signed int __noreturn battle_initBattleObjectSprite()
 
 
 // 0x80dcb9c
-int sub_80DCB9C()
+int battle_stepObject()
 {
     int v0; // r5
     int result; // r0
@@ -60892,7 +60892,7 @@ char *__fastcall battle_slidingAttackUpdate(int a1, int a2, int a3)
         *(v3 + 32) = v5;
         if ( ((v5 < 0) ^ v6) | (v5 == 0) )
         {
-            sub_80DCC96();
+            object_spawnElementCollisionRegionWithFallback();
             spawn_t1_0x0_EffectObject(v3, v3 + 64, *(v3 + 52), *(v3 + 56), *(v3 + 60));
             camera_initShakeEffect_80302a8(2, 15);
             result = &dword_8;
@@ -60953,7 +60953,7 @@ int __fastcall sub_80DCC70(char a1, int a2, int a3, int a4)
 
 
 // 0x80dcc96
-_BYTE *sub_80DCC96()
+_BYTE *object_spawnElementCollisionRegionWithFallback()
 {
     int v0; // r5
     int v1; // r6
@@ -61803,7 +61803,7 @@ int object_stepMoveX()
 
 
 // 0x80dd538
-void __noreturn sub_80DD538()
+void __noreturn object_stepVelocityAndPanels()
 {
     int v0; // r5
     int v1; // r0
@@ -62475,14 +62475,14 @@ int sub_80DDBCA()
     if ( ((result < 0) ^ v2) | (result == 0) )
     {
         *(v0 + 100) = 5;
-        result = sub_80DDBDE();
+        result = object_spawnAfterimage();
     }
     return result;
 }
 
 
 // 0x80ddbde
-int sub_80DDBDE()
+int object_spawnAfterimage()
 {
     Battle *v0; // r5
 
@@ -63444,7 +63444,7 @@ int object_fallLandAndDestroy()
 
 
 // 0x80de660
-int __fastcall sub_80DE660(char a1, int a2, int a3, int a4)
+int __fastcall object_spawnAttackProjectile(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -64480,7 +64480,7 @@ char *__fastcall sub_80DF288(int a1)
     result = (&off_80DF2CC)[a1];
     do
     {
-        sub_80DF2A0(result);
+        object_spawnFrontDimmingRegion(result);
         result = (v3 + 8);
         ++v1;
     }
@@ -64490,7 +64490,7 @@ char *__fastcall sub_80DF288(int a1)
 
 
 // 0x80df2a0
-void __fastcall sub_80DF2A0(int a1)
+void __fastcall object_spawnFrontDimmingRegion(int a1)
 {
     int v1; // r5
     int v2; // r7
@@ -64861,7 +64861,7 @@ int battle_throwHopUpdate()
 
 
 // 0x80df626
-int sub_80DF626()
+int object_phaseDashForward()
 {
     int v0; // r5
     int result; // r0
@@ -64952,7 +64952,7 @@ int battle_hiddenShakePhaseUpdate()
 
 
 // 0x80df6ce
-int sub_80DF6CE()
+int battle_busterSpreadPhase()
 {
     int v0; // r5
     int v1; // r0
@@ -65601,7 +65601,7 @@ int object_updateCollisionSideAndFlags()
 
 
 // 0x80dfd38
-int sub_80DFD38()
+int object_toggleIgnoreCollisionFlag()
 {
     int v0; // r5
 
@@ -65614,7 +65614,7 @@ int sub_80DFD38()
 
 
 // 0x80dfd56
-int sub_80DFD56()
+int object_clearState()
 {
     int v0; // r5
 
@@ -66058,7 +66058,7 @@ LABEL_18:
 
 
 // 0x80e01ee
-int __noreturn sub_80E01EE()
+int __noreturn object_updatePanelAction()
 {
     int v0; // r5
     char v1; // zf
@@ -66871,7 +66871,7 @@ int __fastcall battle_hitEffectUpdate(int a1, int a2, int a3)
 
 
 // 0x80e0d38
-int sub_80E0D38()
+int object_slideAndFree()
 {
     int v0; // r5
     int v1; // r0
@@ -67181,12 +67181,12 @@ void __noreturn object_spawnInitSpriteState()
     v1 = object_getFlip(v0);
     sprite_setFlip(v0, v1);
     *(v0 + 8) = 4;
-    sub_80E100A();
+    object_actionStateUpdate();
 }
 
 
 // 0x80e100a
-void sub_80E100A()
+void object_actionStateUpdate()
 {
     int v0; // r5
 
@@ -67488,7 +67488,7 @@ void sub_80E12BA()
             if ( unpackVerActorTyAndAIIdx_800F29C(*(v4 + 40)) == 2 )
                 battle_killObjectWithDependents(v4);
             else
-                sub_80E14AC(v4);
+                battle_flagSelfAndRelatedForRemoval(v4);
         }
         *(v0 + 8) = 8;
     }
@@ -67636,7 +67636,7 @@ int __fastcall sub_80E146C(int a1)
 
 
 // 0x80e14ac
-int __fastcall sub_80E14AC(int a1)
+int __fastcall battle_flagSelfAndRelatedForRemoval(int a1)
 {
     int v1; // r4
     int v2; // r2
@@ -67679,7 +67679,7 @@ int __fastcall sub_80E1502(int a1)
     if ( **(a1 + 88) == 2 )
         result = battle_killObjectWithDependents(a1);
     else
-        result = sub_80E14AC(a1);
+        result = battle_flagSelfAndRelatedForRemoval(a1);
     return result;
 }
 
@@ -68513,7 +68513,7 @@ int sub_80E1BBE()
 
 
 // 0x80e1bdc
-int sub_80E1BDC()
+int object_blinkPhase()
 {
     int v0; // r5
     int v1; // r0
@@ -71619,7 +71619,7 @@ int sub_80E3748()
 
 
 // 0x80e376c
-int sub_80E376C()
+int battle_damageLinkedObjectStep()
 {
     int v0; // r5
     int v1; // r1
@@ -72749,7 +72749,7 @@ int object_frontPanelWaitPhase()
         v1 = object_getFrontDirection(v0);
         v2 = *(v0 + 4);
         v3 = *(v0 + 44);
-        sub_80CF374(v1 + *(v0 + 18), *(v0 + 19), v4, v5);
+        spawnFieldBattleObject55(v1 + *(v0 + 18), *(v0 + 19), v4, v5);
         *(v0 + 32) = 120;
         *(v0 + 11) = 4;
     }
@@ -73631,7 +73631,7 @@ int sub_80E4930()
 
 
 // 0x80e4954
-int __fastcall sub_80E4954(int a1, int a2, int a3, int a4)
+int __fastcall battle_phaseInitRelatedNaviAndWaitParam2(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0
@@ -73641,7 +73641,7 @@ int __fastcall sub_80E4954(int a1, int a2, int a3, int a4)
 
     if ( !*(v4 + 11) )
     {
-        sub_80C4AEC((v4 + 5), a2, a3, a4);
+        battle_spawnAlliedLinkedObject((v4 + 5), a2, a3, a4);
         sub_80E49C4(*(v4 + 76));
         v5 = battle_clearHudFlag();
         v8 = v4;
@@ -74058,12 +74058,12 @@ void __noreturn sub_80E4CDC()
     sprite_loadAnimationData(v0);
     sprite_update(v0);
     *(v0 + 8) = 4;
-    sub_80E4D1E();
+    battle_cloneUpdate();
 }
 
 
 // 0x80e4d1e
-signed int sub_80E4D1E()
+signed int battle_cloneUpdate()
 {
     Battle *v0; // r5
     u32 *v1; // r4
@@ -74215,7 +74215,7 @@ int battle_hopActionHandler()
 {
     int v0; // r5
 
-    sub_80E4FFC();
+    spawnFlippedIllusion();
     *(v0 + 9) = 4;
     return battle_hopUpdate();
 }
@@ -74242,7 +74242,7 @@ int battle_hopUpdate()
         v0->vx = 327680 * v2;
         v0->vz = 983040;
         v0->currAnimation = 3;
-        sub_80E5024();
+        spawnIllusionAtFeet();
         v0->currAction = 8;
     }
     return sub_80E4FE8();
@@ -74288,7 +74288,7 @@ int sub_80E4FB6()
 
 
 // 0x80e4fca
-int __fastcall sub_80E4FCA(char a1, int a2, int a3, int a4)
+int __fastcall battle_setupCrackPanelEffect(char a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r6
@@ -74325,7 +74325,7 @@ int sub_80E4FE8()
 
 
 // 0x80e4ffc
-int sub_80E4FFC()
+int spawnFlippedIllusion()
 {
     Battle *v0; // r5
 
@@ -74335,7 +74335,7 @@ int sub_80E4FFC()
 
 
 // 0x80e5024
-int sub_80E5024()
+int spawnIllusionAtFeet()
 {
     Battle *v0; // r5
 
@@ -76045,7 +76045,7 @@ int sub_80E5EEC()
 
 
 // 0x80e5f10
-int sub_80E5F10()
+int battle_phaseCheckFrontPanelWait60()
 {
     int v0; // r5
     int v1; // r0
@@ -76068,7 +76068,7 @@ int sub_80E5F10()
         {
             v3 = *(v0 + 4);
             v4 = *(v0 + 44) + *(v0 + 50);
-            sub_80D3742(v8, v9, *(v0 + 14), 0);
+            battle_spawnObjectWithAlliance(v8, v9, *(v0 + 14), 0);
         }
         *(v0 + 32) = 60;
         *(v0 + 11) = 4;
@@ -76146,7 +76146,7 @@ int sub_80E5FDC()
 
 
 // 0x80e6000
-int sub_80E6000()
+int object_applyFacingPanelEffectPhase()
 {
     int v0; // r5
     int v1; // r0
@@ -78471,7 +78471,7 @@ int object_chipNameScreenStep()
 
 
 // 0x80e7668
-int sub_80E7668()
+int object_frontPanelPhase()
 {
     int v0; // r5
     int v1; // r0
@@ -80076,7 +80076,7 @@ int object_spawnMirroredObjectPair()
     int v2; // [sp+0h] [bp-18h]
 
     if ( !*(v0 + 11) )
-        sub_80E84D0(&v2);
+        battle_findTargetPanelDistances(&v2);
     result = *(v0 + 6) | *(v0 + 7);
     if ( !result )
     {
@@ -80159,7 +80159,7 @@ signed int __fastcall object_countPanelsUntilFlag(int a1, int a2, int a3, int a4
 
 
 // 0x80e84d0
-signed int __fastcall __noreturn sub_80E84D0(unsigned __int8 *a1)
+signed int __fastcall __noreturn battle_findTargetPanelDistances(unsigned __int8 *a1)
 {
     Battle *v1; // r5
     unsigned __int8 *v2; // r7
@@ -80307,7 +80307,7 @@ int __fastcall sub_80E862E(char a1, int a2)
 
     v3 = *(v2 + 4);
     v4 = *(v2 + 44);
-    return sub_80CEAA2(a1, a2, *(v2 + 14), *(v2 + 60));
+    return battle_spawnType52(a1, a2, *(v2 + 14), *(v2 + 60));
 }
 
 
@@ -80320,7 +80320,7 @@ int __fastcall sub_80E863E(char a1, int a2)
 
     v3 = &byte_200[*(v2 + 4) & 0xFFFF00FF];
     v4 = *(v2 + 44);
-    return sub_80CEAA2(a1, a2, *(v2 + 14), *(v2 + 60));
+    return battle_spawnType52(a1, a2, *(v2 + 14), *(v2 + 60));
 }
 
 
@@ -82000,7 +82000,7 @@ signed int battle_setStartPanelXByAlliance()
 
 
 // 0x80e9498
-int sub_80E9498()
+int object_runUpdateIfBattleActive()
 {
     int v0; // r5
     int result; // r0
@@ -83515,7 +83515,7 @@ int battle_updateObjectOrDestroyOnAction()
 
 
 // 0x80ea2a4
-int sub_80EA2A4()
+int battle_spawnEffectOnFlagMatchedFoes()
 {
     int v0; // r5
     int v1; // r10
@@ -85423,7 +85423,7 @@ u32 *ai_enemyFrontStepStrike()
         if ( *(v9 + 3) == 1 )
             v0->parent = sub_80E85FA(v4, v5, 0, 1769472);
         else
-            v0->parent = sub_80CEAA2(v4, v5, 0, 1769472);
+            v0->parent = battle_spawnType52(v4, v5, 0, 1769472);
         *(v9 + 16) = 30;
         *(v9 + 1) = 4;
     }
@@ -87909,7 +87909,7 @@ int __fastcall ai_attackStrikeFrontPanel(int a1, int a2, int a3)
         v11 = object_getFrontDirection(v3);
         v12 = *(v4 + 12);
         v13 = *(v4 + 8) + *(v4 + 6);
-        sub_80D9130(v11 + v3->panelX, v3->panelY, *(v4 + 2), 0);
+        ai_spawnStrikeAttackObject(v11 + v3->panelX, v3->panelY, *(v4 + 2), 0);
         result = 4;
         *v4 = 4;
     }
@@ -91167,7 +91167,7 @@ int ai_attackStepShoot()
             v2 = object_getFrontDirection(v0) + v0->panelX;
         v4 = *(v1 + 8) + *(v1 + 6);
         v5 = *(v1 + 3);
-        sub_80DE660(v2, 0, *(v1 + 2), 0);
+        object_spawnAttackProjectile(v2, 0, *(v1 + 2), 0);
     }
     v6 = *(v1 + 16);
     v7 = __OFSUB__(v6, 1);
@@ -92286,7 +92286,7 @@ int sub_80F00F2()
 
 
 // 0x80f0110
-int sub_80F0110()
+int ai_selectRapidBusterPattern()
 {
     int v0; // r7
     int v5; // r2
@@ -93213,7 +93213,7 @@ int sub_80F0A7A()
         *(v1 + 1) = 4;
         *(v0 + 16) = 17;
         *(v1 + 16) = 20;
-        sub_80F0B80();
+        ai_spawnAdjacentCollisionRegion();
         spawn_effectAtFrontPanel();
         PlaySoundEffect(176, v2, v3);
         result = *(v1 + 48);
@@ -93327,7 +93327,7 @@ int __noreturn ai_strikeMatchingPanels()
 
 
 // 0x80f0b80
-int sub_80F0B80()
+int ai_spawnAdjacentCollisionRegion()
 {
     int v0; // r5
     int v1; // r7
@@ -94106,7 +94106,7 @@ int ai_attackDashAdvanceStep()
             object_setPanelsFromCoordinates(v0);
             object_updateCollisionPanels(v0);
             if ( v0->panelX != v10 )
-                sub_80F149C();
+                ai_attackDashSpawnHitbox();
             v15 = *(v1 + 16);
             v16 = __OFSUB__(v15, 1);
             result = v15 - 1;
@@ -94138,7 +94138,7 @@ int ai_attackDashAdvanceStep()
         *(v1 + 48) = 0;
         *(v1 + 52) = 0;
         PlaySoundEffect(228, v5, v6);
-        result = sub_80F146E(393216);
+        result = ai_attackDashComputeVelocity(393216);
     }
     return result;
 }
@@ -94376,7 +94376,7 @@ int __fastcall ai_dispatchAttack(char a1, int a2, int a3, int a4)
 
 
 // 0x80f146e
-int __fastcall sub_80F146E(int a1)
+int __fastcall ai_attackDashComputeVelocity(int a1)
 {
     Battle *v1; // r5
     int v2; // r7
@@ -94399,7 +94399,7 @@ int __fastcall sub_80F146E(int a1)
 
 
 // 0x80f149c
-int sub_80F149C()
+int ai_attackDashSpawnHitbox()
 {
     int v0; // r5
     int v1; // r7
@@ -95819,7 +95819,7 @@ void __fastcall __noreturn battle_aiWoodChargeAttack(int a1, int a2, int a3)
         PlaySoundEffect(173, v6, v7);
         *(v4 + 16) = 30;
     }
-    sub_80F20A0();
+    battle_spawnRowCollisionsByAlliance();
 }
 
 
@@ -95910,7 +95910,7 @@ int ai_spawnFrontPanelCollision()
 
 
 // 0x80f20a0
-int __noreturn sub_80F20A0()
+int __noreturn battle_spawnRowCollisionsByAlliance()
 {
     int v0; // r5
     signed int v1; // r4
@@ -100876,7 +100876,7 @@ void ai_initBossAttack2PanelTarget()
     *(v1 + 2) = 3;
     ai_loadBossAttackDamagePair(2);
     *(v1 + 40) = sub_80F61B6;
-    *(v1 + 48) = sub_80F61E4;
+    *(v1 + 48) = object_checkPanelOppositeFacing;
     *(v1 + 52) = v0 + 96;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -101738,7 +101738,7 @@ void __fastcall __noreturn sub_80F61B6(int a1, int a2, int a3, int a4)
 
 
 // 0x80f61e4
-int __fastcall __noreturn sub_80F61E4(int a1, int a2, int a3, int a4)
+int __fastcall __noreturn object_checkPanelOppositeFacing(int a1, int a2, int a3, int a4)
 {
     int v4; // ST00_4
     int v5; // ST04_4
@@ -102304,7 +102304,7 @@ int ai_attackLandOnTargetStep()
         }
         else
         {
-            sub_80F73CA();
+            ai_attackQueueSpreadStrikes();
             result = 12;
             *v1 = 12;
         }
@@ -103083,7 +103083,7 @@ int __fastcall ai_performPanelEffect(char a1, int a2, int a3, int a4)
 
 
 // 0x80f73ca
-int sub_80F73CA()
+int ai_attackQueueSpreadStrikes()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -104987,7 +104987,7 @@ int sub_80F88DA()
 
 
 // 0x80f8914
-int sub_80F8914()
+int ai_attackLaunch()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -106585,7 +106585,7 @@ int sub_80F97C0()
         {
             object_setCollisionRegion(4);
             v16 = *(v0 + 16);
-            sub_80F9C28();
+            spawn_illusionObject();
         }
         v17 = *(v1 + 16);
         _VF = __OFSUB__(v17, 1);
@@ -106917,7 +106917,7 @@ int __fastcall battle_highlightPatternPanels(int a1)
 
 
 // 0x80f9c28
-int sub_80F9C28()
+int spawn_illusionObject()
 {
     Battle *v0; // r5
 
@@ -107043,7 +107043,7 @@ int sub_80F9E90()
 
 
 // 0x80f9ea4
-int sub_80F9EA4()
+int ai_getPanelAttackTurnDuration()
 {
     int v0; // r4
 
@@ -107122,7 +107122,7 @@ void ai_initPanelAttackTurn()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
     sub_80F9FEC(1);
-    *(v1 + 24) = sub_80F9EA4();
+    *(v1 + 24) = ai_getPanelAttackTurnDuration();
     *(v1 + 12) = sub_80F9E90();
     *(v1 + 40) = object_checkIndexedPanelState;
     *(v1 + 48) = v0 + 96;
@@ -108134,7 +108134,7 @@ int __fastcall sub_80FA81E(int a1, int a2, int a3)
 
 
 // 0x80fa8f0
-int sub_80FA8F0()
+int ai_attackStepGeneric()
 {
     int v0; // r5
     int v1; // r7
@@ -109047,7 +109047,7 @@ int __fastcall ai_attackCountdownTick(int a1, int a2, int a3)
 
 
 // 0x80fb366
-int __fastcall sub_80FB366(int a1, int a2, int a3, int a4)
+int __fastcall battle_aiAttackQuakeState(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r7
@@ -116850,7 +116850,7 @@ int sub_81004EC()
 
 
 // 0x8100500
-int sub_8100500()
+int ai_getBossAttackDelay()
 {
     int v0; // r4
 
@@ -116978,7 +116978,7 @@ void ai_bossAttackInit()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 3;
     battle_aiLoadVersionedAttackPair(3);
-    *(v1 + 24) = sub_8100500();
+    *(v1 + 24) = ai_getBossAttackDelay();
     *(v1 + 12) = sub_81004EC();
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -117552,7 +117552,7 @@ int sub_8100B04()
 
 
 // 0x8100b2c
-int sub_8100B2C()
+int ai_chargeFrontPanelRegion()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -117977,7 +117977,7 @@ int sub_8100E26()
     if ( !*(v0 + 1) )
     {
         *(v0 + 1) = 4;
-        sub_81010DA();
+        ai_attackFirstFrontPanel();
     }
     v1 = *(v0 + 16);
     v2 = __OFSUB__(v1, 1);
@@ -118362,7 +118362,7 @@ int ai_attackTwoPanelsAheadOfTarget()
 
 
 // 0x81010da
-void __noreturn sub_81010DA()
+void __noreturn ai_attackFirstFrontPanel()
 {
     Battle *v0; // r5
     int v1; // r6
@@ -119233,7 +119233,7 @@ void sub_8101E4A()
     else
     {
         *(v0 + 3) = 4;
-        ai_setupAttack9PanelChoose(sub_8102F5C);
+        ai_setupAttack9PanelChoose(object_getFirstFrontPanelInDirectionFiltered);
     }
 }
 
@@ -119291,7 +119291,7 @@ void sub_8101EBC()
         *v0 = 0;
         *(v0 + 2) = 0;
         if ( *(v1 + 26) )
-            sub_810209E();
+            battle_aiInitAttack0D();
     }
     else
     {
@@ -119439,7 +119439,7 @@ void sub_810205C()
 
 
 // 0x810209e
-void sub_810209E()
+void battle_aiInitAttack0D()
 {
     int v0; // r7
 
@@ -120344,7 +120344,7 @@ int __fastcall sub_81028FE(int a1, int a2, int a3, int a4)
     {
         v6 = *(v5 + 12);
         v7 = *(v5 + 8);
-        sub_80E4FCA(*(v5 + 22), *(v5 + 23), *(v5 + 2), a4);
+        battle_setupCrackPanelEffect(*(v5 + 22), *(v5 + 23), *(v5 + 2), a4);
     }
     result = *(v5 + 16) + 1;
     *(v5 + 16) = result;
@@ -120964,7 +120964,7 @@ int __fastcall ai_attackSpawnPair(int a1, int a2, int a3, int a4)
 
 
 // 0x8102f5c
-void __fastcall __noreturn sub_8102F5C(int a1)
+void __fastcall __noreturn object_getFirstFrontPanelInDirectionFiltered(int a1)
 {
     Battle *v1; // r5
     int *v2; // r0
@@ -122649,7 +122649,7 @@ int ai_gregarStartPanelAttack()
     char v4; // r3
 
     *(v1 + 40) = sub_8104E98;
-    sub_810407E(0);
+    ai_loadAttackParamPair(0);
     v2 = ai_gregarRollPanelAttackParams();
     *(v1 + 24) = v2;
     *(v1 + 12) = BYTE4(v2);
@@ -122669,7 +122669,7 @@ void sub_8103F80()
 
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 1;
-    sub_810407E(1);
+    ai_loadAttackParamPair(1);
     v2 = sub_8103E74();
     *(v1 + 24) = v2;
     *(v1 + 12) = BYTE4(v2);
@@ -122689,7 +122689,7 @@ void ai_initGregarAttackVars()
 
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 3;
-    sub_810407E(2);
+    ai_loadAttackParamPair(2);
     v2 = sub_8103EAC();
     *(v1 + 24) = v2;
     *(v1 + 12) = BYTE4(v2);
@@ -122708,7 +122708,7 @@ void ai_gregarInitAttackVars()
 
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
-    sub_810407E(3);
+    ai_loadAttackParamPair(3);
     *(v1 + 48) = sub_81040AC(4);
     *(v1 + 12) = sub_8103EE4();
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -122726,7 +122726,7 @@ void sub_810401C()
 
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
-    sub_810407E(5);
+    ai_loadAttackParamPair(5);
     v2 = sub_8103EF8();
     *(v1 + 24) = v2;
     *(v1 + 12) = BYTE4(v2);
@@ -122746,7 +122746,7 @@ void ai_initGregarAttack()
 
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
-    sub_810407E(6);
+    ai_loadAttackParamPair(6);
     *(v1 + 12) = ai_getGregarAttackParams();
     *(v1 + 13) = v2;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -122755,7 +122755,7 @@ void ai_initGregarAttack()
 
 
 // 0x810407e
-int __fastcall sub_810407E(int a1)
+int __fastcall ai_loadAttackParamPair(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -123498,7 +123498,7 @@ int __fastcall sub_8104694(int a1, int a2, int a3)
         v9 = *(v4 + 14) + 1;
         *(v4 + 14) = v9;
         if ( !__CFSHR__(v9, 3) )
-            sub_81050C2();
+            battle_highlightTwoTilesAhead();
         v10 = *(v4 + 18);
         v11 = __OFSUB__(v10--, 1);
         *(v4 + 18) = v10;
@@ -124695,7 +124695,7 @@ int ai_hitPanelOffsetPattern()
 
 
 // 0x81050c2
-int sub_81050C2()
+int battle_highlightTwoTilesAhead()
 {
     int v0; // r5
     int v1; // r0
@@ -127892,7 +127892,7 @@ int sub_8106FE6()
         object_setCounterTime(10);
         PlaySoundEffect(176, v2, v3);
         *(v1 + 16) = 21;
-        v4 = sub_81079DC();
+        v4 = ai_spawnFrontPanelAttackRegion();
         result = spawn_t1_0x5_tempAttackObject_80B8E30(v4);
         *(v1 + 48) = result;
     }
@@ -128745,7 +128745,7 @@ int sub_8107624()
 
 
 // 0x8107644
-int sub_8107644()
+int ai_sustainedAttackUpdate()
 {
     int v0; // r5
     int v1; // r7
@@ -129224,7 +129224,7 @@ int __fastcall __noreturn sub_8107994(int a1, int a2, int a3, int a4)
 
 
 // 0x81079dc
-int sub_81079DC()
+int ai_spawnFrontPanelAttackRegion()
 {
     Battle *v0; // r5
     int v1; // r7
@@ -129837,7 +129837,7 @@ void sub_81080E6()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 32;
     ai_loadAttackParams(5);
-    *(v1 + 40) = sub_8108CDE;
+    *(v1 + 40) = ai_findTargetRowFilteredByPanel;
     *(v1 + 24) = sub_8107FB8();
     *(v1 + 12) = sub_8107FCC();
     *(v1 + 13) = ai_rollAttackTimer();
@@ -130734,7 +130734,7 @@ int ai_chargePanelStrikeUpdate()
 
 
 // 0x810887a
-int __fastcall sub_810887A(int a1, int a2, int a3)
+int __fastcall battle_attackStepSpawnFrontProjectile(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r7
@@ -131318,7 +131318,7 @@ int __fastcall battle_checkPanelBehindObject(int a1, int a2, int a3, int a4)
 
 
 // 0x8108cde
-int __fastcall sub_8108CDE(int a1, int a2, int a3, int a4)
+int __fastcall ai_findTargetRowFilteredByPanel(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r4

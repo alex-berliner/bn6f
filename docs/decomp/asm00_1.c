@@ -3518,7 +3518,7 @@ signed int __fastcall subsystem_launchChipTrader(int a1)
     v3 = sub_8120A38();
     if ( v3 + HIDWORD(v3) + v5 < v2 )
         return 1;
-    sub_804A2CC(v2, SHIDWORD(v3), v4, v5);
+    submenu_initSceneChipTrader(v2, SHIDWORD(v3), v4, v5);
     v7 = *(v1 + oToolkit_GameStatePtr);
     v8 = *(v7 + oGameState_OverworldPlayerObjectPtr);
     *(v7 + oGameState_PlayerX) = *(v8 + 28);
@@ -4196,7 +4196,7 @@ signed int sub_8006910()
 
 
 // 0x8006920
-signed int __fastcall sub_8006920(int *a1, int a2, int a3, int a4)
+signed int __fastcall chatbox_initWindowReqAndEnqueue(int *a1, int a2, int a3, int a4)
 {
     int *v4; // r4
 
@@ -6037,7 +6037,7 @@ signed int battle_stepSubstateToState4_8007C14()
         goto LABEL_7;
     if ( !*(v1 + 3) )
     {
-        sub_803DDA4();
+        initLinkState();
         result = 4;
         *(v1 + 3) = 4;
         return result;
@@ -7021,7 +7021,7 @@ int battle_dispatchNextPhase()
             {
                 battle_isTimeStop();
                 if ( v6 )
-                    sub_801DFB8(13);
+                    battle_addHudField20(13);
                 result = battle_shouldPlayDeathAnim_800A21C();
                 if ( result )
                 {
@@ -7053,13 +7053,13 @@ int battle_forEachAliveActor()
     int v1; // r5
 
     v1 = *(v0 + oToolkit_S2034880_Ptr);
-    sub_8008622(*(v1 + 128), *(v1 + 132), *(v1 + 4));
-    return sub_8008622(*(v1 + 144), *(v1 + 148), *(v1 + 5));
+    object_syncField24ToMinOrReset(*(v1 + 128), *(v1 + 132), *(v1 + 4));
+    return object_syncField24ToMinOrReset(*(v1 + 144), *(v1 + 148), *(v1 + 5));
 }
 
 
 // 0x8008622
-int __fastcall sub_8008622(int result, int a2, signed int a3)
+int __fastcall object_syncField24ToMinOrReset(int result, int a2, signed int a3)
 {
     int v3; // ST00_4
     int v4; // ST04_4

@@ -949,7 +949,7 @@ loc_812C9FE::
 loc_812CA16::
 	ldrb r0, [r5,#0x15]
 	mov r1, #6
-	bl sub_811A914
+	bl battle_applyObjOamAttrByIndex
 	b loc_812CA50
 loc_812CA20::
 	cmp r0, #3
@@ -2034,7 +2034,7 @@ loc_812D282::
 	bl loc_812D922
 	mov r0, #0
 	mov r1, #6
-	bl sub_811A914
+	bl battle_applyObjOamAttrByIndex
 locret_812D28E::
 	pop {r4-r7,pc}
 	.balign 4, 0

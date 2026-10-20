@@ -53,7 +53,7 @@ int sub_808C378()
     v3 = __OFSUB__(v7, 1);
     v8 = v7 - 1;
     if ( (v8 < 0) ^ v3 )
-        sub_8143294();
+        t3_tickCrows();
     else
         v1[2] = v8;
     camera_initShakeEffect_80302a8(0, 1);

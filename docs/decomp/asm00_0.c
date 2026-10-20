@@ -2724,7 +2724,7 @@ int __fastcall sprite_gfxAnimState_GotoNext_8002310(_DWORD *a1)
 
 
 // 0x800232a
-int __fastcall sub_800232A(int *a1, int a2, int a3)
+int __fastcall sprite_playFrameSound(int *a1, int a2, int a3)
 {
     int result; // r0
 

@@ -525,9 +525,9 @@ off_812EE18:
 // symdb: Draws an 8x2-tile graphic into BG tile block 2 at a coordinate from a lookup table; the tile-id base is r4 (path A, fixed=4) or r4 loaded from byte_812EEBC (path B), then offset by byte_812EEE1[[r5+0x30]] where r5 is supplied by the caller.
 // symdb: (r0 = entry index for the second code path, r5 = object/state pointer with state byte at +0x30)
 // symdb: -> r0 = ?; no meaningful return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EE20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_drawEntry8x2.yaml
 	thumb_local_start
-sub_812EE20:
+copy_drawEntry8x2:
 	push {r4-r7,lr}
 	mov r0, #0
 	ldr r1, off_812EEAC // =off_812EEB0 
@@ -573,7 +573,7 @@ loc_812EE4E:
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_812EE20
+	thumb_func_end copy_drawEntry8x2
 	thumb_func_start sub_812EE78
 sub_812EE78:
 	push {r4-r7,lr}
@@ -689,7 +689,7 @@ submenu_renderSelectedWindow:
 	mov r1, #0
 	bl sub_812EDFC
 	strh r0, [r5,#0x30]
-	bl sub_812EE20
+	bl copy_drawEntry8x2
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	.word unk_2024F90

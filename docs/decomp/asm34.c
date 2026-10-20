@@ -56,7 +56,7 @@ int battle_renderChipPackScreenTilemap()
 int submenu_drawScreenElement()
 {
 	submenu_getWork();
-	sub_812D600(2, 32, 42, 19);
+	battleObject_queueOamFrameAndAdvanceAnim(2, 32, 42, 19);
 	return sub_812D9F0();
 }
 
@@ -160,7 +160,7 @@ int sub_812D5EC()
 
 
 // 0x812d600
-int __fastcall sub_812D600(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_queueOamFrameAndAdvanceAnim(int a1, int a2, int a3, int a4)
 {
 	int *v4; // r4
 	int v5; // r5
@@ -194,7 +194,7 @@ int __fastcall sub_812D600(int a1, int a2, int a3, int a4)
 int sub_812D668()
 {
 	submenu_getWork();
-	return sub_812D600(164, 32, 52, 21);
+	return battleObject_queueOamFrameAndAdvanceAnim(164, 32, 52, 21);
 }
 
 
@@ -216,7 +216,7 @@ void submenu_processConfirmCancelInput()
 			return;
 		if ( v2 == 8 )
 			return;
-		sub_812D700();
+		submenu_toggle();
 		if ( !v3 )
 			return;
 		menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), 7u, 0, 10);
@@ -250,7 +250,7 @@ char *submenu_getWork()
 
 
 // 0x812d700
-void sub_812D700()
+void submenu_toggle()
 {
 	int v0; // r5
 	char *v1; // r7
@@ -288,7 +288,7 @@ void submenu_updateCursorAndTiles()
 	char v2; // zf
 
 	v1 = submenu_getWork();
-	sub_812D700();
+	submenu_toggle();
 	if ( v2 )
 	{
 		battle_confirmSelectionEntry();

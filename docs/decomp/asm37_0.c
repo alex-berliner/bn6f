@@ -482,7 +482,7 @@ void sub_813BAA8()
 
 
 // 0x813bac4
-void sub_813BAC4()
+void t4_loadToolkitSceneBuffers()
 {
     int v0; // r10
 
@@ -3249,7 +3249,7 @@ __int16 *sub_813DAF4()
 
 
 // 0x813db24
-u32 __fastcall sub_813DB24(int a1, int a2)
+u32 __fastcall e_pickBre5TagBlock(int a1, int a2)
 {
     int v2; // r7
     char v3; // r0

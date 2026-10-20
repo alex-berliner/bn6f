@@ -208,7 +208,7 @@ off_80460F4:
 	.word sub_3006F24+1
 	.word 0x0
 	.word get_variantOffsetPtr+1
-	.word sub_80463A0+1
+	.word printNumberCmd+1
 	.word 0x0
 	.word 0x0
 	.word sub_3006F5C
@@ -557,9 +557,9 @@ loc_804637C:
 // symdb: A 3-byte display-script opcode that loads a 32-bit value from byte_200A220, converts it to 8-digit packed BCD, and renders each digit (plus optional padding tiles of glyph 1) one tile at a time via sub_80461D0, with the layout byte selecting leading-zero vs trailing-pad mode.
 // symdb: (r0 = pointer to script command: [r0+1] = value-table index, [r0+2] = layout byte, bit7 = order
 // symdb: flag, bits0-6 = position) -> r0 = r0+3 (next script command); no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80463A0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/printNumberCmd.yaml
 	thumb_local_start
-sub_80463A0:
+printNumberCmd:
 	push {r3,lr}
 	push {r0,r4-r6}
 	ldrb r1, [r0,#1]
@@ -652,7 +652,7 @@ off_8046448:
 	.word countHexDigits_8000C5C+1
 off_804644C:
 	.word byte_200A220
-	thumb_func_end sub_80463A0
+	thumb_func_end printNumberCmd
 
 // symdb: Dispatches an entity to its per-state handler by indexing a table at dword_8046464 with the entity's byte-1 state field.
 // symdb: void entity_runStateHandler_8046450(void *entity /* r0 */);     input:  r0 = entity pointer
@@ -7431,9 +7431,9 @@ byte_804A2B0:
 
 // symdb: Initializes the chip trader sub-scene: stores the launch argument at dword_200ACB0 (eS200AC80+0x30), saves the current MapGroup into LastMapGroup so the overworld can be restored, and clears the eStruct scene record array via battle_resetEStructRecords_8046664.
 // symdb: (r0 = value/pointer stored to dword_200ACB0) -> void; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A2CC.yaml
-	thumb_func_start sub_804A2CC
-sub_804A2CC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_initSceneChipTrader.yaml
+	thumb_func_start submenu_initSceneChipTrader
+submenu_initSceneChipTrader:
 	push {r5,lr}
 	push {r0}
 	bl submenu_clearTraderState
@@ -7446,7 +7446,7 @@ sub_804A2CC:
 	strh r0, [r1,#oGameState_LastMapGroup]
 	bl battle_resetEStructRecords_8046664 // () -> void
 	pop {r5,pc}
-	thumb_func_end sub_804A2CC
+	thumb_func_end submenu_initSceneChipTrader
 
 // symdb: Zero-fills the chip-trader submenu state buffers (the 0x58-byte block at 0x200AC80 and the toolkit's 0x80-byte submenu structure) before the BugFrag chip trader opens.
 // symdb: () -> r0,r1 clobbered; zeroes eS200AC80 (0x58 bytes) and toolkit->SubmenuPtr buffer (0x80 bytes)
@@ -7508,7 +7508,7 @@ off_804A33C:
 	.word e_giveChipStep+1
 	.word chatbox_startFadeOnIdle+1
 	.word e_giveChipStep+1
-	.word sub_804A514+1
+	.word submenu_updateCursorLoop+1
 	.word sub_804A54C+1
 	.word eS200AC80
 off_804A35C:
@@ -7724,9 +7724,9 @@ loc_804A50A:
 
 // symdb: Per-frame menu loop: skips work on two state conditions, else reads held d-pad via the toolkit joypad pointer and advances an 8-entry cursor index in [r5+0x34], then refreshes per-entry state and copies background tiles; always returns 0.
 // symdb: () -> r0 = 0 always; updates menu state at [r5+0x34] (cursor index) and background tiles
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A514.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateCursorLoop.yaml
 	thumb_local_start
-sub_804A514:
+submenu_updateCursorLoop:
 	push {lr}
 	bl submenu_toggleStateStartOrB
 	bne loc_804A53C
@@ -7749,7 +7749,7 @@ loc_804A53C:
 	bl menuCopyBackgroundTiles_804A7C0
 	mov r0, #0
 	pop {pc}
-	thumb_func_end sub_804A514
+	thumb_func_end submenu_updateCursorLoop
 
 	thumb_local_start
 sub_804A54C:
@@ -7765,7 +7765,7 @@ sub_804A54C:
 off_804A560:
 	.word off_804A564
 off_804A564:
-	.word sub_804A574+1
+	.word object_setupTripleSpritesFromTable+1
 	.word sprite_advanceGroupStepClamped+1
 	.word sub_804A5D4+1
 	.word object_riseOffscreenAndClear+1
@@ -7774,9 +7774,9 @@ off_804A564:
 // symdb: Looks up a 0x20-byte entry in unk_202A3E0 using two halfwords from the caller's object struct, splits the entry's +0x1c word into two 7-bit values, configures three consecutive sprite-table entries (ids 0xFFFFFFD8..0xFFFFFFDA) with those values plus zero fields, repositions the trio to (0x58, 0), then sets the object's state to 4 and clears its frame counter.
 // symdb: (r0 = unused on entry; r5 = object struct: +0x2a/+0x2e halfword table index, +0x01 state byte,
 // symdb: +0x18 halfword counter) -> r0 = 0; sets [r5+1]=4, [r5+0x18]=0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804A574.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setupTripleSpritesFromTable.yaml
 	thumb_local_start
-sub_804A574:
+object_setupTripleSpritesFromTable:
 	push {lr}
 	ldr r0, off_804A5AC // =unk_202A3E0 
 	ldrh r2, [r5,#0x2a]
@@ -7807,7 +7807,7 @@ off_804A5AC:
 	.word unk_202A3E0
 dword_804A5B0:
 	.word 0xFFFFFFD8
-	thumb_func_end sub_804A574
+	thumb_func_end object_setupTripleSpritesFromTable
 
 // symdb: Advances an object's sprite-id step by 0x10 up to 0x28, flags state 8 when capped, and moves the 3-sprite group to (0x58, 0).
 // symdb: (r0 = unused on entry, r5 = object struct) -> r0 = final step id passed to callee; stores step
@@ -11378,7 +11378,7 @@ sub_804CB0C:
 	strh r0, [r1,#0x1a]
 	strh r0, [r1,#0x18]
 	mov r0, r7
-	ldr r1, off_804CB60 // =sub_8006920+1 
+	ldr r1, off_804CB60 // =chatbox_initWindowReqAndEnqueue+1 
 	mov lr, pc
 	bx r1
 	mov r0, #4
@@ -11399,7 +11399,7 @@ off_804CB58:
 dword_804CB5C:
 	.word 0x1F09
 off_804CB60:
-	.word sub_8006920+1
+	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
 	thumb_local_start

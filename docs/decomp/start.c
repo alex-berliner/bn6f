@@ -70,7 +70,7 @@ int __fastcall __noreturn start_dead_800025C(int a1)
 {
     int v2; // [sp+0h] [bp-4h]
 
-    sub_3005DEC(a1);
+    irq_enableBits(a1);
     return v2;
 }
 

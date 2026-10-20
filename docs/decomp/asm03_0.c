@@ -45,7 +45,7 @@ int __fastcall sub_8026450(int a1, int a2, char *a3)
 
 
 // 0x80264a8
-int __fastcall sub_80264A8(int a1, int a2, char *a3)
+int __fastcall battle_scanPanelOffsetPattern(int a1, int a2, char *a3)
 {
     Battle *v3; // r5
     int v4; // r6
@@ -305,7 +305,7 @@ int sub_80266AC()
     int v0; // r6
     int v1; // r7
 
-    return sub_80264A8(v0, v1, byte_802679B);
+    return battle_scanPanelOffsetPattern(v0, v1, byte_802679B);
 }
 
 
@@ -367,7 +367,7 @@ unsigned __int64 sub_802670E()
 
 
 // 0x802671c
-int sub_802671C()
+int battle_runFacingTileCheck()
 {
     return battle_checkFacingOffsets(byte_80267CC);
 }
@@ -1558,7 +1558,7 @@ signed int sub_8027574()
 
 
 // 0x8027580
-int sub_8027580()
+int startFadeStep()
 {
     int v0; // r5
     int result; // r0
@@ -1666,7 +1666,7 @@ int t4_waitThenFadeScreen()
 
 
 // 0x8027658
-int sub_8027658()
+int objectWaitFramesThenSetStateC()
 {
     int v0; // r5
     int result; // r0
@@ -2862,7 +2862,7 @@ int sub_80282C2()
 
 
 // 0x80282d2
-int sub_80282D2()
+int queueIndexedGfxChunk()
 {
     int v0; // r4
 
@@ -4208,7 +4208,7 @@ int __fastcall custMenu_confirmAndProcessSelectedChips_8029110(int a1, int a2, i
             if ( !sub_8029328(v18, v19, v20) )
             {
                 sub_80292CC(v27, v28, v29);
-                sub_802B6F2(v27, v28 >> 1, v29, byte_20366F2);
+                submenu_storeHalfwordListRecord(v27, v28 >> 1, v29, byte_20366F2);
                 *(v4 + 11) = 16;
             }
         }
@@ -7457,7 +7457,7 @@ void sub_802B6EC()
 
 
 // 0x802b6f2
-int __fastcall sub_802B6F2(__int16 a1, char a2, int a3, int a4)
+int __fastcall submenu_storeHalfwordListRecord(__int16 a1, char a2, int a3, int a4)
 {
     __int16 v4; // ST00_2
     char v5; // ST04_1
@@ -7551,7 +7551,7 @@ int battle_subEffectFadeOutDispatch()
     else
     {
         *(v0 + 2) = 1;
-        sub_802B9FE(0);
+        copy_queue8Bytes(0);
         result = engine_setScreeneffect(20, 8);
     }
     return result;
@@ -7689,7 +7689,7 @@ int sub_802B8E0()
         v3 = 3 * *(v0 + 6) + 5;
         v4 = 3 * *(v0 + 7) - 1;
         v5 = get_bg2ScrollXTile();
-        sub_802BA34(v5, v6, 3, 0);
+        sound_previewPlayIfReady(v5, v6, 3, 0);
         *(v2 + 1) = 16;
         *(v2 + 2) = 0;
         result = 0;
@@ -7719,7 +7719,7 @@ void chip_previewShowSelectedChip()
         *(v0 + 2) = 0;
         sub_801E780();
         v6 = get_bg2ScrollXTile();
-        sub_802BA34(v6, 5, 3, 0);
+        sound_previewPlayIfReady(v6, 5, 3, 0);
     }
     else if ( v1 == 16 )
     {
@@ -7777,13 +7777,13 @@ void sub_802B9E4()
         v2 = (v1 >> 4) & 3;
         if ( v2 == 3 )
             v2 = 1;
-        sub_802B9FE(v2);
+        copy_queue8Bytes(v2);
     }
 }
 
 
 // 0x802b9fe
-int __fastcall sub_802B9FE(int a1)
+int __fastcall copy_queue8Bytes(int a1)
 {
     return (loc_8000AC8)(&byte_802BA48[8 * a1], &unk_3001AA0, 8);
 }
@@ -7810,7 +7810,7 @@ void __fastcall bg_copyTilesIfRequested(int a1, int a2, int a3, u16 *a4)
 
 
 // 0x802ba34
-void __fastcall sub_802BA34(int a1, int a2, int a3, __int16 a4)
+void __fastcall sound_previewPlayIfReady(int a1, int a2, int a3, __int16 a4)
 {
     if ( byte_2036667 )
         call_sub_3005EBA(a1, a2, a3, a4);
@@ -8788,7 +8788,7 @@ int __fastcall sub_802C8FA(int a1)
     *(v2 + 1) = *(*(v1 + oToolkit_S2034880_Ptr) + 30);
     if ( sub_802D246() & 8 )
     {
-        v8 = sub_80AAC8C(*(v2 + 1));
+        v8 = battle_rollRandomChipDrop(*(v2 + 1));
         *(v2 + 8) = v8;
     }
     else
@@ -12374,7 +12374,7 @@ signed int __fastcall sub_802EF74(int a1)
                         if ( v5 )
                         {
                             v7 = v6;
-                            v5 = sub_802F006(*v6, v5);
+                            v5 = battle_pickMoreFrontObject(*v6, v5);
                             v6 = v7;
                         }
                         else
@@ -12424,7 +12424,7 @@ char *__fastcall sub_802EFF8(int a1)
 
 
 // 0x802f006
-int __fastcall sub_802F006(int a1, int a2)
+int __fastcall battle_pickMoreFrontObject(int a1, int a2)
 {
     int v2; // r5
     int v3; // r6

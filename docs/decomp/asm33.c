@@ -1394,7 +1394,7 @@ void __fastcall npc_runBeastOutDialog(char a1)
 
 
 // 0x812469c
-void __fastcall sub_812469C(char a1)
+void __fastcall npc_showTextByStoryFlag(char a1)
 {
     _BYTE *v1; // r5
     int v2; // r10
@@ -1897,7 +1897,7 @@ int sub_8124F8C()
     *(v0 + 52) = *(v0 + 50);
     *(v0 + 56) = *(v0 + 54);
     submenu_handleEntryScreenInput(30, v1, v2);
-    sub_81268D8();
+    e_setField13FromChipAtIndex();
     battle_runTransition_8125444();
     battle_redrawChipSelectScrollColumn();
     battle_transitionAnimQueueOam();
@@ -3946,7 +3946,7 @@ _BYTE *sub_812687C()
 
 
 // 0x81268d8
-int sub_81268D8()
+int e_setField13FromChipAtIndex()
 {
     int v0; // r5
     unsigned __int8 *v1; // r0
@@ -6247,7 +6247,7 @@ void __noreturn init_eventSceneState()
 
 
 // 0x8128dcc
-int sub_8128DCC()
+int battle_tickStateAndEntities()
 {
     int v0; // r5
 
@@ -7951,7 +7951,7 @@ void submenu_waitCancelButton()
         *(v0 + 1) = 16;
         *(v0 + 2) = 0;
         *(v0 + 40) = 0;
-        sub_8132398(0, v2, v3, v4);
+        submenu_resetState(0, v2, v3, v4);
         return;
     }
     JoypadKeyPressed();
@@ -8322,7 +8322,7 @@ int __fastcall sub_812A350(int a1)
 
 
 // 0x812a3c8
-void __fastcall sub_812A3C8(int a1)
+void __fastcall npc_dialogBranchStep(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -8430,7 +8430,7 @@ int __fastcall sub_812A4AC(int a1, int a2, int a3, int a4)
         *(v4 + 1) = 16;
         *(v4 + 2) = 0;
         *(v4 + 40) = 0;
-        sub_8132398(0, a2, a3, a4);
+        submenu_resetState(0, a2, a3, a4);
         sub_803EA78();
         if ( rfu_shouldRestartWirelessLink() )
             result = rfu_startLinkTransfer();
@@ -8577,7 +8577,7 @@ LABEL_9:
                     *(v0 + 1) = 16;
                     *(v0 + 2) = 0;
                     *(v0 + 40) = 0;
-                    sub_8132398(0, v5, v6, v7);
+                    submenu_resetState(0, v5, v6, v7);
                 }
             }
             else
@@ -8586,7 +8586,7 @@ LABEL_9:
                 *(v0 + 1) = 16;
                 *(v0 + 2) = 0;
                 *(v0 + 40) = 0;
-                sub_8132398(0, v2, v3, v4);
+                submenu_resetState(0, v2, v3, v4);
             }
             goto LABEL_14;
         }
@@ -8648,7 +8648,7 @@ int __fastcall initScreenSceneAndFadeIn(int a1)
 
 
 // 0x812a6f8
-void *sub_812A6F8()
+void *rfu_tryInitSessionStateStep()
 {
     int v0; // r5
     char v1; // zf
@@ -8684,7 +8684,7 @@ void *sub_812A6F8()
                 *(v0 + 1) = 16;
                 *(v0 + 2) = 0;
                 *(v0 + 40) = 0;
-                sub_8132398(0, v5, v6, v7);
+                submenu_resetState(0, v5, v6, v7);
             }
         }
         else
@@ -8693,7 +8693,7 @@ void *sub_812A6F8()
             *(v0 + 1) = 16;
             *(v0 + 2) = 0;
             *(v0 + 40) = 0;
-            sub_8132398(0, v2, v3, v4);
+            submenu_resetState(0, v2, v3, v4);
         }
         sub_81469A0();
         result = sub_81469E8();
@@ -9198,7 +9198,7 @@ signed int link_stepCommState()
             goto LABEL_18;
         if ( !*(v0 + 3) )
         {
-            sub_803DDA4();
+            initLinkState();
             result = 4;
             *(v0 + 3) = 4;
             return result;
@@ -10255,7 +10255,7 @@ void sub_812B8DC()
 
 
 // 0x812b97c
-int sub_812B97C()
+int e_recvQueueEntries()
 {
     int v0; // r5
     int result; // r0
@@ -10377,7 +10377,7 @@ int link_verifyChecksumAndMatchPartner()
 
 
 // 0x812bb08
-int sub_812BB08()
+int camera_checkLinkConnectionType()
 {
     int v0; // r5
     int result; // r0
@@ -10574,7 +10574,7 @@ void submenu_chipLibraryMergeNewFlags()
 
 
 // 0x812bd34
-int __fastcall sub_812BD34(int a1, int a2, int a3)
+int __fastcall object_runStateScriptOnTimer(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -10655,7 +10655,7 @@ int sub_812BDC0()
 
 
 // 0x812bde4
-void sub_812BDE4()
+void e_checkCountersSetFlags()
 {
     int v0; // r5
     signed int v1; // r3
@@ -10701,7 +10701,7 @@ void sub_812BDE4()
 
 
 // 0x812beec
-int __fastcall sub_812BEEC(int a1, int a2, int a3)
+int __fastcall object_waitTimerThenChatboxScript(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -10931,7 +10931,7 @@ int sub_812C0EC()
     }
     else
     {
-        sub_812C194(&unk_2034400);
+        event_mergeFlagRegions(&unk_2034400);
         v2 = &byte_48;
     }
     *(v1 + 8) = v2;
@@ -10995,7 +10995,7 @@ void sub_812C160()
 
 
 // 0x812c194
-int __fastcall sub_812C194(int a1)
+int __fastcall event_mergeFlagRegions(int a1)
 {
     int v1; // r10
     int v2; // r7

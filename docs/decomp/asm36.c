@@ -15,7 +15,7 @@ int sub_8130020()
 	chatbox_8040818();
 	v2 = e_setEntryValue0CWrap(*(v0 + 44), 1);
 	(loc_81304AA)(v2);
-	return sub_811A914(0, 6);
+	return battle_applyObjOamAttrByIndex(0, 6);
 }
 
 
@@ -72,7 +72,7 @@ int t4_sceneInit()
 	t4_loadSceneBackground();
 	sub_81301DC();
 	sub_8130208();
-	sub_813064C();
+	object_queueChoiceOam();
 	t4_drawPlayerBox();
 	t4_refreshChipPackBuffer();
 	battle_drawFolderScreen();
@@ -402,7 +402,7 @@ __int64 sub_813061C()
 
 
 // 0x813064c
-signed int sub_813064C()
+signed int object_queueChoiceOam()
 {
 	char *v0; // r5
 	signed int result; // r0
@@ -531,7 +531,7 @@ LABEL_12:
 
 
 // 0x8130780
-signed int __fastcall sub_8130780(int a1)
+signed int __fastcall folderHasFlaggedChip(int a1)
 {
 	signed int v1; // r7
 	char *v2; // r4
@@ -565,7 +565,7 @@ signed int __fastcall sub_81307BC(int a1)
 	int v2; // r1
 	signed int result; // r0
 
-	if ( sub_8130780(a1) )
+	if ( folderHasFlaggedChip(a1) )
 	{
 		chatbox_runScript_803FD9C_on_eTextScript201BA20(62);
 	}
@@ -591,7 +591,7 @@ void sub_81307F4()
 
 	if ( *(v0 + 1) != 8 && *(v0 + 73) == 4 )
 	{
-		sub_813064C();
+		object_queueChoiceOam();
 		t4_drawPlayerBox();
 	}
 }
@@ -1092,7 +1092,7 @@ void __noreturn sub_8130D40()
 					v10 = IsPaletteFadeActive();
 					if ( !v14 )
 					{
-						sub_8131864(v10, v11, v12, v13);
+						chatbox_initMessageState(v10, v11, v12, v13);
 						*(v0 + 2) = 24;
 					}
 				}
@@ -1362,7 +1362,7 @@ LABEL_13:
 
 
 // 0x8131068
-void __noreturn sub_8131068()
+void __noreturn camera_checkLinkEndSync()
 {
     int v0; // r5
     int v1; // r0
@@ -2032,7 +2032,7 @@ void __fastcall sub_8131824(int a1)
 
 
 // 0x8131864
-int __fastcall sub_8131864(int a1, int a2, int a3, int a4)
+int __fastcall chatbox_initMessageState(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 
@@ -2366,7 +2366,7 @@ signed int t4_tickSubsystemE290()
 
 
 // 0x813202c
-int __fastcall sub_813202C(int a1)
+int __fastcall submenu_step(int a1)
 {
     int v1; // r0
     int v2; // r1
@@ -2465,7 +2465,7 @@ int __fastcall sub_81320AC(int a1)
 
 
 // 0x8132104
-void *sub_8132104()
+void *rfu_initOrRestartSession()
 {
     int v0; // r5
     char v1; // zf
@@ -2491,7 +2491,7 @@ LABEL_2:
     if ( !v1 )
     {
         v2 = sub_803EA78();
-        sub_8132398(v2, v3, v4, v5);
+        submenu_resetState(v2, v3, v4, v5);
         *(v0 + 3) = 12;
         if ( rfu_shouldRestartWirelessLink() )
             rfu_initWirelessSession();
@@ -2673,7 +2673,7 @@ int __fastcall sub_8132324(int a1, int a2, int a3)
 
 
 // 0x8132398
-signed int __fastcall sub_8132398(int a1, int a2, int a3, int a4)
+signed int __fastcall submenu_resetState(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     signed int result; // r0
@@ -3029,7 +3029,7 @@ signed int submenu_resetCursor()
     sub_803EA78();
     sSubmenu.jo_01 = 16;
     sSubmenu.unk_02 = 0;
-    return sub_8132398(0, v0, v1, v2);
+    return submenu_resetState(0, v0, v1, v2);
 }
 
 
@@ -3306,7 +3306,7 @@ signed int __fastcall sub_81329C8(int a1, int a2, int a3)
 
 
 // 0x8132a14
-void __fastcall __noreturn sub_8132A14(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn sprite_drawBcdNumber(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r4
@@ -6867,7 +6867,7 @@ int __fastcall ow_objectStepSavePos(int a1, int a2, int a3)
 
 
 // 0x8135968
-int sub_8135968()
+int navicust_initScreenState()
 {
     _BYTE *v0; // r5
     int v1; // r0
@@ -6908,7 +6908,7 @@ int __fastcall e_confirmSelection(int a1, int a2, int a3)
 
     v5 = *(v3 + 48);
     *(v3 + 50) = v5;
-    sub_813652C(v5, a2, a3);
+    submenu_navigateThreeChoiceCursor(v5, a2, a3);
     getStructFrom2008450(10);
     if ( v6 )
     {
@@ -7075,7 +7075,7 @@ int t4_waitChatboxThenFadeScene()
                 *(v0 + 1) = 8;
                 *(v0 + 2) = 0;
                 engine_setScreeneffect(12, 16);
-                sub_813BAC4();
+                t4_loadToolkitSceneBuffers();
             }
             else
             {
@@ -7923,7 +7923,7 @@ int __fastcall navicust_installSelectedPart(int a1)
 
 
 // 0x813652c
-signed int __fastcall sub_813652C(int a1, int a2, int a3)
+signed int __fastcall submenu_navigateThreeChoiceCursor(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r10
@@ -10417,7 +10417,7 @@ int sub_81380B0()
 
     result = *(v0 + 36) + 7;
     if ( result < *(v0 + 30) )
-        result = sub_8138104(128, 144, 0, 14);
+        result = battleObject_animateStepQueueOam(128, 144, 0, 14);
     return result;
 }
 
@@ -10427,12 +10427,12 @@ int sub_81380E0()
 {
     sub_813809C();
     sub_81380B0();
-    return sub_8138104(4, 32, 32, 12);
+    return battleObject_animateStepQueueOam(4, 32, 32, 12);
 }
 
 
 // 0x8138104
-int __fastcall sub_8138104(int a1, int a2, int a3, int a4)
+int __fastcall battleObject_animateStepQueueOam(int a1, int a2, int a3, int a4)
 {
     int *v4; // r4
     int v5; // r5
@@ -10623,7 +10623,7 @@ int t4_delayedScreenScrollFade()
 
 
 // 0x81383c4
-int sub_81383C4()
+int startFadeState()
 {
     int v0; // r5
     int result; // r0
@@ -10679,7 +10679,7 @@ void __fastcall __noreturn sprite_advanceAnimFrame(int a1, int a2, int a3, int a
     v4 = *(a4 + 1);
     sub_8045FC6();
     sprite_queueSheetGfxUpload();
-    sub_8138890(v5, v6, v7, v8);
+    bg_copyTilesetStrip(v5, v6, v7, v8);
 }
 
 
@@ -11122,7 +11122,7 @@ unsigned int object_freeAllOfType25()
 
 
 // 0x8138890
-void __fastcall __noreturn sub_8138890(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn bg_copyTilesetStrip(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r0

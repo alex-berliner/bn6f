@@ -321,9 +321,9 @@ off_3005DE8:
 // symdb: Atomically ORs the IE bits in r0 into the Interrupt Enable register by briefly clearing the Interrupt Master Enable register, preserving r4 and returning nothing.
 // symdb: (r0 = IE bit mask to enable) -> r0 = destroyed? (not reloaded); preserves r4; no meaningful
 // symdb: return
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3005DEC.yaml
-	thumb_func_start sub_3005DEC
-sub_3005DEC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/irq_enableBits.yaml
+	thumb_func_start irq_enableBits
+irq_enableBits:
 	push {r4,lr}
 	ldr r3, off_3005E54 // =InterruptMasterEnableRegister
 	ldrh r4, [r3]
@@ -335,7 +335,7 @@ sub_3005DEC:
 	strh r2, [r1]
 	strh r4, [r3]
 	pop {r4,pc}
-	thumb_func_end sub_3005DEC
+	thumb_func_end irq_enableBits
 
 // symdb: C hardware helper that clears selected interrupt sources in the IE register without ever leaving interrupts globally disabled
 // symdb: (r0 = bitmask of IE bits to clear) -> r0 = 0 (side effect on IE); flags from mov/bic, no
@@ -2726,8 +2726,8 @@ off_3006DB4:
 dword_3006DB8:
 	.word 0x0
 	.word sub_3006DC8+1
-	.word sub_3006E1C+1
-	.word sub_3006E1C+1
+	.word chatbox_applyRowOffsets+1
+	.word chatbox_applyRowOffsets+1
 	thumb_func_end sub_3006DA4
 
 	thumb_local_start
@@ -2780,9 +2780,9 @@ off_3006E18:
 // symdb: Chatbox script-command handler that runs N=low_nibble_of_byte2 (default 8 if zero) iterations over one chatbox entry chosen by 1-based index in byte 3, calling chatbox_8040D5C and conditionally chatbox_addOffsetToRow per row, then returns r0+4.
 // symdb: (r0 = ptr to 4-byte chatbox script command; r10 = chatbox context) -> r0 = r0+4 (next command);
 // symdb: calls chatbox_8040D5C and chatbox_addOffsetToRow.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006E1C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_applyRowOffsets.yaml
 	thumb_local_start
-sub_3006E1C:
+chatbox_applyRowOffsets:
 	push {r3,r7,lr}
 	push {r0}
 	ldrb r3, [r0,#2]
@@ -2833,7 +2833,7 @@ loc_3006E5C:
 	.balign 4, 0
 off_3006E78:
 	.word chatbox_8040D5C+1
-	thumb_func_end sub_3006E1C
+	thumb_func_end chatbox_applyRowOffsets
 
 // symdb: Dispatches an animation-related handler selected by a byte in the argument struct, currently routing both cases to sprite_queueAnimData.
 // symdb: (r0 = pointer to struct whose byte at +1 is the selector) -> calls table handler with r0

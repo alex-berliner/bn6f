@@ -5737,7 +5737,7 @@ int sub_8038E78()
 
 
 // 0x8038eac
-int sub_8038EAC()
+int battle_commErrorGfxReloadTick()
 {
     int v0; // r5
     int v1; // r0
@@ -6640,7 +6640,7 @@ int sub_8039C14()
 
 
 // 0x8039c32
-int sub_8039C32()
+int object_advanceNetDialogue()
 {
     int v0; // r5
     int v1; // r0
@@ -7282,9 +7282,9 @@ int sub_803A1D8()
     v2 = sub_803C458();
     v4 = v3;
     v5 = *(v0 + 36);
-    sub_803B814(39, 32 * v1 + 35, 6, v2);
+    sprite_drawGlyphString(39, 32 * v1 + 35, 6, v2);
     v6 = *(v0 + 38);
-    sub_803B814(123, 32 * v1 + 35, 7, v4);
+    sprite_drawGlyphString(123, 32 * v1 + 35, 7, v4);
     return sub_803A238(v1, 0);
 }
 
@@ -7297,7 +7297,7 @@ void __noreturn sub_803A214()
     int v2; // r0
 
     v1 = *(v0 + 36);
-    sub_803B814(67, 2, 10, (v0 + 240));
+    sprite_drawGlyphString(67, 2, 10, (v0 + 240));
     v2 = sub_803C418();
     sub_803B9C0(26, 7, 4, v2);
 }
@@ -7391,7 +7391,7 @@ void __noreturn sub_803A2CC()
 
 
 // 0x803a334
-int __noreturn sub_803A334()
+int __noreturn chatbox_screenWipeStep()
 {
     _BYTE *v0; // r5
     int v1; // r10
@@ -7419,7 +7419,7 @@ int __noreturn sub_803A334()
 
 
 // 0x803a39c
-int sub_803A39C()
+int object_timerTransition()
 {
     int v0; // r5
     int v1; // r0
@@ -7532,7 +7532,7 @@ void __noreturn sprite_drawValuePairAndQueueOam()
     int v2; // r0
 
     v1 = *(v0 + 36);
-    sub_803B814(8, 19, 6, (v0 + 240));
+    sprite_drawGlyphString(8, 19, 6, (v0 + 240));
     v2 = sub_803C418();
     sprite_queueOamEntryAt(88, 24, 4, v2);
 }
@@ -9073,7 +9073,7 @@ void __fastcall sub_803B674(int a1)
 
 
 // 0x803b814
-signed int __fastcall sub_803B814(int a1, int a2, int a3, _BYTE *a4)
+signed int __fastcall sprite_drawGlyphString(int a1, int a2, int a3, _BYTE *a4)
 {
     int v4; // r4
     signed int result; // r0
@@ -11837,7 +11837,7 @@ int init_linkState()
 
 
 // 0x803dda4
-int sub_803DDA4()
+int initLinkState()
 {
     int result; // r0
 
@@ -13695,7 +13695,7 @@ LABEL_22:
 
 
 // 0x803ee98
-int sub_803EE98()
+int link_syncInputs()
 {
     int v0; // r10
     char *v1; // r5
@@ -14374,7 +14374,7 @@ signed int battle_getLinkStateCode_803F560()
     v2 = battle_updateLinkState_803DEB4();
     if ( v2 == 2 )
     {
-        if ( sub_813DB24(0, 1) != 255 )
+        if ( e_pickBre5TagBlock(0, 1) != 255 )
         {
             v3 = 0;
             do

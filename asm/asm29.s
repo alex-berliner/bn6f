@@ -7622,7 +7622,7 @@ loc_80A8BD8:
 	mov r0, #0
 	strb r0, [r7,#1]
 	ldrb r0, [r5,#4]
-	bl sub_8143204
+	bl init_setRandomTimer
 	ldrb r0, [r5,#4]
 	bl sub_8143220
 loc_80A8BEC:
@@ -7851,7 +7851,7 @@ sub_80A8D42:
 	b locret_80A8D76
 loc_80A8D70:
 	ldrb r0, [r5,#4]
-	bl sub_8143204
+	bl init_setRandomTimer
 locret_80A8D76:
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -7883,7 +7883,7 @@ sub_80A8D7C:
 	.pool // 80A8DA4
 	thumb_func_end sub_80A8D7C
 
-// symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs sub_8143204 and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
+// symdb: Overworld NPC trigger: if the player may advance and sub_8002E04 allows, and bit 0x10000 of the NPC record's +0x24 word is set, starts cutscene 0x808C315 with sub_8143088's return as param, plays SE 0x122, then runs init_setRandomTimer and the sub_8143220 Cybercrow-style countdown randomizer on the record's +0x04 id byte.
 // symdb: (r0..r3 = unused; r5 = Cybercrow/NPC state struct) -> r0 = clobbered; only acts when player may
 // symdb: advance, sub_8002E04 passes, and bit 0x10000 of +0x24 is set
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_triggerCutscene.yaml
@@ -7906,7 +7906,7 @@ npc_triggerCutscene:
 	add r0, #0xff
 	bl PlaySoundEffect
 	ldrb r0, [r5,#4]
-	bl sub_8143204
+	bl init_setRandomTimer
 	ldrb r0, [r5,#4]
 	bl sub_8143220
 locret_80A8DE6:
@@ -12298,12 +12298,12 @@ off_80AAC88:
 	.word 0x201
 	thumb_func_end sub_80AABA4
 
-// symdb: Picks a random chip-drop for the battle-result record: returns 0xFFFF if an RNG byte <8 and sub_80AAE36 returns 0; otherwise builds a 6-entry halfword pool, scans circularly from sub_80AAB68's starting index, picks via SWI 6 Div on a fresh RNG, and returns sub_80AAD04's pair packed as (r1<<9)|r0 (or 0 if the pool is empty).
+// symdb: Picks a random chip-drop for the battle-result record: returns 0xFFFF if an RNG byte <8 and sub_80AAE36 returns 0; otherwise builds a 6-entry halfword pool, scans circularly from sub_80AAB68's starting index, picks via SWI 6 Div on a fresh RNG, and returns getRandomChipBonusOfKindFromTable's pair packed as (r1<<9)|r0 (or 0 if the pool is empty).
 // symdb: (r0 = battle-result record ptr) -> r0 = packed drop: 0xFFFF = none, 0 = none found, else low
 // symdb: field | (r1<<9); clobbers r4,r6,r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAC8C.yaml
-	thumb_func_start sub_80AAC8C
-sub_80AAC8C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_rollRandomChipDrop.yaml
+	thumb_func_start battle_rollRandomChipDrop
+battle_rollRandomChipDrop:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x10
 	str r0, [sp]
@@ -12352,7 +12352,7 @@ loc_80AACE2:
 	mov r1, r4
 	svc 6
 	mov r0, r6
-	bl sub_80AAD04
+	bl getRandomChipBonusOfKindFromTable
 loc_80AACF4:
 	lsl r1, r1, #9
 	orr r0, r1
@@ -12363,14 +12363,14 @@ loc_80AACF8:
 	.balign 4, 0
 dword_80AAD00:
 	.word 0xFFFF
-	thumb_func_end sub_80AAC8C
+	thumb_func_end battle_rollRandomChipDrop
 
 // symdb: Scans chip IDs 1..0x13F for the r1-th whose chip record byte 5 matches r0, then picks a random nonzero entry from that chip's 4-byte bonus table at dword_2033000 and returns the chip ID plus the chipRecord[chosen] value.
 // symdb: (r0 = kind byte matched against chipRecord[5], r1 = 0-based match index) -> r0 = chip ID, r1 =
 // symdb: chipRecord[random table byte]; clobbers r4-r7
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80AAD04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRandomChipBonusOfKindFromTable.yaml
 	thumb_local_start
-sub_80AAD04:
+getRandomChipBonusOfKindFromTable:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	ldr r6, off_80AAE6C // =dword_203300C 
@@ -12429,7 +12429,7 @@ loc_80AAD4E:
 	ldr r0, [sp,#4]
 	add sp, sp, #0x14
 	pop {r4-r7,pc}
-	thumb_func_end sub_80AAD04
+	thumb_func_end getRandomChipBonusOfKindFromTable
 
 // symdb: Counts owned/registered chips by the byte value at chip-data offset 5 into a caller-provided halfword counter array.
 // symdb: (r0 = u16 counter array (>=6 halfwords), r1 unused) -> r0 = array filled with per-value counts;

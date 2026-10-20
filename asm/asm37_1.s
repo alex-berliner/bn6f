@@ -2081,9 +2081,9 @@ off_8142B54:
 // symdb: Walks the 20-entry, 8-byte-stride table at byte_2006670 twice: first matching entries whose ID equals the current scenario effect's 0x18 field, then matching via sub_8142990/sub_814299C validation, returning the matching entry's 8-way direction from getSoulWeaponCursorDir8, or 0xFF if none.
 // symdb: () -> r0 = direction 0-7 of the matching soul-weapon cursor, or 0xFF if no entry matches; calls
 // symdb: only, no flags of interest
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142B58.yaml
-	thumb_func_start sub_8142B58
-sub_8142B58:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getSoulWeaponCursorDir8ByEffect.yaml
+	thumb_func_start getSoulWeaponCursorDir8ByEffect
+getSoulWeaponCursorDir8ByEffect:
 	push {r4-r7,lr}
 	ldr r5, off_8142C8C // =byte_2006670 
 	mov r4, #0
@@ -2129,7 +2129,7 @@ loc_8142BAA:
 loc_8142BB2:
 	mov r0, r6
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142B58
+	thumb_func_end getSoulWeaponCursorDir8ByEffect
 
 	thumb_func_start sub_8142BB6
 sub_8142BB6:
@@ -2559,7 +2559,7 @@ sub_8142ECC:
 	beq loc_8142F08
 loc_8142F00:
 	push {r0-r7}
-	bl sub_81431C6
+	bl clearCybercrowLesson
 	pop {r0-r7}
 loc_8142F08:
 	bl sub_8143088
@@ -2671,7 +2671,7 @@ ow_crowLessonInteraction:
 	bl TestEventFlag // (flag: u16) -> !zf
 	bne loc_814305E
 	bl sub_8143314
-	bl sub_8143248
+	bl ow_crowLessonCheckCrowCollisions
 	movflag EVENT_962
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_8143010
@@ -2710,7 +2710,7 @@ loc_8143038:
 	movflag EVENT_963
 	bl ClearEventFlagFromImmediate // (flag: u16) -> ()
 loc_8143048:
-	bl sub_8143198
+	bl e_countSetEventFlags
 	bne loc_814306E
 	bl sub_8143088
 	ldr r1, off_8143074 // =off_8143078 // [*const CutsceneScript; 2]
@@ -2894,9 +2894,9 @@ dword_8143194:
 // symdb: Counts the number of set event flags in a fixed group (size from sub_81433CA, base id from sub_81430B6) and returns the count in r0 with Z set when every flag in the group is set, used by ow_crowLessonInteraction to gate cutscene stages.
 // symdb: () -> r0 = number of set flags; flags Z set iff r0 == total flags in group (r1 = total), N/C per
 // symdb: cmp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143198.yaml
-	thumb_func_start sub_8143198
-sub_8143198:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_countSetEventFlags.yaml
+	thumb_func_start e_countSetEventFlags
+e_countSetEventFlags:
 	push {r4-r7,lr}
 	bl e_getFlagTotal
 	mov r6, r0
@@ -2918,13 +2918,13 @@ loc_81431B4:
 	mov r0, r4
 	cmp r0, r1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143198
+	thumb_func_end e_countSetEventFlags
 
 // symdb: Resets the Cybercrow lesson state: runs sub_814339C, zero-fills the 0xA0-byte crow-records array at byte_2000D20, and calls sub_81430B6(0) twice with each result passed to ClearEventFlagRange(8).
 // symdb: () -> void; clobbers r0-r2, calls sub_814339C, ZeroFillByWord, sub_81430B6, ClearEventFlagRange
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81431C6.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearCybercrowLesson.yaml
 	thumb_local_start
-sub_81431C6:
+clearCybercrowLesson:
 	push {r4-r7,lr}
 	ldr r5, off_8143398 // =byte_2000D20 
 	bl e_initMinigameEffectSlot2
@@ -2945,7 +2945,7 @@ sub_81431C6:
 	.balign 4, 0
 off_81431F4:
 	.word 0xA0
-	thumb_func_end sub_81431C6
+	thumb_func_end clearCybercrowLesson
 
 // symdb: Returns a pointer to one of the eight Cybercrow crow records (index * 0x14 into byte_2000D20).
 // symdb: (r0 = record index) -> r0 = &byte_2000D20[index * 0x14] (0x14-byte crow record); flags not
@@ -2963,9 +2963,9 @@ ow_cybercrowGetCrowRecord:
 
 // symdb: Calls sub_81431F8 to obtain a struct pointer, then writes a random halfword in range 30–93 ([GetRNG & 0x3F] + 0x1E) at offset +6 of that struct, used as a frame-delay timer.
 // symdb: () -> r0 = undefined; stores halfword timer into [crowState+6]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143204.yaml
-	thumb_func_start sub_8143204
-sub_8143204:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_setRandomTimer.yaml
+	thumb_func_start init_setRandomTimer
+init_setRandomTimer:
 	push {r4-r7,lr}
 	bl ow_cybercrowGetCrowRecord
 	mov r5, r0
@@ -2979,7 +2979,7 @@ sub_8143204:
 	.balign 4, 0
 dword_814321C:
 	.word 0x1E
-	thumb_func_end sub_8143204
+	thumb_func_end init_setRandomTimer
 
 // symdb: Cybercrow record r0 gets a new random countdown at +0x02 of 0x1E + (GetRNG & 0x3F) frames (30-93), and its state byte becomes 1 unless it is 3 (sub_81432FA).
 // symdb: (r0 = crow slot index 0-7) -> r0 = the record's state byte from before the call (sub_81432FA's
@@ -3010,9 +3010,9 @@ dword_8143244:
 // symdb: Per-crow proximity check for the Cybercrow lesson: when an active crow's position is within the collision threshold of another active crow (delta hypot < 6<<16), flag that crow into state 2 via sub_81432FA.
 // symdb: () -> void; for each active crow record whose position comes within 6.0 of another active crow,
 // symdb: invokes sub_81432FA(crowIndex, 2) and moves on
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143248.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_crowLessonCheckCrowCollisions.yaml
 	thumb_local_start
-sub_8143248:
+ow_crowLessonCheckCrowCollisions:
 	push {r4-r7,lr}
 	mov r6, #0
 	ldr r7, off_8143398 // =byte_2000D20 
@@ -3053,14 +3053,14 @@ loc_814328A:
 	cmp r6, #8
 	blt loc_814324E
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143248
+	thumb_func_end ow_crowLessonCheckCrowCollisions
 
 // symdb: Per-frame loop over 8 Cybercrow lesson records at byte_2000D20: for each active slot, marks +1 = 8 when the player is within 0xFA<<16 hypot distance of the crow's position, then calls sub_81432FA(i, 1) for every active slot.
 // symdb: (void) -> void; touches byte_2000D20 slots (+0 state read, +1 written 8 when player near), calls
 // symdb: sub_81432FA(i, 1) per active slot
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143294.yaml
-	thumb_func_start sub_8143294
-sub_8143294:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_tickCrows.yaml
+	thumb_func_start t3_tickCrows
+t3_tickCrows:
 	push {r4-r7,lr}
 	mov r4, #0
 	ldr r5, off_8143398 // =byte_2000D20 
@@ -3096,7 +3096,7 @@ loc_81432CE:
 	cmp r4, #8
 	blt loc_814329A
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143294
+	thumb_func_end t3_tickCrows
 
 	thumb_local_start
 sub_81432D8:
@@ -3162,7 +3162,7 @@ loc_8143324:
 	bl GetRNG // () -> u32?
 	strh r0, [r5,#4]
 	mov r0, r4
-	bl sub_8143204
+	bl init_setRandomTimer
 	mov r0, r4
 	bl sub_8143220
 	push {r4-r7}
@@ -4567,7 +4567,7 @@ byte_8144040:
 	.byte 0x1B, 0x35, 0x4A, 0x5A, 0x64, 0x0, 0x0, 0x0
 	thumb_func_end sub_8144010
 
-// symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sub_811E744 step, and a fade+subsystem-4 cleanup before the common tail.
+// symdb: On a one-shot flag, initializes three AI chip-queue slots for the multi-enemy actors 0xE/0xC/0xD, then each frame runs AI dispatch, sprite gfx updates, a sub_804691A(3)/sprite_buildGaugeTiles step, and a fade+subsystem-4 cleanup before the common tail.
 // symdb: () -> r0 = 0; flags clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initMultiEnemyAIAndTick.yaml
 	thumb_func_start battle_initMultiEnemyAIAndTick
@@ -4600,7 +4600,7 @@ loc_814407E:
 	mov r0, #3
 	bl battle_testEntityStateFlag
 	beq loc_8144092
-	bl sub_811E744
+	bl sprite_buildGaugeTiles
 loc_8144092:
 	bl IsScreenFadeActive // () -> zf
 	beq loc_81440A6

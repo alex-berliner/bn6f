@@ -716,7 +716,7 @@ LABEL_37:
                         *(v0 + 3) = 0;
                         sub_811A940(0, 6);
                     }
-                    sub_811A914(*(v0 + 21), 6);
+                    battle_applyObjOamAttrByIndex(*(v0 + 21), 6);
                 }
                 else
                 {

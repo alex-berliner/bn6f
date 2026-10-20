@@ -53,9 +53,9 @@ loc_80264A4:
 // symdb: (r0 = base column, r1 = base row, r2 = int8 (dx,dy) offset table terminated by dx=0x7F; uses
 // symdb: global current battle object, incoming r6/r7 forwarded) -> r0 = sub_8026510 result for first
 // symdb: matching panel, or 0 if none; no meaningful flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80264A8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scanPanelOffsetPattern.yaml
 	thumb_local_start
-sub_80264A8:
+battle_scanPanelOffsetPattern:
 	push {r4,r6,r7,lr}
 	sub sp, sp, #0x10
 	str r6, [sp]
@@ -109,7 +109,7 @@ loc_802650A:
 loc_802650C:
 	add sp, sp, #0x10
 	pop {r4,r6,r7,pc}
-	thumb_func_end sub_80264A8
+	thumb_func_end battle_scanPanelOffsetPattern
 
 	thumb_local_start
 sub_8026510:
@@ -192,7 +192,7 @@ jt_8026584:
 	.word sub_80266F2+1
 	.word sub_8026704+1
 	.word sub_802670E+1
-	.word sub_802671C+1
+	.word battle_runFacingTileCheck+1
 	.word battle_checkAnyAdjacentTile+1
 	thumb_func_end battle_beastJumpLockOn_8026554
 
@@ -360,7 +360,7 @@ sub_80266AC:
 	mov r0, r6
 	mov r1, r7
 	ldr r2, off_802681C // =byte_802679B 
-	bl sub_80264A8
+	bl battle_scanPanelOffsetPattern
 	pop {pc}
 	thumb_func_end sub_80266AC
 
@@ -437,14 +437,14 @@ sub_802670E:
 // symdb: Loads the facing-offset table at byte_80267CC into r0 and tail-calls battle_checkFacingOffsets, running the tile-offset check against that hardcoded table.
 // symdb: (r1 = object) -> r0 = nonzero as soon as a checker on a mirrored relative tile succeeds; flags
 // symdb: from callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802671C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runFacingTileCheck.yaml
 	thumb_local_start
-sub_802671C:
+battle_runFacingTileCheck:
 	push {lr}
 	ldr r0, off_8026838 // =byte_80267CC 
 	bl battle_checkFacingOffsets
 	pop {pc}
-	thumb_func_end sub_802671C
+	thumb_func_end battle_runFacingTileCheck
 
 // symdb: Runs a tile checker on all eight tiles adjacent to a battle object and reports whether any of them passes.
 // symdb: (r0 = battle object pointer, passed through to checker) -> r0 = nonzero if the checker succeeded
@@ -2490,7 +2490,7 @@ off_8027560:
 	.word off_8027564
 off_8027564:
 	.word sub_8027574+1
-	.word sub_8027580+1
+	.word startFadeStep+1
 	.word sub_802759E+1
 	.word state_waitFadeEndThenAdvance+1
 	thumb_func_end battleObject_chipSelectUpdate
@@ -2508,9 +2508,9 @@ sub_8027574:
 // symdb: Per-frame step (r5 = state struct): after 16 frames elapses on the [r5+0x40] counter, zeros the counter, kicks off SetScreenFade(4, 0x20) and sets the halfword state field [r5+2] to 8.
 // symdb: (r5 = state/task struct) -> void; updates [r5+0x40] counter, on expiry sets halfword [r5+2] = 8
 // symdb: and calls SetScreenFade(4, 0x20)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027580.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startFadeStep.yaml
 	thumb_local_start
-sub_8027580:
+startFadeStep:
 	push {lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2526,7 +2526,7 @@ sub_8027580:
 	strh r0, [r5,#2]
 locret_802759C:
 	pop {pc}
-	thumb_func_end sub_8027580
+	thumb_func_end startFadeStep
 
 	thumb_local_start
 sub_802759E:
@@ -2593,7 +2593,7 @@ off_8027600:
 off_8027604:
 	.word sub_8027618+1
 	.word t4_waitThenFadeScreen+1
-	.word sub_8027658+1
+	.word objectWaitFramesThenSetStateC+1
 	.word sub_8027672+1
 	.word battle_runFirstTutorialChatboxStep+1
 	thumb_func_end sub_80275EC
@@ -2641,9 +2641,9 @@ locret_8027656:
 
 // symdb: Increments the 32-bit counter at [r5+0x40]; once it reaches 0x32 (50) and no screen fade is active, writes 0xC into the halfword at [r5+2].
 // symdb: (r5 = object/state struct) -> r0 = undefined; updates [r5+0x40] counter and [r5+2] state field
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8027658.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/objectWaitFramesThenSetStateC.yaml
 	thumb_local_start
-sub_8027658:
+objectWaitFramesThenSetStateC:
 	push {r4,r6,lr}
 	ldr r0, [r5,#0x40]
 	add r0, #1
@@ -2657,7 +2657,7 @@ sub_8027658:
 	strh r0, [r5,#2]
 locret_8027670:
 	pop {r4,r6,pc}
-	thumb_func_end sub_8027658
+	thumb_func_end objectWaitFramesThenSetStateC
 
 	thumb_local_start
 sub_8027672:
@@ -4462,9 +4462,9 @@ sub_80282C2:
 // symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at dword_86E441C, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
 // symdb: (r0 = dst VRAM ptr, r1 = dst VRAM ptr, r4 = object struct with byte index at +7) -> r1 advanced
 // symdb: by 0x180; r0 = src ptr used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80282D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/queueIndexedGfxChunk.yaml
 	thumb_local_start
-sub_80282D2:
+queueIndexedGfxChunk:
 	push {lr}
 	ldr r0, off_802835C // =dword_86E441C 
 	ldr r2, off_8028364 // =0x180 
@@ -4475,7 +4475,7 @@ sub_80282D2:
 	add r1, #0xc0
 	add r1, #0xc0
 	pop {pc}
-	thumb_func_end sub_80282D2
+	thumb_func_end queueIndexedGfxChunk
 
 // symdb: Queues the icon graphics (and code-related tile) for the battle chip stored in a chip-slot struct, given a destination/state pointer.
 // symdb: (r0 = unused/overwritten, r1 = gfx destination/state pointer, r4 = chip slot struct) -> r0 =
@@ -4571,7 +4571,7 @@ off_8028370:
 	.word nullsub_14+1
 	.word battle_queueGfxVariant+1
 	.word sub_80282C2+1
-	.word sub_80282D2+1
+	.word queueIndexedGfxChunk+1
 	.word nullsub_14+1
 	.word battle_queueChipIconGfx+1
 	.word battle_queueChipIconGfx+1
@@ -6593,7 +6593,7 @@ loc_80291AC:
 	lsr r1, r1, #1
 	ldr r3, off_80293CC // =byte_20366C0 
 	add r3, #0x32 
-	bl sub_802B6F2
+	bl submenu_storeHalfwordListRecord
 	mov r0, #0x10
 	strb r0, [r5,#0xb]
 loc_80291E2:
@@ -11635,9 +11635,9 @@ sub_802B6EC:
 // symdb: Zero-fills 0x20 bytes at word_2036660, stores a header halfword, two bytes, and a 0xFFFF-terminated halfword list (with count: 0xFF = empty) into the record at base+0x14, for the custom-screen chip-confirm command queue.
 // symdb: (r0 = header halfword, r1 = byte for +6, r2 = byte for +7, r3 = ptr to 0xFFFF-terminated
 // symdb: halfword array) -> r0 clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B6F2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_storeHalfwordListRecord.yaml
 	thumb_local_start
-sub_802B6F2:
+submenu_storeHalfwordListRecord:
 	push {r4-r7,lr}
 	mov r6, #0
 loc_802B6F6:
@@ -11675,7 +11675,7 @@ loc_802B720:
 	bne loc_802B720
 	strb r4, [r5,#0x8] // (byte_2036668 - 0x2036660)
 	pop {r4-r7,pc}
-	thumb_func_end sub_802B6F2
+	thumb_func_end submenu_storeHalfwordListRecord
 
 	thumb_func_start sub_802B734
 sub_802B734:
@@ -11752,7 +11752,7 @@ battle_subEffectFadeOutDispatch:
 	mov r0, #1
 	strb r0, [r5,#2]
 	mov r0, #0
-	bl sub_802B9FE
+	bl copy_queue8Bytes
 	mov r0, #0x14
 	mov r1, #8
 	bl SetScreenFade // (int a1, int a2) -> void
@@ -11942,7 +11942,7 @@ sub_802B8E0:
 	mov r2, #3
 	mov r3, #0
 	mov r4, #9
-	bl sub_802BA34
+	bl sound_previewPlayIfReady
 	pop {r4-r7}
 	mov r0, #0x10
 	strb r0, [r5,#1]
@@ -12006,7 +12006,7 @@ loc_802B96E:
 	mov r3, #0
 	mov r4, #9
 	mov r5, #0xe
-	bl sub_802BA34
+	bl sound_previewPlayIfReady
 locret_802B98C:
 	pop {pc}
 	.balign 4, 0
@@ -12078,7 +12078,7 @@ sub_802B9E4:
 	bne loc_802B9F8
 	mov r0, #1
 loc_802B9F8:
-	bl sub_802B9FE
+	bl copy_queue8Bytes
 locret_802B9FC:
 	pop {r0,r1,pc}
 	thumb_func_end sub_802B9E4
@@ -12086,9 +12086,9 @@ locret_802B9FC:
 // symdb: Queues an 8-byte transfer from a ROM table entry (indexed by r0) to the fixed buffer unk_3001AA0 via QueueEightWordAlignedGFXTransfer.
 // symdb: (r0 = entry index into table byte_802BA48) -> r0 = clobbered? (r0-r3,lr saved/restore pattern
 // symdb: suggests void); no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802B9FE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/copy_queue8Bytes.yaml
 	thumb_local_start
-sub_802B9FE:
+copy_queue8Bytes:
 	push {r1-r3,lr}
 	lsl r0, r0, #3
 	ldr r1, off_802BA10 // =byte_802BA48 
@@ -12102,7 +12102,7 @@ off_802BA10:
 	.word byte_802BA48
 off_802BA14:
 	.word unk_3001AA0
-	thumb_func_end sub_802B9FE
+	thumb_func_end copy_queue8Bytes
 
 // symdb: Small getter returning the chip-preview background's BG2 X scroll converted to tile units plus one.
 // symdb: () -> r0 = (RenderInfo->BG2ScrollX >> 3) + 1; no flags meaningful
@@ -12137,9 +12137,9 @@ locret_802BA32:
 // symdb: Chip-preview UI task hook: if byte 7 of the task struct at word_2036660 is non-zero, calls the IWRAM sound routine at 0x03005EBA with no arguments; otherwise returns immediately.
 // symdb: () -> r0 = result of the 0x3005EBA call; r6 clobbered; returns immediately if [word_2036660+7]
 // symdb: == 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802BA34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_previewPlayIfReady.yaml
 	thumb_local_start
-sub_802BA34:
+sound_previewPlayIfReady:
 	push {r6,lr}
 	ldr r6, off_802BA44 // =word_2036660 
 	ldrb r6, [r6,#0x7] // (byte_2036667 - 0x2036660)
@@ -12346,7 +12346,7 @@ off_802BCB0:
 	.word byte_802BB8C
 	.word byte_802BB92
 	.word NULL
-	thumb_func_end sub_802BA34
+	thumb_func_end sound_previewPlayIfReady
 
 // symdb: Initializes the chip-select/custom-screen state at eS20364C0, dispatches by Index_00 to a tile-copy routine, then runs a panel scan
 // symdb: (r0 = unused=4) -> r0 = 1 ; side effects: writes eS20364C0.Unk_05, copies tiles to a BG block,
@@ -14122,7 +14122,7 @@ loc_802C91A:
 	b loc_802C96C
 loc_802C960:
 	ldrb r0, [r7,#1]
-	bl sub_80AAC8C
+	bl battle_rollRandomChipDrop
 	strh r0, [r7,#8]
 	mov r1, #0
 	strh r1, [r7,#0xa]
@@ -19494,7 +19494,7 @@ loc_802EFB2:
 	push {r0}
 	mov r0, r6
 	mov r1, r7
-	bl sub_802F006
+	bl battle_pickMoreFrontObject
 	mov r7, r0
 	pop {r0}
 loc_802EFC0:
@@ -19551,9 +19551,9 @@ sub_802EFF8:
 // symdb: Given two battle objects and a third object's alliance as orientation reference, returns whichever of the two inputs sits further 'in front' relative to that side (signed PanelX distance using object_getEnemyDirection's ±1 step, then |PanelY| distance, then raw PanelY).
 // symdb: (r0 = BattleObject A, r1 = BattleObject B; r5 = BattleObject whose alliance defines the
 // symdb: reference side, not saved) -> r0 = pointer to the more 'in front' object; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F006.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_pickMoreFrontObject.yaml
 	thumb_local_start
-sub_802F006:
+battle_pickMoreFrontObject:
 	push {r4-r7,lr}
 	mov r6, r0
 	mov r7, r1
@@ -19606,7 +19606,7 @@ loc_802F062:
 	mov r0, r7
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_802F006
+	thumb_func_end battle_pickMoreFrontObject
 
 	thumb_func_start sub_802F068
 sub_802F068:

@@ -1228,7 +1228,7 @@ int battleObject_getPanelChipByIndexAtPlayerPos_8142B28()
 
 
 // 0x8142b58
-unsigned int sub_8142B58()
+unsigned int getSoulWeaponCursorDir8ByEffect()
 {
     char *v0; // r5
     signed int v1; // r4
@@ -1563,7 +1563,7 @@ int sub_8142ECC()
         v16 = v3[oGameState_LastMapGroup];
         TestEventFlagFromImmediate(9, 96);
         if ( !v2 || v15 != v16 || v13 != v14 )
-            sub_81431C6(v13, v14, v15, v16);
+            clearCybercrowLesson(v13, v14, v15, v16);
         v4 = off_8142E14[sub_8143088()];
         v5 = 0;
         while ( *v4 != 255 )
@@ -1627,7 +1627,7 @@ int ow_crowLessonInteraction()
     if ( !v4 )
         goto LABEL_20;
     sub_8143314();
-    sub_8143248();
+    ow_crowLessonCheckCrowCollisions();
     TestEventFlagFromImmediate(9, 98);
     if ( v4 )
     {
@@ -1659,7 +1659,7 @@ int ow_crowLessonInteraction()
             ClearEventFlagFromImmediate(9, 99);
         }
     }
-    sub_8143198();
+    e_countSetEventFlags();
     if ( v4 )
     {
         v8 = sub_8143088();
@@ -1741,7 +1741,7 @@ int sub_814312C()
 
 
 // 0x8143198
-int sub_8143198()
+int e_countSetEventFlags()
 {
     int v0; // r6
     int v1; // r7
@@ -1767,7 +1767,7 @@ int sub_8143198()
 
 
 // 0x81431c6
-unsigned int __fastcall sub_81431C6(int a1, int a2, int a3, int a4)
+unsigned int __fastcall clearCybercrowLesson(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     int v5; // r1
@@ -1790,7 +1790,7 @@ char *__fastcall ow_cybercrowGetCrowRecord(int a1)
 
 
 // 0x8143204
-int __fastcall sub_8143204(int a1)
+int __fastcall init_setRandomTimer(int a1)
 {
     char *v1; // r5
     char v2; // r0
@@ -1820,7 +1820,7 @@ int __fastcall sub_8143220(int a1)
 
 
 // 0x8143248
-int sub_8143248()
+int ow_crowLessonCheckCrowCollisions()
 {
     int v0; // r6
     char *v1; // r7
@@ -1862,7 +1862,7 @@ LABEL_8:
 
 
 // 0x8143294
-int sub_8143294()
+int t3_tickCrows()
 {
     int v0; // r10
     int v1; // r4
@@ -1968,7 +1968,7 @@ int sub_8143314()
         v1[1] = 0;
         GetRNG();
         *(v1 + 2) = v5;
-        sub_8143204(v4);
+        init_setRandomTimer(v4);
         sub_8143220(v4);
         GetRNG();
         v7 = 2 * (v6 & 0xF0);
@@ -2765,7 +2765,7 @@ int battle_initMultiEnemyAIAndTick()
         battleObject_updateSpriteGfxForAll_8046854();
         v2 = battle_testEntityStateFlag(3);
         if ( !v1 )
-            sub_811E744(v2, v3, v4, v5);
+            sprite_buildGaugeTiles(v2, v3, v4, v5);
         IsPaletteFadeActive();
         if ( !v1 && **(v0 + oToolkit_GameStatePtr) == 4 )
             e_decrementCountdown();

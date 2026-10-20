@@ -1342,10 +1342,10 @@ LABEL_14:
         while ( ((byte_200FE04 - 18) & 0xFFu) <= 1 );
         if ( *dword_2010CC0 != 1 || !(rfu_pollLinkWatchdog(0) << 24) )
         {
-            sub_8145DD8();
+            rfu_processConnectionState();
             rfu_handleConnTimeout();
             rfu_advanceConnState();
-            sub_81462D8();
+            rfu_updateSendRecvTargets();
         }
     }
     else
@@ -1844,7 +1844,7 @@ int __fastcall sub_8145D54(unsigned __int16 a1)
 
 
 // 0x8145dd8
-int sub_8145DD8()
+int rfu_processConnectionState()
 {
     int v0; // r4
     int v1; // r8
@@ -2194,7 +2194,7 @@ int __fastcall rfu_disconnectSlots(unsigned __int8 a1)
 
 
 // 0x81462d8
-int sub_81462D8()
+int rfu_updateSendRecvTargets()
 {
     int v0; // r6
     int *v1; // r3
@@ -3202,7 +3202,7 @@ int __fastcall sub_81471D8(_BYTE *a1, int a2)
 
 
 // 0x8147228
-int __fastcall sub_8147228(_BYTE *a1, int a2)
+int __fastcall rfu_processLinkClose(_BYTE *a1, int a2)
 {
     _BYTE *v2; // r5
     int v3; // r6
@@ -3279,7 +3279,7 @@ int __fastcall sub_81472F8(unsigned __int8 *a1, int a2, int a3)
         case 1u:
             goto LABEL_5;
         case 2u:
-            sub_8147228(a1, a2);
+            rfu_processLinkClose(a1, a2);
             break;
         case 3u:
             *a1 = 0;

@@ -596,9 +596,9 @@ sub_813BAA8:
 // symdb: t4 scene step that copies two fixed ROM blobs (0x100 and 0x620 bytes) into toolkit-held buffers at offsets Unk200414c_Ptr and Unk2004190_Ptr.
 // symdb: () -> r0,r1 clobbered; copies data into [*oToolkit_Unk200414c_Ptr + 0x100] and
 // symdb: [*oToolkit_Unk2004190_Ptr + 0x620]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BAC4.yaml
-	thumb_func_start sub_813BAC4
-sub_813BAC4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_loadToolkitSceneBuffers.yaml
+	thumb_func_start t4_loadToolkitSceneBuffers
+t4_loadToolkitSceneBuffers:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_Unk200414c_Ptr]
@@ -618,7 +618,7 @@ off_813BAE4:
 	.word byte_201BC80
 off_813BAE8:
 	.word 0x188
-	thumb_func_end sub_813BAC4
+	thumb_func_end t4_loadToolkitSceneBuffers
 
 	thumb_func_start sub_813BAEC
 sub_813BAEC:
@@ -4866,9 +4866,9 @@ off_813DB1C:
 // symdb: Picks between the two eLinkState tag-block pointers (eLinkState+0x38/+0x3C) by the link mode selector stored in eStruct200F360, returning the one whose 'BRE5'-magic block matches byte_813DBAC[r0*4] (high-byte-only if r1!=0), or 0xFF if neither matches.
 // symdb: (r0 = slot index 0..3, r1 = compare-high-byte-only flag) -> r0 = pointer to matching tag block
 // symdb: (eLinkState+0x38/+0x3C target) or 0xFF if none; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DB24.yaml
-	thumb_func_start sub_813DB24
-sub_813DB24:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_pickBre5TagBlock.yaml
+	thumb_func_start e_pickBre5TagBlock
+e_pickBre5TagBlock:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	str r1, [sp,#4]
@@ -5090,6 +5090,6 @@ off_813E04C:
 	.word CompText87ED240
 	.word CompText87ECF34
 	.word CompText87ED240
-	thumb_func_end sub_813DB24
+	thumb_func_end e_pickBre5TagBlock
 
 /*For debugging purposes, connect comment at any range!*/

@@ -803,7 +803,7 @@ BOOL __fastcall ai_checkPanelForDirection(int a1, int a2)
 
 
 // 0x800f598
-int sub_800F598()
+int battle_getHitSlideDelta()
 {
     int v0; // r5
     int v1; // r3
@@ -2090,7 +2090,7 @@ int battle_objectClearPendingHitIfCollisionProcessed_8010198()
 
 
 // 0x80101ae
-int __fastcall sub_80101AE(__int16 a1)
+int __fastcall battle_startHitCountdown(__int16 a1)
 {
     int v1; // r5
     int result; // r0
@@ -3089,7 +3089,7 @@ u32 __fastcall battle_getPlayerHpMod100(int a1, int a2)
 
 
 // 0x8010c06
-int __fastcall sub_8010C06(int a1, int a2)
+int __fastcall battle_getHalfMaxHPofTarget(int a1, int a2)
 {
     int v2; // r10
     int v3; // r4
@@ -3674,7 +3674,7 @@ int __fastcall battle_spawnObj56StoreRelatedObject2(int a1, int a2, int a3, int 
 
 
 // 0x8011352
-int __fastcall sub_8011352(int a1, int a2)
+int __fastcall battle_spawnRelatedObject2Variant2(int a1, int a2)
 {
     int v2; // r5
     int result; // r0
@@ -5268,7 +5268,7 @@ int sub_801236E()
 
 
 // 0x8012378
-int sub_8012378()
+int initChipParams09()
 {
     return (loc_80126EA)(9);
 }
@@ -5289,7 +5289,7 @@ int sub_801238C()
 
 
 // 0x8012396
-int sub_8012396()
+int battleInitChip199()
 {
     return (loc_80126EA)(199);
 }
@@ -7925,7 +7925,7 @@ int __fastcall initNaviStatsFromNaviId(int a1, int a2, int a3, int a4)
 
 
 // 0x8013c4e
-int sub_8013C4E()
+int battle_runAllianceHook()
 {
     int v0; // r0
     int v1; // r0
@@ -8141,7 +8141,7 @@ int sub_8013EC2()
 
 
 // 0x8013ecc
-int sub_8013ECC()
+int object_giveInvulnerability5sec()
 {
     return object_setInvulnerableTime(byte_12C);
 }
@@ -9169,7 +9169,7 @@ int __fastcall sub_801469C(int a1)
 
 
 // 0x801472a
-int sub_801472A()
+int battle_clearObjectStatusFlagsIfNotPhase1()
 {
     int v0; // r10
     int result; // r0
@@ -14150,7 +14150,7 @@ signed int __noreturn object_continuePanelMoveStep()
     object_updateCollisionPanels(v0);
     object_clearFlag(&loc_1040);
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    v1 = sub_800F598();
+    v1 = battle_getHitSlideDelta();
     *(v0 + 28) = v1;
     *(v0 + 29) = v2;
     *(v0 + 11) = v3;
@@ -14289,7 +14289,7 @@ signed int __noreturn ai_beginPanelSlideMove()
     object_updateCollisionPanels(v0);
     object_clearFlag(&loc_1040);
     object_removePanelReserve(*(v0 + 20), *(v0 + 21));
-    *(v0 + 28) = sub_800F598();
+    *(v0 + 28) = battle_getHitSlideDelta();
     *(v0 + 29) = v1;
     *(v0 + 12) = v2;
     *(v0 + 11) = 6;
@@ -14501,7 +14501,7 @@ signed int sub_8018094()
 
 
 // 0x80180a8
-int sub_80180A8()
+int battle_wobbleThenLaunchAtPanel()
 {
     int v0; // r5
     int v1; // r1
@@ -19970,7 +19970,7 @@ void sub_801D2A0()
 
 
 // 0x801d2a4
-void __noreturn sub_801D2A4()
+void __noreturn copy_updateAnimatedStrip()
 {
     __int16 v0; // r0
     int v1; // [sp+0h] [bp-18h]
@@ -20844,7 +20844,7 @@ signed int __fastcall SetCustGauge(signed int result)
 
 
 // 0x801dfb8
-int __fastcall sub_801DFB8(int a1)
+int __fastcall battle_addHudField20(int a1)
 {
     int result; // r0
 

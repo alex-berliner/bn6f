@@ -5330,7 +5330,7 @@ petNaviGrantElementFolderEvent:
 	bl GetCurPETNavi // () -> u8
 	tst r0, r0
 	bne loc_809CDE4
-	bl sub_809CE40
+	bl pet_copyNaviStatsFieldsToFirstNavi
 	b loc_809CDE8
 loc_809CDE4:
 	bl reloadCurNaviBaseStats_8120df0
@@ -5389,9 +5389,9 @@ loc_809CE38:
 
 // symdb: Copies NaviStats bytes at offsets 0x2D-0x30 and 0x56-0x5B from the PET's currently selected navi record into navi 0's record via GetCurPETNaviStatsByte/SetCurPETNaviStatsByte, using a 0xFF-terminated offset table at byte_809CE84.
 // symdb: () -> void; no meaningful return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809CE40.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_copyNaviStatsFieldsToFirstNavi.yaml
 	thumb_local_start
-sub_809CE40:
+pet_copyNaviStatsFieldsToFirstNavi:
 	push {r4-r7,lr}
 	sub sp, sp, #0x28
 	mov r7, sp
@@ -5480,7 +5480,7 @@ cutscenescript_809CF28:
 	cs_end_for_map_reload_maybe_8037c64
 	cs_end_for_map_reload_maybe_8037c64
 
-	thumb_func_end sub_809CE40
+	thumb_func_end pet_copyNaviStatsFieldsToFirstNavi
 
 // symdb: Conditional entry point that starts the BBS GUI cutscene when the player can advance forward and a BBS request is pending.
 // symdb: void tryStartBbsGuiCutscene_809CF2C(void); // inputs: r10 (caller-saved, preserved by extra

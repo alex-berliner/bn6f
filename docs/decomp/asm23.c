@@ -492,7 +492,7 @@ signed int battleObject_beastModeAiPhaseInit_80898B2()
 
 
 // 0x80898e8
-signed int __fastcall sub_80898E8(int a1)
+signed int __fastcall battle_processChipLockout(int a1)
 {
     _BYTE *v1; // r5
     char v2; // zf
@@ -536,7 +536,7 @@ signed int owPlayer_cutsceneTurnAnimStep()
         battle_tickChipLockout_8089CB4();
         if ( !v1 )
         {
-            v2 = sub_8142B58();
+            v2 = getSoulWeaponCursorDir8ByEffect();
             sub_809E2AE(v2);
             v3 = sub_809E2B8();
             sub_809E13C(byte_8089958[v3]);
@@ -550,7 +550,7 @@ signed int owPlayer_cutsceneTurnAnimStep()
 
 
 // 0x8089960
-signed int sub_8089960()
+signed int battle_chipLockoutExpire()
 {
     _BYTE *v0; // r5
     char v1; // zf

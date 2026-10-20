@@ -1613,7 +1613,7 @@ loc_800C446:
 	mov r3, #0
 	mov r4, #0x28 
 	mov r6, #0x32 
-	bl sub_80C5B76
+	bl spawnBattleObjectType3Kind7
 locret_800C45A:
 	pop {r4-r7,pc}
 loc_800C45C:

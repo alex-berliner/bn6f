@@ -4064,7 +4064,7 @@ off_8001C24:
   // 0xc manual palette transform
 	.word sprite_gfxAnimState_GotoNext_8002310+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x10 play sound effect
-	.word sub_800232A+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+	.word sprite_playFrameSound+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x14 set or clear event flag
 	.word sprite_setOrClearEventFlag+1 // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
    // 0x18 copy 0x40 sized tiles
@@ -5085,9 +5085,9 @@ sprite_gfxAnimState_GotoNext_8002310: // (self: * GFXAnimState $r7, params: * GF
 // symdb: If the sound ID at offset 0 of the GFXAnimDataNext pointer in r0 is non-negative, calls PlaySoundEffect with that ID; otherwise returns without playing anything.
 // symdb: (r0 = * GFXAnimDataNext, frame data whose offset-0 field oGFXAnimData_ParamNext holds the sound
 // symdb: ID) -> r0 clobbered; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800232A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_playFrameSound.yaml
 	thumb_local_start
-sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
+sprite_playFrameSound: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	push {lr}
 	ldr r0, [r0,#oGFXAnimData_ParamNext - oGFXAnimData_ParamNext]
 	cmp r0, #0
@@ -5095,7 +5095,7 @@ sub_800232A: // (self: * GFXAnimState $r7, params: * GFXAnimDataNext) -> ()
 	bl PlaySoundEffect
 .noSound
 	pop {pc}
-	thumb_func_end sub_800232A
+	thumb_func_end sprite_playFrameSound
 
 // symdb: Animation/script callback that sets or clears a single event-work flag depending on the sign of the value stored in its parameter struct.
 // symdb: (r0 = pointer to a struct whose first u32 word is a signed flag id) -> r0 clobbered; calls

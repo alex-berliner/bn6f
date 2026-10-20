@@ -238,7 +238,7 @@ LABEL_31:
 		}
 	}
 LABEL_27:
-	sub_813064C();
+	object_queueChoiceOam();
 	JUMPOUT(loc_812F294);
 }
 
@@ -331,7 +331,7 @@ LABEL_21:
 			}
 			if ( !*(v0 + 3) )
 			{
-				sub_813064C();
+				object_queueChoiceOam();
 				t4_drawPlayerBox();
 			}
 		}
@@ -584,7 +584,7 @@ void sub_812F530()
 											battle_resetEStructRecords_8046664();
 											sub_81301DC();
 											sub_8130208();
-											sub_813064C();
+											object_queueChoiceOam();
 											t4_drawPlayerBox();
 											battle_drawFolderScreen();
 											t4_loadSceneBackground();
@@ -758,7 +758,7 @@ LABEL_31:
 						*(v0 + 3) = 0;
 						sub_811A940(0, 6);
 					}
-					sub_811A914(*(v0 + 21), 6);
+					battle_applyObjOamAttrByIndex(*(v0 + 21), 6);
 				}
 				else
 				{
@@ -1016,7 +1016,7 @@ void __fastcall __noreturn sub_812FA0C(int a1)
     char v13; // zf
     u32 v14; // r0
 
-    sub_813064C();
+    object_queueChoiceOam();
     t4_drawPlayerBox();
     *(v1 + 16) = 19;
     v2 = sub_803EAE4();
@@ -1137,7 +1137,7 @@ void sub_812FAE4()
             v5 = *(v0 + 40) - 1;
             if ( *(v0 + 40) == 1 )
             {
-                if ( sub_8130780(0) || petNaviCheckElementChipLimits(v9) )
+                if ( folderHasFlaggedChip(0) || petNaviCheckElementChipLimits(v9) )
                     v10 = 8;
                 else
                     v10 = 32;

@@ -6102,7 +6102,7 @@ subsystem_launchChipTrader:
 	pop {r4,r5,pc}
 loc_8005D5C:
 	mov r0, r4
-	bl sub_804A2CC
+	bl submenu_initSceneChipTrader
 
 	mov r5, r10
 	ldr r5, [r5,#oToolkit_GameStatePtr]
@@ -7523,9 +7523,9 @@ off_800691C:
 // symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
 // symdb: (r0 = pointer to an 11-field task descriptor) -> r0 = result of req_enqueueTask; r4-r7 clobbered
 // symdb: (saved/restored)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8006920.yaml
-	thumb_func_start sub_8006920
-sub_8006920:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initWindowReqAndEnqueue.yaml
+	thumb_func_start chatbox_initWindowReqAndEnqueue
+chatbox_initWindowReqAndEnqueue:
 	push {r4-r7,lr}
 	mov r4, r0
 	ldr r5, off_8006B8C // =unk_20096A0
@@ -7581,7 +7581,7 @@ off_8006988:
 	.word ZeroFillByWord+1 // (mut_mem: *mut (), num_bytes: usize) -> ()
 off_800698C:
 	.word req_enqueueTask+1
-	thumb_func_end sub_8006920
+	thumb_func_end chatbox_initWindowReqAndEnqueue
 
 	thumb_func_start sub_8006990
 sub_8006990:
@@ -10587,7 +10587,7 @@ battle_stepSubstateToState4_8007C14:
 	ldrb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	tst r0, r0
 	bne loc_8007C2E
-	bl sub_803DDA4
+	bl initLinkState
 	mov r0, #4
 	strb r0, [r5,#oBattleState_SubPhaseInitFlag]
 	b locret_8007C4C
@@ -11886,7 +11886,7 @@ loc_80085DC:
 	bl battle_isTimeStop
 	bne loc_80085E8
 	mov r0, #0xd
-	bl sub_801DFB8
+	bl battle_addHudField20
 loc_80085E8:
 	bl battle_shouldPlayDeathAnim_800A21C
 	cmp r0, #0
@@ -11900,8 +11900,8 @@ locret_80085FC:
 	pop {pc}
 	thumb_func_end battle_dispatchNextPhase
 
-// symdb: Runs the same routine (sub_8008622) over the alive player-actor list and the alive opponent-actor list during battle phase dispatch.
-// symdb: (r0 = battleState via r10) -> r0 = result of last sub_8008622 call; calls sub_8008622(listHead,
+// symdb: Runs the same routine (object_syncField24ToMinOrReset) over the alive player-actor list and the alive opponent-actor list during battle phase dispatch.
+// symdb: (r0 = battleState via r10) -> r0 = result of last object_syncField24ToMinOrReset call; calls object_syncField24ToMinOrReset(listHead,
 // symdb: listHead+4, index) twice
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_forEachAliveActor.yaml
 	thumb_local_start
@@ -11914,22 +11914,22 @@ battle_forEachAliveActor:
 	mov r1, #oBattleState_AlivePlayerActors+4
 	ldr r1, [r5,r1]
 	ldrb r2, [r5,#oBattleState_AliveActorTurnIndex]
-	bl sub_8008622
+	bl object_syncField24ToMinOrReset
 	mov r0, #oBattleState_AliveOpponentActors
 	ldr r0, [r5,r0]
 	mov r1, #oBattleState_AliveOpponentActors+4
 	ldr r1, [r5,r1]
 	ldrb r2, [r5,#oBattleState_OpponentAliveCount]
-	bl sub_8008622
+	bl object_syncField24ToMinOrReset
 	pop {r5,pc}
 	thumb_func_end battle_forEachAliveActor
 
 // symdb: Syncs the halfword at +0x24 of two object structs to the smaller of the two values; if r2<2 or either pointer is null, it instead writes 0 to both fields, dispatches event 0x820080, and clears bits 0x820080 in dword_20352C0.
 // symdb: (r0 = struct ptr A, r1 = struct ptr B, r2 = mode) -> r0 = none; writes halfword [x+0x24] on both
 // symdb: structs, may call dispatch and clear flag bits; returns without writing if r0 is null
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8008622.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_syncField24ToMinOrReset.yaml
 	thumb_local_start
-sub_8008622:
+object_syncField24ToMinOrReset:
 	push {lr}
 	cmp r2, #2
 	bge loc_8008630
@@ -11967,7 +11967,7 @@ loc_800865C:
 	strh r2, [r1,#0x24]
 locret_8008662:
 	pop {pc}
-	thumb_func_end sub_8008622
+	thumb_func_end object_syncField24ToMinOrReset
 
 // symdb: Dispatches an entity's per-frame update to one of four handlers selected by its state byte.
 // symdb: (r0 = arg? actually clobbered, r5 = entity struct pointer) -> tail-calls handler table[byte at

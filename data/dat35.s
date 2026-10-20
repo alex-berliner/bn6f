@@ -319,7 +319,7 @@ loc_812F284::
 loc_812F28E::
 	b loc_812F290
 loc_812F290::
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -421,7 +421,7 @@ loc_812F350::
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne locret_812F38C
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 	b locret_812F38C
 loc_812F366::
@@ -764,7 +764,7 @@ loc_812F5EE::
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_81301DC
 	bl sub_8130208
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 	bl battle_drawFolderScreen
 	bl t4_loadSceneBackground
@@ -951,7 +951,7 @@ loc_812F764::
 loc_812F77C::
 	ldrb r0, [r5,#0x15]
 	mov r1, #6
-	bl sub_811A914
+	bl battle_applyObjOamAttrByIndex
 	b loc_812F7B6
 loc_812F786::
 	cmp r0, #3
@@ -1289,7 +1289,7 @@ dword_812FA08::
 	thumb_local_start
 sub_812FA0C::
 	push {r4-r7,lr}
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 	mov r0, #0x13
 	strb r0, [r5,#0x10]
@@ -1466,7 +1466,7 @@ loc_812FB5A::
 	strh r1, [r4,#0xa]
 	b loc_812FB86
 loc_812FB66::
-	bl sub_8130780
+	bl folderHasFlaggedChip
 	tst r0, r0
 	beq loc_812FB72
 loc_812FB6E::

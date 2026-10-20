@@ -481,7 +481,7 @@ loc_808C3DE:
 	str r0, [r7,#8]
 	b loc_808C3F2
 loc_808C3EE:
-	bl sub_8143294
+	bl t3_tickCrows
 loc_808C3F2:
 	mov r0, #0
 	mov r1, #1

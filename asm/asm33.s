@@ -2841,7 +2841,7 @@ off_812460C:
 	.word chatbox_textShowNextPage+1
 	.word chatbox_textShowNextPage+1
 	.word npc_runBeastOutDialog+1
-	.word sub_812469C+1
+	.word npc_showTextByStoryFlag+1
 	.word sub_81246D8+1
 	.word npc_conditionalChat+1
 	thumb_func_end sub_81245D4
@@ -2926,9 +2926,9 @@ locret_8124698:
 // symdb: Saves r0 into the NPC struct at +0x10, then based on EVENT_1709 sets animation/state bytes at +2 and +3 and copies the byte into the chatbox at +0x4C, running text script 7 (flag clear) or 11 (flag set) from archive eTextScript201C100.
 // symdb: (r0 = byte value (e.g. text/variant id), r5 = object struct, r10 = toolkit) -> r0 = script-
 // symdb: runner result; sets struct fields and chatbox text
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812469C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_showTextByStoryFlag.yaml
 	thumb_local_start
-sub_812469C:
+npc_showTextByStoryFlag:
 	push {r4,lr}
 	strb r0, [r5,#0x10]
 	movflag EVENT_1709
@@ -2957,7 +2957,7 @@ loc_81246C2:
 locret_81246D4:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812469C
+	thumb_func_end npc_showTextByStoryFlag
 
 	thumb_local_start
 sub_81246D8:
@@ -3879,7 +3879,7 @@ sub_8124F8C:
 	strh r0, [r5,#0x38]
 	mov r0, #0x1e
 	bl submenu_handleEntryScreenInput
-	bl sub_81268D8
+	bl e_setField13FromChipAtIndex
 	bl battle_runTransition_8125444
 	bl battle_redrawChipSelectScrollColumn
 	bl battle_transitionAnimQueueOam
@@ -7433,9 +7433,9 @@ locret_81268D6:
 
 // symdb: Adds two u16 fields from the caller-supplied r5 struct, uses the sum as a 4-byte-record index into dword_201F420, treats the loaded u16 as a chip ID, fetches the 44-byte chip record via getChip8021DA8, takes byte 7 (element), and writes it via e_setField13.
 // symdb: (r5 = current entity/context struct) -> r0 = result of e_setField13; no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81268D8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setField13FromChipAtIndex.yaml
 	thumb_local_start
-sub_81268D8:
+e_setField13FromChipAtIndex:
 	push {lr}
 	ldrh r0, [r5,#0x32]
 	ldrh r1, [r5,#0x36]
@@ -7523,7 +7523,7 @@ byte_8126B1C:
 	.byte 0xFF, 0xFF, 0xFF, 0x0, 0xB5, 0xC, 0x20, 0x28, 0x70, 0x0, 0x20, 0x68, 0x70
 	.byte 0xA8, 0x70, 0xE8, 0x70, 0x0, 0xBD, 0x0, 0xB5, 0x17, 0x20, 0x13, 0x21, 0x8
 	.byte 0xF7, 0xE5, 0xFA, 0xFF, 0xF7, 0xF1, 0xFF, 0x0, 0xBD
-	thumb_func_end sub_81268D8
+	thumb_func_end e_setField13FromChipAtIndex
 
 // symdb: Top-level state-machine dispatcher for the MegaMan status menu, tail-calling one of three state handlers based on the menu object's state byte.
 // symdb: void statusMenu_dispatchState(void* menu /* r5 */) — reads menu->state (u8 at r5+1, values 0/4/8
@@ -11849,7 +11849,7 @@ off_8128CCC:
 	.word off_8128CD0
 off_8128CD0:
 	.word init_eventSceneState+1
-	.word sub_8128DCC+1
+	.word battle_tickStateAndEntities+1
 	thumb_func_end sub_8128CBC
 
 // symdb: Init for a story-event scene state: sets EVENT_197/1AD, resets VRAM/palette/BG tile buffer, loads BG/text GFX, spawns scene eStructs, optionally decompresses a text script, then transitions to state 4.
@@ -11965,9 +11965,9 @@ off_8128DC8:
 // symdb: Per-frame tick: dispatches to a handler via a jump table indexed by the state byte at [r5+2], then unconditionally runs entity_runAllUpdateHandlers and battle_updateEStructSprites.
 // symdb: (r5 = task/object record; state byte at r5+2 selects handler) -> r0 = clobbered; calls into
 // symdb: state handler, entity_runAllUpdateHandlers, battle_updateEStructSprites
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128DCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_tickStateAndEntities.yaml
 	thumb_local_start
-sub_8128DCC:
+battle_tickStateAndEntities:
 	push {lr}
 	ldr r0, off_8128DE4 // =off_8128DE8 
 	ldrb r1, [r5,#2]
@@ -11984,7 +11984,7 @@ off_8128DE8:
 	.word sub_8128DF4+1
 	.word sub_8128E2C+1
 	.word chatbox_setMessage+1
-	thumb_func_end sub_8128DCC
+	thumb_func_end battle_tickStateAndEntities
 
 	thumb_local_start
 sub_8128DF4:
@@ -14514,7 +14514,7 @@ loc_8129FCE:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 locret_8129FDC:
 	pop {pc}
 	.byte 0, 0
@@ -14895,7 +14895,7 @@ off_812A294:
 	.word sub_812A2B4+1
 	.word sub_812A2EC+1
 	.word sub_812A350+1
-	.word sub_812A3C8+1
+	.word npc_dialogBranchStep+1
 	.word sub_812A3FC+1
 	.word screens3_initScreen+1
 	.word sub_812A494+1
@@ -15033,9 +15033,9 @@ off_812A3BC:
 
 // symdb: Object/NPC step handler: on clear flag, calls sub_813D978, writes state fields (0x3C/4/5) into r5, and plays text script 0x24 of eTextScript201BA20 via the chatbox wrapper; on set flag, calls sub_803CB18 with r0=0x10 and only on nonzero return writes 0x1C to r5+0xC and 8 to r5+0x28.
 // symdb: () -> void; uses r5 as object/work struct base, no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A3C8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/npc_dialogBranchStep.yaml
 	thumb_local_start
-sub_812A3C8:
+npc_dialogBranchStep:
 	push {lr}
 	bl test0x200bc50_0x5_813D60C
 	bne loc_812A3E8
@@ -15060,7 +15060,7 @@ loc_812A3E8:
 locret_812A3F8:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812A3C8
+	thumb_func_end npc_dialogBranchStep
 
 	thumb_local_start
 sub_812A3FC:
@@ -15169,7 +15169,7 @@ sub_812A4AC:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 	bl sub_803EA78
 	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
@@ -15255,7 +15255,7 @@ off_812A558:
 	.word sub_812A5F8+1
 	.word ow_beginScreenFadeUnlessFlagSet+1
 	.word initScreenSceneAndFadeIn+1
-	.word sub_812A6F8+1
+	.word rfu_tryInitSessionStateStep+1
 	.word sub_812A758+1
 	thumb_func_end sub_812A540
 
@@ -15365,7 +15365,7 @@ loc_812A628:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 	b loc_812A666
 loc_812A648:
 	bl rfu_initWirelessSession
@@ -15381,7 +15381,7 @@ loc_812A658:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 loc_812A666:
 	bl sub_813D5D0
 	mov r6, r0
@@ -15465,12 +15465,12 @@ off_812A6F4:
 	.word byte_8129150
 	thumb_func_end initScreenSceneAndFadeIn
 
-// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
+// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs submenu_resetState. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
 // symdb: (r5 = link connection state struct, set by caller) -> r0 = clobbered; updates struct fields +0x1
 // symdb: (state=0x10), +0x2 (sub-state=0), +0x28 (retry count), +0xC (state=0x18 in alternate branch)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A6F8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryInitSessionStateStep.yaml
 	thumb_local_start
-sub_812A6F8:
+rfu_tryInitSessionStateStep:
 	push {lr}
 	mov r0, #0x10
 	bl rfu_testStatusFlags
@@ -15485,7 +15485,7 @@ sub_812A6F8:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 	b loc_812A742
 loc_812A722:
 	bl rfu_initWirelessSession
@@ -15501,7 +15501,7 @@ loc_812A732:
 	mov r0, #0
 	strb r0, [r5,#2]
 	strh r0, [r5,#0x28]
-	bl sub_8132398
+	bl submenu_resetState
 	b loc_812A742
 loc_812A742:
 	bl sub_81469A0
@@ -15514,7 +15514,7 @@ loc_812A74C:
 	strb r0, [r5,#0xc]
 locret_812A756:
 	pop {pc}
-	thumb_func_end sub_812A6F8
+	thumb_func_end rfu_tryInitSessionStateStep
 
 	thumb_local_start
 sub_812A758:
@@ -16201,7 +16201,7 @@ loc_812AC56:
 	ldrb r0, [r5,#3]
 	tst r0, r0
 	bne loc_812AC6E
-	bl sub_803DDA4
+	bl initLinkState
 	mov r0, #4
 	strb r0, [r5,#3]
 	b locret_812AC7E
@@ -17877,9 +17877,9 @@ off_812B854:
 	.word off_812B858
 off_812B858:
 	.word sub_812B8DC+1
-	.word sub_812B97C+1
+	.word e_recvQueueEntries+1
 	.word link_verifyChecksumAndMatchPartner+1
-	.word sub_812BB08+1
+	.word camera_checkLinkConnectionType+1
 	.word sub_812BC14+1
 	.word sub_812BF6C+1
 	.word sub_812C07C+1
@@ -17932,9 +17932,9 @@ off_812B8BC:
 	.word off_812B8C0
 off_812B8C0:
 	.word sub_812B8DC+1
-	.word sub_812B97C+1
+	.word e_recvQueueEntries+1
 	.word loc_812BA1C+1
-	.word sub_812BB08+1
+	.word camera_checkLinkConnectionType+1
 	.word sub_812BDC0+1
 	.word sub_812BFF4+1
 	.word sub_812C07C+1
@@ -18027,9 +18027,9 @@ locret_812B978:
 // symdb: State-machine step that dispatches via sub_803EAE4 (mode 4 -> sub_812C24C, mode 1 -> exit), sets state r5+0x10=6, calls sub_812C0CC on bit 0x10, then drains a queue entry via get_eLinkStateUnk38/sub_81323B0: on a tag match (halfword at entry+2 == 0x8888 + r5+0x2e) CopyWords moves 8 words into unk_2033C00 + r5+0x3c, advances the cursor, and calls sub_812C160; when the cursor reaches r5+0x34 it sets r5+0x2=8.
 // symdb: (r0-r3 unused; r5 = global transfer-state struct) -> r0 clobbered; writes state byte r5+0x10=6,
 // symdb: cursor r5+0x3c, completion byte r5+0x2=8, buffer unk_2033C00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B97C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_recvQueueEntries.yaml
 	thumb_local_start
-sub_812B97C:
+e_recvQueueEntries:
 	push {r4-r7,lr}
 	bl sub_803EAE4
 	cmp r0, #4
@@ -18090,7 +18090,7 @@ loc_812B9F4:
 	b locret_812B9F6
 locret_812B9F6:
 	pop {r4-r7,pc}
-	thumb_func_end sub_812B97C
+	thumb_func_end e_recvQueueEntries
 
 // symdb: Link-comm state handler: checksums the received buffer at unk_2033C00, then matches the link partner's eLinkState fields against a table to set the next state.
 // symdb: (r5 = comm state-machine context: +0x34 payload size, +0x26 result flag, +0x10 state, +0x2
@@ -18248,9 +18248,9 @@ dword_812BB00:
 // symdb: (no register inputs; r5 must already point at the camera/link struct set up by the caller) ->
 // symdb: r0/r1 clobbered; writes [r5+0x02]=0x10, [r5+0x0C]=0, [r5+0x03]=0 on success, or [r5+0x10]=2 on
 // symdb: partial match, or copies [r5+0x26] into the camera end struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BB08.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_checkLinkConnectionType.yaml
 	thumb_local_start
-sub_812BB08:
+camera_checkLinkConnectionType:
 	push {lr}
 	bl sub_803EAE4
 	cmp r0, #4
@@ -18385,7 +18385,7 @@ locret_812BC0C:
 	.balign 4, 0
 dword_812BC10:
 	.word 0xFFFFFFFF
-	thumb_func_end sub_812BB08
+	thumb_func_end camera_checkLinkConnectionType
 
 	thumb_local_start
 sub_812BC14:
@@ -18402,7 +18402,7 @@ off_812BC24:
 off_812BC28:
 	.word sub_812AC14+1
 	.word submenu_chipLibraryMergeNewFlags+1
-	.word sub_812BD34+1
+	.word object_runStateScriptOnTimer+1
 	.word sub_812BD60+1
 	thumb_func_end sub_812BC14
 
@@ -18542,9 +18542,9 @@ off_812BD30:
 
 // symdb: Object update tick: decrements the halfword timer at [r5+0x28] and, on expiry, runs one of three text-script indices (0x34 if state==0x11, 0x2C if state==0x0F, else 0x33 plus PlaySoundEffect(0x73)) from eTextScript201BA20, then stores 0xC into [r5+0x0C].
 // symdb: (r5 = entity/object struct, preserved from caller) -> no return value used; destroys r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BD34.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_runStateScriptOnTimer.yaml
 	thumb_local_start
-sub_812BD34:
+object_runStateScriptOnTimer:
 	push {lr}
 	ldrh r0, [r5,#0x28]
 	sub r0, #1
@@ -18567,7 +18567,7 @@ loc_812BD54:
 locret_812BD5C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_812BD34
+	thumb_func_end object_runStateScriptOnTimer
 
 	thumb_local_start
 sub_812BD60:
@@ -18628,17 +18628,17 @@ off_812BDD0:
 	.word off_812BDD4
 off_812BDD4:
 	.word sub_812AC14+1
-	.word sub_812BDE4+1
-	.word sub_812BEEC+1
+	.word e_checkCountersSetFlags+1
+	.word object_waitTimerThenChatboxScript+1
 	.word rfu_menuHandleCancelBtn+1
 	thumb_func_end sub_812BDC0
 
 // symdb: Iterates 20 halfword counters, updating the stored record and setting two paired event flags per slot whose count has grown, then updates context fields and tail-calls the multi-entry handler if any flag was set.
 // symdb: (r5 = context struct (fields 0xc, 0x10, 0x28 written), no args read) -> r0 = tail-call result of
 // symdb: sub_803F798 (or unchanged if no update); sets event flags via SetEventFlag
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BDE4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_checkCountersSetFlags.yaml
 	thumb_local_start
-sub_812BDE4:
+e_checkCountersSetFlags:
 	push {r4-r7,lr}
 	ldr r6, off_812BE40 // =unk_20018C0 
 	ldr r4, off_812BE3C // =unk_2033C00 
@@ -18711,13 +18711,13 @@ byte_812BE9C:
 	.byte 0xCC, 0x0, 0x0, 0x0, 0xCD, 0x0, 0x0, 0x0, 0xCE, 0x0, 0x0, 0x0, 0xCB
 	.byte 0x0, 0x0, 0x0, 0xD0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0
-	thumb_func_end sub_812BDE4
+	thumb_func_end e_checkCountersSetFlags
 
 // symdb: Object tick: decrements the halfword timer at r5+0x28; on expiry, if byte at r5+0x10==0x11 runs text script 0x37 silently, otherwise plays sound 0x73 and runs text script 0x36, then writes 0xC to r5+0xc and returns.
 // symdb: (r5 = object/NPC struct, hidden arg) -> r0 = 0; updates [r5+0x28], [r5+0xc]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812BEEC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_waitTimerThenChatboxScript.yaml
 	thumb_local_start
-sub_812BEEC:
+object_waitTimerThenChatboxScript:
 	push {lr}
 	ldrh r0, [r5,#0x28]
 	sub r0, #1
@@ -18736,7 +18736,7 @@ loc_812BF06:
 	strb r0, [r5,#0xc]
 locret_812BF0E:
 	pop {pc}
-	thumb_func_end sub_812BEEC
+	thumb_func_end object_waitTimerThenChatboxScript
 
 // symdb: A/B button handler for an RFU/wireless menu state: on press, advances the menu state machine (to handler 0x14, or 0x18 in state 0x11 with an active wireless mode) and tears down the RFU link while fading the screen.
 // symdb: (r5 = menu state record) -> void; sets record fields and global screen fade
@@ -19020,7 +19020,7 @@ sub_812C0EC:
 	b loc_812C10C
 loc_812C104:
 	ldr r0, off_812C18C // =unk_2034400 
-	bl sub_812C194
+	bl event_mergeFlagRegions
 	ldr r1, off_812C180 // =0x48 
 loc_812C10C:
 	strh r1, [r7,#8]
@@ -19113,9 +19113,9 @@ dword_812C190:
 // symdb: If encryption_800710a returns zero, zero-fills 0x50 bytes at r0 then OR-merges three 0x40-byte event-flag regions (bit offsets 0x1E20, 0x2020, 0x2220) from EventFlagsPtr into r0[0..0x3F], storing their byte-sum word at r0[0x40]; otherwise just zero-fills the 0x50 bytes and returns.
 // symdb: (r0 = dest buffer, >=0x44 bytes) -> fills r7[0..0x3F] with the OR of three flag regions and
 // symdb: r7[0x40] = byte sum; flags from encryption_800710a select merge-vs-zero path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812C194.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/event_mergeFlagRegions.yaml
 	thumb_local_start
-sub_812C194:
+event_mergeFlagRegions:
 	push {r4-r7,lr}
 	mov r7, r0
 	bl encryption_800710a
@@ -19183,7 +19183,7 @@ loc_812C1F6:
 	.balign 4, 0
 off_812C218:
 	.word 0x40
-	thumb_func_end sub_812C194
+	thumb_func_end event_mergeFlagRegions
 
 	thumb_local_start
 sub_812C21C:

@@ -843,10 +843,10 @@ jt_80895C0:
 	.word battle_tickBeastSp_808985A+1
 	.word sub_808989C+1
 	.word battleObject_beastModeAiPhaseInit_80898B2+1
-	.word sub_80898E8+1
+	.word battle_processChipLockout+1
 	.word ai_setStateIfTeamAlive+1
 	.word owPlayer_cutsceneTurnAnimStep+1
-	.word sub_8089960+1
+	.word battle_chipLockoutExpire+1
 	.word sub_808997E+1
 	.word sub_808999C+1
 	.word sub_80899D8+1
@@ -1256,9 +1256,9 @@ loc_80898E4:
 // symdb: Per-frame chip-lockout handler: decrements AIData+0x18 via battle_tickChipLockout_8089CB4; if the timer has not expired it returns 1 immediately, else calls sub_8142BFA, writes 0x40 to [r5] and returns 1.
 // symdb: (r5 = some battle/AI struct pointer, set by caller) -> r0 = 1 always; calls
 // symdb: battle_tickChipLockout_8089CB4 and sub_8142BFA
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80898E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processChipLockout.yaml
 	thumb_local_start
-sub_80898E8:
+battle_processChipLockout:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_80898F8
@@ -1268,7 +1268,7 @@ sub_80898E8:
 loc_80898F8:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_80898E8
+	thumb_func_end battle_processChipLockout
 
 // symdb: If any actor on team 0x10 is still alive, triggers an AI action, loads a 30-frame value into AIData+0x18, and sets the AI state byte to 0x44; always returns 1.
 // symdb: (no meaningful args; r5 = AI/entity context set up by callee) -> r0 = 1; flags from tst r0,r0
@@ -1302,7 +1302,7 @@ owPlayer_cutsceneTurnAnimStep:
 	bne loc_808994E
 	bl battle_tickChipLockout_8089CB4
 	beq loc_808994E
-	bl sub_8142B58
+	bl getSoulWeaponCursorDir8ByEffect
 	bl SetOWPlayerFacingDirection
 	bl GetOWPlayerFacingDirection
 	ldr r1, off_8089954 // =byte_8089958 
@@ -1326,9 +1326,9 @@ byte_8089958:
 // symdb: When called each frame for an entity with a chip-lockout timer: if the [r5+0x13] flag is clear, ticks the lockout timer; if the ticker reports the lockout just expired, starts a mode-4 screen fade via SetScreenFade(4,0xFF) and transitions the entity's state byte at [r5] to 0x4C. Always returns 1.
 // symdb: (r5 = entity/AI struct, set by caller) -> r0 = 1 always; calls SetScreenFade(4, 0xFF) and stores
 // symdb: state 0x4C on expiry
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8089960.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_chipLockoutExpire.yaml
 	thumb_local_start
-sub_8089960:
+battle_chipLockoutExpire:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x13]
 	tst r0, r0
@@ -1343,7 +1343,7 @@ sub_8089960:
 loc_808997A:
 	mov r0, #1
 	pop {r4-r7,pc}
-	thumb_func_end sub_8089960
+	thumb_func_end battle_chipLockoutExpire
 
 	thumb_local_start
 sub_808997E:

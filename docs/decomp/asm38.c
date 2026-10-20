@@ -123,7 +123,7 @@ int __fastcall _SetInterruptCallback(int result, void *a2)
 
 
 // 0x3005dec
-int __fastcall sub_3005DEC(int result)
+int __fastcall irq_enableBits(int result)
 {
     __int16 *v1; // r3
     __int16 v2; // r4
@@ -1663,7 +1663,7 @@ char *__fastcall sub_3006DC8(int a1)
 
 
 // 0x3006e1c
-int __fastcall sub_3006E1C(int a1)
+int __fastcall chatbox_applyRowOffsets(int a1)
 {
     int v1; // r9
     int v2; // r10

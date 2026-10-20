@@ -415,7 +415,7 @@ void __fastcall panelObject_update_800C380(int a1, int a2)
                 if ( *(v2 + 10) > 3 )
                     v13 = 70;
                 if ( *byte_203CB04 == v13 )
-                    sub_80C5B76(*(v2 + 10), *(v2 + 11), 0, 0);
+                    spawnBattleObjectType3Kind7(*(v2 + 10), *(v2 + 11), 0, 0);
                 break;
             default:
                 if ( v5 < 9 || v5 > 12 )

@@ -20,7 +20,7 @@ sub_8130020:
 	bl loc_81304AA
 	mov r0, #0
 	mov r1, #6
-	bl sub_811A914
+	bl battle_applyObjOamAttrByIndex
 	pop {r4-r7,pc}
 	.balign 4, 0
 byte_8130054:
@@ -86,7 +86,7 @@ t4_sceneInit:
 	bl t4_loadSceneBackground
 	bl sub_81301DC
 	bl sub_8130208
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 	bl t4_refreshChipPackBuffer
 	bl battle_drawFolderScreen
@@ -865,9 +865,9 @@ off_8130648:
 // symdb: Queues a single OAM sprite whose source halfword within the scene struct is chosen from a 3-entry offset table indexed by struct field 0xC (0 = skip).
 // symdb: (r5 = scene/choice struct via callees, no args passed in) -> r0 = OAM queue result; r0 on entry
 // symdb: unused; struct field 0xC selects entry (0 = draw nothing).
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813064C.yaml
-	thumb_func_start sub_813064C
-sub_813064C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_queueChoiceOam.yaml
+	thumb_func_start object_queueChoiceOam
+object_queueChoiceOam:
 	push {r4-r7,lr}
 	bl t4_getWork
 	mov r5, r0
@@ -899,7 +899,7 @@ off_8130684:
 	.word dword_8130688
 dword_8130688:
 	.word 0x382E24
-	thumb_func_end sub_813064C
+	thumb_func_end object_queueChoiceOam
 
 // symdb: Builds (or clears) a 0x60-byte record at unk_202708C: 0x20 bytes of text from the chatbox script pool followed by a 0x3C-byte selected-chip entry plus a halfword checksum.
 // symdb: () -> r0 = undefined; writes unk_202708C[0..0x60) and fields of the struct returned by
@@ -1051,9 +1051,9 @@ off_813077C:
 // symdb: Returns 1 if any chip in the active folder's 30-chip list has chipdata[0x16]&0x10 set, else 0; r1 = list pointer past header.
 // symdb: () -> r0 = 1 if a chip with chipdata[0x16]&0x10 was found (checked in loop order), else 0; r1 =
 // symdb: pointer to the scanned list (base+0x20); no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8130780.yaml
-	thumb_func_start sub_8130780
-sub_8130780:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folderHasFlaggedChip.yaml
+	thumb_func_start folderHasFlaggedChip
+folderHasFlaggedChip:
 	push {r4-r7,lr}
 	mov r7, #1
 	ldr r4, off_81307B8 // =unk_202714C 
@@ -1085,12 +1085,12 @@ off_81307B4:
 	.word unk_20270EC
 off_81307B8:
 	.word unk_202714C
-	thumb_func_end sub_8130780
+	thumb_func_end folderHasFlaggedChip
 
 	thumb_func_start sub_81307BC
 sub_81307BC:
 	push {lr}
-	bl sub_8130780
+	bl folderHasFlaggedChip
 	tst r0, r0
 	bne loc_81307D8
 	mov r0, r1
@@ -1128,7 +1128,7 @@ sub_81307F4:
 	ldrb r0, [r5,r0]
 	cmp r0, #4
 	bne locret_813080C
-	bl sub_813064C
+	bl object_queueChoiceOam
 	bl t4_drawPlayerBox
 locret_813080C:
 	pop {pc}
@@ -1261,7 +1261,7 @@ off_8130938:
 	.word sub_8130ED8+1
 	.word sub_8130EDC+1
 	.word e_checkLinkMatchAndStartCutscene+1
-	.word sub_8131068+1
+	.word camera_checkLinkEndSync+1
 	.word sub_8131150+1
 	thumb_func_end battle_updateFrame
 
@@ -1817,7 +1817,7 @@ loc_8130D8A:
 	bne loc_8130DC4
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8130DC4
-	bl sub_8131864
+	bl chatbox_initMessageState
 	mov r0, #0x18
 	strb r0, [r5,#2]
 	b loc_8130DC4
@@ -2183,9 +2183,9 @@ locret_8131064:
 // symdb: Checks link-battle camera end-sync readiness: dispatches on mode (4 forces end state at r5+1; 1 aborts); otherwise copies link-camera fields, scans two 0x10-byte entries against eLinkState, then verifies sub_81325C0 pair matches [r5+0x26] (0x10 or 0x8) before setting end-camera state at r5+2=0x24.
 // symdb: () -> void; uses global r5 (eCamera-like struct) and eLinkState via sub_803E8F8, no args or
 // symdb: return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131068.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_checkLinkEndSync.yaml
 	thumb_local_start
-sub_8131068:
+camera_checkLinkEndSync:
 	push {lr}
 	bl sub_803EAE4
 	cmp r0, #4
@@ -2302,7 +2302,7 @@ loc_8131146:
 
 	bl sub_8131458
 	pop {pc}
-	thumb_func_end sub_8131068
+	thumb_func_end camera_checkLinkEndSync
 	thumb_local_start
 sub_8131150:
 	push {r4-r7,lr}
@@ -3345,9 +3345,9 @@ off_8131860:
 
 // symdb: Zeros the 0x80-byte chatbox message buffer at unk_2037700, resets byte 0xC to 0 and byte 0x70 to 1, sets bit 3 of the owning object's status byte at r5+0x1B, then tail-calls chatbox_8040818 to set up a new message.
 // symdb: (r5 set by caller = owning object/state pointer) -> r0 = clobbered by calls; [r5+0x1B] bit 3 set
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8131864.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initMessageState.yaml
 	thumb_local_start
-sub_8131864:
+chatbox_initMessageState:
 	push {r4,lr}
 	// memBlock
 	ldr r0, off_8131888 // =unk_2037700 
@@ -3369,7 +3369,7 @@ sub_8131864:
 	.balign 4, 0
 off_8131888:
 	.word unk_2037700
-	thumb_func_end sub_8131864
+	thumb_func_end chatbox_initMessageState
 
 // symdb: Sets or clears bit 0x40 in a battle object's flags byte at +0x1b, then runs the state-update dispatcher on the battle object at unk_2037700.
 // symdb: (r0 = bool: set flag if nonzero, clear if zero; r5 = battle object whose +0x1b flag byte is
@@ -4009,7 +4009,7 @@ off_8131FB0:
 off_8131FB4:
 	.word e_setupE5rbSceneAfterFade+1
 	.word t4_tickSubsystemE290+1
-	.word sub_813202C+1
+	.word submenu_step+1
 	.word submenu_linkResultHandler+1
 	thumb_func_end sub_8131FA0
 
@@ -4074,9 +4074,9 @@ off_8132028:
 // symdb: Steps the submenu state machine: tests a shared flag, calls dispatch_803C620, may invoke sub_813D978 or write 0x10 into sSubmenu.unk_0C, then tail-jumps to a handler selected by unk_0C from off_8132070.
 // symdb: () -> r0 = whatever the selected phase handler returns; calls sSubmenu handlers via computed
 // symdb: jump
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813202C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_step.yaml
 	thumb_local_start
-sub_813202C:
+submenu_step:
 	push {r4-r7,lr}
 
 	ldr r5, off_8132068 // =sSubmenu 
@@ -4116,9 +4116,9 @@ off_813206C:
 off_8132070:
 	.word sub_8132080+1
 	.word sub_81320AC+1
-	.word sub_8132104+1
+	.word rfu_initOrRestartSession+1
 	.word sub_8132168+1
-	thumb_func_end sub_813202C
+	thumb_func_end submenu_step
 
 	thumb_local_start
 sub_8132080:
@@ -4197,9 +4197,9 @@ locret_8132100:
 // symdb: RFU session setup/restart: bails on flag bits 8 (stores 0xC at +0xC) or on sub_803C330 pending (after error step); otherwise if flag 0x10 is set, runs the mode dispatcher, then either re-initializes the wireless session (adapter present) or tears down via sub_8147B24, finally spinning one counter tick and calling two RFU cleanup routines.
 // symdb: (r0 = selector passed to sub_803CB18 checks, r5 = eS200BC50 state struct) -> r0 = destroyed;
 // symdb: writes state bytes at eS200BC50+0xC and +0x3
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initOrRestartSession.yaml
 	thumb_local_start
-sub_8132104:
+rfu_initOrRestartSession:
 	push {r4-r7,lr}
 	mov r0, #8
 	bl rfu_testStatusFlags
@@ -4220,7 +4220,7 @@ loc_8132126:
 	bl rfu_testStatusFlags
 	beq loc_813214C
 	bl sub_803EA78
-	bl sub_8132398
+	bl submenu_resetState
 	mov r0, #0xc
 	strb r0, [r5,#3]
 	bl rfu_shouldRestartWirelessLink
@@ -4242,7 +4242,7 @@ loc_8132154:
 	bl sub_81469E8
 	pop {r4-r7,pc}
 	.word eS200BC50
-	thumb_func_end sub_8132104
+	thumb_func_end rfu_initOrRestartSession
 
 	thumb_local_start
 sub_8132168:
@@ -4633,9 +4633,9 @@ byte_8132390:
 // symdb: Clears the 0x200-byte submenu work buffer at unk_2033800 and zeroes the +0xF state flag in the caller's submenu struct to reset transient submenu state.
 // symdb: (r0 unused, r5 = submenu state struct from caller) -> void; zeroes 0x200 bytes at unk_2033800,
 // symdb: stores byte at [r5+0xF]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132398.yaml
-	thumb_func_start sub_8132398
-sub_8132398:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_resetState.yaml
+	thumb_func_start submenu_resetState
+submenu_resetState:
 	push {lr}
 	ldr r0, off_81323A8 // =unk_2033800 
 	ldr r1, off_81323AC // =0x200 
@@ -4648,7 +4648,7 @@ off_81323A8:
 	.word unk_2033800
 off_81323AC:
 	.word 0x200
-	thumb_func_end sub_8132398
+	thumb_func_end submenu_resetState
 
 	thumb_func_start sub_81323B0
 sub_81323B0:
@@ -5071,7 +5071,7 @@ submenu_resetCursor:
 	mov r0, #0
 	strb r0, [r5,#0x2] // (sSubmenu.unk_02 - 0x2009a30)
 
-	bl sub_8132398
+	bl submenu_resetState
 
 	pop {r5,pc}
 	.balign 4, 0
@@ -5551,9 +5551,9 @@ dword_8132A10:
 // symdb: Renders a 5-digit number as a row of digit sprites by BCD-converting the input and queueing one OAM entry per digit, spacing each digit 7 units apart, LSB at the rightmost offset.
 // symdb: (r0 = attr/pos field A, r1 = attr/pos field B (packed as (r0<<16)|r1), r2 = base tile index, r3
 // symdb: = value) -> r0 = queueOamEntry result; calls through thunk
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8132A14.yaml
-	thumb_func_start sub_8132A14
-sub_8132A14:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawBcdNumber.yaml
+	thumb_func_start sprite_drawBcdNumber
+sprite_drawBcdNumber:
 	push {r4-r7,lr}
 	lsl r0, r0, #0x10
 	orr r0, r1
@@ -5584,7 +5584,7 @@ loc_8132A2C:
 	.balign 4, 0x00
 dword_8132A4C:
 	.word 0x1000
-	thumb_func_end sub_8132A14
+	thumb_func_end sprite_drawBcdNumber
 	thumb_func_start sub_8132A50
 sub_8132A50:
 	push {r4-r7,lr}
@@ -11710,7 +11710,7 @@ off_81357E0:
 	.word sub_8135918+1
 	.word sub_8135938+1
 	.word ow_objectStepSavePos+1
-	.word sub_8135968+1
+	.word navicust_initScreenState+1
 	.word e_confirmSelection+1
 	.word sub_8135A10+1
 	.word ow_objectStepSavePos+1
@@ -11912,9 +11912,9 @@ loc_8135960:
 // symdb: One-time initialization of the Navi Customizer screen state (board, key-item list, counters) guarded by an init flag; unconditionally clears a per-entry latch byte at state+0x13 on return.
 // symdb: (r5 = navi-customizer screen state struct; r0 unused on entry) -> r0 = 0; writes state bytes in
 // symdb: the struct, calls rebuild/draw helpers
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8135968.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_initScreenState.yaml
 	thumb_local_start
-sub_8135968:
+navicust_initScreenState:
 	push {lr}
 	ldrb r0, [r5,#0xd]
 	tst r0, r0
@@ -11939,7 +11939,7 @@ loc_813599A:
 	mov r0, #0
 	strb r0, [r5,#0x13]
 	pop {pc}
-	thumb_func_end sub_8135968
+	thumb_func_end navicust_initScreenState
 
 // symdb: State-machine step that copies the selection index from [r5+0x30] to [r5+0x32], then based on entry 10 of eStructArr2008450 and the current selection (0, 0xFFFF, or other) either sets next state to 8, or — after sub_81365F0 succeeds — plays SOUND_EXIT_SUBMENU, clears entry 10, resets selection to 0xFFFF, runs chatbox script 5, and sets state 0x38 (in cyberspace maps, MapGroup >= 0x80), else calls sub_81366FC/sub_813658C and sets timers [r5+0x11]=0x28, [r5+0xC]=0x10; clears [r5+0x13] and returns 0.
 // symdb: (r5 = handler state struct) -> r0 = 0; writes next-state byte [r5+2], selection copy [r5+0x32],
@@ -11950,7 +11950,7 @@ e_confirmSelection:
 	push {lr}
 	ldrh r0, [r5,#0x30]
 	strh r0, [r5,#0x32]
-	bl sub_813652C
+	bl submenu_navigateThreeChoiceCursor
 	mov r0, #0xa
 	bl getStructFrom2008450
 	bne loc_8135A08
@@ -12144,7 +12144,7 @@ t4_waitChatboxThenFadeScene:
 	mov r0, #0xc
 	mov r1, #0x10
 	bl SetScreenFade // (int a1, int a2) -> void
-	bl sub_813BAC4
+	bl t4_loadToolkitSceneBuffers
 	b loc_8135B2A
 loc_8135B26:
 	mov r0, #4
@@ -13521,9 +13521,9 @@ dword_8136528:
 // symdb: Input handler for a 3-option selection screen: B writes 0xFF at [r5,#0x30] (cancel); A clears sprite 0xA confirming the current cursor; Left/Right cycle [r5,#0x30] over 0..2 with out-of-range snapping to 0.
 // symdb: (r5 = submenu state object) -> writes cursor value to [r5,#0x30] (0xFF = cancel); plays menu
 // symdb: sounds; no return value used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813652C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_navigateThreeChoiceCursor.yaml
 	thumb_local_start
-sub_813652C:
+submenu_navigateThreeChoiceCursor:
 	push {r4,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_JoypadPtr]
@@ -13573,7 +13573,7 @@ loc_8136580:
 locret_8136588:
 	pop {r4,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813652C
+	thumb_func_end submenu_navigateThreeChoiceCursor
 
 // symdb: In the Navi Customizer, looks up the part occupying the cell at struct+0x28/+0x2c, copies its width/height and palette bytes into the screen state, rebuilds the parts list, redraws the board, and sets byte +2=0x20 (next state) and byte +0x10=1.
 // symdb: (r0 = unused on entry; r5 = NaviCust screen-state struct with cursor coords at +0x28/+0x2c) ->
@@ -17294,7 +17294,7 @@ sub_81380B0:
 loc_81380C8:
 	ldr r4, off_81380D4 // =byte_81378AC
 	ldr r7, off_813816C // =dword_81378A0 
-	bl sub_8138104
+	bl battleObject_animateStepQueueOam
 locret_81380D0:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -17318,7 +17318,7 @@ sub_81380E0:
 	ldr r4, off_8138100 // =byte_81378A4
 	ldr r6, dword_8138168 // =0x40000000 
 	ldr r7, off_813816C // =dword_81378A0 
-	bl sub_8138104
+	bl battleObject_animateStepQueueOam
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8138100:
@@ -17330,9 +17330,9 @@ off_8138100:
 // symdb: offset of halfword index in object, r4 = u16 OAM row table, r5 = object, r6 = 5th arg to
 // symdb: queueOamFromTableRow, r7 = next-frame table) -> queues one OAM entry; rewrites state byte
 // symdb: [r5+r2]; no return value
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138104.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_animateStepQueueOam.yaml
 	thumb_local_start
-sub_8138104:
+battleObject_animateStepQueueOam:
 	push {r4,lr}
 	sub sp, sp, #0x1c
 	str r1, [sp]
@@ -17388,7 +17388,7 @@ dword_8138168:
 	.word 0x40000000
 off_813816C:
 	.word dword_81378A0
-	thumb_func_end sub_8138104
+	thumb_func_end battleObject_animateStepQueueOam
 
 // symdb: Time-attack result readout for the open submenu entry: takes the faster of two recorded times for that entry and prints it (min:sec.centis) via a chatbox script.
 // symdb: (r5 = submenu/list state: cursor at +0x24, list base at +0x20; r10 = toolkit) -> r0 = 0 if a
@@ -17658,7 +17658,7 @@ off_8138378:
 	.word off_813837C
 off_813837C:
 	.word t4_delayedScreenScrollFade+1
-	.word sub_81383C4+1
+	.word startFadeState+1
 	.word sub_81383F4+1
 	.word sub_8138700+1
 	thumb_func_end game_runModeHandlersAndFrameTick
@@ -17701,9 +17701,9 @@ dword_81383C0:
 
 // symdb: If no screen fade is active, starts one via SetScreenFade(0x80,0xFF) and initializes the r5 state object with two script pointers (byte_8138944, byte_8138B90), clears a flag byte, and sets the step byte to 8.
 // symdb: (r0 = state object in r5, no args) -> r0 = 0; calls SetScreenFade(0x80, 0xFF) if no fade active
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81383C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/startFadeState.yaml
 	thumb_local_start
-sub_81383C4:
+startFadeState:
 	push {lr}
 	bl IsScreenFadeActive // () -> zf
 	beq locret_81383E8
@@ -17727,7 +17727,7 @@ off_81383EC:
 	.word byte_8138944
 off_81383F0:
 	.word byte_8138B90
-	thumb_func_end sub_81383C4
+	thumb_func_end startFadeState
 
 	thumb_local_start
 sub_81383F4:
@@ -17808,7 +17808,7 @@ sprite_advanceAnimFrame:
 	bl sub_8045FC6
 	pop {r0-r7}
 	bl sprite_queueSheetGfxUpload
-	bl sub_8138890
+	bl bg_copyTilesetStrip
 
 	ldrb r0, [r5,#0xd]
 	add r0, #1
@@ -18394,9 +18394,9 @@ object_freeAllOfType25:
 // symdb: Copies a 2-row-tall horizontal strip of tile ids from a per-style tileset (0xd000 + 0x30*[r5+0xd] base, [r6+3] tiles wide) into BG tile block 1 at ([r6+2],[r5+0xc]&0x1F), after preparing the 0xd300 attribute buffer via call_sub_3005EBA.
 // symdb: (r0..r2 unused here; r5 = style/pos struct, r3->r6 = placement struct) -> r0 = ?; builds tile-id
 // symdb: array on stack and issues two BG-map writes
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138890.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_copyTilesetStrip.yaml
 	thumb_local_start
-sub_8138890:
+bg_copyTilesetStrip:
 	push {r3-r7,lr}
 	sub sp, sp, #0x60
 	mov r6, r3
@@ -18444,7 +18444,7 @@ loc_81388AA:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	add sp, sp, #0x60
 	pop {r3-r7,pc}
-	thumb_func_end sub_8138890
+	thumb_func_end bg_copyTilesetStrip
 	thumb_local_start
 sub_81388EE:
 	push {r4,r5,lr}

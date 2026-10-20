@@ -202,7 +202,7 @@ dword_812D4F8:
 
 // symdb: Fetches the shared submenu work struct (0x02037780) and invokes a fixed draw/queue call with constant coordinates and a ROM data blob (byte_8129178), then a follow-up commit call, as part of the per-frame update of this screen's state handlers.
 // symdb: () -> void; no caller consumes a return value (r0-r3, r4=byte_8129178, r6=0x40000000, r7=0x20002
-// symdb: are preloaded as extra args for sub_812D600)
+// symdb: are preloaded as extra args for battleObject_queueOamFrameAndAdvanceAnim)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_drawScreenElement.yaml
 	thumb_func_start submenu_drawScreenElement
 submenu_drawScreenElement:
@@ -216,7 +216,7 @@ submenu_drawScreenElement:
 	ldr r4, off_812D51C // =byte_8129178 
 	ldr r6, dword_812D524 // =0x40000000 
 	ldr r7, dword_812D520 // =0x20002 
-	bl sub_812D600
+	bl battleObject_queueOamFrameAndAdvanceAnim
 	bl sub_812D9F0
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -367,9 +367,9 @@ sub_812D5EC:
 // symdb: (r0 = base ptr (low half replaced by offset), r1 = frame/OAM table base, r2 = state-byte offset
 // symdb: into object struct r5, r3 = index-byte selector (0 => frame index 0, else halfword [r5,r3]),
 // symdb: r4/r6 = extra args passed through) -> void; updates byte [r5+r2] = (nextRow<<4)|(old&0xF)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D600.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_queueOamFrameAndAdvanceAnim.yaml
 	thumb_local_start
-sub_812D600:
+battleObject_queueOamFrameAndAdvanceAnim:
 	push {r4-r7,lr}
 	sub sp, sp, #0x1c
 	str r1, [sp]
@@ -422,7 +422,7 @@ loc_812D64C:
 	.word byte_8129178
 off_812D664:
 	.word dword_8129180
-	thumb_func_end sub_812D600
+	thumb_func_end battleObject_queueOamFrameAndAdvanceAnim
 
 	thumb_local_start
 sub_812D668:
@@ -436,7 +436,7 @@ sub_812D668:
 	ldr r4, off_812D684 // =byte_8129178 
 	ldr r6, dword_812D68C // =0x40000000 
 	ldr r7, dword_812D688 // =0x2 
-	bl sub_812D600
+	bl battleObject_queueOamFrameAndAdvanceAnim
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_812D684:
@@ -464,7 +464,7 @@ submenu_processConfirmCancelInput:
 	beq locret_812D6F4
 	cmp r0, #8
 	beq locret_812D6F4
-	bl sub_812D700
+	bl submenu_toggle
 	bne locret_812D6F4
 	push {r5,r7}
 	mov r5, r7
@@ -520,9 +520,9 @@ off_812D6FC:
 // symdb: Per-frame handler that toggles a menu subscreen (state 0x20): START opens or closes it, B also closes it, otherwise reports not-handled via Z flag.
 // symdb: (r5 = menu work struct, r7 from callee = related struct) -> r0 untouched (returns via Z flag
 // symdb: from final tst); side effects on state byte and sounds
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D700.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_toggle.yaml
 	thumb_local_start
-sub_812D700:
+submenu_toggle:
 	push {r7,lr}
 	bl submenu_getWork
 	mov r7, r0
@@ -558,7 +558,7 @@ loc_812D742:
 	tst r0, r0
 locret_812D746:
 	pop {r7,pc}
-	thumb_func_end sub_812D700
+	thumb_func_end submenu_toggle
 
 // symdb: Per-frame handler for an 8-entry menu: moves the cursor up/down with the d-pad (unless some state forbids it) and refreshes a background tile patch each frame.
 // symdb: () -> void; r7 = menu state pointer (callee-returned), cursor index stored at [state+0x34]
@@ -568,7 +568,7 @@ submenu_updateCursorAndTiles:
 	push {r7,lr}
 	bl submenu_getWork
 	mov r7, r0
-	bl sub_812D700
+	bl submenu_toggle
 	bne locret_812D776
 	bl battle_confirmSelectionEntry
 	bne loc_812D76E

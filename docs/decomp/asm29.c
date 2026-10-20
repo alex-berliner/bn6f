@@ -5007,7 +5007,7 @@ void __noreturn sub_80A8BBC()
         if ( v4 <= &byte_400 )
         {
             *(v1 + 1) = 0;
-            sub_8143204(*(v0 + 4));
+            init_setRandomTimer(*(v0 + 4));
             sub_8143220(*(v0 + 4));
         }
         ow_refreshObjectSpritePriority();
@@ -5166,7 +5166,7 @@ int sub_80A8D42()
     if ( calc_hypotFixed12(
                  *(v0 + 16) - *(*(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 32),
                  *(v0 + 12) - *(*(*(v2 + oToolkit_GameStatePtr) + oGameState_OverworldPlayerObjectPtr) + 28)) >= 1310720 )
-        return sub_8143204(*(v0 + 4));
+        return init_setRandomTimer(*(v0 + 4));
     v3 = *(v1 + 6);
     v4 = __OFSUB__(v3, 1);
     result = v3 - 1;
@@ -5218,7 +5218,7 @@ int npc_triggerCutscene()
             v3 = sub_8143088();
             StartCutscene(134791957, v3, v4, v5);
             PlaySoundEffect(290, v6, v7);
-            sub_8143204(*(v0 + 4));
+            init_setRandomTimer(*(v0 + 4));
             result = sub_8143220(*(v0 + 4));
         }
     }
@@ -8197,7 +8197,7 @@ char *__fastcall sub_80AABA4(int a1)
 
 
 // 0x80aac8c
-signed int __fastcall sub_80AAC8C(int a1)
+signed int __fastcall battle_rollRandomChipDrop(int a1)
 {
     unsigned __int8 v1; // r0
     unsigned int v3; // r0
@@ -8246,13 +8246,13 @@ signed int __fastcall sub_80AAC8C(int a1)
     v10 = v4 >> 1;
     GetPositiveSignedRNG();
     __asm { SVC         6 }
-    v6 = sub_80AAD04(v10, v9);
+    v6 = getRandomChipBonusOfKindFromTable(v10, v9);
     return v6 | (v7 << 9);
 }
 
 
 // 0x80aad04
-int __fastcall sub_80AAD04(int a1, int a2)
+int __fastcall getRandomChipBonusOfKindFromTable(int a1, int a2)
 {
     int *v2; // r6
     int v3; // r7

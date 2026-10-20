@@ -201,7 +201,7 @@ off_8000258:
 	thumb_local_start
 start_dead_800025C:
 	push {lr}
-	ldr r1, off_8000274 // =sub_3005DEC+1 
+	ldr r1, off_8000274 // =irq_enableBits+1 
 	mov lr, pc
 	bx r1
 	pop {r0}
@@ -217,7 +217,7 @@ start_dead_8000268:
 	pop {r0}
 	bx r0
 off_8000274:
-	.word sub_3005DEC+1
+	.word irq_enableBits+1
 off_8000278:
 	.word start_clearIrqEnableBits+1
 	thumb_func_end start_dead_8000268

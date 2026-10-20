@@ -429,7 +429,7 @@ off_8038BB0:
 	.word sub_8038E48+1
 	.word sub_8038E5C+1
 	.word sub_8038E78+1
-	.word sub_8038EAC+1
+	.word battle_commErrorGfxReloadTick+1
 	.word t3_waitForAnyKeyStartFade+1
 	thumb_func_end sub_8038B9C
 
@@ -823,9 +823,9 @@ off_8038EA8:
 // symdb: Per-frame tick that, once a short delay (6 frames) expires, re-uploads the comm-error text glyphs into VRAM and reloads two GFXAnim scripts before resuming the parent state.
 // symdb: (r0 implicit in r5 = error-object/state struct) -> r0 = result of sub_8039198; updates [r5+2]
 // symdb: state byte and [r5+4] frame counter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038EAC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_commErrorGfxReloadTick.yaml
 	thumb_local_start
-sub_8038EAC:
+battle_commErrorGfxReloadTick:
 	push {lr}
 	ldrh r0, [r5,#4]
 	sub r0, #1
@@ -848,7 +848,7 @@ off_8038ED4:
 	.word byte_8038A6C
 off_8038ED8:
 	.word byte_8038A84
-	thumb_func_end sub_8038EAC
+	thumb_func_end battle_commErrorGfxReloadTick
 
 // symdb: Scene-state updater that waits for any button press, then starts a screen fade and moves to the next state.
 // symdb: (r5 = t3 state struct: +0 = state byte, +4 = frame countdown, r10 = toolkit) -> void; no return
@@ -1973,7 +1973,7 @@ off_80399E8:
   // 0x20
 	.word sub_8039C14+1
   // 0x24
-	.word sub_8039C32+1
+	.word object_advanceNetDialogue+1
   // 0x28
 	.word sub_8039D08+1
   // 0x2C
@@ -2259,9 +2259,9 @@ loc_8039C2C:
 // symdb: Object advance-phase routine: passes a sequence of checks, then sets object state to 0x1C, stores 0x1E at object+0x28, runs net text script 0xE; otherwise dispatches via timer-based table sub_803A5F4(0x66) before tail-calling sub_803A104.
 // symdb: (r5 = object pointer, r0 = check selector on entry) -> r0 = 0 or 1; sets object state byte
 // symdb: [r5+1] and field [r5+0x28]
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039C32.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_advanceNetDialogue.yaml
 	thumb_local_start
-sub_8039C32:
+object_advanceNetDialogue:
 	push {r4-r7,lr}
 	mov r0, #1
 	bl rfu_orFlags
@@ -2304,7 +2304,7 @@ dword_8039C8C:
 	.word sub_8039C9C+1
 	.word sub_8039CB4+1
 	.word sub_8039CB4+1
-	thumb_func_end sub_8039C32
+	thumb_func_end object_advanceNetDialogue
 
 	thumb_local_start
 sub_8039C9C:
@@ -2912,7 +2912,7 @@ loc_803A118:
 	add r1, r1, r2
 	mov r2, #6
 	ldrh r4, [r5,#0x24]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	mov r0, #0x7b
 	mov r1, #0x23
 	mov r2, #0x20
@@ -2921,7 +2921,7 @@ loc_803A118:
 	mov r2, #7
 	mov r3, r7
 	ldrh r4, [r5,#0x26]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	mov r0, r7
 	bl sub_8146728
 	mov r3, r0
@@ -3012,7 +3012,7 @@ sub_803A1D8:
 	add r1, r1, r2
 	mov r2, #6
 	ldrh r4, [r5,#0x24]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	mov r0, #0x7b
 	mov r1, #0x23
 	mov r2, #0x20
@@ -3021,7 +3021,7 @@ sub_803A1D8:
 	mov r2, #7
 	mov r3, r7
 	ldrh r4, [r5,#0x26]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	mov r0, r6
 	mov r1, #0
 	bl sub_803A238
@@ -3037,7 +3037,7 @@ sub_803A214:
 	mov r1, #2
 	mov r2, #0xa
 	ldrh r4, [r5,#0x24]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	bl sub_803C418
 	mov r3, r0
 	mov r0, #0x1a
@@ -3121,8 +3121,8 @@ off_803A2B4:
 	.word off_803A2B8
 off_803A2B8:
 	.word sub_803A2CC+1
-	.word sub_803A334+1
-	.word sub_803A39C+1
+	.word chatbox_screenWipeStep+1
+	.word object_timerTransition+1
 	.word sub_803A3C4+1
 	.word sub_803A410+1
 	thumb_func_end sub_803A2A4
@@ -3183,9 +3183,9 @@ off_803A330:
 
 // symdb: Step that each frame shifts two toolkit counters by -0x30 and two by +0x30; once the decremented counter at +6 hits 0x71 it loads BG-tile-table entry 6, fills BG layers 2 and 3 with a 30x20 tile wipe, runs sub_803A422, and stores state bytes 0/0xF/0/8 before returning 0; otherwise it ticks entities via chatbox_waitStepUpdateEntities and returns 0.
 // symdb: () -> r0 = 0 (step not finished); no flags used
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A334.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_screenWipeStep.yaml
 	thumb_local_start
-sub_803A334:
+chatbox_screenWipeStep:
 	push {r4-r7,lr}
 	mov r3, r10
 	ldr r3, [r3,#oToolkit_Unk200f3a0_Ptr]
@@ -3235,13 +3235,13 @@ loc_803A394:
 loc_803A398:
 	mov r0, #0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803A334
+	thumb_func_end chatbox_screenWipeStep
 
 // symdb: Per-frame battle-object step that decrements a counter at [r5+0x1a]; when it reaches 0, loads a GFX anim script (byte_80392D8), plays sound 0xB7, and writes state 0xC to [r5+2], then calls sub_803A422 and returns 0.
 // symdb: (r5 = object struct, r0-r4 unused on entry) -> r0 = 0; no flags meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A39C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_timerTransition.yaml
 	thumb_local_start
-sub_803A39C:
+object_timerTransition:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#0x1a]
 	sub r0, #1
@@ -3260,7 +3260,7 @@ loc_803A3B6:
 	.balign 4, 0
 off_803A3C0:
 	.word byte_80392D8
-	thumb_func_end sub_803A39C
+	thumb_func_end object_timerTransition
 
 	thumb_local_start
 sub_803A3C4:
@@ -3424,7 +3424,7 @@ sprite_drawValuePairAndQueueOam:
 	mov r1, #0x13
 	mov r2, #6
 	ldrh r4, [r5,#0x24]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	bl sub_803C418
 	mov r3, r0
 	mov r0, #0x58
@@ -3438,7 +3438,7 @@ sprite_drawValuePairAndQueueOam:
 	mov r2, #6
 	mov r3, r7
 	ldrh r4, [r5,#0x24]
-	bl sub_803B814
+	bl sprite_drawGlyphString
 	ldr r7, off_803A520 // =0x120
 	add r7, r7, r5
 	mov r0, r7
@@ -5693,9 +5693,9 @@ byte_803B6AC:
 // symdb: Queues one OAM sprite per character of a NUL-terminated string, mapping each byte through byte_80391A8 to a glyph index, advancing x via chatbox_8045ED0, and submitting each sprite to sprite_queueOamEntry with tile-pointer = 0x40001000 + idx*4 and high attr bits (arg2<<12)|0x420.
 // symdb: (r0 = packed pos/attr A, r1 = packed pos/attr B, r2 = extra attr bits (<<12 | 0x420), r3 = null-
 // symdb: terminated string ptr) -> r0 = void; loops until NUL or count exhausted
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803B814.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawGlyphString.yaml
 	thumb_local_start
-sub_803B814:
+sprite_drawGlyphString:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
 	str r0, [sp]
@@ -5751,7 +5751,7 @@ off_803B878:
 	.word byte_80391A8
 off_803B87C:
 	.word byte_2027200
-	thumb_func_end sub_803B814
+	thumb_func_end sprite_drawGlyphString
 
 // symdb: Draws two 3-digit decimal numbers (from sub_803C398's two results) as digit sprites at fixed positions on one row, suppressing leading zeros.
 // symdb: () -> void; internally r0/r1 = two values from sub_803C398, each converted to packed BCD; no
@@ -10102,9 +10102,9 @@ off_803DDA0:
 // symdb: Initializes four fields of eLinkState (byte0=0x10, byte1=0x0C, byte8=0, halfword+0xC=0x10) with constants; called from battle and from sub_812AC1A.
 // symdb: () -> void; writes eLinkState byte0=0x10, byte1=0x0C, halfword at +0xC=0x10, byte8=0; no return
 // symdb: value, flags not meaningful
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803DDA4.yaml
-	thumb_func_start sub_803DDA4
-sub_803DDA4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initLinkState.yaml
+	thumb_func_start initLinkState
+initLinkState:
 	push {r7,lr}
 	ldr r7, off_803DDBC // =eLinkState
 	mov r0, #0x10
@@ -10119,7 +10119,7 @@ sub_803DDA4:
 	.balign 4, 0x00
 off_803DDBC:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803DDA4
+	thumb_func_end initLinkState
 
 	thumb_local_start
 sub_803DDC0:
@@ -12584,7 +12584,7 @@ off_803ED3C:
 	.word off_803ED40
 off_803ED40:
 	.word sub_803ED4C+1
-	.word sub_803EE98+1
+	.word link_syncInputs+1
 off_803ED48:
 	.word eStruct200BC30
 	thumb_func_end sub_803ED1C
@@ -12768,9 +12768,9 @@ dword_803EE94:
 // symdb: Each frame, scans four 2-byte slots of unk_2009480 to find two active link players, copies their columns into eLinkState.unk_88 and unk_88C for unk_70 halfwords, dispatches sub_803E828/850 on 0xFC control markers, and writes the held L/R joypad byte plus an incremented counter into eLinkState.unk_84.
 // symdb: () -> void; writes eCamera.unk_88/8C row buffers, eCamera.unk_84 entry fields, eStruct200BC30+7
 // symdb: counter
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EE98.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/link_syncInputs.yaml
 	thumb_local_start
-sub_803EE98:
+link_syncInputs:
 	push {r4-r7,lr}
 	sub sp, sp, #0x14
 	ldr r6, off_803EF44 // =eLinkState
@@ -12860,7 +12860,7 @@ off_803EF40:
 	.word unk_2009480
 off_803EF44:
 	.word eLinkState // eLinkState
-	thumb_func_end sub_803EE98
+	thumb_func_end link_syncInputs
 
 // symdb: ORs the given bits into the flags byte at offset 0xD of the eStruct200BC30 structure
 // symdb: (r0 = bit mask to set) -> r0 clobbered (used as scratch); no return value
@@ -13903,7 +13903,7 @@ battle_getLinkStateCode_803F560:
 loc_803F574:
 	mov r0, #0
 	mov r1, #1
-	bl sub_813DB24
+	bl e_pickBre5TagBlock
 	cmp r0, #0xff
 	bne loc_803F586
 	mov r1, r2

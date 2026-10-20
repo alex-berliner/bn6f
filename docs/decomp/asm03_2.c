@@ -314,7 +314,7 @@ int __fastcall sub_8046356(int a1)
 
 
 // 0x80463a0
-int __fastcall sub_80463A0(int a1)
+int __fastcall printNumberCmd(int a1)
 {
     unsigned int v1; // r8
     signed int v2; // r7
@@ -4165,7 +4165,7 @@ char *__fastcall chatbox_getTextScriptPointerByIndex_804A24C(int a1)
 
 
 // 0x804a2cc
-void __fastcall sub_804A2CC(int a1, int a2, int a3, int a4)
+void __fastcall submenu_initSceneChipTrader(int a1, int a2, int a3, int a4)
 {
     int v4; // r10
     int v5; // ST00_4
@@ -4306,7 +4306,7 @@ int chatbox_startFadeOnIdle()
 
 
 // 0x804a514
-void __fastcall __noreturn sub_804A514(int a1)
+void __fastcall __noreturn submenu_updateCursorLoop(int a1)
 {
     int v1; // r5
     int v2; // r10
@@ -4336,7 +4336,7 @@ int sub_804A54C()
 
 
 // 0x804a574
-int sub_804A574()
+int object_setupTripleSpritesFromTable()
 {
     int v0; // r5
     int v1; // r2
@@ -6283,7 +6283,7 @@ int sub_804CB0C()
     v3[5] = 7945;
     v3[13] = 0;
     v3[12] = 0;
-    sub_8006920(v1, sub_8006920, v4, v5);
+    chatbox_initWindowReqAndEnqueue(v1, chatbox_initWindowReqAndEnqueue, v4, v5);
     *(v0 + 16) = 4;
     return sub_804CB64();
 }
