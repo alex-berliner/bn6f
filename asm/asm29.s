@@ -7496,6 +7496,9 @@ sub_80A8A74:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8A74
 
+// symdb: Applies a fixed-distance movement step along the angle of an object and decrements its remaining movement steps.
+// symdb: (implicit object pointer in r5) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8A7C.yaml
 	thumb_local_start
 sub_80A8A7C:
 	push {r4-r7,lr}

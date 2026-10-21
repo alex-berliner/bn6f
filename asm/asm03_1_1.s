@@ -15,6 +15,9 @@ sub_80385F0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80385F0
 
+// symdb: Dispatches the current battle scene state to one of four handler routines via a jump table.
+// symdb: () -> none; uses byte_2011E40 as state index
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038606.yaml
 	thumb_local_start
 sub_8038606:
 	push {r4-r7,lr}
@@ -3048,6 +3051,9 @@ sub_803A1D8:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A1D8
 
+// symdb: Per-frame: draws the RFU wireless join-code header (title glyph string + 4-digit join code) onto the OAM sprite layer.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A214.yaml
 	thumb_local_start
 sub_803A214:
 	push {r4-r7,lr}

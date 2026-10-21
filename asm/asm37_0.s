@@ -4026,6 +4026,9 @@ sub_813D5DC:
 
 	push {r4,lr}
 	pop {r4,pc}
+// symdb: Sets bits in the t1 status flag byte (byte_200AF85) by OR-ing the argument.
+// symdb: (r0 = flag bitmask) -> none; side effect: byte_200AF85 |= r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D5E8.yaml
 	thumb_local_start
 sub_813D5E8:
 	ldr r1, off_813D608 // =byte_200AF80 

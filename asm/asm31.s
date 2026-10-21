@@ -2508,6 +2508,10 @@ locret_80B939C:
 	pop {pc}
 	thumb_func_end sub_80B9376
 
+// symdb: Advances the Custom Gauge's chip-swallow phase: starts the swallow anim/timer, then transitions the action once the timer expires.
+// symdb: (r5 = oBattleObject*) -> void; writes CurPhase, CurAnim, Timer, CurAction,
+// symdb: CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B939E.yaml
 	thumb_local_start
 sub_80B939E:
 	push {lr}
@@ -3645,6 +3649,9 @@ locret_80B9B2E:
 	pop {pc}
 	thumb_func_end battle_divemanPhaseWaveAttack
 
+// symdb: Starts the battle object's vanish sequence and removes it when the delay expires.
+// symdb: (r5 = battle object) -> void; flags undefined
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B9B30.yaml
 	thumb_local_start
 sub_80B9B30:
 	push {lr}
@@ -7991,6 +7998,10 @@ byte_80BB860:
 	.byte 0x1, 0xFF, 0x1, 0x0, 0x1, 0x1
 	thumb_func_end battle_sweepLinePanels
 
+// symdb: Selects the battle object's next sweep-panel phase from a row-specific lookup table.
+// symdb: (r5 = battle object pointer) -> r0 = selected phase, r1 = phase-table row offset; flags
+// symdb: unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BB866.yaml
 	thumb_local_start
 sub_80BB866:
 	push {lr}
@@ -12261,6 +12272,9 @@ off_80BD63C:
 	.word 0x8000000
 	thumb_func_end ai_findPanelInColumn
 
+// symdb: Battle object phase 4 handler: plays animation 4 for 3 frames (with optional illusion spawn), then advances to phase 8.
+// symdb: () -> void; uses oBattleObject in r5, sets r0=4 (CurAnim) and r0=8 (next phase)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BD644.yaml
 	thumb_local_start
 sub_80BD644:
 	push {lr}
@@ -13541,6 +13555,10 @@ locret_80BDF0C:
 	pop {pc}
 	thumb_func_end battleObject_advancePhaseAfterTimer30
 
+// symdb: Initializes a newly-spawned battle object's spawn-in animation/timer once, then ticks a short timer before moving it to its next phase.
+// symdb: (no explicit args; operates on the battle object in r5) -> void; clobbers r0, flags: tail-call
+// symdb: to other phase code via pop {pc}
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BDF0E.yaml
 	thumb_local_start
 sub_80BDF0E:
 	push {lr}
@@ -22828,6 +22846,10 @@ dword_80C1D9C:
 	.word 0x10005
 	thumb_func_end sub_80C1CC4
 
+// symdb: Battle object phase that waits 30 ticks then sets CurAction=0x20 and clears the phase fields
+// symdb: (r5 = oBattleObject*) -> void; sets oBattleObject_PhaseInitialized, oBattleObject_Timer,
+// symdb: oBattleObject_CurAction, oBattleObject_CurPhaseAndPhaseInitialized
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C1DA0.yaml
 	thumb_local_start
 sub_80C1DA0:
 	push {lr}
@@ -25288,6 +25310,9 @@ dword_80C2F3C:
 	.word 0xB880080
 	thumb_func_end sub_80C2EC4
 
+// symdb: Starts or completes a five-tick self-destruction sequence for the current battle object.
+// symdb: (r0 = battleObject, r1 = ...) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C2F40.yaml
 	thumb_local_start
 sub_80C2F40:
 	push {lr}
@@ -26206,6 +26231,9 @@ sub_80C3584:
 	pop {pc}
 	thumb_func_end sub_80C3584
 
+// symdb: Moves a battle object by its velocity and makes it bounce when its timer expires.
+// symdb: (r5 = battle object pointer) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80C3598.yaml
 	thumb_local_start
 sub_80C3598:
 	push {r7,lr}
@@ -55678,6 +55706,9 @@ loc_80D075C:
 	pop {r7,pc}
 	thumb_func_end battle_updateTimerObject
 
+// symdb: Per-frame sync: delays a battle object's timer/animation until a related object's CurAction reaches a target value, then triggers CurAnim=1.
+// symdb: (r5 = oBattleObject self) -> void; mutates self.Timer, self.CurAction, self.CurAnim
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D0766.yaml
 	thumb_local_start
 sub_80D0766:
 	push {lr}
@@ -87256,6 +87287,9 @@ byte_80DE7C0:
 	.byte 0x0, 0x0, 0x40, 0x0, 0x0, 0x0, 0x10, 0x0
 	thumb_func_end battle_calcConstDivSpeedTimer
 
+// symdb: Spawns 4 child objects (type 200) around a battle object variant, using a per-variant 4-byte offset table.
+// symdb: (r5 = battle object ptr) -> void; reads byte_80DE3F4[Param1*4 .. Param1*4+3]
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80DE7C8.yaml
 	thumb_local_start
 sub_80DE7C8:
 	push {r4-r7,lr}
@@ -109119,6 +109153,9 @@ off_80E7ED0:
 	.word object_undimScreen+1
 	thumb_func_end sub_80E7EBC
 
+// symdb: Initializes a battle object's panel-position-related state on first execution, then advances to action 0xC if the current Param2 is 0
+// symdb: (r5 = battleObject*) -> void; uses r0,r1,r2,r3,r6,r7 as scratch
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E7EE0.yaml
 	thumb_local_start
 sub_80E7EE0:
 	push {r4,r6,r7,lr}
@@ -109524,6 +109561,9 @@ off_80E816C:
 	.word object_undimScreen+1
 	thumb_func_end sub_80E8158
 
+// symdb: Initializes a Life battle object on its first update and advances its short-lived spawn behavior when Param2 is zero.
+// symdb: (r0 = ..., r1 = ...) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E817C.yaml
 	thumb_local_start
 sub_80E817C:
 	push {r4,r6,r7,lr}
@@ -110274,6 +110314,10 @@ sub_80E863E:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80E863E
 
+// symdb: Restores an object's saved panel-position sequence when any linked panel-position object has a nonzero field 0x70.
+// symdb: (r5 = battle object with pending panel-position links at +0x60..+0x68) -> r0 = restored sequence
+// symdb: pointer or 0; flags = caller-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E8656.yaml
 	thumb_local_start
 sub_80E8656:
 	push {lr}
@@ -111202,6 +111246,10 @@ loc_80E8CBE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end object_collectFilteredPanelsToFlags
 
+// symdb: Marks the panel at column-plus-row in an object's panel flag table when the supplied panel-code offsets resolve to a valid 6-by-3 grid position.
+// symdb: (r0 = panel code low 3 bits, r1 = panel code high nibble, r3 = stack panel-code list pointer, r4
+// symdb: = base of 0x2C-byte panel flag table) -> r0 = unspecified; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E8CC4.yaml
 	thumb_local_start
 sub_80E8CC4:
 	push {r3,r5-r7,lr}
@@ -169637,6 +169685,10 @@ byte_8103E64:
 	.byte 0xC, 0xC, 0xC, 0xC, 0xC, 0xC
 	thumb_func_end ai_gregarRollPanelAttackParams
 
+// symdb: Loads three attack-timing fields (duration, boost, cycles) from a per-AI-difficulty table.
+// symdb: () -> r0 = AttackDuration, r1 = AttackBoost, r2 = Cycles; preserves byte_8103EA0 as a 12-byte
+// symdb: table indexed by AI difficulty tier.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8103E74.yaml
 	thumb_local_start
 sub_8103E74:
 	push {lr}
@@ -170655,6 +170707,10 @@ locret_8104606:
 	pop {pc}
 	thumb_func_end battle_updateAttackStepTimer
 
+// symdb: AI step that spawns/repositions a meteor visual at the target and flips to hit state once it lands.
+// symdb: (void, reads oAIAttackVars_AttackElement of r7, oBattleObject via r5) -> void; sets element,
+// symdb: anim, Z, ZVelocity, StepTimer, HitElement
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8104608.yaml
 	thumb_local_start
 sub_8104608:
 	push {lr}
@@ -172908,6 +172964,10 @@ byte_81056D0:
 	.byte 0x19, 0x19, 0x19
 	thumb_func_end sub_81056A4
 
+// symdb: Returns the duration, boost, and timer/cycle values for a selected AI attack.
+// symdb: (r0 = unused) -> r0 = attack duration, r1 = attack boost 2, r2 = timer or cycles; flags
+// symdb: unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81056DC.yaml
 	thumb_local_start
 sub_81056DC:
 	push {lr}
@@ -172934,6 +172994,9 @@ byte_8105708:
 	.byte 0x8, 0x8
 	thumb_func_end sub_81056DC
 
+// symdb: Looks up three timing values (duration, boost, cycles) for the currently loaded AI attack from a per-attack table.
+// symdb: () -> r0 = duration, r1 = boost, r2 = cycles; no flags set
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8105714.yaml
 	thumb_local_start
 sub_8105714:
 	push {lr}
@@ -174692,6 +174755,9 @@ locret_810637E:
 	pop {r4,pc}
 	thumb_func_end ai_attackSlideUpdate
 
+// symdb: Resets an AI attack's variables, defaulting the element to 4 when none is set, then waits StepTimer ticks and stamps HitElement to 0x18.
+// symdb: () -> void; uses r5 (battle object) and r7 (AI attack vars) from caller frame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8106380.yaml
 	thumb_local_start
 sub_8106380:
 	push {lr}

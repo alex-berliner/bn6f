@@ -22181,6 +22181,10 @@ loc_8118702:
 	.balign 4, 0x00
 	thumb_func_end battle_beastOutScrollStep
 
+// symdb: Computes tile-offset pairs for a composite sprite from an index into a small table
+// symdb: (r6 = object, r7 = out record from sub_81187DC) -> fills out r7+0xc/0xe with two 16-bit tile
+// symdb: offsets
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811870C.yaml
 	thumb_local_start
 sub_811870C:
 	push {r4-r7,lr}
@@ -35030,6 +35034,10 @@ byte_811E8FC:
 	.byte 0x0, 0x80, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	thumb_func_end sound_applyBiasWithSpriteFade
 
+// symdb: Dispatches to one of three subtype initializers for 'kind 23' objects based on a subtype byte at entity+8.
+// symdb: (r5 = entity*, uses r6 = eStruct2001010) -> never returns normally (bx+pop {pc}); dispatches via
+// symdb: jump table
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E914.yaml
 	thumb_func_start sub_811E914
 sub_811E914:
 	push {lr}

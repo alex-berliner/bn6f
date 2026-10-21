@@ -1707,6 +1707,9 @@ locret_812FD42::
 	pop {r4-r7,pc}
 	thumb_func_end sub_812FD10
 
+// symdb: Dispatches on a T4 object's sub-type byte (offset 0xC) to one of four handlers, then refreshes the choice OAM/player box.
+// symdb: (r5 = T4 object ptr) -> void; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812FD44.yaml
 	thumb_local_start
 sub_812FD44::
 	push {lr}

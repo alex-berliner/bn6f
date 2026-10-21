@@ -1476,6 +1476,9 @@ locret_812CE26::
 	pop {r4-r7,pc}
 	thumb_func_end sub_812CDF4
 
+// symdb: Dispatches a submenu operation using byte 0x0C of the active structure as an index into a four-entry handler table.
+// symdb: (r5 = active submenu structure) -> r0, r1, ...; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812CE28.yaml
 	thumb_local_start
 sub_812CE28::
 	push {lr}

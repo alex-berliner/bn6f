@@ -1991,6 +1991,9 @@ dword_8144E6C:
 	.word 0x1000020
 	thumb_func_end rfu_clearConnectionInfo
 
+// symdb: Initializes the RFU link connection state struct (eStruct200FE00) for a target, clearing it then copying over slot/role fields from a caller-supplied struct.
+// symdb: (r0 = targetStruct ptr) -> r0 = 2; clobbers r1,r2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144E70.yaml
 	thumb_local_start
 sub_8144E70:
 	push {r4,lr}
@@ -5223,6 +5226,9 @@ loc_8146582:
 	.balign 4, 0x00
 	thumb_func_end rfu_isNotConnected
 
+// symdb: Initializes RFU link-session state variables in EWRAM to defaults before rfu_initLinkSession is called.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146588.yaml
 	thumb_func_start sub_8146588
 sub_8146588:
 	ldr r1, off_81465A8 // =byte_200FE80 
@@ -5558,6 +5564,10 @@ off_814679C:
 	.word byte_2010288
 	thumb_func_end populateLookupEntriesFromStaging
 
+// symdb: Per-frame: refreshes the per-RFU-peer 13-byte buffer at unk_20098B0 and 8-byte buffer at unk_2009750 for every peer recorded in byte_2010288, bumping the counter at byte_2009470.
+// symdb: () -> void; reads byte_2010288 as peer count, writes unk_20098B0 (16-byte stride), unk_2009750
+// symdb: (8-byte stride), and byte_2009470
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81467A0.yaml
 	thumb_func_start sub_81467A0
 sub_81467A0:
 	push {r4-r7,lr}

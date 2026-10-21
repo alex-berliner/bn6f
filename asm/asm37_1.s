@@ -2201,6 +2201,9 @@ sub_8142BF4:
 	b loc_8142BFE
 	thumb_func_end sub_8142BF4
 
+// symdb: Marks active overworld Navicust entries adjacent to the player.
+// symdb: (r0 = unused, r1 = unused) -> r0 = unused; flags = caller-saved/condition flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142BFA.yaml
 	thumb_func_start sub_8142BFA
 sub_8142BFA:
 	push {r4-r7,lr}
