@@ -6905,7 +6905,7 @@ sub_803C150:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C150
 
-// symdb: Expands a 0-terminated byte-index string into halfword character codes via table eCharCodeBuffer, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
+// symdb: Expands a 0-terminated byte-index string into halfword character codes via table unk_2026A00, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
 // symdb: (r0 = byte-index string (0-terminated), r1 = dest buffer, r2 = max halfword count, r3 = fill
 // symdb: halfword value) -> r0 = preserved; no flags of interest
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/convertByteStringToCharCodes.yaml

@@ -20742,6 +20742,8 @@ beastoutSelectionScreenTileGfxA::
 	.word 0xEEEEEEEE, 0xEEEEE111, 0xEEEEE111, 0xEE111111, 0xEE111111
 	.word 0xEE111111, 0xEEEEEEEE, 0xEEEEEEEE, 0xEEEEEEEE, 0xEEEEEEEE
 	.word 0xEEEEEEEE
+// symdb: Proposed name: beastoutSelectionScreenChipUseGfx. Tile art for the chip-use icon on the Beast-Out selection screen, queued as a 0x540-byte GFX transfer. (table of what)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_8723034.yaml
 byte_8723034::
 	.byte 0x85, 0xBB, 0x9D, 0x99, 0x55, 0xBB, 0xDB, 0x99, 0x58
 	.byte 0xB8, 0xBB, 0x9D, 0x88, 0xC5, 0xCC, 0xDB, 0x85, 0x59
@@ -28035,6 +28037,8 @@ dword_8733914::
 	.word 0xDEE75544, 0xEE875444, 0xEB955545, 0x99955599, 0x999599A4
 	.word 0x99AAA555, 0xAAA95555, 0xAA955555, 0xA9959997, 0x9559999B
 	.word 0x999A999E
+// symdb: Proposed name: ChipSoulPreviewTiles. Tile graphic data for the megabyte/soul preview image loaded by setupChipListVisual_802BF6C. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_8733E54.yaml
 dword_8733E54::
 	.word 0x153E0000, 0x2A1F11BF, 0xA9F123F, 0x1EFF2A7F, 0x133F3AFF
 	.word 0x533F0F9F, 0x57BF33BF, 0x109D77DF
@@ -28107,6 +28111,8 @@ dword_8733E74::
 	.word 0x11111112, 0x11111111, 0x11111111, 0x11111111, 0x11111111
 	.word 0x11111111, 0x11111111, 0x11111111, 0x11111111, 0x11111111
 	.word 0x11111111
+// symdb: Proposed name: chipPreviewTilesFiveRows. Tile graphics for a 5-row chip preview image, used as the GFX source for QueueEightWordAlignedGFXTransfer (table of u32)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_87343B4.yaml
 dword_87343B4::
 	.word 0x56B50000, 0x56B556B5, 0x56B556B5, 0x56B556B5, 0x17DF7C1F
 	.word 0x17DF17DF, 0x17DF17DF, 0x17DF17DF

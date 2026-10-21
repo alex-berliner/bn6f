@@ -553,6 +553,8 @@ unk_2006E08:: // 0x2006e08
 	.space 240
 unk_2006EF8:: // 0x2006ef8
 	.space 4728
+// symdb: Proposed name: ePaletteBuffer. A 64-byte (0x3C halfwords = 0x78 bytes destination of a palette copy) EWRAM buffer used as the destination for a copied palette. (u16)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2008170.yaml
 unk_2008170:: // 0x2008170
 	.space 64
 byte_20081B0:: // 0x20081b0
@@ -887,6 +889,8 @@ word_200A2B4:: // 0x200a2b4
 	.space 2
 word_200A2B6:: // 0x200a2b6
 	.space 234
+// symdb: Proposed name: eOverworldSavedJackInBufferC. One of four EWRAM buffers (0x10 bytes) stashed by ow_saveJackInState to snapshot overworld state before a jack-in. (u8 array of 0x10)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_200A3A0.yaml
 unk_200A3A0:: // 0x200a3a0
 	.space 16
 unk_200A3B0:: // 0x200a3b0
@@ -1100,6 +1104,8 @@ unk_200C4F0:: // 0x200c4f0
 	.space 304
 byte_200C620:: // 0x200c620
 	.space 384
+// symdb: Proposed name: chatboxLineBuffer. 32-byte EWRAM scratch buffer for a chatbox/dialogue text line, referenced as a pointer entry in the chatbox state tables off_8044378 and off_804440C inside jt_8043B00. (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200C7A0.yaml
 byte_200C7A0:: // 0x200c7a0
 	.space 32
 byte_200C7C0:: // 0x200c7c0
@@ -1108,8 +1114,12 @@ byte_200C7E0:: // 0x200c7e0
 	.space 16
 byte_200C7F0:: // 0x200c7f0
 	.space 304
+// symdb: Proposed name: eMapNameTextGfxBuffer. EWRAM tile/tilemap buffer that holds the rendered graphics for the current map name before they are uploaded to the map-name VRAM slot. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200C920.yaml
 byte_200C920:: // 0x200c920
 	.space 768
+// symdb: Proposed name: ow_RenderedMapNameGfx. A 384-byte EWRAM buffer holding the 4bpp tile graphics the overworld map-name HUD repacks and queues to VRAM each frame. (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200CC20.yaml
 byte_200CC20:: // 0x200cc20
 	.space 384
 dword_200CDA0:: // 0x200cda0
@@ -1146,6 +1156,8 @@ byte_200CE3C:: // 0x200ce3c
 	.space 228
 byte_200CF20:: // 0x200cf20
 	.space 768
+// symdb: Proposed name: eMapNamesScreenTilemap. EWRAM tilemap buffer that receives the repacked 4bpp tiles for the map names text screen (u16)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200D220.yaml
 byte_200D220:: // 0x200d220
 	.space 512
 dword_200D420:: // 0x200d420
@@ -1326,6 +1338,8 @@ word_200F476:: // 0x200f476
 	.space 18
 byte_200F488:: // 0x200f488
 	.space 1
+// symdb: Proposed name: eSioMultiPayloadFlags. A single-byte flag scratch used by sio_processMultiPayloads when broadcasting per-player SIO payloads (cleared or OR'd across a 30-slot window). (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200F489.yaml
 byte_200F489:: // 0x200f489
 	.space 487
 byte_200F670:: // 0x200f670
@@ -1432,6 +1446,8 @@ byte_2010144:: // 0x2010144
 	.space 12
 unk_2010150:: // 0x2010150
 	.space 10
+// symdb: Proposed name: ePackScreenNaviId. Current navi id displayed on the pack screen. (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_201015A.yaml
 byte_201015A:: // 0x201015a
 	.space 1
 byte_201015B:: // 0x201015b
@@ -1492,6 +1508,8 @@ byte_2010292:: // 0x2010292
 	.space 1
 byte_2010293:: // 0x2010293
 	.space 1
+// symdb: Proposed name: chatboxTextStateEntries. Work buffer of 10-byte text-state records (5 slots) used by the chatbox/dialog system. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2010294.yaml
 unk_2010294:: // 0x2010294
 	.space 50
 word_20102C6:: // 0x20102c6
@@ -1546,7 +1564,7 @@ byte_20103F8:: // 0x20103f8
 	.space 8
 word_2010400:: // 0x2010400
 	.space 8
-// symdb: Proposed name: eRfuParentReadyFlag. EWRAM byte acting as a ready/active flag for the parent side of an RFU multiplayer link transfer, alongside sibling flags byte_2010270 and rfuLinkStateChangeFlag and timeout word dword_2010418. (u8)
+// symdb: Proposed name: eRfuParentReadyFlag. EWRAM byte acting as a ready/active flag for the parent side of an RFU multiplayer link transfer, alongside sibling flags byte_2010270 and byte_2010368 and timeout word dword_2010418. (u8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/eRfuParentReadyFlag.yaml
 eRfuParentReadyFlag:: // 0x2010408
 	.space 8
@@ -1950,6 +1968,8 @@ byte_2016A04:: // 0x2016a04
 	.space 2044
 byte_2017200:: // 0x2017200
 	.space 4
+// symdb: Proposed name: chatboxWindowTileStaging. EWRAM staging buffer holding the chatbox window tilemap before it is copied into the BG tile block for the text layer. (u8 (tilemap staging buffer, ~2048 bytes))
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2017204.yaml
 byte_2017204:: // 0x2017204
 	.space 2044
 byte_2017A00:: // 0x2017a00
@@ -1966,12 +1986,16 @@ unk_2017C00:: // 0x2017c00
 	.space 104
 unk_2017C68:: // 0x2017c68
 	.space 24
+// symdb: Proposed name: eTextGfxRenderBuffer. EWRAM scratch buffer (160 bytes) used as a tile-destination area when rendering text GFX panels into VRAM via renderTextGfx_8045F8C. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2017C80.yaml
 unk_2017C80:: // 0x2017c80
 	.space 160
 unk_2017D20:: // 0x2017d20
 	.space 224
 unk_2017E00:: // 0x2017e00
 	.space 352
+// symdb: Proposed name: npcEntryRowNameBuffers. per-row text-script name buffers used to render up to four NPC entry-selection rows (table of what)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2017F60.yaml
 unk_2017F60:: // 0x2017f60
 	.space 160
 unk_2018000:: // 0x2018000
@@ -2018,6 +2042,8 @@ byte_2019A04:: // 0x2019a04
 	.space 508
 unk_2019C00:: // 0x2019c00
 	.space 512
+// symdb: Proposed name: savemenuFilenameBuffer. Per-character tilemap-row buffer for the save-menu filename rows, 1024 bytes at 0x02019E00 (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2019E00.yaml
 unk_2019E00:: // 0x2019e00
 	.space 1024
 unk_201A200:: // 0x201a200
@@ -2066,6 +2092,8 @@ byte_201BDB8:: // 0x201bdb8
 	.space 64
 byte_201BDF8:: // 0x201bdf8
 	.space 136
+// symdb: Proposed name: eNaviCustomizerPanelTileIds. UWRAM tile-id table passed as the per-tile-id source to CopyBackgroundTiles for the Navi Customizer full panel background. (table of u16)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_201BE80.yaml
 byte_201BE80:: // 0x201be80
 	.space 128
 eTextScript201BF00:: // 0x201bf00
@@ -2238,6 +2266,8 @@ unk_201F6F0:: // 0x201f6f0
 	.space 304
 unk_201F820:: // 0x201f820
 	.space 376
+// symdb: Proposed name: eCollectedChipListBuffer. EWRAM buffer holding the compacted list of collected chip entries rebuilt by library_rebuildCollectedChipList (table of u32)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201F998.yaml
 unk_201F998:: // 0x201f998
 	.space 352
 unk_201FAF8:: // 0x201faf8
@@ -2496,6 +2526,8 @@ unk_2028204:: // 0x2028204
 	.space 908
 unk_2028590:: // 0x2028590
 	.space 256
+// symdb: Proposed name: eBattleSceneTileIds. per-battle-scene 30x20 tile-ID grid passed to CopyBackgroundTiles as the tile_ids argument (table of u16)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2028690.yaml
 unk_2028690:: // 0x2028690
 	.space 880
 unk_2028A00:: // 0x2028a00
@@ -2763,6 +2795,8 @@ unk_2034F60:: // 0x2034f60
 	.space 160
 unk_2035000:: // 0x2035000
 	.space 90
+// symdb: Proposed name: customScreenChipSlotTileIds. Tile-ID data for a custom-screen chip-slot row's 3-by-3 tile upload (table of what)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_203505A.yaml
 unk_203505A:: // 0x203505a
 	.space 300
 unk_2035186:: // 0x2035186
@@ -3003,6 +3037,8 @@ eT4BattleObjects:: // 0x2036860
 eT4BattleObjectsEnd:: // 0x2038160
 
 	.space 16
+// symdb: Proposed name: eNextTable. Base of a 32-byte-entry 'Next' array; getNextEntryAddress returns an entry's address and leaves the base in r1. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2038170.yaml
 unk_2038170:: // 0x2038170
 	.space 896
 
@@ -3386,6 +3422,8 @@ byte_203EBA0:: // 0x203eba0
 	.space 512
 byte_203EDA0:: // 0x203eda0
 	.space 512
+// symdb: Proposed name: eBattleState_PanelDamage. Per-side panel/damage scratch buffer for side B, returned as the EWRAM base alongside a VRAM base of 0x6017280 by selectPlayerSide when the side flag equals 1. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_203EFA0.yaml
 byte_203EFA0:: // 0x203efa0
 	.space 1280
 // symdb: Proposed name: battleLinkTransferBuffer. First half of the two-player battle link input-transfer buffer, tracked and synchronized by battle ID. (table of what)
@@ -3402,6 +3440,8 @@ eBattleNaviStats203F4AC:: // 0x203f4ac
 	.space 72
 byte_203F4F4:: // 0x203f4f4
 	.space 28
+// symdb: Proposed name: sBattleNaviAuxData. Primary battle copy of the 40-byte auxiliary data block propagated during battle setup. (u32)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_203F510.yaml
 byte_203F510:: // 0x203f510
 	.space 40
 byte_203F538:: // 0x203f538
@@ -3475,8 +3515,12 @@ unk_2034400:: // 0x2034400
 	.space 88
 unk_2034458:: // 0x2034458
 	.space 224
+// symdb: Proposed name: submenuChipPanelTileIds. u16 table of BG tile IDs for the chip/folder name panel drawn in the battle custom-screen submenu (table of u16)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2034538.yaml
 unk_2034538:: // 0x2034538
 	.space 56
+// symdb: Proposed name: chipFolderPageTileIds. Tile-ID array for the selected battle chip-folder page used to build the folder/chip-page background. (table of what)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2034570.yaml
 unk_2034570:: // 0x2034570
 	.space 56
 unk_20345A8:: // 0x20345a8

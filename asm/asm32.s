@@ -28312,7 +28312,7 @@ off_811B358:
 	.word sSubmenu
 	thumb_func_end submenuDispatchTypeUpdate
 
-// symdb: Initializer for an object of type 0x23: loads sprite resource 0x14 from eCharCodeBuffer via initGuiSprite_8002770, sets animation 0 with no shadow and priority 0, claims slot 0x210, writes sub-record field A=2 and sub-entry palette bank 0xA with palette 0, then sets coordinates to (0x20, 0x50) and tail-calls sub_811B3B0. Finally stores state byte 4 at [r5,#8].
+// symdb: Initializer for an object of type 0x23: loads sprite resource 0x14 from unk_2026A00 via initGuiSprite_8002770, sets animation 0 with no shadow and priority 0, claims slot 0x210, writes sub-record field A=2 and sub-entry palette bank 0xA with palette 0, then sets coordinates to (0x20, 0x50) and tail-calls sub_811B3B0. Finally stores state byte 4 at [r5,#8].
 // symdb: (r5 = object state struct) -> void; r0/r1 clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initType23Sprite.yaml
 	thumb_local_start

@@ -3694,7 +3694,7 @@ byte_8004B14:
 	thumb_func_end sub_80049FC
 
 // symdb: Renders an encoded tile stream (byte_2006848) into the BG map as a run of tile writes, then resets the stream pointer.
-// symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *tileStreamCursor, writes
+// symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *dword_2006C48, writes
 // symdb: tiles via bgmap_WriteTileIdAtBlock_800187C, resets cursor to buffer start
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/bgmap_drawTilesFromStream.yaml
 	thumb_local_start
@@ -7531,7 +7531,7 @@ off_800691C:
 	.word byte_20081B0
 	thumb_func_end sub_8006910
 
-// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at chatboxDiagonalEdgeTable via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(chatboxDiagonalEdgeTable, Window0HorizontalDimensions, 4, 0xA2600000).
+// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
 // symdb: (r0 = pointer to an 11-field task descriptor) -> r0 = result of req_enqueueTask; r4-r7 clobbered
 // symdb: (saved/restored)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initWindowReqAndEnqueue.yaml

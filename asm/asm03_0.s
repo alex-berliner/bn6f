@@ -4506,7 +4506,7 @@ sub_80282C2:
 	pop {pc}
 	thumb_func_end sub_80282C2
 
-// symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at IndexedBattleGfxChunks, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
+// symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at dword_86E441C, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
 // symdb: (r0 = dst VRAM ptr, r1 = dst VRAM ptr, r4 = object struct with byte index at +7) -> r1 advanced
 // symdb: by 0x180; r0 = src ptr used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/queueIndexedGfxChunk.yaml

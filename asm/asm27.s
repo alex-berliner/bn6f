@@ -38,9 +38,9 @@ ow_restoreTilemapFromSnapshot:
 	pop {r4-r7,pc}
 	thumb_func_end ow_restoreTilemapFromSnapshot
 
-// symdb: Re-blits the overworld map tilemap block using parameters stored at eOverworldMapTilemap and redraws the area around the camera.
+// symdb: Re-blits the overworld map tilemap block using parameters stored at unk_2026404 and redraws the area around the camera.
 // symdb: () -> r0 = 0; r1-r3/r4-r7 unspecified on entry, so remaining arguments come from the struct at
-// symdb: eOverworldMapTilemap or the caller's state
+// symdb: unk_2026404 or the caller's state
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_refreshMapTilemap.yaml
 	thumb_local_start
 ow_refreshMapTilemap:

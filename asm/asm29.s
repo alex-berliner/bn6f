@@ -10627,7 +10627,7 @@ sub_80AA0FC:
 	pop {pc}
 	thumb_func_end sub_80AA0FC
 
-// symdb: Copies one 8-byte palette-row entry (selected by index 0..2) from a fixed ROM table into the work buffer paletteCopyWorkBuffer and returns 0.
+// symdb: Copies one 8-byte palette-row entry (selected by index 0..2) from a fixed ROM table into the work buffer byte_20018B0 and returns 0.
 // symdb: int palette_copyTableRow(int row /* r0 = entry index, expected 0..2 */);
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/palette_copyTableRow_80AA104.yaml
 	thumb_func_start palette_copyTableRow_80AA104

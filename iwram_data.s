@@ -179,6 +179,8 @@ unk_3002300:: // 0x3002300
 	.space 28
 unk_300231C:: // 0x300231c
 	.space 228
+// symdb: Proposed name: eSpriteOamEntryBuf. IWRAM scratch buffer (0x180 bytes) holding OAM entry staging data passed to sprite_queueOamEntries while queuing a sprite frame's pieces. (struct)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_3002400.yaml
 unk_3002400:: // 0x3002400
 	.space 384
 unk_3002580:: // 0x3002580
@@ -278,6 +280,8 @@ dword_30055F0:: // 0x30055f0
 	.space 4
 dword_30055F4:: // 0x30055f4
 	.space 4
+// symdb: Proposed name: iActiveMPlayTrack. IWRAM pointer to the currently active MPlay track header used by m4a_ply_note tail-call trampolines (pointer)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_30055F8.yaml
 off_30055F8:: // 0x30055f8
 	.space 4
 off_30055FC:: // 0x30055fc

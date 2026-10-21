@@ -622,7 +622,7 @@ copyBgTilesToBlock0:
 off_812D7A0:
 	.word unk_20227A0
 	thumb_func_end copyBgTilesToBlock0
-// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with battleChipSearchList and (field-1) as index before calling sub_812D5A0.
+// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling sub_812D5A0.
 // symdb: (no args; uses r10 toolkit's s2001c04 battle-work pointer and the entry returned by sub_812D6F8)
 // symdb: -> r0 = 1 if A was newly pressed this frame, else 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSelectionEntry.yaml

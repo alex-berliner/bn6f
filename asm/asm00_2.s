@@ -1204,7 +1204,7 @@ battle_getObjectAllianceTeam_800F49E:
 	thumb_func_end battle_getObjectAllianceTeam_800F49E
 
 // symdb: Returns a per-alliance pointer from a global table, selected by the battle object's Alliance field.
-// symdb: (r5 = battle object) -> r0 = battleAllianceLists[Alliance*4]; flags clobbered, r0/r1 scratch
+// symdb: (r5 = battle object) -> r0 = dword_203F7E0[Alliance*4]; flags clobbered, r0/r1 scratch
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAllianceList.yaml
 	thumb_local_start
 battle_getAllianceList:

@@ -11568,7 +11568,7 @@ off_8128AA4:
 	.byte 0x20, 0x14, 0x0, 0x0, 0xB8, 0x0, 0x0, 0x0
 	thumb_func_end sub_8128A44
 
-// symdb: Builds an interleaved two-buffer tile-ID lookup table in the sprite staging area (SpriteStagingTileIds), filling 0x170 halfwords with blank tile 0x7200 and overlaying 0x7201+ tile pairs whose row count is gated by the sprite's row/skip fields.
+// symdb: Builds an interleaved two-buffer tile-ID lookup table in the sprite staging area (unk_201C040), filling 0x170 halfwords with blank tile 0x7200 and overlaying 0x7201+ tile pairs whose row count is gated by the sprite's row/skip fields.
 // symdb: void sub_8128AB0(struct sprite *r5 /* in/out, preserved */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8128AB0.yaml
 	thumb_local_start
@@ -11644,7 +11644,7 @@ dword_8128B30:
 	.word 0x7200
 	thumb_func_end sub_8128AB0
 
-// symdb: Copies the 23x8 tile ID block at SpriteStagingTileIds into background tile block 2 at column 4, row 3.
+// symdb: Copies the 23x8 tile ID block at unk_201C040 into background tile block 2 at column 4, row 3.
 // symdb: void sub_8128B34(void);  // (no register args; uses r10/lr only as caller convention)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8128B34.yaml
 	thumb_local_start

@@ -7276,7 +7276,7 @@ off_81473E8:
 	.word eS200BC50
 	thumb_func_end sub_8147350
 
-// symdb: Wireless link-event dispatcher: on a link event id, updates the wireless session state word (eS200BC50+8), drives rfu_setLinkCommand/sub_813D94C, copies ready-flag bitmasks between word_200FE14 and byte_2010280/byte_2010284, and clears rfuLinkStateChangeFlag.
+// symdb: Wireless link-event dispatcher: on a link event id, updates the wireless session state word (eS200BC50+8), drives rfu_setLinkCommand/sub_813D94C, copies ready-flag bitmasks between word_200FE14 and byte_2010280/byte_2010284, and clears byte_2010368.
 // symdb: (r0 = link event id, byte) -> r0 = undefined; no flags used by callers known
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_dispatchLinkEvent.yaml
 	thumb_local_start
@@ -7558,7 +7558,7 @@ off_81475D0:
 	.word dword_814FE94
 // symdb: Per-frame update for the RFU wireless state machine: spin-waits on a busy flag, optionally issues rfu_REQ_disconnect, then dispatches on the 16-bit state at eS200BC50+8 across cases 1/3/4/9/0xB/0x22/0x34/0x40 to drive rfu_clearAllSlot, sub_8144EF8, sub_8145120, sub_813D934, etc.
 // symdb: (r0 = context/handle passed through to sub_8144EF8, saved in r5) -> r0 = none; updates state
-// symdb: word [eS200BC50+8], flags rfuLinkStateChangeFlag/byte_2010340/byte_2010284
+// symdb: word [eS200BC50+8], flags byte_2010368/byte_2010340/byte_2010284
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_connectionStateUpdate.yaml
 	thumb_func_start rfu_connectionStateUpdate
 rfu_connectionStateUpdate:
@@ -10306,7 +10306,7 @@ off_8148BC8:
 	thumb_func_end sub_8148B80
 
 // symdb: Wireless link watchdog: per active peer slot, compares current received value to last seen, tallies match/increment/decrement/other into per-slot counters, stores new value, and once all masked peers have reported, either sets connection state to 1, transitions to 0x83, or increments a mismatch counter.
-// symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), rfuPeerChangeBitmask
+// symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), byte_20101B0
 // symdb: change flags, and state byte byte_20101B4 (=1 or 0x83 on transition)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniPollPeerValueChanges.yaml
 	thumb_local_start
@@ -23520,7 +23520,7 @@ dword_814EB80:
 	.word 0x68736D53
 	thumb_func_end sound_mplayStop
 
-// symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at iSoundDriverFunctionTable, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
+// symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
 // symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
 // symdb: preserves r4-r6 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cgbSoundInit_814EB84.yaml

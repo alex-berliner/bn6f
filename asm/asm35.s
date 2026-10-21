@@ -449,7 +449,7 @@ locret_812ED90:
 	.balign 4, 0x00
 	thumb_func_end sub_812ED58
 
-// symdb: Reloads the full-screen map background tilemap from battleMapTilemapBuffer into tile block 1, zeroes the BG tile buffer, resets the battle-overlay scene record array, and invokes several overlay helpers using a value read from the caller's r5 struct.
+// symdb: Reloads the full-screen map background tilemap from unk_201E920 into tile block 1, zeroes the BG tile buffer, resets the battle-overlay scene record array, and invokes several overlay helpers using a value read from the caller's r5 struct.
 // symdb: () -> void; caller's r5 preserved via r7 round-trip
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_restoreMapBackground.yaml
 	thumb_func_start battle_restoreMapBackground

@@ -326,7 +326,7 @@ locret_800BA88:
 
 // symdb: Per-tick handler for the "SnakeArm" battle object: when not initialized, checks if a chip can be triggered and queues a 0x4C/0x50 battle effect; once initialized, waits for cross-net readiness and then advances the action/phase state machine.
 // symdb: (r5 = *BattleObject) -> void ; side effects: clears/dispatches 0x10000 flag, plays SE 0x73,
-// symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes eFreezeCounterByAlliance[Alliance]
+// symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes dword_200F3B8[Alliance]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSnakeArm_800BA8A.yaml
 	thumb_func_start battleObject_stepSnakeArm_800BA8A
 battleObject_stepSnakeArm_800BA8A:
@@ -1882,8 +1882,8 @@ loc_800C672:
 	pop {r4-r7,pc}
 	thumb_func_end updateBattlePanels_800C5E0
 
-// symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to battlePanelRuns.
-// symdb: () -> void; writes run records to battlePanelRuns (4 bytes each, first byte 0xFF terminates)
+// symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to byte_203F6B0.
+// symdb: () -> void; writes run records to byte_203F6B0 (4 bytes each, first byte 0xFF terminates)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_encodePanelRuns.yaml
 	thumb_local_start
 battle_encodePanelRuns:
