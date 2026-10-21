@@ -6794,6 +6794,9 @@ dword_8085BC4::
 	cs_set_chatbox_flags byte2=0x40
 	cs_jump destination1=byte_8085B8A
 
+// symdb: Initializes a battle-state field by selecting table entry 9.
+// symdb: (r0 = unused, r1 = unused) -> r0 = 0; flags:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8085BCC.yaml
 	thumb_local_start
 sub_8085BCC:
 	push {lr}

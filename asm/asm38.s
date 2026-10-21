@@ -2532,6 +2532,10 @@ loc_3006C6E:
 	pop {pc}
 	thumb_func_end sub_3006C3C
 
+// symdb: Advances the caller's chatbox output pointer past a variable number of rows.
+// symdb: (r0 = chatbox output pointer, r10+0x38 -> byte count of rows to skip) -> r0 = advanced pointer +
+// symdb: 1; r4 cleared
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006C72.yaml
 	thumb_local_start
 sub_3006C72:
 	push {lr}

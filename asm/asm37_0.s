@@ -627,6 +627,10 @@ off_813BAE8:
 	.word 0x188
 	thumb_func_end t4_loadToolkitSceneBuffers
 
+// symdb: Confirms a Navi Customizer part can be placed by checking panel and overlap rules.
+// symdb: (r0 = part header pointer, r1 = placement data ptr, r2 = ?, r3 = ?) -> r0 = 0 if legal, non-zero
+// symdb: otherwise
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BAEC.yaml
 	thumb_func_start sub_813BAEC
 sub_813BAEC:
 	push {lr}

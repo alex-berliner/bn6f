@@ -7230,6 +7230,10 @@ off_81113B8:
 	.word ai_sweepAttackInit+1
 	thumb_func_end ai_battlesweepUpdate
 
+// symdb: Chooses the next battle AI script from a countdown value.
+// symdb: (r0 = unused, r1 = unused, r5 = AI data, r6 = battle AI state) -> r0 = selected script ID; flags
+// symdb: unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81113C4.yaml
 	thumb_local_start
 sub_81113C4:
 	push {lr}

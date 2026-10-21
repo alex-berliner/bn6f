@@ -1515,6 +1515,10 @@ off_810D148::
 	.word sub_810D168+1
 	thumb_func_end sub_810D130
 
+// symdb: Initializes a battle object by spawning its linked type-0x41 helper and entering AI script state 4.
+// symdb: (r4 = object data with version field, r5 = owning battle object, r6 = AI state) -> r0 = 0; flags
+// symdb: preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D150.yaml
 	thumb_local_start
 sub_810D150::
 	push {r4,lr}

@@ -48068,6 +48068,10 @@ locret_80CD142:
 	pop {pc}
 	thumb_func_end battle_waitTimerThenAdvanceAction
 
+// symdb: Dispatches battle-object processing according to the object's current phase.
+// symdb: (r0 = implicit r5 battle object) -> r0 = selected handler's return value; flags = handler-
+// symdb: dependent
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80CD144.yaml
 	thumb_local_start
 sub_80CD144:
 	push {lr}
@@ -71755,6 +71759,9 @@ battle_objectVanishFromField:
 	pop {r4,pc}
 	thumb_func_end battle_objectVanishFromField
 
+// symdb: Initializes the current battle object to phase 8 with a 32-unit Timer2 after entering animation 5 and setting its extra state to 9.
+// symdb: (r5 = battleObject) -> void; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D7996.yaml
 	thumb_local_start
 sub_80D7996:
 	push {lr}
@@ -75817,6 +75824,9 @@ battle_copyPanelPosFromRelated:
 	pop {pc}
 	thumb_func_end battle_copyPanelPosFromRelated
 
+// symdb: Returns whether the object's relay flags (ExtraVars[0] AND ExtraVars[1]) are non-zero, used to relay damage to a related object.
+// symdb: () -> r0: r0 = (ExtraVars[0] & ExtraVars[1]) != 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80D9690.yaml
 	thumb_local_start
 sub_80D9690:
 	push {lr}
@@ -149963,6 +149973,9 @@ dword_80FAF2C:
 	.word 0x12121818
 	thumb_func_end sub_80FAF0C
 
+// symdb: Returns the default AttackBoost2 value used when initializing an AI attack
+// symdb: () -> r0 = 0x0C0C1212; preserves nothing
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80FAF30.yaml
 	thumb_local_start
 sub_80FAF30:
 	push {lr}
@@ -161654,6 +161667,9 @@ dword_8100520:
 	.word 0x1C202428
 	thumb_func_end ai_getBossAttackDelay
 
+// symdb: Returns the Attack Boost value used by an AI attack helper.
+// symdb: () -> r0 = attackBoostValue (byte via sub_800FE28)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8100524.yaml
 	thumb_local_start
 sub_8100524:
 	push {lr}
@@ -163539,6 +163555,9 @@ dword_8101200:
 	.word 0x3800000
 	thumb_func_end sub_81011B2
 
+// symdb: Spawns the battle object implementing an AI-selected panel attack at the chosen coordinates.
+// symdb: (r0 = target panel X, r1 = target panel Y) -> r0 = spawned object pointer; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8101204.yaml
 	thumb_local_start
 sub_8101204:
 	push {r4,r6,lr}
@@ -163898,6 +163917,9 @@ dword_81014F8:
 	.word 0x4030302
 	thumb_func_end sub_81014E8
 
+// symdb: Returns the configured attack duration for the AI attack parameters.
+// symdb: () -> r0 = attack duration; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81014FC.yaml
 	thumb_local_start
 sub_81014FC:
 	push {lr}
@@ -171387,7 +171409,7 @@ byte_8104B5C:
 	.byte 0x1, 0x2, 0x3, 0x3, 0x2, 0x1, 0x1, 0x2, 0x3, 0x3, 0x2, 0x1
 	thumb_func_end sub_8104B04
 
-// symdb: One step of an AI attack: plays the attack sound, spawns a flip-dependent effect (id 0x4B) at the object's position, optionally calls battle_endSubObjectSlots, and advances SubStepIndex; sets HitElement to 0xC when cycles are reached, else 4 to keep ticking.
+// symdb: One step of an AI attack: plays the attack sound, spawns a flip-dependent effect (id 0x4B) at the object's position, optionally calls sub_80E7DA4, and advances SubStepIndex; sets HitElement to 0xC when cycles are reached, else 4 to keep ticking.
 // symdb: (r5 = battle object, r7 = AI attack vars) -> r0 = HitElement state (4 = still looping, 0xC =
 // symdb: step done); no return value used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_attackStepSpawnEffectLoop.yaml
@@ -175689,6 +175711,9 @@ byte_8106B3C:
 	.byte 0x14, 0x14, 0x10, 0x10, 0xC, 0xC, 0x8, 0x8
 	thumb_func_end sub_8106B20
 
+// symdb: Returns the configured attack duration for the current enemy AI attack.
+// symdb: (r0 = implicit current context) -> r0 = uint16 attack duration; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8106B44.yaml
 	thumb_local_start
 sub_8106B44:
 	push {lr}
@@ -186241,6 +186266,10 @@ dword_810BA90:
 	.word 0x100FF
 	thumb_func_end ai_attackHitFrontPanel
 
+// symdb: Checks whether the battle AI currently has an active attack target.
+// symdb: (implicit r5 = battle AI state) -> r0 = 1 if target exists, otherwise 0; flags are not reliably
+// symdb: used
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810BA94.yaml
 	thumb_local_start
 sub_810BA94:
 	push {r4-r7,lr}

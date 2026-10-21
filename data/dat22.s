@@ -46,6 +46,10 @@ loc_8087226::
 	.balign 4, 0x00
 	thumb_func_end sub_80871F4
 
+// symdb: Copies a saved player trail record from off_8086D1C into the active trail struct and sets event flag 0x5E5.
+// symdb: (r5 = ptr to player trail struct) -> void; r5+0x5..r5+0xd filled from src[1..9], r5+0x10..
+// symdb: filled with 0x21 words from src+0x5C
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087238.yaml
 	thumb_func_start sub_8087238
 sub_8087238::
 	push {r4-r7,lr}

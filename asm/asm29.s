@@ -1567,6 +1567,10 @@ loc_80A594E:
 	.balign 4, 0x00
 	thumb_func_end camera_stepTowardsTarget
 
+// symdb: Copies a three-word overworld player position/coordinate vector from an offset structure into the active player state.
+// symdb: (implicit r6 = source player/offset context, r5 = destination player context) -> r0-r2
+// symdb: unchanged; flags unaffected
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5954.yaml
 	thumb_local_start
 sub_80A5954:
 	push {lr}
