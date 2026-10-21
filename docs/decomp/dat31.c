@@ -270,7 +270,7 @@ int sub_810C72E()
 
 
 // 0x810c754
-signed int sub_810C754()
+signed int object_initSniperAttack()
 {
     int v0; // r4
     _BYTE *v1; // r6
@@ -464,7 +464,7 @@ void __fastcall sub_810C9F4(int a1)
 
 
 // 0x810ca4c
-int sub_810CA4C()
+int ai_stepTargetPanelChoose()
 {
     _BYTE *v0; // r5
     int v1; // r7
@@ -987,7 +987,7 @@ int sub_810D2E4()
 
 
 // 0x810d34c
-int sub_810D34C()
+int object_updateAttackStepTimer()
 {
     int v0; // r5
     int v1; // r7
@@ -1148,7 +1148,7 @@ int __fastcall sub_810D476(int a1, int a2, int a3, int a4)
 
 
 // 0x810d498
-int __fastcall sub_810D498(_DWORD *a1)
+int __fastcall battle_getAttackTargetCountByNameRange(_DWORD *a1)
 {
     int v1; // r5
     _DWORD *v2; // r4
@@ -1177,7 +1177,7 @@ int sub_810D4BA()
     int v11; // r5
     int v12; // [sp+0h] [bp-24h]
 
-    result = sub_810D498(&v12);
+    result = battle_getAttackTargetCountByNameRange(&v12);
     if ( result )
     {
         v4 = 1;
@@ -1225,7 +1225,7 @@ int sub_810D4E8()
     if ( result )
     {
         *(v1 + 52) = 0;
-        result = sub_810D498(&v12);
+        result = battle_getAttackTargetCountByNameRange(&v12);
         if ( result )
         {
             v5 = &v12;
@@ -1267,7 +1267,7 @@ int sub_810D516()
     int v10; // [sp-Ch] [bp-20h]
     int v11; // [sp+0h] [bp-14h]
 
-    result = sub_810D498(&v11);
+    result = battle_getAttackTargetCountByNameRange(&v11);
     if ( result )
     {
         v4 = &v11;
@@ -1506,7 +1506,7 @@ int ai_attackVars_stepChargeAndShoot_810D808()
 
 
 // 0x810d8b2
-int __fastcall sub_810D8B2(int a1, int a2, int a3)
+int __fastcall battleAiAttackTick(int a1, int a2, int a3)
 {
     int v3; // r5
     int v4; // r7
@@ -1562,7 +1562,7 @@ int sub_810D8EA()
 
 
 // 0x810d940
-int sub_810D940()
+int battleInitObjectExtraVarsFromVersion()
 {
     _DWORD *v0; // r5
     int v1; // r2

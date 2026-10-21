@@ -7631,7 +7631,7 @@ int navicust_handleBoardConfirm()
 
     v1 = beastsp_getCodeEntry(*(v0 + 36) + *(v0 + 32));
     v2 = *v1;
-    sub_813629C(v2);
+    navicust_hasBoardJackInKeyItem(v2);
     if ( v5 )
     {
         battle_resetEStructRecords_8046664();
@@ -7680,7 +7680,7 @@ __int16 *__fastcall beastsp_getCodeEntry(int a1)
 
 
 // 0x813629c
-int __fastcall sub_813629C(int a1)
+int __fastcall navicust_hasBoardJackInKeyItem(int a1)
 {
     unsigned int v1; // r4
     int *v2; // r0

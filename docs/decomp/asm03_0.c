@@ -974,7 +974,7 @@ LABEL_15:
 
 
 // 0x8026faa
-int sub_8026FAA()
+int chip_advanceStateIfChatFlagClear()
 {
     int v0; // r5
     int result; // r0

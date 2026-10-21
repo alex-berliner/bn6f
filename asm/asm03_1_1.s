@@ -14975,7 +14975,7 @@ scene_gameOverSetup_803FB64: // (self: *mut S200F348 $r5) -> ()
 
 	bl renderInfo_80017A0 // () -> ()
 
-	bl sub_803FBE8
+	bl req_runShutdownDecompJob
 
 	mov r0, #8
 	mov r1, #0x20 
@@ -15059,9 +15059,9 @@ off_803FBE4:
 
 // symdb: Enqueues a BG-tile-decomp shutdown request and zeroes the 0x140-byte decomp work buffer used by it.
 // symdb: () -> ()
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803FBE8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/req_runShutdownDecompJob.yaml
 	thumb_local_start
-sub_803FBE8:
+req_runShutdownDecompJob:
 	push {lr}
 	ldr r0, off_803FCE0 // =eDecompBuffer2013A00
 	ldr r1, off_803FC0C // =BG1X_Offset
@@ -15084,7 +15084,7 @@ off_803FC0C:
 	.word BG1X_Offset
 dword_803FC10:
 	.word 0xA2400000
-	thumb_func_end sub_803FBE8
+	thumb_func_end req_runShutdownDecompJob
 
 // symdb: Scans the OAM decomp buffer and offsets each row's Y by a scroll delta sourced from the toolkit's render-info field, decrementing that field by 4 first.
 // symdb: void sub_803FC14(void);   // inputs:  r10 = oToolkit* (RenderInfoPtr read via r10), r1 passed in

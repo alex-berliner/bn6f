@@ -1500,7 +1500,7 @@ off_8026EB8:
 off_8026EBC:
 	.word runBattleDialog_8026EC8+1
 	.word battle_custMenuTickPlayerChipCursor_8026F1A+1
-	.word sub_8026FAA+1
+	.word chip_advanceStateIfChatFlagClear+1
 	thumb_func_end battle_updateObjectByKind_8026E98
 
 // symdb: Picks and runs the battle tutorial / battle-run text script and plays the unselect jingle.
@@ -1634,9 +1634,9 @@ locret_8026FA8:
 
 // symdb: Advances a chip's execution state to 4 (and clears its sub-field) once chatbox/cutscene flag 0x80 is no longer set; otherwise leaves state untouched.
 // symdb: (no args; uses r5 = chip state struct) -> no return; branch only
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026FAA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chip_advanceStateIfChatFlagClear.yaml
 	thumb_local_start
-sub_8026FAA:
+chip_advanceStateIfChatFlagClear:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -1648,7 +1648,7 @@ sub_8026FAA:
 	strh r0, [r5,#2]
 locret_8026FBE:
 	pop {pc}
-	thumb_func_end sub_8026FAA
+	thumb_func_end chip_advanceStateIfChatFlagClear
 
 // symdb: Drives the "battle is about to run away" tutorial dialog: on first entry it fires the tutorial script (paged 1 or 2 + offset from battle effects) and marks the tutorial seen; on later entries it waits for chatbox flag 0x80 to clear, then arms a 0x14-timer and clears state.
 // symdb: void battle_runTutorialDialog_8026FC0(struct S20364C0 *self /* r5 */); // outputs:

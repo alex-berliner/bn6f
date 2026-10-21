@@ -415,16 +415,16 @@ sub_810C72E::
 off_810C744::
 	.word off_810C748
 off_810C748::
-	.word sub_810C754+1
+	.word object_initSniperAttack+1
 	.word sub_810C776+1
 	.word sub_810C7B6+1
 	thumb_func_end sub_810C72E
 
 // symdb: Initializes an object's Sniper-style attack state and starts attack pattern 9.
 // symdb: (r0 = ..., r1 = ...) -> r0 = ...; flags ...
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C754.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initSniperAttack.yaml
 	thumb_local_start
-sub_810C754::
+object_initSniperAttack::
 	push {lr}
 	ldrb r1, [r4,#oAIData_Version_16]
 	ldr r0, off_810C76C // =byte_810C770 
@@ -440,7 +440,7 @@ off_810C76C::
 	.word byte_810C770
 byte_810C770::
 	.byte 0x78, 0x64, 0x50, 0x3C, 0x3C, 0x3C
-	thumb_func_end sub_810C754
+	thumb_func_end object_initSniperAttack
 
 	thumb_local_start
 sub_810C776::
@@ -654,7 +654,7 @@ off_810C9C8::
 	.word off_810C9CC
 off_810C9CC::
 	.word sub_810C9F4+1
-	.word sub_810CA4C+1
+	.word ai_stepTargetPanelChoose+1
 	.word sub_810CA8E+1
 	.word sub_810CB14+1
 	.word sub_810CB2A+1
@@ -710,9 +710,9 @@ locret_810CA4A::
 
 // symdb: AI attack step that polls a panel-chooser callback and reserves the chosen panel.
 // symdb: () -> void; r7 = AI attack vars struct
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CA4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_stepTargetPanelChoose.yaml
 	thumb_local_start
-sub_810CA4C::
+ai_stepTargetPanelChoose::
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	sub r0, #1
@@ -747,7 +747,7 @@ loc_810CA84::
 	bic r0, r1
 	strb r0, [r5,#oObjectHeader_Flags]
 	pop {pc}
-	thumb_func_end sub_810CA4C
+	thumb_func_end ai_stepTargetPanelChoose
 
 // symdb: Computes an available adjacent panel step from `r5`'s battle object towards `r10.Toolkit` (used by an AI/object pathing decision).
 // symdb: (r5 = battle object pointer) -> r0 = selected adjacent panel index 0x1..0xC (or 0x0 to indicate
@@ -1590,7 +1590,7 @@ off_810D268::
 off_810D26C::
 	.word sub_810D280+1
 	.word sub_810D2E4+1
-	.word sub_810D34C+1
+	.word object_updateAttackStepTimer+1
 	.word sub_810D378+1
 	.word sub_810D466+1
 	thumb_func_end sub_810D258
@@ -1693,9 +1693,9 @@ locret_810D34A::
 
 // symdb: Advances an object's attack step timer and resets the next charged attack cycle when it expires.
 // symdb: (r0 = implicit current object via r7; r1-r3 unchanged) -> r0 = updated timer; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D34C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateAttackStepTimer.yaml
 	thumb_local_start
-sub_810D34C::
+object_updateAttackStepTimer::
 	push {lr}
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	cmp r0, #0xa
@@ -1719,7 +1719,7 @@ loc_810D35A::
 	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_810D376::
 	pop {pc}
-	thumb_func_end sub_810D34C
+	thumb_func_end object_updateAttackStepTimer
 
 	thumb_local_start
 sub_810D378::
@@ -1890,9 +1890,9 @@ dword_810D494::
 
 // symdb: Counts two categories of enemy battle objects by the caller's alliance and returns the total while optionally writing their object pointers to the supplied array.
 // symdb: (r0 = u32 *out, r1 unused) -> r0 = total count; flags caller-dependent
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D498.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAttackTargetCountByNameRange.yaml
 	thumb_local_start
-sub_810D498::
+battle_getAttackTargetCountByNameRange::
 	push {r4,r6,lr}
 	mov r4, r0
 	mov r1, #1
@@ -1908,14 +1908,14 @@ sub_810D498::
 	bl object_getEnemyByNameRange
 	add r0, r0, r6
 	pop {r4,r6,pc}
-	thumb_func_end sub_810D498
+	thumb_func_end battle_getAttackTargetCountByNameRange
 
 	thumb_local_start
 sub_810D4BA::
 	push {lr}
 	sub sp, sp, #0x20
 	mov r0, sp
-	bl sub_810D498
+	bl battle_getAttackTargetCountByNameRange
 	cmp r0, #0
 	beq loc_810D4E0
 	mov r1, #1
@@ -1948,7 +1948,7 @@ sub_810D4E8::
 	mov r0, #0
 	str r0, [r7,#oAIAttackVars_AiAttackParam]
 	mov r0, sp
-	bl sub_810D498
+	bl battle_getAttackTargetCountByNameRange
 	cmp r0, #0
 	beq loc_810D512
 	mov r3, sp
@@ -1970,7 +1970,7 @@ sub_810D516::
 	push {lr}
 	sub sp, sp, #0x10
 	mov r0, sp
-	bl sub_810D498
+	bl battle_getAttackTargetCountByNameRange
 	cmp r0, #0
 	beq loc_810D54A
 	mov r3, sp
@@ -2255,7 +2255,7 @@ off_810D7F4::
 	.word off_810D7F8
 off_810D7F8::
 	.word ai_attackVars_stepChargeAndShoot_810D808+1
-	.word sub_810D8B2+1
+	.word battleAiAttackTick+1
 	.word sub_810D8EA+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
 	thumb_func_end sub_810D7E4
@@ -2353,9 +2353,9 @@ locret_810D8B0::
 
 // symdb: Advances an AI-controlled attack's substep and timer, then resets it to the animation and duration state for the next cycle.
 // symdb: (r5 = battleObject, r7 = AIAttackVars) -> void; flags conditionally modified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D8B2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleAiAttackTick.yaml
 	thumb_local_start
-sub_810D8B2::
+battleAiAttackTick::
 	push {lr}
 	ldr r1, [r7,#oAIAttackVars_ScratchVar]
 	ldr r1, [r1]
@@ -2386,7 +2386,7 @@ loc_810D8D8::
 	strh r0, [r7,#oAIAttackVars_HitElement]
 locret_810D8E8::
 	pop {pc}
-	thumb_func_end sub_810D8B2
+	thumb_func_end battleAiAttackTick
 
 	thumb_local_start
 sub_810D8EA::
@@ -2427,9 +2427,9 @@ off_810D910::
 // symdb: Initializes a battle object's auxiliary entity and loads version-specific ExtraVars values.
 // symdb: (r0 = battle object pointer, r5 = battle object pointer used implicitly) -> no return value;
 // symdb: flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D940.yaml
-	thumb_func_start sub_810D940
-sub_810D940::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleInitObjectExtraVarsFromVersion.yaml
+	thumb_func_start battleInitObjectExtraVarsFromVersion
+battleInitObjectExtraVarsFromVersion::
 	push {lr}
 	bl sub_810DCCE
 	ldr r0, [r5,#oBattleObject_AIDataPtr]
@@ -2447,6 +2447,6 @@ off_810D960::
 	.word byte_810D964
 byte_810D964::
 	.byte 0x3, 0x3, 0x3, 0x3, 0x3, 0x3, 0x6, 0x6, 0x6, 0x6, 0x6, 0x6
-	thumb_func_end sub_810D940
+	thumb_func_end battleInitObjectExtraVarsFromVersion
 
 /*For debugging purposes, connect comment at any range!*/

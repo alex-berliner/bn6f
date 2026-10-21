@@ -7528,7 +7528,7 @@ int battle_objUpdateDeceleratingFlight()
         *(v0 + 10) = 0;
     }
     object_setPanelsFromCoordinates(v0);
-    return sub_80BC468();
+    return battle_linkRelatedObjectToOwner();
 }
 
 
@@ -7563,7 +7563,7 @@ int battle_stepDecelSlide()
         *(v0 + 64) = v4;
     }
     object_setPanelsFromCoordinates(v0);
-    return sub_80BC468();
+    return battle_linkRelatedObjectToOwner();
 }
 
 
@@ -7702,7 +7702,7 @@ signed int battle_tryUpdateObjectSprite()
 
 
 // 0x80bc468
-int sub_80BC468()
+int battle_linkRelatedObjectToOwner()
 {
     int v0; // r5
     int result; // r0
@@ -55203,7 +55203,7 @@ int sub_80D91C8()
 
 
 // 0x80d9210
-int __fastcall sub_80D9210(int a1, int a2, int a3)
+int __fastcall object_releaseAfterPanelExit(int a1, int a2, int a3)
 {
     int v3; // r5
     int result; // r0
@@ -96028,7 +96028,7 @@ LABEL_16:
         LOWORD(v5) = 0;
     v0->HP = v5;
     v0->currAnimation = 31;
-    sub_80F22DA();
+    battle_spawnHitImpactSprite();
     PlaySoundEffect(107, v6, v7);
     object_clearCollisionRegion();
     v1[8] = 255;
@@ -96160,7 +96160,7 @@ void ai_defaultAttackElement()
 
 
 // 0x80f22da
-Battle *sub_80F22DA()
+Battle *battle_spawnHitImpactSprite()
 {
     int v0; // r5
     int v1; // r0
@@ -96234,7 +96234,7 @@ void nullsub_106()
 
 
 // 0x80f29d8
-int sub_80F29D8()
+int ai_runScriptStepAttack()
 {
     unsigned __int8 *v0; // r6
     int result; // r0
@@ -96305,7 +96305,7 @@ signed int ai_selectTurnPhaseAttack()
         if ( (v4 & 0xF) < 12 )
             ++v1[4];
         *(v2 + 40) = sub_80F36A2;
-        *(v2 + 24) = sub_80F2CC2();
+        *(v2 + 24) = battle_getAttackDuration();
         *(v2 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
         result = (object_setAttack4)(9);
     }
@@ -96413,7 +96413,7 @@ int sub_80F2C90()
 
 
 // 0x80f2cc2
-int sub_80F2CC2()
+int battle_getAttackDuration()
 {
     int v0; // r4
 
@@ -99224,7 +99224,7 @@ signed int __noreturn object_resetCollisionState()
 
 
 // 0x80f49a2
-int sub_80F49A2()
+int ai_getBusterHoldDuration()
 {
     int v0; // r5
     signed int v1; // r1
@@ -99325,7 +99325,7 @@ int ai_startRandomPanelAttack()
     int v0; // r7
 
     *(v0 + 40) = ai_pickRandomFreePanelExcludingNeighbors;
-    *(v0 + 24) = sub_80F49A2();
+    *(v0 + 24) = ai_getBusterHoldDuration();
     return (object_setAttack4)(9);
 }
 
@@ -103324,7 +103324,7 @@ int ai_getSpoutManAttackParams()
 
 
 // 0x80f77b0
-int sub_80F77B0()
+int battle_getChargeAttackDuration()
 {
     int v0; // r4
 
@@ -103430,7 +103430,7 @@ void __fastcall sub_80F78C4(char a1, char a2)
     *(v3 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v3 + 2) = 2;
     sub_80F78FA(2);
-    *(v3 + 24) = sub_80F77B0();
+    *(v3 + 24) = battle_getChargeAttackDuration();
     *(v3 + 12) = sub_80F77D4();
     *(v3 + 44) = battle_findPlayer(*(v2 + 22) ^ 1);
     object_setAttack0();
@@ -105809,14 +105809,14 @@ int sub_80F9104()
 
 
 // 0x80f9118
-int sub_80F9118()
+int ai_tenguRollAttackDuration()
 {
     return sub_800FE28(&off_80F9128);
 }
 
 
 // 0x80f912c
-int sub_80F912C()
+int ai_tenguRollAttackBoost()
 {
     return sub_800FE28(&dword_80F913C);
 }
@@ -105849,7 +105849,7 @@ int ai_tenguInitAttack()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
     ai_tenguLoadAttackDamage(0);
-    *(v1 + 24) = sub_80F9118();
+    *(v1 + 24) = ai_tenguRollAttackDuration();
     *(v1 + 12) = sub_80F9104();
     *(v1 + 40) = battle_findPanelRowOppositeSide;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -105879,7 +105879,7 @@ void sub_80F91A2()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 32;
     ai_tenguLoadAttackDamage(1);
-    *(v1 + 12) = sub_80F912C();
+    *(v1 + 12) = ai_tenguRollAttackBoost();
     *(v1 + 40) = sub_80F9992;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -108570,7 +108570,7 @@ int sub_80FAE60()
 
 
 // 0x80faea0
-int sub_80FAEA0()
+int battleGetPanelChooseDuration()
 {
     int v0; // r4
 
@@ -108636,7 +108636,7 @@ __int64 sub_80FAF44()
 
 
 // 0x80faf7c
-int sub_80FAF7C()
+int battle_aiAttackDurationFromTierOrFlag()
 {
     int v0; // r4
 
@@ -108653,7 +108653,7 @@ int ai_beginPanelChooseAttack()
     int v0; // r7
 
     *(v0 + 40) = object_pickRandomPanelAvoidingColumn;
-    *(v0 + 24) = sub_80FAEA0();
+    *(v0 + 24) = battleGetPanelChooseDuration();
     return (object_setAttack4)(9);
 }
 
@@ -108706,7 +108706,7 @@ void battle_aiAttackInit()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 16;
     sub_80FB062(2);
-    *(v1 + 24) = sub_80FAF7C();
+    *(v1 + 24) = battle_aiAttackDurationFromTierOrFlag();
     v2 = sub_80FAF44();
     *(v1 + 12) = v2;
     *(v1 + 13) = BYTE4(v2);
@@ -109314,7 +109314,7 @@ int battle_stepPreActionWait()
 
 
 // 0x80fb6c0
-int __fastcall sub_80FB6C0(int a1, int a2, int a3, int a4)
+int __fastcall battleSweepTick(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r7
@@ -109882,7 +109882,7 @@ int sub_80FBD40()
 
 
 // 0x80fbd54
-int sub_80FBD54()
+int battle_rollAiAttackRandomDuration()
 {
     return sub_800FE28(&dword_80FBD64);
 }
@@ -110009,7 +110009,7 @@ void ai_initProtoManPanelAttack()
     *(v1 + 40) = object_pickRandomFilteredPanelInRow;
     *(v1 + 24) = sound_playCue();
     *(v1 + 12) = sub_80FBD40();
-    *(v1 + 13) = sub_80FBD54();
+    *(v1 + 13) = battle_rollAiAttackRandomDuration();
     *(v1 + 48) = v0 + 100;
     *(v1 + 52) = v0 + 96;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -116831,7 +116831,7 @@ int sub_81004A4()
 
 
 // 0x81004c8
-int sub_81004C8()
+int battle_aiComputeAttackDuration()
 {
     int v0; // r4
 
@@ -116961,7 +116961,7 @@ void sub_8100614()
     *(v1 + 2) = 4;
     battle_aiLoadVersionedAttackPair(2);
     *(v1 + 40) = sub_810102A;
-    *(v1 + 24) = sub_81004C8();
+    *(v1 + 24) = battle_aiComputeAttackDuration();
     *(v1 + 12) = sub_81004A4();
     *(v1 + 13) = v2;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -118648,7 +118648,7 @@ int ai_colonelPanelAttackSetTimers()
 
 
 // 0x81014c0
-int sub_81014C0()
+int getAiAttackDuration()
 {
     return sub_800FE28(&dword_81014D0);
 }
@@ -118802,7 +118802,7 @@ void battle_aiInitAttackPanelSelect()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 0;
     ai_loadColonelAttackParams(1);
-    *(v1 + 24) = sub_81014C0();
+    *(v1 + 24) = getAiAttackDuration();
     *(v1 + 13) = sub_81014D4();
     *(v1 + 40) = ai_pickRandomPanelScanningColumns;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -129655,7 +129655,7 @@ int ai_pickAttackValue()
 
 
 // 0x8107ee8
-int sub_8107EE8()
+int ai_getAttack0DurationFromData()
 {
     return sub_800FE28(&dword_8107EF8);
 }
@@ -129765,7 +129765,7 @@ void battle_aiInitAttack0()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 2;
     ai_loadAttackParams(0);
-    *(v1 + 24) = sub_8107EE8();
+    *(v1 + 24) = ai_getAttack0DurationFromData();
     *(v1 + 12) = battle_aiLoadAttack0Data();
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -133639,7 +133639,7 @@ signed int __fastcall sub_810AB8C(int a1, int a2, int a3, int a4)
     *(v5 + 112) = v8;
     *(v5 + 116) = *(v5 + 52);
     *(v5 + 120) = v8;
-    sub_810ABFE();
+    battle_applyAIVersionBarrier();
     result = 1;
     *(v5 + 126) = 1;
     return result;
@@ -133679,7 +133679,7 @@ int battle_clearObjectActionWrapper()
 
 
 // 0x810abfe
-int sub_810ABFE()
+int battle_applyAIVersionBarrier()
 {
     int v0; // r5
     int result; // r0

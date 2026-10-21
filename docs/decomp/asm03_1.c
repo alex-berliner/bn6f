@@ -14990,7 +14990,7 @@ int maybeResetStartScreen_803FBC2()
 
 
 // 0x803fbe8
-signed __int64 sub_803FBE8()
+signed __int64 req_runShutdownDecompJob()
 {
     signed int v0; // r2
     signed __int64 result; // r0
