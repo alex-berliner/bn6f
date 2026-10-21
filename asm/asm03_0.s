@@ -374,6 +374,9 @@ sub_802669E:
 	pop {pc}
 	thumb_func_end sub_802669E
 
+// symdb: Scans panel offset patterns using the calling battle object's r6 and r7 context.
+// symdb: (r0 = r6, r1 = r7, r2 = pattern) -> r0 = match result; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80266AC.yaml
 	thumb_local_start
 sub_80266AC:
 	push {lr}
@@ -8414,7 +8417,7 @@ byte_8029CAC:
 // symdb: Updates one custom-screen chip-slot row in the IWRAM tile buffer at unk_2035000 (tile-id table) and, when r2==0, uploads 3×3 tile data via CopyBackgroundTiles.
 // symdb: (r0 = rowIndex, r1 = colIndex, r2 = drawFlag, r10 = toolkit) -> void ; writes 4 halfwords into
 // symdb: unk_2035000 + offset; on r2==0 calls CopyBackgroundTiles; side-effect: tweaks unk_2035000 tile-
-// symdb: id table and copies 0xA×0xF of tile data from customScreenChipSlotTileIds
+// symdb: id table and copies 0xA×0xF of tile data from unk_203505A
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_redrawChipSlot_8029CD4.yaml
 	thumb_local_start
 customScreen_redrawChipSlot_8029CD4:
@@ -17813,7 +17816,7 @@ dword_802E23C:
 	.word 0x1F00000
 	thumb_func_end ai_clearAllianceState
 
-// symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at ePaletteBuffer.
+// symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at unk_2008170.
 // symdb: void loadIndexedPaletteToBuffer(int index /*r0*/); // preserves r3; clobbers r0-r2, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadIndexedPaletteToBuffer_802E240.yaml
 	thumb_func_start loadIndexedPaletteToBuffer_802E240
@@ -18079,6 +18082,9 @@ bg_getParam0:
 	pop {pc}
 	thumb_func_end bg_getParam0
 
+// symdb: Gets parameter 1 from a battle BG context.
+// symdb: (r0 = context pointer) -> r0 = context field at offset 2; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E44A.yaml
 	thumb_func_start sub_802E44A
 sub_802E44A:
 	push {lr}

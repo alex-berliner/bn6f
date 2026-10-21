@@ -6208,6 +6208,9 @@ loc_803BB8C:
 	mov pc, lr
 	thumb_func_end sub_803BB80
 
+// symdb: Sets the network-script object's timer delay at object offset 0x2C.
+// symdb: (r0 = delay) -> void; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BB90.yaml
 	thumb_func_start sub_803BB90
 sub_803BB90:
 	str r0, [r5,#0x2c]
@@ -7089,9 +7092,9 @@ sub_803C2A0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2A0
 
-// symdb: Stashes four caller-supplied buffers (r0=0x20, r1=0x20, r2=0x10, r3=0x10) into unk_200A400, unk_200A420, eOverworldSavedJackInBufferC, and unk_200A3B0, so overworld state can be saved before a jack-in.
+// symdb: Stashes four caller-supplied buffers (r0=0x20, r1=0x20, r2=0x10, r3=0x10) into unk_200A400, unk_200A420, unk_200A3A0, and unk_200A3B0, so overworld state can be saved before a jack-in.
 // symdb: (r0 = src buf A, r1 = src buf B, r2 = src buf C, r3 = src buf D) -> r0 destroyed; copies caller
-// symdb: buffers into unk_200A400/unk_200A420 (0x20 each) and eOverworldSavedJackInBufferC/unk_200A3B0 (0x10 each)
+// symdb: buffers into unk_200A400/unk_200A420 (0x20 each) and unk_200A3A0/unk_200A3B0 (0x10 each)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_saveJackInState.yaml
 	thumb_func_start ow_saveJackInState
 ow_saveJackInState:
@@ -7702,6 +7705,9 @@ off_803C600:
 	.word byte_200BC60
 	thumb_func_end battleObject_setupCustomChipCursorState_803C59C
 
+// symdb: Per-frame: draws the wireless/connected-player entries row and the chip-slot icons on the battle bottom HUD.
+// symdb: () -> void; clobbers r4-r7, lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C604.yaml
 	thumb_func_start sub_803C604
 sub_803C604:
 	push {r4-r7,lr}
@@ -7847,6 +7853,9 @@ rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 	pop {pc}
 	thumb_func_end rfu_resetSlotsAndReportOffline
 
+// symdb: Sets the shared RFU link state to phase 0x33.
+// symdb: (r0 ignored) -> r0 = 1, r1 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C6F4.yaml
 	thumb_local_start
 sub_803C6F4: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
@@ -8448,6 +8457,9 @@ byte_803CAB4:
 	.byte 0x0, 0xBD
 	thumb_func_end rfu_endLinkConnection
 
+// symdb: Rewrites the jack-in paired table (slots 0..N) by re-fetching each overworld entry while the jack-in flag is set
+// symdb: () -> void; runs only when ow_checkJackInFlag() != 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CAC4.yaml
 	thumb_local_start
 sub_803CAC4:
 	push {r4-r7,lr}
@@ -12164,6 +12176,9 @@ e_getStruct200BC30Byte2:
 	.balign 4, 0x00
 	thumb_func_end e_getStruct200BC30Byte2
 
+// symdb: Sets the eLinkState result/error code before the link-state check returns failure.
+// symdb: (r0 = result code 2 or 8) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EA48.yaml
 	thumb_local_start
 sub_803EA48:
 	ldr r1, off_803EBF8 // =eStruct200BC30

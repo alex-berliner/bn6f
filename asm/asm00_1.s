@@ -1730,6 +1730,9 @@ loc_8003AC4:
 	pop {r4-r7,pc}
 	thumb_func_end zeroFill_8003AB2
 
+// symdb: Sets flag byte 3 in the event/state structure.
+// symdb: (void) -> void; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003ACA.yaml
 	thumb_local_start
 sub_8003ACA:
 	push {r4-r7,lr}
@@ -16067,6 +16070,9 @@ off_800A0F0:
 	.word dword_2036820
 	thumb_func_end input_recordStateChangeForEntry_800A0D6
 
+// symdb: Returns a pointer into a global table for the indexed T3-related object.
+// symdb: (r0 = index) -> r0 = table entry pointer; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A0F4.yaml
 	thumb_local_start
 sub_800A0F4:
 	mov r1, #8

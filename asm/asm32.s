@@ -34298,6 +34298,9 @@ off_811E408:
 	.word dword_8089128 // CutsceneScript
 	thumb_func_end battleObject_setCoordsFromCutsceneScript_811E3CC
 
+// symdb: Clears the scenario effect sprite's scale byte and marks the sprite unscalable.
+// symdb: (void) -> void; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E40C.yaml
 	thumb_local_start
 sub_811E40C:
 	push {lr}
@@ -34763,6 +34766,9 @@ sprite_resetToCenter:
 	pop {pc}
 	thumb_func_end sprite_resetToCenter
 
+// symdb: Clears a sprite's scale byte and marks the sprite unscalable.
+// symdb: (r0 = sprite object pointer) -> r0 = unspecified; flags caller-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E73C.yaml
 	thumb_local_start
 sub_811E73C:
 	push {lr}

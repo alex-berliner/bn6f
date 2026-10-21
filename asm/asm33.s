@@ -39,6 +39,9 @@ sub_81231BC:
 	thumb_func_end sub_81231BC
 	.balign 4, 0
 
+// symdb: Adds a signed value to the 16-bit accumulator at global timer state offset 8.
+// symdb: (r0 = signed increment) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81231C8.yaml
 	thumb_func_start sub_81231C8
 sub_81231C8:
 	ldr r2, =word_200DCF0

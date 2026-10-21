@@ -1305,6 +1305,9 @@ sub_8093212::
 	pop {r4-r7,pc}
 	thumb_func_end sub_8093212
 
+// symdb: Clears battle array entries 3 and 4 (their flag bytes and sprite-scalable bits) used by the groundman minigame.
+// symdb: () -> ; no args or return, operates on fixed entries 3 and 4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809322A.yaml
 	thumb_local_start
 sub_809322A::
 	push {r4-r7,lr}

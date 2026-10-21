@@ -5734,7 +5734,7 @@ off_81468C4:
 	thumb_func_end sub_81468BC
 
 // symdb: Returns a pointer to the 10-byte text-state record for a given text slot in the chatbox work table at 2010294.
-// symdb: (r0 = text slot id (byte)) -> r0 = &chatboxTextStateEntries[id*10]; flags clobbered by the shifts
+// symdb: (r0 = text slot id (byte)) -> r0 = &unk_2010294[id*10]; flags clobbered by the shifts
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_getTextStateEntryPtr.yaml
 	thumb_func_start chatbox_getTextStateEntryPtr
 chatbox_getTextStateEntryPtr:
@@ -5895,6 +5895,9 @@ off_814699C:
 	.word byte_200FE60
 	thumb_func_end sub_814695C
 
+// symdb: Returns the RFU global state pointer used during wireless session setup and stepping.
+// symdb: () -> r0 = pointer to unk_200FE63
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81469A0.yaml
 	thumb_func_start sub_81469A0
 sub_81469A0:
 	ldr r0, off_81469A4 // =unk_200FE63 
@@ -5936,7 +5939,7 @@ off_81469D8:
 	.word unk_2010150
 	thumb_func_end sub_81469BC
 
-// symdb: Stores the navi id produced by e_packScreenNaviId into the global ePackScreenNaviId (current pack-screen navi).
+// symdb: Stores the navi id produced by e_packScreenNaviId into the global byte_201015A (current pack-screen navi).
 // symdb: (r0 = navi id byte) -> r0 = destroyed; no flags meaningful (bx lr after strb)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setPackScreenNaviId.yaml
 	thumb_func_start e_setPackScreenNaviId
@@ -23351,6 +23354,9 @@ off_814EA80:
 	.word gMPlayTable
 	thumb_func_end sound_tickAllMusicPlayers_814EA58
 
+// symdb: Resumes a stopped music player through the MPlay API.
+// symdb: (r0 = MPlayInfo pointer) -> r0 = unchanged; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EA84.yaml
 	thumb_local_start
 sub_814EA84:
 	push {lr}

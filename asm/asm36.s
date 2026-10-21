@@ -4969,6 +4969,10 @@ loc_81325BC:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8132538
 
+// symdb: Reads two 16-bit connection-type fields from a 16-byte linked-camera entry (offset 0x8 and 0x18), returning them in r0 and r1.
+// symdb: (r0 = ptr to 0x10-byte link-camera entry) -> r0 = low half at entry+8, r1 = low half at
+// symdb: entry+0x18; flags none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81325C0.yaml
 	thumb_func_start sub_81325C0
 sub_81325C0:
 	mov r2, r0

@@ -3298,6 +3298,9 @@ e_getFlagTotal:
 	pop {r4-r7,pc}
 	thumb_func_end e_getFlagTotal
 
+// symdb: Sets the mode/flag byte of the minigame effect slot 2 struct to the given value.
+// symdb: (r0 = mode) -> void; writes eStruct2001010+0x9
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433D2.yaml
 	thumb_local_start
 sub_81433D2:
 	push {r4-r7,lr}

@@ -5558,6 +5558,9 @@ sub_80112EA:
 	pop {pc}
 	thumb_func_end sub_80112EA
 
+// symdb: Spawns a battle object type 0x56 owned by entity 0x10A (likely a stage/event entity) and stores it via the RelatedObject2Ptr field.
+// symdb: () -> r0 = pointer to spawned obj56; no other arguments set explicitly
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80112F4.yaml
 	thumb_local_start
 sub_80112F4:
 	push {lr}
@@ -12951,6 +12954,9 @@ off_801426C:
 	.word nullsub_47+1
 	thumb_func_end battle_beginTurnForSide
 
+// symdb: Battle init: opens a turn by running beginTurnOpenSetup at game start.
+// symdb: () -> void; no flags affected beyond touched callee.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801429C.yaml
 	thumb_local_start
 sub_801429C:
 	push {lr}

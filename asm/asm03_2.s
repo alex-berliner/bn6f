@@ -10660,7 +10660,7 @@ locret_804C3C2:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_redrawTextWindow
 
-// symdb: Draws a fixed 12x6 tile window (tile data at TextWindowTileIds) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
+// symdb: Draws a fixed 12x6 tile window (tile data at byte_86A13F0) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
 // symdb: () -> r0 = destroyed; sets bit 0x800 of toolkit->RenderInfo->field0 (halfword)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_loadTextWindowTiles.yaml
 	thumb_local_start
@@ -11119,6 +11119,9 @@ off_804C714:
 	.word battleObject_initBattleFieldTilesAndSfxTimer_804C770+1
 	thumb_func_end battle_dispatchStepHandler_804C700
 
+// symdb: Clears bit 11 in the toolkit render-info flags.
+// symdb: (r0 = unused) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C71C.yaml
 	thumb_func_start sub_804C71C
 sub_804C71C:
 	push {r4-r7,lr}
@@ -11469,7 +11472,7 @@ off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
-// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from FullScreenBackgroundTilemap into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
+// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
 // symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;
 // symdb: writes RenderInfo flags and struct byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_showFullScreenBackground.yaml
