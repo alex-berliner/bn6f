@@ -129169,7 +129169,7 @@ locret_80F1184:
 	pop {r4,r6,pc}
 	.balign 4, 0
 off_80F1188:
-	.word byte_2010408
+	.word eRfuParentReadyFlag
 	.word 0x4
 byte_80F1190:
 	.byte 0xF4, 0x1, 0x0, 0x0, 0xA, 0x0, 0x0, 0x0

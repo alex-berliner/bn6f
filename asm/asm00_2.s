@@ -1204,11 +1204,11 @@ battle_getObjectAllianceTeam_800F49E:
 	thumb_func_end battle_getObjectAllianceTeam_800F49E
 
 // symdb: Returns a per-alliance pointer from a global table, selected by the battle object's Alliance field.
-// symdb: (r5 = battle object) -> r0 = dword_203F7E0[Alliance*4]; flags clobbered, r0/r1 scratch
+// symdb: (r5 = battle object) -> r0 = battleAllianceLists[Alliance*4]; flags clobbered, r0/r1 scratch
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getAllianceList.yaml
 	thumb_local_start
 battle_getAllianceList:
-	ldr r1, off_800F4DC // =dword_203F7E0 
+	ldr r1, off_800F4DC // =battleAllianceLists 
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	lsl r0, r0, #2
 	ldr r0, [r1,r0]
@@ -1218,7 +1218,7 @@ battle_getAllianceList:
 	thumb_local_start
 sub_800F4B2:
 	push {lr}
-	ldr r1, off_800F4E0 // =dword_203F7E0 
+	ldr r1, off_800F4E0 // =battleAllianceLists 
 	ldrb r2, [r5,#oBattleObject_Alliance]
 	lsl r2, r2, #2
 	ldr r3, [r1,r2]
@@ -1239,9 +1239,9 @@ off_800F4D4:
 off_800F4D8:
 	.word dword_203CFA0
 off_800F4DC:
-	.word dword_203F7E0
+	.word battleAllianceLists
 off_800F4E0:
-	.word dword_203F7E0
+	.word battleAllianceLists
 	thumb_func_end sub_800F4B2
 
 // symdb: Checks whether the panel at the given battle-grid coordinates has flag 0x10 set in the panel-state table, returning 1/0.
@@ -28819,7 +28819,7 @@ loc_801C69E:
 	mov r2, #0x20 
 	sub r3, #1
 	mul r3, r2
-	ldr r0, off_801C6DC // =byte_86E1CD8 
+	ldr r0, off_801C6DC // =battleOrderBgTileIdBlocks 
 	add r0, r0, r3
 	ldr r1, off_801C6E0 // =iGfxTransferBuffer 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -28844,7 +28844,7 @@ off_801C6D4:
 dword_801C6D8:
 	.word 0x4000
 off_801C6DC:
-	.word byte_86E1CD8
+	.word battleOrderBgTileIdBlocks
 off_801C6E0:
 	.word iGfxTransferBuffer
 off_801C6E4:
@@ -29622,7 +29622,7 @@ loc_801CBF6:
 	sub r0, r0, r1
 	mov r1, #0x80
 	mul r0, r1
-	ldr r1, off_801CDC4 // =dword_872E994 
+	ldr r1, off_801CDC4 // =blankBattleObjectGFXTransferChunks 
 	add r0, r0, r1
 	ldr r1, dword_801CDC8 // =0x6017780 
 	mov r2, #0x80
@@ -29824,7 +29824,7 @@ byte_801CDA4:
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 off_801CDC4:
-	.word dword_872E994
+	.word blankBattleObjectGFXTransferChunks
 dword_801CDC8:
 	.word 0x6017780
 off_801CDCC:
@@ -32133,7 +32133,7 @@ loc_801DE8C:
 	mov r2, #0x20 
 	sub r0, #1
 	mul r0, r2
-	ldr r1, off_801DECC // =byte_86E1CD8 
+	ldr r1, off_801DECC // =battleOrderBgTileIdBlocks 
 	add r0, r0, r1
 	ldr r1, off_801DEC8 // =iGfxTransferBuffer 
 	mov r2, #0x20 
@@ -32164,7 +32164,7 @@ off_801DEC4:
 off_801DEC8:
 	.word iGfxTransferBuffer
 off_801DECC:
-	.word byte_86E1CD8
+	.word battleOrderBgTileIdBlocks
 	thumb_func_end battle_loadBgTileset_801DE82
 
 // symdb: Resets the custom gauge state, reloads its tile graphics from ROM into VRAM, and starts the custom gauge's init/dispatch routine.
@@ -32174,7 +32174,7 @@ off_801DECC:
 custGauge_Init_801DED0:
 	push {lr}
 	bl ClearCustGauge
-	ldr r0, off_801DF6C // =dword_86E489C 
+	ldr r0, off_801DF6C // =custGaugeGfxTiles 
 	ldr r1, dword_801DF70 // =0x600c440 
 	ldr r2, off_801DF74 // =0x380 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -32193,7 +32193,7 @@ custGauge_Init_801DED0:
 battle_customGaugeResetGfxAndRequest:
 	push {lr}
 	bl ClearCustGauge
-	ldr r0, off_801DF6C // =dword_86E489C 
+	ldr r0, off_801DF6C // =custGaugeGfxTiles 
 	ldr r1, dword_801DF70 // =0x600c440 
 	ldr r2, off_801DF74 // =0x380 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -32257,7 +32257,7 @@ off_801DF60:
 	.word 0x600C7C0
 	.word 0x180
 off_801DF6C:
-	.word dword_86E489C
+	.word custGaugeGfxTiles
 dword_801DF70:
 	.word 0x600C440
 off_801DF74:
@@ -34070,7 +34070,7 @@ dword_801EAA8:
 off_801EAAC:
 	.word off_801EAB0
 off_801EAB0:
-	.word dword_86BA120
+	.word battlePaletteLoadRequestTable
 	.word 0x6017200
 	.word 0x20
 	.word byte_86BA140

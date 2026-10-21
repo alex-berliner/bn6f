@@ -302,8 +302,8 @@ byte_2001880:: // 0x2001880
 byte_20018A0:: // 0x20018a0
 	.space 16
 // symdb: Proposed name: paletteCopyWorkBuffer. Eight-byte work buffer receiving a selected three-row palette table entry for component extraction. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20018B0.yaml
-byte_20018B0:: // 0x20018b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/paletteCopyWorkBuffer.yaml
+paletteCopyWorkBuffer:: // 0x20018b0
 	.space 8
 dword_20018B8:: // 0x20018b8
 	.space 8
@@ -476,12 +476,12 @@ byte_2006676:: // 0x2006676
 byte_2006710:: // 0x2006710
 	.space 4
 // symdb: Proposed name: eInfoTextSaveChecksum. running checksum accumulator for the info-text save block being written to/read from SRAM (u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2006714.yaml
-byte_2006714:: // 0x2006714
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eInfoTextSaveChecksum.yaml
+eInfoTextSaveChecksum:: // 0x2006714
 	.space 12
 // symdb: Proposed name: eInfoTextSavedTimestamp. A 0x14-byte EWRAM buffer holding a copy of the EXE6_InfoText_timestamp used as the source/destination when saving the info-text block to SRAM. (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2006720.yaml
-byte_2006720:: // 0x2006720
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eInfoTextSavedTimestamp.yaml
+eInfoTextSavedTimestamp:: // 0x2006720
 	.space 32
 dword_2006740:: // 0x2006740
 	.space 4
@@ -518,8 +518,8 @@ byte_2006849:: // 0x2006849
 unk_2006C46:: // 0x2006c46
 	.space 2
 // symdb: Proposed name: tileStreamCursor. Pointer to the current byte in the encoded background-tile stream. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_2006C48.yaml
-dword_2006C48:: // 0x2006c48
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/tileStreamCursor.yaml
+tileStreamCursor:: // 0x2006c48
 	.space 8
 byte_2006C50:: // 0x2006c50
 	.space 56
@@ -611,8 +611,8 @@ byte_2008978:: // 0x2008978
 dword_200897C:: // 0x200897c
 	.space 4
 // symdb: Proposed name: chatboxDiagonalEdgeTable. Shared 160-by-160-entry work table used to build clipped diagonal window edges for the chatbox. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2008980.yaml
-unk_2008980:: // 0x2008980
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatboxDiagonalEdgeTable.yaml
+chatboxDiagonalEdgeTable:: // 0x2008980
 	.space 1280
 unk_2008E80:: // 0x2008e80
 	.space 1280
@@ -952,8 +952,8 @@ unk_200AA98:: // 0x200aa98
 eNumOWObjectInteractionAreas:: // 0x200ac18
 	.space 4
 // symdb: Proposed name: eGfxTransferQueueCount. Count of queued GFX transfers, capped at 0x60 (u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_200AC1C.yaml
-dword_200AC1C:: // 0x200ac1c
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eGfxTransferQueueCount.yaml
+eGfxTransferQueueCount:: // 0x200ac1c
 	.space 4
 byte_200AC20:: // 0x200ac20
 	.space 1
@@ -1081,16 +1081,16 @@ eMapTilesState200be70End:: // 0x200be94
 unk_200BEA0:: // 0x200bea0
 	.space 576
 // symdb: Proposed name: eMapNameDisplayTileBuffer. EWRAM tile-gfx scratch buffer (192 bytes) that updateMapNameDisplay feeds into renderTextGfx and then sprite_repackAndQueueTiles to draw the current map's name into BG VRAM. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_200C0E0.yaml
-unk_200C0E0:: // 0x200c0e0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eMapNameDisplayTileBuffer.yaml
+eMapNameDisplayTileBuffer:: // 0x200c0e0
 	.space 192
 unk_200C1A0:: // 0x200c1a0
 	.space 16
 unk_200C1B0:: // 0x200c1b0
 	.space 240
 // symdb: Proposed name: mapNamesTextWorkBuffer. Work buffer receiving rendered map-name text graphics before tile upload (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_200C2A0.yaml
-unk_200C2A0:: // 0x200c2a0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/mapNamesTextWorkBuffer.yaml
+mapNamesTextWorkBuffer:: // 0x200c2a0
 	.space 528
 unk_200C4B0:: // 0x200c4b0
 	.space 32
@@ -1255,12 +1255,12 @@ unk_200F390:: // 0x200f390
 unk_200F3A0:: // 0x200f3a0
 	.space 16
 // symdb: Proposed name: eBattleResult. Byte written when a battle finishes; -1 (0xFF) on a comm-failure loss path and 0xEE after the LowHP-alert timer expires, consumed by the next-state dispatcher. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_200F3B0.yaml
-dword_200F3B0:: // 0x200f3b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eBattleResult.yaml
+eBattleResult:: // 0x200f3b0
 	.space 8
 // symdb: Proposed name: eFreezeCounterByAlliance. EWRAM array of 3 per-alliance freeze counters, cleared when a time freeze begins and incremented when SnakeArm queues its battle effect. (table of u32 (3 entries by alliance))
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_200F3B8.yaml
-dword_200F3B8:: // 0x200f3b8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eFreezeCounterByAlliance.yaml
+eFreezeCounterByAlliance:: // 0x200f3b8
 	.space 12
 word_200F3C4:: // 0x200f3c4
 	.space 12
@@ -1445,8 +1445,8 @@ byte_2010164:: // 0x2010164
 word_2010168:: // 0x2010168
 	.space 72
 // symdb: Proposed name: rfuPeerChangeBitmask. Accumulated bitmask of wireless peer slots reporting a received-value change. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20101B0.yaml
-byte_20101B0:: // 0x20101b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuPeerChangeBitmask.yaml
+rfuPeerChangeBitmask:: // 0x20101b0
 	.space 4
 // symdb: Proposed name: uniConnectionState. Wireless UNI link connection/state flag used by the RFU routines. (u8)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/uniConnectionState.yaml
@@ -1469,8 +1469,8 @@ byte_201021D:: // 0x201021d
 byte_2010220:: // 0x2010220
 	.space 16
 // symdb: Proposed name: rfuPerSlotRecvBuffers. Per-peer RFU receive buffers indexed by player slot (4 entries × 16 bytes), cleared via SWI_CpuSet and configured through rfu_setRecvBuffer / rfu_resetRecvSlots during wireless link setup. (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2010230.yaml
-unk_2010230:: // 0x2010230
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuPerSlotRecvBuffers.yaml
+rfuPerSlotRecvBuffers:: // 0x2010230
 	.space 64
 byte_2010270:: // 0x2010270
 	.space 4
@@ -1521,8 +1521,8 @@ unk_2010350:: // 0x2010350
 word_2010352:: // 0x2010352
 	.space 22
 // symdb: Proposed name: rfuLinkStateChangeFlag. RFU wireless-state change synchronization flag (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2010368.yaml
-byte_2010368:: // 0x2010368
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuLinkStateChangeFlag.yaml
+rfuLinkStateChangeFlag:: // 0x2010368
 	.space 40
 byte_2010390:: // 0x2010390
 	.space 12
@@ -1546,9 +1546,9 @@ byte_20103F8:: // 0x20103f8
 	.space 8
 word_2010400:: // 0x2010400
 	.space 8
-// symdb: Proposed name: eRfuParentReadyFlag. EWRAM byte acting as a ready/active flag for the parent side of an RFU multiplayer link transfer, alongside sibling flags byte_2010270 and byte_2010368 and timeout word dword_2010418. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2010408.yaml
-byte_2010408:: // 0x2010408
+// symdb: Proposed name: eRfuParentReadyFlag. EWRAM byte acting as a ready/active flag for the parent side of an RFU multiplayer link transfer, alongside sibling flags byte_2010270 and rfuLinkStateChangeFlag and timeout word dword_2010418. (u8)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eRfuParentReadyFlag.yaml
+eRfuParentReadyFlag:: // 0x2010408
 	.space 8
 unk_2010410:: // 0x2010410
 	.space 8
@@ -1559,12 +1559,12 @@ word_2010420:: // 0x2010420
 word_2010428:: // 0x2010428
 	.space 8
 // symdb: Proposed name: eRfuLinkFlags. Single-byte RFU link state flag cleared on transfer start, set when connected-player count >1, and read as a transfer-active gate. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2010430.yaml
-byte_2010430:: // 0x2010430
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eRfuLinkFlags.yaml
+eRfuLinkFlags:: // 0x2010430
 	.space 4
 // symdb: Proposed name: rfuLinkMismatchCount. EWRAM byte counting wireless-link peer value mismatches, cleared when a transfer starts. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_2010434.yaml
-byte_2010434:: // 0x2010434
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuLinkMismatchCount.yaml
+rfuLinkMismatchCount:: // 0x2010434
 	.space 12
 unk_2010440:: // 0x2010440
 	.space 60
@@ -1939,8 +1939,8 @@ unk_2015E00:: // 0x2015e00
 unk_2016200:: // 0x2016200
 	.space 256
 // symdb: Proposed name: folder_ChipCodeCountTileBuffer. 256-byte tile buffer used by the folder screen to render the selected chip's four code letters plus per-code 'copies in folder' tallies before queueing them to VRAM. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2016300.yaml
-unk_2016300:: // 0x2016300
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/folder_ChipCodeCountTileBuffer.yaml
+folder_ChipCodeCountTileBuffer:: // 0x2016300
 	.space 256
 unk_2016400:: // 0x2016400
 	.space 1536
@@ -2073,8 +2073,8 @@ eTextScript201BF00:: // 0x201bf00
 eTextScript201BF20:: // 0x201bf20
 	.space 288
 // symdb: Proposed name: SpriteStagingTileIds. Interleaved tile-ID staging buffer built from sprite graphics and copied into a background tile block (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201C040.yaml
-unk_201C040:: // 0x201c040
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/SpriteStagingTileIds.yaml
+SpriteStagingTileIds:: // 0x201c040
 	.space 192
 eTextScript201C100:: // 0x201c100
 	.space 176
@@ -2107,8 +2107,8 @@ word_201C4E2:: // 0x201c4e2
 unk_201C4F0:: // 0x201c4f0
 	.space 16
 // symdb: Proposed name: BandedTilemapBufferA. EWRAM destination buffer that decomposeTileBlock fills with the de-interleaved tile-ID half, then gfx_fillAllBandedTilemaps writes out as a 32x32 banded BG2 tilemap. (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201C500.yaml
-unk_201C500:: // 0x201c500
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/BandedTilemapBufferA.yaml
+BandedTilemapBufferA:: // 0x201c500
 	.space 512
 eTextScript201C700:: // 0x201c700
 	.space 128
@@ -2191,18 +2191,18 @@ dword_201E420:: // 0x201e420
 unk_201E55C:: // 0x201e55c
 	.space 276
 // symdb: Proposed name: eNaviCustomizerGfxBuffer. EWRAM tile/asset work buffer used as a source/destination for navi customizer screen graphics (decompressed tile data layer). (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201E670.yaml
-unk_201E670:: // 0x201e670
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eNaviCustomizerGfxBuffer.yaml
+eNaviCustomizerGfxBuffer:: // 0x201e670
 	.space 688
 // symdb: Proposed name: battleMapTilemapBuffer. EWRAM workspace: 30x20 u16 tilemap (BG tile block 1) the battle map background is reloaded into, and a screens3 background tile source. (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201E920.yaml
-unk_201E920:: // 0x201e920
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleMapTilemapBuffer.yaml
+battleMapTilemapBuffer:: // 0x201e920
 	.space 120
 unk_201E998:: // 0x201e998
 	.space 580
 // symdb: Proposed name: submenuSubchipTileIds. Tile-ID buffer used to draw the subchip/Navi information menu on background block 2. (table of u16 tile IDs)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201EBDC.yaml
-unk_201EBDC:: // 0x201ebdc
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenuSubchipTileIds.yaml
+submenuSubchipTileIds:: // 0x201ebdc
 	.space 68
 dword_201EC20:: // 0x201ec20
 	.space 12
@@ -2211,8 +2211,8 @@ unk_201EC2C:: // 0x201ec2c
 unk_201EC8C:: // 0x201ec8c
 	.space 32
 // symdb: Proposed name: middleStripTilemap. Middle 8x2 u16 tilemap scratch buffer (column 0x16) of a three-strip set used to redraw scene background strips (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_201ECAC.yaml
-unk_201ECAC:: // 0x201ecac
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/middleStripTilemap.yaml
+middleStripTilemap:: // 0x201ecac
 	.space 32
 unk_201ECCC:: // 0x201eccc
 	.space 340
@@ -2333,8 +2333,8 @@ word_2023FA6:: // 0x2023fa6
 unk_2023FB0:: // 0x2023fb0
 	.space 16
 // symdb: Proposed name: battleChipSearchList. in-battle chip search/list data used to initialize and confirm selectable battle-menu entries (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2023FC0.yaml
-unk_2023FC0:: // 0x2023fc0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleChipSearchList.yaml
+battleChipSearchList:: // 0x2023fc0
 	.space 720
 unk_2024290:: // 0x2024290
 	.space 224
@@ -2345,8 +2345,8 @@ unk_2024394:: // 0x2024394
 unk_20243D0:: // 0x20243d0
 	.space 24
 // symdb: Proposed name: iChipSelectFolderPanelTileIds. Background tile IDs for the in-battle chip-select folder panel. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_20243E8.yaml
-unk_20243E8:: // 0x20243e8
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iChipSelectFolderPanelTileIds.yaml
+iChipSelectFolderPanelTileIds:: // 0x20243e8
 	.space 24
 unk_2024400:: // 0x2024400
 	.space 200
@@ -2421,8 +2421,8 @@ unk_2026200:: // 0x2026200
 unk_2026400:: // 0x2026400
 	.space 4
 // symdb: Proposed name: eOverworldMapTilemap. 508-byte (256-halfword) overworld tilemap buffer redrawn around the player by the camera (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2026404.yaml
-unk_2026404:: // 0x2026404
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eOverworldMapTilemap.yaml
+eOverworldMapTilemap:: // 0x2026404
 	.space 508
 unk_2026600:: // 0x2026600
 	.space 256
@@ -2431,8 +2431,8 @@ unk_2026700:: // 0x2026700
 unk_2026870:: // 0x2026870
 	.space 400
 // symdb: Proposed name: eCharCodeBuffer. A 32-byte EWRAM buffer of halfword character codes, pre-filled with 0xE5E5 and 0xE6-terminated, used by the byte-string-to-char-code converter and as the sprite-resource pointer for type-0x23 GUI objects. (u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2026A00.yaml
-unk_2026A00:: // 0x2026a00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eCharCodeBuffer.yaml
+eCharCodeBuffer:: // 0x2026a00
 	.space 32
 unk_2026A20:: // 0x2026a20
 	.space 480
@@ -2487,8 +2487,8 @@ dword_20275AC:: // 0x20275ac
 DecompBuf_2027A00:: // 0x2027a00
 	.space 1536
 // symdb: Proposed name: chipDescClearTileBuffer. 512-byte EWRAM buffer used as the tile-data target when clearing the two sprite tile-blocks that hold the chip-description text in the library screen. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2028000.yaml
-unk_2028000:: // 0x2028000
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipDescClearTileBuffer.yaml
+chipDescClearTileBuffer:: // 0x2028000
 	.space 512
 unk_2028200:: // 0x2028200
 	.space 4
@@ -2503,8 +2503,8 @@ unk_2028A00:: // 0x2028a00
 eTextScript2028A20:: // 0x2028a20
 	.space 1504
 // symdb: Proposed name: iBackgroundTilemapCopyBuffer. temporary buffer receiving a decompressed static background tilemap before it is copied into VRAM (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2029000.yaml
-unk_2029000:: // 0x2029000
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iBackgroundTilemapCopyBuffer.yaml
+iBackgroundTilemapCopyBuffer:: // 0x2029000
 	.space 512
 unk_2029200:: // 0x2029200
 	.space 2048
@@ -2582,12 +2582,12 @@ unk_202E0B8:: // 0x202e0b8
 unk_202E0F0:: // 0x202e0f0
 	.space 28
 // symdb: Proposed name: ePackEntriesTilemap. EWRAM u16[28] tilemap buffer for the 2-column x 14-row 'pack entries' strip filled by battle_fillChipPackEntries_81204C4 and copied into BG tile block 2 in battle_renderChipPackScreenTilemap. (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_202E10C.yaml
-byte_202E10C:: // 0x202e10c
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ePackEntriesTilemap.yaml
+ePackEntriesTilemap:: // 0x202e10c
 	.space 56
 // symdb: Proposed name: eChipPackScreenHeaderTilemap. EWRAM tilemap buffer for the chip pack screen header strip rendered by battle_renderChipPackScreenTilemap. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_202E144.yaml
-byte_202E144:: // 0x202e144
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eChipPackScreenHeaderTilemap.yaml
+eChipPackScreenHeaderTilemap:: // 0x202e144
 	.space 56
 byte_202E17C:: // 0x202e17c
 	.space 5120
@@ -2835,8 +2835,8 @@ unk_2036500:: // 0x2036500
 	.space 192
 /// Likely 13 slots of a 12-byte struct, totaling 156 bytes.
 // symdb: Proposed name: activeChipEntries. Array of active-chip entries, each twelve bytes long. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_20365C0.yaml
-unk_20365C0:: // 0x20365c0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/activeChipEntries.yaml
+activeChipEntries:: // 0x20365c0
 	.space 160
 word_2036660:: // 0x2036660
 	.space 4
@@ -3066,8 +3066,8 @@ dword_2039A08:: // 0x2039a08
 word_2039A0C:: // 0x2039a0c
 	.space 4
 // symdb: Proposed name: object_PtrPairs. Pointer-pair table pairing queued battle-object sprite groups with their per-group object counts. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_2039A10.yaml
-dword_2039A10:: // 0x2039a10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_PtrPairs.yaml
+object_PtrPairs:: // 0x2039a10
 	.space 144
 unk_2039AA0:: // 0x2039aa0
 	.space 60
@@ -3174,8 +3174,8 @@ byte_203C4A0:: // 0x203c4a0
 byte_203C4E0:: // 0x203c4e0
 	.space 512
 // symdb: Proposed name: chipPreviewNameGlyphBuffers. 640-byte glyph-name drawing buffer used by the chip-folder cycle animation to render each chip row name. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_203C6E0.yaml
-byte_203C6E0:: // 0x203c6e0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chipPreviewNameGlyphBuffers.yaml
+chipPreviewNameGlyphBuffers:: // 0x203c6e0
 	.space 640
 byte_203C960:: // 0x203c960
 	.space 1
@@ -3445,8 +3445,8 @@ byte_203F694:: // 0x203f694
 eUsedAIDataBitfield:: // 0x203f6a0
 	.space 16
 // symdb: Proposed name: battlePanelRuns. Player-grid equal-panel runs emitted by battle_encodePanelRuns and consumed during battle panel updates. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_203F6B0.yaml
-byte_203F6B0:: // 0x203f6b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battlePanelRuns.yaml
+battlePanelRuns:: // 0x203f6b0
 	.space 1
 byte_203F6B1:: // 0x203f6b1
 	.space 1
@@ -3461,8 +3461,8 @@ byte_203F750:: // 0x203f750
 eStruct203F7D8:: // 0x203f7d8
 	.space 8
 // symdb: Proposed name: battleAllianceLists. Global array of pointers to per-alliance battle lists, selected by a battle object's Alliance field. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_203F7E0.yaml
-dword_203F7E0:: // 0x203f7e0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleAllianceLists.yaml
+battleAllianceLists:: // 0x203f7e0
 	.space 4
 
 	.section ewram_2034000

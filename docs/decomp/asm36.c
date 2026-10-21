@@ -3654,10 +3654,10 @@ void __noreturn decomposeTileBlock_8132FD0()
     v20 = 0;
     do
     {
-        eDecompBuffer2013A00[v10] = *(&unk_201C500 + v20);
+        eDecompBuffer2013A00[v10] = *(&BandedTilemapBufferA + v20);
         ++v10;
         v21 = v20 + 4;
-        *(eDecompBuffer2013A00 + v11) = *(&unk_201C500 + v21);
+        *(eDecompBuffer2013A00 + v11) = *(&BandedTilemapBufferA + v21);
         v11 += 2;
         v20 = v21 - 2;
     }
@@ -7369,7 +7369,7 @@ void __noreturn navicust_getCellProgramId()
 // 0x8135f34
 void __fastcall __noreturn sub_8135F34(int a1)
 {
-    renderTextGfx_8045F8C(&unk_201E670, a1, byte_201B200, 100710400);
+    renderTextGfx_8045F8C(&eNaviCustomizerGfxBuffer, a1, byte_201B200, 100710400);
     JUMPOUT(loc_8135F4A);
 }
 

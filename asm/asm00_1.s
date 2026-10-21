@@ -1152,7 +1152,7 @@ object_800372A:
 	.word object_PtrPairs_800374C
 object_PtrPairs_800374C:
 	.word 0x0, 0x0
-	.word dword_2039A10, byte_2036778
+	.word object_PtrPairs, byte_2036778
 	.word 0x0, 0x0
 	.word dword_203A010, dword_203CA7C
 	.word byte_203F750, byte_2036830
@@ -2183,7 +2183,7 @@ battleObject_projectAndQueueSprites_8003E18:
 	push {r4-r6}
 	ldr r6, off_8003EBC // =byte_2036778
 	ldrb r6, [r6]
-	ldr r7, off_8003EC0 // =dword_2039A10
+	ldr r7, off_8003EC0 // =object_PtrPairs
 loc_8003E28:
 	sub r6, #1
 	blt loc_8003E7A
@@ -2273,7 +2273,7 @@ off_8003EB8:
 off_8003EBC:
 	.word byte_2036778
 off_8003EC0:
-	.word dword_2039A10
+	.word object_PtrPairs
 // JP: 0x8003ea8
 T3BattleObjectJumptable:
 	.word t3_0x0_80C4E58+1 // 0x0
@@ -3539,7 +3539,7 @@ init_zeroWorkBuffer:
 	ldr r0, off_8004D2C // =byte_2006848
 	ldr r1, off_80049F4 // =0x400
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
-	ldr r0, off_8004D28 // =dword_2006C48
+	ldr r0, off_8004D28 // =tileStreamCursor
 	ldr r1, off_8004D2C // =byte_2006848
 	str r1, [r0]
 	pop {pc}
@@ -3572,7 +3572,7 @@ sub_80049FC:
 	ldr r5, off_8004B0C // =unk_2006C46
 	mov r1, #0
 	mov r8, r1
-	ldr r1, off_8004D28 // =dword_2006C48
+	ldr r1, off_8004D28 // =tileStreamCursor
 	ldr r1, [r1]
 	cmp r1, r5
 	bge loc_8004AB0
@@ -3652,7 +3652,7 @@ loc_8004AA6:
 	mov r2, #0xff
 	strh r2, [r1]
 	add r1, #2
-	ldr r0, off_8004D28 // =dword_2006C48
+	ldr r0, off_8004D28 // =tileStreamCursor
 	str r1, [r0]
 loc_8004AB0:
 	ldr r7, [sp,#0x20]
@@ -3694,7 +3694,7 @@ byte_8004B14:
 	thumb_func_end sub_80049FC
 
 // symdb: Renders an encoded tile stream (byte_2006848) into the BG map as a run of tile writes, then resets the stream pointer.
-// symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *dword_2006C48, writes
+// symdb: () -> r0 = destroyed; reads stream buffer byte_2006848 and read cursor *tileStreamCursor, writes
 // symdb: tiles via bgmap_WriteTileIdAtBlock_800187C, resets cursor to buffer start
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/bgmap_drawTilesFromStream.yaml
 	thumb_local_start
@@ -3704,7 +3704,7 @@ bgmap_drawTilesFromStream:
 	mov r7, #0xf2
 	lsl r7, r7, #8
 	add r7, #0xa0
-	ldr r5, off_8004D28 // =dword_2006C48
+	ldr r5, off_8004D28 // =tileStreamCursor
 	ldr r5, [r5]
 	sub r5, r5, r4
 	mov r2, #0
@@ -3735,7 +3735,7 @@ loc_8004B5C:
 	add r0, #1
 	b loc_8004B48
 loc_8004B6A:
-	ldr r4, off_8004D28 // =dword_2006C48
+	ldr r4, off_8004D28 // =tileStreamCursor
 	ldr r1, off_8004D2C // =byte_2006848
 	str r1, [r4]
 	pop {r4-r7,pc}
@@ -3994,7 +3994,7 @@ locret_8004D24:
 	.byte 0x0, 0x0
 	.balign 4, 0
 off_8004D28:
-	.word dword_2006C48
+	.word tileStreamCursor
 off_8004D2C:
 	.word byte_2006848
 off_8004D30:
@@ -7531,7 +7531,7 @@ off_800691C:
 	.word byte_20081B0
 	thumb_func_end sub_8006910
 
-// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at unk_2008980 via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(unk_2008980, Window0HorizontalDimensions, 4, 0xA2600000).
+// symdb: Zero-fills unk_20096A0, seeds its task state from a caller descriptor (9 words into +8..+0x2C plus a flag byte at +3, plus +4=0 and +0xC=0x20000), prepares the work buffer at chatboxDiagonalEdgeTable via sub_8006B94(0x500, 0xA0), then enqueues a background request via req_enqueueTask(chatboxDiagonalEdgeTable, Window0HorizontalDimensions, 4, 0xA2600000).
 // symdb: (r0 = pointer to an 11-field task descriptor) -> r0 = result of req_enqueueTask; r4-r7 clobbered
 // symdb: (saved/restored)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_initWindowReqAndEnqueue.yaml
@@ -7570,12 +7570,12 @@ chatbox_initWindowReqAndEnqueue:
 	str r0, [r5,#0x2c] // (dword_20096CC - 0x20096a0)
 	ldr r0, [r4,#0x24]
 	strb r0, [r5,#0x3] // (byte_20096A3 - 0x20096a0)
-	ldr r0, off_8006B88 // =unk_2008980
+	ldr r0, off_8006B88 // =chatboxDiagonalEdgeTable
 	mov r1, #0xa0
 	lsl r1, r1, #3
 	mov r2, #0xa0
 	bl win_buildDiagonalEdgeTable
-	ldr r0, off_8006B88 // =unk_2008980
+	ldr r0, off_8006B88 // =chatboxDiagonalEdgeTable
 	ldr r1, off_8006980 // =Window0HorizontalDimensions
 	mov r2, #4
 	ldr r3, dword_8006984 // =0xa2600000
@@ -7733,7 +7733,7 @@ sub_8006A6C:
 	sub r5, #8
 	mov r8, r5
 	mov r9, r2
-	ldr r5, off_8006B88 // =unk_2008980
+	ldr r5, off_8006B88 // =chatboxDiagonalEdgeTable
 	sub r7, r1, r2
 	mov r4, r1
 	lsl r6, r1, #3
@@ -7741,14 +7741,14 @@ sub_8006A6C:
 	ble loc_8006AA6
 	cmp r7, #0xa0
 	bmi loc_8006A9C
-	ldr r0, off_8006B88 // =unk_2008980
+	ldr r0, off_8006B88 // =chatboxDiagonalEdgeTable
 	mov r2, #0xa0
 	lsl r1, r2, #3
 	bl win_buildDiagonalEdgeTable
 	add sp, sp, #8
 	pop {r5,r7,pc}
 loc_8006A9C:
-	ldr r0, off_8006B88 // =unk_2008980
+	ldr r0, off_8006B88 // =chatboxDiagonalEdgeTable
 	mov r2, r7
 	lsl r1, r2, #3
 	bl win_buildDiagonalEdgeTable
@@ -7823,7 +7823,7 @@ loc_8006B06:
 	cmp r7, #0xa0
 	bpl loc_8006B36
 	lsl r3, r7, #3
-	ldr r0, off_8006B88 // =unk_2008980
+	ldr r0, off_8006B88 // =chatboxDiagonalEdgeTable
 	add r0, r0, r3
 	mov r1, #0xa0
 	sub r1, r1, r7
@@ -7882,7 +7882,7 @@ loc_8006B82:
 	pop {pc}
 	.balign 4, 0x00
 off_8006B88:
-	.word unk_2008980
+	.word chatboxDiagonalEdgeTable
 off_8006B8C:
 	.word unk_20096A0
 	.word byte_20081B0
@@ -10028,7 +10028,7 @@ battle_finishBattle_8007850: // (self: * BattleState $r5) -> ()
 	mov r4, r0
 	cmp r4, #4
 	bne loc_80078C6
-	ldr r1, off_800793C // =dword_200F3B0
+	ldr r1, off_800793C // =eBattleResult
 	mov r0, #0xff
 	str r0, [r1]
 loc_8007862:
@@ -10154,7 +10154,7 @@ loc_8007918:
 	cmp r0, #0xb4
 	blt locret_8007936
 
-	ldr r1, off_800793C // =dword_200F3B0
+	ldr r1, off_800793C // =eBattleResult
 	mov r0, #0xee
 	str r0, [r1]
 
@@ -10165,7 +10165,7 @@ locret_8007936:
 off_8007938:
 	.word off_8007940
 off_800793C:
-	.word dword_200F3B0
+	.word eBattleResult
 off_8007940: 
   .word battle_initForMatchStart_0800794C+1
 	.word battle_dispatchPhase_8007978+1
@@ -19136,7 +19136,7 @@ loc_800B334:
 	ldr r0, off_800B5F0 // =dword_203F660
 	ldr r0, [r0]
 	str r0, [r2,#0x4] // (byte_203CFA4 - 0x203cfa0)
-	ldr r2, off_800B5F4 // =dword_203F7E0
+	ldr r2, off_800B5F4 // =battleAllianceLists
 	ldr r0, off_800B5F8 // =dword_203F564
 	ldr r0, [r0]
 	str r0, [r2]
@@ -19514,7 +19514,7 @@ off_800B5EC:
 off_800B5F0:
 	.word dword_203F660
 off_800B5F4:
-	.word dword_203F7E0
+	.word battleAllianceLists
 off_800B5F8:
 	.word dword_203F564
 off_800B5FC:

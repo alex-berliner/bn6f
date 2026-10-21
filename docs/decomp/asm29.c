@@ -6955,7 +6955,7 @@ int sub_80AA0FC()
 // 0x80aa104
 int __fastcall palette_copyTableRow_80AA104(int a1)
 {
-    CopyBytes(&byte_80AA11C[8 * a1], byte_20018B0, 8);
+    CopyBytes(&byte_80AA11C[8 * a1], paletteCopyWorkBuffer, 8);
     return 0;
 }
 
@@ -6963,7 +6963,7 @@ int __fastcall palette_copyTableRow_80AA104(int a1)
 // 0x80aa134
 int __fastcall sub_80AA134(int a1)
 {
-    return byte_20018B0[a1] << 16;
+    return paletteCopyWorkBuffer[a1] << 16;
 }
 
 

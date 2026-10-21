@@ -709,7 +709,7 @@ loc_813050C:
 	ldrb r0, [r1,r0]
 	ldrh r0, [r7,r0]
 	ldr r1, off_81305E4 // =unk_2023FB0 
-	ldr r2, off_81305E8 // =unk_20243E8 
+	ldr r2, off_81305E8 // =iChipSelectFolderPanelTileIds 
 	mov r3, #0xa
 	mov r5, #5
 	bl battle_drawChipSelectFighterNames_81200EC
@@ -720,7 +720,7 @@ loc_813050C:
 	// tileBlock32x32
 	mov r2, #2
 	// tileIds
-	ldr r3, off_81305E8 // =unk_20243E8 
+	ldr r3, off_81305E8 // =iChipSelectFolderPanelTileIds 
 	mov r4, #8
 	mov r5, #0xa
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -809,7 +809,7 @@ locret_81305E0:
 off_81305E4:
 	.word unk_2023FB0
 off_81305E8:
-	.word unk_20243E8
+	.word iChipSelectFolderPanelTileIds
 off_81305EC:
 	.word unk_20244C8
 off_81305F0:
@@ -6386,7 +6386,7 @@ loc_813303E:
 	add r0, #1
 	sub r1, #1
 	bgt loc_813303E
-	ldr r0, off_81330A0 // =unk_201C500 
+	ldr r0, off_81330A0 // =BandedTilemapBufferA 
 	mov r2, #0
 loc_8133052:
 	ldrh r1, [r0,r2]
@@ -6434,7 +6434,7 @@ off_8133098:
 dword_813309C:
 	.word 0x30B260
 off_81330A0:
-	.word unk_201C500
+	.word BandedTilemapBufferA
 dword_81330A4:
 	.word 0x30B270
 off_81330A8:
@@ -6490,7 +6490,7 @@ off_8133124:
 	.word unk_201C4F0
 	.byte 0xA2, 0xB2, 0x30, 0x0, 0x2, 0x1, 0x0, 0x0
 off_8133130:
-	.word unk_201C500
+	.word BandedTilemapBufferA
 	.byte 0xA6, 0xB2, 0x30, 0x0, 0x2, 0x1, 0x0, 0x0
 byte_813313C:
 	.byte 0x16, 0x0, 0x10, 0x0, 0x16, 0x1, 0x11, 0x0, 0x16, 0x2, 0x12
@@ -12410,7 +12410,7 @@ off_8135CEC:
 	.word eDecompBuffer2013A00
 
 	.word CompText873ECC8 + COMPRESSED_PTR_FLAG
-	.word unk_201E670
+	.word eNaviCustomizerGfxBuffer
 	.word eDecompBuffer2013A00
 
 	// For navi customizer
@@ -12714,7 +12714,7 @@ navicust_getCellProgramId:
 sub_8135F34:
 	push {r4-r7,lr}
 	mov r1, r0
-	ldr r0, off_8135F74 // =unk_201E670 
+	ldr r0, off_8135F74 // =eNaviCustomizerGfxBuffer 
 	ldr r2, off_8135F78 // =byte_201B200
 	ldr r3, dword_8135F7C // =0x600b800 
 	mov r4, #0xa
@@ -12747,7 +12747,7 @@ sub_8135F5C:
 off_8135F70:
 	.word word_201DA80
 off_8135F74:
-	.word unk_201E670
+	.word eNaviCustomizerGfxBuffer
 off_8135F78:
 	.word byte_201B200
 dword_8135F7C:
@@ -14835,7 +14835,7 @@ off_8136EC8:
 	.word 0x6014800
 	.word 0x100
 	.word byte_86E56FC
-	.word byte_3001590
+	.word iBeastSpDialogTriple
   .word 0x20
   .word NULL
 	thumb_func_end battleObject_runBeastSpFunction_8136DE0

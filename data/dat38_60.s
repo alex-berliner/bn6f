@@ -95932,8 +95932,8 @@ dword_86BA0A0::
 	.word 0x0, 0x0
 	.word 0x21111110, 0x21111110, 0x22222220, 0x0, 0x0, 0x0, 0x0, 0x0
 // symdb: Proposed name: battlePaletteLoadRequestTable. Queue entry for a 32-byte battle palette load into an IWRAM buffer. (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_86BA120.yaml
-dword_86BA120::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battlePaletteLoadRequestTable.yaml
+battlePaletteLoadRequestTable::
 	.word 0x0, 0x0, 0x0, 0x0, 0x0, 0x0
 	.byte 0x10, 0x2, 0x10, 0x2, 0x10, 0x21, 0x11, 0x2
 byte_86BA140::

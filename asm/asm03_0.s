@@ -3684,12 +3684,12 @@ dword_8027E18:
 getLocOfActiveChips_8027E1C:
 	mov r1, #0xc
 	mul r0, r1
-	ldr r1, off_8027E28 // =unk_20365C0 
+	ldr r1, off_8027E28 // =activeChipEntries 
 	add r0, r0, r1
 	mov pc, lr
 	.balign 4, 0x00
 off_8027E28:
-	.word unk_20365C0
+	.word activeChipEntries
 	thumb_func_end getLocOfActiveChips_8027E1C
 
 // symdb: Initializes the chip-select active-state (12 active-chip records), updates beast-out counter, and sets up the first row of selectable chips from the folder.
@@ -4506,14 +4506,14 @@ sub_80282C2:
 	pop {pc}
 	thumb_func_end sub_80282C2
 
-// symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at dword_86E441C, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
+// symdb: Reads a byte index from [r4+7], uses it (multiplied by 0x180) to pick a src from the table at IndexedBattleGfxChunks, queues a 0x180-byte VRAM transfer to r1, then advances r1 by 0x180.
 // symdb: (r0 = dst VRAM ptr, r1 = dst VRAM ptr, r4 = object struct with byte index at +7) -> r1 advanced
 // symdb: by 0x180; r0 = src ptr used
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/queueIndexedGfxChunk.yaml
 	thumb_local_start
 queueIndexedGfxChunk:
 	push {lr}
-	ldr r0, off_802835C // =dword_86E441C 
+	ldr r0, off_802835C // =IndexedBattleGfxChunks 
 	ldr r2, off_8028364 // =0x180 
 	ldrb r3, [r4,#7]
 	mul r3, r2
@@ -4608,7 +4608,7 @@ battle_queueIndexedGfxChunk:
 dword_8028358:
 	.word 0x6009C20
 off_802835C:
-	.word dword_86E441C
+	.word IndexedBattleGfxChunks
 off_8028360:
 	.word dword_86E4D9C
 off_8028364:
@@ -5108,7 +5108,7 @@ loc_80286E4:
 off_8028704:
 	.word off_8028708
 off_8028708:
-	.word dword_8722AF4
+	.word beastoutSelectionScreenTileGfxA
 	.word dword_87225B4
 off_8028710:
 	.word off_8028714
@@ -5212,7 +5212,7 @@ loc_80287AE:
 	ldrb r0, [r0,#4]
 	push {r0}
 	bl loadOneSpriteTileRow_80287D2
-	ldr r0, off_80287EC // =dword_8722AF4 
+	ldr r0, off_80287EC // =beastoutSelectionScreenTileGfxA 
 	ldr r1, dword_80287F0 // =0x6009560 
 	ldr r2, dword_80287F4 // =0x540
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -5242,7 +5242,7 @@ loadOneSpriteTileRow_80287D2:
 	pop {pc}
 	.balign 4, 0
 off_80287EC:
-	.word dword_8722AF4
+	.word beastoutSelectionScreenTileGfxA
 dword_80287F0:
 	.word 0x6009560
 dword_80287F4:
@@ -9772,7 +9772,7 @@ locret_802A664:
 off_802A668::
 	.word eS20364C0
 	.word unk_2035000
-	.word unk_20365C0
+	.word activeChipEntries
 	.word eBattleFolder
 	.byte 0xFF, 0x1, 0x0, 0x0, 0x20, 0x9C, 0x0, 0x6
 byte_802A680:
@@ -9840,7 +9840,7 @@ off_802A744:
 	.word 0x20
 	.word 0x0
 
-/// Seems to feed into the first word of most entries in unk_20365C0
+/// Seems to feed into the first word of most entries in activeChipEntries
 /// [u32; 12]
 dword_802A7CC:
 	.word 0x10A050A
@@ -11920,7 +11920,7 @@ chipAnimFolderCycle:
 	mul r2, r3
 	ldr r3, dword_802B9B4 // =0x6009760 
 	add r3, r3, r2
-	ldr r2, off_802B9B0 // =byte_203C6E0 
+	ldr r2, off_802B9B0 // =chipPreviewNameGlyphBuffers 
 	mov r4, #1
 	mov r5, #1
 	ldr r6, off_802B9A8 // =dword_86B7AE0 
@@ -12099,7 +12099,7 @@ off_802B9A8:
 off_802B9AC:
 	.word TextScript86F0300
 off_802B9B0:
-	.word byte_203C6E0
+	.word chipPreviewNameGlyphBuffers
 dword_802B9B4:
 	.word 0x6009760
 	thumb_func_end chip_previewShowSelectedChip
@@ -21556,7 +21556,7 @@ initRefs_802FCD8:
 	.word eDecompBuffer2013A00
 
 	.word dword_87F3620
-	.word byte_3001590
+	.word iBeastSpDialogTriple
 	.word 0x80
 
 	.word comp_87F4394 + COMPRESSED_PTR_FLAG
@@ -21621,7 +21621,7 @@ locret_802FD68:
 	.balign 4, 0
 	.word eStartScreenAnimationControl200B1A0
 off_802FD70::
-	.word unk_30025B0
+	.word iOamShadowEnd
 dword_802FD74:
 	.word 0x8
 	.word unk_3002580

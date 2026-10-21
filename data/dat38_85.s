@@ -1793,8 +1793,8 @@ dword_86E1C78::
 	.word 0x41087BD1, 0x7FFE0000, 0x3E014A5, 0x331F57BF, 0x6E6F129F
 	.word 0x37F61CC, 0x7F029F, 0x37F63547, 0x41087BD1
 // symdb: Proposed name: battleOrderBgTileIdBlocks. Per-turn-order BG tile-id blocks (32 bytes each) sourced into VRAM for the order-selection BG overlay. (table of u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_86E1CD8.yaml
-byte_86E1CD8::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleOrderBgTileIdBlocks.yaml
+battleOrderBgTileIdBlocks::
 	.byte 0x0, 0x0, 0xFE, 0x7F, 0xA5, 0x14, 0xE0, 0x3, 0xDE, 0x7B
 	.byte 0x7D, 0x3, 0x99, 0x7F, 0x13, 0x1E, 0xCC, 0x61, 0x7F, 0x3
 	.byte 0x9F, 0x2, 0xE0, 0x3, 0x47, 0x35, 0xF6, 0x37, 0xD1, 0x7B
@@ -2551,8 +2551,8 @@ dword_86E43DC::
 	.word 0x0, 0x0, 0x0, 0x0, 0x0
 	.word 0x0
 // symdb: Proposed name: IndexedBattleGfxChunks. table of 0x180-byte indexed graphics chunks queued for battle VRAM transfer (table of 0x180-byte graphics chunks)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_86E441C.yaml
-dword_86E441C::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/IndexedBattleGfxChunks.yaml
+IndexedBattleGfxChunks::
 	.word 0x11111111, 0x11111111, 0x88888311, 0xCBBBB811, 0xDCCCB811
 	.word 0xDCCCB811, 0xCCCCB811, 0xCCCCB811, 0x11111111, 0x11111111
 	.word 0x88888888, 0xBBBBCCCC, 0xCCCCBCCC, 0xCCCCBBBB, 0xCCCCCCCC
@@ -2612,8 +2612,8 @@ dword_86E441C::
 	.word 0x118FDDDD, 0x118FDDDD, 0x118FDDDF, 0x118FDDDF, 0x118FFFFD
 	.word 0x11388888, 0x11111111, 0x11111111
 // symdb: Proposed name: custGaugeGfxTiles. ROM tile graphics used to initialize and redraw the in-battle custom gauge (table of u32 tile graphics)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_86E489C.yaml
-dword_86E489C::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/custGaugeGfxTiles.yaml
+custGaugeGfxTiles::
 	.word 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF, 0xFFFFFFFF
 	.word 0xFFFFFFFF, 0x22222222, 0xCCCCCCCC, 0xFFFFFFF7, 0xFFFFFFF5
 	.word 0xFFFFFFF5, 0xFFFFFFF5, 0xFFFFFFF5, 0xFFFFFFF7, 0x22222222

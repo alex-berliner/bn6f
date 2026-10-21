@@ -592,7 +592,7 @@ signed int battle_encodePanelRuns()
     int v6; // [sp+0h] [bp-20h]
     int v7; // [sp+4h] [bp-1Ch]
 
-    v0 = &byte_203F6B0;
+    v0 = &battlePanelRuns;
     v6 = 1;
     v7 = 6;
     v1 = 1;

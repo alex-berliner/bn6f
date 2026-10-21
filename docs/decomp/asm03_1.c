@@ -14703,10 +14703,10 @@ signed int saveInfoTextBlockToSram()
     int v3; // r7
     int v5; // [sp-4h] [bp-24h]
 
-    CopyBytes("REXE6 F 20060110a US", byte_2006720, 20);
+    CopyBytes("REXE6 F 20060110a US", eInfoTextSavedTimestamp, 20);
     v0 = dword_28;
     v1 = 0;
-    *byte_2006714 = 0;
+    *eInfoTextSaveChecksum = 0;
     while ( 1 )
     {
         v2 = __OFSUB__(v0--, 1);
@@ -14714,7 +14714,7 @@ signed int saveInfoTextBlockToSram()
             break;
         v1 += byte_2006710[v0];
     }
-    *byte_2006714 = v1;
+    *eInfoTextSaveChecksum = v1;
     v3 = 0;
     while ( 1 )
     {
@@ -14745,14 +14745,14 @@ signed int sub_803F976()
 
     sub_814D8F0(234913280, byte_2006710, dword_28);
     v0 = 0;
-    while ( EXE6_InfoText_timestamp[v0] == byte_2006720[v0] )
+    while ( EXE6_InfoText_timestamp[v0] == eInfoTextSavedTimestamp[v0] )
     {
         if ( ++v0 >= 20 )
         {
             v1 = dword_28;
             v2 = 0;
-            v3 = *byte_2006714;
-            *byte_2006714 = 0;
+            v3 = *eInfoTextSaveChecksum;
+            *eInfoTextSaveChecksum = 0;
             while ( 1 )
             {
                 v4 = __OFSUB__(v1--, 1);

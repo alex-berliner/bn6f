@@ -410,7 +410,7 @@ dword_800059C:
 	.word 0x93040D
 off_80005A0:
 	.word GeneralLCDStatus_STAT_LYC_
-	.word off_3000E70
+	.word iInterruptCallbackTable
 off_80005A8:
 	.word sound_vcountCallback+1
 	thumb_func_end main_static_8000570

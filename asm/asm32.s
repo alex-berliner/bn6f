@@ -20292,7 +20292,7 @@ off_8117A10:
 	thumb_local_start
 folder_DrawSelectedChipCodeCounts_8117A14:
 	push {r4-r7,lr}
-	ldr r6, off_8117A7C // =unk_2016300
+	ldr r6, off_8117A7C // =folder_ChipCodeCountTileBuffer
 	mov r0, r6
 	mov r1, #0x20
 	lsl r1, r1, #4
@@ -20326,7 +20326,7 @@ folder_DrawSelectedChipCodeCounts_8117A14:
 	ldrb r7, [r5,#3]
 	mov r1, r7
 	bl folder_CountChipsOfCodeOrSkipEntry_8117AA0
-	ldr r0, off_8117A7C // =unk_2016300
+	ldr r0, off_8117A7C // =folder_ChipCodeCountTileBuffer
 	ldr r1, dword_8117A80 // =0x6013b40
 	mov r2, #0x20
 	lsl r2, r2, #4
@@ -20334,7 +20334,7 @@ folder_DrawSelectedChipCodeCounts_8117A14:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8117A7C:
-	.word unk_2016300
+	.word folder_ChipCodeCountTileBuffer
 dword_8117A80:
 	.word 0x6013B40
 	thumb_func_end folder_DrawSelectedChipCodeCounts_8117A14
@@ -25406,7 +25406,7 @@ loc_8119F12:
 	b loc_8119F82
 loc_8119F18:
 	push {r5}
-	ldr r0, off_811A094 // =unk_2028000
+	ldr r0, off_811A094 // =chipDescClearTileBuffer
 	ldrh r1, [r5,#0xe]
 	ldr r2, off_811A0A0 // =0x140
 	sub r1, r1, r2
@@ -25580,7 +25580,7 @@ off_811A08C:
 off_811A090:
 	.word TextScriptChipDesc1
 off_811A094:
-	.word unk_2028000
+	.word chipDescClearTileBuffer
 dword_811A098:
 	.word 0xA00
 dword_811A09C:
@@ -27737,7 +27737,7 @@ sub_811AE7C:
 	ldr r1, [r1,r2]
 	ldr r2, off_811AFD4 // =0x200 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	ldr r0, off_811AFD0 // =off_86DC3F8 
+	ldr r0, off_811AFD0 // =BattleResultNameplateOrMantleGFX 
 	ldr r1, off_811AFC4 // =off_811AFC8 
 	ldr r2, [sp,#4]
 	lsl r2, r2, #2
@@ -27821,7 +27821,7 @@ off_811AFC8:
 	.word byte_30015F0
 	.word byte_3001610
 off_811AFD0:
-	.word off_86DC3F8
+	.word BattleResultNameplateOrMantleGFX
 off_811AFD4:
 	.word 0x200
 	thumb_func_end sub_811AE7C
@@ -28312,7 +28312,7 @@ off_811B358:
 	.word sSubmenu
 	thumb_func_end submenuDispatchTypeUpdate
 
-// symdb: Initializer for an object of type 0x23: loads sprite resource 0x14 from unk_2026A00 via initGuiSprite_8002770, sets animation 0 with no shadow and priority 0, claims slot 0x210, writes sub-record field A=2 and sub-entry palette bank 0xA with palette 0, then sets coordinates to (0x20, 0x50) and tail-calls sub_811B3B0. Finally stores state byte 4 at [r5,#8].
+// symdb: Initializer for an object of type 0x23: loads sprite resource 0x14 from eCharCodeBuffer via initGuiSprite_8002770, sets animation 0 with no shadow and priority 0, claims slot 0x210, writes sub-record field A=2 and sub-entry palette bank 0xA with palette 0, then sets coordinates to (0x20, 0x50) and tail-calls sub_811B3B0. Finally stores state byte 4 at [r5,#8].
 // symdb: (r5 = object state struct) -> void; r0/r1 clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initType23Sprite.yaml
 	thumb_local_start
@@ -28321,7 +28321,7 @@ object_initType23Sprite:
 	mov r0, #0x23
 	strb r0, [r5]
 	mov r0, #0x14
-	ldr r1, off_811B3AC // =unk_2026A00
+	ldr r1, off_811B3AC // =eCharCodeBuffer
 	bl initGuiSprite_8002770 // (int a1, int a2) -> void
 	mov r0, #0
 	bl sprite_setAnimation // (u8 a1) -> void
@@ -28348,7 +28348,7 @@ object_initType23Sprite:
 off_811B3A8:
 	.word 0x210
 off_811B3AC:
-	.word unk_2026A00
+	.word eCharCodeBuffer
 	thumb_func_end object_initType23Sprite
 
 // symdb: Object update step: dispatches the object's per-type behavior handler from a jump table, then refreshes its sprite.
@@ -35845,14 +35845,14 @@ updateMapNameDisplay_811F014:
 	str r0, [r6,#8]
 	ldr r0, off_811F0C0 // =TextScriptMapNames
 	mov r1, #0xf1
-	ldr r2, off_811F044 // =unk_200C0E0
+	ldr r2, off_811F044 // =eMapNameDisplayTileBuffer
 	mov r3, #0
 	mov r4, #7
 	mov r5, #1
 	ldr r6, off_811F0C4 // =dword_86A5D60
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	ldr r0, off_811F044 // =unk_200C0E0
+	ldr r0, off_811F044 // =eMapNameDisplayTileBuffer
 	ldr r1, off_811F04C // =byte_200CF20
 	ldr r2, dword_811F048 // =0x6015240
 	mov r3, #7
@@ -35860,7 +35860,7 @@ updateMapNameDisplay_811F014:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_811F044:
-	.word unk_200C0E0
+	.word eMapNameDisplayTileBuffer
 dword_811F048:
 	.word 0x6015240
 off_811F04C:
@@ -35880,14 +35880,14 @@ drawMapNamesScreen_811F050:
 	str r0, [r6,#8]
 	ldr r0, off_811F0C0 // =TextScriptMapNames
 	mov r1, #0xf2
-	ldr r2, off_811F080 // =unk_200C2A0
+	ldr r2, off_811F080 // =mapNamesTextWorkBuffer
 	mov r3, #0
 	mov r4, #6
 	mov r5, #1
 	ldr r6, off_811F0C4 // =dword_86A5D60
 	mov r7, #0
 	bl renderTextGfx_8045F8C
-	ldr r0, off_811F080 // =unk_200C2A0
+	ldr r0, off_811F080 // =mapNamesTextWorkBuffer
 	ldr r1, off_811F088 // =byte_200D220
 	ldr r2, dword_811F084 // =0x6015400
 	mov r3, #6
@@ -35895,7 +35895,7 @@ drawMapNamesScreen_811F050:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_811F080:
-	.word unk_200C2A0
+	.word mapNamesTextWorkBuffer
 dword_811F084:
 	.word 0x6015400
 off_811F088:

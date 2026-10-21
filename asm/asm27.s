@@ -38,14 +38,14 @@ ow_restoreTilemapFromSnapshot:
 	pop {r4-r7,pc}
 	thumb_func_end ow_restoreTilemapFromSnapshot
 
-// symdb: Re-blits the overworld map tilemap block using parameters stored at unk_2026404 and redraws the area around the camera.
+// symdb: Re-blits the overworld map tilemap block using parameters stored at eOverworldMapTilemap and redraws the area around the camera.
 // symdb: () -> r0 = 0; r1-r3/r4-r7 unspecified on entry, so remaining arguments come from the struct at
-// symdb: unk_2026404 or the caller's state
+// symdb: eOverworldMapTilemap or the caller's state
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_refreshMapTilemap.yaml
 	thumb_local_start
 ow_refreshMapTilemap:
 	push {r4-r7,lr}
-	ldr r0, off_8094778 // =unk_2026404 
+	ldr r0, off_8094778 // =eOverworldMapTilemap 
 	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
@@ -55,11 +55,11 @@ ow_refreshMapTilemap:
 sub_8094720:
 	push {r4-r7,lr}
 	// memBlock
-	ldr r0, off_8094778 // =unk_2026404 
+	ldr r0, off_8094778 // =eOverworldMapTilemap 
 	mov r1, #0x10
 	lsl r1, r1, #8
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
-	ldr r0, off_8094778 // =unk_2026404 
+	ldr r0, off_8094778 // =eOverworldMapTilemap 
 	bl ow_blitTilemapBlockAndRedraw
 	mov r0, #0
 	pop {r4-r7,pc}
@@ -106,7 +106,7 @@ loc_8094752:
 off_8094774:
 	.word unk_2025404
 off_8094778:
-	.word unk_2026404
+	.word eOverworldMapTilemap
 off_809477C:
 	// <endpool> <endfile>
 	.word eMapTilesState200be70

@@ -91,7 +91,7 @@ loc_3005C30:
 	bic r3, r3, #0xdf
 	orr r3, r3, #0x1f
 	msr CPSR_cf, r3
-	ldr r1, off_3005C9C // =off_3000E70 
+	ldr r1, off_3005C9C // =iInterruptCallbackTable 
 	add r1, r1, r12
 	ldr r0, [r1]
 	stmfd sp!, {lr}
@@ -114,7 +114,7 @@ off_3005C94:
 byte_3005C98:
 	.word 0x20c8
 off_3005C9C:
-	.word off_3000E70
+	.word iInterruptCallbackTable
 off_3005CA0:
 	.word t1_dispatchJumpTable+1
 	.word nullsub_38+1
@@ -273,7 +273,7 @@ sub_3005DA0:
 	strh r0, [r4]
 	mov r0, #0
 	ldr r1, off_3005DCC // =off_3005CA0
-	ldr r2, off_3005DE8 // =off_3000E70
+	ldr r2, off_3005DE8 // =iInterruptCallbackTable
 loc_3005DB2:
 	ldr r3, [r1]
 	str r3, [r2]
@@ -307,7 +307,7 @@ _SetInterruptCallback: // (interrupt_idx: u8, callback: *const ()) -> ()
 	strh r2, [r3]
 
 	// write new interrupt callback
-	ldr r2, off_3005DE8 // =off_3000E70
+	ldr r2, off_3005DE8 // =iInterruptCallbackTable
 	str r1, [r2,r0]
 
 	// restore IME state
@@ -315,7 +315,7 @@ _SetInterruptCallback: // (interrupt_idx: u8, callback: *const ()) -> ()
 	pop {r4,pc}
 	.balign 4, 0
 off_3005DE8:
-	.word off_3000E70
+	.word iInterruptCallbackTable
 	thumb_func_end _SetInterruptCallback
 
 // symdb: Atomically ORs the IE bits in r0 into the Interrupt Enable register by briefly clearing the Interrupt Master Enable register, preserving r4 and returning nothing.
@@ -1885,7 +1885,7 @@ sprite_buildOamShadow: // () -> void
 	// struct{u8 *p0, int len} v4[4]: r6
 	// s1 *v5: r7
 	ldr r0, off_30068C0 // =iOamShadow
-	ldr r2, off_30068C4 // =unk_30025B0
+	ldr r2, off_30068C4 // =iOamShadowEnd
 	ldr r3, off_30068C8 // =unk_3002170
 	ldr r6, off_30068CC // =iSpriteLayerLists
 	ldr r7, off_30068D0 // =iSpritePool
@@ -2023,7 +2023,7 @@ sprite_buildOamShadow: // () -> void
 off_30068C0:
 	.word iOamShadow
 off_30068C4:
-	.word unk_30025B0
+	.word iOamShadowEnd
 off_30068C8:
 	.word unk_3002170
 off_30068CC:

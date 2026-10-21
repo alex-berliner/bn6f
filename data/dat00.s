@@ -10,7 +10,7 @@ off_801ECB4::
 	.word dword_86E1C78
 	.word byte_3001B00
 	.word 0x20
-	.word dword_86BA120
+	.word battlePaletteLoadRequestTable
 	.word 0x600BA40
 	.word 0x40
 	.word dword_86B7BA0

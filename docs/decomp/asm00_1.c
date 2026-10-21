@@ -1120,7 +1120,7 @@ int battleObject_projectAndQueueSprites_8003E18()
 	char v3; // r2
 
 	v0 = byte_2036778;
-	for ( i = &dword_2039A10; ; ++i )
+	for ( i = &object_PtrPairs; ; ++i )
 	{
 		v2 = __OFSUB__(v0--, 1);
 		if ( (v0 < 0) ^ v2 )
@@ -1653,8 +1653,8 @@ int *__fastcall init_zeroWorkBuffer(int a1, int a2, int a3, int a4)
 	int *result; // r0
 
 	ZeroFillByEightWords(&byte_2006848, &byte_400);
-	result = &dword_2006C48;
-	dword_2006C48 = &byte_2006848;
+	result = &tileStreamCursor;
+	tileStreamCursor = &byte_2006848;
 	return result;
 }
 
@@ -1708,10 +1708,10 @@ int __fastcall sub_80049FC(_BYTE *a1, int a2, int a3, int a4, int (__fastcall *a
 	v25 = v7;
 	v26 = v8;
 	v27 = 0;
-	v9 = dword_2006C48;
-	if ( dword_2006C48 < &unk_2006C46 )
+	v9 = tileStreamCursor;
+	if ( tileStreamCursor < &unk_2006C46 )
 	{
-		*dword_2006C48 = *a1;
+		*tileStreamCursor = *a1;
 		v10 = a1 + 1;
 		v11 = (v9 + 1);
 		*v11 = *v10;
@@ -1759,7 +1759,7 @@ LABEL_10:
             ++v12;
         }
         *v13 = 255;
-        dword_2006C48 = (v13 + 1);
+        tileStreamCursor = (v13 + 1);
     }
     return a5(v28, v29, v30, v31);
 }
@@ -1779,7 +1779,7 @@ int __fastcall bgmap_drawTilesFromStream(int result)
     int v9; // ST08_4
 
     v1 = &byte_2006848;
-    v2 = dword_2006C48 - &byte_2006848;
+    v2 = tileStreamCursor - &byte_2006848;
     v3 = 0;
     while ( v2 )
     {
@@ -1812,7 +1812,7 @@ int __fastcall bgmap_drawTilesFromStream(int result)
             }
         }
     }
-    dword_2006C48 = &byte_2006848;
+    tileStreamCursor = &byte_2006848;
     return result;
 }
 
@@ -4214,8 +4214,8 @@ signed int __fastcall chatbox_initWindowReqAndEnqueue(int *a1, int a2, int a3, i
     dword_20096C8 = v4[7];
     dword_20096CC = v4[8];
     *byte_20096A3 = v4[9];
-    win_buildDiagonalEdgeTable(&unk_2008980, 1280, 160);
-    return req_enqueueTask(&unk_2008980, &Window0HorizontalDimensions, 4, -1570766848);
+    win_buildDiagonalEdgeTable(&chatboxDiagonalEdgeTable, 1280, 160);
+    return req_enqueueTask(&chatboxDiagonalEdgeTable, &Window0HorizontalDimensions, 4, -1570766848);
 }
 
 
@@ -4339,13 +4339,13 @@ LABEL_12:
             {
                 v17 = 8 * v6 & 0xFFFF;
                 if ( v17 - 1280 < 0 )
-                    *(&unk_2008980 + v17) = v16;
+                    *(&chatboxDiagonalEdgeTable + v17) = v16;
             }
             if ( !((v7 + v4) & 0x8000) )
             {
                 v18 = (v7 + v4) & 0xFFFF;
                 if ( v18 - 1280 < 0 )
-                    *(&unk_2008980 + v18) = v16;
+                    *(&chatboxDiagonalEdgeTable + v18) = v16;
             }
             v4 -= 8;
             result = v5-- - 1;
@@ -4353,17 +4353,17 @@ LABEL_12:
             {
                 v19 = (v6 + v21) & 0xFFFF;
                 if ( v19 - 160 < 0 )
-                    result = win_buildDiagonalEdgeTable(&unk_2008980 + 8 * v19, 8 * (160 - v19), 160);
+                    result = win_buildDiagonalEdgeTable(&chatboxDiagonalEdgeTable + 8 * v19, 8 * (160 - v19), 160);
                 return result;
             }
         }
     }
     if ( v6 - 160 < 0 )
     {
-        win_buildDiagonalEdgeTable(&unk_2008980, 8 * v6, a2 - a3);
+        win_buildDiagonalEdgeTable(&chatboxDiagonalEdgeTable, 8 * v6, a2 - a3);
         goto LABEL_5;
     }
-    return win_buildDiagonalEdgeTable(&unk_2008980, 1280, 160);
+    return win_buildDiagonalEdgeTable(&chatboxDiagonalEdgeTable, 1280, 160);
 }
 
 
@@ -5675,7 +5675,7 @@ int battle_finishBattle_8007850()
     v2 = v1;
     if ( v1 == 4 )
     {
-        dword_200F3B0 = 255;
+        eBattleResult = 255;
 LABEL_3:
         v3 = eStruct200BC30_getJumpOffset00();
         if ( v3 != 4 && v3 != 8 )
@@ -5715,7 +5715,7 @@ LABEL_3:
         *(v0 + 32) = result;
         if ( result < 180 )
             return result;
-        dword_200F3B0 = 238;
+        eBattleResult = 238;
         goto LABEL_3;
     }
     v8 = eStruct2038160_getBattleTerminate01();
@@ -12446,7 +12446,7 @@ int battle_copyStructsIncludingBattleStats_800b2d8()
     *byte_203CDF4 = *byte_203F694;
     dword_203CFA0[0] = dword_203F560;
     *byte_203CFA4 = dword_203F660;
-    dword_203F7E0[0] = dword_203F564;
+    battleAllianceLists[0] = dword_203F564;
     result = *byte_203F664;
     *byte_203F7E4 = *byte_203F664;
     return result;
@@ -13025,7 +13025,7 @@ signed int object_timefreezeBegin()
         dispatch_801DACC(64);
     if ( sub_800B8D8(obj->Alliance) )
         battle_setFlags(4);
-    dword_200F3B8[obj->Alliance] = 0;
+    eFreezeCounterByAlliance[obj->Alliance] = 0;
     result = 4;
     obj->currState = 4;
     return result;
@@ -13199,7 +13199,7 @@ char *battleObject_stepSnakeArm_800BA8A()
                 }
                 else
                 {
-                    dword_200F3B8[*(v0 + 22)] = 1;
+                    eFreezeCounterByAlliance[*(v0 + 22)] = 1;
                     *(v0 + 9) += 8;
                     result = 0;
                     *(v0 + 10) = 0;

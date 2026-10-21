@@ -2316,7 +2316,7 @@ int battle_customGauge_EndTurn_8027D78()
 // (int a1) -> void*
 char *__fastcall getLocOfActiveChips_8027E1C(int a1)
 {
-    return &unk_20365C0 + 12 * a1;
+    return &activeChipEntries + 12 * a1;
 }
 
 
@@ -2866,7 +2866,7 @@ int queueIndexedGfxChunk()
 {
     int v0; // r4
 
-    return (loc_8000AC8)(dword_86E441C + *(v0 + 7) * &byte_180);
+    return (loc_8000AC8)(IndexedBattleGfxChunks + *(v0 + 7) * &byte_180);
 }
 
 
@@ -3235,7 +3235,7 @@ int __fastcall beastout_loadSelectionScreenGfx(_BYTE *a1, int a2, int a3)
         a1 -= 12;
     v4 = a1[4];
     loadOneSpriteTileRow_80287D2(v4, v3, a3);
-    (loc_8000AC8)(dword_8722AF4, 100701536, 1344);
+    (loc_8000AC8)(beastoutSelectionScreenTileGfxA, 100701536, 1344);
     v5 = (loc_8000AC8)(dword_8725854, &unk_3001AA0, 32);
     beastout_LoadSelectionScreenSpriteSheets_802869E(v5, v6, v7);
     return v4;
@@ -7614,7 +7614,7 @@ int chipAnimFolderCycle()
         renderTextGfx_8045F8C(v2, v4, byte_203C4E0, &byte_48 * v3 + 100701536);
         v5 = v13 & 0x1FF;
         if ( v5 < dword_160 )
-            renderTextGfx_8045F8C(TextScript86F0300, v13 >> 9, byte_203C6E0, &byte_48 * v14 + 100702048);
+            renderTextGfx_8045F8C(TextScript86F0300, v13 >> 9, chipPreviewNameGlyphBuffers, &byte_48 * v14 + 100702048);
         v6 = v14;
         v7 = *(v0 + 16) >> 3;
         v8 = *(v0 + 6);

@@ -1306,7 +1306,7 @@ void __noreturn sub_8124588()
     int v0; // r5
 
     if ( *(v0 + 14) )
-        CopyBackgroundTiles(15, 12, 2, &unk_201EBDC, 11, dword_4 + 2);
+        CopyBackgroundTiles(15, 12, 2, &submenuSubchipTileIds, 11, dword_4 + 2);
     else
         call_sub_3005EBA(15, 12, 2, 0);
 }
@@ -1497,7 +1497,7 @@ void __noreturn background_updateSceneStrips_812475C()
     if ( v2 )
         call_sub_3005EBA(21, 5, 2, 0);
     else
-        CopyBackgroundTiles(21, 5, 2, &unk_201ECAC, 8, &byte_0[2]);
+        CopyBackgroundTiles(21, 5, 2, &middleStripTilemap, 8, &byte_0[2]);
     if ( *(v1 + 40) )
         CopyBackgroundTiles(21, 2, 2, &unk_201ECCC, 8, &byte_0[2]);
     else
@@ -2249,12 +2249,12 @@ void initRefs_buildAndDecompressTable_8125280()
         v3 = v1 + 4;
         v4 = *(&off_8125310 + v3);
         v1 = v3 + 4;
-        *(&unk_2029000 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&iBackgroundTilemapCopyBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_2029000 + v0) = *(&off_8125310 + v1);
+            *(&iBackgroundTilemapCopyBuffer + v0) = *(&off_8125310 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -2262,8 +2262,8 @@ void initRefs_buildAndDecompressTable_8125280()
         while ( v5 < 2 );
     }
     while ( v1 < 80 );
-    *(&unk_2029000 + v0) = 0;
-    decompAndCopyData(&unk_2029000);
+    *(&iBackgroundTilemapCopyBuffer + v0) = 0;
+    decompAndCopyData(&iBackgroundTilemapCopyBuffer);
     decompAndCopyData(byte_8125368);
 }
 
@@ -6063,8 +6063,8 @@ int __fastcall sub_8128AB0(int a1, int a2, int a3, int a4)
     int v16; // [sp+0h] [bp-18h]
 
     v15 = *(v4 + 30) - 2 * *(v4 + 36);
-    v5 = &unk_201C040;
-    HalfwordFill(&unk_201C040, &byte_170, 29184, a4);
+    v5 = &SpriteStagingTileIds;
+    HalfwordFill(&SpriteStagingTileIds, &byte_170, 29184, a4);
     result = *(v4 + 30);
     if ( *(v4 + 30) )
     {
@@ -6116,7 +6116,7 @@ int __fastcall sub_8128AB0(int a1, int a2, int a3, int a4)
 // 0x8128b34
 void sub_8128B34()
 {
-    CopyBackgroundTiles(4, 3, 2, &unk_201C040, 23, &dword_8);
+    CopyBackgroundTiles(4, 3, 2, &SpriteStagingTileIds, 23, &dword_8);
 }
 
 

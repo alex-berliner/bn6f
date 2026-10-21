@@ -1,6 +1,6 @@
 // symdb: Proposed name: BattleResultNameplateOrMantleGFX. A 32-byte tile/gfx source table queued to VRAM by the battle mugshot/end-of-battle nameplate routine. (u8[])
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_86DC3F8.yaml
-off_86DC3F8::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/BattleResultNameplateOrMantleGFX.yaml
+BattleResultNameplateOrMantleGFX::
   .word 0x08420000, 0x49DF5E7F, 0x033F38DF, 0x7FAB793F, 0x27F47F26, 0x7E4113E4, 0x7EEE1E65, 0x292645E0
 
 comp_86DC418::

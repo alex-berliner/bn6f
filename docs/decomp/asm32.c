@@ -12436,7 +12436,7 @@ int __fastcall folder_DrawSelectedChipCodeCounts_8117A14(int a1, int a2, int a3,
     unsigned __int8 *v5; // r5
     signed int v6; // r4
 
-    ZeroFillByEightWords(&unk_2016300, 512);
+    ZeroFillByEightWords(&folder_ChipCodeCountTileBuffer, 512);
     v5 = getChip8021DA8(*(v4 + 2));
     sub_8117A84(*v5);
     sub_8117A84(v5[1]);
@@ -12447,7 +12447,7 @@ int __fastcall folder_DrawSelectedChipCodeCounts_8117A14(int a1, int a2, int a3,
     folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[1]);
     folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[2]);
     folder_CountChipsOfCodeOrSkipEntry_8117AA0(v6, v5[3]);
-    return (loc_8000AC8)(&unk_2016300, 100744000, 512);
+    return (loc_8000AC8)(&folder_ChipCodeCountTileBuffer, 100744000, 512);
 }
 
 
@@ -15499,7 +15499,7 @@ int __fastcall menu_drawChipDescription(int a1, int a2, int a3, int a4)
     if ( !v5 )
         return sub_8119F88(v5, a2, a3, a4);
     renderTextGfx_8045F8C(
-        &unk_2028000,
+        &chipDescClearTileBuffer,
         5 * (*(v4 + 14) - dword_140) + *(v4 + 12),
         *(&off_8119FF0 + *(v4 + 5)),
         32 * *(&off_8119FD0)[*(v4 + 5)] + 100728832);
@@ -16730,7 +16730,7 @@ int __fastcall sub_811AE7C(int a1, int a2)
             (loc_8000AC8)(off_811AF08[v9], *&byte_811AF3C[4 * v11], byte_80);
             (loc_8000AC8)(off_811AF4C[v9], off_811AF80[v11], 32);
             (loc_8000AC8)(*(&off_811AF8C + v8), *&byte_811AFBC[4 * v11], byte_200);
-            result = (loc_8000AC8)(&off_86DC3F8, off_811AFC8[v11], 32);
+            result = (loc_8000AC8)(&BattleResultNameplateOrMantleGFX, off_811AFC8[v11], 32);
             v6 = 35;
         }
         *v5 = v6;
@@ -16995,7 +16995,7 @@ void __noreturn object_initType23Sprite()
     Battle *v0; // r5
 
     v0->objFlags = 35;
-    initGuiSprite_8002770(20, &unk_2026A00);
+    initGuiSprite_8002770(20, &eCharCodeBuffer);
     sprite_setAnimation(v0, 0);
     sprite_loadAnimationData(v0);
     sprite_noShadow(v0);
@@ -21405,8 +21405,8 @@ int __noreturn updateMapNameDisplay_811F014()
     int v0; // r10
 
     *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = protectedZennyOrZero_803D06C();
-    renderTextGfx_8045F8C(TextScriptMapNames, 241, &unk_200C0E0, 0);
-    return sprite_repackAndQueueTiles_811F5DC(&unk_200C0E0, byte_200CF20, 100749888, 7);
+    renderTextGfx_8045F8C(TextScriptMapNames, 241, &eMapNameDisplayTileBuffer, 0);
+    return sprite_repackAndQueueTiles_811F5DC(&eMapNameDisplayTileBuffer, byte_200CF20, 100749888, 7);
 }
 
 
@@ -21416,8 +21416,8 @@ int __noreturn drawMapNamesScreen_811F050()
     int v0; // r10
 
     *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = gameState_getProtectedBugfrags_803D0F4();
-    renderTextGfx_8045F8C(TextScriptMapNames, 242, &unk_200C2A0, 0);
-    return sprite_repackAndQueueTiles_811F5DC(&unk_200C2A0, byte_200D220, 100750336, 6);
+    renderTextGfx_8045F8C(TextScriptMapNames, 242, &mapNamesTextWorkBuffer, 0);
+    return sprite_repackAndQueueTiles_811F5DC(&mapNamesTextWorkBuffer, byte_200D220, 100750336, 6);
 }
 
 

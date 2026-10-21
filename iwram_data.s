@@ -12,8 +12,8 @@ byte_30000FA:: // 0x30000fa
 byte_3000190:: // 0x3000190
 	.space 3296
 // symdb: Proposed name: iInterruptCallbackTable. IWRAM table of interrupt-handler callback pointers, indexed by interrupt source number. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_3000E70.yaml
-off_3000E70:: // 0x3000e70
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iInterruptCallbackTable.yaml
+iInterruptCallbackTable:: // 0x3000e70
 	.space 4
 off_3000E74:: // 0x3000e74
 	.space 4
@@ -55,8 +55,8 @@ byte_300156C:: // 0x300156c
 byte_3001570:: // 0x3001570
 	.space 32
 // symdb: Proposed name: iBeastSpDialogTriple. IWRAM copy of the Beast SP dialog state triple used during per-frame Beast SP processing. (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_3001590.yaml
-byte_3001590:: // 0x3001590
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iBeastSpDialogTriple.yaml
+iBeastSpDialogTriple:: // 0x3001590
 	.space 32
 byte_30015B0:: // 0x30015b0
 	.space 32
@@ -189,8 +189,8 @@ iSpriteLayerLists:: // 0x3002590
 	// type: struct{u8 *p0, int len} [4]
 	.space 4*8
 // symdb: Proposed name: iOamShadowEnd. End pointer for the IWRAM OAM-shadow buffer built each frame. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_30025B0.yaml
-unk_30025B0:: // 0x30025b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iOamShadowEnd.yaml
+iOamShadowEnd:: // 0x30025b0
 	.space 16
 // array of 32x32 blocks of u16 tile ids
 // 0x2000 is cleared and recopied every frame
@@ -255,8 +255,8 @@ unk_300553E:: // 0x300553e
 unk_3005560:: // 0x3005560
 	.space 16
 // symdb: Proposed name: iSoundDriverFunctionTable. IWRAM function-pointer table used by the CGB sound driver and its player initialization wrapper. (table of function pointers)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/off_3005570.yaml
-off_3005570:: // 0x3005570
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iSoundDriverFunctionTable.yaml
+iSoundDriverFunctionTable:: // 0x3005570
 	.space 4
 off_3005574:: // 0x3005574
 	.space 28

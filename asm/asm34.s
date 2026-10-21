@@ -42,13 +42,13 @@ battle_initChipSearchList:
 	mov r1, #0x20 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	bl removeFolderChipsFromPack
-	ldr r0, off_812D3E0 // =unk_2023FC0 
+	ldr r0, off_812D3E0 // =battleChipSearchList 
 	mov r1, #1
 	bl buildChipSearchTable_811FE7C
 	add r0, #1
 	strh r0, [r7,#0x28]
 	mov r1, r0
-	ldr r0, off_812D3E0 // =unk_2023FC0 
+	ldr r0, off_812D3E0 // =battleChipSearchList 
 	mov r2, #5
 	mov r3, #4
 	bl battle_fieldLockDispatch_8120018
@@ -63,7 +63,7 @@ battle_initChipSearchList:
 off_812D3DC:
 	.word word_2023FA0
 off_812D3E0:
-	.word unk_2023FC0
+	.word battleChipSearchList
 	thumb_func_end battle_initChipSearchList
 
 // symdb: Renders six sections (folder chips, folder OAM pack, icon slots, pack entries, panel entries, plus a header) into tilemap buffers and copies each into BG tile block 2 as 2-column x 14-row strips (columns 3,1,0xB,0xD,0xE,0x10), then calls sub_812D5EC.
@@ -137,7 +137,7 @@ battle_renderChipPackScreenTilemap:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	ldrh r0, [r7,#0x2e]
 	ldr r1, off_812D4C4 // =word_2023FA0 
-	ldr r2, off_812D4EC // =byte_202E10C 
+	ldr r2, off_812D4EC // =ePackEntriesTilemap 
 	mov r3, #8
 	lsl r3, r3, #0xc
 	ldr r4, dword_812D4F0 // =0x34f 
@@ -147,13 +147,13 @@ battle_renderChipPackScreenTilemap:
 	mov r0, #0xe
 	mov r1, #4
 	mov r2, #2
-	ldr r3, off_812D4EC // =byte_202E10C 
+	ldr r3, off_812D4EC // =ePackEntriesTilemap 
 	mov r4, #2
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	ldrh r0, [r7,#0x2e]
 	ldr r1, off_812D4C4 // =word_2023FA0 
-	ldr r2, off_812D4F4 // =byte_202E144 
+	ldr r2, off_812D4F4 // =eChipPackScreenHeaderTilemap 
 	mov r3, #0xa
 	lsl r3, r3, #0xc
 	ldr r4, dword_812D4F8 // =0x200 
@@ -163,7 +163,7 @@ battle_renderChipPackScreenTilemap:
 	mov r0, #0x10
 	mov r1, #4
 	mov r2, #2
-	ldr r3, off_812D4F4 // =byte_202E144 
+	ldr r3, off_812D4F4 // =eChipPackScreenHeaderTilemap 
 	mov r4, #2
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -191,11 +191,11 @@ off_812D4E4:
 dword_812D4E8:
 	.word 0x216
 off_812D4EC:
-	.word byte_202E10C
+	.word ePackEntriesTilemap
 dword_812D4F0:
 	.word 0x34F
 off_812D4F4:
-	.word byte_202E144
+	.word eChipPackScreenHeaderTilemap
 dword_812D4F8:
 	.word 0x200
 	thumb_func_end battle_renderChipPackScreenTilemap
@@ -622,7 +622,7 @@ copyBgTilesToBlock0:
 off_812D7A0:
 	.word unk_20227A0
 	thumb_func_end copyBgTilesToBlock0
-// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling sub_812D5A0.
+// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with battleChipSearchList and (field-1) as index before calling sub_812D5A0.
 // symdb: (no args; uses r10 toolkit's s2001c04 battle-work pointer and the entry returned by sub_812D6F8)
 // symdb: -> r0 = 1 if A was newly pressed this frame, else 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSelectionEntry.yaml
@@ -661,7 +661,7 @@ loc_812D7DE:
 	eor r3, r1
 	strb r3, [r0,r4]
 loc_812D7E6:
-	ldr r0, off_812D80C // =unk_2023FC0 
+	ldr r0, off_812D80C // =battleChipSearchList 
 	ldrh r1, [r5,#0x28]
 	sub r1, #1
 	beq loc_812D7F6
@@ -683,7 +683,7 @@ loc_812D804:
 off_812D808:
 	.word byte_30069A0
 off_812D80C:
-	.word unk_2023FC0
+	.word battleChipSearchList
 	.word 0x64
 	thumb_func_end battle_confirmSelectionEntry
 

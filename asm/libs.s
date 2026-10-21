@@ -6567,7 +6567,7 @@ rfu_setLinkState:
 sub_8146E60:
 	push {lr}
 	ldr r0, off_8146E70 // =byte_20101E0 
-	ldr r1, off_8146E74 // =unk_2010230 
+	ldr r1, off_8146E74 // =rfuPerSlotRecvBuffers 
 	mov r2, #0xc
 	bl rfu_resetRecvSlots
 	pop {r0}
@@ -6576,14 +6576,14 @@ sub_8146E60:
 off_8146E70:
 	.word byte_20101E0
 off_8146E74:
-	.word unk_2010230
+	.word rfuPerSlotRecvBuffers
 	thumb_func_end sub_8146E60
 
 	thumb_func_start sub_8146E78
 sub_8146E78:
 	push {lr}
 	ldr r0, off_8146E88 // =byte_20101E0 
-	ldr r1, off_8146E8C // =unk_2010230 
+	ldr r1, off_8146E8C // =rfuPerSlotRecvBuffers 
 	mov r2, #0xc
 	bl sub_8146F90
 	pop {r0}
@@ -6592,7 +6592,7 @@ sub_8146E78:
 off_8146E88:
 	.word byte_20101E0
 off_8146E8C:
-	.word unk_2010230
+	.word rfuPerSlotRecvBuffers
 	thumb_func_end sub_8146E78
 
 // symdb: Resets RFU receive state for up to 4 connection slots: clears queue globals, rebuilds the active-slot bitmask from dword_2010CC0+2, zeroes per-slot/recv state, then for each active slot calls rfu_clearSlot(0xC) and rfu_setRecvBuffer(0x20, slot, r1[slot], size).
@@ -6746,7 +6746,7 @@ sub_8146F90:
 	beq loc_8146FAE
 	b def_814700A
 loc_8146FAE:
-	ldr r1, off_8147014 // =byte_2010368 
+	ldr r1, off_8147014 // =rfuLinkStateChangeFlag 
 loc_8146FB0:
 	ldrb r0, [r1]
 	cmp r0, #1
@@ -6767,7 +6767,7 @@ loc_8146FD0:
 	ldrb r1, [r0]
 	cmp r1, #1
 	bne loc_8146FE4
-	ldr r0, off_8147014 // =byte_2010368 
+	ldr r0, off_8147014 // =rfuLinkStateChangeFlag 
 	strb r1, [r0]
 	mov r0, #1
 	bl rfu_sendLinkState
@@ -6799,7 +6799,7 @@ off_814700C:
 off_8147010:
 	.word eS200BC50
 off_8147014:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 off_8147018:
 	.word byte_2010340
 off_814701C:
@@ -7216,7 +7216,7 @@ sub_8147350:
 	strb r1, [r0]
 	ldr r0, off_81473C4 // =byte_2010328 
 	strb r1, [r0]
-	ldr r0, off_81473C8 // =byte_2010368 
+	ldr r0, off_81473C8 // =rfuLinkStateChangeFlag 
 	strb r1, [r0]
 	bl zeroFill_813D960
 	mov r0, sp
@@ -7257,7 +7257,7 @@ off_81473C0:
 off_81473C4:
 	.word byte_2010328
 off_81473C8:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 off_81473CC:
 	.word byte_2010290
 dword_81473D0:
@@ -7276,7 +7276,7 @@ off_81473E8:
 	.word eS200BC50
 	thumb_func_end sub_8147350
 
-// symdb: Wireless link-event dispatcher: on a link event id, updates the wireless session state word (eS200BC50+8), drives rfu_setLinkCommand/sub_813D94C, copies ready-flag bitmasks between word_200FE14 and byte_2010280/byte_2010284, and clears byte_2010368.
+// symdb: Wireless link-event dispatcher: on a link event id, updates the wireless session state word (eS200BC50+8), drives rfu_setLinkCommand/sub_813D94C, copies ready-flag bitmasks between word_200FE14 and byte_2010280/byte_2010284, and clears rfuLinkStateChangeFlag.
 // symdb: (r0 = link event id, byte) -> r0 = undefined; no flags used by callers known
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_dispatchLinkEvent.yaml
 	thumb_local_start
@@ -7353,13 +7353,13 @@ loc_814745A:
 loc_8147460:
 	b loc_81475AA
 loc_8147462:
-	ldr r1, off_814746C // =byte_2010368 
+	ldr r1, off_814746C // =rfuLinkStateChangeFlag 
 	mov r0, #0
 	strb r0, [r1]
 	b loc_81475AA
 	.balign 4, 0
 off_814746C:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 loc_8147470:
 	ldr r1, off_8147474 // =eS200BC50 
 	b loc_814750E
@@ -7495,7 +7495,7 @@ loc_8147560:
 	ldr r0, off_814757C // =eStruct200FE00 
 	ldrh r0, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	strh r0, [r1]
-	ldr r1, off_8147580 // =byte_2010368 
+	ldr r1, off_8147580 // =rfuLinkStateChangeFlag 
 	mov r0, #0
 	strb r0, [r1]
 	ldr r1, off_8147584 // =eS200BC50 
@@ -7508,7 +7508,7 @@ off_8147578:
 off_814757C:
 	.word eStruct200FE00
 off_8147580:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 off_8147584:
 	.word eS200BC50
 loc_8147588:
@@ -7528,7 +7528,7 @@ loc_8147598:
 	mov r0, #0xd
 loc_81475A2:
 	bl rfu_setLinkCommand
-	ldr r0, off_81475B4 // =byte_2010368 
+	ldr r0, off_81475B4 // =rfuLinkStateChangeFlag 
 	strb r4, [r0]
 loc_81475AA:
 	pop {r4,r5}
@@ -7537,7 +7537,7 @@ loc_81475AA:
 off_81475B0:
 	.word eS200BC50
 off_81475B4:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 	thumb_func_end rfu_dispatchLinkEvent
 
 	thumb_local_start
@@ -7558,13 +7558,13 @@ off_81475D0:
 	.word dword_814FE94
 // symdb: Per-frame update for the RFU wireless state machine: spin-waits on a busy flag, optionally issues rfu_REQ_disconnect, then dispatches on the 16-bit state at eS200BC50+8 across cases 1/3/4/9/0xB/0x22/0x34/0x40 to drive rfu_clearAllSlot, sub_8144EF8, sub_8145120, sub_813D934, etc.
 // symdb: (r0 = context/handle passed through to sub_8144EF8, saved in r5) -> r0 = none; updates state
-// symdb: word [eS200BC50+8], flags byte_2010368/byte_2010340/byte_2010284
+// symdb: word [eS200BC50+8], flags rfuLinkStateChangeFlag/byte_2010340/byte_2010284
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_connectionStateUpdate.yaml
 	thumb_func_start rfu_connectionStateUpdate
 rfu_connectionStateUpdate:
 	push {r4,r5,lr}
 	mov r5, r0
-	ldr r1, off_8147630 // =byte_2010368 
+	ldr r1, off_8147630 // =rfuLinkStateChangeFlag 
 loc_81475DA:
 	ldrb r0, [r1]
 	cmp r0, #1
@@ -7586,7 +7586,7 @@ loc_81475FC:
 	ldrb r1, [r0]
 	cmp r1, #1
 	bne loc_8147610
-	ldr r0, off_8147630 // =byte_2010368 
+	ldr r0, off_8147630 // =rfuLinkStateChangeFlag 
 	strb r1, [r0]
 	mov r0, #1
 	bl rfu_sendLinkState
@@ -7609,7 +7609,7 @@ loc_8147624:
 	mov pc, r0
 	.balign 4, 0
 off_8147630:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 off_8147634:
 	.word Timer2Counter_Reload
 off_8147638:
@@ -9510,7 +9510,7 @@ rfu_startLinkTransfer:
 	mov r0, sp
 	add r0, #2
 	strh r4, [r0]
-	ldr r1, off_81486B8 // =unk_2010230 
+	ldr r1, off_81486B8 // =rfuPerSlotRecvBuffers 
 	mov r2, r5
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
 	ldr r0, off_81486BC // =unk_200FFF0 
@@ -9519,14 +9519,14 @@ rfu_startLinkTransfer:
 	bl rfu_clearSlotBuffer
 	ldr r0, off_81486C4 // =byte_2010270 
 	strb r4, [r0]
-	ldr r0, off_81486C8 // =byte_2010408 
+	ldr r0, off_81486C8 // =eRfuParentReadyFlag 
 	strb r4, [r0]
 	ldr r1, off_81486CC // =dword_2010418 
 	mov r0, #0
 	str r0, [r1]
 	ldr r0, off_81486D0 // =byte_20103F4 
 	strb r4, [r0]
-	ldr r0, off_81486D4 // =byte_2010434 
+	ldr r0, off_81486D4 // =rfuLinkMismatchCount 
 	strb r4, [r0]
 	ldr r0, off_81486D8 // =byte_20101D4 
 	strb r4, [r0]
@@ -9560,7 +9560,7 @@ loc_81485A8:
 	lsr r4, r0, #0x18
 	cmp r4, #3
 	bls loc_81485A8
-	ldr r0, off_81486F8 // =byte_20101B0 
+	ldr r0, off_81486F8 // =rfuPeerChangeBitmask 
 	mov r2, #1
 	strb r2, [r0]
 	ldr r0, off_81486FC // =byte_20101D0 
@@ -9585,7 +9585,7 @@ loc_81485A8:
 	add r0, #0x3c 
 	mov r1, #1
 	strb r1, [r0]
-	ldr r0, off_8148714 // =byte_2010430 
+	ldr r0, off_8148714 // =eRfuLinkFlags 
 	strb r1, [r0]
 	bl sub_803ECFC
 	mov r0, r4
@@ -9606,7 +9606,7 @@ loc_814861A:
 	cmp r1, #0
 	beq loc_8148642
 	lsl r2, r4, #4
-	ldr r0, off_81486B8 // =unk_2010230 
+	ldr r0, off_81486B8 // =rfuPerSlotRecvBuffers 
 	add r2, r2, r0
 	mov r0, #0x10
 	mov r1, r4
@@ -9677,7 +9677,7 @@ off_81486B0:
 dword_81486B4:
 	.word 0x1000020
 off_81486B8:
-	.word unk_2010230
+	.word rfuPerSlotRecvBuffers
 off_81486BC:
 	.word unk_200FFF0
 off_81486C0:
@@ -9685,13 +9685,13 @@ off_81486C0:
 off_81486C4:
 	.word byte_2010270
 off_81486C8:
-	.word byte_2010408
+	.word eRfuParentReadyFlag
 off_81486CC:
 	.word dword_2010418
 off_81486D0:
 	.word byte_20103F4
 off_81486D4:
-	.word byte_2010434
+	.word rfuLinkMismatchCount
 off_81486D8:
 	.word byte_20101D4
 off_81486DC:
@@ -9709,7 +9709,7 @@ off_81486F0:
 off_81486F4:
 	.word unk_2010410
 off_81486F8:
-	.word byte_20101B0
+	.word rfuPeerChangeBitmask
 off_81486FC:
 	.word byte_20101D0
 off_8148700:
@@ -9723,7 +9723,7 @@ off_814870C:
 off_8148710:
 	.word dword_2010CC0
 off_8148714:
-	.word byte_2010430
+	.word eRfuLinkFlags
 off_8148718:
 	.word sub_8148738+1
 off_814871C:
@@ -9802,7 +9802,7 @@ loc_8148786:
 loc_8148794:
 	bl sub_8148B80
 	bl rfu_uniPollPeerValueChanges
-	ldr r1, off_81487AC // =byte_2010368 
+	ldr r1, off_81487AC // =rfuLinkStateChangeFlag 
 	mov r0, #0
 	strb r0, [r1]
 loc_81487A2:
@@ -9811,21 +9811,21 @@ loc_81487A2:
 	b loc_814886C
 	.balign 4, 0
 off_81487AC:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 loc_81487B0:
-	ldr r1, off_81487C4 // =byte_2010408 
+	ldr r1, off_81487C4 // =eRfuParentReadyFlag 
 	mov r0, #1
 	strb r0, [r1]
-	ldr r1, off_81487C8 // =byte_2010368 
+	ldr r1, off_81487C8 // =rfuLinkStateChangeFlag 
 	mov r0, #0
 	strb r0, [r1]
 	mov r0, #0xf
 	bl rfu_setLinkCommand
 	b loc_814886C
 off_81487C4:
-	.word byte_2010408
+	.word eRfuParentReadyFlag
 off_81487C8:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 loc_81487CC:
 	ldr r1, off_81487D4 // =eS200BC50 
 	mov r0, #0x34 
@@ -9872,7 +9872,7 @@ loc_8148810:
 	mov r2, #0
 	mov r0, #0x32 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	ldr r0, off_8148830 // =byte_2010368 
+	ldr r0, off_8148830 // =rfuLinkStateChangeFlag 
 	strb r2, [r0]
 	mov r0, #0x15
 	bl rfu_setLinkCommand
@@ -9881,7 +9881,7 @@ loc_8148810:
 off_814882C:
 	.word eS200BC50
 off_8148830:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 loc_8148834:
 	ldr r1, off_8148840 // =eS200BC50 
 	mov r4, #0
@@ -9899,15 +9899,15 @@ loc_8148844:
 	mov r0, #1
 loc_814884E:
 	bl rfu_setLinkCommand
-	ldr r0, off_814885C // =byte_2010368 
+	ldr r0, off_814885C // =rfuLinkStateChangeFlag 
 	strb r4, [r0]
 	b loc_814886C
 off_8148858:
 	.word eS200BC50
 off_814885C:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 loc_8148860:
-	ldr r1, off_8148874 // =byte_2010368 
+	ldr r1, off_8148874 // =rfuLinkStateChangeFlag 
 	mov r0, #0
 	strb r0, [r1]
 	mov r0, #0x13
@@ -9918,7 +9918,7 @@ loc_814886C:
 	bx r0
 	.balign 4, 0x00
 off_8148874:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 	thumb_func_end sub_8148738
 
 	thumb_local_start
@@ -9933,14 +9933,14 @@ sub_8148878:
 	thumb_func_start sub_8148884
 sub_8148884:
 	push {lr}
-	ldr r1, off_81488F4 // =byte_2010368 
+	ldr r1, off_81488F4 // =rfuLinkStateChangeFlag 
 loc_8148888:
 	ldrb r0, [r1]
 	cmp r0, #1
 	beq loc_8148888
 	mov r0, #0
 	bl sub_81453F0
-	ldr r3, off_81488F8 // =byte_2010408 
+	ldr r3, off_81488F8 // =eRfuParentReadyFlag 
 	ldrb r0, [r3]
 	cmp r0, #0
 	beq loc_81488B4
@@ -9953,7 +9953,7 @@ loc_8148888:
 	ldr r0, off_8148900 // =byte_20101D0 
 	mov r1, #1
 	strb r1, [r0]
-	ldr r0, off_8148904 // =byte_20101B0 
+	ldr r0, off_8148904 // =rfuPeerChangeBitmask 
 	strb r1, [r0]
 	strb r2, [r3]
 loc_81488B4:
@@ -9967,11 +9967,11 @@ loc_81488B4:
 	ldrh r0, [r0,#0x8] // (word_200BC58 - 0x200bc50)
 	cmp r0, #0x30 
 	bne loc_8148920
-	ldr r0, off_8148910 // =byte_2010430 
+	ldr r0, off_8148910 // =eRfuLinkFlags 
 	ldrb r0, [r0]
 	cmp r0, #0
 	beq loc_8148920
-	ldr r1, off_81488F4 // =byte_2010368 
+	ldr r1, off_81488F4 // =rfuLinkStateChangeFlag 
 	mov r0, #1
 	strb r0, [r1]
 	ldr r0, off_81488FC // =byte_2010270 
@@ -9988,21 +9988,21 @@ loc_81488B4:
 	b loc_8148920
 	.balign 4, 0
 off_81488F4:
-	.word byte_2010368
+	.word rfuLinkStateChangeFlag
 off_81488F8:
-	.word byte_2010408
+	.word eRfuParentReadyFlag
 off_81488FC:
 	.word byte_2010270
 off_8148900:
 	.word byte_20101D0
 off_8148904:
-	.word byte_20101B0
+	.word rfuPeerChangeBitmask
 off_8148908:
 	.word dword_2010CC0
 off_814890C:
 	.word eS200BC50
 off_8148910:
-	.word byte_2010430
+	.word eRfuLinkFlags
 off_8148914:
 	.word byte_2010328
 off_8148918:
@@ -10157,7 +10157,7 @@ sub_8148A80:
 	mov r1, #0x40 
 	bl rfu_prepareLinkState
 loc_8148AB6:
-	ldr r1, off_8148B6C // =byte_2010430 
+	ldr r1, off_8148B6C // =eRfuLinkFlags 
 	mov r0, #0
 	strb r0, [r1]
 	mov r1, sp
@@ -10188,7 +10188,7 @@ loc_8148AD8:
 	cmp r0, #1
 	bne loc_8148B08
 	lsl r0, r4, #4
-	ldr r1, off_8148B74 // =unk_2010230 
+	ldr r1, off_8148B74 // =rfuPerSlotRecvBuffers 
 	add r0, r0, r1
 	lsl r1, r4, #1
 	add r1, r1, r4
@@ -10223,14 +10223,14 @@ loc_8148B08:
 loc_8148B38:
 	ldr r0, off_8148B5C // =byte_20101D0 
 	strb r4, [r0]
-	ldr r0, off_8148B7C // =byte_20101B0 
+	ldr r0, off_8148B7C // =rfuPeerChangeBitmask 
 	strb r4, [r0]
 loc_8148B40:
 	ldr r0, off_8148B60 // =byte_2010290 
 	ldrb r0, [r0,#0x3] // (byte_2010293 - 0x2010290)
 	cmp r0, #1
 	bls loc_8148B4E
-	ldr r1, off_8148B6C // =byte_2010430 
+	ldr r1, off_8148B6C // =eRfuLinkFlags 
 	mov r0, #1
 	strb r0, [r1]
 loc_8148B4E:
@@ -10250,15 +10250,15 @@ off_8148B64:
 off_8148B68:
 	.word byte_20103F0
 off_8148B6C:
-	.word byte_2010430
+	.word eRfuLinkFlags
 dword_8148B70:
 	.word 0x1000020
 off_8148B74:
-	.word unk_2010230
+	.word rfuPerSlotRecvBuffers
 off_8148B78:
 	.word unk_20101EC
 off_8148B7C:
-	.word byte_20101B0
+	.word rfuPeerChangeBitmask
 	thumb_func_end sub_8148A80
 
 	thumb_local_start
@@ -10279,7 +10279,7 @@ sub_8148B80:
 	ldr r0, off_8148BB4 // =byte_2010270 
 	mov r1, #0
 	strb r1, [r0]
-	ldr r0, off_8148BB8 // =byte_2010430 
+	ldr r0, off_8148BB8 // =eRfuLinkFlags 
 	strb r1, [r0]
 	b loc_8148BC2
 	.balign 4, 0
@@ -10292,7 +10292,7 @@ off_8148BB0:
 off_8148BB4:
 	.word byte_2010270
 off_8148BB8:
-	.word byte_2010430
+	.word eRfuLinkFlags
 loc_8148BBC:
 	ldr r1, off_8148BC8 // =byte_2010270 
 	mov r0, #1
@@ -10306,7 +10306,7 @@ off_8148BC8:
 	thumb_func_end sub_8148B80
 
 // symdb: Wireless link watchdog: per active peer slot, compares current received value to last seen, tallies match/increment/decrement/other into per-slot counters, stores new value, and once all masked peers have reported, either sets connection state to 1, transitions to 0x83, or increments a mismatch counter.
-// symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), byte_20101B0
+// symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), rfuPeerChangeBitmask
 // symdb: change flags, and state byte byte_20101B4 (=1 or 0x83 on transition)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniPollPeerValueChanges.yaml
 	thumb_local_start
@@ -10320,8 +10320,8 @@ rfu_uniPollPeerValueChanges:
 loc_8148BD8:
 	mov r4, #0
 	ldr r5, off_8148C34 // =byte_2010290 
-	ldr r7, off_8148C38 // =byte_20101B0 
-	ldr r6, off_8148C3C // =unk_2010230 
+	ldr r7, off_8148C38 // =rfuPeerChangeBitmask 
+	ldr r6, off_8148C3C // =rfuPerSlotRecvBuffers 
 loc_8148BE0:
 	mov r0, #0x80
 	lsl r0, r0, #0x12
@@ -10338,7 +10338,7 @@ loc_8148BE0:
 	ldrb r0, [r0,#0x12]
 	cmp r0, #0
 	beq loc_8148CA2
-	ldr r2, off_8148C38 // =byte_20101B0 
+	ldr r2, off_8148C38 // =rfuPeerChangeBitmask 
 	ldrb r1, [r2]
 	mov r0, r3
 	orr r0, r1
@@ -10368,9 +10368,9 @@ off_8148C30:
 off_8148C34:
 	.word byte_2010290
 off_8148C38:
-	.word byte_20101B0
+	.word rfuPeerChangeBitmask
 off_8148C3C:
-	.word unk_2010230
+	.word rfuPerSlotRecvBuffers
 off_8148C40:
 	.word off_2010CA0
 off_8148C44:
@@ -10425,7 +10425,7 @@ loc_8148C94:
 	ldrb r1, [r1,#0xc]
 	strb r1, [r0]
 	ldr r5, off_8148CF4 // =byte_2010290 
-	ldr r7, off_8148CF8 // =byte_20101B0 
+	ldr r7, off_8148CF8 // =rfuPeerChangeBitmask 
 loc_8148CA2:
 	add r0, r4, #1
 	lsl r0, r0, #0x18
@@ -10444,7 +10444,7 @@ loc_8148CA2:
 	and r3, r0
 	cmp r3, r2
 	beq loc_8148CD6
-	ldr r1, off_8148D00 // =byte_2010434 
+	ldr r1, off_8148D00 // =rfuLinkMismatchCount 
 	ldrb r0, [r1]
 	add r0, #1
 	strb r0, [r1]
@@ -10473,11 +10473,11 @@ off_8148CF0:
 off_8148CF4:
 	.word byte_2010290
 off_8148CF8:
-	.word byte_20101B0
+	.word rfuPeerChangeBitmask
 off_8148CFC:
 	.word byte_20101D0
 off_8148D00:
-	.word byte_2010434
+	.word rfuLinkMismatchCount
 off_8148D04:
 	.word byte_20103F8
 loc_8148D08:
@@ -23520,7 +23520,7 @@ dword_814EB80:
 	.word 0x68736D53
 	thumb_func_end sound_mplayStop
 
-// symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at off_3005570, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
+// symdb: Initialize the CGB sound driver: reset the GBA sound hardware, install the game's patched sound handlers into the function-pointer table at iSoundDriverFunctionTable, zero the caller-supplied sound buffer, and stamp channel-pattern identification bytes.
 // symdb: void sub_814EB84(u32 sound_buf /* r0 */); /* returns to lr; clobbers r0-r3, lr, flags nzc;
 // symdb: preserves r4-r6 */
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/cgbSoundInit_814EB84.yaml
@@ -23561,7 +23561,7 @@ cgbSoundInit_814EB84:
 	bne loc_814EC44
 	add r0, r6, #1
 	str r0, [r4]
-	ldr r1, off_814EC60 // =off_3005570 
+	ldr r1, off_814EC60 // =iSoundDriverFunctionTable 
 	ldr r0, off_814EC64 // =t3_condScriptVmStep+1 
 	str r0, [r1,#0x20] // (off_3005590 - 0x3005570)
 	ldr r0, off_814EC68 // =battle_aiData_processStreamByte_814E7CC+1 
@@ -23638,7 +23638,7 @@ off_814EC58:
 dword_814EC5C:
 	.word 0x68736D53
 off_814EC60:
-	.word off_3005570
+	.word iSoundDriverFunctionTable
 off_814EC64:
 	.word t3_condScriptVmStep+1
 off_814EC68:
@@ -23786,7 +23786,7 @@ loc_814ECF2:
 	str r0, [r5,#0x2c]
 	str r0, [r5,#0x30]
 	str r0, [r5,#0x3c]
-	ldr r4, off_814EDB8 // =off_3005570 
+	ldr r4, off_814EDB8 // =iSoundDriverFunctionTable 
 	mov r0, r4
 	bl sub_814E09C
 	str r4, [r5,#0x34]
@@ -23829,7 +23829,7 @@ off_814EDB0:
 off_814EDB4:
 	.word nullsub_23+1
 off_814EDB8:
-	.word off_3005570
+	.word iSoundDriverFunctionTable
 dword_814EDBC:
 	.word 0x68736D53
 	thumb_func_end soundInit
@@ -26195,14 +26195,14 @@ off_814FD70:
 	thumb_func_start sub_814FD74
 sub_814FD74:
 	push {lr}
-	ldr r2, off_814FD84 // =off_3005570 
+	ldr r2, off_814FD84 // =iSoundDriverFunctionTable 
 	ldr r2, [r2]
 	bl rfu_callFuncByPtr_814DA68
 	pop {r0}
 	bx r0
 	.balign 4, 0
 off_814FD84:
-	.word off_3005570
+	.word iSoundDriverFunctionTable
 	thumb_func_end sub_814FD74
 
 	thumb_func_start sub_814FD88

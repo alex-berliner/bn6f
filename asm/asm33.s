@@ -1955,7 +1955,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	bl GetCurPETNaviStatsHword // (which_navi: u8, which_stat: u8) -> u16
 
 	strh r0, [r5,#0x1a]
-	ldr r0, off_812404C // =unk_201EBDC 
+	ldr r0, off_812404C // =submenuSubchipTileIds 
 	mov r1, #0xb
 	mov r2, #3
 	ldr r3, dword_8124050 // =0x30b380 
@@ -1968,7 +1968,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 	ldr r3, dword_8124060 // =0x306220 
 	bl gfx_fillTilemapConsecutiveBanded_8120C94
 
-	ldr r0, off_8124064 // =unk_201ECAC 
+	ldr r0, off_8124064 // =middleStripTilemap 
 	mov r1, #8
 	mov r2, #1
 	ldr r3, dword_8124068 // =0x306230 
@@ -1996,7 +1996,7 @@ submenu_subchip_init_8123F7C: // (struct UnkSubMenu* state_a5) -> void
 dword_8124048:
 	.word 0x1F40
 off_812404C:
-	.word unk_201EBDC
+	.word submenuSubchipTileIds
 dword_8124050:
 	.word 0x30B380
 off_8124054:
@@ -2008,7 +2008,7 @@ off_812405C:
 dword_8124060:
 	.word 0x306220
 off_8124064:
-	.word unk_201ECAC
+	.word middleStripTilemap
 dword_8124068:
 	.word 0x306230
 off_812406C:
@@ -2767,7 +2767,7 @@ loc_81245A4:
 	// tileBlock32x32
 	mov r2, #2
 	// tileIds
-	ldr r3, off_81245B8 // =unk_201EBDC 
+	ldr r3, off_81245B8 // =submenuSubchipTileIds 
 	mov r4, #0xb
 	mov r5, #6
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -2775,7 +2775,7 @@ locret_81245B4:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_81245B8:
-	.word unk_201EBDC
+	.word submenuSubchipTileIds
 	thumb_func_end sub_8124588
 
 // symdb: Copies an 8x12 block of background tiles from tile block 2's table (unk_201EC2C) to position (j=2, i=6) in the background tilemap.
@@ -3089,7 +3089,7 @@ loc_812478A:
 	mov r0, #0x15
 	mov r1, #5
 	mov r2, #2
-	ldr r3, off_81247E4 // =unk_201ECAC 
+	ldr r3, off_81247E4 // =middleStripTilemap 
 	mov r4, #8
 	mov r5, #2
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -3128,7 +3128,7 @@ locret_81247DE:
 off_81247E0:
 	.word unk_201EC8C
 off_81247E4:
-	.word unk_201ECAC
+	.word middleStripTilemap
 off_81247E8:
 	.word unk_201ECCC
 	thumb_func_end background_updateSceneStrips_812475C
@@ -4288,7 +4288,7 @@ locret_812527C:
 	thumb_local_start
 initRefs_buildAndDecompressTable_8125280:
 	push {r4-r7,lr}
-	ldr r4, off_8125360 // =unk_2029000 
+	ldr r4, off_8125360 // =iBackgroundTilemapCopyBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_812530C // =off_8125310 
@@ -4314,7 +4314,7 @@ loc_812529C:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8125360 // =unk_2029000 
+	ldr r0, off_8125360 // =iBackgroundTilemapCopyBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8125364 // =byte_8125368
@@ -4385,7 +4385,7 @@ off_8125310:
 	.word unk_3001AE0
 	.word 0x20
 off_8125360:
-	.word unk_2029000
+	.word iBackgroundTilemapCopyBuffer
 off_8125364:
 	.word byte_8125368
 byte_8125368:
@@ -4437,7 +4437,7 @@ off_8125384:
 	.word unk_2026C00
 	.word eDecompBuffer2013A00
 	.word CompText86D6F30 + COMPRESSED_PTR_FLAG
-	.word unk_2028000
+	.word chipDescClearTileBuffer
 	.word eDecompBuffer2013A00
 	.word dword_86C9BB4
 	.word gfxIWRAMTransferBuffer
@@ -11568,7 +11568,7 @@ off_8128AA4:
 	.byte 0x20, 0x14, 0x0, 0x0, 0xB8, 0x0, 0x0, 0x0
 	thumb_func_end sub_8128A44
 
-// symdb: Builds an interleaved two-buffer tile-ID lookup table in the sprite staging area (unk_201C040), filling 0x170 halfwords with blank tile 0x7200 and overlaying 0x7201+ tile pairs whose row count is gated by the sprite's row/skip fields.
+// symdb: Builds an interleaved two-buffer tile-ID lookup table in the sprite staging area (SpriteStagingTileIds), filling 0x170 halfwords with blank tile 0x7200 and overlaying 0x7201+ tile pairs whose row count is gated by the sprite's row/skip fields.
 // symdb: void sub_8128AB0(struct sprite *r5 /* in/out, preserved */);
 // symdb: hypothesis; evidence and how to reproduce it: recomp symbols/db/sub_8128AB0.yaml
 	thumb_local_start
@@ -11580,7 +11580,7 @@ sub_8128AB0:
 	ldrh r0, [r5,#0x1e]
 	sub r0, r0, r1
 	str r0, [sp]
-	ldr r0, off_8128B24 // =unk_201C040 
+	ldr r0, off_8128B24 // =SpriteStagingTileIds 
 	mov r7, r0
 	ldr r1, off_8128B28 // =0x170 
 	ldr r2, dword_8128B30 // =0x7200 
@@ -11635,7 +11635,7 @@ loc_8128B1E:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8128B24:
-	.word unk_201C040
+	.word SpriteStagingTileIds
 off_8128B28:
 	.word 0x170
 dword_8128B2C:
@@ -11644,7 +11644,7 @@ dword_8128B30:
 	.word 0x7200
 	thumb_func_end sub_8128AB0
 
-// symdb: Copies the 23x8 tile ID block at unk_201C040 into background tile block 2 at column 4, row 3.
+// symdb: Copies the 23x8 tile ID block at SpriteStagingTileIds into background tile block 2 at column 4, row 3.
 // symdb: void sub_8128B34(void);  // (no register args; uses r10/lr only as caller convention)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/sub_8128B34.yaml
 	thumb_local_start
@@ -11657,14 +11657,14 @@ sub_8128B34:
 	// tileBlock32x32
 	mov r2, #2
 	// tileIds
-	ldr r3, off_8128B48 // =unk_201C040 
+	ldr r3, off_8128B48 // =SpriteStagingTileIds 
 	mov r4, #0x17
 	mov r5, #8
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8128B48:
-	.word unk_201C040
+	.word SpriteStagingTileIds
 	thumb_func_end sub_8128B34
 
 // symdb: Enqueues a battle object's affine-OBJ descriptor (skipping when not visible) and stores the returned tile-attribute byte into the object.
@@ -16887,7 +16887,7 @@ off_812B19C:
 	.word byte_812B1A0
 byte_812B1A0:
 	.word comp_86DCA9C + COMPRESSED_PTR_FLAG
-	.word unk_201E920
+	.word battleMapTilemapBuffer
 	.word eDecompBuffer2013A00
 	.word comp_86DCBC8 + COMPRESSED_PTR_FLAG
 	.word unk_201EE20

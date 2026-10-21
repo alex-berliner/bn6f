@@ -137,7 +137,7 @@ loc_800B928:
 loc_800B938:
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	lsl r0, r0, #2
-	ldr r1, off_800B948 // =dword_200F3B8
+	ldr r1, off_800B948 // =eFreezeCounterByAlliance
 	mov r2, #0
 	str r2, [r1,r0]
 	mov r0, #CUR_STATE_UPDATE
@@ -145,7 +145,7 @@ loc_800B938:
 	pop {pc}
 	.balign 4, 0
 off_800B948:
-	.word dword_200F3B8
+	.word eFreezeCounterByAlliance
 	thumb_func_end object_timefreezeBegin
 
 // symdb: Battle-scene phase that fades the screen to dark (e.g. when the round is decided) and waits for the fade to finish before advancing the object's action state.
@@ -326,7 +326,7 @@ locret_800BA88:
 
 // symdb: Per-tick handler for the "SnakeArm" battle object: when not initialized, checks if a chip can be triggered and queues a 0x4C/0x50 battle effect; once initialized, waits for cross-net readiness and then advances the action/phase state machine.
 // symdb: (r5 = *BattleObject) -> void ; side effects: clears/dispatches 0x10000 flag, plays SE 0x73,
-// symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes dword_200F3B8[Alliance]
+// symdb: mutates CurAction/CurPhaseAndPhaseInitialized on r5, writes eFreezeCounterByAlliance[Alliance]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObject_stepSnakeArm_800BA8A.yaml
 	thumb_func_start battleObject_stepSnakeArm_800BA8A
 battleObject_stepSnakeArm_800BA8A:
@@ -428,7 +428,7 @@ loc_800BB46:
 	bne loc_800BB72
 	ldrb r1, [r5,#oBattleObject_Alliance]
 	lsl r1, r1, #2
-	ldr r0, off_800BBA4 // =dword_200F3B8
+	ldr r0, off_800BBA4 // =eFreezeCounterByAlliance
 	mov r2, #1
 	str r2, [r0,r1]
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -467,7 +467,7 @@ locret_800BB9E:
 dword_800BBA0:
 	.word 0x10000
 off_800BBA4:
-	.word dword_200F3B8
+	.word eFreezeCounterByAlliance
 	thumb_func_end battleObject_stepSnakeArm_800BA8A
 
 // symdb: Battle-object action step that dispatches the chip-use sub-effect (kind 0x4C, or 0x50 if the linked ally used the same chip) with the chip's ID and damage/state data, plays the chip-use sound, then waits for cross-net readiness and advances CurAction by 4 or 8 depending on the ally's status.
@@ -1882,14 +1882,14 @@ loc_800C672:
 	pop {r4-r7,pc}
 	thumb_func_end updateBattlePanels_800C5E0
 
-// symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to byte_203F6B0.
-// symdb: () -> void; writes run records to byte_203F6B0 (4 bytes each, first byte 0xFF terminates)
+// symdb: Finalises the player panel grid by scanning it as a zigzag from row 1 downward and row 6 upward, emitting a 0xFF-terminated list of 4-byte equal-panel run records to battlePanelRuns.
+// symdb: () -> void; writes run records to battlePanelRuns (4 bytes each, first byte 0xFF terminates)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_encodePanelRuns.yaml
 	thumb_local_start
 battle_encodePanelRuns:
 	push {r4-r7,lr}
 	sub sp, sp, #0xc
-	ldr r7, off_800C8D0 // =byte_203F6B0 
+	ldr r7, off_800C8D0 // =battlePanelRuns 
 	mov r0, #1
 	str r0, [sp]
 	mov r0, #6
@@ -2050,7 +2050,7 @@ loc_800C774:
 	add r4, #1
 	cmp r4, #6
 	ble loc_800C74E
-	ldr r7, off_800C8E4 // =byte_203F6B0 
+	ldr r7, off_800C8E4 // =battlePanelRuns 
 loc_800C77E:
 	ldrb r4, [r7]
 	cmp r4, #0xff
@@ -2257,7 +2257,7 @@ battle_getPanelEntry_800C8C2:
 off_800C8CC:
 	.word ePanelData
 off_800C8D0:
-	.word byte_203F6B0
+	.word battlePanelRuns
 off_800C8D4:
 	.word byte_800D730
 off_800C8D8:
@@ -2267,7 +2267,7 @@ dword_800C8DC:
 off_800C8E0:
 	.word unk_2034018
 off_800C8E4:
-	.word byte_203F6B0
+	.word battlePanelRuns
 off_800C8E8:
 	.word unk_2034010
 off_800C8EC:

@@ -6441,7 +6441,7 @@ byte_8049AD8:
 	.word NULL
 	.word eDecomp202BA00
 
-	.word off_86DC3F8
+	.word BattleResultNameplateOrMantleGFX
 	.word byte_3001570
 	.word 0x20
 

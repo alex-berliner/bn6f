@@ -6905,7 +6905,7 @@ sub_803C150:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C150
 
-// symdb: Expands a 0-terminated byte-index string into halfword character codes via table unk_2026A00, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
+// symdb: Expands a 0-terminated byte-index string into halfword character codes via table eCharCodeBuffer, pre-filling with 0xE5E5 and appending a 0xE6 terminator.
 // symdb: (r0 = byte-index string (0-terminated), r1 = dest buffer, r2 = max halfword count, r3 = fill
 // symdb: halfword value) -> r0 = preserved; no flags of interest
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/convertByteStringToCharCodes.yaml
@@ -6925,7 +6925,7 @@ convertByteStringToCharCodes:
 	lsl r2, r2, #1
 	strb r0, [r1,r2]
 	pop {r0-r2}
-	ldr r7, off_803C1A4 // =unk_2026A00
+	ldr r7, off_803C1A4 // =eCharCodeBuffer
 	add r7, #2
 loc_803C18A:
 	ldrb r3, [r0]
@@ -6943,7 +6943,7 @@ locret_803C1A0:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C1A4:
-	.word unk_2026A00
+	.word eCharCodeBuffer
 	thumb_func_end convertByteStringToCharCodes
 
 	thumb_func_start sub_803C1A8
@@ -6966,7 +6966,7 @@ sub_803C1BC:
 	str r4, [r0,#4]
 	str r4, [r0,#8]
 	str r4, [r0,#0xc]
-	ldr r7, off_803C204 // =unk_2026A00
+	ldr r7, off_803C204 // =eCharCodeBuffer
 	add r7, #2
 loc_803C1CC:
 	ldrb r3, [r1]
@@ -7002,7 +7002,7 @@ locret_803C200:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_803C204:
-	.word unk_2026A00
+	.word eCharCodeBuffer
 off_803C208:
 	.word unk_2024A00
 	.word unk_2025200
@@ -14579,13 +14579,13 @@ off_803F914:
 saveInfoTextBlockToSram:
 	push {r1-r7,lr}
 	ldr r0, off_803F9E0 // =EXE6_InfoText_timestamp
-	ldr r1, off_803F9CC // =byte_2006720
+	ldr r1, off_803F9CC // =eInfoTextSavedTimestamp
 	mov r2, #0x14
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	ldr r0, off_803F9D4 // =byte_2006710
 	ldr r1, off_803F9DC // =0x28
 	mov r2, #0
-	ldr r3, off_803F9D0 // =byte_2006714
+	ldr r3, off_803F9D0 // =eInfoTextSaveChecksum
 	str r2, [r3]
 loc_803F92E:
 	sub r1, #1
@@ -14633,7 +14633,7 @@ sub_803F976:
 	bl sub_814D8F0
 	pop {r0-r3}
 	ldr r0, off_803F9E0 // =EXE6_InfoText_timestamp
-	ldr r1, off_803F9CC // =byte_2006720
+	ldr r1, off_803F9CC // =eInfoTextSavedTimestamp
 	mov r2, #0
 loc_803F98C:
 	ldrb r3, [r0,r2]
@@ -14646,7 +14646,7 @@ loc_803F98C:
 	ldr r0, off_803F9D4 // =byte_2006710
 	ldr r1, off_803F9DC // =0x28
 	mov r2, #0
-	ldr r4, off_803F9D0 // =byte_2006714
+	ldr r4, off_803F9D0 // =eInfoTextSaveChecksum
 	ldr r3, [r4]
 	str r2, [r4]
 loc_803F9A6:
@@ -14669,9 +14669,9 @@ loc_803F9C0:
 	pop {r1-r7,pc}
 	.balign 4, 0
 off_803F9CC:
-	.word byte_2006720
+	.word eInfoTextSavedTimestamp
 off_803F9D0:
-	.word byte_2006714
+	.word eInfoTextSaveChecksum
 off_803F9D4:
 	.word byte_2006710
 dword_803F9D8:

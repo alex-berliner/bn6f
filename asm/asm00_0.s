@@ -912,7 +912,7 @@ dword_8000A38:
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/clearWord_e200AC1C.yaml
 	thumb_func_start clearWord_e200AC1C
 clearWord_e200AC1C:
-	ldr r0, off_8000B10 // =dword_200AC1C
+	ldr r0, off_8000B10 // =eGfxTransferQueueCount
 	mov r1, #0
 	str r1, [r0]
 	mov pc, lr
@@ -924,7 +924,7 @@ ProcessGFXTransferQueue:
 	mov r0, r8
 	mov r1, r9
 	push {r0,r1,r4-r7}
-	ldr r0, off_8000B10 // =dword_200AC1C
+	ldr r0, off_8000B10 // =eGfxTransferQueueCount
 	ldr r1, [r0]
 	ldr r2, off_8000B14 // =fiveWordArr200B4B0
 loc_8000A52:
@@ -1014,7 +1014,7 @@ QueueEightWordAlignedGFXTransfer: // (queued_src: *const (), mut_queued_dest: *m
 loc_8000ACA: // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32, copy_type: int) -> ()
 	push {r4-r7}
 	mov r7, r3
-	ldr r3, off_8000B10 // =dword_200AC1C 
+	ldr r3, off_8000B10 // =eGfxTransferQueueCount 
 	// r4 = count of something?
 	ldr r4, [r3]
 	cmp r4, #0x60
@@ -1049,7 +1049,7 @@ dword_8000AFC:
 	.word 0xffffffff
 	.word 0xffffffff
 off_8000B10:
-	.word dword_200AC1C
+	.word eGfxTransferQueueCount
 off_8000B14:
 	.word fiveWordArr200B4B0
 	thumb_func_end QueueUnk00GFXTransfer

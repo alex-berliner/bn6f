@@ -711,7 +711,7 @@ int battle_getAllianceList()
 {
     int v0; // r5
 
-    return dword_203F7E0[*(v0 + 22)];
+    return battleAllianceLists[*(v0 + 22)];
 }
 
 
@@ -720,7 +720,7 @@ void __fastcall sub_800F4B2(int a1)
 {
     int v1; // r5
 
-    dword_203F7E0[*(v1 + 22)] -= a1;
+    battleAllianceLists[*(v1 + 22)] -= a1;
     if ( !battle_networkInvert(*(v1 + 22)) )
         TakeBugfrags();
 }
@@ -18970,7 +18970,7 @@ int __fastcall battle_drawOrderBGSelectionArrows_801C640(int a1)
         v4 = *(v1 + 24);
         if ( !*(v1 + 24) )
             v4 -= 2;
-        result = (loc_8000AC8)(&byte_86E1CD8[32 * (v4 - 1)], &iGfxTransferBuffer);
+        result = (loc_8000AC8)(&battleOrderBgTileIdBlocks[32 * (v4 - 1)], &iGfxTransferBuffer);
     }
     return result;
 }
@@ -19505,7 +19505,7 @@ int __fastcall sub_801CBD0(int a1, int a2, int a3, int a4, int a5, int a6, int a
         v12 = v10[14];
         if ( v11 & 2 )
             v12 = v10[13];
-        (loc_8000AC8)(&dword_872E994[32 * (10 - v12)], 100759424, 128, varg_r3);
+        (loc_8000AC8)(&blankBattleObjectGFXTransferChunks[32 * (10 - v12)], 100759424, 128, varg_r3);
     }
     else
     {
@@ -20764,7 +20764,7 @@ int battle_loadBgTileset_801DE82()
     v1 = *(v0 + 24);
     if ( !*(v0 + 24) )
         v1 -= 2;
-    (loc_8000AC8)(&byte_86E1CD8[32 * (v1 - 1)], &iGfxTransferBuffer, 32);
+    (loc_8000AC8)(&battleOrderBgTileIdBlocks[32 * (v1 - 1)], &iGfxTransferBuffer, 32);
     CopyBackgroundTiles(6, 0, 3, word_801EDB4, 18, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(0x20000);
 }
@@ -20774,7 +20774,7 @@ int battle_loadBgTileset_801DE82()
 int custGauge_Init_801DED0()
 {
     ClearCustGauge();
-    (loc_8000AC8)(dword_86E489C, 100713536, &dword_380);
+    (loc_8000AC8)(custGaugeGfxTiles, 100713536, &dword_380);
     eStruct2035280_SetRequestBits_801BECC(16);
     return dispatch_801DA48(16);
 }
@@ -20784,7 +20784,7 @@ int custGauge_Init_801DED0()
 int battle_customGaugeResetGfxAndRequest()
 {
     ClearCustGauge();
-    (loc_8000AC8)(dword_86E489C, 100713536, &dword_380);
+    (loc_8000AC8)(custGaugeGfxTiles, 100713536, &dword_380);
     eStruct2035280_SetRequestBits_801BECC(32);
     return dispatch_801DA48(32);
 }

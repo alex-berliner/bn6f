@@ -3086,7 +3086,7 @@ int __fastcall sub_8146F90(int a1, int a2, int a3)
     v5 = a3;
     if ( !(word_200BC58 & 0x80) )
     {
-        while ( byte_2010368 == 1 )
+        while ( rfuLinkStateChangeFlag == 1 )
             ;
         sub_81453F0(0);
         if ( byte_2010340 )
@@ -3097,7 +3097,7 @@ int __fastcall sub_8146F90(int a1, int a2, int a3)
         }
         if ( *dword_2010CC0 == 1 )
         {
-            byte_2010368 = 1;
+            rfuLinkStateChangeFlag = 1;
             rfu_sendLinkState(1u);
         }
         sub_81472F8(&unk_200AF80, v3, v5);
@@ -3309,7 +3309,7 @@ int __fastcall sub_8147350(int a1, int a2, int a3, int a4)
     byte_201028C = 0;
     byte_2010340 = 0;
     byte_2010328 = 0;
-    byte_2010368 = 0;
+    rfuLinkStateChangeFlag = 0;
     zeroFill_813D960();
     v5 = 0;
     SWI_CpuSet(&v5, &byte_2010290, 16777248);
@@ -3347,7 +3347,7 @@ int __fastcall rfu_dispatchLinkEvent(signed int a1)
                 if ( rfu_linkCommandDiffers(21) )
                     rfu_setLinkCommand(21);
                 rfu_connectionState = word_200FE14;
-                byte_2010368 = 0;
+                rfuLinkStateChangeFlag = 0;
                 word_200BC58 = 63;
             }
             else if ( a1 > 240 )
@@ -3365,11 +3365,11 @@ int __fastcall rfu_dispatchLinkEvent(signed int a1)
                     v2 = 1;
                 }
                 rfu_setLinkCommand(v2);
-                byte_2010368 = 0;
+                rfuLinkStateChangeFlag = 0;
             }
             else if ( a1 == 80 )
             {
-                byte_2010368 = 0;
+                rfuLinkStateChangeFlag = 0;
             }
             return v4;
         }
@@ -3460,7 +3460,7 @@ int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
     int v5; // [sp+8h] [bp-4h]
 
     v1 = a1;
-    while ( byte_2010368 == 1 )
+    while ( rfuLinkStateChangeFlag == 1 )
         ;
     sub_81453F0(Timer2Counter_Reload);
     if ( byte_2010340 )
@@ -3471,7 +3471,7 @@ int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
     }
     if ( *dword_2010CC0 == 1 )
     {
-        byte_2010368 = 1;
+        rfuLinkStateChangeFlag = 1;
         rfu_sendLinkState(1u);
     }
     rfu_syncWirelessState();
@@ -4241,10 +4241,10 @@ int rfu_startLinkTransfer()
     rfu_clearSlotBuffer(&unk_200FFF0);
     rfu_clearSlotBuffer(&unk_200FE90);
     byte_2010270 = 0;
-    byte_2010408 = 0;
+    eRfuParentReadyFlag = 0;
     dword_2010418 = 0;
     byte_20103F4 = 0;
-    byte_2010434 = 0;
+    rfuLinkMismatchCount = 0;
     byte_20101D4 = 0;
     byte_20103F8 = 0;
     byte_2010480 = 0;
@@ -4259,15 +4259,15 @@ int rfu_startLinkTransfer()
         v0 = (v0 + 1) & 0xFF;
     }
     while ( v0 <= 3 );
-    byte_20101B0 = 1;
+    rfuPeerChangeBitmask = 1;
     byte_20101D0 = 1;
     uniConnectionState = 1;
     byte_20103F0 = 0;
     byte_2010274 = byte_2010292;
     byte_2010292 = 2 * *(dword_2010CC0 + 2) | 1;
     byte_201021C = 1;
-    byte_2010430 = 1;
-    sub_803ECFC(&byte_2010430);
+    eRfuLinkFlags = 1;
+    sub_803ECFC(&eRfuLinkFlags);
     rfu_queuePushEntry(&byte_20101E0, 0xCu);
     sub_81463E8(sub_8148738);
     rfu_setMscCallbackArg(sub_8148878);
@@ -4320,7 +4320,7 @@ int __fastcall sub_8148738(signed int a1)
                 else if ( word_200FE16 )
                 {
                     word_200BC58 = 50;
-                    byte_2010368 = 0;
+                    rfuLinkStateChangeFlag = 0;
                     rfu_setLinkCommand(21);
                 }
             }
@@ -4337,12 +4337,12 @@ int __fastcall sub_8148738(signed int a1)
                         return v3;
                     sub_8148B80();
                     rfu_uniPollPeerValueChanges();
-                    byte_2010368 = 0;
+                    rfuLinkStateChangeFlag = 0;
                     goto LABEL_24;
                 }
                 if ( a1 == 242 )
                 {
-                    byte_2010368 = 0;
+                    rfuLinkStateChangeFlag = 0;
                     rfu_setLinkCommand(19);
                 }
                 else
@@ -4360,7 +4360,7 @@ int __fastcall sub_8148738(signed int a1)
                         v1 = 1;
                     }
                     rfu_setLinkCommand(v1);
-                    byte_2010368 = 0;
+                    rfuLinkStateChangeFlag = 0;
                 }
             }
         }
@@ -4377,8 +4377,8 @@ LABEL_24:
                     return v3;
                 }
 LABEL_25:
-                byte_2010408 = 1;
-                byte_2010368 = 0;
+                eRfuParentReadyFlag = 1;
+                rfuLinkStateChangeFlag = 0;
                 rfu_setLinkCommand(15);
                 return v3;
             }
@@ -4415,20 +4415,20 @@ int sub_8148884()
     signed __int16 v0; // r0
     int v2; // [sp+0h] [bp-4h]
 
-    while ( byte_2010368 == 1 )
+    while ( rfuLinkStateChangeFlag == 1 )
         ;
     sub_81453F0(0);
-    if ( byte_2010408 && byte_2010270 )
+    if ( eRfuParentReadyFlag && byte_2010270 )
     {
         byte_2010270 = 0;
         byte_20101D0 = 1;
-        byte_20101B0 = 1;
-        byte_2010408 = 0;
+        rfuPeerChangeBitmask = 1;
+        eRfuParentReadyFlag = 0;
     }
     sub_8148A80();
-    if ( !*(dword_2010CC0 + 3) && word_200BC58 == 48 && byte_2010430 )
+    if ( !*(dword_2010CC0 + 3) && word_200BC58 == 48 && eRfuLinkFlags )
     {
-        byte_2010368 = 1;
+        rfuLinkStateChangeFlag = 1;
         if ( byte_2010270 )
         {
             rfu_REQ_PARENT_resumeRetransmitAndChange();
@@ -4481,7 +4481,7 @@ int sub_8148A80()
         v0 = byte_201021C;
         if ( uniConnectionState == 1 && byte_20103F0 == 1 )
             rfu_prepareLinkState(&byte_20101E0, 0x40u);
-        byte_2010430 = 0;
+        eRfuLinkFlags = 0;
         v3 = 0;
         SWI_CpuSet(&v3, &byte_20101E0, 16777248);
         byte_201021D = byte_2010293;
@@ -4502,10 +4502,10 @@ int sub_8148A80()
                 rfu_advanceTickCounter();
             }
             byte_20101D0 = 1;
-            byte_20101B0 = 1;
+            rfuPeerChangeBitmask = 1;
         }
         if ( byte_2010293 > 1u )
-            byte_2010430 = 1;
+            eRfuLinkFlags = 1;
     }
     return v4;
 }
@@ -4522,7 +4522,7 @@ int sub_8148B80()
     if ( (v0 & byte_2010292) == byte_2010292 )
     {
         byte_2010270 = 0;
-        byte_2010430 = 0;
+        eRfuLinkFlags = 0;
     }
     else
     {
@@ -4555,7 +4555,7 @@ int rfu_uniPollPeerValueChanges()
         v1 = (0x2000000 << v0) >> 24;
         if ( byte_2010292 & v1 && (*off_2010CA0[v0])[18] )
         {
-            byte_20101B0 |= v1;
+            rfuPeerChangeBitmask |= v1;
             rfu_UNI_clearRecvNewDataFlag(v0);
             v2 = byte_2010220[v0];
             v3 = byte_2010230[16 * v0 + 12];
@@ -4588,17 +4588,17 @@ LABEL_15:
         v0 = (v0 + 1) & 0xFF;
     }
     while ( v0 <= 3 );
-    v7 = (byte_2010292 & byte_20101B0);
+    v7 = (byte_2010292 & rfuPeerChangeBitmask);
     if ( v7 != byte_2010292 )
         goto LABEL_19;
     if ( (byte_2010292 & byte_20101D0) == v7 )
         goto LABEL_28;
-    ++byte_2010434;
+    ++rfuLinkMismatchCount;
 LABEL_19:
     if ( (byte_20101D0 & byte_2010292) == byte_2010292 )
     {
 LABEL_28:
-        if ( (byte_20101B0 & byte_2010292) != byte_2010292 )
+        if ( (rfuPeerChangeBitmask & byte_2010292) != byte_2010292 )
         {
             v8 = &byte_20103F8;
             if ( byte_20103F8 )
@@ -11301,8 +11301,8 @@ int __fastcall soundInit(_DWORD *a1)
     v1[11] = nullsub_23;
     v1[12] = nullsub_23;
     v1[15] = nullsub_23;
-    sub_814E09C(&off_3005570);
-    v1[13] = &off_3005570;
+    sub_814E09C(&iSoundDriverFunctionTable);
+    v1[13] = &iSoundDriverFunctionTable;
     SampleFreqSet_814EDC0(0x40000);
     *v1 = 1752395091;
     return v4;
@@ -12560,7 +12560,7 @@ int __fastcall sub_814FD74(int a1, int a2)
 {
     int v3; // [sp+0h] [bp-4h]
 
-    rfu_callFuncByPtr_814DA68(a1, a2, off_3005570);
+    rfu_callFuncByPtr_814DA68(a1, a2, iSoundDriverFunctionTable);
     return v3;
 }
 

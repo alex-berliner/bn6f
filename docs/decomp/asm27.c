@@ -17,7 +17,7 @@ int ow_restoreTilemapFromSnapshot()
 // 0x8094714
 int ow_refreshMapTilemap()
 {
-    ow_blitTilemapBlockAndRedraw(&unk_2026404);
+    ow_blitTilemapBlockAndRedraw(&eOverworldMapTilemap);
     return 0;
 }
 
@@ -25,8 +25,8 @@ int ow_refreshMapTilemap()
 // 0x8094720
 int __fastcall sub_8094720(int a1, int a2, int a3, int a4)
 {
-    ZeroFillByWord(&unk_2026404, 4096);
-    ow_blitTilemapBlockAndRedraw(&unk_2026404);
+    ZeroFillByWord(&eOverworldMapTilemap, 4096);
+    ow_blitTilemapBlockAndRedraw(&eOverworldMapTilemap);
     return 0;
 }
 

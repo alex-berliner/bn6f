@@ -491,7 +491,7 @@ int __fastcall memory_80009FC(int result)
 // 0x8000a3c
 void __cdecl clearWord_e200AC1C()
 {
-    dword_200AC1C = 0;
+    eGfxTransferQueueCount = 0;
 }
 
 
@@ -507,7 +507,7 @@ void __cdecl objRender_8000A44()
     int v6; // r4
     int v7; // r4
 
-    v0 = dword_200AC1C;
+    v0 = eGfxTransferQueueCount;
     for ( i = fiveWordArr200B4B0; ; i = v5 + 5 )
     {
         v2 = __OFSUB__(v0, 1);
@@ -539,10 +539,10 @@ int __fastcall sub_8000AB8(int result, int a2, int a3)
     int v3; // r4
     int *v4; // r4
 
-    v3 = dword_200AC1C;
-    if ( dword_200AC1C < 96 )
+    v3 = eGfxTransferQueueCount;
+    if ( eGfxTransferQueueCount < 96 )
     {
-        ++dword_200AC1C;
+        ++eGfxTransferQueueCount;
         v4 = &fiveWordArr200B4B0[5 * v3];
         *v4 = result;
         v4[1] = a2;

@@ -19,9 +19,9 @@ signed int __fastcall battle_initChipSearchList(int a1, int a2, int a3, int a4)
 
 	ZeroFillByEightWords(word_2023FA0, 32);
 	removeFolderChipsFromPack();
-	v8 = buildChipSearchTable_811FE7C(&unk_2023FC0, 1, v6, v7) + 1;
+	v8 = buildChipSearchTable_811FE7C(&battleChipSearchList, 1, v6, v7) + 1;
 	*(v4 + 40) = v8;
-	battle_fieldLockDispatch_8120018(&unk_2023FC0, v8, 5, 4);
+	battle_fieldLockDispatch_8120018(&battleChipSearchList, v8, 5, 4);
 	v9 = *(v5 + oToolkit_Unk2001c04_Ptr);
 	*(v9 + 2) = 5;
 	result = 4;
@@ -44,10 +44,10 @@ int battle_renderChipPackScreenTilemap()
 	CopyBackgroundTiles(11, 4, 2, &unk_202E0B8, 2, &dword_C + 2);
 	battle_loadChipIconSlots_8120458(*(v0 + 23), word_2023FA0, &unk_202E0F0, 41494);
 	CopyBackgroundTiles(13, 4, 2, &unk_202E0F0, 1, &dword_C + 2);
-	battle_fillChipPackEntries_81204C4(*(v0 + 23), word_2023FA0, byte_202E10C, 33615);
-	CopyBackgroundTiles(14, 4, 2, byte_202E10C, 2, &dword_C + 2);
-	sub_8120618(*(v0 + 23), word_2023FA0, byte_202E144, 41472);
-	CopyBackgroundTiles(16, 4, 2, byte_202E144, 2, &dword_C + 2);
+	battle_fillChipPackEntries_81204C4(*(v0 + 23), word_2023FA0, ePackEntriesTilemap, 33615);
+	CopyBackgroundTiles(14, 4, 2, ePackEntriesTilemap, 2, &dword_C + 2);
+	sub_8120618(*(v0 + 23), word_2023FA0, eChipPackScreenHeaderTilemap, 41472);
+	CopyBackgroundTiles(16, 4, 2, eChipPackScreenHeaderTilemap, 2, &dword_C + 2);
 	return sub_812D5EC();
 }
 
@@ -349,7 +349,7 @@ signed int battle_confirmSelectionEntry()
 	*(v5 + 3) = v8;
 	if ( *(v1 + 20) != 1 )
 	{
-		battle_fieldLockDispatch_8120018(&unk_2023FC0, *(v1 + 20) - 1, v6, v8);
+		battle_fieldLockDispatch_8120018(&battleChipSearchList, *(v1 + 20) - 1, v6, v8);
 		sub_812D5A0();
 	}
 	return 1;

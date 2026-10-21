@@ -20672,8 +20672,8 @@ dword_87225B4::
 	.word 0xE1111111, 0xEEEEEEEE, 0xEEEEEEEE, 0xEEEEEEEE, 0xEEEEEEEE
 	.word 0xEEEEEEEE
 // symdb: Proposed name: beastoutSelectionScreenTileGfxA. ROM tile graphics (0x540 bytes) for the Beast-Out selection screen, DMA'd to BG VRAM at 0x6009560 (table of 4bpp tiles)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_8722AF4.yaml
-dword_8722AF4::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/beastoutSelectionScreenTileGfxA.yaml
+beastoutSelectionScreenTileGfxA::
 	.word 0xEEEEEEEE, 0xEEEEEEEE, 0xAEEEEEEE, 0xAEEEEEEE, 0xAEEEEEEE
 	.word 0x711111EE, 0x711111EE, 0x711111EE, 0x111EEEEE, 0x111EEEEE
 	.word 0xAEEEAAAA, 0xAAEAAEEA, 0xAAEAAEEA, 0x77177117, 0x77177117
@@ -26443,8 +26443,8 @@ dword_872E894::
 	.word 0x222226EE
 	.word 0x226EEEE6, 0x66EE6666, 0x11111111
 // symdb: Proposed name: blankBattleObjectGFXTransferChunks. Pool of 128-byte blank graphics chunks used to refresh an object's tile graphics area (table of blank 0x80-byte GFX transfer chunks)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_872E994.yaml
-dword_872E994::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/blankBattleObjectGFXTransferChunks.yaml
+blankBattleObjectGFXTransferChunks::
 	.word 0x11111111, 0x22222222, 0x22222222, 0x22222222, 0x22222222
 	.word 0x22222222, 0x22222222, 0x22222222, 0x11111, 0x12222
 	.word 0x12222, 0x12222, 0x12222, 0x12222, 0x12222
