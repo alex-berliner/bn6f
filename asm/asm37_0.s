@@ -3111,7 +3111,7 @@ sub_813CD10:
 	thumb_func_end sub_813CD10
 
 // symdb: Runs a setup step then clears byte 0x13 of the currently selected navi's NaviStats record.
-// symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by pet_initCurNaviStatsRoundControl
+// symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by sub_813CD3E
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_resetCurNaviStatsByte19.yaml
 	thumb_local_start
 pet_resetCurNaviStatsByte19:

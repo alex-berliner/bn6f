@@ -1122,6 +1122,9 @@ locret_81307F0:
 	.balign 4, 0x00
 	thumb_func_end sub_81307BC
 
+// symdb: Refreshes a T4 object's choice sprite and, when enabled, its player HP/emotion box.
+// symdb: (r0 = objectQueueChoiceOam context, r5 = current object) -> r0 = unchanged; flags clobtered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81307F4.yaml
 	thumb_func_start sub_81307F4
 sub_81307F4:
 	push {lr}
@@ -17352,6 +17355,9 @@ sprite_copyGlyphTiles3x14:
 
 	pop {r4-r7,pc}
 	thumb_func_end sprite_copyGlyphTiles3x14
+// symdb: If object flag 0x24 is set, queues an extra summon OAM entry (var 0xd) via sub_81380B0
+// symdb: (uses r5 = object; r0..r3 = 0x80,0x18,0,0xd -> jumps to sub_81380B0)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813809C.yaml
 	thumb_local_start
 sub_813809C:
 	push {r4-r7,lr}
@@ -18233,6 +18239,9 @@ byte_81386CA:
 	.byte 0xFF, 0xFF
 	thumb_func_end ow_scriptOpSpawnNpcGroup
 
+// symdb: Action-script step: reads a frame count, sets object's state byte to 8 and timer, then waits via object_countdownTimer
+// symdb: (r3 = script ptr, r5 = object work) -> r0 = 1; advances script by 2
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81386CC.yaml
 	thumb_local_start
 sub_81386CC:
 	push {lr}

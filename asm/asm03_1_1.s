@@ -8025,7 +8025,7 @@ off_803C7E4:
 	.word 0xB4
 	thumb_func_end rfu_advanceLinkState
 
-// symdb: RFU wireless-link tick: on a failed/lost link it sets flag 0x40, decrements [r7+0xA], and once that expires raises flags 0x08 and 0x80 via sub_813D978; otherwise if sub_8146888 reports no activity it resets the link command (0), clears [r7+3], and calls sub_8146CFC and rfu_clearLinkPacketQueue to restart the link.
+// symdb: RFU wireless-link tick: on a failed/lost link it sets flag 0x40, decrements [r7+0xA], and once that expires raises flags 0x08 and 0x80 via sub_813D978; otherwise if sub_8146888 reports no activity it resets the link command (0), clears [r7+3], and calls sub_8146CFC and sub_813DA84 to restart the link.
 // symdb: (r7 = RFU session/task struct, global) -> r0 clobbered; RFU flags word at 0x200BC50+0xC updated,
 // symdb: [r7+0xA] counter decremented, [r7+3] byte cleared
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_maintainLink.yaml

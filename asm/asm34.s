@@ -961,6 +961,9 @@ byte_812D9E0:
 	.byte 0x0
 	thumb_func_end sub_812D99C
 
+// symdb: Submits the shared submenu screen object's cursor-related OAM layer.
+// symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused) -> r0 = unspecified; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D9F0.yaml
 	thumb_local_start
 sub_812D9F0:
 	push {r4-r7,lr}

@@ -2389,6 +2389,10 @@ locret_80A5F46:
 	pop {r4,pc}
 	thumb_func_end sub_80A5EC8
 
+// symdb: Returns a byte selected from a three-entry table according to the current map group, with a special map-group 0x81 path.
+// symdb: (r0 = unused r10 context pointer, r1-r3 = unused) -> r0 = selected byte from byte_80A5F64;
+// symdb: flags: none
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F48.yaml
 	thumb_local_start
 sub_80A5F48:
 	push {r4,lr}
@@ -9203,7 +9207,7 @@ byte_80A9648:
 	.byte 0xF9, 0xB, 0xFA, 0xB, 0x0, 0x0
 	thumb_func_end sub_80A9628
 
-// symdb: Mr. Weather comp map object (type 0x1D) update: long-calls one of 4 state handlers (off_80A966C = sub_80A9680, sub_80A96C8, object_updateFadeWhite, sub_80A96FC) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1D) update: long-calls one of 4 state handlers (off_80A966C = sub_80A9680, sub_80A96C8, sub_80A96F0, sub_80A96FC) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9658.yaml
 	thumb_func_start sub_80A9658
 sub_80A9658:

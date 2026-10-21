@@ -5772,6 +5772,9 @@ off_81468F0:
 	.word unk_20102E0
 	thumb_func_end sub_81468E0
 
+// symdb: Returns the per-RFU-slot link-state halfword from the RFU child table at eStruct200FE00 + 0x28.
+// symdb: () -> r0 = u16 (link-state word for rfuSlotId)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81468F4.yaml
 	thumb_func_start sub_81468F4
 sub_81468F4:
 	ldr r1, off_8146904 // =eStruct200FE00 
@@ -6575,6 +6578,9 @@ rfu_setLinkState:
 	bx lr
 	thumb_func_end rfu_setLinkState
 
+// symdb: Re-initialises the RFU receive-side state: clears byte_20101E0 and zeroes per-slot receive buffers, then calls rfu_resetRecvSlots.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E60.yaml
 	thumb_func_start sub_8146E60
 sub_8146E60:
 	push {lr}

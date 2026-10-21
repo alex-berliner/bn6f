@@ -246,6 +246,9 @@ off_812EC28:
 	.word word_2023FA0
 	thumb_func_end submenu_loadSelectedEntry
 
+// symdb: Sets or clears a battle-overlay window state by window ID and action type
+// symdb: (r0 = windowId, r1 = mode, r2 = type) -> r0 = windowId; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EC2C.yaml
 	thumb_func_start sub_812EC2C
 sub_812EC2C:
 	push {r4-r7,lr}
@@ -509,6 +512,10 @@ off_812EDF8:
 	.word byte_812DADC
 	thumb_func_end sub_812EDE4
 
+// symdb: Renders the indexed text associated with a menu window or scene element.
+// symdb: (r0 = window id, r1 = text variant index) -> r0 = rendered tile width/result from
+// symdb: t3_renderIndexedText; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EDFC.yaml
 	thumb_func_start sub_812EDFC
 sub_812EDFC:
 	push {r4,lr}

@@ -1411,6 +1411,10 @@ byte_810E414:
 	.byte 0xFF, 0xFF, 0xFF
 	thumb_func_end sub_810E3A0
 
+// symdb: Dispatches a thrown battle object along either a straight-drop or arc path based on the AI attack's HitElement byte.
+// symdb: (r7 -> oAIAttackVars.HitElement index) -> tail-calls battle_throwObjectAway or
+// symdb: battle_stepArcMotion for that object; no return value computed here
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E4D4.yaml
 	thumb_local_start
 sub_810E4D4:
 	push {lr}

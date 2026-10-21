@@ -21373,6 +21373,9 @@ locret_8018092:
 	pop {pc}
 	thumb_func_end sub_8018076
 
+// symdb: Initializes a battle object's wobble state from its saved coordinates and prevents animation.
+// symdb: (r0 = battleObject pointer, implicitly r5) -> r0 = 0xC; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018094.yaml
 	thumb_local_start
 sub_8018094:
 	push {lr}

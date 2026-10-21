@@ -19444,7 +19444,7 @@ byte_802EE64:
 
 // symdb: Adds an encoded amount (256 per unit) to a battle entity's counter at field 0x28, choosing a capped or alternate add path based on bit 7 of the argument.
 // symdb: (r0 = encoded amount, bit7 = variant flag, bits0-6 = unit count; r5 = battle entity pointer) ->
-// symdb: r0 = result of the add callee; calls battle_addCappedCounter or battle_subCappedCounter
+// symdb: r0 = result of the add callee; calls battle_addCappedCounter or sub_802E04E
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_addCounterAmount.yaml
 	thumb_local_start
 battle_addCounterAmount:
