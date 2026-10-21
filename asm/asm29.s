@@ -7208,6 +7208,9 @@ sub_80A8814:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8814
 
+// symdb: Finalises an OW sprite load once its first-frame flip flag is set, switching state to 8 then running a sprite update.
+// symdb: () -> void; uses object in r5.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8848.yaml
 	thumb_local_start
 sub_80A8848:
 	push {r4-r7,lr}

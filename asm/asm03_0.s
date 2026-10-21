@@ -19735,6 +19735,10 @@ locret_802F082:
 	pop {r7,pc}
 	thumb_func_end sub_802F068
 
+// symdb: Resets the current battle object's alliance entry and clears its pending AI-data flag.
+// symdb: (r5 = battle object) -> void; flags: r0 is read from the object's alliance index, and r1 is used
+// symdb: as a temporary byte/word value.
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F084.yaml
 	thumb_local_start
 sub_802F084:
 	push {lr}

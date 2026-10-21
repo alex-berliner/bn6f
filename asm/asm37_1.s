@@ -3994,6 +3994,9 @@ dword_8143C2C:
 	.word 0xD330D32
 	thumb_func_end get_groundmanMinigameMapId
 
+// symdb: Resets the Groundman minigame's event flags, progress state, and active effect.
+// symdb: (r0 = unused, r1 = unused) -> r0 = unused; flags/condition codes unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C30.yaml
 	thumb_local_start
 sub_8143C30:
 	push {r4-r7,lr}

@@ -7085,6 +7085,9 @@ off_8133600:
 	.word sub_813375C+1
 	thumb_func_end object_dispatchState
 
+// symdb: Handles a jack-in attempt result by displaying a denial message or running the successful jack-in text script.
+// symdb: (r5 = chatbox state/context) -> r0 = undefined; flags condition-code dependent
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133618.yaml
 	thumb_local_start
 sub_8133618:
 	push {lr}
@@ -16843,6 +16846,9 @@ byte_8137D0C:
 	.byte 0x0, 0x0
 	thumb_func_end battle_gatherFlaggedTextIds
 
+// symdb: Rebuilds the per-frame navi/chip name tile graphic (up to 7 names) into BG tile block 2 at offset (2,4), zeroing and refilling the name tile buffer from the navi-chip-name table.
+// symdb: () -> void; reads [r5+0x24] as a row index into unk_201CF00, writes byte_2017A00
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137D20.yaml
 	thumb_local_start
 sub_8137D20:
 	push {r4-r7,lr}

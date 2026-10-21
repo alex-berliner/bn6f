@@ -5161,6 +5161,10 @@ loc_80491F6:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491E6
 
+// symdb: Advances one battle frame while a screen fade is active, using temporary network-script object state.
+// symdb: (r0 = ?, r1 = ?, r2 = ?, r3 = ?, r4 = ?, r5 = battle/network-script object, r6 = ?, r7 = ?, lr =
+// symdb: return address) -> r0 = battle_stepFrame result; flags inherited from battle_stepFrame
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80491FC.yaml
 	thumb_local_start
 sub_80491FC:
 	push {r4-r7,lr}

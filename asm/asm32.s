@@ -19230,6 +19230,9 @@ off_8117278:
 	.word 0x380
 	thumb_func_end sub_8117238
 
+// symdb: Picks sprite type 0x21 or 0x23 by a t1 flag and snaps the sprite to its wave's row Y coordinate.
+// symdb: (no args; r5 = sprite sub-entry) -> modifies [r5] to 0x21/0x23, calls sprite_update
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811727C.yaml
 	thumb_local_start
 sub_811727C:
 	push {lr}

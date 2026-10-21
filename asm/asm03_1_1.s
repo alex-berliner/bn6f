@@ -1689,6 +1689,10 @@ loc_8039810:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80397F6
 
+// symdb: Updates the submenu display during an active screen fade, clears its shared state, and redraws its numbers and cursor.
+// symdb: (r0 = implicit menu context, r5 = implicit state pointer) -> r0 = undefined; flags are caller-
+// symdb: clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039816.yaml
 	thumb_local_start
 sub_8039816:
 	push {r4-r7,lr}

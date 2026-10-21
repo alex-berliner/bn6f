@@ -430,6 +430,9 @@ off_808FB48:
 	.word off_808F5D4
 	thumb_func_end ow_endEventResetPlayer
 
+// symdb: Checks story event flag BE7 and clears it if it is set.
+// symdb: (r0 = unused) -> r0 = 1 if EVENT_BE7 was clear, otherwise 0; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB4C.yaml
 	thumb_local_start
 sub_808FB4C:
 	push {lr}

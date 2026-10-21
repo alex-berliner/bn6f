@@ -100729,6 +100729,9 @@ locret_80E4610:
 	pop {pc}
 	thumb_func_end sub_80E45F8
 
+// symdb: Each tick, while the parent's HP-gauge display phase is active, draw the controlled digi-beast's HP gauge over its owner so the viewer sees the partner's HP at a glance.
+// symdb: (void, uses r5 = oBattleObject*) -> void; no flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E4612.yaml
 	thumb_local_start
 sub_80E4612:
 	push {lr}
@@ -110275,6 +110278,9 @@ locret_80E85F8:
 	pop {r7,pc}
 	thumb_func_end sub_80E85A8
 
+// symdb: Spawns and initializes the type-0x1B strike effect used by the enemy AI front-step attack.
+// symdb: (r0 = parentBattleObjectPtr, r1 = x, r2 = y) -> r0 = spawnedBattleObjectPtr or 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E85FA.yaml
 	thumb_local_start
 sub_80E85FA:
 	push {lr}
