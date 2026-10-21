@@ -4326,7 +4326,7 @@ byte_813D7A0:
 	.byte 0x40, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0
 	thumb_func_end rfu_setEntryFlagBit
 
-// symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls t1SetFlags(1); clears byte_200AF81 each tick.
+// symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls sub_813D5E8(1); clears byte_200AF81 each tick.
 // symdb: (r0 = ptr to state struct; [r0+1] = step counter 0..0x14) -> r0 = 0 (or finalize result); r5/r7
 // symdb: clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1StepSequence.yaml

@@ -2996,7 +2996,7 @@ loc_803A194:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_waitStepUpdateEntities
 
-// symdb: Per-frame battle tick: calls rfu_drawJoinCodeHeader once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
+// symdb: Per-frame battle tick: calls sub_803A214 once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
 // symdb: (r5 = battle/global state struct) -> r0 = clobbered; returns early if gate sub_803A2A4 returns 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepFrame.yaml
 	thumb_func_start battle_stepFrame

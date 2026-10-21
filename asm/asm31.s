@@ -4364,6 +4364,10 @@ locret_80BA052:
 	pop {pc}
 	thumb_func_end sub_80BA02C
 
+// symdb: Scans forward for an occupied panel, then waits before advancing the battle object's action state.
+// symdb: (r0 = battle object pointer, r5 = same battle object pointer) -> r0 = unchanged; flags are
+// symdb: caller-clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BA054.yaml
 	thumb_local_start
 sub_80BA054:
 	push {lr}
@@ -12009,6 +12013,10 @@ off_80BD474:
 	.word byte_80BD464
 	thumb_func_end battle_initObjectFromParam1Table
 
+// symdb: Dispatches a battle object's current phase based on CurAction, choosing one of two handler tables depending on Param1.
+// symdb: (r5 = oBattleObject, Param1==0 ? dispatch table at off_80BD4A0 : table at off_80BD4B0) -> tail-
+// symdb: calls handler; clobbers r0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BD478.yaml
 	thumb_local_start
 sub_80BD478:
 	push {lr}
@@ -13248,6 +13256,9 @@ off_80BDCF8:
 	.word byte_80203EA
 	thumb_func_end sub_80BDBC8
 
+// symdb: Dispatches a battle object's current action to the handler selected by Param1 and CurAction.
+// symdb: (implicit r5 = battle object) -> void; flags preserved/unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BDCFC.yaml
 	thumb_local_start
 sub_80BDCFC:
 	push {lr}
@@ -111208,7 +111219,7 @@ loc_80E8C7A:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80E8C44
 
-// symdb: Zeros the 0x28-halfword panel flag table at r5+0x64, fetches a version-dependent panel filter via GetAllianceDependentPanelParamArgs2, runs object_getPanelsFiltered into a stack buffer, then per byte calls object_setPanelFlagFromOffsets with the low 3 bits and high nibble to populate the table, returning 1 if any panel matched.
+// symdb: Zeros the 0x28-halfword panel flag table at r5+0x64, fetches a version-dependent panel filter via GetAllianceDependentPanelParamArgs2, runs object_getPanelsFiltered into a stack buffer, then per byte calls sub_80E8CC4 with the low 3 bits and high nibble to populate the table, returning 1 if any panel matched.
 // symdb: (r5 = object/work struct; r0-r2 = filter args from GetAllianceDependentPanelParamArgs2) -> r0 =
 // symdb: 1 if any matching panels, else 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_collectFilteredPanelsToFlags.yaml
