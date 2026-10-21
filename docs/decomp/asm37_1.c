@@ -2168,7 +2168,7 @@ int ow_groundmanMinigameTick()
         v19 = v3[12];
         TestEventFlagFromImmediate(13, 48);
         if ( !v2 || v18 != v19 || v16 != v17 )
-            sub_8143C30(v16, v17, v18, v19);
+            ow_resetGroundmanMinigameProgress(v16, v17, v18, v19);
         v4 = *(&off_8143804 + GetGroundmanMinigameMapIndex());
         v5 = 0;
         while ( *v4 != 255 )
@@ -2379,7 +2379,7 @@ int get_groundmanMinigameMapId()
 
 
 // 0x8143c30
-int __fastcall sub_8143C30(int a1, int a2, int a3, int a4)
+int __fastcall ow_resetGroundmanMinigameProgress(int a1, int a2, int a3, int a4)
 {
     int v4; // r0
     int v5; // r1

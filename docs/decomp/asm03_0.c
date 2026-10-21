@@ -12485,13 +12485,13 @@ int sub_802F068()
     v2 = v1;
     v3 = v1[2];
     if ( !v3 || (result = v3 - 1, v2[2] = result, !result) )
-        result = sub_802F084();
+        result = battle_resetAllianceEntry();
     return result;
 }
 
 
 // 0x802f084
-int sub_802F084()
+int battle_resetAllianceEntry()
 {
     int v0; // r5
     char *v1; // r0

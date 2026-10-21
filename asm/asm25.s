@@ -432,9 +432,9 @@ off_808FB48:
 
 // symdb: Checks story event flag BE7 and clears it if it is set.
 // symdb: (r0 = unused) -> r0 = 1 if EVENT_BE7 was clear, otherwise 0; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_808FB4C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_checkAndClearEventBE7.yaml
 	thumb_local_start
-sub_808FB4C:
+e_checkAndClearEventBE7:
 	push {lr}
 	movflag EVENT_BE7
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
@@ -446,7 +446,7 @@ sub_808FB4C:
 loc_808FB64:
 	mov r0, #1
 	pop {pc}
-	thumb_func_end sub_808FB4C
+	thumb_func_end e_checkAndClearEventBE7
 
 // symdb: Attempts to move the overworld player down 4 tiles (into a pit/hole); if that would leave the area it instead plays a fall sound, locks input and resets related state, returning 0, otherwise returns 1 after the move.
 // symdb: () -> r0 = 1 if the player was moved down by 4, 0 if the fall-out sequence ran; no flags

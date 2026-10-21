@@ -271,7 +271,7 @@ void __noreturn ow_endEventResetPlayer()
 
 
 // 0x808fb4c
-signed int sub_808FB4C()
+signed int e_checkAndClearEventBE7()
 {
     char v0; // zf
 

@@ -3125,7 +3125,7 @@ byte_808F690::
 	cs_decomp_text_archive ptr1=TextScript87E1718
 	cs_call_native_with_return_value ptr1=ow_endEventResetPlayer+1
 	cs_pause byte1=0xFF byte2=0x02
-	cs_call_native_with_return_value ptr1=sub_808FB4C+1
+	cs_call_native_with_return_value ptr1=e_checkAndClearEventBE7+1
 	cs_pause byte1=0xFF byte2=0x02
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x14
 	cs_run_text_script_not_from_mem byte2=0x00

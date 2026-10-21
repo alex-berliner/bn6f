@@ -2622,7 +2622,7 @@ int sub_80491E6()
 
 
 // 0x80491fc
-int sub_80491FC()
+int battle_runFadeFrame()
 {
     int v0; // r5
     char v1; // zf

@@ -19197,7 +19197,7 @@ off_8117228:
 	.word off_811722C
 off_811722C:
 	.word sub_8117238+1
-	.word sub_811727C+1
+	.word sprite_setWaveRowFromFlag+1
 	.word sub_81172A6+1
 	thumb_func_end sub_8117218
 
@@ -19223,7 +19223,7 @@ sub_8117238:
 	bl sprite_setCoordinates
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_811727C
+	bl sprite_setWaveRowFromFlag
 	pop {pc}
 	.balign 4, 0
 off_8117278:
@@ -19232,9 +19232,9 @@ off_8117278:
 
 // symdb: Picks sprite type 0x21 or 0x23 by a t1 flag and snaps the sprite to its wave's row Y coordinate.
 // symdb: (no args; r5 = sprite sub-entry) -> modifies [r5] to 0x21/0x23, calls sprite_update
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811727C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_setWaveRowFromFlag.yaml
 	thumb_local_start
-sub_811727C:
+sprite_setWaveRowFromFlag:
 	push {lr}
 	mov r4, #0x21
 	mov r0, #1
@@ -19254,7 +19254,7 @@ loc_811729E:
 	strb r4, [r5]
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811727C
+	thumb_func_end sprite_setWaveRowFromFlag
 
 	thumb_local_start
 sub_81172A6:

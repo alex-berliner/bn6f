@@ -100556,7 +100556,7 @@ loc_80E44F0:
 	ldrh r0, [r5,#oBattleObject_Timer]
 	cmp r0, #0x14
 	blt loc_80E44FA
-	bl sub_80E4612
+	bl battle_drawDigiBeastHpGauge
 loc_80E44FA:
 	ldrh r0, [r5,#oBattleObject_Timer]
 	sub r0, #1
@@ -100731,9 +100731,9 @@ locret_80E4610:
 
 // symdb: Each tick, while the parent's HP-gauge display phase is active, draw the controlled digi-beast's HP gauge over its owner so the viewer sees the partner's HP at a glance.
 // symdb: (void, uses r5 = oBattleObject*) -> void; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E4612.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawDigiBeastHpGauge.yaml
 	thumb_local_start
-sub_80E4612:
+battle_drawDigiBeastHpGauge:
 	push {lr}
 	bl battle_testFlag0x40_800A8F8
 	tst r0, r0
@@ -100750,7 +100750,7 @@ locret_80E462E:
 	.balign 4, 0
 dword_80E4630:
 	.word 0xFFFF
-	thumb_func_end sub_80E4612
+	thumb_func_end battle_drawDigiBeastHpGauge
 
 	thumb_func_start t4_0x37_80E4634
 t4_0x37_80E4634:
@@ -110280,9 +110280,9 @@ locret_80E85F8:
 
 // symdb: Spawns and initializes the type-0x1B strike effect used by the enemy AI front-step attack.
 // symdb: (r0 = parentBattleObjectPtr, r1 = x, r2 = y) -> r0 = spawnedBattleObjectPtr or 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E85FA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnType1BStrike.yaml
 	thumb_local_start
-sub_80E85FA:
+battle_spawnType1BStrike:
 	push {lr}
 	push {r0-r2,r5}
 	mov r0, #0x70 
@@ -110294,7 +110294,7 @@ sub_80E85FA:
 	str r7, [r0,#oBattleObject_ExtraVars+0xc]
 locret_80E8610:
 	pop {pc}
-	thumb_func_end sub_80E85FA
+	thumb_func_end battle_spawnType1BStrike
 
 // symdb: Restores a battle object's saved panel position sequence.
 // symdb: (r0 = battle object pointer or null) -> r0 = unspecified; flags preserved
@@ -117845,7 +117845,7 @@ off_80EC03C:
 	.word ai_attackCleanupWait+1
 	thumb_func_end sub_80EC02A
 
-// symdb: Enemy AI front-step strike: on first call spawns a t1 subtype-5 step object on the front panel, adds AttackBoost to Damage, spawns a 0x1B strike effect (sub_80CEAA2 or sub_80E85FA at difficulty 1) into RelatedObject1Ptr, arms a 30-frame timer, and advances AttackElement to 4. On later calls, marks HitElement=4 once the spawned object is cleared.
+// symdb: Enemy AI front-step strike: on first call spawns a t1 subtype-5 step object on the front panel, adds AttackBoost to Damage, spawns a 0x1B strike effect (sub_80CEAA2 or battle_spawnType1BStrike at difficulty 1) into RelatedObject1Ptr, arms a 30-frame timer, and advances AttackElement to 4. On later calls, marks HitElement=4 once the spawned object is cleared.
 // symdb: (r5 = battle object via working register, r7 = AI attack vars block) -> r0 = clobbered; no
 // symdb: meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_enemyFrontStepStrike.yaml
@@ -117894,7 +117894,7 @@ loc_80EC09A:
 	lsl r3, r3, #0x10
 	mov r7, #0x4c 
 	add r7, r7, r5
-	bl sub_80E85FA
+	bl battle_spawnType1BStrike
 	str r0, [r5,#oBattleObject_RelatedObject1Ptr]
 	pop {r7}
 loc_80EC0AC:

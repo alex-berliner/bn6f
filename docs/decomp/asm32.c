@@ -11783,12 +11783,12 @@ void __noreturn sub_8117238()
     sprite_setPriority_8002E14(2);
     sprite_setCoordinates(0, 0);
     v0->currState = 4;
-    sub_811727C();
+    sprite_setWaveRowFromFlag();
 }
 
 
 // 0x811727c
-void __noreturn sub_811727C()
+void __noreturn sprite_setWaveRowFromFlag()
 {
     int v0; // r5
     char v1; // r4

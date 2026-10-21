@@ -4676,12 +4676,12 @@ void __noreturn sub_80A8814()
     v1 = sub_8035694((v0 + 12));
     sprite_setPriority_8002E14(v1);
     *(v0 + 8) = 4;
-    sub_80A8848();
+    sprite_finishLoad();
 }
 
 
 // 0x80a8848
-void __noreturn sub_80A8848()
+void __noreturn sprite_finishLoad()
 {
     Battle *v0; // r5
 

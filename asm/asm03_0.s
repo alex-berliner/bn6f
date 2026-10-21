@@ -19730,7 +19730,7 @@ sub_802F068:
 	strb r0, [r7,#2]
 	bne locret_802F082
 loc_802F07E:
-	bl sub_802F084
+	bl battle_resetAllianceEntry
 locret_802F082:
 	pop {r7,pc}
 	thumb_func_end sub_802F068
@@ -19738,9 +19738,9 @@ locret_802F082:
 // symdb: Resets the current battle object's alliance entry and clears its pending AI-data flag.
 // symdb: (r5 = battle object) -> void; flags: r0 is read from the object's alliance index, and r1 is used
 // symdb: as a temporary byte/word value.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802F084.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_resetAllianceEntry.yaml
 	thumb_local_start
-sub_802F084:
+battle_resetAllianceEntry:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Alliance]
 	bl getEntryPtr_2036120_1D0_802E070
@@ -19764,7 +19764,7 @@ dword_802F0A8:
 	.hword 0x4B0, 0x514, 0x384, 0x3E8
 	.hword 0x4B0, 0x3E8, 0x44C, 0x514
 	.hword 0x384, 0x0
-	thumb_func_end sub_802F084
+	thumb_func_end battle_resetAllianceEntry
 
 // symdb: Clears the entire event-flags array in the toolkit's event-flag buffer, resetting all 630 story/scene flags.
 // symdb: void sub_802F0C4(void); // r10 = toolkit ptr in; r2, r3 preserved pass-through; NZCV clobbered

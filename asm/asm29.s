@@ -7179,7 +7179,7 @@ off_80A8800:
 	.word off_80A8804
 off_80A8804:
 	.word sub_80A8814+1
-	.word sub_80A8848+1
+	.word sprite_finishLoad+1
 	.word ow_clearEventFlagAndFreeObject+1
 off_80A8810:
 	.word unk_2011A90
@@ -7204,15 +7204,15 @@ sub_80A8814:
 	bl sprite_setPriority_8002E14
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A8848
+	bl sprite_finishLoad
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A8814
 
 // symdb: Finalises an OW sprite load once its first-frame flip flag is set, switching state to 8 then running a sprite update.
 // symdb: () -> void; uses object in r5.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8848.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_finishLoad.yaml
 	thumb_local_start
-sub_80A8848:
+sprite_finishLoad:
 	push {r4-r7,lr}
 	bl sprite_getFrameParameters
 	mov r1, #0x80
@@ -7224,7 +7224,7 @@ loc_80A8858:
 	bl sprite_update
 	pop {r4-r7,pc}
 	.byte 0, 0
-	thumb_func_end sub_80A8848
+	thumb_func_end sprite_finishLoad
 
 // symdb: Termination routine for an overworld map object: clears story flag EVENT_5E0, then releases the object's slot.
 // symdb: (r0 = overworld map object pointer, passed through to FreeOverworldMapObject) -> r0 = unchanged

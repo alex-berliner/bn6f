@@ -4022,7 +4022,7 @@ int object_dispatchState()
 
 
 // 0x8133618
-void sub_8133618()
+void chatbox_handleJackInResult()
 {
     int v0; // r5
     int v1; // r0
@@ -9932,7 +9932,7 @@ signed int submenu_handleConfirmCancelCursorInput()
             v8 = 7;
         result = menu_adjustCursorOrValue_811F7F8(*(*(v1 + oToolkit_JoypadPtr) + 4), v8, 0, 0);
         if ( result )
-            sub_8137D20(result, v9, v10, v11);
+            t4_renderNaviChipNameTiles(result, v9, v10, v11);
     }
     else
     {
@@ -9968,7 +9968,7 @@ int chatbox_runSceneStepAndCopy()
                 v3 = byte_201CF00[2 * (*(v0 + 32) + *(v0 + 36)) + 1];
                 v4 = *(&battleBestTimes + v3);
                 *(&unk_20018C0 + v3) = v4;
-                sub_8137D20(v3, v4, &battleBestTimes, &unk_20018C0);
+                t4_renderNaviChipNameTiles(v3, v4, &battleBestTimes, &unk_20018C0);
             }
         }
         chatbox_8040818();
@@ -10078,7 +10078,7 @@ int __fastcall battle_gatherFlaggedTextIds(int a1, int a2, int a3, int a4)
 
 
 // 0x8137d20
-void __fastcall __noreturn sub_8137D20(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn t4_renderNaviChipNameTiles(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
 

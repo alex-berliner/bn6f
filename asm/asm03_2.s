@@ -5008,7 +5008,7 @@ off_8049098:
 	.word sub_804918A+1
 	.word sub_80491C4+1
 	.word sub_80491E6+1
-	.word sub_80491FC+1
+	.word battle_runFadeFrame+1
 	.word object_netScriptTriggerStep+1
 	.word sub_8049272+1
 	.word sub_8049290+1
@@ -5164,9 +5164,9 @@ loc_80491F6:
 // symdb: Advances one battle frame while a screen fade is active, using temporary network-script object state.
 // symdb: (r0 = ?, r1 = ?, r2 = ?, r3 = ?, r4 = ?, r5 = battle/network-script object, r6 = ?, r7 = ?, lr =
 // symdb: return address) -> r0 = battle_stepFrame result; flags inherited from battle_stepFrame
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80491FC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runFadeFrame.yaml
 	thumb_local_start
-sub_80491FC:
+battle_runFadeFrame:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_8049218
@@ -5180,7 +5180,7 @@ sub_80491FC:
 loc_8049218:
 	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_80491FC
+	thumb_func_end battle_runFadeFrame
 
 // symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
 // symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =

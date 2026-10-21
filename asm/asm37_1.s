@@ -3681,7 +3681,7 @@ ow_groundmanMinigameTick:
 	beq loc_81439BE
 loc_81439B6:
 	push {r0-r7}
-	bl sub_8143C30
+	bl ow_resetGroundmanMinigameProgress
 	pop {r0-r7}
 loc_81439BE:
 	bl GetGroundmanMinigameMapIndex
@@ -3996,9 +3996,9 @@ dword_8143C2C:
 
 // symdb: Resets the Groundman minigame's event flags, progress state, and active effect.
 // symdb: (r0 = unused, r1 = unused) -> r0 = unused; flags/condition codes unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143C30.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_resetGroundmanMinigameProgress.yaml
 	thumb_local_start
-sub_8143C30:
+ow_resetGroundmanMinigameProgress:
 	push {r4-r7,lr}
 	bl e_resetEffectStruct
 	mov r0, #0
@@ -4015,7 +4015,7 @@ sub_8143C30:
 	bl sub_8143BFC
 	bl e_setFieldC
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143C30
+	thumb_func_end ow_resetGroundmanMinigameProgress
 
 // symdb: Looks up the Groundman minigame result map index, swaps the overworld NPC spawn list to one of two hardcoded lists via npc_freeAllObjectsThenSpawnObjectsFromList, then sets event flag 1721.
 // symdb: () -> r0 = undefined; sets EVENT_1721, replaces overworld NPC list via

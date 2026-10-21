@@ -1484,7 +1484,7 @@ off_8039674:
 	.word sub_8039734+1
 	.word sub_80397DC+1
 	.word sub_80397F6+1
-	.word sub_8039816+1
+	.word submenu_updateFadeAndDraw+1
 	.word sub_8039830+1
 	.word sub_8039846+1
 	thumb_func_end battle_dispatchModeAndRunUpdates
@@ -1692,9 +1692,9 @@ loc_8039810:
 // symdb: Updates the submenu display during an active screen fade, clears its shared state, and redraws its numbers and cursor.
 // symdb: (r0 = implicit menu context, r5 = implicit state pointer) -> r0 = undefined; flags are caller-
 // symdb: clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039816.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_updateFadeAndDraw.yaml
 	thumb_local_start
-sub_8039816:
+submenu_updateFadeAndDraw:
 	push {r4-r7,lr}
 	bl IsScreenFadeActive // () -> zf
 	beq loc_803982A
@@ -1706,7 +1706,7 @@ sub_8039816:
 loc_803982A:
 	bl submenu_drawNumbersAndCursor
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039816
+	thumb_func_end submenu_updateFadeAndDraw
 
 	thumb_local_start
 sub_8039830:

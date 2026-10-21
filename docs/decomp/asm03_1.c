@@ -6196,7 +6196,7 @@ void __noreturn sub_80397F6()
 
 
 // 0x8039816
-void __noreturn sub_8039816()
+void __noreturn submenu_updateFadeAndDraw()
 {
     _BYTE *v0; // r5
     char v1; // zf

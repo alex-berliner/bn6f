@@ -73110,7 +73110,7 @@ int sub_80E44E0()
     }
     v1 = *(v0 + 32);
     if ( v1 >= 20 )
-        sub_80E4612(v1);
+        battle_drawDigiBeastHpGauge(v1);
     v2 = *(v0 + 32);
     v3 = __OFSUB__(v2, 1);
     result = v2 - 1;
@@ -73282,7 +73282,7 @@ signed int __fastcall sub_80E45F8(int a1)
 
 
 // 0x80e4612
-signed int __fastcall sub_80E4612(int a1)
+signed int __fastcall battle_drawDigiBeastHpGauge(int a1)
 {
     int v1; // r5
     signed int result; // r0
@@ -80255,7 +80255,7 @@ int sub_80E85A8()
 
 
 // 0x80e85fa
-Battle *__fastcall sub_80E85FA(char a1, int a2, int a3, int a4)
+Battle *__fastcall battle_spawnType1BStrike(char a1, int a2, int a3, int a4)
 {
     Battle *v4; // r5
     int v5; // r7
@@ -85421,7 +85421,7 @@ u32 *ai_enemyFrontStepStrike()
         v6 = *(v9 + 12);
         v7 = *(v1 + 8) + *(v1 + 6);
         if ( *(v9 + 3) == 1 )
-            v0->parent = sub_80E85FA(v4, v5, 0, 1769472);
+            v0->parent = battle_spawnType1BStrike(v4, v5, 0, 1769472);
         else
             v0->parent = battle_spawnType52(v4, v5, 0, 1769472);
         *(v9 + 16) = 30;

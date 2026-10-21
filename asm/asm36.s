@@ -7077,7 +7077,7 @@ object_dispatchState:
 off_81335FC:
 	.word off_8133600
 off_8133600:
-	.word sub_8133618+1
+	.word chatbox_handleJackInResult+1
 	.word sub_8133648+1
 	.word chatbox_stateRunScript12Once+1
 	.word submenu_chatboxInputHandler+1
@@ -7087,9 +7087,9 @@ off_8133600:
 
 // symdb: Handles a jack-in attempt result by displaying a denial message or running the successful jack-in text script.
 // symdb: (r5 = chatbox state/context) -> r0 = undefined; flags condition-code dependent
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8133618.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_handleJackInResult.yaml
 	thumb_local_start
-sub_8133618:
+chatbox_handleJackInResult:
 	push {lr}
 	bl sub_8133D64
 	tst r0, r0
@@ -7113,7 +7113,7 @@ loc_8133636:
 	bl chatbox_runScript_803FD9C_on_eTextScript2028A20
 locret_8133646:
 	pop {pc}
-	thumb_func_end sub_8133618
+	thumb_func_end chatbox_handleJackInResult
 
 	thumb_local_start
 sub_8133648:
@@ -16423,7 +16423,7 @@ battle_initRoundState:
 loc_8137906:
 	bl battle_gatherFlaggedTextIds
 	strh r0, [r5,#0x1e]
-	bl sub_8137D20
+	bl t4_renderNaviChipNameTiles
 	bl chatbox_renderTextEntry
 	bl sub_8137E4C
 	bl sprite_renderCharGlyph
@@ -16552,7 +16552,7 @@ loc_81379FE:
 	bl menu_adjustCursorOrValue_811F7F8
 	tst r0, r0
 	beq locret_8137A1A
-	bl sub_8137D20
+	bl t4_renderNaviChipNameTiles
 	bl chatbox_renderTextEntry
 	bl sub_8137E4C
 	bl sprite_renderCharGlyph
@@ -16590,7 +16590,7 @@ chatbox_runSceneStepAndCopy:
 	ldr r3, off_8137A74 // =unk_20018C0 
 	ldrh r1, [r2,r0]
 	strh r1, [r3,r0]
-	bl sub_8137D20
+	bl t4_renderNaviChipNameTiles
 	bl chatbox_renderTextEntry
 	bl sub_8137E4C
 	bl sprite_renderCharGlyph
@@ -16848,9 +16848,9 @@ byte_8137D0C:
 
 // symdb: Rebuilds the per-frame navi/chip name tile graphic (up to 7 names) into BG tile block 2 at offset (2,4), zeroing and refilling the name tile buffer from the navi-chip-name table.
 // symdb: () -> void; reads [r5+0x24] as a row index into unk_201CF00, writes byte_2017A00
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137D20.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_renderNaviChipNameTiles.yaml
 	thumb_local_start
-sub_8137D20:
+t4_renderNaviChipNameTiles:
 	push {r4-r7,lr}
 	mov r7, r5
 	ldr r0, off_8137D48 // =byte_2017A00 
@@ -16873,7 +16873,7 @@ off_8137D48:
 	.word byte_2017A00
 off_8137D4C:
 	.word unk_201CF00
-	thumb_func_end sub_8137D20
+	thumb_func_end t4_renderNaviChipNameTiles
 // symdb: Renders up to 7 navi-chip name strings (via text-script lookup) into two tile-index buffers, 8 tiles per name.
 // symdb: (r0 = base index multiplier, r1 = array base, r2/r3 = u16 tile-out buffers, r3<<12|0x200 on
 // symdb: stack = param for callee) -> void; r0-r5 clobbered
