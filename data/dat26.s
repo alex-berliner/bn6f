@@ -973,7 +973,7 @@ sub_8092F76::
 	bne loc_8092FA2
 	b loc_8092FB6
 loc_8092F8C::
-	bl sub_809322A
+	bl battle_clearGroundmanMinigameEntries3and4
 	mov r0, #SOUND_EXIT_SUBMENU
 	bl PlaySoundEffect
 	mov r0, #0xa
@@ -1016,7 +1016,7 @@ sub_8092FD2::
 	push {r4-r7,lr}
 	bl e_countdownExpired
 	beq loc_809300E
-	bl sub_809322A
+	bl battle_clearGroundmanMinigameEntries3and4
 	ldr r0, [r7]
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	push {r0,r1}
@@ -1307,16 +1307,16 @@ sub_8093212::
 
 // symdb: Clears battle array entries 3 and 4 (their flag bytes and sprite-scalable bits) used by the groundman minigame.
 // symdb: () -> ; no args or return, operates on fixed entries 3 and 4
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_809322A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearGroundmanMinigameEntries3and4.yaml
 	thumb_local_start
-sub_809322A::
+battle_clearGroundmanMinigameEntries3and4::
 	push {r4-r7,lr}
 	mov r0, #3
 	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	mov r0, #4
 	bl battle_clearEntryFlagAndMakeUnscalable_80468EC
 	pop {r4-r7,pc}
-	thumb_func_end sub_809322A
+	thumb_func_end battle_clearGroundmanMinigameEntries3and4
 
 	thumb_local_start
 sub_809323A::

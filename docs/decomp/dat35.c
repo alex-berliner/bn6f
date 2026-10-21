@@ -1189,7 +1189,7 @@ void sub_812FAE4()
                 {
                     if ( !v15 )
                     {
-                        v17 = sub_81325C0(v14);
+                        v17 = camera_readLinkConnectionType(v14);
                         if ( v17 == 8 || v18 == 8 )
                         {
                             sub_81307BC(v17);
@@ -1479,7 +1479,7 @@ void __fastcall sub_812FE10(int a1)
                 {
                     if ( sub_803DD60(v7) )
                     {
-                        v12 = sub_81325C0(v8);
+                        v12 = camera_readLinkConnectionType(v8);
                         if ( v13 == 16 && (v12 == 16 || v12 == 8) )
                         {
 LABEL_30:
@@ -1489,7 +1489,7 @@ LABEL_30:
                             return;
                         }
                     }
-                    else if ( sub_81325C0(v8) == 16 && (v14 == 16 || v14 == 8) )
+                    else if ( camera_readLinkConnectionType(v8) == 16 && (v14 == 16 || v14 == 8) )
                     {
                         goto LABEL_30;
                     }
@@ -1500,12 +1500,12 @@ LABEL_30:
                         return;
                     if ( sub_803DD60(v7) )
                     {
-                        if ( sub_81325C0(v8) == 16 && v15 == 8 )
+                        if ( camera_readLinkConnectionType(v8) == 16 && v15 == 8 )
                             goto LABEL_30;
                     }
                     else
                     {
-                        v16 = sub_81325C0(v8);
+                        v16 = camera_readLinkConnectionType(v8);
                         if ( v17 == 16 && v16 == 8 )
                             goto LABEL_30;
                     }

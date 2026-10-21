@@ -41,15 +41,15 @@ sub_81231BC:
 
 // symdb: Adds a signed value to the 16-bit accumulator at global timer state offset 8.
 // symdb: (r0 = signed increment) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81231C8.yaml
-	thumb_func_start sub_81231C8
-sub_81231C8:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/timerAccumulate.yaml
+	thumb_func_start timerAccumulate
+timerAccumulate:
 	ldr r2, =word_200DCF0
 	ldrh r1, [r2,#8]
 	add r1, r1, r0
 	strh r1, [r2,#8]
 	mov pc, lr
-	thumb_func_end sub_81231C8
+	thumb_func_end timerAccumulate
 	.balign 4, 0
 
 	thumb_func_start sub_81231D4
@@ -15405,7 +15405,7 @@ loc_812A666:
 	bl sub_813D5D0
 	mov r6, r0
 	mov r4, #1
-	bl sub_81469A0
+	bl getRfuGlobalStatePtr
 	bl sub_81469E8
 locret_812A676:
 	pop {r4-r7,pc}
@@ -15484,7 +15484,7 @@ off_812A6F4:
 	.word byte_8129150
 	thumb_func_end initScreenSceneAndFadeIn
 
-// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair sub_81469A0/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
+// symdb: Per-frame link-state step dispatched from sub_803EA78/sub_803EA50: on gate pass calls sub_8147B24; otherwise calls rfu_initWirelessSession, incrementing the halfword retry counter at +0x28 on failure, and on success sets state +0x1=0x10, clears +0x2 and the counter, then runs sub_8132398. The pair getRfuGlobalStatePtr/sub_81469E8 runs every pass through the 0x10 branch. The alternate branch writes 0x18 to +0xC when test0x200bc50_0x5_813D60C is clear.
 // symdb: (r5 = link connection state struct, set by caller) -> r0 = clobbered; updates struct fields +0x1
 // symdb: (state=0x10), +0x2 (sub-state=0), +0x28 (retry count), +0xC (state=0x18 in alternate branch)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_tryInitSessionStateStep.yaml
@@ -15523,7 +15523,7 @@ loc_812A732:
 	bl submenu_resetState
 	b loc_812A742
 loc_812A742:
-	bl sub_81469A0
+	bl getRfuGlobalStatePtr
 	bl sub_81469E8
 	b locret_812A756
 loc_812A74C:
@@ -15559,7 +15559,7 @@ battle_tutorialStepCheckChipSelection:
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
 	bne loc_812A77A
-	bl sub_803C604
+	bl battle_drawBattleBottomBar
 loc_812A77A:
 	mov r0, #0
 	strb r0, [r5,#0x10]
@@ -16360,7 +16360,7 @@ loc_812AD5C:
 	tst r0, r0
 	beq loc_812AD88
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812ADDC
 	cmp r0, #0x10
@@ -16370,7 +16370,7 @@ loc_812AD5C:
 	b loc_812ADC6
 loc_812AD88:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812ADDC
 	cmp r1, #0x10
@@ -16385,7 +16385,7 @@ loc_812AD9C:
 	tst r0, r0
 	beq loc_812ADB8
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812ADDC
 	cmp r1, #8
@@ -16393,7 +16393,7 @@ loc_812AD9C:
 	b loc_812ADC6
 loc_812ADB8:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812ADDC
 	cmp r0, #8
@@ -17866,7 +17866,7 @@ sub_812B80C:
 	cmp r0, #4
 	beq loc_812B826
 loc_812B822:
-	bl sub_803C604
+	bl battle_drawBattleBottomBar
 loc_812B826:
 	ldr r0, off_812B854 // =off_812B858 
 	ldrb r1, [r5,#2]
@@ -17904,7 +17904,7 @@ off_812B858:
 	.word sub_812C07C+1
 	thumb_func_end sub_812B80C
 
-// symdb: Per-frame step of the battle custom-screen state machine: conditionally calls sub_803C604, dispatches one of seven state handlers from a thumb tail-call table, ticks battle_runFrameUpdate(0x12), and refreshes the chip-cursor OAM/tile.
+// symdb: Per-frame step of the battle custom-screen state machine: conditionally calls battle_drawBattleBottomBar, dispatches one of seven state handlers from a thumb tail-call table, ticks battle_runFrameUpdate(0x12), and refreshes the chip-cursor OAM/tile.
 // symdb: (r0 = unused/jump-offset seed, r5 = screen-state struct: +2 = state id, +3 = substate) -> r0 =
 // symdb: result of battle_runFrameUpdate(0x12); no meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runCustomScreenFrame.yaml
@@ -17921,7 +17921,7 @@ battle_runCustomScreenFrame:
 	cmp r0, #4
 	beq loc_812B88E
 loc_812B88A:
-	bl sub_803C604
+	bl battle_drawBattleBottomBar
 loc_812B88E:
 	ldr r0, off_812B8BC // =off_812B8C0 
 	ldrb r1, [r5,#2]
@@ -18326,7 +18326,7 @@ loc_812BB60:
 	tst r0, r0
 	beq loc_812BB8C
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812BC0A
 	cmp r0, #0x10
@@ -18336,7 +18336,7 @@ loc_812BB60:
 	b loc_812BBCA
 loc_812BB8C:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812BC0A
 	cmp r1, #0x10
@@ -18351,7 +18351,7 @@ loc_812BBA0:
 	tst r0, r0
 	beq loc_812BBBC
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812BC0A
 	cmp r1, #8
@@ -18359,7 +18359,7 @@ loc_812BBA0:
 	b loc_812BBCA
 loc_812BBBC:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812BC0A
 	cmp r0, #8
@@ -18376,7 +18376,7 @@ loc_812BBD6:
 	tst r0, r0
 	beq loc_812BBEE
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x20 
 	bne loc_812BC0A
 	cmp r0, #0x20 
@@ -18384,7 +18384,7 @@ loc_812BBD6:
 	b loc_812BBCA
 loc_812BBEE:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x20 
 	bne loc_812BC0A
 	cmp r0, #0x20 

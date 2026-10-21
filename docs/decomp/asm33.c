@@ -8601,7 +8601,7 @@ LABEL_9:
         goto LABEL_9;
 LABEL_14:
     sub_813D5D0();
-    sub_81469A0();
+    getRfuGlobalStatePtr();
     sub_81469E8();
 }
 
@@ -8695,7 +8695,7 @@ void *rfu_tryInitSessionStateStep()
             *(v0 + 40) = 0;
             submenu_resetState(0, v2, v3, v4);
         }
-        sub_81469A0();
+        getRfuGlobalStatePtr();
         result = sub_81469E8();
     }
     return result;
@@ -8741,7 +8741,7 @@ int battle_tutorialStepCheckChipSelection()
     int result; // r0
 
     if ( eStruct200BC30_getJumpOffset00() == 8 )
-        sub_803C604();
+        battle_drawBattleBottomBar();
     *(v0 + 16) = 0;
     v1 = sub_803EAE4();
     v2 = v1;
@@ -9336,7 +9336,7 @@ int sub_812AD04()
                 {
                     if ( sub_803DD60(v5) )
                     {
-                        v10 = sub_81325C0(v6);
+                        v10 = camera_readLinkConnectionType(v6);
                         if ( v11 == 16 && (v10 == 16 || v10 == 8) )
                         {
 LABEL_30:
@@ -9346,7 +9346,7 @@ LABEL_30:
                             goto LABEL_32;
                         }
                     }
-                    else if ( sub_81325C0(v6) == 16 && (v12 == 16 || v12 == 8) )
+                    else if ( camera_readLinkConnectionType(v6) == 16 && (v12 == 16 || v12 == 8) )
                     {
                         goto LABEL_30;
                     }
@@ -9357,12 +9357,12 @@ LABEL_30:
                         goto LABEL_32;
                     if ( sub_803DD60(v5) )
                     {
-                        if ( sub_81325C0(v6) == 16 && v13 == 8 )
+                        if ( camera_readLinkConnectionType(v6) == 16 && v13 == 8 )
                             goto LABEL_30;
                     }
                     else
                     {
-                        v14 = sub_81325C0(v6);
+                        v14 = camera_readLinkConnectionType(v6);
                         if ( v15 == 16 && v14 == 8 )
                             goto LABEL_30;
                     }
@@ -10157,7 +10157,7 @@ int sub_812B80C()
     int result; // r0
 
     if ( eStruct200BC30_getJumpOffset00() == 8 && (*(v0 + 2) != 20 || *(v0 + 3) != 4) )
-        sub_803C604();
+        battle_drawBattleBottomBar();
     (*(&off_812B858 + *(v0 + 2)))();
     if ( *(v0 + 2) != 20 || *(v0 + 3) != 4 )
         battle_runFrameUpdate(18);
@@ -10175,7 +10175,7 @@ int battle_runCustomScreenFrame()
     int result; // r0
 
     if ( eStruct200BC30_getJumpOffset00() == 8 && (*(v0 + 2) != 20 || *(v0 + 3) != 4) )
-        sub_803C604();
+        battle_drawBattleBottomBar();
     (*(&off_812B8C0 + *(v0 + 2)))();
     if ( *(v0 + 2) != 20 || *(v0 + 3) != 4 )
         battle_runFrameUpdate(18);
@@ -10438,7 +10438,7 @@ int camera_checkLinkConnectionType()
     {
         if ( sub_803DD60(result) )
         {
-            result = sub_81325C0(v5);
+            result = camera_readLinkConnectionType(v5);
             if ( v9 == 16 && (result == 16 || result == 8) )
             {
 LABEL_30:
@@ -10451,7 +10451,7 @@ LABEL_30:
         }
         else
         {
-            result = sub_81325C0(v5);
+            result = camera_readLinkConnectionType(v5);
             if ( result == 16 && (v10 == 16 || v10 == 8) )
                 goto LABEL_30;
         }
@@ -10460,26 +10460,26 @@ LABEL_30:
     {
         if ( sub_803DD60(result) )
         {
-            result = sub_81325C0(v5);
+            result = camera_readLinkConnectionType(v5);
             if ( result == 16 && v11 == 8 )
                 goto LABEL_30;
         }
         else
         {
-            result = sub_81325C0(v5);
+            result = camera_readLinkConnectionType(v5);
             if ( v12 == 16 && result == 8 )
                 goto LABEL_30;
         }
     }
     else if ( sub_803DD60(result) )
     {
-        result = sub_81325C0(v5);
+        result = camera_readLinkConnectionType(v5);
         if ( v13 == 32 && result == 32 )
             goto LABEL_30;
     }
     else
     {
-        result = sub_81325C0(v5);
+        result = camera_readLinkConnectionType(v5);
         if ( v14 == 32 && result == 32 )
             goto LABEL_30;
     }

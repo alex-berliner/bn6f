@@ -2633,7 +2633,7 @@ int sub_80491FC()
         sub_803C320();
         *(v0 + 1) = 28;
         sub_803BB7C(30);
-        sub_803BB90(0);
+        object_setNetScriptTimer(0);
     }
     return battle_stepFrame();
 }
@@ -2663,7 +2663,7 @@ int object_netScriptTriggerStep()
                 if ( !v2 )
                 {
                     chatbox_clearTextBuffers();
-                    sub_803BB90(30);
+                    object_setNetScriptTimer(30);
                     ow_checkJackInFlag();
                     if ( !v2 )
                     {
@@ -2715,7 +2715,7 @@ void sub_8049290()
             sub_803C320();
             *(v0 + 1) = 28;
             sub_803BB7C(30);
-            sub_803BB90(0);
+            object_setNetScriptTimer(0);
             sub_803BB2C(14);
         }
         else
@@ -6118,7 +6118,7 @@ int battle_dispatchStepHandler_804C700()
 
 
 // 0x804c71c
-int sub_804C71C()
+int renderInfoClearFlag11()
 {
     int v0; // r10
     _WORD *v1; // r1

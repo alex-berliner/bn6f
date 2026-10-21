@@ -5897,14 +5897,14 @@ off_814699C:
 
 // symdb: Returns the RFU global state pointer used during wireless session setup and stepping.
 // symdb: () -> r0 = pointer to unk_200FE63
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81469A0.yaml
-	thumb_func_start sub_81469A0
-sub_81469A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getRfuGlobalStatePtr.yaml
+	thumb_func_start getRfuGlobalStatePtr
+getRfuGlobalStatePtr:
 	ldr r0, off_81469A4 // =unk_200FE63 
 	bx lr
 off_81469A4:
 	.word unk_200FE63
-	thumb_func_end sub_81469A0
+	thumb_func_end getRfuGlobalStatePtr
 
 	thumb_local_start
 sub_81469A8:
@@ -23356,15 +23356,15 @@ off_814EA80:
 
 // symdb: Resumes a stopped music player through the MPlay API.
 // symdb: (r0 = MPlayInfo pointer) -> r0 = unchanged; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_814EA84.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sound_m4aMPlayResume.yaml
 	thumb_local_start
-sub_814EA84:
+sound_m4aMPlayResume:
 	push {lr}
 	bl sound_m4aMPlayContinue
 	pop {r0}
 	bx r0
 	.byte 0, 0
-	thumb_func_end sub_814EA84
+	thumb_func_end sound_m4aMPlayResume
 
 // symdb: m4a StopAll: calls the stop routine on every one of the 0x20 music players in gMPlayTable
 // symdb: () -> r0 = destroyed; no meaningful return

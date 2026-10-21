@@ -2198,7 +2198,7 @@ sub_8039B98:
 	mov r0, #0x1e
 	bl sub_803BB7C
 	mov r0, #0
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 loc_8039BBA:
 	bl battle_stepFrame
 	pop {r4-r7,pc}
@@ -2234,7 +2234,7 @@ loc_8039BE6:
 	beq loc_8039C0E
 	bl chatbox_clearTextBuffers
 	mov r0, #0x1e
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 	bl ow_checkJackInFlag
 	beq loc_8039C0E
 	mov r0, #0xb
@@ -2286,7 +2286,7 @@ object_advanceNetDialogue:
 	mov r0, #0x1e
 	bl sub_803BB7C
 	mov r0, #0
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 	mov r0, #0xe
 	bl sub_803BB2C
 	b loc_8039C7C
@@ -6210,12 +6210,12 @@ loc_803BB8C:
 
 // symdb: Sets the network-script object's timer delay at object offset 0x2C.
 // symdb: (r0 = delay) -> void; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803BB90.yaml
-	thumb_func_start sub_803BB90
-sub_803BB90:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setNetScriptTimer.yaml
+	thumb_func_start object_setNetScriptTimer
+object_setNetScriptTimer:
 	str r0, [r5,#0x2c]
 	mov pc, lr
-	thumb_func_end sub_803BB90
+	thumb_func_end object_setNetScriptTimer
 
 // symdb: Ticks down a frame-count timer in the state struct at [r5,#0x2c] and returns 1 once it has expired.
 // symdb: () -> r0 = 1 when countdown [r5+0x2c] reached below 0 after decrement, 0 otherwise; no flags
@@ -7707,15 +7707,15 @@ off_803C600:
 
 // symdb: Per-frame: draws the wireless/connected-player entries row and the chip-slot icons on the battle bottom HUD.
 // symdb: () -> void; clobbers r4-r7, lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C604.yaml
-	thumb_func_start sub_803C604
-sub_803C604:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_drawBattleBottomBar.yaml
+	thumb_func_start battle_drawBattleBottomBar
+battle_drawBattleBottomBar:
 	push {r4-r7,lr}
 	ldr r5, off_803C61C // =eS200A290
 	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
-	thumb_func_end sub_803C604
+	thumb_func_end battle_drawBattleBottomBar
 
 	thumb_func_start sub_803C612
 sub_803C612:
@@ -7765,7 +7765,7 @@ dword_803C650:
 	// 0x0C
 	.word rfu_resetSlotsAndReportOffline+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x10
-	.word sub_803C6F4+1 // (self: * S200BC50 $r7) -> (u32?, bool)
+	.word rfu_setIdleLinkPhase+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x14
 	.word dispatch_803C702+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x18
@@ -7855,16 +7855,16 @@ rfu_resetSlotsAndReportOffline: // (self: * S200BC50 $r7) -> (u32?, bool)
 
 // symdb: Sets the shared RFU link state to phase 0x33.
 // symdb: (r0 ignored) -> r0 = 1, r1 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C6F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setIdleLinkPhase.yaml
 	thumb_local_start
-sub_803C6F4: // (self: * S200BC50 $r7) -> (u32?, bool)
+rfu_setIdleLinkPhase: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	ldr r0, byte_803CAB4 // =0x33
 	bl rfu_setLinkPhase
 	mov r0, #1
 	mov r1, #0
 	pop {pc}
-	thumb_func_end sub_803C6F4
+	thumb_func_end rfu_setIdleLinkPhase
 
 	thumb_local_start
 dispatch_803C702: // (self: * S200BC50 $r7) -> (u32?, bool)
@@ -8459,9 +8459,9 @@ byte_803CAB4:
 
 // symdb: Rewrites the jack-in paired table (slots 0..N) by re-fetching each overworld entry while the jack-in flag is set
 // symdb: () -> void; runs only when ow_checkJackInFlag() != 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803CAC4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_syncJackInPairTableFromOverworld.yaml
 	thumb_local_start
-sub_803CAC4:
+ow_syncJackInPairTableFromOverworld:
 	push {r4-r7,lr}
 	bl ow_checkJackInFlag
 	mov r6, r0
@@ -8486,7 +8486,7 @@ loc_803CAD2:
 locret_803CAF4:
 	pop {r4-r7,pc}
 	.byte 0x0, 0x0
-	thumb_func_end sub_803CAC4
+	thumb_func_end ow_syncJackInPairTableFromOverworld
 
 // symdb: returns the current global state value stored at eS200BC5C
 // symdb: () -> r0 = dword at eS200BC5C (current global state/mode); flags from load (irrelevant)
@@ -8602,7 +8602,7 @@ sub_803CB78:
 	ldrb r0, [r1]
 	cmp r0, #7
 	bne locret_803CB86
-	bl sub_803CAC4
+	bl ow_syncJackInPairTableFromOverworld
 locret_803CB86:
 	pop {pc}
 	.balign 4, 0
@@ -12178,14 +12178,14 @@ e_getStruct200BC30Byte2:
 
 // symdb: Sets the eLinkState result/error code before the link-state check returns failure.
 // symdb: (r0 = result code 2 or 8) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803EA48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setLinkResult.yaml
 	thumb_local_start
-sub_803EA48:
+e_setLinkResult:
 	ldr r1, off_803EBF8 // =eStruct200BC30
 	strb r0, [r1,#0x2] // (byte_200BC32 - 0x200bc30)
 	mov pc, lr
 	.byte 0, 0
-	thumb_func_end sub_803EA48
+	thumb_func_end e_setLinkResult
 
 // symdb: returns the wireless-link flag from eStruct200BC30 that callers use to decide whether to re-init the RFU session or run error/cleanup handling
 // symdb: () -> r0 = flag byte at eStruct200BC30+1 (0/1); no flags touched
@@ -12701,9 +12701,9 @@ off_803ED48:
 	.word eStruct200BC30
 	thumb_func_end e_dispatchStateHandler
 
-// symdb: Iterates eLinkState+4 entries calling sub_8144D04, requires exactly two hits, then validates unk_2009480 records (0x60 means fail, 0x62 marks found), copies matching fields into eLinkState+0x20/+0x40, bumps state by 4, sets jump offset to 4, and returns 2 (or 4 via sub_803EA48 on failure).
+// symdb: Iterates eLinkState+4 entries calling sub_8144D04, requires exactly two hits, then validates unk_2009480 records (0x60 means fail, 0x62 marks found), copies matching fields into eLinkState+0x20/+0x40, bumps state by 4, sets jump offset to 4, and returns 2 (or 4 via e_setLinkResult on failure).
 // symdb: (no args used) -> r0 = 2 if table verified and eStruct/eLinkState advanced, 4 if validation
-// symdb: failed or count != 2, 4/8 via sub_803EA48 on the exit paths; writes eLinkState[0], +1, +0xE,
+// symdb: failed or count != 2, 4/8 via e_setLinkResult on the exit paths; writes eLinkState[0], +1, +0xE,
 // symdb: +0x20, +0x30, +0x40 and eStruct200BC30 byte 5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_checkLinkStateTable.yaml
 	thumb_local_start
@@ -12861,12 +12861,12 @@ loc_803EE60:
 loc_803EE6A:
 	add sp, sp, #0x14
 	mov r0, #2
-	bl sub_803EA48
+	bl e_setLinkResult
 	mov r0, #4
 	pop {r4-r7,pc}
 	add sp, sp, #0x14
 	mov r0, #8
-	bl sub_803EA48
+	bl e_setLinkResult
 	mov r0, #4
 	pop {r4-r7,pc}
 	.balign 4, 0

@@ -34219,7 +34219,7 @@ off_811E370:
 off_811E374:
 	.word battleObject_initCutsceneSprite_811E384+1
 	.word battleObject_setCoordsFromCutsceneScript_811E3CC+1
-	.word sub_811E40C+1
+	.word sprite_clearScenarioEffectScale+1
 off_811E380:
 	.word eScenarioEffectState2000780
 	thumb_func_end battleObject_dispatchCurStateAction_811E360
@@ -34300,14 +34300,14 @@ off_811E408:
 
 // symdb: Clears the scenario effect sprite's scale byte and marks the sprite unscalable.
 // symdb: (void) -> void; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E40C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_clearScenarioEffectScale.yaml
 	thumb_local_start
-sub_811E40C:
+sprite_clearScenarioEffectScale:
 	push {lr}
 	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
 	.word eScenarioEffectState2000780
-	thumb_func_end sub_811E40C
+	thumb_func_end sprite_clearScenarioEffectScale
 
 // symdb: Calls one of three handler routines selected by the mode byte at [r5,#8], passing that mode as r1.
 // symdb: (r5 = object whose +8 byte selects handler) -> tail-call to handler(r1 = mode, r5 preserved); r0
@@ -34715,7 +34715,7 @@ off_811E6D0:
 off_811E6D4:
 	.word initObjectSpriteType35+1
 	.word sprite_resetToCenter+1
-	.word sub_811E73C+1
+	.word sprite_clearScale+1
 off_811E6E0:
 	.word eStruct2001010
 	thumb_func_end e_dispatchByState
@@ -34768,13 +34768,13 @@ sprite_resetToCenter:
 
 // symdb: Clears a sprite's scale byte and marks the sprite unscalable.
 // symdb: (r0 = sprite object pointer) -> r0 = unspecified; flags caller-saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E73C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_clearScale.yaml
 	thumb_local_start
-sub_811E73C:
+sprite_clearScale:
 	push {lr}
 	bl sprite_clearScaleAndMakeUnscalable_80468E0
 	pop {pc}
-	thumb_func_end sub_811E73C
+	thumb_func_end sprite_clearScale
 
 // symdb: Builds a 13-tile (0x340-byte) 4bpp horizontal gauge strip with palette indices 10-14 into unk_2027000, masking unused tiles per sub_8144010's 0-8 fill level, then DMA-queues it to VRAM 0x6014180.
 // symdb: () -> void; r0-r3 clobbered
@@ -40530,7 +40530,7 @@ off_81211D0:
 	.word sub_81231A4
 	.word sub_81231B0
 	.word sub_81231BC
-	.word sub_81231C8
+	.word timerAccumulate
 	.word sub_81231D4
 	.word sub_81231E0
 	.word sub_81231E8

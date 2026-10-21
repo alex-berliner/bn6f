@@ -780,7 +780,7 @@ cutscenescript_808DB30:
 	cs_write_byte ptr1=dword_200A6AC+1 byte5=0x08
 	cs_pause byte1=0xFF byte2=0x78
 	cs_run_eStruct200a6a0_callback
-	cs_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=sub_804C71C+1 word9=0x00040400
+	cs_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=renderInfoClearFlag11+1 word9=0x00040400
 	cs_play_sound hword1=0x01AC
 	cs_pause byte1=0xFF byte2=0x1E
 	cs_run_text_script_not_from_mem byte2=0x0A
@@ -818,7 +818,7 @@ byte_808DBF9::
 	cs_add_mail_range hword1=0x1CE7 byte3=0x01
 	cs_pause byte1=0xFF byte2=0x3C
 	cs_play_music hword1=0xFFFF
-	cs_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=sub_804C71C+1 word9=0x00000000
+	cs_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=renderInfoClearFlag11+1 word9=0x00000000
 	cs_set_screen_fade byte1=0xFF byte2=0x08 byte3=0x08
 	cs_wait_screen_fade
 	cs_enable_ow_player_wall_collision_809e248

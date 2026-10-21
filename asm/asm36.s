@@ -2184,7 +2184,7 @@ locret_8131064:
 	.balign 4, 0x00
 	thumb_func_end e_checkLinkMatchAndStartCutscene
 
-// symdb: Checks link-battle camera end-sync readiness: dispatches on mode (4 forces end state at r5+1; 1 aborts); otherwise copies link-camera fields, scans two 0x10-byte entries against eLinkState, then verifies sub_81325C0 pair matches [r5+0x26] (0x10 or 0x8) before setting end-camera state at r5+2=0x24.
+// symdb: Checks link-battle camera end-sync readiness: dispatches on mode (4 forces end state at r5+1; 1 aborts); otherwise copies link-camera fields, scans two 0x10-byte entries against eLinkState, then verifies camera_readLinkConnectionType pair matches [r5+0x26] (0x10 or 0x8) before setting end-camera state at r5+2=0x24.
 // symdb: () -> void; uses global r5 (eCamera-like struct) and eLinkState via sub_803E8F8, no args or
 // symdb: return value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_checkLinkEndSync.yaml
@@ -2248,7 +2248,7 @@ loc_81310C4:
 	tst r0, r0
 	beq loc_81310F0
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_8131144
 	cmp r0, #0x10
@@ -2258,7 +2258,7 @@ loc_81310C4:
 	b loc_813112E
 loc_81310F0:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_8131144
 	cmp r1, #0x10
@@ -2273,7 +2273,7 @@ loc_8131104:
 	tst r0, r0
 	beq loc_8131120
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_8131144
 	cmp r1, #8
@@ -2281,7 +2281,7 @@ loc_8131104:
 	b loc_813112E
 loc_8131120:
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_8131144
 	cmp r0, #8
@@ -4246,7 +4246,7 @@ loc_8132154:
 	add r6, #1
 	cmp r6, r4
 	blt loc_8132154
-	bl sub_81469A0
+	bl getRfuGlobalStatePtr
 	bl sub_81469E8
 	pop {r4-r7,pc}
 	.word eS200BC50
@@ -4972,16 +4972,16 @@ loc_81325BC:
 // symdb: Reads two 16-bit connection-type fields from a 16-byte linked-camera entry (offset 0x8 and 0x18), returning them in r0 and r1.
 // symdb: (r0 = ptr to 0x10-byte link-camera entry) -> r0 = low half at entry+8, r1 = low half at
 // symdb: entry+0x18; flags none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81325C0.yaml
-	thumb_func_start sub_81325C0
-sub_81325C0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_readLinkConnectionType.yaml
+	thumb_func_start camera_readLinkConnectionType
+camera_readLinkConnectionType:
 	mov r2, r0
 	ldrh r0, [r2,#8]
 	add r2, #0x10
 	ldrh r1, [r2,#8]
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_81325C0
+	thumb_func_end camera_readLinkConnectionType
 
 // symdb: Copies two fields of the eLinkState global (offsets 0x1C and 0x0A) into the eCamera end struct at eCamera.unk_84+4 and +2.
 // symdb: () -> void; writes eCamera.unk_84+2 (halfword) and +4 (word), clobbers r0-r1, r4

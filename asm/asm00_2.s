@@ -3097,7 +3097,7 @@ loc_8010152:
 	ldr r0, [r4,r7]
 	tst r0, r0
 	beq locret_8010160
-	bl sub_80E4DA2
+	bl object_resetChildEntityState
 	mov r0, #0
 	str r0, [r4,r7]
 locret_8010160:
@@ -5039,7 +5039,7 @@ off_8010EA4:
 off_8010F08:
 	.word sub_80112E0+1
 	.word sub_80112EA+1
-	.word sub_80112F4+1
+	.word battle_spawnObj56From10a+1
 	.word sub_80112FE+1
 	.word sub_8011308+1
 	.word sub_8011312+1
@@ -5518,7 +5518,7 @@ off_801127C:
 	.word nullsub_42+1
 	.word sub_80112E0+1
 	.word sub_80112EA+1
-	.word sub_80112F4+1
+	.word battle_spawnObj56From10a+1
 	.word sub_80112FE+1
 	.word sub_8011308+1
 	.word sub_8011312+1
@@ -5560,14 +5560,14 @@ sub_80112EA:
 
 // symdb: Spawns a battle object type 0x56 owned by entity 0x10A (likely a stage/event entity) and stores it via the RelatedObject2Ptr field.
 // symdb: () -> r0 = pointer to spawned obj56; no other arguments set explicitly
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80112F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_spawnObj56From10a.yaml
 	thumb_local_start
-sub_80112F4:
+battle_spawnObj56From10a:
 	push {lr}
 	ldr r0, dword_80114E0 // =0x10a 
 	bl battle_spawnObj56StoreRelatedObject2
 	pop {pc}
-	thumb_func_end sub_80112F4
+	thumb_func_end battle_spawnObj56From10a
 
 	thumb_local_start
 sub_80112FE:
@@ -12940,7 +12940,7 @@ loc_8014256:
 off_8014268:
 	.word off_801426C
 off_801426C:
-	.word sub_801429C+1
+	.word battle_beginTurnOpenEntry+1
 	.word nullsub_47+1
 	.word nullsub_47+1
 	.word nullsub_47+1
@@ -12956,13 +12956,13 @@ off_801426C:
 
 // symdb: Battle init: opens a turn by running beginTurnOpenSetup at game start.
 // symdb: () -> void; no flags affected beyond touched callee.
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801429C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_beginTurnOpenEntry.yaml
 	thumb_local_start
-sub_801429C:
+battle_beginTurnOpenEntry:
 	push {lr}
 	bl battle_beginTurnOpenSetup
 	pop {pc}
-	thumb_func_end sub_801429C
+	thumb_func_end battle_beginTurnOpenEntry
 
 	thumb_local_start
 sub_80142A4:
@@ -30576,7 +30576,7 @@ copy_updateAnimatedStrip:
 	bl sub_801D344
 	ldr r0, [r5,#0x48]
 	ldrb r0, [r0,#0x16]
-	bl sub_802E44A
+	bl bg_getParam1
 	ldr r1, dword_801D330 // =0x280
 	ldr r2, dword_801D334 // =0x200
 	ldr r3, [sp]

@@ -190,7 +190,7 @@ jt_8026584:
 	.word sub_802668A+1
 	.word sub_8026694+1
 	.word sub_802669E+1
-	.word sub_80266AC+1
+	.word battle_scanObjectPanelPattern+1
 	.word battle_checkFacingTileMatch+1
 	.word battle_checkFacingOffsetsDefaultTable_80266DE+1
 	.word sub_80266E8+1
@@ -376,16 +376,16 @@ sub_802669E:
 
 // symdb: Scans panel offset patterns using the calling battle object's r6 and r7 context.
 // symdb: (r0 = r6, r1 = r7, r2 = pattern) -> r0 = match result; flags ...
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80266AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scanObjectPanelPattern.yaml
 	thumb_local_start
-sub_80266AC:
+battle_scanObjectPanelPattern:
 	push {lr}
 	mov r0, r6
 	mov r1, r7
 	ldr r2, off_802681C // =byte_802679B 
 	bl battle_scanPanelOffsetPattern
 	pop {pc}
-	thumb_func_end sub_80266AC
+	thumb_func_end battle_scanObjectPanelPattern
 
 // symdb: Runs the facing-offset tile checker on an object using one of two special-case offset tables, chosen by comparing a computed alliance/facing value against r6.
 // symdb: (r4 = battle object, r6 = value to match) -> r0 = nonzero if the checker hit on a listed
@@ -18084,14 +18084,14 @@ bg_getParam0:
 
 // symdb: Gets parameter 1 from a battle BG context.
 // symdb: (r0 = context pointer) -> r0 = context field at offset 2; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E44A.yaml
-	thumb_func_start sub_802E44A
-sub_802E44A:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/bg_getParam1.yaml
+	thumb_func_start bg_getParam1
+bg_getParam1:
 	push {lr}
 	bl sub_802E490
 	ldrh r0, [r0,#2]
 	pop {pc}
-	thumb_func_end sub_802E44A
+	thumb_func_end bg_getParam1
 
 	thumb_func_start sub_802E454
 sub_802E454:
@@ -18719,7 +18719,7 @@ sub_802E86C:
 	cmp r0, r5
 	bne loc_802E892
 	mov r0, r4
-	bl sub_802E44A
+	bl bg_getParam1
 	cmp r0, r5
 	bne loc_802E892
 	mov r0, r4

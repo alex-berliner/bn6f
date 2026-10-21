@@ -129,7 +129,7 @@ signed int __fastcall sub_8092F76(int a1, int a2, int a3)
     v5 = *(*(v4 + 4) + 2);
     if ( v5 & 2 )
     {
-        sub_809322A();
+        battle_clearGroundmanMinigameEntries3and4();
         PlaySoundEffect(131, v6, v7);
         sub_80931FA(10);
         *v3 = 16;
@@ -180,7 +180,7 @@ signed int __fastcall sub_8092FD2(int a1)
     e_countdownExpired();
     if ( !v3 )
     {
-        sub_809322A();
+        battle_clearGroundmanMinigameEntries3and4();
         v4 = *v2;
         v6 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         v7 = v5;
@@ -477,7 +477,7 @@ char *sub_8093212()
 
 
 // 0x809322a
-int sub_809322A()
+int battle_clearGroundmanMinigameEntries3and4()
 {
     battle_clearEntryFlagAndMakeUnscalable_80468EC(3);
     return battle_clearEntryFlagAndMakeUnscalable_80468EC(4);

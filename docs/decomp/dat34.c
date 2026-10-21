@@ -1028,7 +1028,7 @@ void sub_812E440()
                 v15 += 16;
                 if ( v15 > v14 + 16 )
                 {
-                    if ( !v16 && sub_81325C0(v15) == 32 && v18 == 32 )
+                    if ( !v16 && camera_readLinkConnectionType(v15) == 32 && v18 == 32 )
                     {
                         *(v0 + 2) = 44;
                         *(v0 + 12) = 0;
@@ -1271,7 +1271,7 @@ void sub_812E718()
                 {
                     if ( sub_803DD60(v6) )
                     {
-                        v11 = sub_81325C0(v7);
+                        v11 = camera_readLinkConnectionType(v7);
                         if ( v12 == 16 && (v11 == 16 || v11 == 8) )
                         {
 LABEL_30:
@@ -1281,7 +1281,7 @@ LABEL_30:
                             return;
                         }
                     }
-                    else if ( sub_81325C0(v7) == 16 && (v13 == 16 || v13 == 8) )
+                    else if ( camera_readLinkConnectionType(v7) == 16 && (v13 == 16 || v13 == 8) )
                     {
                         goto LABEL_30;
                     }
@@ -1292,12 +1292,12 @@ LABEL_30:
                         return;
                     if ( sub_803DD60(v6) )
                     {
-                        if ( sub_81325C0(v7) == 16 && v14 == 8 )
+                        if ( camera_readLinkConnectionType(v7) == 16 && v14 == 8 )
                             goto LABEL_30;
                     }
                     else
                     {
-                        v15 = sub_81325C0(v7);
+                        v15 = camera_readLinkConnectionType(v7);
                         if ( v16 == 16 && v15 == 8 )
                             goto LABEL_30;
                     }

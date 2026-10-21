@@ -2652,7 +2652,7 @@ int __fastcall sub_814695C(int a1)
 
 
 // 0x81469a0
-void *sub_81469A0()
+void *getRfuGlobalStatePtr()
 {
     return &unk_200FE63;
 }
@@ -11085,7 +11085,7 @@ int __fastcall sound_tickAllMusicPlayers_814EA58(int a1, int a2, int a3)
 
 
 // 0x814ea84
-int __fastcall sub_814EA84(int a1)
+int __fastcall sound_m4aMPlayResume(int a1)
 {
     int v2; // [sp+0h] [bp-4h]
 

@@ -20174,12 +20174,12 @@ int __noreturn sub_80C3504()
     sub_80C36AE();
     *(v0 + 96) = 1;
     *(v0 + 8) = 4;
-    return sub_80C3550();
+    return battleObject_runCurrentPhase();
 }
 
 
 // 0x80c3550
-int sub_80C3550()
+int battleObject_runCurrentPhase()
 {
     return battleObject_runPhase();
 }
@@ -22613,7 +22613,7 @@ int __fastcall object_resetAnimFrame(int result)
 
 
 // 0x80c4c46
-int __fastcall sub_80C4C46(int result)
+int __fastcall battle_aIScriptClearCurrent(int result)
 {
     *(result + 12) = 0;
     return result;
@@ -35278,7 +35278,7 @@ int __fastcall battle_fallingObjectLandSpawnRegion(int a1, int a2, int a3)
 
 
 // 0x80ccd24
-signed int sub_80CCD24()
+signed int object_setCurAnimAndAction()
 {
     int v0; // r5
     signed int result; // r0
@@ -38080,7 +38080,7 @@ int sub_80CE9A4()
 
 
 // 0x80ce9cc
-signed int sub_80CE9CC()
+signed int battleResetObjectToAppearingPhase()
 {
     int v0; // r5
     signed int result; // r0
@@ -46561,7 +46561,7 @@ int battle_countdownPhaseStep()
     {
         *(v0 + 11) = 4;
         battle_remapCurAnimForPhase();
-        sub_80D3F88();
+        battle_loadPhaseAnimVars();
         *(v0 + 32) = *&byte_80D3C3C[2 * *(v0 + 4)];
         *(v0 + 34) = 0;
     }
@@ -46999,7 +46999,7 @@ int sub_80D3F42()
 
 
 // 0x80d3f88
-int sub_80D3F88()
+int battle_loadPhaseAnimVars()
 {
     _DWORD *v0; // r5
     int v1; // r1
@@ -67569,7 +67569,7 @@ int __fastcall battle_objectCleanup(int a1, unsigned int a2)
     {
         result = *(*(v2 + 88) + 92);
         if ( result )
-            result = sub_80C4C46(result);
+            result = battle_aIScriptClearCurrent(result);
     }
     return result;
 }
@@ -74131,7 +74131,7 @@ Battle *__fastcall object_spawnChildOfEntity(int a1, int a2, int a3, int a4)
 
 
 // 0x80e4da2
-int __fastcall sub_80E4DA2(int result)
+int __fastcall object_resetChildEntityState(int result)
 {
     *(result + 8) = 8;
     return result;
@@ -77537,7 +77537,7 @@ int t4_0x57_80E6E44()
 
 
 // 0x80e6e64
-signed int sub_80E6E64()
+signed int battle_setStateEntryParams()
 {
     int v0; // r5
     signed int result; // r0
@@ -80221,7 +80221,7 @@ int t4_0x70_80E857C()
 
 
 // 0x80e859c
-int sub_80E859C()
+int battleResetObjectActionState()
 {
     int v0; // r5
 
@@ -80776,7 +80776,7 @@ int __fastcall sub_80E8A2A(int a1, int a2, int a3, int a4)
 
 
 // 0x80e8a46
-int __fastcall sub_80E8A46(int result)
+int __fastcall ai_setTimedAttackScratchValue8(int result)
 {
     if ( result )
         *(result + 8) = 8;
@@ -80785,7 +80785,7 @@ int __fastcall sub_80E8A46(int result)
 
 
 // 0x80e8a52
-int __fastcall sub_80E8A52(int result, char a2)
+int __fastcall objectSetTimerAttrs(int result, char a2)
 {
     if ( result )
     {
@@ -89124,7 +89124,7 @@ int sub_80EE2A0()
 
 
 // 0x80ee2c0
-signed int sub_80EE2C0()
+signed int initAiAttackVars()
 {
     int v0; // r7
     signed int result; // r0
@@ -123578,7 +123578,7 @@ int __fastcall sub_81046F6(int a1, int a2, int a3)
         *(v4 + 18) = 16;
         result = *(v4 + 48);
         if ( result )
-            result = sub_80E8A52(result, 84);
+            result = objectSetTimerAttrs(result, 84);
     }
     return result;
 }
@@ -123610,7 +123610,7 @@ int ai_attackStepTimedElement()
         object_setCollisionRegion(2);
         result = *(v1 + 48);
         if ( result )
-            result = sub_80E8A46(result);
+            result = ai_setTimedAttackScratchValue8(result);
     }
     return result;
 }

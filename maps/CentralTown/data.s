@@ -256,7 +256,7 @@ byte_804EA21::
 MapScriptOnInitCentralTown_804EA28::
 	ms_set_event_flag byte1=0xFF event16_2=EVENT_16D0
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_A9B destination4=byte_804EA41
-	ms_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=sub_804C71C+1 word9=0x00000000
+	ms_init_eStruct200a6a0 ptr1=battle_dispatchStepHandler_804C700+1 ptr5=renderInfoClearFlag11+1 word9=0x00000000
 
 byte_804EA41::
 	ms_jump_if_flag_clear byte1=0xFF event16_2=EVENT_3A destination4=mapscript_804EA52

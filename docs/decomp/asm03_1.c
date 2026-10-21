@@ -6571,7 +6571,7 @@ int sub_8039B98()
             sub_803C320();
             *(v0 + 1) = 28;
             sub_803BB7C(30);
-            sub_803BB90(0);
+            object_setNetScriptTimer(0);
         }
     }
     return battle_stepFrame();
@@ -6605,7 +6605,7 @@ int __fastcall object_chatboxStep(int a1)
                     if ( !v3 )
                     {
                         chatbox_clearTextBuffers();
-                        sub_803BB90(30);
+                        object_setNetScriptTimer(30);
                         ow_checkJackInFlag();
                         if ( !v3 )
                         {
@@ -6662,7 +6662,7 @@ int object_advanceNetDialogue()
                 sub_803C320();
                 *(v0 + 1) = 28;
                 sub_803BB7C(30);
-                sub_803BB90(0);
+                object_setNetScriptTimer(0);
                 sub_803BB2C(14);
             }
             else
@@ -9355,7 +9355,7 @@ signed int sub_803BB80()
 
 
 // 0x803bb90
-int __fastcall sub_803BB90(int result)
+int __fastcall object_setNetScriptTimer(int result)
 {
     int v1; // r5
 
@@ -10303,7 +10303,7 @@ int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
 
 
 // 0x803c604
-void sub_803C604()
+void battle_drawBattleBottomBar()
 {
     rfu_drawConnectedPlayerEntries();
     submenu_queueSlotIcons();
@@ -10362,7 +10362,7 @@ __int64 rfu_resetSlotsAndReportOffline()
 
 
 // 0x803c6f4
-signed __int64 sub_803C6F4()
+signed __int64 rfu_setIdleLinkPhase()
 {
     rfu_setLinkPhase(51);
     return 1LL;
@@ -10750,7 +10750,7 @@ int rfu_endLinkConnection()
 
 
 // 0x803cac4
-char *__fastcall sub_803CAC4(int a1)
+char *__fastcall ow_syncJackInPairTableFromOverworld(int a1)
 {
     char *result; // r0
     char *v2; // r6
@@ -10854,7 +10854,7 @@ char *sub_803CB78()
 
     result = eS200BC50;
     if ( eS200BC50 == 7 )
-        result = sub_803CAC4(7);
+        result = ow_syncJackInPairTableFromOverworld(7);
     return result;
 }
 
@@ -13213,7 +13213,7 @@ int e_getStruct200BC30Byte2()
 
 
 // 0x803ea48
-int __fastcall sub_803EA48(int result)
+int __fastcall e_setLinkResult(int result)
 {
     byte_200BC32 = result;
     return result;
@@ -13689,7 +13689,7 @@ LABEL_13:
         }
     }
 LABEL_22:
-    sub_803EA48(2);
+    e_setLinkResult(2);
     return 4;
 }
 

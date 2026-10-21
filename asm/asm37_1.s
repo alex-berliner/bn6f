@@ -3256,7 +3256,7 @@ off_8143398:
 	.word byte_2000D20
 	thumb_func_end sub_8143314
 
-// symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs sub_81433D2(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
+// symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs e_setMinigameEffectSlot2Mode(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
 // symdb: () -> r0 = 0 (success); no flags relied on by caller
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_initMinigameEffectSlot2.yaml
 	thumb_local_start
@@ -3272,7 +3272,7 @@ e_initMinigameEffectSlot2:
 	mov r1, #0x40 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, #5
-	bl sub_81433D2
+	bl e_setMinigameEffectSlot2Mode
 	bl sub_8143406
 	bl sub_814343A
 	mov r0, #0
@@ -3300,14 +3300,14 @@ e_getFlagTotal:
 
 // symdb: Sets the mode/flag byte of the minigame effect slot 2 struct to the given value.
 // symdb: (r0 = mode) -> void; writes eStruct2001010+0x9
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81433D2.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setMinigameEffectSlot2Mode.yaml
 	thumb_local_start
-sub_81433D2:
+e_setMinigameEffectSlot2Mode:
 	push {r4-r7,lr}
 	ldr r5, off_81434E0 // =eStruct2001010 
 	strb r0, [r5,#0x9] // (byte_2001019 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_81433D2
+	thumb_func_end e_setMinigameEffectSlot2Mode
 
 // symdb: Returns nonzero when the crow-lesson event flag at eStruct2001010+0x9 is set
 // symdb: (void) -> r0 = flag byte from eStruct2001010+0x9 (0 or nonzero); flags set by tst

@@ -5172,13 +5172,13 @@ sub_80491FC:
 	mov r0, #0x1e
 	bl sub_803BB7C
 	mov r0, #0
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 loc_8049218:
 	bl battle_stepFrame
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491FC
 
-// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
+// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with object_setNetScriptTimer(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
 // symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =
 // symdb: sub_803A1B0 result; updates [r5+1] = 0x20 on trigger
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_netScriptTriggerStep.yaml
@@ -5208,7 +5208,7 @@ loc_8049244:
 	beq loc_804926C
 	bl chatbox_clearTextBuffers
 	mov r0, #0x1e
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 	bl ow_checkJackInFlag
 	beq loc_804926C
 	mov r0, #0xb
@@ -5254,7 +5254,7 @@ sub_8049290:
 	mov r0, #0x1e
 	bl sub_803BB7C
 	mov r0, #0
-	bl sub_803BB90
+	bl object_setNetScriptTimer
 	mov r0, #0xe
 	bl sub_803BB2C
 	b loc_80492D4
@@ -11121,9 +11121,9 @@ off_804C714:
 
 // symdb: Clears bit 11 in the toolkit render-info flags.
 // symdb: (r0 = unused) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C71C.yaml
-	thumb_func_start sub_804C71C
-sub_804C71C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/renderInfoClearFlag11.yaml
+	thumb_func_start renderInfoClearFlag11
+renderInfoClearFlag11:
 	push {r4-r7,lr}
 	mov r4, r10
 	ldr r1, [r4,#oToolkit_RenderInfoPtr]
@@ -11132,7 +11132,7 @@ sub_804C71C:
 	bic r0, r2
 	strh r0, [r1]
 	pop {r4-r7,pc}
-	thumb_func_end sub_804C71C
+	thumb_func_end renderInfoClearFlag11
 
 // symdb: Queues the battle background GFX and palette transfers, sets the render-info blend word, advances the battle setup state to step 4, and initialises the battlefield tiles/SFX timer.
 // symdb: void battle_setupBackgroundGfx(battleState* r5, toolkit* r10); // outputs r2, r8-r12 pass

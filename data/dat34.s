@@ -1341,7 +1341,7 @@ loc_812E520::
 	tst r3, r3
 	bne loc_812E572
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x20 
 	bne loc_812E572
 	cmp r1, #0x20 
@@ -1632,7 +1632,7 @@ loc_812E774::
 	tst r0, r0
 	beq loc_812E7A0
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812E7EE
 	cmp r0, #0x10
@@ -1642,7 +1642,7 @@ loc_812E774::
 	b loc_812E7DE
 loc_812E7A0::
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812E7EE
 	cmp r1, #0x10
@@ -1657,7 +1657,7 @@ loc_812E7B4::
 	tst r0, r0
 	beq loc_812E7D0
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r0, #0x10
 	bne loc_812E7EE
 	cmp r1, #8
@@ -1665,7 +1665,7 @@ loc_812E7B4::
 	b loc_812E7DE
 loc_812E7D0::
 	mov r0, r4
-	bl sub_81325C0
+	bl camera_readLinkConnectionType
 	cmp r1, #0x10
 	bne loc_812E7EE
 	cmp r0, #8

@@ -1988,7 +1988,7 @@ int __fastcall e_initMinigameEffectSlot2(int a1, int a2, int a3, int a4)
 {
     initMinigameEffect_8003a64(2u, a2, a3, a4);
     ZeroFillByWord(&byte_2001018, 64);
-    sub_81433D2(5);
+    e_setMinigameEffectSlot2Mode(5);
     sub_8143406();
     sub_814343A();
     return 0;
@@ -2011,7 +2011,7 @@ int e_getFlagTotal()
 
 
 // 0x81433d2
-int __fastcall sub_81433D2(int result)
+int __fastcall e_setMinigameEffectSlot2Mode(int result)
 {
     byte_2001019 = result;
     return result;

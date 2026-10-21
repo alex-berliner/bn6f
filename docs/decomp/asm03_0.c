@@ -300,7 +300,7 @@ unsigned __int64 sub_802669E()
 
 
 // 0x80266ac
-int sub_80266AC()
+int battle_scanObjectPanelPattern()
 {
     int v0; // r6
     int v1; // r7
@@ -11457,7 +11457,7 @@ int __fastcall bg_getParam0(int a1)
 
 
 // 0x802e44a
-int __fastcall sub_802E44A(int a1)
+int __fastcall bg_getParam1(int a1)
 {
     return *(sub_802E490(a1) + 1);
 }
@@ -11881,7 +11881,7 @@ BOOL __fastcall sub_802E86C(int a1)
     int v1; // r4
 
     v1 = a1;
-    return bg_getParam0(a1) != 0xFFFF || sub_802E44A(v1) != 0xFFFF || sub_802E454(v1) != 0xFFFF;
+    return bg_getParam0(a1) != 0xFFFF || bg_getParam1(v1) != 0xFFFF || sub_802E454(v1) != 0xFFFF;
 }
 
 

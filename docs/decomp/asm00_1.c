@@ -902,7 +902,7 @@ void __fastcall zeroFill_8003AB2()
 
 
 // 0x8003aca
-signed int sub_8003ACA()
+signed int e_setFlag3()
 {
 	signed int result; // r0
 
@@ -10385,7 +10385,7 @@ int __fastcall input_recordStateChangeForEntry_800A0D6(int a1, int a2)
 
 
 // 0x800a0f4
-int *__fastcall sub_800A0F4(int a1)
+int *__fastcall getT3Entry(int a1)
 {
     return &dword_2036820[2 * a1];
 }

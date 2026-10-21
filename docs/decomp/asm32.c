@@ -20505,7 +20505,7 @@ void __noreturn battleObject_setCoordsFromCutsceneScript_811E3CC()
 
 
 // 0x811e40c
-int sub_811E40C()
+int sprite_clearScenarioEffectScale()
 {
     return sprite_clearScaleAndMakeUnscalable_80468E0();
 }
@@ -20802,7 +20802,7 @@ void __noreturn sprite_resetToCenter()
 
 
 // 0x811e73c
-int sub_811E73C()
+int sprite_clearScale()
 {
     return sprite_clearScaleAndMakeUnscalable_80468E0();
 }

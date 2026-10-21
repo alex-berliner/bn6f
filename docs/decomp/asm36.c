@@ -1425,7 +1425,7 @@ void __noreturn camera_checkLinkEndSync()
                     {
                         if ( sub_803DD60(v6) )
                         {
-                            v11 = sub_81325C0(v7);
+                            v11 = camera_readLinkConnectionType(v7);
                             if ( v12 == 16 && (v11 == 16 || v11 == 8) )
                             {
 LABEL_30:
@@ -1435,7 +1435,7 @@ LABEL_30:
                                 goto LABEL_32;
                             }
                         }
-                        else if ( sub_81325C0(v7) == 16 && (v13 == 16 || v13 == 8) )
+                        else if ( camera_readLinkConnectionType(v7) == 16 && (v13 == 16 || v13 == 8) )
                         {
                             goto LABEL_30;
                         }
@@ -1446,12 +1446,12 @@ LABEL_30:
                             goto LABEL_32;
                         if ( sub_803DD60(v6) )
                         {
-                            if ( sub_81325C0(v7) == 16 && v14 == 8 )
+                            if ( camera_readLinkConnectionType(v7) == 16 && v14 == 8 )
                                 goto LABEL_30;
                         }
                         else
                         {
-                            v15 = sub_81325C0(v7);
+                            v15 = camera_readLinkConnectionType(v7);
                             if ( v16 == 16 && v15 == 8 )
                                 goto LABEL_30;
                         }
@@ -2503,7 +2503,7 @@ LABEL_9:
     do
         ++v6;
     while ( v6 < 1 );
-    sub_81469A0();
+    getRfuGlobalStatePtr();
     return sub_81469E8();
 }
 
@@ -2949,7 +2949,7 @@ signed int __fastcall sub_8132538(int a1)
 
 
 // 0x81325c0
-int __fastcall sub_81325C0(int a1)
+int __fastcall camera_readLinkConnectionType(int a1)
 {
     int v1; // r2
     int result; // r0

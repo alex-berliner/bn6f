@@ -2032,7 +2032,7 @@ Battle *__fastcall sub_801012C(int a1)
         result = *(v2 + 80);
         if ( result )
         {
-            sub_80E4DA2(result);
+            object_resetChildEntityState(result);
             result = 0;
             *(v2 + 80) = 0;
         }
@@ -3606,7 +3606,7 @@ int __fastcall sub_80112EA(int a1, int a2, int a3, int a4)
 
 
 // 0x80112f4
-int __fastcall sub_80112F4(int a1, int a2, int a3, int a4)
+int __fastcall battle_spawnObj56From10a(int a1, int a2, int a3, int a4)
 {
     return battle_spawnObj56StoreRelatedObject2(266, a2, a3, a4);
 }
@@ -8575,7 +8575,7 @@ int battle_beginTurnForSide()
 
 
 // 0x801429c
-int sub_801429C()
+int battle_beginTurnOpenEntry()
 {
     return (loc_80144CA)();
 }

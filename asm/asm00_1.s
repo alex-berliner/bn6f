@@ -1732,15 +1732,15 @@ loc_8003AC4:
 
 // symdb: Sets flag byte 3 in the event/state structure.
 // symdb: (void) -> void; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003ACA.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setFlag3.yaml
 	thumb_local_start
-sub_8003ACA:
+e_setFlag3:
 	push {r4-r7,lr}
 	ldr r5, off_8003B40 // =eStruct2001010
 	mov r0, #1
 	strb r0, [r5,#0x3] // (byte_2001013 - 0x2001010)
 	pop {r4-r7,pc}
-	thumb_func_end sub_8003ACA
+	thumb_func_end e_setFlag3
 
 // symdb: Sets bit 0x80 on the status byte at eStruct2001010, but only if that byte is currently nonzero
 // symdb: (no args) -> r0 = flag byte value; flags from tst/loret, no meaningful return
@@ -16072,9 +16072,9 @@ off_800A0F0:
 
 // symdb: Returns a pointer into a global table for the indexed T3-related object.
 // symdb: (r0 = index) -> r0 = table entry pointer; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800A0F4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getT3Entry.yaml
 	thumb_local_start
-sub_800A0F4:
+getT3Entry:
 	mov r1, #8
 	mul r0, r1
 	ldr r1, off_800A100 // =dword_2036820
@@ -16083,7 +16083,7 @@ sub_800A0F4:
 	.byte 0, 0
 off_800A100:
 	.word dword_2036820
-	thumb_func_end sub_800A0F4
+	thumb_func_end getT3Entry
 
 // symdb: Decrements a per-alliance counter in the battle state (slot = this object's alliance + 4) unless a flag in the object's AI data suppresses it.
 // symdb: void battle_DecrementAllianceCounterSlot4(battleobj* obj /*r5*/, toolkit* tk /*r10*/); returns
