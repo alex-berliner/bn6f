@@ -10968,7 +10968,7 @@ off_804C610:
 off_804C614:
 	.word sub_804C668+1
 	.word sub_804C66C+1
-	.word sub_804C694+1
+	.word e_queueHandshakeAndDispatch+1
 dword_804C620:
 	.word 0x800
 	thumb_func_end drawFullscreenBackgroundTiles
@@ -11042,9 +11042,9 @@ byte_804C684:
 // symdb: Queues the E-connection handshake packet and dispatches the pending event callback.
 // symdb: (r0 = inherited context pointer, r1..r3 = inherited values) -> r0 = callback result or inherited
 // symdb: r0; flags conditionally inherited from the callback path
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C694.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_queueHandshakeAndDispatch.yaml
 	thumb_local_start
-sub_804C694:
+e_queueHandshakeAndDispatch:
 	push {r4-r7,lr}
 	ldr r0, off_804C6A8 // =off_804C6AC 
 	bl e_queuePacketEntry
@@ -11065,7 +11065,7 @@ dword_804C6B4:
 	.word 0x808060A
 	.word 0xC040A06
 	.word 0x10000E02
-	thumb_func_end sub_804C694
+	thumb_func_end e_queueHandshakeAndDispatch
 
 // symdb: Emits one 4-byte packet (0x48,0x37 + two data bytes) into the toolkit scratch struct, stepping through 64 two-byte records of the selected table before resetting and zero-filling.
 // symdb: (r0 = array of pointers to 2-byte record tables; uses r5 struct: +0xC table selector byte, +0x18
@@ -11399,7 +11399,7 @@ loc_804CABE:
 off_804CACC:
 	.word off_804CAD0
 off_804CAD0:
-	.word sub_804CB0C+1
+	.word t3_setupFullScreenBattleBackground+1
 	.word t3_showFullScreenBackground+1
 	.word nullsub_804CBA0+1
 off_804CADC:
@@ -11437,9 +11437,9 @@ off_804CB08:
 // symdb: (r0 = context/state pointer, r1 = unused, r2 = unused, r3 = unused, r4 = context/state pointer,
 // symdb: r5 = state pointer, r6 = unused, r7 = argument for chatbox initialization, r10 = render context)
 // symdb: -> void; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CB0C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_setupFullScreenBattleBackground.yaml
 	thumb_local_start
-sub_804CB0C:
+t3_setupFullScreenBattleBackground:
 	push {r4-r7,lr}
 	ldr r0, off_804CB48 // =byte_86A34C0 
 	ldr r1, dword_804CB4C // =0x600cfe0 
@@ -11482,7 +11482,7 @@ dword_804CB5C:
 	.word 0x1F09
 off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
-	thumb_func_end sub_804CB0C
+	thumb_func_end t3_setupFullScreenBattleBackground
 
 // symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
 // symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;

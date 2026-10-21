@@ -1259,7 +1259,7 @@ int __fastcall dirOffsetFromAlliance_800F9DE(int a1, int a2)
 
 
 // 0x800fa20
-void __fastcall __noreturn sub_800FA20(int a1)
+void __fastcall __noreturn battle_findPanelInAllianceDir(int a1)
 {
     unsigned __int8 *v1; // r5
     int v2; // r0
@@ -19838,7 +19838,7 @@ void eBgCounterDrawStep()
     {
         renderTextGfx_8045F8C(TextScript86F0374, 2, byte_203C4E0, 100701024);
         CopyBackgroundTiles(14, 5, 3, dword_801D190, 2, &byte_0[2]);
-        sub_801D12A(*(v0 + 6), v1, v2, v3, v4);
+        eBgCounterBuildHexTileIds(*(v0 + 6), v1, v2, v3, v4);
     }
     if ( !v0[14] )
     {
@@ -19849,7 +19849,7 @@ void eBgCounterDrawStep()
 
 
 // 0x801d12a
-void __fastcall __noreturn sub_801D12A(unsigned int a1, int a2, int a3, int a4, int a5)
+void __fastcall __noreturn eBgCounterBuildHexTileIds(unsigned int a1, int a2, int a3, int a4, int a5)
 {
     int v5; // lr
     unsigned int v6; // r4

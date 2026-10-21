@@ -6069,7 +6069,7 @@ void sub_804C66C()
 
 
 // 0x804c694
-void sub_804C694()
+void e_queueHandshakeAndDispatch()
 {
     int v0; // r5
     int v1; // r1
@@ -6268,7 +6268,7 @@ signed int __fastcall ow_loadCurrentMap(int a1, int a2, int a3, int a4)
 
 
 // 0x804cb0c
-int sub_804CB0C()
+int t3_setupFullScreenBattleBackground()
 {
     int v0; // r5
     int *v1; // r7

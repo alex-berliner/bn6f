@@ -189,7 +189,7 @@ LABEL_34:
             }
         }
     }
-    sub_812D5A0();
+    submenu_clearSelectedFieldElements();
     battle_renderChipPackScreenTilemap();
     return submenu_drawScreenElement();
 }
@@ -715,7 +715,7 @@ LABEL_38:
                         *(v25 + 10) = *(v0 + 42);
                         v26 = sub_812D5D0(0, 3, 0);
                         *(v0 + 48) = sub_812D934(v26, 1);
-                        sub_812D99C(1);
+                        battle_scrollChipPackScreen(1);
                         battle_spawnEStructsFromTablePair();
                         return;
                     }
@@ -825,8 +825,8 @@ int sub_812CA84()
                                     {
                                         engine_setScreeneffect(8, 16);
                                         *(v0 + 3) = 4;
-                                        sub_812D99C(0);
-                                        sub_812D99C(1);
+                                        battle_scrollChipPackScreen(0);
+                                        battle_scrollChipPackScreen(1);
                                         battle_resetEStructRecords_8046664();
                                         sub_812D528();
                                         sub_812D378();
@@ -1239,7 +1239,7 @@ int sub_812CEF0()
     {
         t4_transitionToTextState1C();
 LABEL_22:
-        sub_812D778();
+        battle_renderChipPackScreenTiles();
         goto LABEL_24;
     }
     if ( v1 != 1 )
@@ -1256,7 +1256,7 @@ LABEL_22:
             if ( !eStruct200BC30_getJumpOffset00() )
             {
 LABEL_23:
-                sub_812D778();
+                battle_renderChipPackScreenTiles();
                 npc_runDialog41(32);
                 goto LABEL_24;
             }
@@ -1550,7 +1550,7 @@ int sub_812D164()
     }
     else if ( result != 16 )
     {
-        sub_812D5A0();
+        submenu_clearSelectedFieldElements();
         battle_renderChipPackScreenTilemap();
         result = submenu_drawScreenElement();
     }

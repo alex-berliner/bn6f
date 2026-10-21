@@ -2208,7 +2208,7 @@ int sub_813CD22()
 
 
 // 0x813cd30
-int sub_813CD30()
+int pet_clearCurNaviRoundAndBattleFlags()
 {
     int v0; // r0
     int v1; // r1
@@ -2553,7 +2553,7 @@ int __fastcall pet_addCurNaviStatsByteCapped7(int a1)
 
 
 // 0x813cf8c
-int __fastcall sub_813CF8C(char a1)
+int __fastcall petSetCurNaviStatId(char a1)
 {
     return SetCurPETNaviStatsByte(0, 26, a1);
 }

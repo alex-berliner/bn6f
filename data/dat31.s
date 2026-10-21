@@ -1781,7 +1781,7 @@ sub_810D3EA::
 	ldrh r0, [r7,#oAIAttackVars_StepTimer]
 	cmp r0, #1
 	bne loc_810D3FE
-	bl sub_810D4E8
+	bl object_clearAiAttackInvulnerables
 	ldr r0, [r7,#oAIAttackVars_PanelParamFlags2]
 	mov r1, #0
 	str r1, [r0]
@@ -1940,9 +1940,9 @@ dword_810D4E4::
 
 // symdb: Clears invulnerability on every object recorded in the current AI attack's param buffer.
 // symdb: (no args; uses r7 = oAIAttackVars-like context) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D4E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_clearAiAttackInvulnerables.yaml
 	thumb_local_start
-sub_810D4E8::
+object_clearAiAttackInvulnerables::
 	push {lr}
 	sub sp, sp, #0x20
 	ldr r0, [r7,#oAIAttackVars_AiAttackParam]
@@ -1966,7 +1966,7 @@ loc_810D502::
 loc_810D512::
 	add sp, sp, #0x20
 	pop {pc}
-	thumb_func_end sub_810D4E8
+	thumb_func_end object_clearAiAttackInvulnerables
 
 	thumb_local_start
 sub_810D516::
@@ -2024,7 +2024,7 @@ sub_810D590::
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	cmp r0, #0
 	bne loc_810D5A0
-	bl sub_810D4E8
+	bl object_clearAiAttackInvulnerables
 	mov r0, #0
 	str r0, [r5,#oBattleObject_ExtraVars]
 loc_810D5A0::
@@ -2041,7 +2041,7 @@ sub_810D5A6::
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq loc_810D5B8
-	bl sub_810D4E8
+	bl object_clearAiAttackInvulnerables
 loc_810D5B8::
 	bl battleObject_initAndRunAI_8016B02
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -2067,7 +2067,7 @@ battle_objThinkCustom::
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq loc_810D5E0
-	bl sub_810D4E8
+	bl object_clearAiAttackInvulnerables
 loc_810D5E0::
 	bl battle_objectStatePendingCommit
 	ldrb r0, [r5,#oBattleObject_CurAction]
@@ -2090,7 +2090,7 @@ sub_810D5F6::
 	ldr r0, [r5,#oBattleObject_ExtraVars]
 	cmp r0, #0
 	beq loc_810D608
-	bl sub_810D4E8
+	bl object_clearAiAttackInvulnerables
 loc_810D608::
 	bl battle_hoverBobObjectUpdate
 	ldrb r0, [r5,#oBattleObject_CurAction]

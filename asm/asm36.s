@@ -17085,7 +17085,7 @@ loc_8137E9C:
 	ldr r0, [sp]
 	ldr r1, [sp,#0xc]
 	mov r2, r7
-	bl sub_8138210
+	bl battle_getDigitStoryFlag
 	ldr r1, [sp,#4]
 	ldr r2, [sp,#8]
 	bl sub_8137F08
@@ -17580,9 +17580,9 @@ off_813820C:
 // symdb: Returns the story-progress flag controlling visibility of one battle time digit.
 // symdb: (r0 = default_flag, r1 = flag table, r2 = digit_index) -> r0 = enabled story flag or
 // symdb: default_flag; flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138210.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getDigitStoryFlag.yaml
 	thumb_local_start
-sub_8138210:
+battle_getDigitStoryFlag:
 	push {r3-r7,lr}
 	sub sp, sp, #4
 	mov r7, r0
@@ -17617,7 +17617,7 @@ byte_8138240:
 	.byte 0x0, 0x0, 0x0, 0xD0, 0x0, 0x0, 0x0
 byte_8138288:
 	.byte 0x38, 0x0, 0x0, 0x0, 0x38, 0x1, 0x0, 0x0, 0xFF, 0xFF, 0xFF, 0xFF
-	thumb_func_end sub_8138210
+	thumb_func_end battle_getDigitStoryFlag
 
 	thumb_func_start sub_8138294
 sub_8138294:
@@ -17880,7 +17880,7 @@ off_8138444:
 	.word sprite_advanceAnimFrame+1
 	.word sub_81384E0+1
 	.word sub_81384FC+1
-	.word sub_8138514+1
+	.word object_clearType25AndAdvance+1
 	.word sub_8138528+1
 	.word sub_813853C+1
 	.word sub_8138550+1
@@ -17990,9 +17990,9 @@ sub_81384FC:
 
 // symdb: Clears all active battle objects of type 0x25, marks the current object field, and advances a counter/state byte.
 // symdb: (r0 = implicit current object/state pointer in r5) -> r0 = 1; flags:
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138514.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_clearType25AndAdvance.yaml
 	thumb_local_start
-sub_8138514:
+object_clearType25AndAdvance:
 	push {lr}
 	mov r0, #0xc
 	strb r0, [r5,#1]
@@ -18002,7 +18002,7 @@ sub_8138514:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8138514
+	thumb_func_end object_clearType25AndAdvance
 
 	thumb_local_start
 sub_8138528:

@@ -3032,7 +3032,7 @@ byte_813CC18:
 	.word sub_813CD10+1
 	.word pet_resetCurNaviStatsByte19+1
 	.word sub_813CD22+1
-	.word sub_813CD30+1
+	.word pet_clearCurNaviRoundAndBattleFlags+1
 	.word sub_813CD58+1
 	.word pet_setCurNaviStatsByte63+1
 	.word sub_813CD66+1
@@ -3137,15 +3137,15 @@ sub_813CD22:
 
 // symdb: Clears the selected Navi's round-control byte and adjacent byte 0x13 in PET NaviStats.
 // symdb: (r0 = unused, r1 = unused, r2 = 4, r3 = ...) -> r0 = ...; flags ...
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD30.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_clearCurNaviRoundAndBattleFlags.yaml
 	thumb_local_start
-sub_813CD30:
+pet_clearCurNaviRoundAndBattleFlags:
 	push {lr}
 	bl pet_initCurNaviStatsRoundControl
 	mov r2, #4
 	bl pet_clearCurNaviStatsByte19
 	pop {pc}
-	thumb_func_end sub_813CD30
+	thumb_func_end pet_clearCurNaviRoundAndBattleFlags
 
 // symdb: Initializes the selected navi's NaviStats round-control byte (offset 0x12) to 0 with a 3-byte write, used as the first step before clearing adjacent round/battle state bytes.
 // symdb: () -> void; writes 0 to offset 0x12 of the current PET navi's NaviStats record via
@@ -3612,9 +3612,9 @@ loc_813CF86:
 
 // symdb: Writes a supplied stat-record ID into the selected PET Navi's stats.
 // symdb: (r0 = statRecordId) -> void; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/petSetCurNaviStatId.yaml
 	thumb_local_start
-sub_813CF8C:
+petSetCurNaviStatId:
 	push {lr}
 	mov r2, r0
 	mov r0, #0
@@ -3749,7 +3749,7 @@ byte_813D3A4:
 byte_813D410:
 	.byte 0x3E, 0x45, 0xCC, 0x86, 0x90, 0x18, 0x4F, 0x9, 0x61
 	.byte 0xE9, 0x0, 0x0
-	thumb_func_end sub_813CF8C
+	thumb_func_end petSetCurNaviStatId
 
 // symdb: Verifies an 8-byte player-entered code against a lookup table and, on first match, sets the corresponding story event flag.
 // symdb: (r0 = u8 code[8]) -> r0 = 1 (new match, r1 = entry id, r2 = entry halfword, r3 = entry byte1), 2

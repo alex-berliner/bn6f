@@ -10216,7 +10216,7 @@ _WORD *__fastcall battle_renderTimeBcdDigits(int a1, int a2, int a3, int a4)
         if ( *v6 )
         {
             get_indexedTimeBcd(v5, &unk_20018C0);
-            v8 = sub_8138210(v11, v14, v5);
+            v8 = battle_getDigitStoryFlag(v11, v14, v5);
             sub_8137F08(v8, v12, v13, v9);
         }
         v6 += 2;
@@ -10502,7 +10502,7 @@ signed int submenu_showSelectedFastestTime()
 
 
 // 0x8138210
-int __fastcall sub_8138210(int a1, int a2, int a3)
+int __fastcall battle_getDigitStoryFlag(int a1, int a2, int a3)
 {
     int v3; // r7
     unsigned int v4; // r0
@@ -10722,7 +10722,7 @@ signed int __fastcall sub_81384FC(int a1, int a2, int a3, int a4)
 
 
 // 0x8138514
-signed int sub_8138514()
+signed int object_clearType25AndAdvance()
 {
     int v0; // r5
     int v1; // r3

@@ -310,9 +310,9 @@ loc_812D594:
 
 // symdb: Clears the three visual elements associated with the currently selected submenu field.
 // symdb: (r0 = unused) -> r0 = unspecified; flags clobpered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D5A0.yaml
-	thumb_func_start sub_812D5A0
-sub_812D5A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_clearSelectedFieldElements.yaml
+	thumb_func_start submenu_clearSelectedFieldElements
+submenu_clearSelectedFieldElements:
 	push {r4-r7,lr}
 	bl submenu_getWork
 	mov r5, r0
@@ -335,7 +335,7 @@ sub_812D5A0:
 	.balign 4, 0
 off_812D5CC:
 	.word word_2023FA0
-	thumb_func_end sub_812D5A0
+	thumb_func_end submenu_clearSelectedFieldElements
 
 	thumb_func_start sub_812D5D0
 sub_812D5D0:
@@ -592,9 +592,9 @@ locret_812D776:
 
 // symdb: Refreshes the chip-pack screen background tile patch when the screen object requests a special refresh state.
 // symdb: (r5 = battle screen object/state pointer) -> void; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D778.yaml
-	thumb_func_start sub_812D778
-sub_812D778:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_renderChipPackScreenTiles.yaml
+	thumb_func_start battle_renderChipPackScreenTiles
+battle_renderChipPackScreenTiles:
 	push {lr}
 	ldrb r0, [r5,#2]
 	cmp r0, #0x20 
@@ -604,7 +604,7 @@ sub_812D778:
 locret_812D788:
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812D778
+	thumb_func_end battle_renderChipPackScreenTiles
 
 // symdb: Blits a fixed 8x17 tile patch from the RAM buffer unk_20227A0 into background tile block 0 at position (j=0x15, i=2).
 // symdb: () -> void; no flags (r0-r5 set internally, calls CopyBackgroundTiles)
@@ -628,7 +628,7 @@ copyBgTilesToBlock0:
 off_812D7A0:
 	.word unk_20227A0
 	thumb_func_end copyBgTilesToBlock0
-// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling sub_812D5A0.
+// symdb: A-button confirm handler for a battle-menu entry: on new A press, plays SOUND_MENU_SELECT, stores the entry's +0x34 halfword into s2001c04 work byte +2, XORs a flag from byte_30069A0[stored] into work byte +4 (always, even if unchanged), and when the entry's +0x28 field is not 1, dispatches battle_fieldLockDispatch_8120018 with unk_2023FC0 and (field-1) as index before calling submenu_clearSelectedFieldElements.
 // symdb: (no args; uses r10 toolkit's s2001c04 battle-work pointer and the entry returned by sub_812D6F8)
 // symdb: -> r0 = 1 if A was newly pressed this frame, else 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_confirmSelectionEntry.yaml
@@ -672,7 +672,7 @@ loc_812D7E6:
 	sub r1, #1
 	beq loc_812D7F6
 	bl battle_fieldLockDispatch_8120018
-	bl sub_812D5A0
+	bl submenu_clearSelectedFieldElements
 loc_812D7F6:
 	mov r6, #0
 	mov r7, #0
@@ -928,9 +928,9 @@ loc_812D970:
 	thumb_func_end sub_812D954
 // symdb: Scrolls the shared battle display window horizontally to a selected side or position during chip-pack transitions.
 // symdb: (r0 = scroll selector 0 or 1) -> r0 = unchanged selector; flags caller-clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D99C.yaml
-	thumb_func_start sub_812D99C
-sub_812D99C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_scrollChipPackScreen.yaml
+	thumb_func_start battle_scrollChipPackScreen
+battle_scrollChipPackScreen:
 	push {r4-r7,lr}
 	lsl r0, r0, #2
 	ldr r1, off_812D9D0 // =off_812D9D4 
@@ -968,7 +968,7 @@ off_812D9DC:
 byte_812D9E0:
 	.byte 0xB, 0x0, 0x0, 0x0, 0xB, 0x0, 0x0, 0x0, 0x6, 0x0, 0x0, 0x0, 0xD, 0x0, 0x0
 	.byte 0x0
-	thumb_func_end sub_812D99C
+	thumb_func_end battle_scrollChipPackScreen
 
 // symdb: Submits the shared submenu screen object's cursor-related OAM layer.
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused) -> r0 = unspecified; flags unspecified

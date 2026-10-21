@@ -16813,7 +16813,7 @@ void __noreturn sprite_drawMarkerForObject()
 
 
 // 0x811b098
-int sub_811B098()
+int sprite_drawChipGateMarker()
 {
     int v0; // r5
     int v1; // r0

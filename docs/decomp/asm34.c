@@ -129,7 +129,7 @@ int __fastcall battle_spawnEStructGroup(void *a1, int a2, int a3)
 
 
 // 0x812d5a0
-int sub_812D5A0()
+int submenu_clearSelectedFieldElements()
 {
 	char *v0; // r5
 	int v1; // r2
@@ -300,7 +300,7 @@ void submenu_updateCursorAndTiles()
 
 
 // 0x812d778
-int sub_812D778()
+int battle_renderChipPackScreenTiles()
 {
 	int v0; // r5
 	int result; // r0
@@ -350,7 +350,7 @@ signed int battle_confirmSelectionEntry()
 	if ( *(v1 + 20) != 1 )
 	{
 		battle_fieldLockDispatch_8120018(&battleChipSearchList, *(v1 + 20) - 1, v6, v8);
-		sub_812D5A0();
+		submenu_clearSelectedFieldElements();
 	}
 	return 1;
 }
@@ -490,7 +490,7 @@ void __fastcall __noreturn sub_812D954(int a1)
 
 
 // 0x812d99c
-void __fastcall sub_812D99C(int a1)
+void __fastcall battle_scrollChipPackScreen(int a1)
 {
 	int v1; // r5
 	int v2; // r0

@@ -77105,7 +77105,7 @@ void battle_objPhaseRunChatboxScript()
 
 
 // 0x80e6924
-int sub_80E6924()
+int battleSpawnTimedAttackProjectile()
 {
     int v0; // r5
     int v1; // r0
@@ -84085,7 +84085,7 @@ void battleObject_aiAttackStepMoveTowardTarget_80EB088()
             if ( v5 != 2 )
             {
                 if ( v5 == 3 )
-                    sub_800FA20(v4);
+                    battle_findPanelInAllianceDir(v4);
                 goto LABEL_14;
             }
             v6 = *(v1 + 22);
@@ -84430,7 +84430,7 @@ int __fastcall battle_getTargetPanelByMode(int a1, int a2)
     else
     {
         if ( a2 == 3 )
-            sub_800FA20(a1);
+            battle_findPanelInAllianceDir(a1);
         result = 0;
     }
     return result;

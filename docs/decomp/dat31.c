@@ -1048,7 +1048,7 @@ _DWORD *sub_810D3EA()
 
     if ( *(v0 + 16) == 1 )
     {
-        sub_810D4E8();
+        object_clearAiAttackInvulnerables();
         result = *(v0 + 56);
         *result = 0;
     }
@@ -1205,7 +1205,7 @@ int sub_810D4BA()
 
 
 // 0x810d4e8
-int sub_810D4E8()
+int object_clearAiAttackInvulnerables()
 {
     int v0; // r5
     int v1; // r7
@@ -1303,7 +1303,7 @@ int sub_810D590()
     v1 = *(v0 + 10);
     if ( !*(v0 + 10) )
     {
-        sub_810D4E8();
+        object_clearAiAttackInvulnerables();
         v1 = 0;
         *(v0 + 96) = 0;
     }
@@ -1318,7 +1318,7 @@ int sub_810D5A6()
     int result; // r0
 
     if ( !*(v0 + 11) && *(v0 + 96) )
-        sub_810D4E8();
+        object_clearAiAttackInvulnerables();
     battleObject_initAndRunAI_8016B02();
     result = *(v0 + 9);
     if ( result != 4 )
@@ -1338,7 +1338,7 @@ int battle_objThinkCustom()
     int result; // r0
 
     if ( !*(v0 + 11) && *(v0 + 96) )
-        sub_810D4E8();
+        object_clearAiAttackInvulnerables();
     battle_objectStatePendingCommit();
     result = *(v0 + 9);
     if ( result != 6 )
@@ -1358,7 +1358,7 @@ int sub_810D5F6()
     int result; // r0
 
     if ( !*(v0 + 11) && *(v0 + 96) )
-        sub_810D4E8();
+        object_clearAiAttackInvulnerables();
     battle_hoverBobObjectUpdate();
     result = *(v0 + 9);
     if ( result != 7 )

@@ -1997,9 +1997,9 @@ byte_800FA14:
 
 // symdb: From a battle object's own panel, searches a row or column in the direction its alliance indicates and returns the matching panel via sub_800D120 / battle_scanPanelColumnForMatch.
 // symdb: (r5 = battle object) -> r0 = match row, r1 = match column; uses 0x18 sp
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FA20.yaml
-	thumb_func_start sub_800FA20
-sub_800FA20:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_findPanelInAllianceDir.yaml
+	thumb_func_start battle_findPanelInAllianceDir
+battle_findPanelInAllianceDir:
 	push {lr}
 	sub sp, sp, #0x18
 	ldrb r1, [r5,#oBattleObject_Alliance]
@@ -2023,7 +2023,7 @@ loc_800FA42:
 loc_800FA50:
 	add sp, sp, #0x18
 	pop {pc}
-	thumb_func_end sub_800FA20
+	thumb_func_end battle_findPanelInAllianceDir
 
 	thumb_func_start playerObject_checkDirectionButtons_800FA54
 playerObject_checkDirectionButtons_800FA54:
@@ -30275,7 +30275,7 @@ loc_801D070:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	pop {r4-r7}
 	ldrh r0, [r7,#0xc]
-	bl sub_801D12A
+	bl eBgCounterBuildHexTileIds
 	ldr r7, off_801D1D4 // =byte_2036840 
 	ldrh r0, [r7,#0xc] // (word_203684C - 0x2036840)
 	bl countHexDigits_8000C5C
@@ -30327,7 +30327,7 @@ loc_801D0DA:
 	str r0, [sp,#0xc]
 loc_801D0FE:
 	ldrh r0, [r7,#0xa] // (word_203684A - 0x2036840)
-	bl sub_801D12A
+	bl eBgCounterBuildHexTileIds
 	// j
 	mov r0, #9
 	// i
@@ -30358,9 +30358,9 @@ locret_801D128:
 
 // symdb: Builds two-tile-wide hexadecimal glyph pairs with leading blanks for a four-digit BG counter field.
 // symdb: (r0 = value) -> stack writes four u16 tile IDs; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D12A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eBgCounterBuildHexTileIds.yaml
 	thumb_local_start
-sub_801D12A:
+eBgCounterBuildHexTileIds:
 	mov r4, r0
 	mov r7, lr
 	bl countHexDigits_8000C5C
@@ -30436,7 +30436,7 @@ off_801D1D0:
 	.word dword_86B7AE0
 off_801D1D4:
 	.word byte_2036840
-	thumb_func_end sub_801D12A
+	thumb_func_end eBgCounterBuildHexTileIds
 
 // symdb: Counts down a one-byte timer at 0x2036857 and, when it hits zero, clears request-flag bit 16 and fires dispatch_801DACC with that mask.
 // symdb: (void) -> r0 = result of dispatch_801DACC; the counter decrement sets NZ for the branch, no LR

@@ -27606,7 +27606,7 @@ sprite_updateGui68:
 	bl sub_811B104
 	bl sub_811B14C
 	bl sprite_forwardVariantValueAtOffset
-	bl sub_811B098
+	bl sprite_drawChipGateMarker
 	bl sprite_drawMarkerForObject
 locret_811ADEC:
 	pop {pc}
@@ -27951,9 +27951,9 @@ dword_811B094:
 
 // symdb: Per-frame drawer for GUI sprite 0x68's overlay marker, queuing one OAM entry at an object's coordinates plus a fixed offset.
 // symdb: (r5 = sprite struct) -> void; queues one sprite via sprite_queueOamEntryFromTable
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B098.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_drawChipGateMarker.yaml
 	thumb_local_start
-sub_811B098:
+sprite_drawChipGateMarker:
 	push {r4-r7,lr}
 	sub sp, sp, #8
 	ldr r0, off_811B0DC // =byte_811B0E0
@@ -28004,7 +28004,7 @@ off_811B0FC:
 	.word dword_811B100
 dword_811B100:
 	.word 0x403
-	thumb_func_end sub_811B098
+	thumb_func_end sprite_drawChipGateMarker
 
 	thumb_local_start
 sub_811B104:

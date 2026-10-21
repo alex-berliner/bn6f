@@ -123,7 +123,7 @@ loc_812C370::
 	ldr r0, byte_812C4DC // =0xdc 
 	strh r0, [r5,#0x2a]
 	bl sub_812D298
-	bl sub_812D5A0
+	bl submenu_clearSelectedFieldElements
 	b loc_812C3B6
 loc_812C3B2::
 	bl t4_transitionToTextState1C
@@ -267,7 +267,7 @@ loc_812C4C4::
 	mov r0, #4
 	bl npc_runDialog41
 loc_812C4CA::
-	bl sub_812D5A0
+	bl submenu_clearSelectedFieldElements
 	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	pop {r4-r7,pc}
@@ -736,7 +736,7 @@ loc_812C846::
 	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 	mov r0, #0
-	bl sub_812D99C
+	bl battle_scrollChipPackScreen
 	mov r0, #4
 	strb r0, [r5,#2]
 	b loc_812C880
@@ -913,7 +913,7 @@ loc_812C986::
 	bl sub_812D934
 	strh r0, [r5,#0x30]
 	mov r0, #1
-	bl sub_812D99C
+	bl battle_scrollChipPackScreen
 	bl battle_spawnEStructsFromTablePair
 	b loc_812CA50
 loc_812C9D8::
@@ -1088,9 +1088,9 @@ loc_812CB0A::
 	mov r0, #4
 	strb r0, [r5,#3]
 	mov r0, #0
-	bl sub_812D99C
+	bl battle_scrollChipPackScreen
 	mov r0, #1
-	bl sub_812D99C
+	bl battle_scrollChipPackScreen
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl sub_812D528
 	bl sub_812D378
@@ -1671,10 +1671,10 @@ loc_812CF9E::
 loc_812CFA8::
 	bl t4_transitionToTextState1C
 loc_812CFAC::
-	bl sub_812D778
+	bl battle_renderChipPackScreenTiles
 	b loc_812CFBC
 loc_812CFB2::
-	bl sub_812D778
+	bl battle_renderChipPackScreenTiles
 	mov r0, #0x20 
 	bl npc_runDialog41
 loc_812CFBC::
@@ -1960,7 +1960,7 @@ loc_812D1D4::
 loc_812D1E4::
 	cmp r0, #0x10
 	beq locret_812D1F4
-	bl sub_812D5A0
+	bl submenu_clearSelectedFieldElements
 	bl battle_renderChipPackScreenTilemap
 	bl submenu_drawScreenElement
 locret_812D1F4::

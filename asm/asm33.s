@@ -14921,7 +14921,7 @@ off_812A294:
 	.word sub_812A3FC+1
 	.word screens3_initScreen+1
 	.word sub_812A494+1
-	.word sub_812A4AC+1
+	.word rfu_restartLinkTransfer+1
 	thumb_func_end sub_812A27C
 
 	thumb_local_start
@@ -15181,9 +15181,9 @@ locret_812A4A8:
 
 // symdb: Counts down a wireless-link timer and restarts the multiplayer transfer when it expires.
 // symdb: (r5 = link-state object) -> void; flags conditionally modified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A4AC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_restartLinkTransfer.yaml
 	thumb_local_start
-sub_812A4AC:
+rfu_restartLinkTransfer:
 	push {lr}
 	ldrh r0, [r5,#0x28]
 	sub r0, #1
@@ -15205,7 +15205,7 @@ loc_812A4D6:
 	bl rfu_startLinkTransfer
 locret_812A4DA:
 	pop {pc}
-	thumb_func_end sub_812A4AC
+	thumb_func_end rfu_restartLinkTransfer
 
 	thumb_local_start
 sub_812A4DC:

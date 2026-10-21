@@ -106001,7 +106001,7 @@ off_80E68EC:
 	.word off_80E68F0
 off_80E68F0:
 	.word battle_objPhaseRunChatboxScript+1
-	.word sub_80E6924+1
+	.word battleSpawnTimedAttackProjectile+1
 	thumb_func_end battle_objPhaseDispatch
 
 // symdb: Battle-object phase step that displays a text script once (keyed by Param2+0x1E) and waits until the chatbox closes before ending the phase.
@@ -106037,9 +106037,9 @@ off_80E6920:
 
 // symdb: Initializes a battle object, conditionally spawns configured projectile object type 0x77, then advances a 30-frame lifetime and ends the object.
 // symdb: (r2 = packed secondary configuration, r5 = battle object) -> r0 = unspecified; flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E6924.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleSpawnTimedAttackProjectile.yaml
 	thumb_local_start
-sub_80E6924:
+battleSpawnTimedAttackProjectile:
 	push {r4,r6,lr}
 	ldrb r0, [r5,#oBattleObject_PhaseInitialized]
 	tst r0, r0
@@ -106075,7 +106075,7 @@ loc_80E6962:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80E696A:
 	pop {r4,r6,pc}
-	thumb_func_end sub_80E6924
+	thumb_func_end battleSpawnTimedAttackProjectile
 
 // symdb: Spawns a child battle object (type 0x54 via object_spawnType4) and, on success, copies the caller’s r0..r2 plus a pointer/scalar set (r5) and parent-derived halfword (+0x16) into the new object’s +0x60/+0x64/+0xE/+0x4C/+0x16 slots, with r6/r7 stored at +0x2C/+0x30.
 // symdb: (r0, r1, r2, r3 = spawn params; r5 = source object, r6/r7 = extra values) -> r0 = new object
@@ -115782,7 +115782,7 @@ loc_80EB0BA:
 loc_80EB0C4:
 	cmp r1, #3
 	bne loc_80EB114
-	bl sub_800FA20
+	bl battle_findPanelInAllianceDir
 loc_80EB0CC:
 	tst r0, r0
 	beq loc_80EB114
@@ -116245,7 +116245,7 @@ loc_80EB41E:
 loc_80EB428:
 	cmp r1, #3
 	bne loc_80EB432
-	bl sub_800FA20
+	bl battle_findPanelInAllianceDir
 locret_80EB430:
 	pop {pc}
 loc_80EB432:

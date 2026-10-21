@@ -8418,7 +8418,7 @@ int __fastcall sub_812A494(int a1)
 
 
 // 0x812a4ac
-int __fastcall sub_812A4AC(int a1, int a2, int a3, int a4)
+int __fastcall rfu_restartLinkTransfer(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int result; // r0

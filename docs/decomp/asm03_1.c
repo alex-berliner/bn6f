@@ -10265,7 +10265,7 @@ int rfu_setFlag40()
 
 
 // 0x803c58c
-int sub_803C58C()
+int battle_clearPlayerStatusFlags()
 {
     return clearStatusBits(64);
 }
@@ -10609,7 +10609,7 @@ signed __int64 rfu_pollLinkState()
 
 
 // 0x803c94c
-signed __int64 sub_803C94C()
+signed __int64 rfu_finishLink()
 {
     char v0; // zf
 

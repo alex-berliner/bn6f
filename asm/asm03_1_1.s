@@ -7652,9 +7652,9 @@ rfu_setFlag40:
 
 // symdb: Clears the fixed player status/flag word at eS200A290 using mask 0x40.
 // symdb: (void) -> void; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C58C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_clearPlayerStatusFlags.yaml
 	thumb_local_start
-sub_803C58C:
+battle_clearPlayerStatusFlags:
 	push {r4-r7,lr}
 	ldr r5, off_803C598 // =eS200A290
 	mov r0, #0x40
@@ -7663,7 +7663,7 @@ sub_803C58C:
 	.balign 4, 0
 off_803C598:
 	.word eS200A290
-	thumb_func_end sub_803C58C
+	thumb_func_end battle_clearPlayerStatusFlags
 
 // symdb: Appends a custom-screen OAM entry and uploads the next chip-cursor tile to VRAM each frame, gated on the chip-cursor singleton's state.
 // symdb: (r0 = packed_OAM_word0, r1 = packed_OAM_word1) -> r0 = packed_OAM_word0 ; r0/r1 also clobbered
@@ -7800,7 +7800,7 @@ dword_803C650:
 	// 0x30
 	.word rfu_stepLinkState+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x34
-	.word sub_803C94C+1 // (self: * S200BC50 $r7) -> (u32?, bool)
+	.word rfu_finishLink+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x38
 	.word sub_803C97C+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x3C
@@ -7812,9 +7812,9 @@ dword_803C650:
 	// 0x48
 	.word rfu_stateStep+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x4C
-	.word sub_803C94C+1 // (self: * S200BC50 $r7) -> (u32?, bool)
+	.word rfu_finishLink+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x50
-	.word sub_803C94C+1 // (self: * S200BC50 $r7) -> (u32?, bool)
+	.word rfu_finishLink+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	// 0x54
 	.word battle_initWaitTimer+1 // (self: * S200BC50 $r7) -> (u32?, bool)
 	thumb_func_end dispatch_803C620
@@ -8255,9 +8255,9 @@ off_803C948:
 
 // symdb: Finishes/tears down the current RFU wireless link: if no subsystem is active, advances to link phase 1, otherwise records the ended state; always clears the pending link command and returns (true, 0).
 // symdb: () -> (r0 = 1 /* success/finished */, r1 = 0 /* status */)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C94C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_finishLink.yaml
 	thumb_local_start
-sub_803C94C: // (self: * S200BC50 $r7) -> (u32?, bool)
+rfu_finishLink: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
 	bl IsCurSubsystemInUse // () -> (bool, !zf)
 	bne loc_803C966
@@ -8278,7 +8278,7 @@ loc_803C966:
 	.balign 4, 0
 dword_803C978:
 	.word 0x1
-	thumb_func_end sub_803C94C
+	thumb_func_end rfu_finishLink
 
 	thumb_local_start
 sub_803C97C: // (self: * S200BC50 $r7) -> (u32?, bool)
