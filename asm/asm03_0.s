@@ -10042,7 +10042,7 @@ off_802A988:
 	.word sub_802AE5C+1
 	.word object_drawNextArrowOam+1
 	.word object_renderSpritePair+1
-	.word sub_802AED8+1
+	.word battle_advancePhase14Wipe+1
 	.word object_waitCountdownStep+1
 	thumb_func_end sub_802A974
 
@@ -10403,7 +10403,7 @@ loc_802AC2C:
 	strb r0, [r5,#8]
 	strb r0, [r5,#9]
 loc_802AC4E:
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	ldrb r1, [r0,#9]
 	cmp r1, #1
 	bne locret_802AC6C
@@ -10491,7 +10491,7 @@ loc_802ACEA:
 	bl PlaySoundEffect
 	b loc_802AD48
 loc_802ACF2:
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	bl object_setFlag80000
 	mov r0, #SOUND_SELECT_67
 	bl PlaySoundEffect
@@ -10571,7 +10571,7 @@ sub_802AD84:
 	bne loc_802ADB0
 	mov r0, #1
 	strb r0, [r5,#3]
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	mov r5, r0
 	ldr r2, [r0,#0x58]
 	mov r1, #1
@@ -10586,7 +10586,7 @@ sub_802AD84:
 	sub r0, #1
 	strb r0, [r1,#oBattleState_AliveActorTurnIndex]
 loc_802ADB0:
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	ldrb r1, [r0]
 	cmp r1, #0
 	bne locret_802ADF8
@@ -10608,7 +10608,7 @@ loc_802ADC8:
 loc_802ADD8:
 	sub r0, #1
 	strb r0, [r5,#5]
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	ldrb r1, [r0,#0x12]
 	strb r1, [r5,#8]
 	ldrb r1, [r0,#0x13]
@@ -10665,7 +10665,7 @@ ow_chatboxWaitStep:
 	ldrb r0, [r5,#5]
 	sub r0, #1
 	strb r0, [r5,#5]
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	ldrb r1, [r0,#0x12]
 	strb r1, [r5,#8]
 	ldrb r1, [r0,#0x13]
@@ -10759,9 +10759,9 @@ loc_802AEC6:
 
 // symdb: Advances the overworld wipe, entering battle phase 0x14 once the horizontal BG2 wipe completes.
 // symdb: (r0 = ..., r1 = ...) -> r0 = ...; flags ...
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AED8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_advancePhase14Wipe.yaml
 	thumb_local_start
-sub_802AED8:
+battle_advancePhase14Wipe:
 	push {lr}
 	bl ow_wipeBg2Columns
 	bne locret_802AEE8
@@ -10770,7 +10770,7 @@ sub_802AED8:
 	strb r0, [r5]
 locret_802AEE8:
 	pop {pc}
-	thumb_func_end sub_802AED8
+	thumb_func_end battle_advancePhase14Wipe
 
 // symdb: Given an enemy index, decompresses that enemy's sprite data and spawns its battle object at panel (2,2) with alliance 0, returning the decompressed sprite pointer.
 // symdb: (r0 = enemy index) -> r0 = pointer to decompressed sprite data; enemy struct fields 0/1 used as
@@ -10798,7 +10798,7 @@ battle_spawnEnemyDecompressSprite:
 	thumb_local_start
 sub_802AF0E:
 	push {r5,lr}
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	ldrb r1, [r5,#8]
 	strb r1, [r0,#0x12]
 	strb r1, [r0,#0x14]
@@ -10828,15 +10828,15 @@ dword_802AF34:
 // symdb: Returns the cached decompressed enemy sprite pointer for slot r5[5] from an object's slot table at r5+0x30 (slot×4 stride).
 // symdb: () -> r0 = pointer to enemy sprite struct (from r5[5] in r5+0x30[x4]); uses r5, returns via mov
 // symdb: pc,lr
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF38.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_getEnemySpriteBySlot.yaml
 	thumb_local_start
-sub_802AF38:
+battle_getEnemySpriteBySlot:
 	ldrb r0, [r5,#5]
 	lsl r0, r0, #2
 	add r0, #0x30 
 	ldr r0, [r5,r0]
 	mov pc, lr
-	thumb_func_end sub_802AF38
+	thumb_func_end battle_getEnemySpriteBySlot
 
 	thumb_local_start
 sub_802AF42:
@@ -10844,7 +10844,7 @@ sub_802AF42:
 	ldrb r0, [r5,#5]
 	sub r0, #1
 	strb r0, [r5,#5]
-	bl sub_802AF38
+	bl battle_getEnemySpriteBySlot
 	mov r5, r0
 	ldr r2, [r0,#0x58]
 	mov r1, #1
@@ -15503,14 +15503,14 @@ sub_802D1B4:
 
 // symdb: Returns the three-digit counter value for the selected battle side.
 // symdb: (r0 = battle side index) -> r0 = counter value; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D1BE.yaml
-	thumb_func_start sub_802D1BE
-sub_802D1BE:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getBattleSideCounter.yaml
+	thumb_func_start getBattleSideCounter
+getBattleSideCounter:
 	push {lr}
 	bl getTableEntryPtr32_802D064 // (a0: bool) -> * ?
 	ldrb r0, [r0,#0xf]
 	pop {pc}
-	thumb_func_end sub_802D1BE
+	thumb_func_end getBattleSideCounter
 
 	thumb_local_start
 sub_802D1C8:
@@ -17529,9 +17529,9 @@ loc_802E04A:
 
 // symdb: Subtracts a (scaled) amount from a battle entity's counter at field 0x28, clamping to zero.
 // symdb: (r0 = entity index, r1 = amount in field 0x28 units, 256 per game unit) -> void; clamps at 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E04E.yaml
-	thumb_func_start sub_802E04E
-sub_802E04E:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_subCappedCounter.yaml
+	thumb_func_start battle_subCappedCounter
+battle_subCappedCounter:
 	push {lr}
 	push {r1}
 	bl getEntryPtr_2036120_1D0_802E070
@@ -17544,7 +17544,7 @@ sub_802E04E:
 loc_802E062:
 	strh r0, [r2,#0x28]
 	pop {pc}
-	thumb_func_end sub_802E04E
+	thumb_func_end battle_subCappedCounter
 
 	thumb_func_start sub_802E066
 sub_802E066:
@@ -18929,7 +18929,7 @@ loc_802E9C4:
 	and r1, r0
 	lsl r1, r1, #8
 	ldrb r0, [r5,#0x16]
-	bl sub_802E04E
+	bl battle_subCappedCounter
 loc_802E9D0:
 	pop {r0}
 	pop {r4,r6,r7,pc}
@@ -19444,7 +19444,7 @@ byte_802EE64:
 
 // symdb: Adds an encoded amount (256 per unit) to a battle entity's counter at field 0x28, choosing a capped or alternate add path based on bit 7 of the argument.
 // symdb: (r0 = encoded amount, bit7 = variant flag, bits0-6 = unit count; r5 = battle entity pointer) ->
-// symdb: r0 = result of the add callee; calls battle_addCappedCounter or sub_802E04E
+// symdb: r0 = result of the add callee; calls battle_addCappedCounter or battle_subCappedCounter
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_addCounterAmount.yaml
 	thumb_local_start
 battle_addCounterAmount:
@@ -19461,7 +19461,7 @@ loc_802EEB4:
 	and r1, r0
 	lsl r1, r1, #8
 	ldrb r0, [r5,#0x16]
-	bl sub_802E04E
+	bl battle_subCappedCounter
 locret_802EEC0:
 	pop {pc}
 	.balign 4, 0x00
@@ -19472,7 +19472,7 @@ sub_802EEC4:
 	push {r4,r7,lr}
 	sub sp, sp, #8
 	ldrb r0, [r5,#0x16]
-	bl sub_802EFEE
+	bl getBattleObjectEntryField44
 	mov r7, r0
 	beq loc_802EF44
 	bl object_getEnemyDirection
@@ -19574,7 +19574,7 @@ sub_802EF74:
 	ldr r0, [sp]
 	mov r1, #1
 	eor r0, r1
-	bl sub_802EFEE
+	bl getBattleObjectEntryField44
 	tst r0, r0
 	beq loc_802EFD4
 	cmp r0, r5
@@ -19635,14 +19635,14 @@ loc_802EFEA:
 
 // symdb: returns field 0x44 from a battle-object table entry
 // symdb: (r0 = entry index) -> r0 = entry->field_0x44; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EFEE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getBattleObjectEntryField44.yaml
 	thumb_local_start
-sub_802EFEE:
+getBattleObjectEntryField44:
 	push {lr}
 	bl getEntryPtr_2036120_1D0_802E070
 	ldr r0, [r0,#0x44]
 	pop {pc}
-	thumb_func_end sub_802EFEE
+	thumb_func_end getBattleObjectEntryField44
 
 	thumb_local_start
 sub_802EFF8:

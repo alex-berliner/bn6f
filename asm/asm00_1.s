@@ -389,9 +389,9 @@ loc_800338C:
 
 // symdb: Spawns and prepends a type-3 battle object using a caller-supplied initialization context.
 // symdb: (r0 = context passed to the type-3 initializer) -> r0 = NULL; flags = unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003390.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/spawnBattleObjectType3.yaml
 	thumb_local_start
-sub_8003390:
+spawnBattleObjectType3:
 	push {r7,lr}
 	sub sp, sp, #0x14
 	mov r7, sp
@@ -405,7 +405,7 @@ sub_8003390:
 loc_80033A8:
 	add sp, sp, #0x14
 	pop {r7,pc}
-	thumb_func_end sub_8003390
+	thumb_func_end spawnBattleObjectType3
 
 // symdb: Wrapper that spawns a battle object of type 4 from five caller-supplied parameters and immediately runs its initializer.
 // symdb: battle_spawnObjectType4(u32 param0, u32 param1, u32 param2, u32 param3, u32 param4) ->

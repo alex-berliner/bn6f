@@ -59,11 +59,11 @@ signed int __fastcall sub_8092EC4(int a1)
 
     *v2 = sub_8143DEA(a1);
     v3 = sub_809E1AE();
-    sub_8143EA4();
+    groundmanMinigameGetPlayerGridIndex();
     v4 = ConvertGroundmanMinigameGridCoordsToMapCoords();
     sub_809323A(v4, v5, v3, SHIDWORD(v3));
     v6 = sub_809E1AE();
-    sub_8143EA4();
+    groundmanMinigameGetPlayerGridIndex();
     v7 = ConvertGroundmanMinigameGridCoordsToMapCoords();
     v9 = calcAngle_800117C(v7 - v6, HIDWORD(v6) - v8);
     sub_809E13C(((((((v9 + 16) >> 4) & 0xF) >> 1) - 1) & 7) + 8);
@@ -88,10 +88,10 @@ signed int __fastcall sub_8092F1E(int a1)
     e_countdownExpired();
     if ( !v3 )
     {
-        sub_8143EA4();
+        groundmanMinigameGetPlayerGridIndex();
         v4 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         (loc_809E1A4)(v4);
-        sub_8143EA4();
+        groundmanMinigameGetPlayerGridIndex();
         v5 = *v2;
         v6 = groundmanMinigameGridDirBetween();
         sub_809E2AE(v6);
@@ -184,7 +184,7 @@ signed int __fastcall sub_8092FD2(int a1)
         v4 = *v2;
         v6 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         v7 = v5;
-        sub_8143EA4();
+        groundmanMinigameGetPlayerGridIndex();
         v8 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         sub_809323A(v8, v9, v6, v7);
         sub_80931FA(8);
@@ -263,10 +263,10 @@ int __fastcall sub_8093074(int a1)
     int v7; // r0
     int v8; // r1
 
-    sub_8143EA4();
+    groundmanMinigameGetPlayerGridIndex();
     v3 = ConvertGroundmanMinigameGridCoordsToMapCoords();
     v4 = v2;
-    v5 = sub_8143EA4();
+    v5 = groundmanMinigameGetPlayerGridIndex();
     v6 = sub_809E2B8();
     *v1 = grid_stepPackedTileCoordsInDirection(v5, v6, 1);
     v7 = ConvertGroundmanMinigameGridCoordsToMapCoords();
@@ -312,10 +312,10 @@ LABEL_7:
             v1[9] = v11;
             if ( ((v11 < 0) ^ v10) | (v11 == 0) )
             {
-                sub_8143EA4();
+                groundmanMinigameGetPlayerGridIndex();
                 v13 = ConvertGroundmanMinigameGridCoordsToMapCoords();
                 v14 = v12;
-                v15 = sub_8143EA4();
+                v15 = groundmanMinigameGetPlayerGridIndex();
                 v16 = sub_809E2B8();
                 grid_stepPackedTileCoordsInDirection(v15, v16, 1);
                 v17 = ConvertGroundmanMinigameGridCoordsToMapCoords();
@@ -402,7 +402,7 @@ signed int __fastcall sub_809319C(int a1)
         v4 = *v2;
         v6 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         v7 = v5;
-        sub_8143EA4();
+        groundmanMinigameGetPlayerGridIndex();
         v8 = ConvertGroundmanMinigameGridCoordsToMapCoords();
         sub_809323A(v8, v9, v6, v7);
         sub_80931FA(16);
@@ -432,7 +432,7 @@ signed int __fastcall sub_80931CA(int a1)
 
 
 // 0x80931ee
-void __fastcall sub_80931EE(int a1)
+void __fastcall chatbox_runScriptByGlobalIndex(int a1)
 {
     int v1; // r5
 

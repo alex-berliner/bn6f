@@ -6127,7 +6127,7 @@ void sub_80A96C8()
 
 
 // 0x80a96f0
-void __fastcall __noreturn sub_80A96F0(int a1)
+void __fastcall __noreturn object_updateFadeWhite(int a1)
 {
     object_fadeWhiteUpdate();
 }

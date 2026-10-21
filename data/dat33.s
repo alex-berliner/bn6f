@@ -1484,7 +1484,7 @@ sub_812CE28::
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_812DA3C
+	bl submenu_drawScreenElementIfUnused
 	pop {pc}
 	.balign 4, 0
 off_812CE3C::

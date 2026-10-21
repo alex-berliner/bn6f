@@ -283,7 +283,7 @@ int __fastcall storeWorkByte_813B920(int result)
 
 
 // 0x813b928
-int sub_813B928()
+int navicust_getPlacementCursorStep()
 {
     return byte_20096D8;
 }
@@ -2191,7 +2191,7 @@ int pet_resetCurNaviStatsByte19()
     int v0; // r0
     int v1; // r1
 
-    v0 = sub_813CD3E();
+    v0 = pet_initCurNaviStatsRoundControl();
     return pet_clearCurNaviStatsByte19(v0, v1, 2);
 }
 
@@ -2202,7 +2202,7 @@ int sub_813CD22()
     int v0; // r0
     int v1; // r1
 
-    v0 = sub_813CD3E();
+    v0 = pet_initCurNaviStatsRoundControl();
     return pet_clearCurNaviStatsByte19(v0, v1, 3);
 }
 
@@ -2213,13 +2213,13 @@ int sub_813CD30()
     int v0; // r0
     int v1; // r1
 
-    v0 = sub_813CD3E();
+    v0 = pet_initCurNaviStatsRoundControl();
     return pet_clearCurNaviStatsByte19(v0, v1, 4);
 }
 
 
 // 0x813cd3e
-int sub_813CD3E()
+int pet_initCurNaviStatsRoundControl()
 {
     return SetCurPETNaviStatsByte(0, 18, 3);
 }
@@ -2275,7 +2275,7 @@ void sub_813CD88()
 
 
 // 0x813cd8c
-int sub_813CD8C()
+int clearSelectedPETNaviStats()
 {
     return SetCurPETNaviStatsByte(0, 40, 1);
 }
@@ -2445,7 +2445,7 @@ void sub_813CE8C()
 
 
 // 0x813ce90
-int sub_813CE90()
+int clearSelectedPETNaviStat()
 {
     return SetCurPETNaviStatsByte(0, 26, 10);
 }
@@ -3191,7 +3191,7 @@ void sub_813DA0C()
 
 
 // 0x813da84
-void __fastcall sub_813DA84(int a1, int a2, int a3, int a4)
+void __fastcall rfu_clearLinkPacketQueue(int a1, int a2, int a3, int a4)
 {
     ZeroFillByWord(&byte_2010290, 16);
 }

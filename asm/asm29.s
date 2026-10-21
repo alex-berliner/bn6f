@@ -9203,7 +9203,7 @@ byte_80A9648:
 	.byte 0xF9, 0xB, 0xFA, 0xB, 0x0, 0x0
 	thumb_func_end sub_80A9628
 
-// symdb: Mr. Weather comp map object (type 0x1D) update: long-calls one of 4 state handlers (off_80A966C = sub_80A9680, sub_80A96C8, sub_80A96F0, sub_80A96FC) chosen by the state byte [r5+8].
+// symdb: Mr. Weather comp map object (type 0x1D) update: long-calls one of 4 state handlers (off_80A966C = sub_80A9680, sub_80A96C8, object_updateFadeWhite, sub_80A96FC) chosen by the state byte [r5+8].
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A9658.yaml
 	thumb_func_start sub_80A9658
 sub_80A9658:
@@ -9221,7 +9221,7 @@ off_80A9668:
 off_80A966C:
 	.word sub_80A9680+1
 	.word sub_80A96C8+1
-	.word sub_80A96F0+1
+	.word object_updateFadeWhite+1
 	.word sub_80A96FC+1
 off_80A967C:
 	.word eWeatherCompState
@@ -9278,14 +9278,14 @@ loc_80A96EA:
 
 // symdb: Advances a fading object's white-transition state and updates its sprite.
 // symdb: (r0 = object pointer) -> r0 = updated object pointer; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A96F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateFadeWhite.yaml
 	thumb_local_start
-sub_80A96F0:
+object_updateFadeWhite:
 	push {lr}
 	bl object_fadeWhiteUpdate
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_80A96F0
+	thumb_func_end object_updateFadeWhite
 
 	thumb_local_start
 sub_80A96FC:

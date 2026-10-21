@@ -313,16 +313,16 @@ storeWorkByte_813B920:
 
 // symdb: Returns the current 0..3 cursor-rotation step held in a global byte, used to rotate the held Navi Customizer part on L/R input.
 // symdb: () -> r0 = current placement-cursor rotation step (0..3)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B928.yaml
-	thumb_func_start sub_813B928
-sub_813B928:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_getPlacementCursorStep.yaml
+	thumb_func_start navicust_getPlacementCursorStep
+navicust_getPlacementCursorStep:
 	ldr r1, off_813B930 // =byte_20096D8 
 	ldrb r0, [r1]
 	mov pc, lr
 	.byte 0, 0
 off_813B930:
 	.word byte_20096D8
-	thumb_func_end sub_813B928
+	thumb_func_end navicust_getPlacementCursorStep
 
 // symdb: Zeroes the two scratch work buffers (0x188 bytes and 0x40 bytes) hanging off the toolkit struct pointed to by r10.
 // symdb: void toolkit_clearScratchBuffers(u32 toolkit /*r10*/, u32 passR2 /*r2 in/out*/, u32 passR3 /*r3
@@ -3034,9 +3034,9 @@ byte_813CC18:
 	.word sub_813CD66+1
 	.word sub_813CD70+1
 	.word sub_813CD88+1
-	.word sub_813CD8C+1
-	.word sub_813CD8C+1
-	.word sub_813CD8C+1
+	.word clearSelectedPETNaviStats+1
+	.word clearSelectedPETNaviStats+1
+	.word clearSelectedPETNaviStats+1
 	.word sub_813CD9C+1
 	.word sub_813CDA0+1
 	.word sub_813CDA0+1
@@ -3062,9 +3062,9 @@ byte_813CC18:
 	.word sub_813CE7C+1
 	.word sub_813CE7C+1
 	.word sub_813CE8C+1
-	.word sub_813CE90+1
-	.word sub_813CE90+1
-	.word sub_813CE90+1
+	.word clearSelectedPETNaviStat+1
+	.word clearSelectedPETNaviStat+1
+	.word clearSelectedPETNaviStat+1
 	thumb_func_end sub_813CBCC
 
 	thumb_local_start
@@ -3111,12 +3111,12 @@ sub_813CD10:
 	thumb_func_end sub_813CD10
 
 // symdb: Runs a setup step then clears byte 0x13 of the currently selected navi's NaviStats record.
-// symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by sub_813CD3E
+// symdb: () -> void; r2 = 2 passed to the clear call, r0/r1 as left by pet_initCurNaviStatsRoundControl
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_resetCurNaviStatsByte19.yaml
 	thumb_local_start
 pet_resetCurNaviStatsByte19:
 	push {lr}
-	bl sub_813CD3E
+	bl pet_initCurNaviStatsRoundControl
 	mov r2, #2
 	bl pet_clearCurNaviStatsByte19
 	pop {pc}
@@ -3125,7 +3125,7 @@ pet_resetCurNaviStatsByte19:
 	thumb_local_start
 sub_813CD22:
 	push {lr}
-	bl sub_813CD3E
+	bl pet_initCurNaviStatsRoundControl
 	mov r2, #3
 	bl pet_clearCurNaviStatsByte19
 	pop {pc}
@@ -3134,7 +3134,7 @@ sub_813CD22:
 	thumb_local_start
 sub_813CD30:
 	push {lr}
-	bl sub_813CD3E
+	bl pet_initCurNaviStatsRoundControl
 	mov r2, #4
 	bl pet_clearCurNaviStatsByte19
 	pop {pc}
@@ -3143,16 +3143,16 @@ sub_813CD30:
 // symdb: Initializes the selected navi's NaviStats round-control byte (offset 0x12) to 0 with a 3-byte write, used as the first step before clearing adjacent round/battle state bytes.
 // symdb: () -> void; writes 0 to offset 0x12 of the current PET navi's NaviStats record via
 // symdb: SetCurPETNaviStatsByte(r0=0, r1=0x12, r2=3)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD3E.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pet_initCurNaviStatsRoundControl.yaml
 	thumb_local_start
-sub_813CD3E:
+pet_initCurNaviStatsRoundControl:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x12
 	mov r2, #3
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
-	thumb_func_end sub_813CD3E
+	thumb_func_end pet_initCurNaviStatsRoundControl
 
 // symdb: Writes 0 to byte 0x13 (offset 19) of the NaviStats record of the navi currently selected in the PET.
 // symdb: () -> void; calls SetCurPETNaviStatsByte(0, 0x13), no return value used
@@ -3220,9 +3220,9 @@ sub_813CD88:
 
 // symdb: Clears one byte of the currently selected PET Navi's stats record.
 // symdb: (r0 = 0, r1 = 0x28, r2 = 1) -> void; flags not preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD8C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearSelectedPETNaviStats.yaml
 	thumb_local_start
-sub_813CD8C:
+clearSelectedPETNaviStats:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x28 
@@ -3230,7 +3230,7 @@ sub_813CD8C:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_813CD8C
+	thumb_func_end clearSelectedPETNaviStats
 
 	thumb_local_start
 sub_813CD9C:
@@ -3440,9 +3440,9 @@ sub_813CE8C:
 
 // symdb: Clears one selected-PET NaviStats byte with index 0x1A and value 0x0A.
 // symdb: (void) -> void; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE90.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/clearSelectedPETNaviStat.yaml
 	thumb_local_start
-sub_813CE90:
+clearSelectedPETNaviStat:
 	push {lr}
 	mov r0, #0
 	mov r1, #0x1a
@@ -3450,7 +3450,7 @@ sub_813CE90:
 	bl SetCurPETNaviStatsByte // (int a1, int a2, int a3) -> void
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_813CE90
+	thumb_func_end clearSelectedPETNaviStat
 
 // () -> void
 // symdb: If the PET Navi's equipped chip has an element level exceeding the Navi's stat-9 threshold, mark that chip slot as consumed (0xFF).
@@ -4802,9 +4802,9 @@ off_813DA80:
 	.word eS200BC50
 // symdb: Clears the RFU link packet queue before restarting wireless communication.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DA84.yaml
-	thumb_func_start sub_813DA84
-sub_813DA84:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_clearLinkPacketQueue.yaml
+	thumb_func_start rfu_clearLinkPacketQueue
+rfu_clearLinkPacketQueue:
 	push {lr}
 	// memBlock
 	ldr r0, off_813DA90 // =byte_2010290 
@@ -4815,7 +4815,7 @@ sub_813DA84:
 	.balign 4, 0
 off_813DA90:
 	.word byte_2010290
-	thumb_func_end sub_813DA84
+	thumb_func_end rfu_clearLinkPacketQueue
 
 // symdb: Dispatches one step of the title-screen state machine by indexing into a two-entry table stored in EWRAM and calling the matching handler.
 // symdb: () -> r0 = handler return (0 on handled/continue, 1 on skipped/finished) ; may clobber r0-r3,

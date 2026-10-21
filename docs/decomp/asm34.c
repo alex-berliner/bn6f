@@ -523,7 +523,7 @@ signed int __fastcall object_submitOamFromStruct(int a1, int a2, int a3, int a4)
 
 
 // 0x812da3c
-int sub_812DA3C()
+int submenu_drawScreenElementIfUnused()
 {
 	int result; // r0
 	char v1; // zf

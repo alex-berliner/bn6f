@@ -13015,7 +13015,7 @@ loc_813614C:
 	ldr r1, off_8136204 // =0x200 
 	tst r4, r1
 	beq loc_8136176
-	bl sub_813B928
+	bl navicust_getPlacementCursorStep
 	sub r0, #1
 	mov r1, #3
 	and r0, r1
@@ -13027,7 +13027,7 @@ loc_8136176:
 	ldr r1, off_8136208 // =0x100 
 	tst r4, r1
 	beq loc_8136192
-	bl sub_813B928
+	bl navicust_getPlacementCursorStep
 	add r0, #1
 	mov r1, #3
 	and r0, r1
@@ -14736,9 +14736,9 @@ pet_returnToPetMenu:
 
 // symdb: Initializes a 32-byte runtime data block from the stored status/template data.
 // symdb: (r0 = ignored, r1 = ignored) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136DC8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initCopyStatusData.yaml
 	thumb_local_start
-sub_8136DC8:
+initCopyStatusData:
 	push {lr}
 	ldr r0, off_8136DD8 // =byte_86A5D20 
 	ldr r1, off_8136DDC // =unk_30019A0 
@@ -14750,7 +14750,7 @@ off_8136DD8:
 	.word byte_86A5D20
 off_8136DDC:
 	.word unk_30019A0
-	thumb_func_end sub_8136DC8
+	thumb_func_end initCopyStatusData
 
 // symdb: Per-frame tick of the Beast SP dialog state machine: saves the 3-halfword dialog triple from the battle object, dispatches the active dialog handler via a 36-entry jump table, runs the beast-SP handler dispatcher, then restores the triple.
 // symdb: void battleObject_runBeastSpDialogStep(void /* inputs r2 r4 r6 r9 r10 r11 r12 -> outputs r8 r9
@@ -14826,7 +14826,7 @@ off_8136E2C:
 	.word navicust_counterThenShowDialog+1
 	.word chatbox_store74IfFlag80Clear_81374C4+1
 	.word navicust_dialogStateHandler+1
-	.word sub_8137528+1
+	.word chatbox_handleEventFlag80+1
 	.word sub_8137538+1
 	.word navicust_dialogDelayTick+1
 	.word navicust_queueBeastOutDialog+1
@@ -15765,9 +15765,9 @@ dword_8137524:
 
 // symdb: Sets a chatbox object's state byte to 0x74 when chatbox event flag 0x80 is not set.
 // symdb: (r5 = chatbox object pointer) -> void; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137528.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_handleEventFlag80.yaml
 	thumb_local_start
-sub_8137528:
+chatbox_handleEventFlag80:
 	push {lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -15776,7 +15776,7 @@ sub_8137528:
 	strb r0, [r5]
 locret_8137536:
 	pop {pc}
-	thumb_func_end sub_8137528
+	thumb_func_end chatbox_handleEventFlag80
 
 	thumb_local_start
 sub_8137538:
@@ -16852,7 +16852,7 @@ sub_8137D20:
 	mov r0, #2
 	mov r1, #4
 	ldr r2, off_8137D48 // =byte_2017A00 
-	bl sub_8137DA4
+	bl t4_copyNaviChipNameToBg
 
 	pop {r4-r7,pc}
 	.balign 4, 0x00
@@ -16913,9 +16913,9 @@ off_8137DA0:
 
 // symdb: copies a prepared navi/chip name tile-id buffer into BG tile block 2 at offset (2,4)
 // symdb: (r0 = src_tile_j_offset_or_unused=2, r1 = dst_tile_i_offset=4, r2 = tile_ids_ptr) ->
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137DA4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_copyNaviChipNameToBg.yaml
 	thumb_local_start
-sub_8137DA4:
+t4_copyNaviChipNameToBg:
 	push {r4-r7,lr}
 	// tileIds
 	mov r3, r2
@@ -16926,7 +16926,7 @@ sub_8137DA4:
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 
 	pop {r4-r7,pc}
-	thumb_func_end sub_8137DA4
+	thumb_func_end t4_copyNaviChipNameToBg
 // symdb: Clears a text work buffer, draws the message selected by the caller's text ID from table unk_201CF00 into it, and places it at a fixed screen position.
 // symdb: (r0-r3 = caller state; reads caller's r5 struct field +0x24 as a text/message ID) -> r0 = ?;
 // symdb: renders into unk_2017AE0

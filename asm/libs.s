@@ -1791,16 +1791,16 @@ off_8144D2C:
 
 // symdb: Enables timer channel 5.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D30.yaml
-	thumb_func_start sub_8144D30
-sub_8144D30:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eEnableTimer5.yaml
+	thumb_func_start eEnableTimer5
+eEnableTimer5:
 	ldr r1, off_8144D38 // =eTimerEnable200F460 
 	mov r0, #5
 	strb r0, [r1,#0x1] // (byte_200F461 - 0x200f460)
 	bx lr
 off_8144D38:
 	.word eTimerEnable200F460
-	thumb_func_end sub_8144D30
+	thumb_func_end eEnableTimer5
 
 	thumb_local_start
 sub_8144D3C:
@@ -4950,16 +4950,16 @@ off_81463E4:
 
 // symdb: Stores a wireless callback argument in the RFU communication structure.
 // symdb: (r0 = callback argument) -> r0 = unchanged; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81463E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_setCallbackArg.yaml
 	thumb_local_start
-sub_81463E8:
+rfu_setCallbackArg:
 	ldr r1, off_81463F0 // =eStruct200FE00 
 	str r0, [r1,#0x40] // (dword_200FE40 - 0x200fe00)
 	bx lr
 	.byte 0, 0
 off_81463F0:
 	.word eStruct200FE00
-	thumb_func_end sub_81463E8
+	thumb_func_end rfu_setCallbackArg
 
 	thumb_local_start
 sub_81463F4:
@@ -6535,7 +6535,7 @@ loc_8146DFC:
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
 	mov r0, r6
 	mov r1, r9
-	bl sub_8146E48
+	bl rfu_copyRecvSlotData
 loc_8146E34:
 	pop {r3,r4}
 	mov r8, r3
@@ -6551,9 +6551,9 @@ off_8146E44:
 
 // symdb: Copies a peer's received wireless data block into the shared wireless buffer at the slot's index offset.
 // symdb: (r0 = *mut SlotInfo, r1 = *const u8 dest in shared buffer) -> ()
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_copyRecvSlotData.yaml
 	thumb_local_start
-sub_8146E48:
+rfu_copyRecvSlotData:
 	push {lr}
 	mov r3, r1
 	ldr r1, [r0,#0xc]
@@ -6563,7 +6563,7 @@ sub_8146E48:
 	pop {r0}
 	bx r0
 	.balign 4, 0x00
-	thumb_func_end sub_8146E48
+	thumb_func_end rfu_copyRecvSlotData
 
 // symdb: Writes a state/phase byte into the 0x200AF80 wireless link-state structure.
 // symdb: (r0 = pointer to link-state struct at 0x200AF80, r1 = state byte) -> r0 clobbered; flags not
@@ -9604,7 +9604,7 @@ loc_81485A8:
 	mov r1, #0xc
 	bl rfu_queuePushEntry
 	ldr r0, off_8148718 // =sub_8148738+1 
-	bl sub_81463E8
+	bl rfu_setCallbackArg
 	ldr r0, off_814871C // =sub_8148878+1 
 	bl rfu_setMscCallbackArg
 	mov r4, #0
@@ -10601,7 +10601,7 @@ loc_8148D9C:
 	mov r0, #0
 	strb r0, [r5,#0xc] // (byte_201039C - 0x2010390)
 	ldr r0, off_8148E58 // =sub_8148E74+1 
-	bl sub_81463E8
+	bl rfu_setCallbackArg
 	ldr r0, off_8148E5C // =rfu_recvData+1 
 	bl rfu_setMscCallbackArg
 	ldr r4, off_8148E60 // =rfuSlotId 

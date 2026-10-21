@@ -9112,7 +9112,7 @@ int sub_801462A()
 
 
 // 0x8014640
-int sub_8014640()
+int object_enableSuperArmorCollision()
 {
     object_setFlag1(0x20000);
     return object_updateCollisionAndResolveCleared_8014606();
@@ -18714,7 +18714,7 @@ int battle_drawSideCounters()
     v1 = sub_802D1B4(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
     sprite_drawRightAligned3DigitNumber(v1, 100714880);
     sub_801C3EE(v1, byte_3001670, 0);
-    v2 = sub_802D1BE(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
+    v2 = getBattleSideCounter(*(*(v0 + oToolkit_S2034880_Ptr) + 13));
     sprite_drawRightAligned3DigitNumber(v2, 100715072);
     return sub_801C3EE(v2, &word_3001684, 1);
 }

@@ -191,7 +191,7 @@ int *__fastcall sub_8003374(int a1, int a2, int a3, int a4)
 
 
 // 0x8003390
-_DWORD *__fastcall sub_8003390(int a1, int a2, int a3, int a4)
+_DWORD *__fastcall spawnBattleObjectType3(int a1, int a2, int a3, int a4)
 {
 	int v4; // r4
 	int v5; // r5

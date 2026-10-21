@@ -11890,7 +11890,7 @@ init_eventSceneState:
 	strh r1, [r0,#0x16]
 	strh r1, [r0,#0x18]
 	strh r1, [r0,#0x1a]
-	bl sub_8128F04
+	bl init_loadEventGfxData
 	ldr r0, off_8128D9C // =byte_201BB60
 	ldr r1, dword_8128DA0 // =0x9070 
 	ldr r2, dword_8128DA4 // =0x6008e00 
@@ -12139,16 +12139,16 @@ off_8128F00:
 
 // symdb: Loads the event scene's compressed graphic data during story-scene initialization.
 // symdb: () -> void; flags:
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8128F04.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_loadEventGfxData.yaml
 	thumb_local_start
-sub_8128F04:
+init_loadEventGfxData:
 	push {lr}
 	// initRefs
 	ldr r0, off_8128F34 // =byte_8128F38
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_8128F04
+	thumb_func_end init_loadEventGfxData
 
 // symdb: Fills BG tile blocks 3 and 2 with tilemap entries from eReader-scene tilemap buffers to build the scene's background layers.
 // symdb: () -> r0 = destroyed; r1-r5 clobbered; no return value
@@ -14903,7 +14903,7 @@ dword_812A278:
 	thumb_local_start
 sub_812A27C:
 	push {lr}
-	bl sub_812B574
+	bl t3_rfuCheckAndSpinUpdate
 	ldr r1, off_812A290 // =off_812A294 
 	ldrb r2, [r5,#0xc]
 	ldr r1, [r1,r2]
@@ -17497,9 +17497,9 @@ off_812B570:
 
 // symdb: If state at EWRAM 0x200BC30 is 4, runs the RFU wireless connection update with the dword_814FE94 context; otherwise calls sub_8148224.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812B574.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_rfuCheckAndSpinUpdate.yaml
 	thumb_local_start
-sub_812B574:
+t3_rfuCheckAndSpinUpdate:
 	push {lr}
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #4
@@ -17514,7 +17514,7 @@ locret_812B58A:
 	.balign 4, 0
 off_812B58C:
 	.word dword_814FE94
-	thumb_func_end sub_812B574
+	thumb_func_end t3_rfuCheckAndSpinUpdate
 
 // symdb: Plays text script 0x2f from archive eTextScript201BA20 in the chatbox, then advances the caller's state struct.
 // symdb: (r0 = unused entry value, r5 = state struct pointer from caller) -> r0 = script-run result;
@@ -17523,7 +17523,7 @@ off_812B58C:
 	thumb_local_start
 t3_runScript2fSetState:
 	push {r4,lr}
-	bl sub_812B574
+	bl t3_rfuCheckAndSpinUpdate
 	mov r0, #0x2f 
 	bl chatbox_runScript_803FD9C_on_eTextScript201BA20
 	mov r0, #0x3c 

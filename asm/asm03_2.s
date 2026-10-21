@@ -5014,7 +5014,7 @@ off_8049098:
 	.word sub_8049290+1
 	.word sub_8049360+1
 	.word rfu_linkMenuStateStep+1
-	.word sub_80493FE+1
+	.word battle_refreshRfuAndSubmenuIfFlag+1
 	.word rfu_wirelessConnectStep+1
 	.word sub_804946E+1
 	.word submenu_selectNetworkScript+1
@@ -5420,9 +5420,9 @@ loc_80493F4:
 
 // symdb: Per-frame battle UI refresh: redraws the wireless-connect player list and the submenu slot icons, plus sets an inter-frame byte when flag 0x80 is clear.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80493FE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_refreshRfuAndSubmenuIfFlag.yaml
 	thumb_local_start
-sub_80493FE:
+battle_refreshRfuAndSubmenuIfFlag:
 	push {r4-r7,lr}
 	mov r0, #0x80
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
@@ -5433,7 +5433,7 @@ loc_804940C:
 	bl rfu_drawConnectedPlayerEntries
 	bl submenu_queueSlotIcons
 	pop {r4-r7,pc}
-	thumb_func_end sub_80493FE
+	thumb_func_end battle_refreshRfuAndSubmenuIfFlag
 
 // symdb: One step of the wireless-connection state machine: on failure shows network text and sets phase 0x38, on cancel paths sets 0x3C, and on success initializes the wireless session and sets phase 0x44.
 // symdb: (r0 = ? unused/ignored; r5 = network state context struct) -> r0 = result of sub_8049BC0; writes

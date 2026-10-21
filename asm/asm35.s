@@ -120,9 +120,9 @@ off_812EB74:
 
 // symdb: Spawns submenu eStruct records by walking the static table at byte_812DA94, called as part of submenu/e-link state transitions.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EB78.yaml
-	thumb_func_start sub_812EB78
-sub_812EB78:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_spawnEStructRecordsFromTable.yaml
+	thumb_func_start submenu_spawnEStructRecordsFromTable
+submenu_spawnEStructRecordsFromTable:
 	push {lr}
 	// a1
 	ldr r0, off_812EB84 // =byte_812DA94 
@@ -131,7 +131,7 @@ sub_812EB78:
 	.balign 4, 0
 off_812EB84:
 	.word byte_812DA94
-	thumb_func_end sub_812EB78
+	thumb_func_end submenu_spawnEStructRecordsFromTable
 
 // symdb: Initializes the 9-entry, 0x44-byte-per-entry submenu state table (byte_812DABC) via a shared loop, as part of setting up a submenu before rendering.
 // symdb: () -> void (arguments hardcoded inside: r1 = 9 entries, r2 = 0x44 bytes/entry, r4 =

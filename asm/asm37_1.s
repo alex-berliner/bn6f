@@ -3779,7 +3779,7 @@ loc_8143A9A:
 	bl sub_8143DEA
 	bl groundmanMinigameFindActiveEntry
 	beq loc_8143AC6
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl sub_8143BB0
 	bne loc_8143ABE
 	ldr r0, off_8143B24 // =byte_8092DE8 // CutsceneScript
@@ -4229,7 +4229,7 @@ ConvertGroundmanMinigameGridCoordsToMapCoords:
 sub_8143DEA:
 	push {r4-r7,lr}
 	sub sp, sp, #0x10
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	mov r4, r0
 	bl GetOWPlayerFacingDirection
 	mov r1, #1
@@ -4318,14 +4318,14 @@ byte_8143E94:
 
 // symdb: Returns the player's current GroundMan minigame grid cell index, by combining OW player coords with the grid-offset conversion.
 // symdb: () -> r0 = u8 grid cell index of the player on the GroundMan minigame board
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EA4.yaml
-	thumb_func_start sub_8143EA4
-sub_8143EA4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/groundmanMinigameGetPlayerGridIndex.yaml
+	thumb_func_start groundmanMinigameGetPlayerGridIndex
+groundmanMinigameGetPlayerGridIndex:
 	push {r4-r7,lr}
 	bl ReadOWPlayerObjectCoords
 	bl groundmanMinigamePosToGridIndex
 	pop {r4-r7,pc}
-	thumb_func_end sub_8143EA4
+	thumb_func_end groundmanMinigameGetPlayerGridIndex
 
 // symdb: Returns an 8-way direction index pointing from one Groundman-minigame grid cell to another.
 // symdb: (r0 = packed grid coords of point A, r1 = packed grid coords of point B) -> r0 = direction 0-7

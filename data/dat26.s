@@ -888,14 +888,14 @@ sub_8092EC4::
 	str r0, [r7]
 	bl ReadOWPlayerObjectCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
 	mov r4, #0x10
 	bl sub_809323A
 	bl ReadOWPlayerObjectCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
 	sub r0, r0, r2
@@ -925,10 +925,10 @@ sub_8092F1E::
 	bl sub_8093258
 	bl e_countdownExpired
 	beq loc_8092F54
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	bl owPlayer_indirectlySetPlayerCoordsMaybe_809e1a4
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	ldr r1, [r7]
 	bl groundmanMinigameGridDirBetween
 	bl SetOWPlayerFacingDirection
@@ -1020,7 +1020,7 @@ sub_8092FD2::
 	ldr r0, [r7]
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
 	mov r4, #0x40 
@@ -1095,10 +1095,10 @@ loc_8093070::
 	thumb_local_start
 sub_8093074::
 	push {r4-r7,lr}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	mov r4, r0
 	bl GetOWPlayerFacingDirection
 	mov r1, r0
@@ -1151,10 +1151,10 @@ loc_80930DC::
 	bl owPlayer_enableWallCollision_809e248
 	b loc_8093168
 loc_8093100::
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	mov r4, r0
 	bl GetOWPlayerFacingDirection
 	mov r1, r0
@@ -1225,7 +1225,7 @@ sub_809319C::
 	ldr r0, [r7]
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	push {r0,r1}
-	bl sub_8143EA4
+	bl groundmanMinigameGetPlayerGridIndex
 	bl ConvertGroundmanMinigameGridCoordsToMapCoords
 	pop {r2,r3}
 	mov r4, #0x40 
@@ -1259,15 +1259,15 @@ loc_80931EA::
 
 // symdb: Runs the current chatbox script selected by the global chatbox state.
 // symdb: (r0 = script_idx: u8) -> void; flags caller-saved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80931EE.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_runScriptByGlobalIndex.yaml
 	thumb_local_start
-sub_80931EE::
+chatbox_runScriptByGlobalIndex::
 	push {r4-r7,lr}
 	mov r1, r0
 	ldr r0, [r5,#0x30]
 	bl chatbox_runScript // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	pop {r4-r7,pc}
-	thumb_func_end sub_80931EE
+	thumb_func_end chatbox_runScriptByGlobalIndex
 
 	thumb_local_start
 sub_80931FA::
@@ -3009,7 +3009,7 @@ cutscenescript_80943B8:
 	cs_wait_chatbox byte1=0x80
 	cs_run_cutscene_camera_script ptr1=ccs_809438F
 	cs_spawn_ow_npc_objects_from_list ptr2=npcscript_list_8064224
-	cs_call_native_with_return_value ptr1=sub_8094720+1
+	cs_call_native_with_return_value ptr1=ow_clearAndRedrawTilemap+1
 	cs_pause byte1=0xFF byte2=0x78
 	cs_disable_cutscene_skip_script
 	cs_do_pet_effect byte1=0xFF byte2=0x01
@@ -3088,7 +3088,7 @@ cutscenescript_8094624:
 cutscenescript_809462C:
 	cs_set_chatbox_flags byte2=0x40
 	cs_load_gfx_anims ptr1=off_80348FC
-	cs_call_native_with_return_value ptr1=sub_8094720+1
+	cs_call_native_with_return_value ptr1=ow_clearAndRedrawTilemap+1
 	cs_set_screen_fade byte1=0xFF byte2=0x18 byte3=0xFF
 	cs_wait_screen_fade
 	cs_pause byte1=0xFF byte2=0x01
@@ -3099,7 +3099,7 @@ cutscenescript_809462C:
 cutscenescript_809464B:
 	cs_set_chatbox_flags byte2=0x40
 	cs_load_gfx_anims ptr1=off_8034938
-	cs_call_native_with_return_value ptr1=sub_8094720+1
+	cs_call_native_with_return_value ptr1=ow_clearAndRedrawTilemap+1
 	cs_set_screen_fade byte1=0xFF byte2=0x20 byte3=0xFF
 	cs_wait_screen_fade
 	cs_pause byte1=0xFF byte2=0x01

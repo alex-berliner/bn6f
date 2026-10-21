@@ -714,7 +714,7 @@ loc_812E046::
 	bl submenu_renderSelectedWindow
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl submenu_initEntryTable
-	bl sub_812EB78
+	bl submenu_spawnEStructRecordsFromTable
 	bl CopyBackgroundTiles812EAAC
 	mov r0, #4
 	strb r0, [r5,#2]
@@ -1071,7 +1071,7 @@ loc_812E306::
 	bl sub_812EE78
 	bl battle_resetEStructRecords_8046664 // () -> void
 	bl submenu_initEntryTable
-	bl sub_812EB78
+	bl submenu_spawnEStructRecordsFromTable
 	bl submenu_renderSelectedWindow
 	bl CopyBackgroundTiles812EAAC
 	b loc_812E35E
@@ -1954,7 +1954,7 @@ sub_812E9AC::
 	bl sub_812EA44
 	bl CopyBackgroundTiles812EAAC
 	bl submenu_initEntryTable
-	bl sub_812EB78
+	bl submenu_spawnEStructRecordsFromTable
 	bl submenu_renderSelectedWindow
 	mov r0, #0
 	ldr r1, off_812EA40 // =dword_8129180 

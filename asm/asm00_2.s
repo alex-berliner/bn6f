@@ -13481,7 +13481,7 @@ JumpTable8014550:
 	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word sub_801462A+1
 	.word object_updateCollisionAndResolveCleared_8014606+1
-	.word sub_8014640+1
+	.word object_enableSuperArmorCollision+1
 	.word object_updateCollisionAndResolveCleared_8014606+1
 	.word battle_grantSuperArmorInvulnerability+1
 	.word sub_8014674+1
@@ -13624,16 +13624,16 @@ loc_801463A:
 // symdb: Enables super armor on the current battle object and refreshes its collision state.
 // symdb: (r0 = current battle object) -> r0 = unspecified; flags may be modified by the collision refresh
 // symdb: callee
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014640.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_enableSuperArmorCollision.yaml
 	thumb_local_start
-sub_8014640:
+object_enableSuperArmorCollision:
 	push {lr}
 	mov r0, #1
 	lsl r0, r0, #OBJECT_FLAGS_SUPERARMOR_BIT
 	bl object_setFlag1 // (int a1) -> void
 	bl object_updateCollisionAndResolveCleared_8014606
 	pop {pc}
-	thumb_func_end sub_8014640
+	thumb_func_end object_enableSuperArmorCollision
 
 // symdb: Sets the SuperArmor object flag and gives the current battle object a near-permanent (0xFFFF) invulnerability timer.
 // symdb: () -> void; no meaningful return, flags clobbered by bls
@@ -28380,7 +28380,7 @@ battle_drawSideCounters:
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_BattleStatePtr]
 	ldrb r0, [r0,#oBattleState_PlayerSide]
-	bl sub_802D1BE
+	bl getBattleSideCounter
 	ldr r1, dword_801C448 // =0x600ca40 
 	push {r0}
 	bl sprite_drawRightAligned3DigitNumber

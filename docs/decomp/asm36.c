@@ -7563,14 +7563,14 @@ int __fastcall navicust_handlePlacementCursorInput(int a1, int a2, int a3)
     {
         if ( v5 & byte_200 )
         {
-            v9 = sub_813B928();
+            v9 = navicust_getPlacementCursorStep();
             *(v3 + 14) = storeWorkByte_813B920((v9 - 1) & 3);
             sub_8136384();
             return PlaySoundEffect(127, v10, v11);
         }
         if ( v5 & byte_100 )
         {
-            v12 = sub_813B928();
+            v12 = navicust_getPlacementCursorStep();
             *(v3 + 14) = storeWorkByte_813B920((v12 + 1) & 3);
             sub_8136384();
             return PlaySoundEffect(127, v10, v11);
@@ -8642,7 +8642,7 @@ _BYTE *pet_returnToPetMenu()
 
 
 // 0x8136dc8
-void sub_8136DC8()
+void initCopyStatusData()
 {
     CopyWords(byte_86A5D20, &unk_30019A0, 0x20u);
 }
@@ -9412,7 +9412,7 @@ int navicust_dialogStateHandler()
 
 
 // 0x8137528
-int sub_8137528()
+int chatbox_handleEventFlag80()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -10084,7 +10084,7 @@ void __fastcall __noreturn sub_8137D20(int a1, int a2, int a3, int a4)
 
     ZeroFillByHalfword(byte_2017A00, 0xE0u, a3, a4);
     t4_drawNaviChipNameTiles(*(v4 + 36), byte_201CF00, byte_2017A00);
-    sub_8137DA4(2, 4, byte_2017A00);
+    t4_copyNaviChipNameToBg(2, 4, byte_2017A00);
 }
 
 
@@ -10115,7 +10115,7 @@ int *__fastcall t4_drawNaviChipNameTiles(int a1, int a2, _WORD *a3)
 
 
 // 0x8137da4
-void __fastcall __noreturn sub_8137DA4(int a1, int a2, u16 *a3)
+void __fastcall __noreturn t4_copyNaviChipNameToBg(int a1, int a2, u16 *a3)
 {
     CopyBackgroundTiles(a1, a2, 2, a3, 8, &dword_C + 2);
     JUMPOUT(locret_8137DB2);

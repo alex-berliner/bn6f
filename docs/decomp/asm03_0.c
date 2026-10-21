@@ -6616,7 +6616,7 @@ int sub_802AC10()
         *(v0 + 8) = 2;
         *(v0 + 9) = 2;
     }
-    result = sub_802AF38();
+    result = battle_getEnemySpriteBySlot();
     if ( *(result + 9) == 1 )
     {
         *(result + 18) = 0;
@@ -6689,7 +6689,7 @@ int __fastcall battle_panelTargetCursorUpdate(int a1, int a2, int a3)
         }
         else
         {
-            sub_802AF38();
+            battle_getEnemySpriteBySlot();
             object_setFlag80000();
             PlaySoundEffect(103, v17, v18);
             v19 = *(v3 + 5) + 1;
@@ -6732,14 +6732,14 @@ _BYTE *sub_802AD84()
     if ( !*(v0 + 3) )
     {
         *(v0 + 3) = 1;
-        v0 = sub_802AF38();
+        v0 = battle_getEnemySpriteBySlot();
         *(*(v0 + 88) + 2) = 1;
         sub_800EC3C();
         v2 = *(v1 + oToolkit_S2034880_Ptr);
         --*(v2 + 8);
         --*(v2 + 4);
     }
-    result = sub_802AF38();
+    result = battle_getEnemySpriteBySlot();
     if ( !*result )
     {
         if ( *(v0 + *(v0 + 5) + 10) )
@@ -6747,7 +6747,7 @@ _BYTE *sub_802AD84()
         if ( *(v0 + 5) )
         {
             --*(v0 + 5);
-            v4 = sub_802AF38();
+            v4 = battle_getEnemySpriteBySlot();
             *(v0 + 8) = *(v4 + 18);
             *(v0 + 9) = *(v4 + 19);
             *(v4 + 18) = 0;
@@ -6801,7 +6801,7 @@ int ow_chatboxWaitStep()
             *(v0 + 1) = 16;
             *(v0 + 2) = 0;
             --*(v0 + 5);
-            v3 = sub_802AF38();
+            v3 = battle_getEnemySpriteBySlot();
             *(v0 + 8) = *(v3 + 18);
             *(v0 + 9) = *(v3 + 19);
             *(v3 + 18) = 0;
@@ -6880,7 +6880,7 @@ int object_renderSpritePair()
 
 
 // 0x802aed8
-int __noreturn sub_802AED8()
+int __noreturn battle_advancePhase14Wipe()
 {
     _BYTE *v0; // r5
     int result; // r0
@@ -6918,7 +6918,7 @@ int sub_802AF0E()
     u8 v2; // r1
     u8 v3; // r1
 
-    v1 = sub_802AF38();
+    v1 = battle_getEnemySpriteBySlot();
     v2 = *(v0 + 8);
     v1->panelX = v2;
     v1->futurePanelX = v2;
@@ -6937,7 +6937,7 @@ int object_setFlag80000()
 
 
 // 0x802af38
-int sub_802AF38()
+int battle_getEnemySpriteBySlot()
 {
     int v0; // r5
 
@@ -6954,7 +6954,7 @@ int sub_802AF42()
     int result; // r0
 
     --*(v0 + 5);
-    *(*(sub_802AF38() + 88) + 2) = 1;
+    *(*(battle_getEnemySpriteBySlot() + 88) + 2) = 1;
     sub_800EC3C();
     v2 = *(v1 + oToolkit_S2034880_Ptr);
     --*(v2 + 8);
@@ -9695,7 +9695,7 @@ int __fastcall sub_802D1B4(int a1)
 
 
 // 0x802d1be
-int __fastcall sub_802D1BE(int a1)
+int __fastcall getBattleSideCounter(int a1)
 {
     return getTableEntryPtr32_802D064(a1)[15];
 }
@@ -11135,7 +11135,7 @@ int __fastcall battle_addCappedCounter(int a1, int a2)
 
 
 // 0x802e04e
-int __fastcall __spoils<R0,R2,R3,R12> sub_802E04E(int a1)
+int __fastcall __spoils<R0,R2,R3,R12> battle_subCappedCounter(int a1)
 {
     char *v1; // r0
     char *v2; // r2
@@ -12026,7 +12026,7 @@ int __fastcall sub_802E95C(int a1)
     }
     *(v4 + 8) = v9;
     if ( (*off_802E9F8[v2])[v3] & 0x80 )
-        sub_802E04E(*(v1 + 22));
+        battle_subCappedCounter(*(v1 + 22));
     else
         battle_addCappedCounter(*(v1 + 22), (*off_802E9F8[v2])[v3] << 8);
     return v11;
@@ -12285,7 +12285,7 @@ int __fastcall battle_addCounterAmount(int a1)
     int result; // r0
 
     if ( a1 & 0x80 )
-        result = sub_802E04E(*(v1 + 22));
+        result = battle_subCappedCounter(*(v1 + 22));
     else
         result = battle_addCappedCounter(*(v1 + 22), a1 << 8);
     return result;
@@ -12303,7 +12303,7 @@ int sub_802EEC4()
     int v5; // [sp+0h] [bp-14h]
     int v6; // [sp+4h] [bp-10h]
 
-    result = sub_802EFEE(*(v0 + 22));
+    result = getBattleObjectEntryField44(*(v0 + 22));
     v2 = result;
     if ( result )
     {
@@ -12361,7 +12361,7 @@ signed int __fastcall sub_802EF74(int a1)
     {
         v4 = 4;
         v5 = 0;
-        result = sub_802EFEE(v9 ^ 1);
+        result = getBattleObjectEntryField44(v9 ^ 1);
         if ( result )
         {
             if ( result == v1 )
@@ -12405,7 +12405,7 @@ BOOL __fastcall __noreturn battle_checkPanelTypeMatch(int a1, int a2)
 
 
 // 0x802efee
-int __fastcall sub_802EFEE(int a1)
+int __fastcall getBattleObjectEntryField44(int a1)
 {
     return *(getEntryPtr_2036120_1D0_802E070(a1) + 17);
 }

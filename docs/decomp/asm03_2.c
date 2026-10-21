@@ -2849,7 +2849,7 @@ LABEL_10:
 
 
 // 0x80493fe
-void sub_80493FE()
+void battle_refreshRfuAndSubmenuIfFlag()
 {
     int v0; // r5
     char v1; // zf

@@ -1133,7 +1133,7 @@ int sub_812CE28()
     int v0; // r5
 
     (*(&off_812CE40 + *(v0 + 12)))();
-    return sub_812DA3C();
+    return submenu_drawScreenElementIfUnused();
 }
 
 

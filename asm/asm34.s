@@ -1012,9 +1012,9 @@ dword_812DA38:
 // symdb: Draws or queues a shared submenu screen element when its corresponding structure slot is unused.
 // symdb: (r0 = unused selector 6) -> r0 = getStructFrom2008450(6)'s in-use byte; flags NZ reflect whether
 // symdb: the slot is in use
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA3C.yaml
-	thumb_func_start sub_812DA3C
-sub_812DA3C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_drawScreenElementIfUnused.yaml
+	thumb_func_start submenu_drawScreenElementIfUnused
+submenu_drawScreenElementIfUnused:
 	push {lr}
 	mov r0, #6
 	bl getStructFrom2008450
@@ -1022,7 +1022,7 @@ sub_812DA3C:
 	bl submenu_drawScreenElement
 locret_812DA4A:
 	pop {pc}
-	thumb_func_end sub_812DA3C
+	thumb_func_end submenu_drawScreenElementIfUnused
 
 // symdb: Stores a caller-supplied byte into an NPC state struct, sets its state to 0x30, then makes the chatbox play text script 0x41 from archive eTextScript201BA20 and loads a 0xF0 timer.
 // symdb: (r0 = byte parameter stored at [r5,#0x1f], r5 = NPC/object work struct) -> r0 =

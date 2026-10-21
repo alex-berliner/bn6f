@@ -53,9 +53,9 @@ ow_refreshMapTilemap:
 
 // symdb: Zeroes the overworld tilemap buffer and then blits the tilemap block into it, redrawing around the camera.
 // symdb: () -> r0 = 0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094720.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_clearAndRedrawTilemap.yaml
 	thumb_local_start
-sub_8094720:
+ow_clearAndRedrawTilemap:
 	push {r4-r7,lr}
 	// memBlock
 	ldr r0, off_8094778 // =eOverworldMapTilemap 
@@ -67,7 +67,7 @@ sub_8094720:
 	mov r0, #0
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_8094720
+	thumb_func_end ow_clearAndRedrawTilemap
 
 // symdb: Copies a 34-row x 100-halfword block into the overworld map tilemap buffer at an offset, then redraws the tilemap around the camera.
 // symdb: (r0 = source buffer of 34 rows x 0x64 halfwords) -> r0 = 0; no meaningful flags

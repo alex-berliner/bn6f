@@ -984,7 +984,7 @@ off_810E110:
 off_810E120:
 	.word RunSpawnAnimationMaybe_8016380+1
 	.word battle_ResetObjectActionState_80165B8+1
-	.word sub_810E37A+1
+	.word battle_cleanupAndUpdateObject+1
 	.word sub_80166AE+1
 	.word battleObject_initAndRunAI_8016B02+1
 	.word battleObjectStateDispatcher_8016CE8+1
@@ -1272,15 +1272,15 @@ locret_810E334:
 
 // symdb: Sets a battle object's byte +0x67 to 1.
 // symdb: () -> r5 holds oBattleObject; writes r5[0x67] = 1
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E336.yaml
-	thumb_func_start sub_810E336
-sub_810E336:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_setByte67ToOne.yaml
+	thumb_func_start battle_setByte67ToOne
+battle_setByte67ToOne:
 	push {lr}
 	mov r0, #1
 	mov r1, #0x67
 	strb r0, [r5,r1]
 	pop {pc}
-	thumb_func_end sub_810E336
+	thumb_func_end battle_setByte67ToOne
 
 // symdb: Zeros the byte at offset 0x67 of the enemy/object struct passed in r5 during the per-frame enemy update.
 // symdb: (r5 = enemy/object struct base, r0/r1 clobbered as temps) -> void; no return value
@@ -1323,14 +1323,14 @@ loc_810E376:
 
 // symdb: Releases an AI battle object's auxiliary slots, then dispatches its per-frame update.
 // symdb: (r0 = battle object/state pointer) -> r0 = ...; flags ...
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E37A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_cleanupAndUpdateObject.yaml
 	thumb_local_start
-sub_810E37A:
+battle_cleanupAndUpdateObject:
 	push {r4-r7,lr}
 	bl ai_freeBattleObjectExtraSlots
 	bl battle_objectUpdateDispatchPhase_80165C2
 	pop {r4-r7,pc}
-	thumb_func_end sub_810E37A
+	thumb_func_end battle_cleanupAndUpdateObject
 
 	thumb_func_start sub_810E386
 sub_810E386:
@@ -34334,7 +34334,7 @@ off_811E428:
 off_811E42C:
 	.word object_initSpriteObjA1+1
 	.word object_updateSpriteObjA1+1
-	.word sub_811E510+1
+	.word object_stepColorFadeInAndUpdate+1
 	thumb_func_end object_dispatchModeHandler
 
 // symdb: Initializer for a sprite-based object: assigns sprite 0xA1, animation 1, no shadow, palette 0, priority 2, position halfword 0x280, and sets the object's kind/state bytes.
@@ -34449,14 +34449,14 @@ off_811E50C:
 
 // symdb: Advances an object's color-fade-in effect and immediately updates its sprite.
 // symdb: (r0 = object pointer) -> r0 = unspecified; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E510.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_stepColorFadeInAndUpdate.yaml
 	thumb_local_start
-sub_811E510:
+object_stepColorFadeInAndUpdate:
 	push {lr}
 	bl object_stepColorFadeIn
 	bl sprite_update
 	pop {pc}
-	thumb_func_end sub_811E510
+	thumb_func_end object_stepColorFadeInAndUpdate
 
 // symdb: Spawns sprite object 0xA1 at a fixed off-screen-right x with a y randomly chosen inside the 32px lane given by its byte 3.
 // symdb: (r0/r5 = object ptr; reads byte [obj+3] as lane index) -> sets [obj+0xe]=0x15E,
@@ -39816,7 +39816,7 @@ sub_8120B54:
 	mov r1, #8
 	tst r0, r1
 	bne loc_8120B74
-	bl sub_8144D30
+	bl eEnableTimer5
 	b loc_8120BA2
 loc_8120B74:
 	ldr r5, off_8120BAC // =eStruct200F360

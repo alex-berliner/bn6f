@@ -6797,7 +6797,7 @@ int __fastcall sub_8039D66(int a1)
 
 
 // 0x8039d9a
-int __fastcall sub_8039D9A(int a1)
+int __fastcall t3_runConnectIdleOrAdvance(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -7196,7 +7196,7 @@ int sub_803A0BE()
 
 
 // 0x803a0d4
-int __fastcall sub_803A0D4(int a1)
+int __fastcall battle_t4FadeWaitStep(int a1)
 {
     int v1; // r5
     char v2; // zf
@@ -10486,7 +10486,7 @@ void __fastcall rfu_maintainLink(int a1)
                 rfu_setLinkCommand(0);
                 *(v1 + 3) = 0;
                 v5 = sub_8146CFC();
-                sub_813DA84(v5, v6, v7, v8);
+                rfu_clearLinkPacketQueue(v5, v6, v7, v8);
             }
         }
         else

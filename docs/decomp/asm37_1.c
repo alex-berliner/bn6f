@@ -2254,7 +2254,7 @@ int ow_groundmanStartCutscene()
                 groundmanMinigameFindActiveEntry(v6);
                 if ( !v3 )
                 {
-                    v7 = sub_8143EA4();
+                    v7 = groundmanMinigameGetPlayerGridIndex();
                     sub_8143BB0(v7);
                     if ( v3 )
                         StartCutscene(byte_8092DE8, 0, v8, v9);
@@ -2516,7 +2516,7 @@ unsigned int __fastcall sub_8143DEA(int a1)
     int v11; // r0
     int v12; // r1
 
-    v1 = sub_8143EA4();
+    v1 = groundmanMinigameGetPlayerGridIndex();
     v2 = sub_809E2B8();
     if ( v2 & 1 )
         return grid_stepPackedTileCoordsInDirection(v1, v2, 1);
@@ -2541,7 +2541,7 @@ unsigned int __fastcall grid_stepPackedTileCoordsInDirection(unsigned int a1, in
 
 
 // 0x8143ea4
-int sub_8143EA4()
+int groundmanMinigameGetPlayerGridIndex()
 {
     __int64 v0; // r0
 

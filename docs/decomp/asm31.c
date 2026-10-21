@@ -3267,7 +3267,7 @@ int sub_80B9E40()
 
 
 // 0x80b9f00
-int sub_80B9F00()
+int object_clearExtraAndFree()
 {
     int v0; // r5
 
@@ -4970,7 +4970,7 @@ int battle_objectThreeStepDelayUpdate()
         *(v0 + 32) = result;
         if ( ((result < 0) ^ v3) | (result == 0) )
         {
-            sub_80BAEC0(*(v0 + 6));
+            battle_objectSpawnStepEffect(*(v0 + 6));
             v4 = *(v0 + 6) + 1;
             *(v0 + 6) = v4;
             if ( v4 >= 3 )
@@ -5145,7 +5145,7 @@ __int64 __noreturn battle_breakFrontPanels()
 
 
 // 0x80baec0
-int __fastcall sub_80BAEC0(int a1)
+int __fastcall battle_objectSpawnStepEffect(int a1)
 {
     int v1; // r5
     int v2; // r4
@@ -5549,12 +5549,12 @@ void __noreturn sub_80BB1FE()
 
     object_getFrontDirection(v0);
     v2 = *(v0 + 44);
-    sub_80BB228(*(v0 + 116), *(v0 + 120), 1, v1);
+    object_checkBreakPanelAtPanel(*(v0 + 116), *(v0 + 120), 1, v1);
 }
 
 
 // 0x80bb228
-void __fastcall __noreturn sub_80BB228(int a1, int a2, int a3, int a4)
+void __fastcall __noreturn object_checkBreakPanelAtPanel(int a1, int a2, int a3, int a4)
 {
     char v4; // [sp+0h] [bp-24h]
     int v5; // [sp+4h] [bp-20h]
@@ -38003,7 +38003,7 @@ int sub_80CE8F4()
             *(v0 + 10) = 0;
             result = *(v0 + 5);
             if ( result == 1 )
-                result = sub_80E8612(*(v0 + 76), v2, 0);
+                result = object_restorePanelPositions(*(v0 + 76), v2, 0);
         }
     }
     return result;
@@ -38045,7 +38045,7 @@ int object_panelSlideMovementStep()
             *(v0 + 112) = 1;
             if ( *(v0 + 5) == 1 )
             {
-                result = sub_80E8612(*(v0 + 76), *(v0 + 96), *(v0 + 6) - *(v0 + 96));
+                result = object_restorePanelPositions(*(v0 + 76), *(v0 + 96), *(v0 + 6) - *(v0 + 96));
             }
             else
             {
@@ -73276,7 +73276,7 @@ signed int __fastcall sub_80E45F8(int a1)
 
     result = battle_testFlag0x40_800A8F8(a1);
     if ( result )
-        result = sub_802E04E(*(v1 + 22) ^ 1);
+        result = battle_subCappedCounter(*(v1 + 22) ^ 1);
     return result;
 }
 
@@ -80279,7 +80279,7 @@ Battle *__fastcall sub_80E85FA(char a1, int a2, int a3, int a4)
 
 
 // 0x80e8612
-int __fastcall sub_80E8612(int result, int a2, int a3)
+int __fastcall object_restorePanelPositions(int result, int a2, int a3)
 {
     int v3; // r4
     signed int v4; // r1
@@ -80334,7 +80334,7 @@ int sub_80E8656()
 
     result = get_nullSafeField70(v0[24]);
     if ( result || (result = get_nullSafeField70(v0[25])) != 0 || (result = get_nullSafeField70(v0[26])) != 0 )
-        result = sub_80E8612(result, v2, v3);
+        result = object_restorePanelPositions(result, v2, v3);
     return result;
 }
 
@@ -101905,7 +101905,7 @@ signed int battle_aiTurnHandler()
 
 
 // 0x80f64e6
-int sub_80F64E6()
+int object_setAttack0DAndClearScriptState()
 {
     _BYTE *v0; // r6
     int result; // r0
@@ -104663,7 +104663,7 @@ int sub_80F85D4()
 
 
 // 0x80f85e8
-int sub_80F85E8()
+int battle_getRandomAttackDuration()
 {
     return sub_800FE28(&dword_80F85F8);
 }
@@ -107036,7 +107036,7 @@ int sub_80F9E6C()
 
 
 // 0x80f9e90
-int sub_80F9E90()
+int ai_getPanelAttackTurnBoost()
 {
     return sub_800FE28(&dword_80F9EA0);
 }
@@ -107123,7 +107123,7 @@ void ai_initPanelAttackTurn()
     *(v1 + 2) = 0;
     sub_80F9FEC(1);
     *(v1 + 24) = ai_getPanelAttackTurnDuration();
-    *(v1 + 12) = sub_80F9E90();
+    *(v1 + 12) = ai_getPanelAttackTurnBoost();
     *(v1 + 40) = object_checkIndexedPanelState;
     *(v1 + 48) = v0 + 96;
     object_setAttack0();
@@ -131628,7 +131628,7 @@ LABEL_13:
                 if ( *(*(v0 + 84) + 132) )
                 {
                     battle_settleCollisionCounters();
-                    sub_810E336();
+                    battle_setByte67ToOne();
                 }
             }
         }

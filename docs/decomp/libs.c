@@ -712,7 +712,7 @@ int sub_8144D24()
 
 
 // 0x8144d30
-signed int sub_8144D30()
+signed int eEnableTimer5()
 {
     signed int result; // r0
 
@@ -2268,7 +2268,7 @@ int __fastcall rfu_setMscCallbackArg(int a1)
 
 
 // 0x81463e8
-int __fastcall sub_81463E8(int result)
+int __fastcall rfu_setCallbackArg(int result)
 {
     dword_200FE40 = result;
     return result;
@@ -2979,14 +2979,14 @@ LABEL_8:
         v9 = *(v4 + 20);
         v10 = &unk_2009480 + 4 * byte_2010328 * (v9 >> 2);
         ZeroFillByWord(*(v4 + 12), v9);
-        sub_8146E48(v4, v10);
+        rfu_copyRecvSlotData(v4, v10);
     }
     return v12;
 }
 
 
 // 0x8146e48
-int __fastcall sub_8146E48(int a1, int a2)
+int __fastcall rfu_copyRecvSlotData(int a1, int a2)
 {
     int v3; // [sp+0h] [bp-4h]
 
@@ -4269,7 +4269,7 @@ int rfu_startLinkTransfer()
     eRfuLinkFlags = 1;
     sub_803ECFC(&eRfuLinkFlags);
     rfu_queuePushEntry(&byte_20101E0, 0xCu);
-    sub_81463E8(sub_8148738);
+    rfu_setCallbackArg(sub_8148738);
     rfu_setMscCallbackArg(sub_8148878);
     v1 = 0;
     do
@@ -4652,7 +4652,7 @@ signed int rfu_initWirelessSession()
     uniConnectionState = 0;
     byte_2010274 = byte_2010292;
     byte_201039C = 0;
-    sub_81463E8(sub_8148E74);
+    rfu_setCallbackArg(sub_8148E74);
     rfu_setMscCallbackArg(rfu_recvData);
     rfu_setRecvBuffer(16, rfuSlotId, &unk_20103A0, 64);
     v1 = rfu_clearSlot(3, rfuSlotId);

@@ -860,7 +860,7 @@ signed int ai_tryEnterAttackFinishState()
 
 
 // 0x810e336
-signed int sub_810E336()
+signed int battle_setByte67ToOne()
 {
     int v0; // r5
     signed int result; // r0
@@ -910,7 +910,7 @@ signed int ai_tryUseSelectedChip()
 
 
 // 0x810e37a
-int sub_810E37A()
+int battle_cleanupAndUpdateObject()
 {
     int v0; // r0
 
@@ -20592,7 +20592,7 @@ LABEL_13:
 
 
 // 0x811e510
-void __noreturn sub_811E510()
+void __noreturn object_stepColorFadeInAndUpdate()
 {
     Battle *v0; // r5
 
@@ -23756,7 +23756,7 @@ signed int sub_8120B54()
         return 255;
     if ( rfu_countPlayersByStatus() >= 2 && !(sub_802D246() & 8) )
     {
-        sub_8144D30();
+        eEnableTimer5();
         return 255;
     }
     if ( link_getSlotState_803F740(4) >> 32 )

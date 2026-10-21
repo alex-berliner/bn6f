@@ -6226,7 +6226,7 @@ void __noreturn init_eventSceneState()
     v6[11] = 0;
     v6[12] = 0;
     v6[13] = 0;
-    sub_8128F04();
+    init_loadEventGfxData();
     sprite_initSequentialIndices(byte_201BB60, 36976, 100699648, v7);
     sub_8129104(byte_201BB60, 36960);
     battle_resetEStructRecords_8046664();
@@ -6335,7 +6335,7 @@ int chatbox_setMessage()
 
 
 // 0x8128f04
-void sub_8128F04()
+void init_loadEventGfxData()
 {
     decompAndCopyData(byte_8128F38);
 }
@@ -8216,7 +8216,7 @@ int sub_812A27C()
     int v0; // r5
     int v1; // r0
 
-    v1 = sub_812B574();
+    v1 = t3_rfuCheckAndSpinUpdate();
     return (*(&off_812A294 + *(v0 + 12)))(v1);
 }
 
@@ -9876,7 +9876,7 @@ int loadEntityJumpOffset00Gfx_812B530()
 
 
 // 0x812b574
-int sub_812B574()
+int t3_rfuCheckAndSpinUpdate()
 {
     int result; // r0
 
@@ -9894,7 +9894,7 @@ signed int t3_runScript2fSetState()
     _BYTE *v0; // r5
     signed int result; // r0
 
-    sub_812B574();
+    t3_rfuCheckAndSpinUpdate();
     chatbox_runScript_803FD9C_on_eTextScript201BA20(47);
     v0[1] = 60;
     v0[2] = 4;

@@ -1987,7 +1987,7 @@ off_80399E8:
   // 0x2C
 	.word sub_8039D66+1
   // 0x30
-	.word sub_8039D9A+1
+	.word t3_runConnectIdleOrAdvance+1
   // 0x34
 	.word battle_transitionToStart+1
   // 0x38
@@ -2015,7 +2015,7 @@ off_80399E8:
   // 0x64
 	.word sub_803A0BE+1
   // 0x68
-	.word sub_803A0D4+1
+	.word battle_t4FadeWaitStep+1
   // 0x6C
 	.word sub_803A0EE+1
 	thumb_func_end sub_80399CE
@@ -2441,9 +2441,9 @@ loc_8039D94:
 // symdb: t3 (RFU/link) state tick: if the t3 state handler is idle and RFU bit 0x80 is clear, advance the phase byte to 0x24, then redraw the connected-players list.
 // symdb: (r5 = t3 state cell) -> void; runs t3_runStateHandler, may set [r5,#1] = 0x24, then
 // symdb: rfu_drawConnectedPlayerEntries
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039D9A.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_runConnectIdleOrAdvance.yaml
 	thumb_local_start
-sub_8039D9A:
+t3_runConnectIdleOrAdvance:
 	push {r4-r7,lr}
 	bl t3_runStateHandler
 	bne loc_8039DAE
@@ -2455,7 +2455,7 @@ sub_8039D9A:
 loc_8039DAE:
 	bl rfu_drawConnectedPlayerEntries
 	pop {r4-r7,pc}
-	thumb_func_end sub_8039D9A
+	thumb_func_end t3_runConnectIdleOrAdvance
 
 // symdb: State phase handler that branches on sub_803A558: one branch shows a script via sub_803BB2C and sets phase 0x38; the other waits (sub_803CB18 frames 8/0x10), then on success fades the screen, stops music, plays SOUND_BATTLE_START, and advances to phase 0x3C.
 // symdb: (r5 = pointer to object/state struct; r0/r1 scratch) -> r0 = result of sub_803A104; writes next
@@ -2870,9 +2870,9 @@ loc_803A0CE:
 // symdb: Advances the battle simulation while fading the screen for a T4 wait task.
 // symdb: (r5 = T4 task pointer) -> r0 = t4_dispatchWaitStep result; flags preserved from
 // symdb: t4_dispatchWaitStep
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A0D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_t4FadeWaitStep.yaml
 	thumb_local_start
-sub_803A0D4:
+battle_t4FadeWaitStep:
 	push {r4-r7,lr}
 	bl t4_dispatchWaitStep
 	beq loc_803A0E8
@@ -2884,7 +2884,7 @@ sub_803A0D4:
 loc_803A0E8:
 	bl battle_stepFrame
 	pop {r4-r7,pc}
-	thumb_func_end sub_803A0D4
+	thumb_func_end battle_t4FadeWaitStep
 
 	thumb_local_start
 sub_803A0EE:
@@ -8025,7 +8025,7 @@ off_803C7E4:
 	.word 0xB4
 	thumb_func_end rfu_advanceLinkState
 
-// symdb: RFU wireless-link tick: on a failed/lost link it sets flag 0x40, decrements [r7+0xA], and once that expires raises flags 0x08 and 0x80 via sub_813D978; otherwise if sub_8146888 reports no activity it resets the link command (0), clears [r7+3], and calls sub_8146CFC and sub_813DA84 to restart the link.
+// symdb: RFU wireless-link tick: on a failed/lost link it sets flag 0x40, decrements [r7+0xA], and once that expires raises flags 0x08 and 0x80 via sub_813D978; otherwise if sub_8146888 reports no activity it resets the link command (0), clears [r7+3], and calls sub_8146CFC and rfu_clearLinkPacketQueue to restart the link.
 // symdb: (r7 = RFU session/task struct, global) -> r0 clobbered; RFU flags word at 0x200BC50+0xC updated,
 // symdb: [r7+0xA] counter decremented, [r7+3] byte cleared
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_maintainLink.yaml
@@ -8062,7 +8062,7 @@ loc_803C81E:
 	mov r0, #0
 	strb r0, [r7,#3]
 	bl sub_8146CFC
-	bl sub_813DA84
+	bl rfu_clearLinkPacketQueue
 locret_803C838:
 	pop {pc}
 	thumb_func_end rfu_maintainLink

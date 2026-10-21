@@ -818,7 +818,7 @@ void sub_812E280()
                                         sub_812EE78(1);
                                         battle_resetEStructRecords_8046664();
                                         submenu_initEntryTable();
-                                        sub_812EB78();
+                                        submenu_spawnEStructRecordsFromTable();
                                         submenu_renderSelectedWindow();
                                     }
                                 }

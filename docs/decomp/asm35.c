@@ -74,7 +74,7 @@ int battle_collectUnassignedKeyPresses()
 
 
 // 0x812eb78
-void sub_812EB78()
+void submenu_spawnEStructRecordsFromTable()
 {
     battle_spawnEStructRecordsFromTable_80465A0(&byte_812DA94);
 }
