@@ -4282,7 +4282,7 @@ off_80B9FB4:
 off_80B9FB8:
 	.word sub_80B9FD8+1
 	.word sub_80BA02C+1
-	.word sub_80BA054+1
+	.word battleObjectFindPanelAndWait+1
 	.word battle_stepAdvanceColumn+1
 	.word battle_objectDelayActionStep+1
 	.word battle_objMoveToPanelPhase+1
@@ -4367,9 +4367,9 @@ locret_80BA052:
 // symdb: Scans forward for an occupied panel, then waits before advancing the battle object's action state.
 // symdb: (r0 = battle object pointer, r5 = same battle object pointer) -> r0 = unchanged; flags are
 // symdb: caller-clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BA054.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleObjectFindPanelAndWait.yaml
 	thumb_local_start
-sub_80BA054:
+battleObjectFindPanelAndWait:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_CurPhase]
 	tst r0, r0
@@ -4402,7 +4402,7 @@ loc_80BA086:
 	strh r0, [r5,#oBattleObject_CurPhaseAndPhaseInitialized]
 locret_80BA08E:
 	pop {pc}
-	thumb_func_end sub_80BA054
+	thumb_func_end battleObjectFindPanelAndWait
 
 // symdb: Battle-object action step handler that every 15 frames advances Param2 one column and calls sub_80BA238 on it, ending the action when it reaches the object's own PanelX or leaves columns 1-6.
 // symdb: (r5 = battle object, r0 = scratch) -> no return; sets
@@ -11913,11 +11913,11 @@ off_80BD39C:
 	.word off_80BD3A0
 off_80BD3A0:
 	.word battle_initObjectFromParam1Table+1
-	.word sub_80BD478+1
+	.word battle_dispatchCurPhaseByParam1+1
 	.word sub_80BD984+1
 	thumb_func_end t1_0x20_80BD388
 
-// symdb: Initializes a battle object from a Param1-indexed 8-byte-per-entry table: loads its sprite (decompressing temp data if the entry flag demands), copies the parent object's X/Y/Z into both its +0x34 and +0x40 position blocks offset by signed dx/dy scaled by object_getFrontDirection, recomputes panels, sets flags/flip, decodes actor type, and when Param1==0 also spawns a second linked object via sub_80BD9A2 and cross-links the two through ExtraVars+4 before handing off to sub_80BD478 in CUR_STATE_UPDATE.
+// symdb: Initializes a battle object from a Param1-indexed 8-byte-per-entry table: loads its sprite (decompressing temp data if the entry flag demands), copies the parent object's X/Y/Z into both its +0x34 and +0x40 position blocks offset by signed dx/dy scaled by object_getFrontDirection, recomputes panels, sets flags/flip, decodes actor type, and when Param1==0 also spawns a second linked object via sub_80BD9A2 and cross-links the two through ExtraVars+4 before handing off to battle_dispatchCurPhaseByParam1 in CUR_STATE_UPDATE.
 // symdb: (r5 = battle object to initialize; r0 unused on entry) -> r0 = new related object when
 // symdb: Param1==0; destroys r4/r6 scratch
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initObjectFromParam1Table.yaml
@@ -12003,7 +12003,7 @@ loc_80BD3CC:
 loc_80BD45A:
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80BD478
+	bl battle_dispatchCurPhaseByParam1
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 byte_80BD464:
@@ -12016,9 +12016,9 @@ off_80BD474:
 // symdb: Dispatches a battle object's current phase based on CurAction, choosing one of two handler tables depending on Param1.
 // symdb: (r5 = oBattleObject, Param1==0 ? dispatch table at off_80BD4A0 : table at off_80BD4B0) -> tail-
 // symdb: calls handler; clobbers r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BD478.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchCurPhaseByParam1.yaml
 	thumb_local_start
-sub_80BD478:
+battle_dispatchCurPhaseByParam1:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #0
@@ -12050,7 +12050,7 @@ off_80BD4B0:
 	.word battle_dispatchCurPhase+1
 	.word sub_80BD89C+1
 	.word sub_80BD7EA+1
-	thumb_func_end sub_80BD478
+	thumb_func_end battle_dispatchCurPhaseByParam1
 
 	thumb_local_start
 sub_80BD4BC:
@@ -13105,7 +13105,7 @@ off_80BDBB8:
 	.word off_80BDBBC
 off_80BDBBC:
 	.word sub_80BDBC8+1
-	.word sub_80BDCFC+1
+	.word battle_dispatchActionPhase+1
 	.word object_freeAndClearExtraVars+1
 	thumb_func_end t1_0x21_80BDBA4
 
@@ -13245,7 +13245,7 @@ loc_80BDCE2:
 	strb r0, [r5,#oBattleObject_Param4]
 	mov r0, #CUR_STATE_UPDATE
 	str r0, [r5,#oBattleObject_CurStateActionPhaseAndPhaseInitialized]
-	bl sub_80BDCFC
+	bl battle_dispatchActionPhase
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_80BDCF0:
@@ -13258,9 +13258,9 @@ off_80BDCF8:
 
 // symdb: Dispatches a battle object's current action to the handler selected by Param1 and CurAction.
 // symdb: (implicit r5 = battle object) -> void; flags preserved/unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BDCFC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_dispatchActionPhase.yaml
 	thumb_local_start
-sub_80BDCFC:
+battle_dispatchActionPhase:
 	push {lr}
 	ldrb r0, [r5,#oBattleObject_Param1]
 	cmp r0, #0
@@ -13292,7 +13292,7 @@ off_80BDD34:
 	.word object_waitPhasePlaySoundAndAdvance+1
 	.word sub_80BE174+1
 	.word sub_80BE22E+1
-	thumb_func_end sub_80BDCFC
+	thumb_func_end battle_dispatchActionPhase
 
 // symdb: Battle-object action-step handler: plays sound effect 0x94 once, then waits 60 frames before advancing the object's action.
 // symdb: (r5 = battle object, not passed in r0) -> void; no meaningful return, flags from PlaySoundEffect

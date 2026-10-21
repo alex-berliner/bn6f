@@ -3422,7 +3422,7 @@ int sub_80BA02C()
 
 
 // 0x80ba054
-int sub_80BA054()
+int battleObjectFindPanelAndWait()
 {
     int v0; // r5
     int v1; // r0
@@ -9386,12 +9386,12 @@ int __noreturn battle_initObjectFromParam1Table()
         *(v14 + 100) = v20;
     }
     *(v0 + 8) = 4;
-    return sub_80BD478();
+    return battle_dispatchCurPhaseByParam1();
 }
 
 
 // 0x80bd478
-int sub_80BD478()
+int battle_dispatchCurPhaseByParam1()
 {
     int v0; // r5
     int result; // r0
@@ -10311,12 +10311,12 @@ int __noreturn sub_80BDBC8()
     }
     *(v0 + 7) = 0;
     *(v0 + 8) = 4;
-    return sub_80BDCFC();
+    return battle_dispatchActionPhase();
 }
 
 
 // 0x80bdcfc
-int sub_80BDCFC()
+int battle_dispatchActionPhase()
 {
     int v0; // r5
     int result; // r0
