@@ -7225,7 +7225,7 @@ locret_81113B0:
 off_81113B4:
 	.word off_81113B8
 off_81113B8:
-	.word sub_81113C4+1
+	.word battleAiChooseScript+1
 	.word ai_beginAnchoredAttack+1
 	.word ai_sweepAttackInit+1
 	thumb_func_end ai_battlesweepUpdate
@@ -7233,9 +7233,9 @@ off_81113B8:
 // symdb: Chooses the next battle AI script from a countdown value.
 // symdb: (r0 = unused, r1 = unused, r5 = AI data, r6 = battle AI state) -> r0 = selected script ID; flags
 // symdb: unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81113C4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleAiChooseScript.yaml
 	thumb_local_start
-sub_81113C4:
+battleAiChooseScript:
 	push {lr}
 	mov r0, #0x67
 	ldrb r1, [r5,r0]
@@ -7251,7 +7251,7 @@ loc_81113D8:
 	strb r0, [r6,#oAIState_ScriptId]
 locret_81113DC:
 	pop {pc}
-	thumb_func_end sub_81113C4
+	thumb_func_end battleAiChooseScript
 
 // symdb: AI script step that arms a version-scaled attack (duration 24, damage/extra-damage from per-version tables) and, when a condition holds, blocks sliding and launches attack 0x0A.
 // symdb: (r4 = AI/battle object, r5 = battle object, r6 = AI state, r7 = AI attack vars) -> r0 = 0; r6

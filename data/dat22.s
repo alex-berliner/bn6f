@@ -49,9 +49,9 @@ loc_8087226::
 // symdb: Copies a saved player trail record from off_8086D1C into the active trail struct and sets event flag 0x5E5.
 // symdb: (r5 = ptr to player trail struct) -> void; r5+0x5..r5+0xd filled from src[1..9], r5+0x10..
 // symdb: filled with 0x21 words from src+0x5C
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8087238.yaml
-	thumb_func_start sub_8087238
-sub_8087238::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/init_copyPlayerTrailFromSave.yaml
+	thumb_func_start init_copyPlayerTrailFromSave
+init_copyPlayerTrailFromSave::
 	push {r4-r7,lr}
 	ldr r3, off_8087280 // =off_8086D18 
 	ldr r3, [r3,#0x4] // (off_8086D1C - 0x8086d18)
@@ -88,7 +88,7 @@ loc_808726A::
 	bl reqBBS_setFlag_e17b0f7_8140A00
 	pop {r4-r7,pc}
 	.balign 4, 0
-	thumb_func_end sub_8087238
+	thumb_func_end init_copyPlayerTrailFromSave
 
 off_8087280::
 	.word off_8086D18

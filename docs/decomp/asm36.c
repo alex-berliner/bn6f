@@ -7887,7 +7887,7 @@ __int16 *navicust_checkPartPlacement()
     if ( result[1] )
     {
         v2 = (*result - 144);
-        sub_813BAEC(v2, *(v0 + 68), *(v0 + 40), *(v0 + 44));
+        navicust_validatePartPlacement(v2, *(v0 + 68), *(v0 + 40), *(v0 + 44));
         result = v2;
     }
     return result;

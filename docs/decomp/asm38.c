@@ -1503,7 +1503,7 @@ void __fastcall sub_3006C3C(int result, int a2, int a3)
 
 
 // 0x3006c72
-int __fastcall sub_3006C72(int a1, int a2, int a3)
+int __fastcall chatbox_skipRows(int a1, int a2, int a3)
 {
     int v3; // r4
     int v4; // r10

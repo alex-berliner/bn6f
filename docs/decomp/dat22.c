@@ -33,7 +33,7 @@ int sub_80871F4()
 
 
 // 0x8087238
-unsigned int sub_8087238()
+unsigned int init_copyPlayerTrailFromSave()
 {
 	_BYTE *v0; // r5
 	signed int v1; // r1

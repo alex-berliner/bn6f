@@ -880,7 +880,7 @@ int sub_810D130()
 
 
 // 0x810d150
-int sub_810D150()
+int object_initType41State()
 {
     int v0; // r4
     int v1; // r5

@@ -630,9 +630,9 @@ off_813BAE8:
 // symdb: Confirms a Navi Customizer part can be placed by checking panel and overlap rules.
 // symdb: (r0 = part header pointer, r1 = placement data ptr, r2 = ?, r3 = ?) -> r0 = 0 if legal, non-zero
 // symdb: otherwise
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813BAEC.yaml
-	thumb_func_start sub_813BAEC
-sub_813BAEC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_validatePartPlacement.yaml
+	thumb_func_start navicust_validatePartPlacement
+navicust_validatePartPlacement:
 	push {lr}
 	push {r0-r3}
 	bl battle_checkPanelPlacement_813BB00
@@ -642,7 +642,7 @@ sub_813BAEC:
 loc_813BAFC:
 	tst r0, r0
 	pop {pc}
-	thumb_func_end sub_813BAEC
+	thumb_func_end navicust_validatePartPlacement
 
 // symdb: Tests whether a 7×7 panel shape from a Custom Program or AI-selected attack can legally occupy its target tiles on the 15×15 battle grid.
 // symdb: int battle_checkPanelPlacement(unsigned panel_id /*r0*/, uint8_t *grid /*r1*/,

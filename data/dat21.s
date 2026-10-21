@@ -6781,7 +6781,7 @@ byte_8085B8A::
 	cs_write_ow_player_fixed_anim_select_8037dac byte2=0xFF byte3=0x07
 	cs_ow_player_coord_special byte1=0x00 byte2=0xFF byte3=0x01 signedhword4=-0x01C0 signedhword6=-0x02C0 signedhword8=0x0000
 	cs_make_ow_player_visible
-	cs_call_native_with_return_value ptr1=sub_8085BCC+1
+	cs_call_native_with_return_value ptr1=initBattleFieldTable+1
 	cs_pause byte1=0xFF byte2=0x0F
 	cs_warp_cmd_8038040_2 byte1=0x81 byte2=0x00 ptr3=NULL
 	cs_set_event_flag byte1=0xFF event16_2=EVENT_52B
@@ -6796,9 +6796,9 @@ dword_8085BC4::
 
 // symdb: Initializes a battle-state field by selecting table entry 9.
 // symdb: (r0 = unused, r1 = unused) -> r0 = 0; flags:
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8085BCC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/initBattleFieldTable.yaml
 	thumb_local_start
-sub_8085BCC:
+initBattleFieldTable:
 	push {lr}
 	mov r0, #9
 	bl getIndexed20ByteTableEntry_80355DE
@@ -6806,7 +6806,7 @@ sub_8085BCC:
 	mov r0, #0
 	pop {pc}
 	.balign 4, 0
-	thumb_func_end sub_8085BCC
+	thumb_func_end initBattleFieldTable
 
 cutscenescript_8085BDC:
 	cs_lock_player_for_non_npc_dialogue_809e0b0
@@ -8176,7 +8176,7 @@ sub_8086DF8::
 	movflag EVENT_5F2
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	beq locret_8086E6A
-	bl sub_8087238
+	bl init_copyPlayerTrailFromSave
 	movflag EVENT_5E4
 	bl TestEventFlagFromImmediate // (flag: u16) -> !zf
 	bne loc_8086E50

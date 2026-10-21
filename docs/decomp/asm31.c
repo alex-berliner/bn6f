@@ -35735,7 +35735,7 @@ int battle_waitTimerThenAdvanceAction()
 
 
 // 0x80cd144
-int sub_80CD144()
+int battle_objectStepByPhase()
 {
     int v0; // r5
 
@@ -52711,7 +52711,7 @@ signed int __noreturn battle_objectVanishFromField()
 
 
 // 0x80d7996
-signed int sub_80D7996()
+signed int battleObjectInitRecoverablePhase()
 {
     int v0; // r5
     signed int result; // r0
@@ -55606,7 +55606,7 @@ void __noreturn battle_relayDamageUpdate()
 
     object_removeCollisionData();
     object_spawnCollisionEffect();
-    if ( battle_isBattleOver() || sub_80D9690() )
+    if ( battle_isBattleOver() || battle_checkRelayFlags() )
     {
         v8 = object_clearCollisionRegion();
         object_presentCollisionData(v8, v9);
@@ -55716,7 +55716,7 @@ int battle_copyPanelPosFromRelated()
 
 
 // 0x80d9690
-signed int sub_80D9690()
+signed int battle_checkRelayFlags()
 {
     int v0; // r5
     signed int v1; // r3
@@ -108617,7 +108617,7 @@ int sub_80FAF0C()
 
 
 // 0x80faf30
-int sub_80FAF30()
+int battle_getDefaultAttackBoost2()
 {
     return sub_800FE28(&dword_80FAF40);
 }
@@ -108688,7 +108688,7 @@ void sub_80FAFF2()
     *(v1 + 2) = 16;
     sub_80FB062(1);
     *(v1 + 24) = sub_80FAF0C();
-    *(v1 + 12) = sub_80FAF30();
+    *(v1 + 12) = battle_getDefaultAttackBoost2();
     *(v1 + 40) = object_getPanelRowInColumn;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
     object_setAttack0();
@@ -116862,7 +116862,7 @@ int ai_getBossAttackDelay()
 
 
 // 0x8100524
-int sub_8100524()
+int battle_aiGetAttackBoostValue()
 {
     return sub_800FE28(&dword_8100534);
 }
@@ -116911,7 +116911,7 @@ void sub_8100580()
     *(v0 + 2) = 32;
     battle_aiLoadVersionedAttackPair(4);
     *(v0 + 24) = sub_8100538();
-    *(v0 + 12) = sub_8100524();
+    *(v0 + 12) = battle_aiGetAttackBoostValue();
     object_setAttack0();
 }
 
@@ -117848,7 +117848,7 @@ int ai_battlesweepTargetPanelStep()
     if ( ((result < 0) ^ v2) | (result == 0) )
     {
         *(v0 + 14) = 0;
-        sub_8101204(*(v0 + 22), *(v0 + 23));
+        battleSpawnAIMoveAttackObject(*(v0 + 22), *(v0 + 23));
         result = 16;
         *v0 = 16;
     }
@@ -117878,7 +117878,7 @@ int ai_stepTargetedPanelAttack()
     *(v1 + 16) = result;
     if ( ((result < 0) ^ v3) | (result == 0) )
     {
-        sub_8101204(*(v1 + 22), *(v1 + 23));
+        battleSpawnAIMoveAttackObject(*(v1 + 22), *(v1 + 23));
         v5 = *(v1 + 14) + 1;
         *(v1 + 14) = v5;
         if ( v5 >= 5 )
@@ -118461,7 +118461,7 @@ int __noreturn sub_81011B2()
 
 
 // 0x8101204
-int __fastcall sub_8101204(char a1, int a2)
+int __fastcall battleSpawnAIMoveAttackObject(char a1, int a2)
 {
     int v2; // r7
     int v3; // r3
@@ -118669,7 +118669,7 @@ int sub_81014E8()
 
 
 // 0x81014fc
-int sub_81014FC()
+int ai_getColonelAttackDuration()
 {
     return sub_800FE28(&dword_810150C);
 }
@@ -118819,7 +118819,7 @@ void sub_810168C()
     *(v1 + 3) = battle_getAiDifficultyTier_800FE36();
     *(v1 + 2) = 1;
     ai_loadColonelAttackParams(2);
-    *(v1 + 24) = sub_81014FC();
+    *(v1 + 24) = ai_getColonelAttackDuration();
     *(v1 + 12) = sub_81014E8();
     *(v1 + 13) = sub_8101510();
     *(v1 + 40) = sub_81038FE;
@@ -127445,7 +127445,7 @@ int sub_8106B20()
 
 
 // 0x8106b44
-int sub_8106B44()
+int ai_getAttackDuration()
 {
     return sub_800FE28(&off_8106B54);
 }
@@ -127558,7 +127558,7 @@ void ai_initAttack()
     sub_8106CEA(3);
     *(v1 + 48) = sub_8106D18(4);
     *(v1 + 40) = object_getRearPanelIfFlagsMatch;
-    *(v1 + 24) = sub_8106B44();
+    *(v1 + 24) = ai_getAttackDuration();
     *(v1 + 12) = sub_8106B58();
     *(v1 + 13) = v2;
     *(v1 + 44) = battle_findPlayer(*(v0 + 22) ^ 1);
@@ -134772,7 +134772,7 @@ int sub_810B8EC()
 
     if ( *(v2 + 1) )
     {
-        sub_810BA94();
+        ai_hasActiveAttackTarget();
         if ( v4 )
         {
             result = *(v2 + 16) - 1;
@@ -134941,7 +134941,7 @@ int ai_attackHitFrontPanel()
 
 
 // 0x810ba94
-signed int sub_810BA94()
+signed int ai_hasActiveAttackTarget()
 {
     int v0; // r5
     signed int result; // r0

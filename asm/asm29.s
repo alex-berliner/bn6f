@@ -1479,7 +1479,7 @@ sub_80A58AC:
 	beq locret_80A58D8
 	mov r0, #0
 	strb r0, [r6,#7]
-	bl sub_80A5954
+	bl owPlayer_copyPositionOffset
 	str r0, [r5,#0xc]
 	str r1, [r5,#0x10]
 	str r2, [r5,#0x14]
@@ -1498,7 +1498,7 @@ dword_80A58DC:
 owPlayer_setupPrologue_80A58E0:
 	push {r4-r7,lr}
 	mov r4, #0
-	bl sub_80A5954
+	bl owPlayer_copyPositionOffset
 	bl owPlayer_setDirectionAnimThunk
 	bl sub_80A59B8
 	mov r2, r0
@@ -1570,9 +1570,9 @@ loc_80A594E:
 // symdb: Copies a three-word overworld player position/coordinate vector from an offset structure into the active player state.
 // symdb: (implicit r6 = source player/offset context, r5 = destination player context) -> r0-r2
 // symdb: unchanged; flags unaffected
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5954.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/owPlayer_copyPositionOffset.yaml
 	thumb_local_start
-sub_80A5954:
+owPlayer_copyPositionOffset:
 	push {lr}
 	mov r3, #0x7c 
 	ldr r0, [r6,r3]
@@ -1585,7 +1585,7 @@ sub_80A5954:
 	str r2, [r5,#0x2c]
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_80A5954
+	thumb_func_end owPlayer_copyPositionOffset
 
 // symdb: Wrapper that loads two fields off an r5-based struct and tail-calls the OW player facing-animation setter.
 // symdb: (r5 = struct base, args unused) -> r0 = [r5+0x24], r1 = [r5+0x28] passed to

@@ -58,7 +58,7 @@ int __fastcall sub_8086DF8(int a1, int a2, int a3, int a4)
     result = TestEventFlagFromImmediate(5, 242);
     if ( !v6 )
     {
-        sub_8087238();
+        init_copyPlayerTrailFromSave();
         TestEventFlagFromImmediate(5, 228);
         if ( v6 )
         {

@@ -841,7 +841,7 @@ int sub_80A58AC()
     if ( result != 1 )
     {
         *(v1 + 7) = 0;
-        result = sub_80A5954();
+        result = owPlayer_copyPositionOffset();
         v0[3] = result;
         v0[4] = v5;
         v0[5] = v6;
@@ -853,7 +853,7 @@ int sub_80A58AC()
 // 0x80a58e0
 void owPlayer_setupPrologue_80A58E0()
 {
-    sub_80A5954();
+    owPlayer_copyPositionOffset();
     owPlayer_setDirectionAnimThunk();
     sub_80A59B8();
     JUMPOUT(&loc_80A58FA);
@@ -928,7 +928,7 @@ LABEL_14:
 
 
 // 0x80a5954
-int sub_80A5954()
+int owPlayer_copyPositionOffset()
 {
     _DWORD *v0; // r5
     _DWORD *v1; // r6

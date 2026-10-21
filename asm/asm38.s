@@ -2368,7 +2368,7 @@ off_3006B18:
 	.word sub_3006C3C+1
 	.word sub_3006F42+1
 	.word sub_3006F74+1
-	.word sub_3006C72+1
+	.word chatbox_skipRows+1
 	.word sub_3006C8E+1
 	.word 0x0
 	.word sub_3006CA8+1
@@ -2535,9 +2535,9 @@ loc_3006C6E:
 // symdb: Advances the caller's chatbox output pointer past a variable number of rows.
 // symdb: (r0 = chatbox output pointer, r10+0x38 -> byte count of rows to skip) -> r0 = advanced pointer +
 // symdb: 1; r4 cleared
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_3006C72.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_skipRows.yaml
 	thumb_local_start
-sub_3006C72:
+chatbox_skipRows:
 	push {lr}
 	mov r1, r10
 	ldr r1, [r1,#0x38]
@@ -2553,7 +2553,7 @@ loc_3006C88:
 	mov r4, #0
 	add r0, #1
 	pop {pc}
-	thumb_func_end sub_3006C72
+	thumb_func_end chatbox_skipRows
 
 	thumb_func_start sub_3006C8E
 sub_3006C8E:

@@ -4345,7 +4345,7 @@ void ai_battlesweepUpdate()
 
 
 // 0x81113c4
-signed int sub_81113C4()
+signed int battleAiChooseScript()
 {
     int v0; // r5
     _BYTE *v1; // r6

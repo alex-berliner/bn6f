@@ -492,7 +492,7 @@ void t4_loadToolkitSceneBuffers()
 
 
 // 0x813baec
-int __fastcall sub_813BAEC(int a1, int a2, int a3, int a4)
+int __fastcall navicust_validatePartPlacement(int a1, int a2, int a3, int a4)
 {
     int result; // r0
     char v5; // zf
