@@ -13621,6 +13621,10 @@ loc_801463A:
 	pop {pc}
 	thumb_func_end sub_801462A
 
+// symdb: Enables super armor on the current battle object and refreshes its collision state.
+// symdb: (r0 = current battle object) -> r0 = unspecified; flags may be modified by the collision refresh
+// symdb: callee
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8014640.yaml
 	thumb_local_start
 sub_8014640:
 	push {lr}

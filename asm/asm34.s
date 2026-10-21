@@ -1009,6 +1009,10 @@ dword_812DA38:
 	.word 0xC24C
 	thumb_func_end object_submitOamFromStruct
 
+// symdb: Draws or queues a shared submenu screen element when its corresponding structure slot is unused.
+// symdb: (r0 = unused selector 6) -> r0 = getStructFrom2008450(6)'s in-use byte; flags NZ reflect whether
+// symdb: the slot is in use
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812DA3C.yaml
 	thumb_func_start sub_812DA3C
 sub_812DA3C:
 	push {lr}

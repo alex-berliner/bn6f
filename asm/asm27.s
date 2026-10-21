@@ -51,6 +51,9 @@ ow_refreshMapTilemap:
 	pop {r4-r7,pc}
 	thumb_func_end ow_refreshMapTilemap
 
+// symdb: Zeroes the overworld tilemap buffer and then blits the tilemap block into it, redrawing around the camera.
+// symdb: () -> r0 = 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8094720.yaml
 	thumb_local_start
 sub_8094720:
 	push {r4-r7,lr}

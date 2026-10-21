@@ -118,6 +118,9 @@ off_812EB74:
 	.word 0xBC
 	thumb_func_end battle_collectUnassignedKeyPresses
 
+// symdb: Spawns submenu eStruct records by walking the static table at byte_812DA94, called as part of submenu/e-link state transitions.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EB78.yaml
 	thumb_func_start sub_812EB78
 sub_812EB78:
 	push {lr}

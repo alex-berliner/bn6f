@@ -2184,7 +2184,7 @@ locret_8131064:
 	.balign 4, 0x00
 	thumb_func_end e_checkLinkMatchAndStartCutscene
 
-// symdb: Checks link-battle camera end-sync readiness: dispatches on mode (4 forces end state at r5+1; 1 aborts); otherwise copies link-camera fields, scans two 0x10-byte entries against eLinkState, then verifies camera_readLinkConnectionType pair matches [r5+0x26] (0x10 or 0x8) before setting end-camera state at r5+2=0x24.
+// symdb: Checks link-battle camera end-sync readiness: dispatches on mode (4 forces end state at r5+1; 1 aborts); otherwise copies link-camera fields, scans two 0x10-byte entries against eLinkState, then verifies sub_81325C0 pair matches [r5+0x26] (0x10 or 0x8) before setting end-camera state at r5+2=0x24.
 // symdb: () -> void; uses global r5 (eCamera-like struct) and eLinkState via sub_803E8F8, no args or
 // symdb: return value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/camera_checkLinkEndSync.yaml
@@ -14734,6 +14734,9 @@ pet_returnToPetMenu:
 	.word 0x120
 	thumb_func_end pet_returnToPetMenu
 
+// symdb: Initializes a 32-byte runtime data block from the stored status/template data.
+// symdb: (r0 = ignored, r1 = ignored) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8136DC8.yaml
 	thumb_local_start
 sub_8136DC8:
 	push {lr}
@@ -15760,6 +15763,9 @@ dword_8137524:
 	.word 0x1
 	thumb_func_end navicust_dialogStateHandler
 
+// symdb: Sets a chatbox object's state byte to 0x74 when chatbox event flag 0x80 is not set.
+// symdb: (r5 = chatbox object pointer) -> void; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137528.yaml
 	thumb_local_start
 sub_8137528:
 	push {lr}
@@ -16905,6 +16911,9 @@ off_8137DA0:
 	.word 0x200
 	thumb_func_end t4_drawNaviChipNameTiles
 
+// symdb: copies a prepared navi/chip name tile-id buffer into BG tile block 2 at offset (2,4)
+// symdb: (r0 = src_tile_j_offset_or_unused=2, r1 = dst_tile_i_offset=4, r2 = tile_ids_ptr) ->
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8137DA4.yaml
 	thumb_local_start
 sub_8137DA4:
 	push {r4-r7,lr}

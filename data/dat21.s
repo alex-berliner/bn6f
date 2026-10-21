@@ -4029,6 +4029,10 @@ loc_8083FA6:
 	pop {r4-r7, pc}
 	thumb_func_end sub_8083F80
 
+// symdb: Initializes the chatbox scratch eStruct at 0x200A6A0 with the chatbox dispatch table and handler, marking it active.
+// symdb: (r0 = dispatchTable from chatbox_dispatchTable_804C058, r1 = handler = sub_804C074, r2 = 0) ->
+// symdb: void; uses 0x50-byte eStruct at 0x200A6A0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8083FA8.yaml
 	thumb_local_start
 sub_8083FA8:
 	push {r4-r7, lr}

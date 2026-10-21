@@ -2438,6 +2438,10 @@ loc_8039D94:
 	pop {r4-r7,pc}
 	thumb_func_end sub_8039D66
 
+// symdb: t3 (RFU/link) state tick: if the t3 state handler is idle and RFU bit 0x80 is clear, advance the phase byte to 0x24, then redraw the connected-players list.
+// symdb: (r5 = t3 state cell) -> void; runs t3_runStateHandler, may set [r5,#1] = 0x24, then
+// symdb: rfu_drawConnectedPlayerEntries
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8039D9A.yaml
 	thumb_local_start
 sub_8039D9A:
 	push {r4-r7,lr}
@@ -2863,6 +2867,10 @@ loc_803A0CE:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803A0BE
 
+// symdb: Advances the battle simulation while fading the screen for a T4 wait task.
+// symdb: (r5 = T4 task pointer) -> r0 = t4_dispatchWaitStep result; flags preserved from
+// symdb: t4_dispatchWaitStep
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A0D4.yaml
 	thumb_local_start
 sub_803A0D4:
 	push {r4-r7,lr}
@@ -12701,9 +12709,9 @@ off_803ED48:
 	.word eStruct200BC30
 	thumb_func_end e_dispatchStateHandler
 
-// symdb: Iterates eLinkState+4 entries calling sub_8144D04, requires exactly two hits, then validates unk_2009480 records (0x60 means fail, 0x62 marks found), copies matching fields into eLinkState+0x20/+0x40, bumps state by 4, sets jump offset to 4, and returns 2 (or 4 via e_setLinkResult on failure).
+// symdb: Iterates eLinkState+4 entries calling sub_8144D04, requires exactly two hits, then validates unk_2009480 records (0x60 means fail, 0x62 marks found), copies matching fields into eLinkState+0x20/+0x40, bumps state by 4, sets jump offset to 4, and returns 2 (or 4 via sub_803EA48 on failure).
 // symdb: (no args used) -> r0 = 2 if table verified and eStruct/eLinkState advanced, 4 if validation
-// symdb: failed or count != 2, 4/8 via e_setLinkResult on the exit paths; writes eLinkState[0], +1, +0xE,
+// symdb: failed or count != 2, 4/8 via sub_803EA48 on the exit paths; writes eLinkState[0], +1, +0xE,
 // symdb: +0x20, +0x30, +0x40 and eStruct200BC30 byte 5
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_checkLinkStateTable.yaml
 	thumb_local_start

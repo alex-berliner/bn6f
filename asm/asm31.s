@@ -4166,6 +4166,10 @@ off_80B9EFC:
 	.word byte_2030204
 	thumb_func_end sub_80B9E40
 
+// symdb: Clears the current battle object's extra-variable flag, then releases the object.
+// symdb: (r0 = battle object, r1...r5 = caller-saved context; r5 = object base) -> r0 = 0; flags caller-
+// symdb: saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80B9F00.yaml
 	thumb_local_start
 sub_80B9F00:
 	push {lr}
@@ -6571,6 +6575,10 @@ loc_80BAEB8:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_breakFrontPanels
 
+// symdb: Spawns a battle-object step-effect (attack object) three frames' worth of positions in front of the object based on a step index.
+// symdb: (r0 = step index 0..2, r5 = oBattleObject) -> void; calls sub_80DC4B8 (likely AddObject/spawn)
+// symdb: with computed panel X = PanelX + facingDir*3 + (stepIndex+1)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BAEC0.yaml
 	thumb_local_start
 sub_80BAEC0:
 	push {r4,r6,r7,lr}
@@ -7072,6 +7080,9 @@ sub_80BB1FE:
 	pop {r4,r6,r7,pc}
 	thumb_func_end sub_80BB1FE
 
+// symdb: If the panel at (col,row) has the break/hole flag, invokes sub_80C8DE0 (event hook).
+// symdb: (r0 = col, r1 = row, r2 = ?, r3 = ?) -> no return used; flags tst with #0x10
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80BB228.yaml
 	thumb_local_start
 sub_80BB228:
 	push {r0-r3,lr}
@@ -110183,6 +110194,9 @@ locret_80E8610:
 	pop {pc}
 	thumb_func_end sub_80E85FA
 
+// symdb: Restores a battle object's saved panel position sequence.
+// symdb: (r0 = battle object pointer or null) -> r0 = unspecified; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E8612.yaml
 	thumb_local_start
 sub_80E8612:
 	push {r4,lr}
@@ -140084,6 +140098,9 @@ loc_80F64E0:
 	pop {r4,r6,pc}
 	thumb_func_end battle_aiTurnHandler
 
+// symdb: Sets an object's attack mode to 0x0D and clears its AI script state.
+// symdb: (r0 = object pointer, r1-r3 unspecified) -> r0 = unspecified; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F64E6.yaml
 	thumb_local_start
 sub_80F64E6:
 	push {r4,r6,lr}
@@ -144462,6 +144479,9 @@ dword_80F85E4:
 	.word 0x10181E26
 	thumb_func_end sub_80F85D4
 
+// symdb: Returns a halfword attack duration for an enemy battle-AI attack.
+// symdb: (r0 = loaded AI attack variables) -> r0 = u16 attack duration
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F85E8.yaml
 	thumb_local_start
 sub_80F85E8:
 	push {lr}
@@ -147717,6 +147737,9 @@ dword_80F9E8C:
 	.word 0xF14191E
 	thumb_func_end sub_80F9E6C
 
+// symdb: Looks up the panel-attack turn's boost value from a small inline table.
+// symdb: (no args) -> r0 = boost value
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80F9E90.yaml
 	thumb_local_start
 sub_80F9E90:
 	push {lr}

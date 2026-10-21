@@ -1270,6 +1270,9 @@ locret_810E334:
 	pop {r4-r7,pc}
 	thumb_func_end ai_tryEnterAttackFinishState
 
+// symdb: Sets a battle object's byte +0x67 to 1.
+// symdb: () -> r5 holds oBattleObject; writes r5[0x67] = 1
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E336.yaml
 	thumb_func_start sub_810E336
 sub_810E336:
 	push {lr}
@@ -1318,6 +1321,9 @@ loc_810E376:
 	pop {r4,r6,pc}
 	thumb_func_end ai_tryUseSelectedChip
 
+// symdb: Releases an AI battle object's auxiliary slots, then dispatches its per-frame update.
+// symdb: (r0 = battle object/state pointer) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E37A.yaml
 	thumb_local_start
 sub_810E37A:
 	push {r4-r7,lr}
@@ -34441,6 +34447,9 @@ off_811E50C:
 	.word byte_2011E40
 	thumb_func_end object_updateSpriteObjA1
 
+// symdb: Advances an object's color-fade-in effect and immediately updates its sprite.
+// symdb: (r0 = object pointer) -> r0 = unspecified; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E510.yaml
 	thumb_local_start
 sub_811E510:
 	push {lr}

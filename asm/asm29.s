@@ -9276,6 +9276,9 @@ loc_80A96EA:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80A96C8
 
+// symdb: Advances a fading object's white-transition state and updates its sprite.
+// symdb: (r0 = object pointer) -> r0 = updated object pointer; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A96F0.yaml
 	thumb_local_start
 sub_80A96F0:
 	push {lr}

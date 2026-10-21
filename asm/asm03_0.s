@@ -10757,6 +10757,9 @@ loc_802AEC6:
 	pop {pc}
 	thumb_func_end object_renderSpritePair
 
+// symdb: Advances the overworld wipe, entering battle phase 0x14 once the horizontal BG2 wipe completes.
+// symdb: (r0 = ..., r1 = ...) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AED8.yaml
 	thumb_local_start
 sub_802AED8:
 	push {lr}
@@ -10822,6 +10825,10 @@ dword_802AF34:
 	.word 0x80000
 	thumb_func_end object_setFlag80000
 
+// symdb: Returns the cached decompressed enemy sprite pointer for slot r5[5] from an object's slot table at r5+0x30 (slot×4 stride).
+// symdb: () -> r0 = pointer to enemy sprite struct (from r5[5] in r5+0x30[x4]); uses r5, returns via mov
+// symdb: pc,lr
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802AF38.yaml
 	thumb_local_start
 sub_802AF38:
 	ldrb r0, [r5,#5]
@@ -15494,6 +15501,9 @@ sub_802D1B4:
 	pop {pc}
 	thumb_func_end sub_802D1B4
 
+// symdb: Returns the three-digit counter value for the selected battle side.
+// symdb: (r0 = battle side index) -> r0 = counter value; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802D1BE.yaml
 	thumb_func_start sub_802D1BE
 sub_802D1BE:
 	push {lr}
@@ -17517,6 +17527,9 @@ loc_802E04A:
 	pop {pc}
 	thumb_func_end battle_addCappedCounter
 
+// symdb: Subtracts a (scaled) amount from a battle entity's counter at field 0x28, clamping to zero.
+// symdb: (r0 = entity index, r1 = amount in field 0x28 units, 256 per game unit) -> void; clamps at 0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802E04E.yaml
 	thumb_func_start sub_802E04E
 sub_802E04E:
 	push {lr}
@@ -19620,6 +19633,9 @@ loc_802EFEA:
 	pop {pc}
 	thumb_func_end battle_checkPanelTypeMatch
 
+// symdb: returns field 0x44 from a battle-object table entry
+// symdb: (r0 = entry index) -> r0 = entry->field_0x44; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_802EFEE.yaml
 	thumb_local_start
 sub_802EFEE:
 	push {lr}

@@ -3256,7 +3256,7 @@ off_8143398:
 	.word byte_2000D20
 	thumb_func_end sub_8143314
 
-// symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs e_setMinigameEffectSlot2Mode(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
+// symdb: Initializes the effect-slot-2 work area at eStruct2001010+8 (zero-fills 0x40 bytes), runs sub_81433D2(5) and the RNG/sub-write helpers sub_8143406/sub_814343A, and returns 0.
 // symdb: () -> r0 = 0 (success); no flags relied on by caller
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_initMinigameEffectSlot2.yaml
 	thumb_local_start
@@ -4316,6 +4316,9 @@ byte_8143E94:
 	.byte 0x0, 0x0, 0x1, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0, 0xFF, 0x0, 0x0, 0x0, 0x0, 0xFF
 	thumb_func_end grid_stepPackedTileCoordsInDirection
 
+// symdb: Returns the player's current GroundMan minigame grid cell index, by combining OW player coords with the grid-offset conversion.
+// symdb: () -> r0 = u8 grid cell index of the player on the GroundMan minigame board
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8143EA4.yaml
 	thumb_func_start sub_8143EA4
 sub_8143EA4:
 	push {r4-r7,lr}

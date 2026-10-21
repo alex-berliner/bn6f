@@ -5178,7 +5178,7 @@ loc_8049218:
 	pop {r4-r7,pc}
 	thumb_func_end sub_80491FC
 
-// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with object_setNetScriptTimer(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
+// symdb: Object step that, on each call, consumes one use via sub_803BB80; if B is pressed it shows text index 0x83 (sub_803C28A), otherwise when chatbox flag bit 3 is set and sub_803BB94/C558/13D638 pass (with sub_803BB90(0x1E)), it selects network script 0xB and advances the phase byte [r5+1] to 0x20, then tails into sub_803A1B0.
 // symdb: (r5 = object state block: [r5] = uses-left counter, [r5+1] = phase byte; r10 = toolkit) -> r0 =
 // symdb: sub_803A1B0 result; updates [r5+1] = 0x20 on trigger
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_netScriptTriggerStep.yaml
@@ -5418,6 +5418,9 @@ loc_80493F4:
 	pop {r4-r7,pc}
 	thumb_func_end rfu_linkMenuStateStep
 
+// symdb: Per-frame battle UI refresh: redraws the wireless-connect player list and the submenu slot icons, plus sets an inter-frame byte when flag 0x80 is clear.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80493FE.yaml
 	thumb_local_start
 sub_80493FE:
 	push {r4-r7,lr}

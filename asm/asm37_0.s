@@ -311,6 +311,9 @@ storeWorkByte_813B920:
 	.balign 4, 0x00
 	thumb_func_end storeWorkByte_813B920
 
+// symdb: Returns the current 0..3 cursor-rotation step held in a global byte, used to rotate the held Navi Customizer part on L/R input.
+// symdb: () -> r0 = current placement-cursor rotation step (0..3)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813B928.yaml
 	thumb_func_start sub_813B928
 sub_813B928:
 	ldr r1, off_813B930 // =byte_20096D8 
@@ -3137,6 +3140,10 @@ sub_813CD30:
 	pop {pc}
 	thumb_func_end sub_813CD30
 
+// symdb: Initializes the selected navi's NaviStats round-control byte (offset 0x12) to 0 with a 3-byte write, used as the first step before clearing adjacent round/battle state bytes.
+// symdb: () -> void; writes 0 to offset 0x12 of the current PET navi's NaviStats record via
+// symdb: SetCurPETNaviStatsByte(r0=0, r1=0x12, r2=3)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD3E.yaml
 	thumb_local_start
 sub_813CD3E:
 	push {lr}
@@ -3211,6 +3218,9 @@ sub_813CD88:
 	pop {pc}
 	thumb_func_end sub_813CD88
 
+// symdb: Clears one byte of the currently selected PET Navi's stats record.
+// symdb: (r0 = 0, r1 = 0x28, r2 = 1) -> void; flags not preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD8C.yaml
 	thumb_local_start
 sub_813CD8C:
 	push {lr}
@@ -3428,6 +3438,9 @@ sub_813CE8C:
 	pop {pc}
 	thumb_func_end sub_813CE8C
 
+// symdb: Clears one selected-PET NaviStats byte with index 0x1A and value 0x0A.
+// symdb: (void) -> void; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CE90.yaml
 	thumb_local_start
 sub_813CE90:
 	push {lr}
@@ -4787,6 +4800,9 @@ off_813DA7C:
 	.word eLinkState // eLinkState
 off_813DA80:
 	.word eS200BC50
+// symdb: Clears the RFU link packet queue before restarting wireless communication.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813DA84.yaml
 	thumb_func_start sub_813DA84
 sub_813DA84:
 	push {lr}

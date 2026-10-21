@@ -1257,6 +1257,9 @@ loc_80931EA::
 	pop {r4-r7,pc}
 	thumb_func_end sub_80931CA
 
+// symdb: Runs the current chatbox script selected by the global chatbox state.
+// symdb: (r0 = script_idx: u8) -> void; flags caller-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80931EE.yaml
 	thumb_local_start
 sub_80931EE::
 	push {r4-r7,lr}

@@ -387,6 +387,9 @@ loc_800338C:
 	pop {r7,pc}
 	thumb_func_end sub_8003374
 
+// symdb: Spawns and prepends a type-3 battle object using a caller-supplied initialization context.
+// symdb: (r0 = context passed to the type-3 initializer) -> r0 = NULL; flags = unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8003390.yaml
 	thumb_local_start
 sub_8003390:
 	push {r7,lr}

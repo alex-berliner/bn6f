@@ -1789,6 +1789,9 @@ off_8144D2C:
 	.word byte_200F448
 	thumb_func_end sub_8144D24
 
+// symdb: Enables timer channel 5.
+// symdb: () -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144D30.yaml
 	thumb_func_start sub_8144D30
 sub_8144D30:
 	ldr r1, off_8144D38 // =eTimerEnable200F460 
@@ -4945,6 +4948,9 @@ off_81463E4:
 	.word sub_8145D54+1
 	thumb_func_end rfu_setMscCallbackArg
 
+// symdb: Stores a wireless callback argument in the RFU communication structure.
+// symdb: (r0 = callback argument) -> r0 = unchanged; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81463E8.yaml
 	thumb_local_start
 sub_81463E8:
 	ldr r1, off_81463F0 // =eStruct200FE00 
@@ -6543,6 +6549,9 @@ off_8146E44:
 	.word byte_2010328
 	thumb_func_end rfu_clearDisconnectedSlots
 
+// symdb: Copies a peer's received wireless data block into the shared wireless buffer at the slot's index offset.
+// symdb: (r0 = *mut SlotInfo, r1 = *const u8 dest in shared buffer) -> ()
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E48.yaml
 	thumb_local_start
 sub_8146E48:
 	push {lr}
