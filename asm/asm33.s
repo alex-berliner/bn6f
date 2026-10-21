@@ -15179,6 +15179,9 @@ locret_812A4A8:
 	.balign 4, 0x00
 	thumb_func_end sub_812A494
 
+// symdb: Counts down a wireless-link timer and restarts the multiplayer transfer when it expires.
+// symdb: (r5 = link-state object) -> void; flags conditionally modified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812A4AC.yaml
 	thumb_local_start
 sub_812A4AC:
 	push {lr}

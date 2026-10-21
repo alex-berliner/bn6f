@@ -1995,6 +1995,9 @@ byte_800FA14:
 	.byte 0, 0
 	thumb_func_end dirOffsetFromAlliance_800F9DE
 
+// symdb: From a battle object's own panel, searches a row or column in the direction its alliance indicates and returns the matching panel via sub_800D120 / battle_scanPanelColumnForMatch.
+// symdb: (r5 = battle object) -> r0 = match row, r1 = match column; uses 0x18 sp
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800FA20.yaml
 	thumb_func_start sub_800FA20
 sub_800FA20:
 	push {lr}
@@ -30353,6 +30356,9 @@ locret_801D128:
 	pop {r4-r7,pc}
 	thumb_func_end eBgCounterDrawStep
 
+// symdb: Builds two-tile-wide hexadecimal glyph pairs with leading blanks for a four-digit BG counter field.
+// symdb: (r0 = value) -> stack writes four u16 tile IDs; flags clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801D12A.yaml
 	thumb_local_start
 sub_801D12A:
 	mov r4, r0

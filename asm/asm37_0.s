@@ -3135,6 +3135,9 @@ sub_813CD22:
 	pop {pc}
 	thumb_func_end sub_813CD22
 
+// symdb: Clears the selected Navi's round-control byte and adjacent byte 0x13 in PET NaviStats.
+// symdb: (r0 = unused, r1 = unused, r2 = 4, r3 = ...) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CD30.yaml
 	thumb_local_start
 sub_813CD30:
 	push {lr}
@@ -3607,6 +3610,9 @@ loc_813CF86:
 	pop {r4,pc}
 	thumb_func_end pet_addCurNaviStatsByteCapped7
 
+// symdb: Writes a supplied stat-record ID into the selected PET Navi's stats.
+// symdb: (r0 = statRecordId) -> void; flags unchanged
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813CF8C.yaml
 	thumb_local_start
 sub_813CF8C:
 	push {lr}

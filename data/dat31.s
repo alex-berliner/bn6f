@@ -1938,6 +1938,9 @@ dword_810D4E4::
 	.word 0xFFFF
 	thumb_func_end sub_810D4BA
 
+// symdb: Clears invulnerability on every object recorded in the current AI attack's param buffer.
+// symdb: (no args; uses r7 = oAIAttackVars-like context) -> void
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D4E8.yaml
 	thumb_local_start
 sub_810D4E8::
 	push {lr}

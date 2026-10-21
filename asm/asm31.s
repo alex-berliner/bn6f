@@ -9562,7 +9562,7 @@ loc_80BC304:
 	pop {r4,r6,r7,pc}
 	thumb_func_end battle_objUpdateDeceleratingFlight
 
-// symdb: Each call advances the object's X by XVelocity, adding the signed displacement into ExtraVars+0x14 until it reaches ±0x780000, with XVelocity reduced by YVelocity each step and clamped to a min magnitude of 0x10000. At the threshold, it restores 12 bytes from RelatedObject1Ptr+0x34, resets the related object's ExtraVars[0]=0 and ExtraVars+0xc=1, and sets CurAnim=3/CurAction=4 with phase cleared. object_setPanelsFromCoordinates and battle_linkRelatedObjectToOwner are always called.
+// symdb: Each call advances the object's X by XVelocity, adding the signed displacement into ExtraVars+0x14 until it reaches ±0x780000, with XVelocity reduced by YVelocity each step and clamped to a min magnitude of 0x10000. At the threshold, it restores 12 bytes from RelatedObject1Ptr+0x34, resets the related object's ExtraVars[0]=0 and ExtraVars+0xc=1, and sets CurAnim=3/CurAction=4 with phase cleared. object_setPanelsFromCoordinates and sub_80BC468 are always called.
 // symdb: (object ptr in r5, no args) -> r0 clobbered; updates oBattleObject_X, XVelocity, ExtraVars+0x14,
 // symdb: CurAnim, CurAction, phase, and the related object's ExtraVars
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepDecelSlide.yaml
@@ -106035,6 +106035,9 @@ off_80E6920:
 	.word TextScript8736D74
 	thumb_func_end battle_objPhaseRunChatboxScript
 
+// symdb: Initializes a battle object, conditionally spawns configured projectile object type 0x77, then advances a 30-frame lifetime and ends the object.
+// symdb: (r2 = packed secondary configuration, r5 = battle object) -> r0 = unspecified; flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80E6924.yaml
 	thumb_local_start
 sub_80E6924:
 	push {r4,r6,lr}
@@ -136779,7 +136782,7 @@ loc_80F4A92:
 	pop {pc}
 	thumb_func_end sub_80F4A8C
 
-// symdb: Begins an AI attack (id 9) whose target panel is chosen by the ai_pickRandomFreePanelExcludingNeighbors callback, with a duration taken from ai_getBusterHoldDuration.
+// symdb: Begins an AI attack (id 9) whose target panel is chosen by the ai_pickRandomFreePanelExcludingNeighbors callback, with a duration taken from sub_80F49A2.
 // symdb: (r7 = object AI attack vars) -> r0 = 9 passed to object_setAttack4; no return value
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_startRandomPanelAttack.yaml
 	thumb_local_start

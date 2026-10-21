@@ -27949,6 +27949,9 @@ dword_811B094:
 	.word 0x605
 	thumb_func_end sprite_drawMarkerForObject
 
+// symdb: Per-frame drawer for GUI sprite 0x68's overlay marker, queuing one OAM entry at an object's coordinates plus a fixed offset.
+// symdb: (r5 = sprite struct) -> void; queues one sprite via sprite_queueOamEntryFromTable
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811B098.yaml
 	thumb_local_start
 sub_811B098:
 	push {r4-r7,lr}

@@ -7650,6 +7650,9 @@ rfu_setFlag40:
 	pop {r4-r7,pc}
 	thumb_func_end rfu_setFlag40
 
+// symdb: Clears the fixed player status/flag word at eS200A290 using mask 0x40.
+// symdb: (void) -> void; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C58C.yaml
 	thumb_local_start
 sub_803C58C:
 	push {r4-r7,lr}
@@ -8250,6 +8253,9 @@ off_803C948:
 	.word unk_200FE70
 	thumb_func_end rfu_pollLinkState
 
+// symdb: Finishes/tears down the current RFU wireless link: if no subsystem is active, advances to link phase 1, otherwise records the ended state; always clears the pending link command and returns (true, 0).
+// symdb: () -> (r0 = 1 /* success/finished */, r1 = 0 /* status */)
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803C94C.yaml
 	thumb_local_start
 sub_803C94C: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}

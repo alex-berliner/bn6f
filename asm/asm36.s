@@ -13112,7 +13112,7 @@ byte_8136210:
 	.byte 0x6, 0x6, 0x7, 0x6, 0x7, 0x7, 0x0, 0x0
 	thumb_func_end navicust_handlePlacementCursorInput
 
-// symdb: Navi Customizer board 'confirm' handler: adds cursor halfwords at r5+0x24/+0x20 to index into the board via sub_8136290; if navicust_hasBoardJackInKeyItem returns 0 it calls battle_resetEStructRecords_8046664 then plays SOUND_CANT_JACK_IN; if the cell ID is 0x14C it stores state 0x2C, plays SOUND_SELECT_82 and dispatches to sub_813686C/sub_813677C; else if cell's +2 word is nonzero it stores state 0x10, calls sub_813660C(1), redraws the board and plays SOUND_MENU_SELECT (pick-up).
+// symdb: Navi Customizer board 'confirm' handler: adds cursor halfwords at r5+0x24/+0x20 to index into the board via sub_8136290; if sub_813629C returns 0 it calls battle_resetEStructRecords_8046664 then plays SOUND_CANT_JACK_IN; if the cell ID is 0x14C it stores state 0x2C, plays SOUND_SELECT_82 and dispatches to sub_813686C/sub_813677C; else if cell's +2 word is nonzero it stores state 0x10, calls sub_813660C(1), redraws the board and plays SOUND_MENU_SELECT (pick-up).
 // symdb: () -> void; reads cursor coords from context r5 at +0x20/+0x24, writes state byte [r5+2], plays
 // symdb: a sound ID in r0 via PlaySoundEffect
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_handleBoardConfirm.yaml
@@ -17577,6 +17577,10 @@ off_813820C:
 	.word eTextScript201BF00
 	thumb_func_end submenu_showSelectedFastestTime
 
+// symdb: Returns the story-progress flag controlling visibility of one battle time digit.
+// symdb: (r0 = default_flag, r1 = flag table, r2 = digit_index) -> r0 = enabled story flag or
+// symdb: default_flag; flags
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138210.yaml
 	thumb_local_start
 sub_8138210:
 	push {r3-r7,lr}
@@ -17984,6 +17988,9 @@ sub_81384FC:
 	.balign 4, 0x00
 	thumb_func_end sub_81384FC
 
+// symdb: Clears all active battle objects of type 0x25, marks the current object field, and advances a counter/state byte.
+// symdb: (r0 = implicit current object/state pointer in r5) -> r0 = 1; flags:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8138514.yaml
 	thumb_local_start
 sub_8138514:
 	push {lr}

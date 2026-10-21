@@ -308,6 +308,9 @@ loc_812D594:
 	.byte 0, 0
 	thumb_func_end battle_spawnEStructGroup
 
+// symdb: Clears the three visual elements associated with the currently selected submenu field.
+// symdb: (r0 = unused) -> r0 = unspecified; flags clobpered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D5A0.yaml
 	thumb_func_start sub_812D5A0
 sub_812D5A0:
 	push {r4-r7,lr}
@@ -587,6 +590,9 @@ locret_812D776:
 	pop {r7,pc}
 	thumb_func_end submenu_updateCursorAndTiles
 
+// symdb: Refreshes the chip-pack screen background tile patch when the screen object requests a special refresh state.
+// symdb: (r5 = battle screen object/state pointer) -> void; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D778.yaml
 	thumb_func_start sub_812D778
 sub_812D778:
 	push {lr}
@@ -920,6 +926,9 @@ loc_812D970:
 	pop {r4-r7,pc}
 	.balign 4, 0x00
 	thumb_func_end sub_812D954
+// symdb: Scrolls the shared battle display window horizontally to a selected side or position during chip-pack transitions.
+// symdb: (r0 = scroll selector 0 or 1) -> r0 = unchanged selector; flags caller-clobbered
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D99C.yaml
 	thumb_func_start sub_812D99C
 sub_812D99C:
 	push {r4-r7,lr}

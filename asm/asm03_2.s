@@ -11039,6 +11039,10 @@ byte_804C684:
 	.byte 0x2, 0x10, 0x0
 	thumb_func_end sub_804C66C
 
+// symdb: Queues the E-connection handshake packet and dispatches the pending event callback.
+// symdb: (r0 = inherited context pointer, r1..r3 = inherited values) -> r0 = callback result or inherited
+// symdb: r0; flags conditionally inherited from the callback path
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804C694.yaml
 	thumb_local_start
 sub_804C694:
 	push {r4-r7,lr}
@@ -11429,6 +11433,11 @@ off_804CB08:
 	.word sub_8006A5C+1
 	thumb_func_end ow_loadCurrentMap
 
+// symdb: Queues the full-screen battle background graphics, configures rendering, and initializes the next chatbox/window state.
+// symdb: (r0 = context/state pointer, r1 = unused, r2 = unused, r3 = unused, r4 = context/state pointer,
+// symdb: r5 = state pointer, r6 = unused, r7 = argument for chatbox initialization, r10 = render context)
+// symdb: -> void; flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_804CB0C.yaml
 	thumb_local_start
 sub_804CB0C:
 	push {r4-r7,lr}
