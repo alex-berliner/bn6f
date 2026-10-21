@@ -886,9 +886,9 @@ loc_812E184::
 	mov r0, #0x90
 	mov r1, #1
 	mov r2, #4
-	bl sub_812EC2C
+	bl battleSetSelectedWindow
 	mov r1, #1
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	strh r0, [r5,#0x30]
 	mov r0, #1
 	bl sub_812EE78
@@ -1267,7 +1267,7 @@ loc_812E492::
 	lsl r0, r0, #0x11
 	lsr r0, r0, #0x11
 	mov r1, #0
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	strh r0, [r5,#0x30]
 	mov r0, #0
 	bl loc_812EE38
@@ -1286,7 +1286,7 @@ loc_812E4BC::
 	lsl r0, r0, #0x11
 	lsr r0, r0, #0x11
 	mov r1, #1
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	strh r0, [r5,#0x30]
 	mov r0, #1
 	bl loc_812EE38
@@ -1866,9 +1866,9 @@ loc_812E92C::
 	ldrh r0, [r5,#0x2c]
 	mov r1, #1
 	mov r2, #4
-	bl sub_812EC2C
+	bl battleSetSelectedWindow
 	mov r1, #1
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	strh r0, [r5,#0x30]
 	mov r0, #1
 	bl loc_812EE38

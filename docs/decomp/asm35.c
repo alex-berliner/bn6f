@@ -149,7 +149,7 @@ int submenu_loadSelectedEntry()
 
 
 // 0x812ec2c
-int __fastcall sub_812EC2C(__int16 a1, int a2, int a3)
+int __fastcall battleSetSelectedWindow(__int16 a1, int a2, int a3)
 {
     int v3; // r4
 
@@ -252,8 +252,8 @@ void __fastcall __noreturn battle_restoreMapBackground(int a1, int a2, int a3, i
     battle_resetEStructRecords_8046664();
     CopyBackgroundTiles(0, 0, 1, &battleMapTilemapBuffer, 30, dword_14);
     sub_812EB92();
-    v5 = sub_812EC2C(*(v4 + 42), 0, 4);
-    sub_812EDFC(v5, 0);
+    v5 = battleSetSelectedWindow(*(v4 + 42), 0, 4);
+    t3_renderTextByWindowId(v5, 0);
     (loc_812EE38)(0);
 }
 
@@ -266,7 +266,7 @@ void sub_812EDE4()
 
 
 // 0x812edfc
-int __fastcall sub_812EDFC(int a1, int a2)
+int __fastcall t3_renderTextByWindowId(int a1, int a2)
 {
     return t3_renderIndexedText(a1, 4 * a2, *(&off_812EE18 + a2));
 }

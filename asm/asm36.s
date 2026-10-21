@@ -1124,9 +1124,9 @@ locret_81307F0:
 
 // symdb: Refreshes a T4 object's choice sprite and, when enabled, its player HP/emotion box.
 // symdb: (r0 = objectQueueChoiceOam context, r5 = current object) -> r0 = unchanged; flags clobtered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81307F4.yaml
-	thumb_func_start sub_81307F4
-sub_81307F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_updateChoiceOamAndPlayerBox.yaml
+	thumb_func_start t4_updateChoiceOamAndPlayerBox
+t4_updateChoiceOamAndPlayerBox:
 	push {lr}
 	ldrb r0, [r5,#1]
 	cmp r0, #8
@@ -1140,7 +1140,7 @@ sub_81307F4:
 locret_813080C:
 	pop {pc}
 	.byte 0, 0
-	thumb_func_end sub_81307F4
+	thumb_func_end t4_updateChoiceOamAndPlayerBox
 
 // symdb: Overlay helper that, gated on a scene counter, reads the player object's state nibble and stamps the HP/emotion box tiles (from unk_20347D8) into BG tile block 2 via sub_8120348 + CopyBackgroundTiles.
 // symdb: () -> void; no incoming args — it fetches the scene record via sub_8130404 and reads its byte at
@@ -17357,9 +17357,9 @@ sprite_copyGlyphTiles3x14:
 	thumb_func_end sprite_copyGlyphTiles3x14
 // symdb: If object flag 0x24 is set, queues an extra summon OAM entry (var 0xd) via sub_81380B0
 // symdb: (uses r5 = object; r0..r3 = 0x80,0x18,0,0xd -> jumps to sub_81380B0)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813809C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_queueExtraSummon.yaml
 	thumb_local_start
-sub_813809C:
+sprite_queueExtraSummon:
 	push {r4-r7,lr}
 	ldrh r0, [r5,#0x24]
 	tst r0, r0
@@ -17370,7 +17370,7 @@ sub_813809C:
 	mov r3, #0xd
 	ldr r6, dword_81380DC // =0x0 
 	b loc_81380C8
-	thumb_func_end sub_813809C
+	thumb_func_end sprite_queueExtraSummon
 
 	thumb_local_start
 sub_81380B0:
@@ -17404,7 +17404,7 @@ dword_81380DC:
 	thumb_local_start
 sub_81380E0:
 	push {r4-r7,lr}
-	bl sub_813809C
+	bl sprite_queueExtraSummon
 	bl sub_81380B0
 	mov r0, #4
 	mov r1, #0x20 
@@ -18157,7 +18157,7 @@ off_8138614:
 	.word off_8138618
 off_8138618:
 	.word ow_scriptOpSpawnNpcGroup+1
-	.word sub_81386CC+1
+	.word object_setStateAndWaitFrames+1
 	.word sub_81386E4+1
 	thumb_func_end sub_8138600
 
@@ -18241,9 +18241,9 @@ byte_81386CA:
 
 // symdb: Action-script step: reads a frame count, sets object's state byte to 8 and timer, then waits via object_countdownTimer
 // symdb: (r3 = script ptr, r5 = object work) -> r0 = 1; advances script by 2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81386CC.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_setStateAndWaitFrames.yaml
 	thumb_local_start
-sub_81386CC:
+object_setStateAndWaitFrames:
 	push {lr}
 	ldrb r0, [r3,#1]
 	strh r0, [r5,#6]
@@ -18255,7 +18255,7 @@ sub_81386CC:
 	mov r0, #1
 	pop {pc}
 	.balign 4, 0x00
-	thumb_func_end sub_81386CC
+	thumb_func_end object_setStateAndWaitFrames
 
 	thumb_local_start
 sub_81386E4:

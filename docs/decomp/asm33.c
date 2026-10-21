@@ -8435,7 +8435,7 @@ int __fastcall sub_812A4AC(int a1, int a2, int a3, int a4)
         if ( rfu_shouldRestartWirelessLink() )
             result = rfu_startLinkTransfer();
         else
-            result = sub_8146E60();
+            result = rfu_reinitRecvSlots();
     }
     return result;
 }

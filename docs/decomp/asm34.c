@@ -57,7 +57,7 @@ int submenu_drawScreenElement()
 {
 	submenu_getWork();
 	battleObject_queueOamFrameAndAdvanceAnim(2, 32, 42, 19);
-	return sub_812D9F0();
+	return submenu_submitCursorOam();
 }
 
 
@@ -506,7 +506,7 @@ void __fastcall sub_812D99C(int a1)
 
 
 // 0x812d9f0
-int sub_812D9F0()
+int submenu_submitCursorOam()
 {
 	submenu_getWork();
 	return object_submitOamFromStruct(146, 28, 40, 46);

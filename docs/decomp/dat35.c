@@ -1334,7 +1334,7 @@ int sub_812FD44()
     int v0; // r5
 
     (*(&off_812FD5C + *(v0 + 12)))();
-    return sub_81307F4();
+    return t4_updateChoiceOamAndPlayerBox();
 }
 
 
@@ -1437,7 +1437,7 @@ void __fastcall sub_812FE10(int a1)
     int v16; // r0
     int v17; // r1
 
-    sub_81307F4();
+    t4_updateChoiceOamAndPlayerBox();
     v2 = sub_803EAE4();
     if ( v2 == 4 )
     {

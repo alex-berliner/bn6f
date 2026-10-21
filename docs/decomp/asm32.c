@@ -949,7 +949,7 @@ void __fastcall __noreturn sub_810E3A0(int a1, int a2, int a3)
 
 
 // 0x810e4d4
-int sub_810E4D4()
+int battle_throwObjectByAiAttack()
 {
     unsigned __int8 *v0; // r7
 

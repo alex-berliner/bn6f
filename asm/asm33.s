@@ -15196,7 +15196,7 @@ sub_812A4AC:
 	bl rfu_shouldRestartWirelessLink
 	tst r0, r0
 	bne loc_812A4D6
-	bl sub_8146E60
+	bl rfu_reinitRecvSlots
 	b locret_812A4DA
 loc_812A4D6:
 	bl rfu_startLinkTransfer

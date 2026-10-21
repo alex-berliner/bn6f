@@ -217,7 +217,7 @@ submenu_drawScreenElement:
 	ldr r6, dword_812D524 // =0x40000000 
 	ldr r7, dword_812D520 // =0x20002 
 	bl battleObject_queueOamFrameAndAdvanceAnim
-	bl sub_812D9F0
+	bl submenu_submitCursorOam
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_812D51C:
@@ -963,9 +963,9 @@ byte_812D9E0:
 
 // symdb: Submits the shared submenu screen object's cursor-related OAM layer.
 // symdb: (r0 = unused, r1 = unused, r2 = unused, r3 = unused) -> r0 = unspecified; flags unspecified
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812D9F0.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_submitCursorOam.yaml
 	thumb_local_start
-sub_812D9F0:
+submenu_submitCursorOam:
 	push {r4-r7,lr}
 	bl submenu_getWork
 	mov r5, r0
@@ -976,7 +976,7 @@ sub_812D9F0:
 	bl object_submitOamFromStruct
 	pop {r4-r7,pc}
 	.balign 4, 0x00
-	thumb_func_end sub_812D9F0
+	thumb_func_end submenu_submitCursorOam
 
 // symdb: Parameterized helper that packs r0 into the low half of a word, sets the high half to a fixed 0x20002 flag word, reads two halfwords from the caller-supplied object in r5 at the offsets given in r2 and r3, and calls object_computeAndQueueOamEntry_811FA98 with fixed extras (r4=7, r6=0xC24C, r7=0x64) to submit one OAM entry.
 // symdb: (r0 = value A (16-bit), r1 = value B (16-bit), r2 = offset of field 1 in [r5], r3 = offset of

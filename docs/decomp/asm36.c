@@ -585,7 +585,7 @@ signed int __fastcall sub_81307BC(int a1)
 
 
 // 0x81307f4
-void sub_81307F4()
+void t4_updateChoiceOamAndPlayerBox()
 {
 	int v0; // r5
 
@@ -10399,7 +10399,7 @@ void __fastcall __noreturn sprite_copyGlyphTiles3x14(int a1, int a2, u16 *a3)
 
 
 // 0x813809c
-void sub_813809C()
+void sprite_queueExtraSummon()
 {
     int v0; // r5
 
@@ -10425,7 +10425,7 @@ int sub_81380B0()
 // 0x81380e0
 int sub_81380E0()
 {
-    sub_813809C();
+    sprite_queueExtraSummon();
     sub_81380B0();
     return battleObject_animateStepQueueOam(4, 32, 32, 12);
 }
@@ -10919,7 +10919,7 @@ int __fastcall ow_scriptOpSpawnNpcGroup(int a1, int a2, int a3, int a4)
 
 
 // 0x81386cc
-signed int __fastcall sub_81386CC(int a1, int a2, int a3, int a4)
+signed int __fastcall object_setStateAndWaitFrames(int a1, int a2, int a3, int a4)
 {
     int v4; // r5
     int v5; // r3

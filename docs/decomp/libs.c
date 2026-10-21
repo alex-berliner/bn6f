@@ -2596,7 +2596,7 @@ char *__fastcall sub_81468E0(unsigned __int8 a1)
 
 
 // 0x81468f4
-int sub_81468F4()
+int rfu_getSlotLinkState()
 {
     return *&algn_200FE28[2 * rfuSlotId];
 }
@@ -3004,7 +3004,7 @@ int __fastcall rfu_setLinkState(int result, char a2)
 
 
 // 0x8146e60
-int sub_8146E60()
+int rfu_reinitRecvSlots()
 {
     int v1; // [sp+0h] [bp-4h]
 

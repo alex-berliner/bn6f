@@ -14486,7 +14486,7 @@ int sub_8018076()
 
 
 // 0x8018094
-signed int sub_8018094()
+signed int battle_initChipPoseState()
 {
     int v0; // r5
     signed int result; // r0

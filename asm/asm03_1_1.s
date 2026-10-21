@@ -8086,7 +8086,7 @@ sub_803C842: // (self: * S200BC50 $r7) -> (u32?, bool)
 	thumb_local_start
 sub_803C84A: // (self: * S200BC50 $r7) -> (u32?, bool)
 	push {lr}
-	bl sub_81468F4
+	bl rfu_getSlotLinkState
 	mov r4, r0
 	bl rfu_getConnectedPlayerCount
 	mov r0, #0

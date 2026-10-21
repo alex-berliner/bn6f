@@ -10522,7 +10522,7 @@ __int64 sub_803C842()
 // 0x803c84a
 __int64 sub_803C84A()
 {
-    sub_81468F4();
+    rfu_getSlotLinkState();
     rfu_getConnectedPlayerCount();
     return 0LL;
 }

@@ -9827,7 +9827,7 @@ int sub_80BD7EA()
 
 
 // 0x80bd81a
-int sub_80BD81A()
+int battle_dispatchCurPhase()
 {
     int v0; // r5
 
@@ -12317,7 +12317,7 @@ int battle_phaseWait5Frames()
 
 
 // 0x80befe2
-int sub_80BEFE2()
+int battle_updateQuakePanelByPhase()
 {
     int v0; // r5
 
@@ -19010,7 +19010,7 @@ int sub_80C2AF8()
 
 
 // 0x80c2b20
-int sub_80C2B20()
+int object_dispatchPhaseAction()
 {
     int v0; // r5
 
@@ -30919,7 +30919,7 @@ int __fastcall object_spawnType30WithSourceLink(char a1, int a2, int a3, int a4)
 
 
 // 0x80c9ece
-int *__fastcall sub_80C9ECE(int a1, int a2, int a3)
+int *__fastcall battle_queuePartyObjectSprites(int a1, int a2, int a3)
 {
     int v3; // r10
     int *result; // r0
@@ -67659,7 +67659,7 @@ int __fastcall battle_flagSelfAndRelatedForRemoval(int a1)
 
 
 // 0x80e14ec
-int __fastcall sub_80E14EC(int a1, unsigned int a2)
+int __fastcall battle_objectCleanupByState(int a1, unsigned int a2)
 {
     int result; // r0
 
@@ -77078,7 +77078,7 @@ int object_dispatchScreenDimAction()
 
 
 // 0x80e68dc
-int sub_80E68DC()
+int battle_objPhaseDispatch()
 {
     int v0; // r5
 
@@ -79282,7 +79282,7 @@ int __fastcall sub_80E7D84(int a1, int a2, int a3, int a4)
 
 
 // 0x80e7da4
-int __fastcall sub_80E7DA4(int *a1)
+int __fastcall battle_endSubObjectSlots(int *a1)
 {
     int *v1; // r5
 
@@ -81336,7 +81336,7 @@ int __fastcall battle_linkBigEnemySubobject(int a1, int a2, int a3, int a4)
 
 
 // 0x80e8f98
-int __fastcall sub_80E8F98(int a1)
+int __fastcall object_markInactiveGroup(int a1)
 {
     int v1; // r5
 
@@ -95109,7 +95109,7 @@ void sub_80F1A1E()
 
 
 // 0x80f1a46
-int sub_80F1A46()
+int ai_dispatchHitElementAction()
 {
     unsigned __int8 *v0; // r7
 
@@ -123374,7 +123374,7 @@ int ai_attackStepPanelMove()
 
 
 // 0x81045e8
-int sub_81045E8()
+int battle_updateAttackStepTimer()
 {
     int v0; // r7
     int result; // r0
@@ -124108,7 +124108,7 @@ signed int __fastcall ai_attackStepSpawnEffectLoop(int a1, int a2, int a3)
     spawn_t1_0x0_EffectObject(v3, 75, v3->x, v3->y, v3->z);
     v7 = *(v4 + 48);
     if ( v7 )
-        sub_80E7DA4(v7);
+        battle_endSubObjectSlots(v7);
     v8 = *(v4 + 14) + 1;
     *(v4 + 14) = v8;
     if ( v8 >= *(v4 + 13) )
@@ -127972,7 +127972,7 @@ void sub_8107050()
 
 
 // 0x81070a8
-int sub_81070A8()
+int ai_dispatchAttackOnHitEffect()
 {
     unsigned __int8 *v0; // r7
 

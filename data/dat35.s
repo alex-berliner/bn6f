@@ -1715,7 +1715,7 @@ sub_812FD44::
 	ldr r0, [r0,r1]
 	mov lr, pc
 	bx r0
-	bl sub_81307F4
+	bl t4_updateChoiceOamAndPlayerBox
 	pop {pc}
 	.balign 4, 0
 off_812FD58::
@@ -1808,7 +1808,7 @@ sub_812FE0C::
 	thumb_local_start
 sub_812FE10::
 	push {lr}
-	bl sub_81307F4
+	bl t4_updateChoiceOamAndPlayerBox
 	bl sub_803EAE4
 	cmp r0, #4
 	beq loc_812FEE6

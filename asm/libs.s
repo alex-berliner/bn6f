@@ -5774,9 +5774,9 @@ off_81468F0:
 
 // symdb: Returns the per-RFU-slot link-state halfword from the RFU child table at eStruct200FE00 + 0x28.
 // symdb: () -> r0 = u16 (link-state word for rfuSlotId)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81468F4.yaml
-	thumb_func_start sub_81468F4
-sub_81468F4:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_getSlotLinkState.yaml
+	thumb_func_start rfu_getSlotLinkState
+rfu_getSlotLinkState:
 	ldr r1, off_8146904 // =eStruct200FE00 
 	ldr r0, off_8146908 // =rfuSlotId 
 	ldrb r0, [r0]
@@ -5790,7 +5790,7 @@ off_8146904:
 	.word eStruct200FE00
 off_8146908:
 	.word rfuSlotId
-	thumb_func_end sub_81468F4
+	thumb_func_end rfu_getSlotLinkState
 
 // symdb: returns a halfword status/count field of the wireless (RFU) shared struct at 200FE00+0x26, used to decide whether a wireless session has enough participants before ending it
 // symdb: () -> r0 = halfword at [eStruct200FE00+0x26]; no flags set intentionally
@@ -6580,9 +6580,9 @@ rfu_setLinkState:
 
 // symdb: Re-initialises the RFU receive-side state: clears byte_20101E0 and zeroes per-slot receive buffers, then calls rfu_resetRecvSlots.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146E60.yaml
-	thumb_func_start sub_8146E60
-sub_8146E60:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_reinitRecvSlots.yaml
+	thumb_func_start rfu_reinitRecvSlots
+rfu_reinitRecvSlots:
 	push {lr}
 	ldr r0, off_8146E70 // =byte_20101E0 
 	ldr r1, off_8146E74 // =rfuPerSlotRecvBuffers 
@@ -6595,7 +6595,7 @@ off_8146E70:
 	.word byte_20101E0
 off_8146E74:
 	.word rfuPerSlotRecvBuffers
-	thumb_func_end sub_8146E60
+	thumb_func_end rfu_reinitRecvSlots
 
 	thumb_func_start sub_8146E78
 sub_8146E78:

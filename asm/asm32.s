@@ -1414,9 +1414,9 @@ byte_810E414:
 // symdb: Dispatches a thrown battle object along either a straight-drop or arc path based on the AI attack's HitElement byte.
 // symdb: (r7 -> oAIAttackVars.HitElement index) -> tail-calls battle_throwObjectAway or
 // symdb: battle_stepArcMotion for that object; no return value computed here
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810E4D4.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_throwObjectByAiAttack.yaml
 	thumb_local_start
-sub_810E4D4:
+battle_throwObjectByAiAttack:
 	push {lr}
 	ldr r1, off_810E4E4 // =off_810E4E8
 	ldrb r0, [r7,#oAIAttackVars_HitElement]
@@ -1430,7 +1430,7 @@ off_810E4E4:
 off_810E4E8:
 	.word battle_throwObjectAway+1
 	.word battle_stepArcMotion+1
-	thumb_func_end sub_810E4D4
+	thumb_func_end battle_throwObjectByAiAttack
 
 // symdb: Fully cleans a battle object out of the fight (collision, AI, actor list, held chip) and then launches it off as a thrown projectile.
 // symdb: (r5 = battle object, r7 = its AI-attack-vars struct; no args in r0-r3) -> r0 = 0xF00000 *
@@ -1833,7 +1833,7 @@ off_810E7B0:
 	.word battle_hoverBobObjectUpdate+1
 	.word ai_dispatchSweepState+1
 	.word genericAI_exitAttackStateAfterDelay_81097BA+1
-	.word sub_810E4D4+1
+	.word battle_throwObjectByAiAttack+1
 	.word genericAI_movementRelated_8109952+1
 	.word ai_dispatchAttackByType+1
 byte_810E7E4:

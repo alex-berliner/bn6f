@@ -701,8 +701,8 @@ LABEL_37:
                         *(v25 + 8) = 4;
                         *(v0 + 38) = 4;
                         *(v25 + 10) = *(v0 + 42);
-                        v26 = sub_812EC2C(144, 1, 4);
-                        *(v0 + 48) = sub_812EDFC(v26, 1);
+                        v26 = battleSetSelectedWindow(144, 1, 4);
+                        *(v0 + 48) = t3_renderTextByWindowId(v26, 1);
                         sub_812EE78(1);
                         sub_812EDE4();
                         return;
@@ -993,7 +993,7 @@ void sub_812E440()
                     *(v0 + 46) = v8;
                     if ( v8 + 60 >= 180 )
                     {
-                        v9 = sub_812EDFC(*(v0 + 44) & 0x7FFF, 0);
+                        v9 = t3_renderTextByWindowId(*(v0 + 44) & 0x7FFF, 0);
                         *(v0 + 48) = v9;
                         (loc_812EE38)(0);
                     }
@@ -1001,7 +1001,7 @@ void sub_812E440()
                     v10 = 180 - *(v0 + 46);
                     if ( v10 <= 60 )
                     {
-                        v11 = sub_812EDFC(*(v0 + 42) & 0x7FFF, 1);
+                        v11 = t3_renderTextByWindowId(*(v0 + 42) & 0x7FFF, 1);
                         *(v0 + 48) = v11;
                         (loc_812EE38)(1);
                     }
@@ -1461,8 +1461,8 @@ void __noreturn sub_812E910()
     *(v1 + 21) = 0;
     *(v1 + 3) = 0;
     *(v1 + 40) = 0;
-    v5 = sub_812EC2C(*(v1 + 44), 1, 4);
-    v6 = sub_812EDFC(v5, 1);
+    v5 = battleSetSelectedWindow(*(v1 + 44), 1, 4);
+    v6 = t3_renderTextByWindowId(v5, 1);
     *(v1 + 48) = v6;
     (loc_812EE38)(1);
 }

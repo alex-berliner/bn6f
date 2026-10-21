@@ -21311,7 +21311,7 @@ off_8018010:
 off_8018014:
 	.word sub_801802C+1
 	.word sub_8018076+1
-	.word sub_8018094+1
+	.word battle_initChipPoseState+1
 	.word battle_wobbleThenLaunchAtPanel+1
 	.word sub_80180EC+1
 	.word nullsub_57+1
@@ -21375,9 +21375,9 @@ locret_8018092:
 
 // symdb: Initializes a battle object's wobble state from its saved coordinates and prevents animation.
 // symdb: (r0 = battleObject pointer, implicitly r5) -> r0 = 0xC; flags unchanged
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8018094.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_initChipPoseState.yaml
 	thumb_local_start
-sub_8018094:
+battle_initChipPoseState:
 	push {lr}
 	ldrh r0, [r5,#oBattleObject_Unk_1e_Unk_1f]
 	strb r0, [r5,#oBattleObject_WobbleOrEffectTimer]
@@ -21388,7 +21388,7 @@ sub_8018094:
 	mov r0, #0xc
 	strb r0, [r5,#oBattleObject_PreventAnim]
 	pop {pc}
-	thumb_func_end sub_8018094
+	thumb_func_end battle_initChipPoseState
 
 // symdb: Per-frame wobble for a battle object: jitters its XYZ by a small random offset each frame while the hold timer is nonzero, and when it expires restores the original position, sets the landing panel, lobs the object there, plays sfx 0xFFF3, and blocks animation.
 // symdb: (r0 unused entry, r5 = battle object ptr) -> r0 = launch result / sfx id, clobbered; no

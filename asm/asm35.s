@@ -248,9 +248,9 @@ off_812EC28:
 
 // symdb: Sets or clears a battle-overlay window state by window ID and action type
 // symdb: (r0 = windowId, r1 = mode, r2 = type) -> r0 = windowId; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EC2C.yaml
-	thumb_func_start sub_812EC2C
-sub_812EC2C:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleSetSelectedWindow.yaml
+	thumb_func_start battleSetSelectedWindow
+battleSetSelectedWindow:
 	push {r4-r7,lr}
 	mov r6, r2
 	lsl r0, r0, #0x11
@@ -262,7 +262,7 @@ sub_812EC2C:
 	bl sub_811BC00
 	mov r0, r4
 	pop {r4-r7,pc}
-	thumb_func_end sub_812EC2C
+	thumb_func_end battleSetSelectedWindow
 
 	push {r4-r7,lr}
 	sub sp, sp, #0x1c
@@ -476,16 +476,16 @@ battle_restoreMapBackground:
 	ldrh r0, [r5,#0x2a]
 	mov r1, #0
 	mov r2, #4
-	bl sub_812EC2C
+	bl battleSetSelectedWindow
 	mov r1, #0
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	mov r0, #0
 	bl loc_812EE38
 	bl sub_812EBB8
 	mov r0, #0x90
 	mov r1, #1
 	mov r2, #4
-	bl sub_812EC2C
+	bl battleSetSelectedWindow
 	bl sub_812EDE4
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -515,9 +515,9 @@ off_812EDF8:
 // symdb: Renders the indexed text associated with a menu window or scene element.
 // symdb: (r0 = window id, r1 = text variant index) -> r0 = rendered tile width/result from
 // symdb: t3_renderIndexedText; flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812EDFC.yaml
-	thumb_func_start sub_812EDFC
-sub_812EDFC:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_renderTextByWindowId.yaml
+	thumb_func_start t3_renderTextByWindowId
+t3_renderTextByWindowId:
 	push {r4,lr}
 	lsl r1, r1, #2
 	mov r4, r0
@@ -534,7 +534,7 @@ off_812EE14:
 off_812EE18:
 	.word unk_2024F90
 	.word unk_2024FB0
-	thumb_func_end sub_812EDFC
+	thumb_func_end t3_renderTextByWindowId
 
 // symdb: Draws an 8x2-tile graphic into BG tile block 2 at a coordinate from a lookup table; the tile-id base is r4 (path A, fixed=4) or r4 loaded from byte_812EEBC (path B), then offset by byte_812EEE1[[r5+0x30]] where r5 is supplied by the caller.
 // symdb: (r0 = entry index for the second code path, r5 = object/state pointer with state byte at +0x30)
@@ -699,9 +699,9 @@ submenu_renderSelectedWindow:
 	mov r0, r4
 	mov r1, #9
 	mov r2, #0
-	bl sub_812EC2C
+	bl battleSetSelectedWindow
 	mov r1, #0
-	bl sub_812EDFC
+	bl t3_renderTextByWindowId
 	strh r0, [r5,#0x30]
 	bl copy_drawEntry8x2
 	pop {r4-r7,pc}

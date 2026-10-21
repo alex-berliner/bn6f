@@ -1552,7 +1552,7 @@ LABEL_11:
 
 
 // 0x80a5f48
-int sub_80A5F48()
+int getMapGroupVariant()
 {
     int v0; // r10
     int v1; // r0

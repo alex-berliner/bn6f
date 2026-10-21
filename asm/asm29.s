@@ -2392,9 +2392,9 @@ locret_80A5F46:
 // symdb: Returns a byte selected from a three-entry table according to the current map group, with a special map-group 0x81 path.
 // symdb: (r0 = unused r10 context pointer, r1-r3 = unused) -> r0 = selected byte from byte_80A5F64;
 // symdb: flags: none
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A5F48.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/getMapGroupVariant.yaml
 	thumb_local_start
-sub_80A5F48:
+getMapGroupVariant:
 	push {r4,lr}
 	mov r0, r10
 	ldr r0, [r0,#oToolkit_GameStatePtr]
@@ -2416,7 +2416,7 @@ byte_80A5F64:
 	.byte 0x2, 0x2, 0x3
 byte_80A5F67:
 	.byte 0x2
-	thumb_func_end sub_80A5F48
+	thumb_func_end getMapGroupVariant
 
 // symdb: Spawns overworld map object 0x14 and plays the log-out sound effect, matching the jack-out/logout sequence.
 // symdb: (r5 = context struct; r1 = [r5,#0xc], r2 = [r5,#0x10], r3 = [r5,#0x14] as spawn params) -> r0 =
