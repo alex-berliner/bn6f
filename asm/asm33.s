@@ -5554,7 +5554,7 @@ loc_8125BC0:
 	cmp r4, r0
 	ble loc_8125B4E
 	ldr r6, off_8125BFC // =dword_201F420 
-	ldr r7, off_8125C04 // =unk_201F998 
+	ldr r7, off_8125C04 // =eCollectedChipListBuffer 
 	mov r4, #0
 loc_8125BCE:
 	ldr r0, [r6]
@@ -5588,7 +5588,7 @@ off_8125BFC:
 off_8125C00:
 	.word 0x578
 off_8125C04:
-	.word unk_201F998
+	.word eCollectedChipListBuffer
 	thumb_func_end library_rebuildCollectedChipList_8125B3C
 
 // symdb: Builds the available COM-chip list by scanning event flags for chips 0x140-0x15E and compacting the resulting slot array.
@@ -9888,7 +9888,7 @@ loc_8127D08:
 	tst r4, r5
 	beq loc_8127D28
 	// tileIds
-	ldr r3, off_8127E18 // =unk_2028690 
+	ldr r3, off_8127E18 // =eBattleSceneTileIds 
 loc_8127D28:
 	mov r4, #0x1e
 	mov r5, #0x14
@@ -9969,7 +9969,7 @@ off_8127E0C:
 	.word eDecompBuffer2013A00
 	.word comp_86D00C0 + COMPRESSED_PTR_FLAG
 off_8127E18:
-	.word unk_2028690
+	.word eBattleSceneTileIds
 	.word eDecompBuffer2013A00
 	.word comp_86C9274 + COMPRESSED_PTR_FLAG
 	.word 0x06008020
@@ -10306,7 +10306,7 @@ loc_812802C:
 	str r1, [r0,#8]
 	ldr r0, off_81280B8 // =eTextScript201BA00
 	mov r1, #3
-	ldr r2, off_81280D0 // =unk_2017F60 
+	ldr r2, off_81280D0 // =npcEntryRowNameBuffers 
 	add r2, r2, r7
 	ldr r3, dword_81280D4 // =0x6004560 
 	add r3, r3, r7
@@ -10347,7 +10347,7 @@ off_81280C8:
 dword_81280CC:
 	.word 0x6004320
 off_81280D0:
-	.word unk_2017F60
+	.word npcEntryRowNameBuffers
 dword_81280D4:
 	.word 0x6004560
 off_81280D8:
@@ -17333,7 +17333,7 @@ sub_812B430:
 	str r2, [r0,#0xc]
 	ldr r0, off_812B48C // =eTextScript201BA20
 	mov r1, #0x21 
-	ldr r2, off_812B49C // =unk_2017C80 
+	ldr r2, off_812B49C // =eTextGfxRenderBuffer 
 	ldr r3, dword_812B4A0 // =0x6007480 
 	mov r4, #0xa
 	mov r5, #1
@@ -17365,7 +17365,7 @@ off_812B494:
 dword_812B498:
 	.word 0x6007200
 off_812B49C:
-	.word unk_2017C80
+	.word eTextGfxRenderBuffer
 dword_812B4A0:
 	.word 0x6007480
 off_812B4A4:

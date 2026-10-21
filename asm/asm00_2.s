@@ -30778,7 +30778,7 @@ battle_drawPlayerSideSpriteSet:
 	and r1, r0
 	ldr r2, off_801D508 // =0x40 
 	mul r1, r2
-	ldr r0, off_801D500 // =dword_86E98CC 
+	ldr r0, off_801D500 // =playerSideSpriteTiles 
 	add r0, r0, r1
 	ldr r1, dword_801D504 // =0x6017900 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -30836,7 +30836,7 @@ dword_801D4F8:
 dword_801D4FC:
 	.word 0xC3C8
 off_801D500:
-	.word dword_86E98CC
+	.word playerSideSpriteTiles
 dword_801D504:
 	.word 0x6017900
 off_801D508:
@@ -34033,7 +34033,7 @@ selectPlayerSide_801EA5A:
 	ldr r3, dword_801EA9C // =0x6016e00 
 	mov pc, lr
 loc_801EA66:
-	ldr r2, off_801EAA4 // =byte_203EFA0 
+	ldr r2, off_801EAA4 // =eBattleState_PanelDamage 
 	ldr r3, dword_801EAA8 // =0x6017280 
 	mov pc, lr
 	.balign 4, 0
@@ -34064,7 +34064,7 @@ dword_801EA9C:
 off_801EAA0:
 	.word dword_86B7AE0
 off_801EAA4:
-	.word byte_203EFA0
+	.word eBattleState_PanelDamage
 dword_801EAA8:
 	.word 0x6017280
 off_801EAAC:
@@ -34317,7 +34317,7 @@ sub_801EC38:
 	thumb_func_start battle_hudQueueGfxLoadAndStartTimer
 battle_hudQueueGfxLoadAndStartTimer:
 	push {r4,r6,r7,lr}
-	ldr r0, off_801EC74 // =dword_86E994C 
+	ldr r0, off_801EC74 // =battleHudGfxTiles 
 	ldr r1, dword_801EC78 // =0x6016d00 
 	mov r2, #0xc0
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -34337,7 +34337,7 @@ battle_hudQueueGfxLoadAndStartTimer:
 	pop {r4,r6,r7,pc}
 	.balign 4, 0
 off_801EC74:
-	.word dword_86E994C
+	.word battleHudGfxTiles
 dword_801EC78:
 	.word 0x6016D00
 off_801EC7C:

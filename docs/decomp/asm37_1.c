@@ -1420,7 +1420,7 @@ void battleObject_emptyStub_8142C90()
 // 0x8142c94
 int init_queueBeastSpGfx()
 {
-    return (loc_8000AC8)(dword_8619730, 100690944, &byte_420);
+    return (loc_8000AC8)(beastSpGfxTiles, 100690944, &byte_420);
 }
 
 

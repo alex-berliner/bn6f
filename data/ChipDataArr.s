@@ -9917,7 +9917,7 @@ ChipDataArr_8021DA8::
 		chip_gate_usage_limit: 0x01,
 		dark_chip_id: 0xFF,
 		chip_icon_ptr: byte_872C994,
-		chip_image_ptr: byte_8723034,
+		chip_image_ptr: beastoutSelectionScreenChipUseGfx,
 		chip_palette_ptr: dword_8725814,
 	]
 	chip_data_struct [

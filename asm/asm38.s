@@ -1366,7 +1366,7 @@ loc_3006452:
 	sub sp, sp, #0x1c
 	str r0, [sp]
 	str r1, [sp,#0x14]
-	ldr r0, off_3006590 // =unk_3002400
+	ldr r0, off_3006590 // =eSpriteOamEntryBuf
 	str r0, [sp,#0x10]
 	mov r0, #0
 	str r0, [sp,#0xc]
@@ -1512,7 +1512,7 @@ loc_3006562:
 	beq loc_30064B0
 	b loc_30064B0
 loc_3006576:
-	ldr r0, off_3006590 // =unk_3002400
+	ldr r0, off_3006590 // =eSpriteOamEntryBuf
 	ldr r1, [sp,#0xc]
 	tst r1, r1
 	beq loc_3006582
@@ -1526,7 +1526,7 @@ loc_3006582:
 off_300658C:
 	.word eRenderDirtyFlags
 off_3006590:
-	.word unk_3002400
+	.word eSpriteOamEntryBuf
 	thumb_func_end sprite_queueFramePieces
 
 // symdb: Computes the OAM draw offsets for one sprite piece, applying optional flip-sign plus per-size anchoring (0x100 path) or an affine rotation/scaling using word_200A6F0 (0x300 path), returning (r0=x, r1=y) and updating r6 with the affine index (or 0x02000000 when r7==1).

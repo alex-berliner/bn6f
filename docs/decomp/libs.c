@@ -522,7 +522,7 @@ int sio_processMultiPayloads()
     v0 = 0;
     do
     {
-        copy_storeHalfwordRecord(*(&v11 + v0), v0, byte_200F489);
+        copy_storeHalfwordRecord(*(&v11 + v0), v0, eSioMultiPayloadFlags);
         v0 = (v0 + 1) & 0xFF;
     }
     while ( v0 <= 3 );
@@ -566,7 +566,7 @@ int sio_processMultiPayloads()
                     v7 = *(&v11 + v4);
                     word_200F476 += v7;
                     word_2006E04 |= v7;
-                    word_200F674[240 * v4 + 30 * byte_200F489 + v5] = v7;
+                    word_200F674[240 * v4 + 30 * eSioMultiPayloadFlags + v5] = v7;
                 }
                 else if ( v6 == 2 )
                 {
@@ -592,7 +592,7 @@ LABEL_28:
             while ( v4 < byte_200F463 );
         }
     }
-    if ( ++byte_200F489 == 8 && word_2006E04 )
+    if ( ++eSioMultiPayloadFlags == 8 && word_2006E04 )
     {
         ++byte_200FDF5;
         word_2006E04 = 0;
@@ -655,10 +655,10 @@ int sio_timer3EnableUpdate()
 {
     int v1; // [sp+0h] [bp-4h]
 
-    if ( byte_200F489 == 8 )
+    if ( eSioMultiPayloadFlags == 8 )
     {
         byte_200F488 = 0;
-        byte_200F489 = 0;
+        eSioMultiPayloadFlags = 0;
     }
     else if ( eTimerEnable200F460 )
     {
@@ -678,7 +678,7 @@ int timer_IsEnabled_8144CE0()
 // 0x8144cec
 int sub_8144CEC()
 {
-    return byte_200F489;
+    return eSioMultiPayloadFlags;
 }
 
 
@@ -2584,7 +2584,7 @@ int sub_81468BC()
 // 0x81468c8
 char *__fastcall chatbox_getTextStateEntryPtr(unsigned __int8 a1)
 {
-    return &unk_2010294 + 10 * a1;
+    return &chatboxTextStateEntries + 10 * a1;
 }
 
 
@@ -2677,7 +2677,7 @@ int __fastcall sub_81469BC(int a1, int a2)
 // 0x81469dc
 int __fastcall e_setPackScreenNaviId(int result)
 {
-    byte_201015A = result;
+    ePackScreenNaviId = result;
     return result;
 }
 
@@ -3608,7 +3608,7 @@ int sub_814794C()
     }
     while ( v0 <= 3 );
     byte_2010292 = 2 * byte_2010280 | 1;
-    sub_81469F0((dword_2010CC0 + 169), &unk_2010294, 8u);
+    sub_81469F0((dword_2010CC0 + 169), &chatboxTextStateEntries, 8u);
     word_20102C6[0] = *(dword_2010CC0 + 148);
     sub_81469F0((dword_2010CC0 + 154), &unk_20102E0, 0xDu);
     v1 = 0;
@@ -11258,7 +11258,7 @@ int __fastcall cgbSoundInit_814EB84(_BYTE *a1)
 // 0x814eca0
 int __fastcall m4a_ply_trampoline_814ECA0(int a1)
 {
-    return rfufunc_tailCallStub_814DA64(a1, off_30055F8);
+    return rfufunc_tailCallStub_814DA64(a1, iActiveMPlayTrack);
 }
 
 

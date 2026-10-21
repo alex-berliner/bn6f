@@ -2740,7 +2740,7 @@ off_8047494:
 	thumb_local_start
 chatbox_uploadWindowTileGfx_804754C:
 	push {r5,lr}
-	ldr r0, off_8047578 // =byte_2017204 
+	ldr r0, off_8047578 // =chatboxWindowTileStaging 
 	mov r1, r10
 	ldr r1, [r1,#oToolkit_iBGTileIdBlocks_Ptr]
 	mov r2, #0x80
@@ -2760,7 +2760,7 @@ chatbox_uploadWindowTileGfx_804754C:
 	pop {r5,pc}
 	.balign 4, 0
 off_8047578:
-	.word byte_2017204
+	.word chatboxWindowTileStaging
 dword_804757C:
 	.word 0x800
 off_8047580:
@@ -10660,7 +10660,7 @@ locret_804C3C2:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_redrawTextWindow
 
-// symdb: Draws a fixed 12x6 tile window (tile data at byte_86A13F0) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
+// symdb: Draws a fixed 12x6 tile window (tile data at TextWindowTileIds) into background tile block 3 and sets a render-info flag, presumably making the text window visible.
 // symdb: () -> r0 = destroyed; sets bit 0x800 of toolkit->RenderInfo->field0 (halfword)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_loadTextWindowTiles.yaml
 	thumb_local_start
@@ -10675,7 +10675,7 @@ t3_loadTextWindowTiles:
 	mov r0, #0xc
 	mov r1, #0
 	mov r2, #3
-	ldr r3, off_804C3E8 // =byte_86A13F0 
+	ldr r3, off_804C3E8 // =TextWindowTileIds 
 	mov r4, #6
 	mov r5, #0xc
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -10684,7 +10684,7 @@ locret_804C3E4:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C3E8:
-	.word byte_86A13F0
+	.word TextWindowTileIds
 dword_804C3EC:
 	.word 0x800
 byte_804C3F0:
@@ -10745,7 +10745,7 @@ clearRenderFlags:
 	thumb_local_start
 battle_render_startBlurEffect_804C43C:
 	push {r4-r7,lr}
-	ldr r0, off_804C468 // =byte_86A1480
+	ldr r0, off_804C468 // =BlurEffectGFX
 	ldr r1, dword_804C46C // =0x600cb00 
 	ldr r2, off_804C470 // =0x4c0 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -10765,7 +10765,7 @@ battle_render_startBlurEffect_804C43C:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804C468:
-	.word byte_86A1480
+	.word BlurEffectGFX
 dword_804C46C:
 	.word 0x600CB00
 off_804C470:
@@ -11469,7 +11469,7 @@ off_804CB60:
 	.word chatbox_initWindowReqAndEnqueue+1
 	thumb_func_end sub_804CB0C
 
-// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from byte_86A34E0 into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
+// symdb: Enables BG layer flags (0x2800) in RenderInfo, copies a full-screen 30x20 tilemap from FullScreenBackgroundTilemap into BG tile block 3, calls sub_8006990, then stores state 8 at r5+0x10.
 // symdb: (r0..r2 = unused/zero locals, r5 = ptr to struct with u8 state at +0x10) -> r0 = clobbered;
 // symdb: writes RenderInfo flags and struct byte
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t3_showFullScreenBackground.yaml
@@ -11486,7 +11486,7 @@ t3_showFullScreenBackground:
 	mov r0, #0
 	mov r1, #0
 	mov r2, #3
-	ldr r3, off_804CB94 // =byte_86A34E0 
+	ldr r3, off_804CB94 // =FullScreenBackgroundTilemap 
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -11501,7 +11501,7 @@ locret_804CB92:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_804CB94:
-	.word byte_86A34E0
+	.word FullScreenBackgroundTilemap
 off_804CB98:
 	.word ow_updateMarkerProj+1
 dword_804CB9C:
@@ -11568,7 +11568,7 @@ beastSp_startTransformSequence:
 	ldr r1, dword_804CC28 // =0x600cfe0 
 	ldr r2, dword_804CC2C // =0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	ldr r0, off_804CC30 // =byte_86A3990 
+	ldr r0, off_804CC30 // =beastSpTransformTiles 
 	ldr r1, off_804CC34 // =byte_3001B00 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -11601,7 +11601,7 @@ dword_804CC28:
 dword_804CC2C:
 	.word 0x20
 off_804CC30:
-	.word byte_86A3990
+	.word beastSpTransformTiles
 off_804CC34:
 	.word byte_3001B00
 dword_804CC38:
@@ -11791,7 +11791,7 @@ battle_initBeastspBackground:
 	ldr r1, dword_804CDB4 // =0x600cc00 
 	ldr r2, off_804CDB8 // =0xa0 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
-	ldr r0, off_804CDBC // =byte_86A3E80 
+	ldr r0, off_804CDBC // =beastspBackgroundGfx 
 	ldr r1, off_804CDC0 // =byte_3001B00 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -11831,7 +11831,7 @@ dword_804CDB4:
 off_804CDB8:
 	.word 0xA0
 off_804CDBC:
-	.word byte_86A3E80
+	.word beastspBackgroundGfx
 off_804CDC0:
 	.word byte_3001B00
 byte_804CDC4:

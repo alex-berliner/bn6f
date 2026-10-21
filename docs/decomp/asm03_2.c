@@ -1279,7 +1279,7 @@ int __noreturn chatbox_uploadWindowTileGfx_804754C()
     int v0; // r5
     int v1; // r10
 
-    CopyByEightWords(byte_2017204, *(v1 + oToolkit_iBGTileIdBlocks_Ptr) + 2048, 0x800u);
+    CopyByEightWords(chatboxWindowTileStaging, *(v1 + oToolkit_iBGTileIdBlocks_Ptr) + 2048, 0x800u);
     return renderTextGfx_8045F8C(*(v0 + 36), 16, &unk_2015E00, 100671488);
 }
 
@@ -5891,7 +5891,7 @@ void t3_loadTextWindowTiles()
     int v0; // r10
 
     **(v0 + oToolkit_RenderInfoPtr) |= 0x800u;
-    CopyBackgroundTiles(12, 0, 3, byte_86A13F0, 6, &dword_C);
+    CopyBackgroundTiles(12, 0, 3, TextWindowTileIds, 6, &dword_C);
 }
 
 
@@ -5927,7 +5927,7 @@ int battle_render_startBlurEffect_804C43C()
     int v1; // r10
     int v2; // r1
 
-    (loc_8000AC8)(byte_86A1480, 100715264, dword_4C0);
+    (loc_8000AC8)(BlurEffectGFX, 100715264, dword_4C0);
     *(*(v1 + oToolkit_RenderInfoPtr) + 10) = 8066;
     v2 = *(v1 + oToolkit_Unk200f3a0_Ptr);
     *(v2 + 9) = 63;
@@ -6298,7 +6298,7 @@ signed int t3_showFullScreenBackground()
     int v3; // [sp+0h] [bp-18h]
 
     **(v0 + oToolkit_RenderInfoPtr) |= 0x2800u;
-    CopyBackgroundTiles(0, 0, 3, byte_86A34E0, 30, dword_14);
+    CopyBackgroundTiles(0, 0, 3, FullScreenBackgroundTilemap, 30, dword_14);
     result = ow_updateMarkerProj();
     if ( !v2 )
     {
@@ -6346,7 +6346,7 @@ int beastSp_startTransformSequence()
     _BYTE *v2; // r1
 
     (loc_8000AC8)(byte_86A39B0, 100716512, 32);
-    (loc_8000AC8)(byte_86A3990, byte_3001B00, 32);
+    (loc_8000AC8)(beastSpTransformTiles, byte_3001B00, 32);
     *(*(v1 + oToolkit_RenderInfoPtr) + 10) = 7945;
     v2 = *(v1 + oToolkit_Unk2009740_Ptr);
     *v2 = 72;
@@ -6468,7 +6468,7 @@ int battle_initBeastspBackground()
     _BYTE *v3; // r1
 
     (loc_8000AC8)(byte_86A3EA0, 100715520, &loc_A0);
-    (loc_8000AC8)(byte_86A3E80, byte_3001B00, 32);
+    (loc_8000AC8)(beastspBackgroundGfx, byte_3001B00, 32);
     v2 = *(v1 + oToolkit_RenderInfoPtr);
     v2[5] = 7945;
     v2[13] = 0;

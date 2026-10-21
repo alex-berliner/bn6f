@@ -12436,7 +12436,7 @@ int battle_copyStructsIncludingBattleStats_800b2d8()
         CopyWords(byte_203F5AC, eBattleNaviStats203C980, 0x64u);
     }
     ePrimaryRngSeed = *byte_203F4A4;
-    CopyWords(byte_203F510, byte_203EB00, 0x28u);
+    CopyWords(sBattleNaviAuxData, byte_203EB00, 0x28u);
     CopyWords(byte_203F610, byte_203EB28, 0x28u);
     CopyWords(byte_203F538, byte_2036790, 0x28u);
     CopyWords(byte_203F638, byte_20367B8, 0x28u);

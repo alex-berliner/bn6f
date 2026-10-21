@@ -2307,14 +2307,14 @@ battleObject_emptyStub_8142C90:
 	thumb_func_start init_queueBeastSpGfx
 init_queueBeastSpGfx:
 	push {lr}
-	ldr r0, off_8142CA4 // =dword_8619730 
+	ldr r0, off_8142CA4 // =beastSpGfxTiles 
 	ldr r1, dword_8142CA8 // =0x6006c00 
 	ldr r2, off_8142CAC // =0x420 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {pc}
 	.balign 4, 0
 off_8142CA4:
-	.word dword_8619730
+	.word beastSpGfxTiles
 dword_8142CA8:
 	.word 0x6006C00
 off_8142CAC:

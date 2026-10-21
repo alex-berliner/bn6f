@@ -17823,11 +17823,11 @@ loc_800AAA6:
 getNextEntryAddress_800AAAE:
 	mov r1, #0x20
 	mul r0, r1
-	ldr r1, off_800AAB8 // =unk_2038170
+	ldr r1, off_800AAB8 // =eNextTable
 	add r0, r0, r1
 	mov pc, lr
 off_800AAB8:
-	.word unk_2038170
+	.word eNextTable
 	thumb_func_end getNextEntryAddress_800AAAE
 
 // symdb: Advances the battle state machine into phase 0x14, first running the struct-setup helper with argument 4
@@ -19098,7 +19098,7 @@ loc_800B334:
 	ldr r0, [r0]
 	ldr r1, off_800B5A4 // =ePrimaryRngSeed
 	str r0, [r1]
-	ldr r0, off_800B5A8 // =byte_203F510
+	ldr r0, off_800B5A8 // =sBattleNaviAuxData
 	ldr r1, off_800B5AC // =byte_203EB00
 	mov r2, #0x28
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
@@ -19476,7 +19476,7 @@ off_800B5A0:
 off_800B5A4:
 	.word ePrimaryRngSeed
 off_800B5A8:
-	.word byte_203F510
+	.word sBattleNaviAuxData
 off_800B5AC:
 	.word byte_203EB00
 off_800B5B0:

@@ -1615,7 +1615,7 @@ dword_8034408:
 	.word byte_86C2340
 	.word 0x2
 	.word eTileIds2017A04
-	.word byte_86C2360
+	.word worldMapAnimRowOneTileData
 	.word 0x2
 	.word eTileIds2017A04
 	.word byte_86C2380

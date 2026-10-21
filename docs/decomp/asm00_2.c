@@ -20079,7 +20079,7 @@ int battle_drawPlayerSideSpriteSet()
     int v2; // r4
     signed int v3; // r1
 
-    (loc_8000AC8)(dword_86E98CC + (*(v0 + 54) & 1) * &byte_40, 100759808);
+    (loc_8000AC8)(playerSideSpriteTiles + (*(v0 + 54) & 1) * &byte_40, 100759808);
     v2 = 5242880 * *(getEntryPtr_2036120_1D0_802E070(*(*(v1 + oToolkit_S2034880_Ptr) + 13)) + 31);
     v3 = *(v0 + 54);
     if ( v3 >= 3 )
@@ -21830,7 +21830,7 @@ signed int battle_hudQueueGfxLoadAndStartTimer()
 {
     signed int result; // r0
 
-    (loc_8000AC8)(&dword_86E994C, 100756736, 192);
+    (loc_8000AC8)(&battleHudGfxTiles, 100756736, 192);
     (loc_8000AC8)(dword_86E9A0C, gfxDecompressWorkBuffer, 32);
     eStruct2035280_SetRequestBits_801BECC(0x200000);
     dispatch_801DA48(0x200000);

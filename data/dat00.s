@@ -348,7 +348,7 @@ dword_801F2A0::
 	.word byte_86F1B40
 	.word byte_86F1B80
 	.word byte_86F1BC0
-	.word byte_86F1C00
+	.word ProgramAdvanceFaceIcons
 	.word byte_86F1C40
 	.word byte_86F1C80
 	.word byte_86F1CC0
@@ -429,7 +429,7 @@ dword_801F3CC::
 	.word byte_86F1B40
 	.word byte_86F1B80
 	.word byte_86F1BC0
-	.word byte_86F1C00
+	.word ProgramAdvanceFaceIcons
 	.word byte_86F1C40
 	.word byte_86F1C80
 	.word byte_86F1CC0

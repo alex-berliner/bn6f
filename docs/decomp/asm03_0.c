@@ -3186,7 +3186,7 @@ void __fastcall beastout_loadSelectionScreenChipUseGfx(int a1, int a2, int a3)
     int v6; // r2
 
     loadOneSpriteTileRow_80287D2(a1, a2, a3);
-    (loc_8000AC8)(byte_8723034, 100701536, 1344);
+    (loc_8000AC8)(beastoutSelectionScreenChipUseGfx, 100701536, 1344);
     v3 = getLocOfActiveChips_8027E1C(11);
     v4 = (loc_8000AC8)(&dword_8725814[8 * v3[6]], &unk_3001AA0, 32);
     beastout_LoadSelectionScreenSpriteSheets_802869E(v4, v5, v6);
@@ -5574,7 +5574,7 @@ void __fastcall customScreen_redrawChipSlot_8029CD4(int a1, int a2, int a3)
     }
     while ( v5 != 16 );
     if ( !a3 )
-        CopyBackgroundTiles(0, 3, 3, &unk_203505A, 15, &dword_8 + 2);
+        CopyBackgroundTiles(0, 3, 3, &customScreenChipSlotTileIds, 15, &dword_8 + 2);
 }
 
 
@@ -8057,7 +8057,7 @@ LABEL_22:
         else
         {
             v5 = dword_8733E74;
-            v6 = dword_87343B4;
+            v6 = chipPreviewTilesFiveRows;
         }
     }
     else if ( v3 )
@@ -8068,7 +8068,7 @@ LABEL_22:
     else
     {
         v5 = dword_8733914;
-        v6 = dword_8733E54;
+        v6 = ChipSoulPreviewTiles;
     }
 LABEL_19:
     v8 = v6;
@@ -11324,7 +11324,7 @@ int ai_clearAllianceState()
 // 0x802e240
 void __fastcall loadIndexedPaletteToBuffer_802E240(int a1)
 {
-    CopyHalfwords(off_802E260[a1], &unk_2008170, 60);
+    CopyHalfwords(off_802E260[a1], &ePaletteBuffer, 60);
 }
 
 

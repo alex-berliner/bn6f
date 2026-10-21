@@ -21395,7 +21395,7 @@ int __noreturn ow_renderMapNameHudGfx()
         *(v1 + 12) = 0;
     }
     renderTextGfx_8045F8C(TextScriptMapNames, 240, &unk_200BEA0, 0);
-    return sprite_repackAndQueueTiles_811F5DC(&unk_200BEA0, byte_200CC20, 100749312, 9);
+    return sprite_repackAndQueueTiles_811F5DC(&unk_200BEA0, ow_RenderedMapNameGfx, 100749312, 9);
 }
 
 
@@ -21417,7 +21417,7 @@ int __noreturn drawMapNamesScreen_811F050()
 
     *(*(v0 + oToolkit_Unk200a220_Ptr) + 8) = gameState_getProtectedBugfrags_803D0F4();
     renderTextGfx_8045F8C(TextScriptMapNames, 242, &mapNamesTextWorkBuffer, 0);
-    return sprite_repackAndQueueTiles_811F5DC(&mapNamesTextWorkBuffer, byte_200D220, 100750336, 6);
+    return sprite_repackAndQueueTiles_811F5DC(&mapNamesTextWorkBuffer, eMapNamesScreenTilemap, 100750336, 6);
 }
 
 
@@ -21428,7 +21428,7 @@ int __fastcall __noreturn drawCurrentMapName_811F08C(int a1)
 
     v1 = getCurrentMapBgm_811F290();
     renderTextGfx_8045F8C(TextScriptMapNames, v1, byte_200C620, 0);
-    return sprite_repackAndQueueTiles_811F5DC(byte_200C620, byte_200C920, 100751232, 12);
+    return sprite_repackAndQueueTiles_811F5DC(byte_200C620, eMapNameTextGfxBuffer, 100751232, 12);
 }
 
 

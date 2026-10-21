@@ -35819,7 +35819,7 @@ loc_811EFE6:
 	mov r7, #0
 	bl renderTextGfx_8045F8C
 	ldr r0, off_811F008 // =unk_200BEA0
-	ldr r1, off_811F010 // =byte_200CC20
+	ldr r1, off_811F010 // =ow_RenderedMapNameGfx
 	ldr r2, dword_811F00C // =0x6015000
 	mov r3, #9
 	bl sprite_repackAndQueueTiles_811F5DC
@@ -35830,7 +35830,7 @@ off_811F008:
 dword_811F00C:
 	.word 0x6015000
 off_811F010:
-	.word byte_200CC20
+	.word ow_RenderedMapNameGfx
 	thumb_func_end ow_renderMapNameHudGfx
 
 // symdb: Renders the current map's name into VRAM and refreshes the on-screen map-name display buffers.
@@ -35888,7 +35888,7 @@ drawMapNamesScreen_811F050:
 	mov r7, #0
 	bl renderTextGfx_8045F8C
 	ldr r0, off_811F080 // =mapNamesTextWorkBuffer
-	ldr r1, off_811F088 // =byte_200D220
+	ldr r1, off_811F088 // =eMapNamesScreenTilemap
 	ldr r2, dword_811F084 // =0x6015400
 	mov r3, #6
 	bl sprite_repackAndQueueTiles_811F5DC
@@ -35899,7 +35899,7 @@ off_811F080:
 dword_811F084:
 	.word 0x6015400
 off_811F088:
-	.word byte_200D220
+	.word eMapNamesScreenTilemap
 	thumb_func_end drawMapNamesScreen_811F050
 
 // symdb: Resolves the name of the map the player is currently on, renders it as text, and uploads it to the map-name VRAM slot.
@@ -35919,7 +35919,7 @@ drawCurrentMapName_811F08C:
 	mov r7, #0
 	bl renderTextGfx_8045F8C
 	ldr r0, off_811F0B4 // =byte_200C620
-	ldr r1, off_811F0BC // =byte_200C920
+	ldr r1, off_811F0BC // =eMapNameTextGfxBuffer
 	ldr r2, dword_811F0B8 // =0x6015780
 	mov r3, #0xc
 	bl sprite_repackAndQueueTiles_811F5DC
@@ -35930,7 +35930,7 @@ off_811F0B4:
 dword_811F0B8:
 	.word 0x6015780
 off_811F0BC:
-	.word byte_200C920
+	.word eMapNameTextGfxBuffer
 off_811F0C0:
 	.word TextScriptMapNames
 off_811F0C4:

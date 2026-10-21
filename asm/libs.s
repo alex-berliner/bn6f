@@ -1206,7 +1206,7 @@ sio_processMultiPayloads:
 	str r0, [sp]
 	str r1, [sp,#4]
 	mov r4, #0
-	ldr r5, off_81449A4 // =byte_200F489 
+	ldr r5, off_81449A4 // =eSioMultiPayloadFlags 
 loc_8144938:
 	lsl r0, r4, #1
 	add r0, sp
@@ -1263,7 +1263,7 @@ loc_8144978:
 off_81449A0:
 	.word SIOData0_Parent__Multi_PlayerMode_
 off_81449A4:
-	.word byte_200F489
+	.word eSioMultiPayloadFlags
 off_81449A8:
 	.word eTimerEnable200F460
 off_81449AC:
@@ -5734,7 +5734,7 @@ off_81468C4:
 	thumb_func_end sub_81468BC
 
 // symdb: Returns a pointer to the 10-byte text-state record for a given text slot in the chatbox work table at 2010294.
-// symdb: (r0 = text slot id (byte)) -> r0 = &unk_2010294[id*10]; flags clobbered by the shifts
+// symdb: (r0 = text slot id (byte)) -> r0 = &chatboxTextStateEntries[id*10]; flags clobbered by the shifts
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatbox_getTextStateEntryPtr.yaml
 	thumb_func_start chatbox_getTextStateEntryPtr
 chatbox_getTextStateEntryPtr:
@@ -5744,12 +5744,12 @@ chatbox_getTextStateEntryPtr:
 	lsl r0, r1, #2
 	add r0, r0, r1
 	lsl r0, r0, #1
-	ldr r1, off_81468DC // =unk_2010294 
+	ldr r1, off_81468DC // =chatboxTextStateEntries 
 	add r0, r0, r1
 	bx lr
 	.balign 4, 0x00
 off_81468DC:
-	.word unk_2010294
+	.word chatboxTextStateEntries
 	thumb_func_end chatbox_getTextStateEntryPtr
 
 	thumb_func_start sub_81468E0
@@ -5936,17 +5936,17 @@ off_81469D8:
 	.word unk_2010150
 	thumb_func_end sub_81469BC
 
-// symdb: Stores the navi id produced by e_packScreenNaviId into the global byte_201015A (current pack-screen navi).
+// symdb: Stores the navi id produced by e_packScreenNaviId into the global ePackScreenNaviId (current pack-screen navi).
 // symdb: (r0 = navi id byte) -> r0 = destroyed; no flags meaningful (bx lr after strb)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_setPackScreenNaviId.yaml
 	thumb_func_start e_setPackScreenNaviId
 e_setPackScreenNaviId:
-	ldr r1, off_81469E4 // =byte_201015A 
+	ldr r1, off_81469E4 // =ePackScreenNaviId 
 	strb r0, [r1]
 	bx lr
 	.balign 4, 0x00
 off_81469E4:
-	.word byte_201015A
+	.word ePackScreenNaviId
 	thumb_func_end e_setPackScreenNaviId
 
 	thumb_func_start sub_81469E8
@@ -23675,14 +23675,14 @@ byte_814EC98:
 	thumb_local_start
 m4a_ply_trampoline_814ECA0:
 	push {lr}
-	ldr r1, off_814ECB0 // =off_30055F8 
+	ldr r1, off_814ECB0 // =iActiveMPlayTrack 
 	ldr r1, [r1]
 	bl rfufunc_tailCallStub_814DA64
 	pop {r0}
 	bx r0
 	.balign 4, 0
 off_814ECB0:
-	.word off_30055F8
+	.word iActiveMPlayTrack
 	thumb_func_end m4a_ply_trampoline_814ECA0
 
 // symdb: m4a song-track tail-call trampoline that pops the saved LR and returns through the chosen track's IRQ handler.

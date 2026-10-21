@@ -361,7 +361,7 @@ off_8081178:
 	.word 0x6000020
 	.word byte_8618E40
 	.word 0x800
-	.word byte_8618F50
+	.word battleBackgroundGFXAnimationScript
 	.word palette_3001960
 	.word 0x20
 off_8081194:

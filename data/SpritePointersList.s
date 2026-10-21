@@ -278,7 +278,7 @@ off_8031FA4::
 	.word sprite_8395660 // 0x56
 	.word sprite_8396650 // 0x57
 	.word spriteWhiteDot // 0x58
-	.word byte_83971C0 // 0x59
+	.word spriteWhiteSquareHole // 0x59
 	.word byte_8398048 // 0x5a
 	.word spriteWhiteDot // 0x5b
 off_8032114::
@@ -2197,7 +2197,7 @@ off_8033720:: // [*const ([u32; 4]?, LZ77Compressed<?>); CENTRAL_AREA_NUM_MAPS]
 	.word dword_8667820
 	.word dword_866B038
 off_803372C:: // [*const ([u32; 4]?, LZ77Compressed<?>); SEASIDE_AREA_NUM_MAPS]
-	.word byte_866D090
+	.word SeasideAreaMapThree
 	.word byte_8671A74
 	.word byte_8673418
 off_8033738:: // [*const ([u32; 4]?, LZ77Compressed<?>); GREEN_AREA_NUM_MAPS]

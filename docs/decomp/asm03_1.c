@@ -9928,7 +9928,7 @@ int __fastcall ow_saveJackInState(int a1, int a2, int a3, int a4)
     v6 = a4;
     CopyBytes(a1, &unk_200A400, 32);
     CopyBytes(v4, &unk_200A420, 32);
-    CopyBytes(v5, &unk_200A3A0, 16);
+    CopyBytes(v5, &eOverworldSavedJackInBufferC, 16);
     return CopyBytes(v6, &unk_200A3B0, 16);
 }
 
@@ -10296,7 +10296,7 @@ int __fastcall battleObject_setupCustomChipCursorState_803C59C(int a1, int a2)
             v5 = 0;
             byte_200BC60 = 0;
         }
-        result = (loc_8000AC8)(&dword_86A5300[32 * v5], 100761216, 128);
+        result = (loc_8000AC8)(&CustomChipCursorTileGraphicsTable[32 * v5], 100761216, 128);
     }
     return result;
 }

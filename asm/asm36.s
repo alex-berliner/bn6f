@@ -6102,7 +6102,7 @@ saveMenu_8132D9C:
 	str r0, [r1,#8]
 	ldr r0, off_8132EEC // =eTextScript201BF00
 	mov r1, #6
-	ldr r2, off_8132EDC // =unk_2019E00 
+	ldr r2, off_8132EDC // =savemenuFilenameBuffer 
 	ldr r3, dword_8132EE0 // =0x6005200 
 	mov r4, #7
 	mov r5, #1
@@ -6153,7 +6153,7 @@ off_8132ED4:
 dword_8132ED8:
 	.word 0x6005000
 off_8132EDC:
-	.word unk_2019E00
+	.word savemenuFilenameBuffer
 dword_8132EE0:
 	.word 0x6005200
 off_8132EE4:
@@ -8633,7 +8633,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 
 	ldrh r0, [r7,#0x24]
 	ldr r1, off_81342E0 // =word_202A020 
-	ldr r2, off_81342E8 // =unk_2034538 
+	ldr r2, off_81342E8 // =submenuChipPanelTileIds 
 	ldr r3, off_81342EC // =byte_813317C
 	ldr r4, dword_81342F0 // =0x6007200 
 	mov r5, #7
@@ -8645,13 +8645,13 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	sub r0, r0, r1
 	mov r1, #4
 	mov r2, #2
-	ldr r3, off_81342E8 // =unk_2034538 
+	ldr r3, off_81342E8 // =submenuChipPanelTileIds 
 	mov r4, #2
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
 	ldrh r0, [r7,#0x24]
 	ldr r1, off_81342E0 // =word_202A020 
-	ldr r2, off_81342F4 // =unk_2034570 
+	ldr r2, off_81342F4 // =chipFolderPageTileIds 
 	mov r3, #0xa
 	lsl r3, r3, #0xc
 	ldr r4, off_81342F8 // =0x35c 
@@ -8666,7 +8666,7 @@ battleObject_submenuRenderFolderAndChips_81341A0:
 	sub r0, r0, r1
 	mov r1, #4
 	mov r2, #2
-	ldr r3, off_81342F4 // =unk_2034570 
+	ldr r3, off_81342F4 // =chipFolderPageTileIds 
 	mov r4, #2
 	mov r5, #0xe
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -8769,13 +8769,13 @@ off_81342E0:
 off_81342E4:
 	.word unk_2034458
 off_81342E8:
-	.word unk_2034538
+	.word submenuChipPanelTileIds
 off_81342EC:
 	.word byte_813317C
 dword_81342F0:
 	.word 0x6007200
 off_81342F4:
-	.word unk_2034570
+	.word chipFolderPageTileIds
 off_81342F8:
 	.word 0x35C
 dword_81342FC:
@@ -12284,7 +12284,7 @@ loc_8135BB4:
 	// tileBlock32x32
 	mov r2, #1
 	// tileIds
-	ldr r3, off_8135CBC // =byte_201BE80
+	ldr r3, off_8135CBC // =eNaviCustomizerPanelTileIds
 	mov r4, #0x1e
 	mov r5, #0x14
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -12365,7 +12365,7 @@ off_8135C64:
 
 	.word comp_86D439C + COMPRESSED_PTR_FLAG
 off_8135CBC:
-	.word byte_201BE80
+	.word eNaviCustomizerPanelTileIds
 	.word eDecompBuffer2013A00
 
 	.word comp_86D3D70 + COMPRESSED_PTR_FLAG

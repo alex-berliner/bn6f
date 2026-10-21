@@ -1424,7 +1424,7 @@ dword_800C200:
 dword_800C258:
 	.word 0x50A04
 	.word unk_3001A20
-	.word byte_86E0998
+	.word panelTileAnimationFrame
 	.word 0x10
 	.word byte_86E06D8
 	.word 0x10
@@ -1451,7 +1451,7 @@ dword_800C2B0:
 	.word 0x8
 	.word byte_86E0578
 	.word 0x8
-	.word byte_86E0598
+	.word panelTileAnimationFrameOffsets
 	.word 0x8
 	.word byte_86E05B8
 	.word 0x8
@@ -1490,7 +1490,7 @@ dword_800C340:
 	.word 0xA
 	.word byte_86E07D8
 	.word 0xA
-	.word byte_86E07F8
+	.word animPanelTilesSourceTwo
 	.word 0xA
 	.word byte_86E0818
 	.word 0xA

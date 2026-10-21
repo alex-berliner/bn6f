@@ -7180,7 +7180,7 @@ void __noreturn battle_loadNaviCustomizerGfx()
     decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&off_8135C64);
     CopyByEightWords(byte_201CF80, word_30019E0, byte_100);
-    CopyBackgroundTiles(0, 0, 1, byte_201BE80, 30, dword_14);
+    CopyBackgroundTiles(0, 0, 1, eNaviCustomizerPanelTileIds, 30, dword_14);
     JUMPOUT(loc_8135BF0);
 }
 

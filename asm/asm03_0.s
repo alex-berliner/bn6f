@@ -5125,7 +5125,7 @@ off_8028714:
 beastout_loadSelectionScreenChipUseGfx:
 	push {lr}
 	bl loadOneSpriteTileRow_80287D2
-	ldr r0, off_802874C // =byte_8723034 
+	ldr r0, off_802874C // =beastoutSelectionScreenChipUseGfx 
 	ldr r1, dword_80287F0 // =0x6009560 
 	ldr r2, dword_80287F4 // =0x540
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
@@ -5143,7 +5143,7 @@ beastout_loadSelectionScreenChipUseGfx:
 	pop {pc}
 	.balign 4, 0
 off_802874C:
-	.word byte_8723034
+	.word beastoutSelectionScreenChipUseGfx
 off_8028750:
 	.word dword_8725814
 	thumb_func_end beastout_loadSelectionScreenChipUseGfx
@@ -8414,7 +8414,7 @@ byte_8029CAC:
 // symdb: Updates one custom-screen chip-slot row in the IWRAM tile buffer at unk_2035000 (tile-id table) and, when r2==0, uploads 3×3 tile data via CopyBackgroundTiles.
 // symdb: (r0 = rowIndex, r1 = colIndex, r2 = drawFlag, r10 = toolkit) -> void ; writes 4 halfwords into
 // symdb: unk_2035000 + offset; on r2==0 calls CopyBackgroundTiles; side-effect: tweaks unk_2035000 tile-
-// symdb: id table and copies 0xA×0xF of tile data from unk_203505A
+// symdb: id table and copies 0xA×0xF of tile data from customScreenChipSlotTileIds
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/customScreen_redrawChipSlot_8029CD4.yaml
 	thumb_local_start
 customScreen_redrawChipSlot_8029CD4:
@@ -8449,7 +8449,7 @@ loc_8029CEE:
 	// tileBlock32x32
 	mov r2, #3
 	// tileIds
-	ldr r3, off_8029D28 // =unk_203505A 
+	ldr r3, off_8029D28 // =customScreenChipSlotTileIds 
 	mov r4, #0xf
 	mov r5, #0xa
 	bl CopyBackgroundTiles // (j: u32, i: u32, which_tile_block_32x32: u32, tile_ids: *const u16, j_size: u32, i_size: u32 ) -> ()
@@ -8462,7 +8462,7 @@ byte_8029D18:
 	.byte 0x0, 0x0, 0x0, 0x90, 0x1E, 0x0, 0x1, 0x90, 0x6, 0x0, 0x0, 0x94, 0x24
 	.byte 0x0, 0x1, 0x94
 off_8029D28:
-	.word unk_203505A
+	.word customScreenChipSlotTileIds
 	.word 0x3FF
 off_8029D30:
 	.word unk_2035000
@@ -12813,7 +12813,7 @@ loc_802BFAC:
 	b loc_802BFE4
 loc_802BFBA:
 	ldr r0, off_802C028 // =dword_8733914 
-	ldr r1, off_802C02C // =dword_8733E54 
+	ldr r1, off_802C02C // =ChipSoulPreviewTiles 
 	b loc_802BFE4
 loc_802BFC0:
 	cmp r0, #3
@@ -12835,7 +12835,7 @@ loc_802BFD8:
 	b loc_802BFE4
 loc_802BFE0:
 	ldr r0, off_802C030 // =dword_8733E74 
-	ldr r1, off_802C034 // =dword_87343B4 
+	ldr r1, off_802C034 // =chipPreviewTilesFiveRows 
 loc_802BFE4:
 	push {r5}
 	push {r1}
@@ -12872,11 +12872,11 @@ off_802C024:
 off_802C028:
 	.word dword_8733914
 off_802C02C:
-	.word dword_8733E54
+	.word ChipSoulPreviewTiles
 off_802C030:
 	.word dword_8733E74
 off_802C034:
-	.word dword_87343B4
+	.word chipPreviewTilesFiveRows
 off_802C038:
 	.word dword_8734934
 off_802C03C:
@@ -17813,7 +17813,7 @@ dword_802E23C:
 	.word 0x1F00000
 	thumb_func_end ai_clearAllianceState
 
-// symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at unk_2008170.
+// symdb: Copies one 0x3C-halfword palette entry, selected by index from a pointer table, into the palette buffer at ePaletteBuffer.
 // symdb: void loadIndexedPaletteToBuffer(int index /*r0*/); // preserves r3; clobbers r0-r2, flags
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/loadIndexedPaletteToBuffer_802E240.yaml
 	thumb_func_start loadIndexedPaletteToBuffer_802E240
@@ -17824,7 +17824,7 @@ loadIndexedPaletteToBuffer_802E240:
 	// src
 	ldr r0, [r1,r0]
 	// dest
-	ldr r1, off_802E280 // =unk_2008170 
+	ldr r1, off_802E280 // =ePaletteBuffer 
 	// halfwordCount
 	mov r2, #0x3c 
 	bl CopyHalfwords // (u16 *src, u16 *dest, int halfwordCount) -> void
@@ -17850,7 +17850,7 @@ off_802E260:
 	.word byte_802194C
 	.word byte_8021988
 off_802E280:
-	.word unk_2008170
+	.word ePaletteBuffer
 	thumb_func_end sub_802E252
 
 	thumb_local_start

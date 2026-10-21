@@ -3027,7 +3027,7 @@ int __fastcall library_rebuildCollectedChipList_8125B3C(int a1, int a2, int a3, 
                 }
                 ++v17;
             }
-            while ( v17 < &unk_201F998 );
+            while ( v17 < &eCollectedChipListBuffer );
         }
         ++v14;
         ++v15;
@@ -5192,7 +5192,7 @@ void __noreturn battle_setupSceneTiles_8127CB8()
     battle_loadTileGridByNavi_8123300(byte_8127D38, &eTextScript201BA00, eDecompBuffer2013A00);
     v8 = &unk_201C200;
     if ( v9 & 1 )
-        v8 = &unk_2028690;
+        v8 = &eBattleSceneTileIds;
     CopyBackgroundTiles(0, 0, 1, v8, 30, dword_14);
 }
 
@@ -9832,7 +9832,7 @@ void __noreturn sub_812B430()
     v4 = *(v0 + 56);
     *(v4 + 8) = v2;
     *(v4 + 12) = v3;
-    renderTextGfx_8045F8C(eTextScript201BA20, 33, &unk_2017C80, 100693120);
+    renderTextGfx_8045F8C(eTextScript201BA20, 33, &eTextGfxRenderBuffer, 100693120);
     CopyBackgroundTiles(16, 4, 2, byte_8129188, 10, &byte_0[2]);
     CopyBackgroundTiles(17, 6, 2, byte_81291B0, 10, &byte_0[2]);
 }

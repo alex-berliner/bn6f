@@ -165,7 +165,7 @@ off_807CFB0:
 	.word 0x6008020
 	.word byte_8618E40
 	.word 0x1800
-	.word byte_8618F50
+	.word battleBackgroundGFXAnimationScript
 	.word palette_3001960
 	.word 0x20
 	thumb_func_end Undernet_LoadBGAnim

@@ -7089,9 +7089,9 @@ sub_803C2A0:
 	pop {r4-r7,pc}
 	thumb_func_end sub_803C2A0
 
-// symdb: Stashes four caller-supplied buffers (r0=0x20, r1=0x20, r2=0x10, r3=0x10) into unk_200A400, unk_200A420, unk_200A3A0, and unk_200A3B0, so overworld state can be saved before a jack-in.
+// symdb: Stashes four caller-supplied buffers (r0=0x20, r1=0x20, r2=0x10, r3=0x10) into unk_200A400, unk_200A420, eOverworldSavedJackInBufferC, and unk_200A3B0, so overworld state can be saved before a jack-in.
 // symdb: (r0 = src buf A, r1 = src buf B, r2 = src buf C, r3 = src buf D) -> r0 destroyed; copies caller
-// symdb: buffers into unk_200A400/unk_200A420 (0x20 each) and unk_200A3A0/unk_200A3B0 (0x10 each)
+// symdb: buffers into unk_200A400/unk_200A420 (0x20 each) and eOverworldSavedJackInBufferC/unk_200A3B0 (0x10 each)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_saveJackInState.yaml
 	thumb_func_start ow_saveJackInState
 ow_saveJackInState:
@@ -7107,7 +7107,7 @@ ow_saveJackInState:
 	mov r2, #0x20
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	mov r0, r6
-	ldr r1, off_803C2E4 // =unk_200A3A0
+	ldr r1, off_803C2E4 // =eOverworldSavedJackInBufferC
 	mov r2, #0x10
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	mov r0, r7
@@ -7121,7 +7121,7 @@ off_803C2DC:
 off_803C2E0:
 	.word unk_200A420
 off_803C2E4:
-	.word unk_200A3A0
+	.word eOverworldSavedJackInBufferC
 off_803C2E8:
 	.word unk_200A3B0
 	thumb_func_end ow_saveJackInState
@@ -7682,7 +7682,7 @@ battleObject_setupCustomChipCursorState_803C59C:
 	strb r0, [r5]
 loc_803C5DE:
 	lsl r0, r0, #7
-	ldr r1, off_803C5F8 // =dword_86A5300
+	ldr r1, off_803C5F8 // =CustomChipCursorTileGraphicsTable
 	add r0, r0, r1
 	ldr r1, dword_803C5FC // =0x6017e80
 	mov r2, #0x80
@@ -7695,7 +7695,7 @@ dword_803C5F0:
 dword_803C5F4:
 	.word 0xE3F4
 off_803C5F8:
-	.word dword_86A5300
+	.word CustomChipCursorTileGraphicsTable
 dword_803C5FC:
 	.word 0x6017E80
 off_803C600:
