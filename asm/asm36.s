@@ -13481,7 +13481,7 @@ locret_81364BA:
 	pop {pc}
 	thumb_func_end navicust_confirmPartPlacement
 
-// symdb: On the Navi Customizer board, looks up the part under the cursor/grid cell and validates it (via navicust_validatePartPlacement) as part of confirming the placement.
+// symdb: On the Navi Customizer board, looks up the part under the cursor/grid cell and validates it (via sub_813BAEC) as part of confirming the placement.
 // symdb: (r5 = naviCust screen state; r0/r1 unused) -> r0 = part id (cell id - 0x90, only if occupied),
 // symdb: flags Z/N set from validator result in r1 (NZ = invalid)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/navicust_checkPartPlacement.yaml
