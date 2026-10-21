@@ -77,18 +77,18 @@ byte_3001690:: // 0x3001690
 byte_30016A8:: // 0x30016a8
 	.space 8
 // symdb: Proposed name: gfxIWRAMTransferBuffer. Shared 32-byte IWRAM staging buffer used while queuing 0x20-byte graphics chunks to VRAM. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_30016B0.yaml
-byte_30016B0:: // 0x30016b0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gfxIWRAMTransferBuffer.yaml
+gfxIWRAMTransferBuffer:: // 0x30016b0
 	.space 32
 byte_30016D0:: // 0x30016d0
 	.space 32
 // symdb: Proposed name: gfxDecompressWorkBuffer. Shared 32-byte IWRAM work buffer for graphics copied or decompressed by battle HUD, active-chip, and submenu graphics routines. (u8[32])
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_30016F0.yaml
-byte_30016F0:: // 0x30016f0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gfxDecompressWorkBuffer.yaml
+gfxDecompressWorkBuffer:: // 0x30016f0
 	.space 32
 // symdb: Proposed name: chatboxTileRowScratchBuf. A 32-byte IWRAM scratch buffer that receives the chatbox's per-row text tilemap row (8 tiles) from the chatbox script / text-color paths, then gets queued for transfer to VRAM with the rest of the chatbox GFX. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_3001710.yaml
-byte_3001710:: // 0x3001710
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatboxTileRowScratchBuf.yaml
+chatboxTileRowScratchBuf:: // 0x3001710
 	.space 32
 byte_3001730:: // 0x3001730
 	.space 32
@@ -125,8 +125,8 @@ unk_3001A40:: // 0x3001a40
 unk_3001A60:: // 0x3001a60
 	.space 32
 // symdb: Proposed name: iGfxTransferBuffer. IWRAM staging buffer for queued 32-byte VRAM graphics transfers (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_3001A80.yaml
-unk_3001A80:: // 0x3001a80
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/iGfxTransferBuffer.yaml
+iGfxTransferBuffer:: // 0x3001a80
 	.space 32
 unk_3001AA0:: // 0x3001aa0
 	.space 32

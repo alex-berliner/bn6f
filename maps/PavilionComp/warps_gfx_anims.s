@@ -74,7 +74,7 @@ off_806A900:
 	gfx_anim_loop
 
 off_806A940:
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x05
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x05
 	gfx_anim_data_ptr ptr=byte_85D070C delay=0x00000028
 	gfx_anim_data_ptr ptr=byte_85D072C delay=0x0000000C
 	gfx_anim_data_ptr ptr=byte_85D074C delay=0x00000008

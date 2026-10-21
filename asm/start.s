@@ -77,7 +77,7 @@ _GameEntryPoint:
 	ldr r0, off_8000224 // =dword_2009930 
 	mov r1, #1
 	str r1, [r0]
-	ldr r0, off_8000228 // =dword_200A870 
+	ldr r0, off_8000228 // =gameFrameCounter 
 	mov r1, #0
 	str r1, [r0]
 	ldr r0, off_800022C // =GeneralLCDStatus_STAT_LYC_ 
@@ -151,7 +151,7 @@ off_8000220:
 off_8000224:
 	.word dword_2009930
 off_8000228:
-	.word dword_200A870
+	.word gameFrameCounter
 off_800022C:
 	.word GeneralLCDStatus_STAT_LYC_
 off_8000230:

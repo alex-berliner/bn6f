@@ -1047,7 +1047,7 @@ signed int battle_queueActiveChipGfx()
         v2 = v1[5];
     (loc_8000AC8)(&byte_8725894[128 * v2], 100758208, 128);
     *(v0 + 68) = 16 * *(v0 + 8) + 24;
-    (loc_8000AC8)(byte_872CF94, byte_30016F0, 32);
+    (loc_8000AC8)(byte_872CF94, gfxDecompressWorkBuffer, 32);
     result = 4;
     *(v0 + 2) = 4;
     return result;
@@ -2708,7 +2708,7 @@ int __fastcall gfx_queueIndexedRecordTiles_802812C(int a1)
     v3 = (loc_8000AC8)(v2, 100757728, 64);
     (loc_8000AC8)(v3 + v4, 100757856);
     v5 = getPermutedRecord32_8028172(v1);
-    return (loc_8000AC8)(v5, byte_30016B0, 32);
+    return (loc_8000AC8)(v5, gfxIWRAMTransferBuffer, 32);
 }
 
 
@@ -3058,7 +3058,7 @@ void __fastcall __noreturn battleObject_loadChipPanelGfx_80284E2(unsigned int a1
     {
         v5 = 0;
     }
-    (loc_8000AC8)(&byte_86E587C[32 * v5], &unk_3001A80);
+    (loc_8000AC8)(&byte_86E587C[32 * v5], &iGfxTransferBuffer);
     v6 = v17 >> 9;
     if ( v17 >> 9 == 28 )
         v6 = 27;
@@ -3246,7 +3246,7 @@ int __fastcall beastout_loadSelectionScreenGfx(_BYTE *a1, int a2, int a3)
 int __fastcall loadOneSpriteTileRow_80287D2(int a1, int a2, int a3)
 {
     battle_loadGfxChunkBySelectorWithRows_802868C(byte_802A6C0, 100701024, a3, 8);
-    return (loc_8000AC8)(byte_86E587C, &unk_3001A80, 32);
+    return (loc_8000AC8)(byte_86E587C, &iGfxTransferBuffer, 32);
 }
 
 
@@ -8392,14 +8392,14 @@ int __fastcall setupNaviDisplay_802C34E(int a1)
         *(&off_802C3FC + 3 * dword_20364C4),
         *(&off_802C3FC + 3 * dword_20364C4 + 1),
         *(&off_802C3FC + 3 * dword_20364C4 + 2));
-    (loc_8000AC8)(dword_8732814, &unk_3001A80, &off_5D + 3);
+    (loc_8000AC8)(dword_8732814, &iGfxTransferBuffer, &off_5D + 3);
     (loc_8000AC8)(dword_8732874, 100701184, dword_5E0);
     v3 = getPETNaviSelect();
     v4 = getIndexed80hRecordPtr_8028164(v3);
     (loc_8000AC8)(v4, 100745216, 128);
     v5 = getPETNaviSelect();
     v6 = getPermutedRecord32_8028172(v5);
-    return (loc_8000AC8)(v6, byte_30016B0, 32);
+    return (loc_8000AC8)(v6, gfxIWRAMTransferBuffer, 32);
 }
 
 
@@ -8831,7 +8831,7 @@ signed int battle_checkTimerWindowSubstate_802C97E()
     {
         v1 = 2;
         v4 = 2 * v3;
-        if ( *(v0 + 28) < *(&unk_20018C0 + v4) || (v1 = 1, *(v0 + 28) < *(&unk_2000260 + v4)) )
+        if ( *(v0 + 28) < *(&unk_20018C0 + v4) || (v1 = 1, *(v0 + 28) < *(&battleBestTimes + v4)) )
             *(v0 + 15) = 1;
         else
             v1 = 0;
@@ -8857,13 +8857,13 @@ int battle_updateSlotBestRecords_802C9B8()
         result *= 2;
         if ( v0 >= *(&unk_20018C0 + result) )
         {
-            if ( v0 < *(&unk_2000260 + result) )
-                *(&unk_2000260 + result) = v0;
+            if ( v0 < *(&battleBestTimes + result) )
+                *(&battleBestTimes + result) = v0;
         }
         else
         {
             *(&unk_20018C0 + result) = v0;
-            *(&unk_2000260 + result) = v0;
+            *(&battleBestTimes + result) = v0;
         }
     }
     return result;

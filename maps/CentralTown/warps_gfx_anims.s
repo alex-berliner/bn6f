@@ -33,7 +33,7 @@ off_804E450::
 	gfx_anim_loop
 
 off_804E478::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x01
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x01
 	gfx_anim_data_ptr ptr=byte_850CFD4 delay=0x0000000A
 	gfx_anim_data_ptr ptr=byte_850CFF4 delay=0x0000000A
 	gfx_anim_data_ptr ptr=byte_850D014 delay=0x0000000A

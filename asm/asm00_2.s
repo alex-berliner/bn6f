@@ -28821,7 +28821,7 @@ loc_801C69E:
 	mul r3, r2
 	ldr r0, off_801C6DC // =byte_86E1CD8 
 	add r0, r0, r3
-	ldr r1, off_801C6E0 // =unk_3001A80 
+	ldr r1, off_801C6E0 // =iGfxTransferBuffer 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 locret_801C6AE:
 	pop {r4-r6,pc}
@@ -28846,7 +28846,7 @@ dword_801C6D8:
 off_801C6DC:
 	.word byte_86E1CD8
 off_801C6E0:
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 off_801C6E4:
 	.word byte_801C6E8
 byte_801C6E8:
@@ -32035,7 +32035,7 @@ sub_801DDD8:
 setupBattleBackground_801DDF6:
 	push {r4,r5,lr}
 	ldr r0, off_801DEC4 // =dword_86E1C78 
-	ldr r1, off_801DEC8 // =unk_3001A80 
+	ldr r1, off_801DEC8 // =iGfxTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	// j
@@ -32074,14 +32074,14 @@ sub_801DE1E:
 	thumb_func_end sub_801DE1E
 
 // symdb: Queues a small GFX upload, draws an 18x2 run of background tiles from a static tile list, and sets bit 0x20 in the eStruct2035280 flag word.
-// symdb: () -> void; touches IWRAM GFX queue buffer unk_3001A80, BG tile VRAM via CopyBackgroundTiles,
+// symdb: () -> void; touches IWRAM GFX queue buffer iGfxTransferBuffer, BG tile VRAM via CopyBackgroundTiles,
 // symdb: and flag word eStruct2035280+0x44
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadOverlayTiles.yaml
 	thumb_local_start
 battle_loadOverlayTiles:
 	push {r4,r5,lr}
 	ldr r0, off_801DEC4 // =dword_86E1C78 
-	ldr r1, off_801DEC8 // =unk_3001A80 
+	ldr r1, off_801DEC8 // =iGfxTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	// j
@@ -32135,7 +32135,7 @@ loc_801DE8C:
 	mul r0, r2
 	ldr r1, off_801DECC // =byte_86E1CD8 
 	add r0, r0, r1
-	ldr r1, off_801DEC8 // =unk_3001A80 
+	ldr r1, off_801DEC8 // =iGfxTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	// j
@@ -32162,7 +32162,7 @@ off_801DEC0:
 off_801DEC4:
 	.word dword_86E1C78
 off_801DEC8:
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 off_801DECC:
 	.word byte_86E1CD8
 	thumb_func_end battle_loadBgTileset_801DE82
@@ -32595,7 +32595,7 @@ battle_loadModeGfx_801E10E:
 	cmp r0, #6
 	beq loc_801E122
 	ldr r0, off_801E12C // =dword_86E1C78 
-	ldr r1, off_801E130 // =unk_3001A80 
+	ldr r1, off_801E130 // =iGfxTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 loc_801E122:
@@ -32607,7 +32607,7 @@ loc_801E122:
 off_801E12C:
 	.word dword_86E1C78
 off_801E130:
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word dword_86E1C78
 	thumb_func_end battle_loadModeGfx_801E10E
 
@@ -32632,7 +32632,7 @@ battle_setFlagBits200_801E144:
 	bl flagSetBits_eStruct2035280_801BEB8
 	pop {pc}
 	.word dword_86E1C78
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word dword_86E1C78
 	thumb_func_end battle_setFlagBits200_801E144
 
@@ -33797,7 +33797,7 @@ loc_801E890:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 loc_801E8C0:
 	ldr r0, off_801E938 // =byte_86F2900 
-	ldr r1, off_801E93C // =byte_30016B0 
+	ldr r1, off_801E93C // =gfxIWRAMTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {r4-r7,pc}
@@ -33873,7 +33873,7 @@ dword_801E934:
 off_801E938:
 	.word byte_86F2900
 off_801E93C:
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 off_801E940:
 	.word off_801E944
 off_801E944:
@@ -33981,7 +33981,7 @@ loc_801E9FC:
 	add r0, r0, r1
 	strb r0, [r5,#2]
 	ldr r0, off_801EA90 // =dword_86E1C78 
-	ldr r1, off_801EA94 // =byte_30016B0 
+	ldr r1, off_801EA94 // =gfxIWRAMTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	// dataList
@@ -34056,7 +34056,7 @@ dword_801EA88:
 off_801EA90:
 	.word dword_86E1C78
 off_801EA94:
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 off_801EA98:
 	.word byte_203EDA0
 dword_801EA9C:
@@ -34322,7 +34322,7 @@ battle_hudQueueGfxLoadAndStartTimer:
 	mov r2, #0xc0
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	ldr r0, off_801EC7C // =dword_86E9A0C 
-	ldr r1, off_801EC80 // =byte_30016F0 
+	ldr r1, off_801EC80 // =gfxDecompressWorkBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #1
@@ -34343,7 +34343,7 @@ dword_801EC78:
 off_801EC7C:
 	.word dword_86E9A0C
 off_801EC80:
-	.word byte_30016F0
+	.word gfxDecompressWorkBuffer
 	thumb_func_end battle_hudQueueGfxLoadAndStartTimer
 
 	thumb_local_start

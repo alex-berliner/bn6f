@@ -106,7 +106,7 @@ byte_8071928::
 	.byte 0x16, 0x0, 0x89, 0x0, 0x18, 0x0, 0x24, 0x0, 0x25, 0x0, 0x1B, 0x0, 0x0, 0x0, 0x1C, 0x0
 	.byte 0x1D, 0x0, 0x1E, 0x0, 0x1F, 0x0, 0x0, 0x0
 byte_8071970::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x01
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x01
 	gfx_anim_data_ptr ptr=byte_85DB01C delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85DB03C delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85DB05C delay=0x00000010
@@ -154,7 +154,7 @@ byte_8071A60::
 	gfx_anim_loop
 
 byte_8071AB0::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x01
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x01
 	gfx_anim_data_ptr ptr=byte_85E0530 delay=0x0000001E
 	gfx_anim_data_ptr ptr=byte_85E0550 delay=0x00000014
 	gfx_anim_data_ptr ptr=byte_85E0570 delay=0x00000013
@@ -166,7 +166,7 @@ byte_8071AB0::
 	gfx_anim_loop
 
 byte_8071B00::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x01
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x01
 	gfx_anim_data_ptr ptr=byte_85E05D0 delay=0x00000019
 	gfx_anim_data_ptr ptr=byte_85E05F0 delay=0x0000000E
 	gfx_anim_data_ptr ptr=byte_85E0610 delay=0x0000000D

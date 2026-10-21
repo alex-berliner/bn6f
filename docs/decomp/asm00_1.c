@@ -2025,7 +2025,7 @@ char *scenario_prepareEnterMap_8004D48()
     byte_200ACFC = -1;
     setEventFlag_809E098();
     sCamera.unk_4C = 0;
-    LOBYTE(dword_20096D0) = 0;
+    LOBYTE(eRenderDirtyFlags) = 0;
     npc_clearOverworldNpcStateWord_8004702();
     ClearEventFlagFromImmediate(23, 3);
     ClearEventFlagFromImmediate(23, 27);
@@ -4120,7 +4120,7 @@ _WORD *e_stepColorCycle()
     sub_8002378(0, *&byte_80065BC[2 * *(v0 + 13)], 16, 20);
     v3 = *(v0 + 20);
     sub_8002378(0, *&byte_80065BC[2 * *(v0 + 13)], 16, 21);
-    dword_20096D0 = 64;
+    eRenderDirtyFlags = 64;
     v4 = *(v0 + 13) + 1;
     if ( v4 < 16 )
         *(v0 + 13) = v4;
@@ -4142,7 +4142,7 @@ _WORD *sub_8006580()
 
     Terminate_ePalette20097a0_Transform(20);
     Terminate_ePalette20097a0_Transform(21);
-    dword_20096D0 = 0;
+    eRenderDirtyFlags = 0;
     *(v0 + 13) = 0;
     result = *(v1 + oToolkit_RenderInfoPtr);
     result[3] &= 0xFFBFu;
@@ -11683,7 +11683,7 @@ void __fastcall clearIndexEntryPair_800AAFC(int a1, int a2, int a3, int a4)
 
     v4 = a1;
     WordFill(&unk_20018C0 + 40 * a1, 40, -1);
-    WordFill(&unk_2000260 + 40 * v4, 40, -1);
+    WordFill(&battleBestTimes + 40 * v4, 40, -1);
 }
 
 
@@ -12399,7 +12399,7 @@ int battle_initBattleStateBuffer_800B144()
                 break;
         }
         CopyWords(&unk_20018C0, byte_203CC50, 0x28u);
-        CopyWords(&unk_2000260, byte_203CC78, 0x28u);
+        CopyWords(&battleBestTimes, byte_203CC78, 0x28u);
     }
     byte_203CCA8 = sub_81209DC(1);
     byte_203CCA9 = v15;
@@ -12473,8 +12473,8 @@ void __fastcall transferBattleHandNaviStats_800B3D8(int a1)
 {
     if ( byte_203F4A4[0] != 255 )
         CopyWords(byte_203F4A4, byte_20349C0, 0x50u);
-    if ( sub_802D246() & 8 && byte_203F5A4[0] != 255 )
-        CopyWords(byte_203F5A4, byte_2034A10, 0x50u);
+    if ( sub_802D246() & 8 && eBattleLinkPacketEnemy[0] != 255 )
+        CopyWords(eBattleLinkPacketEnemy, byte_2034A10, 0x50u);
     CopyWords(byte_203F4F4, byte_203CE00, 0x64u);
     if ( sub_802D246() & 8 )
         CopyWords(byte_203F5F4, byte_203CE64, 0x64u);
@@ -12496,7 +12496,7 @@ char *sub_800B444()
     int v0; // r0
 
     CopyWords(byte_203F4A4, &unk_2035260, 0xCu);
-    CopyWords(byte_203F5A4, &unk_203526C, 0xCu);
+    CopyWords(eBattleLinkPacketEnemy, &unk_203526C, 0xCu);
     return battle_syncEffectSlotBetweenBuffers_802C9EA(v0);
 }
 
@@ -12507,7 +12507,7 @@ int battle_resetLinkSyncFlags_800B460()
     int result; // r0
 
     result = 0;
-    dword_203F4A0[0] = 0;
+    battleLinkTransferBuffer[0] = 0;
     dword_203F5A0[0] = 0;
     return result;
 }
@@ -12521,7 +12521,7 @@ signed int __fastcall battle_doBothTrackedIdsMatch_800B46C(int a1)
 
     v1 = a1;
     result = 0;
-    if ( dword_203F4A0[0] == v1 && dword_203F5A0[0] == v1 )
+    if ( battleLinkTransferBuffer[0] == v1 && dword_203F5A0[0] == v1 )
         result = 1;
     return result;
 }
@@ -12540,7 +12540,7 @@ int battle_sendLinkPacketF1RequestMode10()
 void battle_initLoopbackLinkPackets()
 {
     sub_802E45E(0, byte_203F4A4);
-    sub_802E45E(1, byte_203F5A4);
+    sub_802E45E(1, eBattleLinkPacketEnemy);
 }
 
 
@@ -12616,7 +12616,7 @@ void battle_loadBattlerSeed()
     if ( sub_802D246() & 8 )
     {
         v4 = getEntryPtr_2036120_1D0_802E070(1);
-        sub_800B548(v4, byte_203F5A4, *byte_203F5A4, 1);
+        sub_800B548(v4, eBattleLinkPacketEnemy, *eBattleLinkPacketEnemy, 1);
         *(v5 + 68) = v6;
         *(v5 + 14) = *(v7 + 4);
     }

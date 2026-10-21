@@ -51,8 +51,8 @@ void __cdecl main_awaitFrame()
         while ( !(GeneralLCDStatus_STAT_LYC_ & 1) )
             ;
     }
-    while ( dword_200A870 < dword_2009930 );
-    dword_200A870 = 0;
+    while ( gameFrameCounter < dword_2009930 );
+    gameFrameCounter = 0;
 }
 
 

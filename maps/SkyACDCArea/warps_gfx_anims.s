@@ -131,7 +131,7 @@ byte_807A3C0::
 	gfx_anim_loop
 
 byte_807A410::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x02
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x02
 	gfx_anim_data_ptr ptr=byte_85FB680 delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85FB6A0 delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85FB6C0 delay=0x00000010
@@ -251,7 +251,7 @@ byte_807A7D0::
 	gfx_anim_loop
 
 byte_807A800::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x02
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x02
 	gfx_anim_data_ptr ptr=byte_85FEE68 delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85FEE88 delay=0x00000010
 	gfx_anim_data_ptr ptr=byte_85FEEA8 delay=0x00000010

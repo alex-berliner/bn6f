@@ -21135,12 +21135,12 @@ int queueGFXTransfersFromTable_811EC68()
         v3 = v1 + 4;
         v4 = *(&off_811ECFC + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_811ECFC + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_811ECFC + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -21152,12 +21152,12 @@ int queueGFXTransfersFromTable_811EC68()
     do
     {
         v7 = *(&off_811ECB4 + v6);
-        *(&unk_20096E0 + v0) = v7;
+        *(&eDecompInitRefsBuffer + v0) = v7;
         v6 += 4;
         v0 += 4;
     }
     while ( v7 );
-    return decomp_initGfx_8000B8E(&unk_20096E0);
+    return decomp_initGfx_8000B8E(&eDecompInitRefsBuffer);
 }
 
 

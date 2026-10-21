@@ -68,7 +68,7 @@ byte_807EC08::
 	gfx_anim_loop
 
 off_807EC58::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x04
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x04
 	gfx_anim_data_ptr ptr=byte_860DD30 delay=0x00000010
 	gfx_anim_data_ptr ptr=dword_860DD50 delay=0x00000010
 	gfx_anim_data_ptr ptr=dword_860DD70 delay=0x00000010

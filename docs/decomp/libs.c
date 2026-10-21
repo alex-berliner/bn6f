@@ -1889,7 +1889,7 @@ int rfu_processConnectionState()
                 v5 = v2 + 1;
                 if ( byte_200FE24 & v3 )
                 {
-                    v6 = dword_2010CB0[v2];
+                    v6 = rfuConnectionSlots[v2];
                     if ( *(v6 + 52) == 70 )
                     {
                         if ( *(v6 + 97) == 1 )
@@ -2005,7 +2005,7 @@ int rfu_handleConnTimeout()
         v1 = &algn_200FE28[2 * byte_200FE10];
         v2 = *v1 - 1;
         *v1 = v2;
-        if ( !(v2 << 16) || *dword_2010CB0[byte_200FE10] == 39 )
+        if ( !(v2 << 16) || *rfuConnectionSlots[byte_200FE10] == 39 )
         {
             rfu_pollLinkLossState();
             byte_200FE04 = 24;
@@ -2038,7 +2038,7 @@ int rfu_handleDisconnectPacket()
 {
     int v1; // [sp+8h] [bp-4h]
 
-    if ( byte_200FE04 == 15 && *dword_2010CB0[byte_200FE10] == 38 )
+    if ( byte_200FE04 == 15 && *rfuConnectionSlots[byte_200FE10] == 38 )
     {
         byte_200FE05 = 0;
         byte_200FE04 = 0;
@@ -2149,7 +2149,7 @@ int __fastcall rfu_disconnectSlots(unsigned __int8 a1)
         v2 = 0;
         do
         {
-            v3 = dword_2010CB0[v2];
+            v3 = rfuConnectionSlots[v2];
             if ( *v3 & 0x8000 )
             {
                 v4 = *(v3 + 26);
@@ -2165,7 +2165,7 @@ int __fastcall rfu_disconnectSlots(unsigned __int8 a1)
         v5 = 0;
         do
         {
-            v6 = dword_2010CB0[v5];
+            v6 = rfuConnectionSlots[v5];
             if ( *(v6 + 52) & 0x8000 && *(v6 + 78) & v1 )
                 rfu_NI_stopReceivingData(v5);
             v5 = (v5 + 1) & 0xFF;
@@ -2214,10 +2214,10 @@ int rfu_updateSendRecvTargets()
             v0 = 0;
             do
             {
-                v1 = dword_2010CB0;
+                v1 = rfuConnectionSlots;
                 v2 = v0;
                 v3 = v0 + 1;
-                if ( *dword_2010CB0[v0] & 0x8000 )
+                if ( *rfuConnectionSlots[v0] & 0x8000 )
                 {
                     v4 = 0;
                     v5 = 0;
@@ -2228,7 +2228,7 @@ int rfu_updateSendRecvTargets()
                         if ( v4 )
                         {
                             v6 = v1;
-                            rfu_changeSendTarget(32, v0, v4 ^ *(dword_2010CB0[v2] + 26));
+                            rfu_changeSendTarget(32, v0, v4 ^ *(rfuConnectionSlots[v2] + 26));
                             v1 = v6;
                         }
                         v5 = (v5 + 1) & 0xFF;
@@ -2244,7 +2244,7 @@ int rfu_updateSendRecvTargets()
             v7 = 0;
             do
             {
-                v8 = dword_2010CB0[v7];
+                v8 = rfuConnectionSlots[v7];
                 if ( *(v8 + 52) & 0x8000 && *(v8 + 54) > word_200FE18 )
                     rfu_NI_stopReceivingData(v7);
                 v7 = (v7 + 1) & 0xFF;
@@ -2341,7 +2341,7 @@ int rfu_pollLinkLossState()
 // 0x814656c
 BOOL rfu_isNotConnected()
 {
-    return word_20102D0 != 3;
+    return rfu_connectionState != 3;
 }
 
 
@@ -2598,7 +2598,7 @@ char *__fastcall sub_81468E0(unsigned __int8 a1)
 // 0x81468f4
 int sub_81468F4()
 {
-    return *&algn_200FE28[2 * byte_20103E0];
+    return *&algn_200FE28[2 * rfuSlotId];
 }
 
 
@@ -2843,7 +2843,7 @@ int __fastcall sub_8146C60(int a1)
     int v4; // [sp+4h] [bp-4h]
 
     v1 = a1;
-    if ( rfu_NI_setSendData((0x1000000 << byte_20103E0) >> 24, *(v1 + 16) + 2, &byte_200DD10, *(v1 + 16)) << 16 )
+    if ( rfu_NI_setSendData((0x1000000 << rfuSlotId) >> 24, *(v1 + 16) + 2, &byte_200DD10, *(v1 + 16)) << 16 )
         v2 = 4;
     else
         v2 = 2;
@@ -2860,16 +2860,16 @@ int __fastcall rfu_handleDisconnectMsg(_BYTE *a1)
     int v4; // [sp+4h] [bp-4h]
 
     v1 = a1;
-    v2 = *dword_2010CB0[byte_20103E0];
+    v2 = *rfuConnectionSlots[rfuSlotId];
     if ( v2 == 38 )
     {
-        rfu_clearSlot(4, byte_20103E0);
+        rfu_clearSlot(4, rfuSlotId);
         *v1 = 3;
         v1[2] = 0;
     }
     else if ( v2 == 39 )
     {
-        rfu_clearSlot(4, byte_20103E0);
+        rfu_clearSlot(4, rfuSlotId);
         *v1 = 4;
     }
     return v4;
@@ -2954,7 +2954,7 @@ int __fastcall rfu_clearDisconnectedSlots(int a1, int a2, int a3, int a4)
         v7 = (2 << v6) & 0xFF;
         if ( !(byte_2010292 & v7) )
             goto LABEL_8;
-        v8 = *(dword_2010CB0[v6] + 52);
+        v8 = *(rfuConnectionSlots[v6] + 52);
         switch ( v8 )
         {
             case 71:
@@ -3042,7 +3042,7 @@ int __fastcall rfu_resetRecvSlots(int a1, int a2, unsigned int a3)
     SWI_CpuSet(&v9, v3, 2 * v4 & 0x1FFFFF | 0x1000000);
     rfu_clearSlotBuffer(&unk_200FFF0);
     rfu_clearSlotBuffer(&unk_200FE90);
-    byte_20101B4 = 1;
+    uniConnectionState = 1;
     byte_2010292 = 2 * *(dword_2010CC0 + 2) | 1;
     v5 = 0;
     do
@@ -3151,7 +3151,7 @@ int __fastcall sub_814713C(int a1, int a2)
         v6 = (2 << v5) & 0xFF;
         if ( !(byte_2010292 & v6) )
             goto LABEL_8;
-        v7 = *(dword_2010CB0[v5] + 52);
+        v7 = *(rfuConnectionSlots[v5] + 52);
         switch ( v7 )
         {
             case 71:
@@ -3190,7 +3190,7 @@ int __fastcall rfu_requestSendData(_BYTE *a1, int a2)
     {
         *v2 = 4;
         word_200BC58 |= 0x80u;
-        byte_20101B4 = -125;
+        uniConnectionState = -125;
     }
     else
     {
@@ -3215,7 +3215,7 @@ int __fastcall rfu_processLinkClose(_BYTE *a1, int a2)
 
     v2 = a1;
     v3 = a2;
-    v4 = dword_2010CB0[byte_2010328];
+    v4 = rfuConnectionSlots[byte_2010328];
     v5 = *v4;
     if ( v5 != 38 )
     {
@@ -3252,12 +3252,12 @@ int sub_814728C()
     v1 = 0;
     do
     {
-        if ( byte_2010292 & (2 << v1) && byte_20101B4 == 1 )
+        if ( byte_2010292 & (2 << v1) && uniConnectionState == 1 )
             CopyWords(&byte_200DD10, &byte_20101E0, 0xCu);
         v1 = (v1 + 1) & 0xFF;
     }
     while ( v1 <= 3 );
-    if ( byte_20101B4 == 1 )
+    if ( uniConnectionState == 1 )
         byte_20101E0 = v0 + 1;
     return v4;
 }
@@ -3346,7 +3346,7 @@ int __fastcall rfu_dispatchLinkEvent(signed int a1)
             {
                 if ( rfu_linkCommandDiffers(21) )
                     rfu_setLinkCommand(21);
-                word_20102D0 = word_200FE14;
+                rfu_connectionState = word_200FE14;
                 byte_2010368 = 0;
                 word_200BC58 = 63;
             }
@@ -3640,7 +3640,7 @@ int rfu_pollSlotDisconnect()
     v0 = 0;
     if ( byte_201028C & 2 )
     {
-        v1 = dword_2010CB0[byte_2010328];
+        v1 = rfuConnectionSlots[byte_2010328];
         v2 = *v1;
         if ( v2 == 38 )
         {
@@ -3705,7 +3705,7 @@ int __fastcall rfu_initCommState(int a1, int a2, int a3)
     SWI_CpuSet(&v9, v3, v5);
     rfu_clearSlotBuffer(&unk_200FFF0);
     rfu_clearSlotBuffer(&unk_200FE90);
-    byte_20101B4 = 1;
+    uniConnectionState = 1;
     byte_2010274 = byte_2010292;
     v6 = 0;
     do
@@ -3717,8 +3717,8 @@ int __fastcall rfu_initCommState(int a1, int a2, int a3)
     }
     while ( v6 <= 3 );
     byte_2010390 = 0;
-    rfu_clearSlot(12, byte_20103E0);
-    rfu_setRecvBuffer(32, byte_20103E0, v3, v4);
+    rfu_clearSlot(12, rfuSlotId);
+    rfu_setRecvBuffer(32, rfuSlotId, v3, v4);
     word_200BC58 = 49;
     return v10;
 }
@@ -3791,12 +3791,12 @@ int __fastcall sub_8147DE0(int a1, int a2)
     v3 = a2;
     if ( !*(a1 + 1) )
     {
-        v4 = *(dword_2010CB0[byte_20103E0] + 52);
+        v4 = *(rfuConnectionSlots[rfuSlotId] + 52);
         if ( v4 != 71 )
         {
             if ( v4 == 70 )
             {
-                rfu_clearSlot(8, byte_20103E0);
+                rfu_clearSlot(8, rfuSlotId);
                 *(v2 + 1) = 1;
                 t1StepSequence(v3);
                 return v6;
@@ -3804,7 +3804,7 @@ int __fastcall sub_8147DE0(int a1, int a2)
             if ( v4 != 72 )
                 return v6;
         }
-        rfu_clearSlot(8, byte_20103E0);
+        rfu_clearSlot(8, rfuSlotId);
         if ( word_200BC58 == 49 )
             *(v2 + 1) = 2;
     }
@@ -3819,11 +3819,11 @@ int __fastcall rfu_niSendPacket(_BYTE *a1, int a2)
     int v4; // [sp+4h] [bp-4h]
 
     v2 = a1;
-    if ( rfu_NI_setSendData((0x1000000 << byte_20103E0) >> 24, a2 + 2, &byte_2010390, a2) << 16 )
+    if ( rfu_NI_setSendData((0x1000000 << rfuSlotId) >> 24, a2 + 2, &byte_2010390, a2) << 16 )
     {
         if ( word_200BC58 == 49 )
             *v2 = 4;
-        byte_20101B4 = -125;
+        uniConnectionState = -125;
     }
     else
     {
@@ -3845,10 +3845,10 @@ int __fastcall sub_8147E98(_BYTE *a1, int a2)
 
     v2 = a1;
     v3 = a2;
-    v4 = *dword_2010CB0[byte_20103E0];
+    v4 = *rfuConnectionSlots[rfuSlotId];
     if ( v4 == 38 )
     {
-        rfu_clearSlot(4, byte_20103E0);
+        rfu_clearSlot(4, rfuSlotId);
         *v2 = 3;
         v2[2] = 0;
         v5 = *(v3 + 1);
@@ -3857,7 +3857,7 @@ int __fastcall sub_8147E98(_BYTE *a1, int a2)
     }
     else if ( v4 == 39 )
     {
-        rfu_clearSlot(4, byte_20103E0);
+        rfu_clearSlot(4, rfuSlotId);
         if ( word_200BC58 == 49 )
             *v2 = 4;
     }
@@ -3879,7 +3879,7 @@ int __fastcall sub_8147F00(int a1, unsigned int a2)
     v4 = byte_2010390;
     v6 = 0;
     SWI_CpuSet(&v6, &byte_2010390, (a2 << 10 >> 11) | 0x1000000);
-    if ( byte_20101B4 == 1 )
+    if ( uniConnectionState == 1 )
     {
         byte_2010390 = v4 + 1;
         CopyWords(&byte_200DD10, v2, v3);
@@ -3941,7 +3941,7 @@ int __fastcall sub_8147F98(int a1, int a2, int a3, int a4)
     word_200BC58 = 1;
     byte_200BC55 = 1;
     byte_2010288 = 0;
-    byte_20103E0 = 0;
+    rfuSlotId = 0;
     v5 = 0;
     SWI_CpuSet(&v5, &byte_2010290, 16777248);
     sub_8146CFC();
@@ -3964,7 +3964,7 @@ int __fastcall rfu_handleLinkCommand(signed int a1)
     {
         if ( a1 == 35 )
         {
-            word_20102D0 = 3;
+            rfu_connectionState = 3;
             word_200BC58 = 63;
             rfu_setLinkCommand(2);
             return v2;
@@ -3986,7 +3986,7 @@ int __fastcall rfu_handleLinkCommand(signed int a1)
             {
                 if ( a1 == 34 )
                 {
-                    byte_20103E0 = word_200FE14;
+                    rfuSlotId = word_200FE14;
                     unk_200AF84 = word_200FE14;
                     rfu_setRecvBuffer(32, word_200FE14, &byte_2010290, 64);
                     word_200BC58 = 13;
@@ -4052,7 +4052,7 @@ LABEL_48:
         else if ( a1 == 240 )
         {
             word_200BC58 = 63;
-            word_20102D0 = word_200FE14;
+            rfu_connectionState = word_200FE14;
             rfu_setLinkCommand(5);
         }
     }
@@ -4175,10 +4175,10 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
             }
             return v6;
         case 0x25:
-            v4 = *(dword_2010CB0[byte_20103E0] + 52);
+            v4 = *(rfuConnectionSlots[rfuSlotId] + 52);
             if ( v4 == 70 )
             {
-                rfu_clearSlot(8, byte_20103E0);
+                rfu_clearSlot(8, rfuSlotId);
                 if ( byte_2010291 )
                 {
                     if ( !byte_2010290 )
@@ -4199,7 +4199,7 @@ LABEL_19:
             }
             else if ( ((v4 - 71) & 0xFFFFu) <= 1 )
             {
-                rfu_clearSlot(8, byte_20103E0);
+                rfu_clearSlot(8, rfuSlotId);
                 word_200BC58 = 63;
                 rfu_setLinkCommand(4);
             }
@@ -4261,7 +4261,7 @@ int rfu_startLinkTransfer()
     while ( v0 <= 3 );
     byte_20101B0 = 1;
     byte_20101D0 = 1;
-    byte_20101B4 = 1;
+    uniConnectionState = 1;
     byte_20103F0 = 0;
     byte_2010274 = byte_2010292;
     byte_2010292 = 2 * *(dword_2010CC0 + 2) | 1;
@@ -4314,7 +4314,7 @@ int __fastcall sub_8148738(signed int a1)
             {
                 if ( word_200FE14 == 38 )
                 {
-                    if ( byte_20101B4 == 143 || byte_2010292 == 1 )
+                    if ( uniConnectionState == 143 || byte_2010292 == 1 )
                         word_200FE16 = 0;
                 }
                 else if ( word_200FE16 )
@@ -4476,10 +4476,10 @@ int sub_8148A80()
     __int16 v3; // [sp+0h] [bp-14h]
     int v4; // [sp+10h] [bp-4h]
 
-    if ( byte_20101B4 != 143 && (byte_20101D0 & byte_2010292) == byte_2010292 )
+    if ( uniConnectionState != 143 && (byte_20101D0 & byte_2010292) == byte_2010292 )
     {
         v0 = byte_201021C;
-        if ( byte_20101B4 == 1 && byte_20103F0 == 1 )
+        if ( uniConnectionState == 1 && byte_20103F0 == 1 )
             rfu_prepareLinkState(&byte_20101E0, 0x40u);
         byte_2010430 = 0;
         v3 = 0;
@@ -4488,12 +4488,12 @@ int sub_8148A80()
         v1 = 0;
         do
         {
-            if ( ((0x2000000 << v1) >> 24) & byte_2010292 && byte_20101B4 == 1 )
+            if ( ((0x2000000 << v1) >> 24) & byte_2010292 && uniConnectionState == 1 )
                 CopyWords(&byte_2010230[16 * v1], &unk_20101EC + 12 * v1, 0xCu);
             v1 = (v1 + 1) & 0xFF;
         }
         while ( v1 <= 3 );
-        if ( byte_20101B4 == 1 )
+        if ( uniConnectionState == 1 )
         {
             if ( !rfu_queuePushEntry(&byte_20101E0, 0xCu) )
             {
@@ -4547,7 +4547,7 @@ int rfu_uniPollPeerValueChanges()
     char v9; // r0
     int v11; // [sp+10h] [bp-4h]
 
-    if ( byte_20101B4 == 143 )
+    if ( uniConnectionState == 143 )
         return v11;
     v0 = 0;
     do
@@ -4604,7 +4604,7 @@ LABEL_28:
             if ( byte_20103F8 )
             {
                 ++byte_20101D4;
-                v8 = &byte_20101B4;
+                v8 = &uniConnectionState;
                 v9 = -125;
             }
             else
@@ -4649,16 +4649,16 @@ signed int rfu_initWirelessSession()
         v0 = (v0 + 1) & 0xFF;
     }
     while ( v0 <= 3 );
-    byte_20101B4 = 0;
+    uniConnectionState = 0;
     byte_2010274 = byte_2010292;
     byte_201039C = 0;
     sub_81463E8(sub_8148E74);
     rfu_setMscCallbackArg(rfu_recvData);
-    rfu_setRecvBuffer(16, byte_20103E0, &unk_20103A0, 64);
-    v1 = rfu_clearSlot(3, byte_20103E0);
+    rfu_setRecvBuffer(16, rfuSlotId, &unk_20103A0, 64);
+    v1 = rfu_clearSlot(3, rfuSlotId);
     sub_803ECFC(v1);
     rfu_queuePushEntry(&byte_2010390, 0xCu);
-    if ( rfu_UNI_setSendData((0x1000000 << byte_20103E0) >> 24, &byte_2010390, 14) << 16 )
+    if ( rfu_UNI_setSendData((0x1000000 << rfuSlotId) >> 24, &byte_2010390, 14) << 16 )
         return 1;
     word_200BC58 = 49;
     return 0;
@@ -4699,7 +4699,7 @@ int __fastcall sub_8148E74(signed int a1)
             }
             else if ( a1 == 240 )
             {
-                if ( word_200FE14 == 48 && byte_20101B4 == 143 && word_200FE16 == 3 )
+                if ( word_200FE14 == 48 && uniConnectionState == 143 && word_200FE16 == 3 )
                 {
                     word_200FE16 = 0;
                     word_200BC58 = 50;
@@ -4809,7 +4809,7 @@ int rfu_readyUniSendIfFlagged()
     int v1; // [sp+0h] [bp-4h]
 
     if ( rfu_uniProcessRecvChunk() << 24 )
-        rfu_UNI_readySendData(byte_20103E0);
+        rfu_UNI_readySendData(rfuSlotId);
     rfu_sendLinkState(1u);
     return v1;
 }
@@ -4822,19 +4822,19 @@ signed int rfu_uniProcessRecvChunk()
     __int16 *v2; // r1
 
     v0 = 0;
-    if ( byte_20101B4 == 143 )
+    if ( uniConnectionState == 143 )
         return 0;
-    if ( (*off_2010CA0[byte_20103E0])[18] )
+    if ( (*off_2010CA0[rfuSlotId])[18] )
     {
         v0 = 1;
-        rfu_UNI_clearRecvNewDataFlag(byte_20103E0);
+        rfu_UNI_clearRecvNewDataFlag(rfuSlotId);
         if ( ((byte_2010220[0] + 1) & 0xFF) == byte_20103DC )
         {
             rfu_prepareLinkState(&unk_20103A0, 0x40u);
-            byte_20101B4 = 1;
+            uniConnectionState = 1;
             if ( rfu_queuePushEntry(&byte_2010390, 0xCu) )
             {
-                byte_20101B4 = -125;
+                uniConnectionState = -125;
             }
             else
             {
@@ -4889,13 +4889,13 @@ signed int __fastcall rfu_initializeAPI(int a1, unsigned __int16 a2, int a3, cha
     dword_2010CC0 = a1;
     dword_2010CC4 = a1 + 180;
     dword_2010CC8 = a1 + 220;
-    dword_2010CB0[0] = a1 + 444;
+    rfuConnectionSlots[0] = a1 + 444;
     off_2010CA0[0] = (a1 + 892);
     v7 = 1;
     do
     {
         v8 = v7 - 1;
-        dword_2010CB0[v7] = dword_2010CB0[v8] + 112;
+        rfuConnectionSlots[v7] = rfuConnectionSlots[v8] + 112;
         off_2010CA0[v7] = off_2010CA0[v8] + 1;
         v7 = (v7 + 1) & 0xFFFF;
     }
@@ -4907,7 +4907,7 @@ signed int __fastcall rfu_initializeAPI(int a1, unsigned __int16 a2, int a3, cha
     v10 = 0;
     do
     {
-        v11 = dword_2010CB0[v10];
+        v11 = rfuConnectionSlots[v10];
         *(v11 + 104) = 0;
         *(v11 + 108) = 0;
         v12 = off_2010CA0[v10];
@@ -5205,7 +5205,7 @@ int rfu_REQ_stopMode()
         rfu_STC_clearAPIVariables();
         if ( AgbRFU_checkID(8u) == 32769 )
         {
-            v1 = &Timer0Counter_Reload[2 * *(dword_2010CCC + 10)];
+            v1 = &Timer0Counter_Reload[2 * *(pSTWIWork + 10)];
             *v1 = 0;
             *v1 = 8585216;
             while ( *v1 << 16 <= 0x105FFFFu )
@@ -5223,8 +5223,8 @@ int rfu_REQ_stopMode()
     else
     {
         rfu_STC_REQ_callback(0x3Du, 6u);
-        v0 = *(dword_2010CCC + 18);
-        *(dword_2010CCC + 18) = 6;
+        v0 = *(pSTWIWork + 18);
+        *(pSTWIWork + 18) = 6;
     }
     return v3;
 }
@@ -5388,7 +5388,7 @@ int __fastcall rfu_CB_configGameData(unsigned __int8 a1, unsigned __int16 a2)
     v3 = a2;
     if ( !a2 )
     {
-        v4 = *(dword_2010CCC + 36);
+        v4 = *(pSTWIWork + 36);
         v5 = dword_2010CC0;
         v6 = v4[4];
         v7 = (dword_2010CC0 + 152);
@@ -6019,7 +6019,7 @@ int __fastcall rfu_REQBN_watchLink(__int16 a1, _BYTE *a2, char *a3, _BYTE *a4)
     *a2 = 0;
     *a3 = 0;
     *a4 = 0;
-    if ( *dword_2010CC0 == 255 || !*(dword_2010CCC + 20) )
+    if ( *dword_2010CC0 == 255 || !*(pSTWIWork + 20) )
         return 0;
     if ( *dword_2010CC4 & 4 )
         *(dword_2010CC4 + 32) = 360;
@@ -6438,9 +6438,9 @@ int rfu_getMasterSlave()
     v0 = STWI_read_status(1);
     if ( v0 == 1 )
     {
-        if ( *(dword_2010CCC + 44) )
+        if ( *(pSTWIWork + 44) )
         {
-            v1 = *(dword_2010CCC + 6);
+            v1 = *(pSTWIWork + 6);
             if ( v1 == 39 || v1 == 37 || v1 == 55 )
                 v0 = 0;
         }
@@ -6464,7 +6464,7 @@ int rfu_clearAllSlot()
     do
     {
         v3 = 0;
-        SWI_CpuSet(&v3, dword_2010CB0[v1], 16777268);
+        SWI_CpuSet(&v3, rfuConnectionSlots[v1], 16777268);
         v4 = 0;
         SWI_CpuSet(&v4, off_2010CA0[v1], 16777226);
         *(dword_2010CC0 + 16 + v1) = 16;
@@ -6527,7 +6527,7 @@ signed int __fastcall rfu_clearSlot(char a1, unsigned __int8 a2)
     if ( a1 & 0xC )
     {
         v6 = 0;
-        v7 = &dword_2010CB0[a2];
+        v7 = &rfuConnectionSlots[a2];
         do
         {
             v8 = 0;
@@ -6607,7 +6607,7 @@ signed int __fastcall rfu_setRecvBuffer(int a1, int a2, int a3, int a4)
         return 1024;
     if ( v6 & 0x20 )
     {
-        v8 = dword_2010CB0[a2];
+        v8 = rfuConnectionSlots[a2];
         *(v8 + 104) = a3;
         *(v8 + 108) = v4;
     }
@@ -6716,7 +6716,7 @@ LABEL_20:
     InterruptMasterEnableRegister = 0;
     if ( v6 & 0x20 || v6 == 64 )
     {
-        v14 = dword_2010CB0[v11];
+        v14 = rfuConnectionSlots[v11];
         *(v14 + 24) = 0;
         v15 = (v14 + 45);
         *(v14 + 4) = v14 + 45;
@@ -6744,7 +6744,7 @@ LABEL_20:
         do
         {
             if ( (v7 >> v17) & 1 )
-                *(dword_2010CB0[v17] + 2) = 0;
+                *(rfuConnectionSlots[v17] + 2) = 0;
             v17 = (v17 + 1) & 0xFF;
         }
         while ( v17 <= 3 );
@@ -6786,7 +6786,7 @@ int *__fastcall rfu_changeSendTarget(int a1, unsigned __int8 a2, unsigned __int8
         return &byte_400;
     if ( a1 == 32 )
     {
-        v5 = dword_2010CB0[a2];
+        v5 = rfuConnectionSlots[a2];
         if ( (*v5 & 0x8020) == 32800 )
         {
             v6 = a3 ^ *(v5 + 26);
@@ -6800,7 +6800,7 @@ int *__fastcall rfu_changeSendTarget(int a1, unsigned __int8 a2, unsigned __int8
                     do
                     {
                         if ( (v6 >> v8) & 1 )
-                            *(dword_2010CB0[v8] + 2) = 0;
+                            *(rfuConnectionSlots[v8] + 2) = 0;
                         v8 = (v8 + 1) & 0xFF;
                     }
                     while ( v8 <= 3 );
@@ -6858,8 +6858,8 @@ signed int __fastcall rfu_NI_stopReceivingData(unsigned __int8 a1)
     v1 = a1;
     if ( a1 > 3u )
         return 1024;
-    v3 = dword_2010CB0[a1];
-    v4 = dword_2010CB0[a1] + 52;
+    v3 = rfuConnectionSlots[a1];
+    v4 = rfuConnectionSlots[a1] + 52;
     v5 = InterruptMasterEnableRegister;
     InterruptMasterEnableRegister = 0;
     v6 = *(v3 + 52);
@@ -7008,7 +7008,7 @@ int __fastcall rfu_REQ_sendData(unsigned __int8 a1)
     {
         if ( *dword_2010CC0 == 1 )
         {
-            v4 = *(dword_2010CCC + 28);
+            v4 = *(pSTWIWork + 28);
             if ( v4 )
                 return rfufunc_tailCallStub_814DA64(39, v4);
         }
@@ -7043,10 +7043,10 @@ int __fastcall rfu_CB_sendData(int a1, unsigned __int16 a2)
             v5 = off_2010CA0[v3];
             if ( (*v5)[2] )
                 (*v5)[2] = 0;
-            v6 = dword_2010CB0[v4];
+            v6 = rfuConnectionSlots[v4];
             if ( *v6 == 32800 )
             {
-                rfu_STC_releaseFrame(v3, 0, dword_2010CB0[v4]);
+                rfu_STC_releaseFrame(v3, 0, rfuConnectionSlots[v4]);
                 *(dword_2010CC0 + 4) &= ~*(v6 + 26);
                 if ( *(v6 + 45) == 1 )
                     *(dword_2010CC0 + 7) |= 1 << v3;
@@ -7113,7 +7113,7 @@ int rfu_constructSendLLFrame()
         do
         {
             v3 = 0;
-            v4 = &dword_2010CB0[v2];
+            v4 = &rfuConnectionSlots[v2];
             if ( **v4 & 0x8000 )
                 v3 = rfu_STC_NI_constructLLSF(v2, &v7, *v4) & 0xFFFF;
             if ( (*v4)[26] & 0x8000 )
@@ -7336,7 +7336,7 @@ int __fastcall rfu_CB_recvData(unsigned __int8 a1, int a2, int a3, int a4)
         v9 = &dword_2010CC0;
         do
         {
-            v10 = &dword_2010CB0[v8];
+            v10 = &rfuConnectionSlots[v8];
             v11 = *v10;
             if ( *(*v10 + 52) == 32835 && !((*(dword_2010CC4 + 1) >> v8) & 1) )
             {
@@ -7490,7 +7490,7 @@ unsigned int __fastcall rfu_STC_analyzeLLSF(unsigned __int8 a1, unsigned __int8 
                 {
                     v12 = 0;
                     v13 = v4;
-                    if ( !((*(dword_2010CB0[0] + 26) >> v4) & 1) )
+                    if ( !((*(rfuConnectionSlots[0] + 26) >> v4) & 1) )
                         goto LABEL_14;
                     v14 = *(dword_2010CC0 + 4);
 LABEL_17:
@@ -7507,7 +7507,7 @@ LABEL_14:
                             v12 = (v12 + 1) & 0xFF;
                             if ( v12 > 3 )
                                 break;
-                            if ( (*(dword_2010CB0[v12] + 26) >> v4) & 1 )
+                            if ( (*(rfuConnectionSlots[v12] + 26) >> v4) & 1 )
                             {
                                 v14 = *(dword_2010CC0 + 4);
                                 v13 = v4;
@@ -7628,7 +7628,7 @@ int __fastcall rfu_STC_NI_receive_Sender(int a1, unsigned __int8 a2, int a3)
 
     v3 = a3;
     v4 = a2;
-    v5 = *(dword_2010CB0 + (4 * a1 & 0x3FF));
+    v5 = *(rfuConnectionSlots + (4 * a1 & 0x3FF));
     v6 = *v5;
     v21 = *(v5 + *(a3 + 4) + 33);
     v7 = *(a3 + 2);
@@ -7697,7 +7697,7 @@ int __fastcall rfu_STC_NI_receive_Sender(int a1, unsigned __int8 a2, int a3)
         v19 = InterruptMasterEnableRegister;
         InterruptMasterEnableRegister = 0;
         *(dword_2010CC4 + 2) |= 16 << v4;
-        *(dword_2010CB0[v4] + 2) = 0;
+        *(rfuConnectionSlots[v4] + 2) = 0;
         InterruptMasterEnableRegister = v19;
     }
     return v22;
@@ -7725,8 +7725,8 @@ int __fastcall rfu_STC_NI_receive_Receiver(int a1, int a2, int a3)
     v15 = a3;
     v4 = a1;
     v5 = 0;
-    v6 = dword_2010CB0[a1];
-    v7 = (dword_2010CB0[a1] + 52);
+    v6 = rfuConnectionSlots[a1];
+    v7 = (rfuConnectionSlots[a1] + 52);
     v8 = *(v6 + 52);
     v9 = *(v6 + 85 + *(a2 + 4));
     v10 = *(a2 + 2);
@@ -7847,7 +7847,7 @@ int __fastcall rfu_STC_NI_initSlot_asRecvDataEntity(unsigned __int8 a1, int a2)
     }
     else
     {
-        v3 = dword_2010CB0[a1];
+        v3 = rfuConnectionSlots[a1];
         if ( *(a2 + 48) > *(v3 + 108) )
         {
             *(dword_2010CC4 + 4) |= (0x1000000 << a1) >> 24;
@@ -7893,9 +7893,9 @@ int rfu_NI_checkCommFailCounter()
         {
             v3 = (0x1000000 << v2) >> 24;
             if ( *(dword_2010CC0 + 4) & v3 && !(*(dword_2010CC4 + 2) & v3) )
-                ++*(dword_2010CB0[v2] + 2);
+                ++*(rfuConnectionSlots[v2] + 2);
             if ( *(dword_2010CC0 + 5) & v3 && !(v1 & v3) )
-                ++*(dword_2010CB0[v2] + 54);
+                ++*(rfuConnectionSlots[v2] + 54);
             v2 = (v2 + 1) & 0xFF;
         }
         while ( v2 <= 3 );
@@ -7933,28 +7933,28 @@ int __fastcall STWI_init_all(int a1, _DWORD *a2, char a3)
         *a2 = byte_814CF54;
         v4 = a1 + 232;
     }
-    dword_2010CCC = v4;
+    pSTWIWork = v4;
     *(v4 + 40) = v3;
     *(v4 + 36) = v3 + 116;
     v5 = *(v4 + 20);
     *(v4 + 20) = 1;
-    v6 = dword_2010CCC;
-    *dword_2010CCC = 0;
+    v6 = pSTWIWork;
+    *pSTWIWork = 0;
     *(v6 + 4) = 0;
-    *(dword_2010CCC + 5) = 0;
-    *(dword_2010CCC + 7) = 0;
-    *(dword_2010CCC + 8) = 0;
-    *(dword_2010CCC + 9) = 0;
-    v7 = dword_2010CCC;
-    *(dword_2010CCC + 12) = 0;
+    *(pSTWIWork + 5) = 0;
+    *(pSTWIWork + 7) = 0;
+    *(pSTWIWork + 8) = 0;
+    *(pSTWIWork + 9) = 0;
+    v7 = pSTWIWork;
+    *(pSTWIWork + 12) = 0;
     v8 = *(v7 + 16);
     *(v7 + 16) = 0;
-    v9 = dword_2010CCC;
-    v10 = *(dword_2010CCC + 18);
-    *(dword_2010CCC + 18) = 0;
+    v9 = pSTWIWork;
+    v10 = *(pSTWIWork + 18);
+    *(pSTWIWork + 18) = 0;
     *(v9 + 21) = 0;
-    LOBYTE(v10) = *(dword_2010CCC + 44);
-    *(dword_2010CCC + 44) = 0;
+    LOBYTE(v10) = *(pSTWIWork + 44);
+    *(pSTWIWork + 44) = 0;
     SIOModeSelect_GeneralPurposeData = 256;
     SIOControlRegister = 20483;
     STWI_init_Callback_M();
@@ -7971,10 +7971,10 @@ int __fastcall STWI_init_timer(_DWORD *a1, char a2)
     int v4; // [sp+8h] [bp-4h]
 
     *a1 = STWI_intr_timer;
-    *(dword_2010CCC + 10) = a2;
+    *(pSTWIWork + 10) = a2;
     v2 = InterruptMasterEnableRegister;
     InterruptMasterEnableRegister = 0;
-    InterruptEnableRegister |= 8 << *(dword_2010CCC + 10);
+    InterruptEnableRegister |= 8 << *(pSTWIWork + 10);
     InterruptMasterEnableRegister = v2;
     return v4;
 }
@@ -7994,7 +7994,7 @@ int AgbRFU_SoftReset()
     int v9; // [sp+8h] [bp-4h]
 
     SIOModeSelect_GeneralPurposeData = -32608;
-    v0 = 2 * *(dword_2010CCC + 10);
+    v0 = 2 * *(pSTWIWork + 10);
     v1 = &Timer0Control[v0];
     *v1 = 0;
     Timer0Counter_Reload[v0] = 0;
@@ -8003,26 +8003,26 @@ int AgbRFU_SoftReset()
     *v1 = 3;
     SIOModeSelect_GeneralPurposeData = -32608;
     SIOControlRegister = 20483;
-    v2 = dword_2010CCC;
-    *dword_2010CCC = 0;
+    v2 = pSTWIWork;
+    *pSTWIWork = 0;
     *(v2 + 4) = 0;
-    *(dword_2010CCC + 5) = 0;
-    *(dword_2010CCC + 6) = 0;
-    *(dword_2010CCC + 7) = 0;
-    *(dword_2010CCC + 8) = 0;
-    *(dword_2010CCC + 9) = 0;
-    v3 = dword_2010CCC;
-    *(dword_2010CCC + 12) = 0;
+    *(pSTWIWork + 5) = 0;
+    *(pSTWIWork + 6) = 0;
+    *(pSTWIWork + 7) = 0;
+    *(pSTWIWork + 8) = 0;
+    *(pSTWIWork + 9) = 0;
+    v3 = pSTWIWork;
+    *(pSTWIWork + 12) = 0;
     v4 = *(v3 + 16);
     *(v3 + 16) = 0;
-    v5 = dword_2010CCC;
-    v6 = *(dword_2010CCC + 18);
-    *(dword_2010CCC + 18) = 0;
+    v5 = pSTWIWork;
+    v6 = *(pSTWIWork + 18);
+    *(pSTWIWork + 18) = 0;
     LOBYTE(v6) = *(v5 + 20);
     *(v5 + 20) = 1;
-    *(dword_2010CCC + 21) = 0;
-    v7 = *(dword_2010CCC + 44);
-    *(dword_2010CCC + 44) = 0;
+    *(pSTWIWork + 21) = 0;
+    v7 = *(pSTWIWork + 44);
+    *(pSTWIWork + 44) = 0;
     return v9;
 }
 
@@ -8032,17 +8032,17 @@ int __fastcall STWI_read_status(signed int a1)
 {
     a1 = a1;
     if ( a1 == 1 )
-        return *(dword_2010CCC + 20);
+        return *(pSTWIWork + 20);
     if ( a1 > 1 )
     {
         if ( a1 == 2 )
-            return *dword_2010CCC & 0xFFFF;
+            return *pSTWIWork & 0xFFFF;
         if ( a1 == 3 )
-            return *(dword_2010CCC + 6);
+            return *(pSTWIWork + 6);
     }
     else if ( !a1 )
     {
-        return *(dword_2010CCC + 18);
+        return *(pSTWIWork + 18);
     }
     return 0xFFFF;
 }
@@ -8071,7 +8071,7 @@ int STWI_init_Callback_S()
 // 0x814c360
 int __fastcall STWI_set_Callback_M(int result)
 {
-    *(dword_2010CCC + 24) = result;
+    *(pSTWIWork + 24) = result;
     return result;
 }
 
@@ -8079,7 +8079,7 @@ int __fastcall STWI_set_Callback_M(int result)
 // 0x814c36c
 int __fastcall STWI_set_Callback_S(int result)
 {
-    *(dword_2010CCC + 28) = result;
+    *(pSTWIWork + 28) = result;
     return result;
 }
 
@@ -8087,7 +8087,7 @@ int __fastcall STWI_set_Callback_S(int result)
 // 0x814c378
 int __fastcall STWI_set_Callback_ID(int result)
 {
-    *(dword_2010CCC + 32) = result;
+    *(pSTWIWork + 32) = result;
     return result;
 }
 
@@ -8095,9 +8095,9 @@ int __fastcall STWI_set_Callback_ID(int result)
 // 0x814c384
 int STWI_poll_CommandEnd()
 {
-    while ( *(dword_2010CCC + 44) == 1 )
+    while ( *(pSTWIWork + 44) == 1 )
         ;
-    return *(dword_2010CCC + 18);
+    return *(pSTWIWork + 18);
 }
 
 
@@ -8108,7 +8108,7 @@ int STWI_send_ResetREQ()
 
     if ( !STWI_init(0x10u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8122,7 +8122,7 @@ int STWI_send_LinkStatusREQ()
 
     if ( !STWI_init(0x11u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8136,7 +8136,7 @@ int STWI_send_SystemStatusREQ()
 
     if ( !STWI_init(0x13u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8150,7 +8150,7 @@ int STWI_send_SlotStatusREQ()
 
     if ( !STWI_init(0x14u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8173,8 +8173,8 @@ int __fastcall STWI_send_GameConfigREQ(_WORD *a1, _BYTE *a2)
     v3 = a2;
     if ( !(STWI_init(0x16u) << 16) )
     {
-        *(dword_2010CCC + 4) = 6;
-        v4 = (*(dword_2010CCC + 36) + 4);
+        *(pSTWIWork + 4) = 6;
+        v4 = (*(pSTWIWork + 36) + 4);
         *v4 = *v2;
         v5 = v4 + 1;
         v6 = v2 + 1;
@@ -8212,8 +8212,8 @@ int __fastcall STWI_send_SystemConfigREQ(__int16 a1, char a2, char a3)
     v5 = a3;
     if ( !(STWI_init(0x17u) << 16) )
     {
-        *(dword_2010CCC + 4) = 1;
-        v6 = (*(dword_2010CCC + 36) + 4);
+        *(pSTWIWork + 4) = 1;
+        v6 = (*(pSTWIWork + 36) + 4);
         *v6++ = v5;
         *v6 = v4;
         *(v6 + 1) = v3;
@@ -8230,7 +8230,7 @@ int STWI_send_SC_StartREQ()
 
     if ( !STWI_init(0x19u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8244,7 +8244,7 @@ int STWI_send_SC_PollingREQ()
 
     if ( !STWI_init(0x1Au) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8258,7 +8258,7 @@ int STWI_send_SC_EndREQ()
 
     if ( !STWI_init(0x1Bu) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8272,7 +8272,7 @@ int STWI_send_SP_StartREQ()
 
     if ( !STWI_init(0x1Cu) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8286,7 +8286,7 @@ int STWI_send_SP_EndREQ()
 
     if ( !STWI_init(0x1Du) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8300,7 +8300,7 @@ int STWI_send_SP_EndREQ()
 
     if ( !STWI_init(0x1Eu) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8316,8 +8316,8 @@ int __fastcall STWI_send_CP_StartREQ(unsigned __int16 a1)
     v1 = a1;
     if ( !(STWI_init(0x1Fu) << 16) )
     {
-        *(dword_2010CCC + 4) = 1;
-        *(*(dword_2010CCC + 36) + 4) = v1;
+        *(pSTWIWork + 4) = 1;
+        *(*(pSTWIWork + 36) + 4) = v1;
         STWI_start_Command();
     }
     return v3;
@@ -8331,7 +8331,7 @@ int STWI_send_CP_PollingREQ()
 
     if ( !STWI_init(0x20u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8345,7 +8345,7 @@ int STWI_send_CP_EndREQ()
 
     if ( !STWI_init(0x21u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8369,8 +8369,8 @@ int __fastcall STWI_send_DataTxREQ(int a1, int a2)
         v5 = v3 >> 26;
         if ( v4 & 3 )
             LOBYTE(v5) = v5 + 1;
-        *(dword_2010CCC + 4) = v5;
-        SWI_CpuSet(v2, (*(dword_2010CCC + 36) + 4), *(dword_2010CCC + 4) | 0x4000000);
+        *(pSTWIWork + 4) = v5;
+        SWI_CpuSet(v2, (*(pSTWIWork + 36) + 4), *(pSTWIWork + 4) | 0x4000000);
         STWI_start_Command();
     }
     return v7;
@@ -8394,8 +8394,8 @@ int __fastcall STWI_send_DataTxAndChangeREQ(int a1, int a2)
         v5 = v3 >> 26;
         if ( v4 & 3 )
             LOBYTE(v5) = v5 + 1;
-        *(dword_2010CCC + 4) = v5;
-        SWI_CpuSet(v2, (*(dword_2010CCC + 36) + 4), *(dword_2010CCC + 4) | 0x4000000);
+        *(pSTWIWork + 4) = v5;
+        SWI_CpuSet(v2, (*(pSTWIWork + 36) + 4), *(pSTWIWork + 4) | 0x4000000);
         STWI_start_Command();
     }
     return v7;
@@ -8409,7 +8409,7 @@ int STWI_send_DataRxREQ()
 
     if ( !STWI_init(0x26u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8423,7 +8423,7 @@ int STWI_send_MS_ChangeREQ()
 
     if ( !STWI_init(0x27u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8444,8 +8444,8 @@ int __fastcall STWI_send_DataReadyAndChangeREQ(unsigned __int8 a1)
     {
         if ( v1 )
         {
-            *(dword_2010CCC + 4) = 1;
-            v3 = (*(dword_2010CCC + 36) + 4);
+            *(pSTWIWork + 4) = 1;
+            v3 = (*(pSTWIWork + 36) + 4);
             *v3++ = v2;
             *v3++ = 0;
             *v3 = 0;
@@ -8453,7 +8453,7 @@ int __fastcall STWI_send_DataReadyAndChangeREQ(unsigned __int8 a1)
         }
         else
         {
-            *(dword_2010CCC + 4) = 0;
+            *(pSTWIWork + 4) = 0;
         }
         STWI_start_Command();
     }
@@ -8473,8 +8473,8 @@ int __fastcall STWI_send_DisconnectedAndChangeREQ(char a1, char a2)
     v3 = a2;
     if ( !STWI_init(0x29u) )
     {
-        *(dword_2010CCC + 4) = 1;
-        v4 = (*(dword_2010CCC + 36) + 4);
+        *(pSTWIWork + 4) = 1;
+        v4 = (*(pSTWIWork + 36) + 4);
         *v4++ = v2;
         *v4++ = v3;
         *v4 = 0;
@@ -8492,7 +8492,7 @@ int STWI_send_ResumeRetransmitAndChangeREQ()
 
     if ( !STWI_init(0x37u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8508,8 +8508,8 @@ int __fastcall STWI_send_DisconnectREQ(unsigned __int8 a1)
     v1 = a1;
     if ( !(STWI_init(0x30u) << 16) )
     {
-        *(dword_2010CCC + 4) = 1;
-        *(*(dword_2010CCC + 36) + 4) = v1;
+        *(pSTWIWork + 4) = 1;
+        *(*(pSTWIWork + 36) + 4) = v1;
         STWI_start_Command();
     }
     return v3;
@@ -8527,8 +8527,8 @@ int __fastcall STWI_send_TestModeREQ(unsigned __int8 a1, unsigned __int8 a2)
     v3 = a2;
     if ( !(STWI_init(0x31u) << 16) )
     {
-        *(dword_2010CCC + 4) = 1;
-        *(*(dword_2010CCC + 36) + 4) = (v3 << 8) | v2;
+        *(pSTWIWork + 4) = 1;
+        *(*(pSTWIWork + 36) + 4) = (v3 << 8) | v2;
         STWI_start_Command();
     }
     return v5;
@@ -8549,8 +8549,8 @@ int __fastcall STWI_send_CPR_StartREQ(unsigned __int16 a1, unsigned __int16 a2, 
     v5 = a3;
     if ( !(STWI_init(0x32u) << 16) )
     {
-        *(dword_2010CCC + 4) = 2;
-        v6 = *(dword_2010CCC + 36);
+        *(pSTWIWork + 4) = 2;
+        v6 = *(pSTWIWork + 36);
         *(v6 + 4) = (v3 << 16) | v4;
         *(v6 + 8) = v5;
         STWI_start_Command();
@@ -8566,7 +8566,7 @@ int STWI_send_CPR_PollingREQ()
 
     if ( !STWI_init(0x33u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8580,7 +8580,7 @@ int STWI_send_CPR_EndREQ()
 
     if ( !STWI_init(0x34u) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8594,7 +8594,7 @@ int STWI_send_StopModeREQ()
 
     if ( !STWI_init(0x3Du) )
     {
-        *(dword_2010CCC + 4) = 0;
+        *(pSTWIWork + 4) = 0;
         STWI_start_Command();
     }
     return v1;
@@ -8610,11 +8610,11 @@ int STWI_intr_timer()
     int (__fastcall *v3)(int, int); // r2
     int v5; // [sp+4h] [bp-4h]
 
-    v0 = *(dword_2010CCC + 12);
+    v0 = *(pSTWIWork + 12);
     if ( v0 == 2 )
     {
-        v1 = *(dword_2010CCC + 16);
-        *(dword_2010CCC + 16) = 1;
+        v1 = *(pSTWIWork + 16);
+        *(pSTWIWork + 16) = 1;
         STWI_set_timer(0x32u);
     }
     else
@@ -8634,11 +8634,11 @@ LABEL_9:
             STWI_restart_Command();
             return v5;
         }
-        v2 = *(dword_2010CCC + 16);
-        *(dword_2010CCC + 16) = 1;
+        v2 = *(pSTWIWork + 16);
+        *(pSTWIWork + 16) = 1;
         STWI_stop_timer();
         STWI_reset_ClockCounter();
-        v3 = *(dword_2010CCC + 24);
+        v3 = *(pSTWIWork + 24);
         if ( v3 )
             rfu_callFuncByPtr_814DA68(255, 0, v3);
     }
@@ -8658,14 +8658,14 @@ int __fastcall STWI_set_timer(unsigned __int8 a1)
     int v8; // [sp+10h] [bp-4h]
 
     v1 = a1;
-    v2 = 2 * *(dword_2010CCC + 10);
+    v2 = 2 * *(pSTWIWork + 10);
     v3 = &Timer0Counter_Reload[v2];
     v4 = &Timer0Control[v2];
     InterruptMasterEnableRegister = 0;
     if ( v1 == 80 )
     {
         *v3 = -1312;
-        v5 = dword_2010CCC;
+        v5 = pSTWIWork;
         v6 = 2;
     }
     else if ( v1 > 80 )
@@ -8673,7 +8673,7 @@ int __fastcall STWI_set_timer(unsigned __int8 a1)
         if ( v1 == 100 )
         {
             *v3 = -1642;
-            v5 = dword_2010CCC;
+            v5 = pSTWIWork;
             v6 = 3;
         }
         else
@@ -8681,7 +8681,7 @@ int __fastcall STWI_set_timer(unsigned __int8 a1)
             if ( v1 != 130 )
                 goto LABEL_13;
             *v3 = -2131;
-            v5 = dword_2010CCC;
+            v5 = pSTWIWork;
             v6 = 4;
         }
     }
@@ -8690,13 +8690,13 @@ int __fastcall STWI_set_timer(unsigned __int8 a1)
         if ( v1 != 50 )
             goto LABEL_13;
         *v3 = -821;
-        v5 = dword_2010CCC;
+        v5 = pSTWIWork;
         v6 = 1;
     }
     *(v5 + 12) = v6;
 LABEL_13:
     *v4 = 195;
-    InterruptRequestFlags_IRQAcknowledge = 8 << *(dword_2010CCC + 10);
+    InterruptRequestFlags_IRQAcknowledge = 8 << *(pSTWIWork + 10);
     InterruptMasterEnableRegister = 1;
     return v8;
 }
@@ -8708,10 +8708,10 @@ __int16 *STWI_stop_timer()
     int v0; // r0
     __int16 *result; // r0
 
-    v0 = dword_2010CCC;
-    *(dword_2010CCC + 12) = 0;
+    v0 = pSTWIWork;
+    *(pSTWIWork + 12) = 0;
     Timer0Counter_Reload[2 * *(v0 + 10)] = 0;
-    result = &Timer0Control[2 * *(dword_2010CCC + 10)];
+    result = &Timer0Control[2 * *(pSTWIWork + 10)];
     *result = 0;
     return result;
 }
@@ -8738,31 +8738,31 @@ int __fastcall STWI_init(unsigned __int8 a1)
 
     if ( !InterruptMasterEnableRegister )
     {
-        v1 = dword_2010CCC;
-        v2 = *(dword_2010CCC + 18);
-        *(dword_2010CCC + 18) = 6;
+        v1 = pSTWIWork;
+        v2 = *(pSTWIWork + 18);
+        *(pSTWIWork + 18) = 6;
         v3 = *(v1 + 24);
         if ( v3 )
             rfu_callFuncByPtr_814DA68(a1, *(v1 + 18), v3);
         return 1;
     }
-    v4 = dword_2010CCC;
-    v5 = (dword_2010CCC + 44);
-    if ( *(dword_2010CCC + 44) == 1 )
+    v4 = pSTWIWork;
+    v5 = (pSTWIWork + 44);
+    if ( *(pSTWIWork + 44) == 1 )
     {
-        v6 = *(dword_2010CCC + 18);
-        *(dword_2010CCC + 18) = 2;
+        v6 = *(pSTWIWork + 18);
+        *(pSTWIWork + 18) = 2;
         LOBYTE(v6) = *v5;
         *v5 = 0;
-        v7 = *(dword_2010CCC + 24);
+        v7 = *(pSTWIWork + 24);
         if ( v7 )
-            rfu_callFuncByPtr_814DA68(a1, *(dword_2010CCC + 18), v7);
+            rfu_callFuncByPtr_814DA68(a1, *(pSTWIWork + 18), v7);
         return 1;
     }
-    if ( !*(dword_2010CCC + 20) )
+    if ( !*(pSTWIWork + 20) )
     {
-        v8 = *(dword_2010CCC + 18);
-        *(dword_2010CCC + 18) = 4;
+        v8 = *(pSTWIWork + 18);
+        *(pSTWIWork + 18) = 4;
         v9 = *(v4 + 24);
         if ( v9 )
             return rfu_dispatchCallFromCallback_814DA6C(a1, *(v4 + 18), v4, v9);
@@ -8770,21 +8770,21 @@ int __fastcall STWI_init(unsigned __int8 a1)
     }
     v11 = *v5;
     *v5 = 1;
-    *(dword_2010CCC + 6) = a1;
-    v12 = dword_2010CCC;
-    *dword_2010CCC = 0;
+    *(pSTWIWork + 6) = a1;
+    v12 = pSTWIWork;
+    *pSTWIWork = 0;
     *(v12 + 4) = 0;
-    *(dword_2010CCC + 5) = 0;
-    *(dword_2010CCC + 7) = 0;
-    *(dword_2010CCC + 8) = 0;
-    *(dword_2010CCC + 9) = 0;
-    v13 = dword_2010CCC;
-    *(dword_2010CCC + 12) = 0;
+    *(pSTWIWork + 5) = 0;
+    *(pSTWIWork + 7) = 0;
+    *(pSTWIWork + 8) = 0;
+    *(pSTWIWork + 9) = 0;
+    v13 = pSTWIWork;
+    *(pSTWIWork + 12) = 0;
     v14 = *(v13 + 16);
     *(v13 + 16) = 0;
-    v15 = dword_2010CCC;
-    v16 = *(dword_2010CCC + 18);
-    *(dword_2010CCC + 18) = 0;
+    v15 = pSTWIWork;
+    v16 = *(pSTWIWork + 18);
+    *(pSTWIWork + 18) = 0;
     *(v15 + 21) = 0;
     SIOModeSelect_GeneralPurposeData = 256;
     SIOControlRegister = 20483;
@@ -8798,14 +8798,14 @@ int STWI_start_Command()
     int v0; // r1
     __int16 v1; // r3
 
-    **(dword_2010CCC + 36) = (*(dword_2010CCC + 4) << 8) | *(dword_2010CCC + 6) | 0x99660000;
-    v0 = dword_2010CCC;
-    *&SIOData0_Parent__Multi_PlayerMode_ = **(dword_2010CCC + 36);
-    *dword_2010CCC = 0;
+    **(pSTWIWork + 36) = (*(pSTWIWork + 4) << 8) | *(pSTWIWork + 6) | 0x99660000;
+    v0 = pSTWIWork;
+    *&SIOData0_Parent__Multi_PlayerMode_ = **(pSTWIWork + 36);
+    *pSTWIWork = 0;
     *(v0 + 5) = 1;
     v1 = InterruptMasterEnableRegister;
     InterruptMasterEnableRegister = 0;
-    InterruptEnableRegister |= 8 << *(dword_2010CCC + 10);
+    InterruptEnableRegister |= 8 << *(pSTWIWork + 10);
     InterruptEnableRegister |= 0x80u;
     InterruptMasterEnableRegister = v1;
     SIOControlRegister = 20611;
@@ -8825,38 +8825,38 @@ int STWI_restart_Command()
     __int16 v6; // t1
     int (__fastcall *v7)(int, int); // r2
 
-    v0 = dword_2010CCC;
-    v1 = *(dword_2010CCC + 21);
+    v0 = pSTWIWork;
+    v1 = *(pSTWIWork + 21);
     if ( v1 > 1 )
     {
-        v2 = *(dword_2010CCC + 6);
+        v2 = *(pSTWIWork + 6);
         if ( v2 != 39 && v2 != 37 && v2 != 53 && v2 != 55 )
         {
-            v6 = *(dword_2010CCC + 18);
-            *(dword_2010CCC + 18) = 1;
+            v6 = *(pSTWIWork + 18);
+            *(pSTWIWork + 18) = 1;
             LOBYTE(v6) = *(v0 + 44);
             *(v0 + 44) = 0;
-            v7 = *(dword_2010CCC + 24);
+            v7 = *(pSTWIWork + 24);
             if ( v7 )
-                rfu_callFuncByPtr_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v7);
-            *dword_2010CCC = 4;
+                rfu_callFuncByPtr_814DA68(*(pSTWIWork + 6), *(pSTWIWork + 18), v7);
+            *pSTWIWork = 4;
         }
         else
         {
-            v3 = dword_2010CCC;
-            v4 = *(dword_2010CCC + 18);
-            *(dword_2010CCC + 18) = 1;
+            v3 = pSTWIWork;
+            v4 = *(pSTWIWork + 18);
+            *(pSTWIWork + 18) = 1;
             v3 += 44;
             LOBYTE(v4) = *v3;
             *v3 = 0;
-            v5 = *(dword_2010CCC + 24);
+            v5 = *(pSTWIWork + 24);
             if ( v5 )
-                rfu_callFuncByPtr_814DA68(*(dword_2010CCC + 6), *(dword_2010CCC + 18), v5);
+                rfu_callFuncByPtr_814DA68(*(pSTWIWork + 6), *(pSTWIWork + 18), v5);
         }
     }
     else
     {
-        *(dword_2010CCC + 21) = v1 + 1;
+        *(pSTWIWork + 21) = v1 + 1;
         STWI_start_Command();
     }
     return 0;
@@ -8868,10 +8868,10 @@ int STWI_reset_ClockCounter()
 {
     int v0; // r1
 
-    v0 = dword_2010CCC;
-    *dword_2010CCC = 5;
+    v0 = pSTWIWork;
+    *pSTWIWork = 5;
     *(v0 + 4) = 0;
-    *(dword_2010CCC + 5) = 0;
+    *(pSTWIWork + 5) = 0;
     *&SIOData0_Parent__Multi_PlayerMode_ = 2147483648;
     SIOControlRegister = 20610;
     return 0;
@@ -8891,10 +8891,10 @@ signed int __fastcall AgbRFU_checkID(unsigned __int8 a1)
     if ( !InterruptMasterEnableRegister )
         return -1;
     v4 = InterruptEnableRegister;
-    *dword_2010CCC = 10;
+    *pSTWIWork = 10;
     STWI_set_Callback_ID(Sio32IDIntr);
     Sio32IDInit();
-    v5 = &Timer0Counter_Reload[2 * *(dword_2010CCC + 10)];
+    v5 = &Timer0Counter_Reload[2 * *(pSTWIWork + 10)];
     v6 = 8 * v2 & 0xFF;
     while ( 1 )
     {
@@ -8914,7 +8914,7 @@ signed int __fastcall AgbRFU_checkID(unsigned __int8 a1)
     }
     InterruptEnableRegister = v4;
     InterruptMasterEnableRegister = 1;
-    *dword_2010CCC = 0;
+    *pSTWIWork = 0;
     STWI_set_Callback_ID(0);
     return v1;
 }
@@ -8927,7 +8927,7 @@ int Sio32IDInit()
     int v2; // [sp+Ch] [bp-4h]
 
     InterruptMasterEnableRegister = 0;
-    InterruptEnableRegister &= ~((8 << *(dword_2010CCC + 10)) | 0x80);
+    InterruptEnableRegister &= ~((8 << *(pSTWIWork + 10)) | 0x80);
     InterruptMasterEnableRegister = 1;
     SIOModeSelect_GeneralPurposeData = 0;
     SIOControlRegister = 20608;

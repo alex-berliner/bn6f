@@ -984,7 +984,7 @@ off_8123868:
 	thumb_local_start
 chipFolder_initGfx_812386C:
 	push {r4-r7,lr}
-	ldr r4, off_812395C // =unk_20096E0 
+	ldr r4, off_812395C // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8123918 // =off_812391C
@@ -1010,7 +1010,7 @@ loc_8123888:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_812395C // =unk_20096E0 
+	ldr r0, off_812395C // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8123960 // =dword_8123964 
@@ -1072,14 +1072,14 @@ off_812391C:
 	.word 0x20
 	.word comp_86C9AA4 + COMPRESSED_PTR_FLAG
 	.word 0x2
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word 0x2013A00
 	.word byte_872CF94
 	.word 0x2
 	.word unk_3001AE0
 	.word 0x20
 off_812395C:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8123960:
 	.word dword_8123964
 dword_8123964:
@@ -1096,7 +1096,7 @@ dword_8123964:
 	.word 0x6004000
 	.word 0x2800
 	.word dword_86C9B54
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word 0x20
 	.word comp_86C96C0 + COMPRESSED_PTR_FLAG
 	.word 0x6006800
@@ -2531,7 +2531,7 @@ off_81243AC:
 	thumb_local_start
 subchip_initGfx_81243B0:
 	push {r4-r7,lr}
-	ldr r4, off_8124480 // =unk_20096E0 
+	ldr r4, off_8124480 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_812444C // =off_8124450
@@ -2557,7 +2557,7 @@ loc_81243CC:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8124480 // =unk_20096E0 
+	ldr r0, off_8124480 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8124484 // =byte_8124488
@@ -2615,7 +2615,7 @@ off_8124450:
 	.word unk_3001A20
 	.word 0x20
 off_8124480:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8124484:
 	.word byte_8124488
 byte_8124488:
@@ -4440,7 +4440,7 @@ off_8125384:
 	.word unk_2028000
 	.word eDecompBuffer2013A00
 	.word dword_86C9BB4
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word 0x20
 	.word CompText86D6EE4 + COMPRESSED_PTR_FLAG
 	.word unk_201CC20
@@ -8249,14 +8249,14 @@ sub_8127060:
 	.byte 0, 0
 	thumb_func_end sub_8127060
 
-// symdb: Initialize the unk_20096E0 dispatch table and the text-script/decompression tables used by the title-screen flow.
+// symdb: Initialize the eDecompInitRefsBuffer dispatch table and the text-script/decompression tables used by the title-screen flow.
 // symdb: void initTitleScreens_81270D0(void); // inputs: r10, lr; outputs: r5, r7; clobbers: nzcv, r0-r3,
 // symdb: lr; preserved: r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initTitleScreens_81270D0.yaml
 	thumb_local_start
 initTitleScreens_81270D0:
 	push {r4-r7,lr}
-	ldr r4, off_8127180 // =unk_20096E0 
+	ldr r4, off_8127180 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_812715C // =off_8127160 
@@ -8282,7 +8282,7 @@ loc_81270EC:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8127180 // =unk_20096E0 
+	ldr r0, off_8127180 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8127184 // =byte_8127188
@@ -8325,7 +8325,7 @@ off_8127160:
 	.word unk_3001A40
 	.word 0x20
 off_8127180:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8127184:
 	.word byte_8127188
 byte_8127188:
@@ -9832,7 +9832,7 @@ battle_setupSceneTiles_8127CB8:
 	sub sp, sp, #4
 	ldrb r0, [r5,#0xd]
 	str r0, [sp]
-	ldr r4, off_8127DE8 // =unk_20096E0 
+	ldr r4, off_8127DE8 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8127DB4 // =off_8127DB8
@@ -9858,7 +9858,7 @@ loc_8127CDA:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8127DE8 // =unk_20096E0 
+	ldr r0, off_8127DE8 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8127DEC // =byte_8127DF0
@@ -9950,10 +9950,10 @@ off_8127DB8:
 	.word 0x20
 	.word dword_86C9B14
 	.word 0x2
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word 0x20
 off_8127DE8:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8127DEC:
 	.word byte_8127DF0
 byte_8127DF0:
@@ -9996,7 +9996,7 @@ off_8127E18:
 	.word byte_3001690
 	.word eDecompBuffer2013A00
 	.word comp_86D02BC + COMPRESSED_PTR_FLAG
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word eDecompBuffer2013A00
 	.word byte_86C9D6C
 	.word byte_30016D0
@@ -11341,7 +11341,7 @@ locret_81288F8:
 	thumb_local_start
 init_loadScreenAssets:
 	push {r4-r7,lr}
-	ldr r4, off_8128970 // =unk_20096E0 
+	ldr r4, off_8128970 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_812894C // =off_8128950
@@ -11367,7 +11367,7 @@ loc_8128918:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8128970 // =unk_20096E0 
+	ldr r0, off_8128970 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8128974 // =byte_8128978
@@ -11397,7 +11397,7 @@ off_8128950:
 	.word unk_3001A40
 	.word 0x20
 off_8128970:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8128974:
 	.word byte_8128978
 byte_8128978:
@@ -12197,10 +12197,10 @@ off_8128F84:
 	.word byte_201BDF8
 	.word eDecompBuffer2013A00
 	.word byte_86DDB24
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word 0x20
 	.word byte_86C9D6C
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word 0x20
 	.word comp_86C9BD4 + COMPRESSED_PTR_FLAG
 	.word 0x6016C80
@@ -16790,7 +16790,7 @@ off_812B024:
 	.word 0x20
 	.word dword_86C9B54
 	.word 0x2
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word 0x20
 	.word comp_86C9AA4 + COMPRESSED_PTR_FLAG
 	.word 0x2

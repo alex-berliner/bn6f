@@ -3469,12 +3469,12 @@ void __noreturn saveMenu_config_textscript_8132CB8()
         v3 = v1 + 4;
         v4 = *(&off_8132D58 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8132D58 + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8132D58 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -3482,8 +3482,8 @@ void __noreturn saveMenu_config_textscript_8132CB8()
         while ( v5 < 2 );
     }
     while ( v1 < 32 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&off_8132D80);
     battle_loadTileGridByNavi_8123300(&TextScriptNetworkPtrs8132D18, eTextScript201BF00, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
@@ -4905,12 +4905,12 @@ void __noreturn sub_8133EC0()
         v3 = v1 + 4;
         v4 = *(&off_8133F70 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8133F70 + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8133F70 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -4918,8 +4918,8 @@ void __noreturn sub_8133EC0()
         while ( v5 < 2 );
     }
     while ( v1 < 64 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&off_8133FB8);
     battle_loadTileGridByNavi_8123300(&off_8133F30, &eTextScript2028A20, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &unk_201CA20, 30, dword_14);
@@ -7163,12 +7163,12 @@ void __noreturn battle_loadNaviCustomizerGfx()
         v3 = v1 + 4;
         v4 = *(&off_8135C2C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8135C2C + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8135C2C + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -7176,8 +7176,8 @@ void __noreturn battle_loadNaviCustomizerGfx()
         while ( v5 < 2 );
     }
     while ( v1 < 48 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&off_8135C64);
     CopyByEightWords(byte_201CF80, word_30019E0, byte_100);
     CopyBackgroundTiles(0, 0, 1, byte_201BE80, 30, dword_14);
@@ -9966,9 +9966,9 @@ int chatbox_runSceneStepAndCopy()
             if ( chatbox_GetState_8045F4C() )
             {
                 v3 = byte_201CF00[2 * (*(v0 + 32) + *(v0 + 36)) + 1];
-                v4 = *(&unk_2000260 + v3);
+                v4 = *(&battleBestTimes + v3);
                 *(&unk_20018C0 + v3) = v4;
-                sub_8137D20(v3, v4, &unk_2000260, &unk_20018C0);
+                sub_8137D20(v3, v4, &battleBestTimes, &unk_20018C0);
             }
         }
         chatbox_8040818();
@@ -10026,12 +10026,12 @@ void __noreturn battle_loadNaviBackground()
         v3 = v1 + 4;
         v4 = *(&off_8137B6C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8137B6C + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8137B6C + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -10039,8 +10039,8 @@ void __noreturn battle_loadNaviBackground()
         while ( v5 < 2 );
     }
     while ( v1 < 48 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&off_8137BA4);
     battle_loadTileGridByNavi_8123300(&off_8137B2C, eTextScript201BF00, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
@@ -10155,7 +10155,7 @@ _WORD *__fastcall sub_8137DE4(int a1, int a2, int a3, int a4)
     {
         if ( *v5 )
         {
-            v7 = get_indexedTimeBcd(v4, &unk_2000260);
+            v7 = get_indexedTimeBcd(v4, &battleBestTimes);
             sub_8137F08(v9, v10, v11, v7);
         }
         v5 += 2;
@@ -10482,10 +10482,10 @@ signed int submenu_showSelectedFastestTime()
     v5 = byte_201CF00[2 * (v2 + v3) + 1];
     v6 = 2;
     v7 = *(&unk_20018C0 + v5);
-    if ( *(&unk_2000260 + v5) <= v7 )
+    if ( *(&battleBestTimes + v5) <= v7 )
     {
         v6 = 0;
-        v7 = *(&unk_2000260 + v5);
+        v7 = *(&battleBestTimes + v5);
     }
     v8 = memory_bcd_8000D84(v7);
     if ( v8 <= 612761 )

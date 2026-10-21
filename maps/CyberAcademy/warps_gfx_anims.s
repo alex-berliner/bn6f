@@ -108,7 +108,7 @@ byte_8052538::
 	gfx_anim_loop
 
 byte_8052560::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x01
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x01
 	gfx_anim_data_ptr ptr=byte_8527B28 delay=0x00000018
 	gfx_anim_data_ptr ptr=byte_8527B48 delay=0x0000000C
 	gfx_anim_data_ptr ptr=byte_8527B68 delay=0x00000018
@@ -116,7 +116,7 @@ byte_8052560::
 	gfx_anim_loop
 
 gfx_anim_script_08052590::
-	.word unk_3001A80, 0x00000020, 0xFFFF0100, byte_8526A5C
+	.word iGfxTransferBuffer, 0x00000020, 0xFFFF0100, byte_8526A5C
 	.word 0x00000001, 0x00000000
 
 unk_80525A8:

@@ -110,8 +110,8 @@ main_subsystemJumpTable:
 	thumb_func_end main_
 
 // symdb: Wait for the next game step: VBlank count reaching the frames-per-step setting.
-// symdb: () -> waits for VBlank until dword_200A870 >= dword_2009930, then clears dword_200A870; r0 =
-// symdb: &dword_200A870, r1 = 0, r2 = frames counted
+// symdb: () -> waits for VBlank until gameFrameCounter >= dword_2009930, then clears gameFrameCounter; r0 =
+// symdb: &gameFrameCounter, r1 = 0, r2 = frames counted
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/main_awaitFrame.yaml
 	thumb_local_start
 main_awaitFrame: // () -> void
@@ -123,7 +123,7 @@ loc_80003A6:
 	ldrh r1, [r0]
 	tst r1, r2
 	beq loc_80003A6
-	ldr r0, off_80003C4 // =dword_200A870
+	ldr r0, off_80003C4 // =gameFrameCounter
 	ldr r2, [r0]
 	ldr r1, off_80003C8 // =dword_2009930
 	ldr r1, [r1]
@@ -135,7 +135,7 @@ loc_80003A6:
 	.balign 4, 0
 	.word dword_2009CC0
 off_80003C4:
-	.word dword_200A870
+	.word gameFrameCounter
 off_80003C8:
 	.word dword_2009930
 off_80003CC:

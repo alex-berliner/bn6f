@@ -65,7 +65,7 @@ off_8068E88::
 	gfx_anim_loop
 
 off_8068ED0::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x03
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x03
 	gfx_anim_data_ptr ptr=byte_85ABA68 delay=0x0000000A
 	gfx_anim_data_ptr ptr=byte_85ABA88 delay=0x0000000A
 	gfx_anim_loop

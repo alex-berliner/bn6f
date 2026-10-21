@@ -14871,9 +14871,9 @@ BOOL save_BackupToGamePakWithRetry_803FAB4()
     do
     {
         rng_FillSeedBuffer_803FAEE();
-        libSave_CopyToGamePak(dword_20067C0, 0xE007F80, byte_80);
+        libSave_CopyToGamePak(eSaveWorkBuffer, 0xE007F80, byte_80);
         v3 = v0;
-        if ( !sub_814D9C4(dword_20067C0, 234913664, byte_80) )
+        if ( !sub_814D9C4(eSaveWorkBuffer, 234913664, byte_80) )
             ++v1;
         ++v0;
     }
@@ -14892,7 +14892,7 @@ void rng_FillSeedBuffer_803FAEE()
     do
     {
         GetRNG();
-        dword_20067C0[v0 / 4u] = v1;
+        eSaveWorkBuffer[v0 / 4u] = v1;
         v0 += 4;
     }
     while ( v0 < byte_80 );
@@ -14902,8 +14902,8 @@ void rng_FillSeedBuffer_803FAEE()
 // 0x803fb04
 void __fastcall save_CommitWorkBufferToGamePak_803FB04(int a1)
 {
-    dword_20067C0[0] = a1;
-    libSave_CopyToGamePak(dword_20067C0, 0xE007F80, byte_80);
+    eSaveWorkBuffer[0] = a1;
+    libSave_CopyToGamePak(eSaveWorkBuffer, 0xE007F80, byte_80);
 }
 
 

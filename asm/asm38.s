@@ -161,14 +161,14 @@ sub_3005CF0:
 	bl dma0_processPendingRequest
 	pop {r0}
 	mov lr, r0
-	ldr r0, off_3005D04 // =dword_200A870
+	ldr r0, off_3005D04 // =gameFrameCounter
 	ldr r1, [r0]
 	add r1, #1
 	str r1, [r0]
 	bx lr
 	.balign 4, 0
 off_3005D04:
-	.word dword_200A870
+	.word gameFrameCounter
 	.word eLinkState // eLinkState
 jt_81D620C:
 	.word iJumpTable3005D10
@@ -1394,7 +1394,7 @@ loc_3006452:
 	mov r1, #0x80
 	and r1, r0
 	lsr r1, r1, #1
-	ldr r3, off_300658C // =dword_20096D0
+	ldr r3, off_300658C // =eRenderDirtyFlags
 	ldrb r3, [r3]
 	orr r0, r3
 	bic r0, r1
@@ -1524,7 +1524,7 @@ loc_3006582:
 	pop {pc}
 	.balign 4, 0
 off_300658C:
-	.word dword_20096D0
+	.word eRenderDirtyFlags
 off_3006590:
 	.word unk_3002400
 	thumb_func_end sprite_queueFramePieces
@@ -2882,7 +2882,7 @@ loc_3006EAE:
 	add r7, #0x34
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_3006F14 // =byte_200AFA0
+	ldr r1, off_3006F14 // =chatboxTextSlots
 	add r1, r1, r2
 	push {r0,r1}
 	mov r0, r6
@@ -2918,7 +2918,7 @@ off_3006EEC:
 	.word byte_2001A64
 	.word byte_2001AC0
 off_3006F14:
-	.word byte_200AFA0
+	.word chatboxTextSlots
 off_3006F18:
 	.word CopyBytes+1
 off_3006F1C:

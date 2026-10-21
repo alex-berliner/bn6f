@@ -18970,7 +18970,7 @@ int __fastcall battle_drawOrderBGSelectionArrows_801C640(int a1)
         v4 = *(v1 + 24);
         if ( !*(v1 + 24) )
             v4 -= 2;
-        result = (loc_8000AC8)(&byte_86E1CD8[32 * (v4 - 1)], &unk_3001A80);
+        result = (loc_8000AC8)(&byte_86E1CD8[32 * (v4 - 1)], &iGfxTransferBuffer);
     }
     return result;
 }
@@ -20724,7 +20724,7 @@ int __noreturn sub_801DDD8()
 // 0x801ddf6
 int setupBattleBackground_801DDF6()
 {
-    (loc_8000AC8)(dword_86E1C78, &unk_3001A80, 32);
+    (loc_8000AC8)(dword_86E1C78, &iGfxTransferBuffer, 32);
     CopyBackgroundTiles(6, 0, 3, word_801ED6C, 18, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(16);
 }
@@ -20741,7 +20741,7 @@ int __noreturn sub_801DE1E()
 // 0x801de3c
 int battle_loadOverlayTiles()
 {
-    (loc_8000AC8)(dword_86E1C78, &unk_3001A80, 32);
+    (loc_8000AC8)(dword_86E1C78, &iGfxTransferBuffer, 32);
     CopyBackgroundTiles(6, 0, 3, word_801ED6C, 18, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(32);
 }
@@ -20764,7 +20764,7 @@ int battle_loadBgTileset_801DE82()
     v1 = *(v0 + 24);
     if ( !*(v0 + 24) )
         v1 -= 2;
-    (loc_8000AC8)(&byte_86E1CD8[32 * (v1 - 1)], &unk_3001A80, 32);
+    (loc_8000AC8)(&byte_86E1CD8[32 * (v1 - 1)], &iGfxTransferBuffer, 32);
     CopyBackgroundTiles(6, 0, 3, word_801EDB4, 18, &byte_0[2]);
     return flagSetBits_eStruct2035280_801BEB8(0x20000);
 }
@@ -20988,7 +20988,7 @@ int __noreturn event_markStepDoneAndPlayFinishEffects_801E0DC()
 int __fastcall battle_loadModeGfx_801E10E(int a1)
 {
     if ( sub_802D234() != 6 )
-        (loc_8000AC8)(dword_86E1C78, &unk_3001A80, 32);
+        (loc_8000AC8)(dword_86E1C78, &iGfxTransferBuffer, 32);
     return flagSetBits_eStruct2035280_801BEB8(1024);
 }
 
@@ -21590,7 +21590,7 @@ int battle_queueScoreAndTiles_801E838()
         (loc_8000AC8)(&(*v9)[8], v12 + 32);
         (loc_8000AC8)(&(*v10)[8], v13 + 32);
     }
-    return (loc_8000AC8)(byte_86F2900, byte_30016B0, 32);
+    return (loc_8000AC8)(byte_86F2900, gfxIWRAMTransferBuffer, 32);
 }
 
 
@@ -21697,7 +21697,7 @@ int __fastcall __noreturn chip_renderListEntry(int a1, unsigned int a2, int a3, 
         }
     }
     *(v21 + 2) += 4 * (15 - (*(v21 + 9) + *(v21 + 10) + *(v21 + 11))) - 16 * *(v21 + 12) * v20;
-    (loc_8000AC8)(dword_86E1C78, byte_30016B0, 32, v11);
+    (loc_8000AC8)(dword_86E1C78, gfxIWRAMTransferBuffer, 32, v11);
     decomp_initGfx_8000B8E(&off_801EAB0);
     return 0;
 }
@@ -21831,7 +21831,7 @@ signed int battle_hudQueueGfxLoadAndStartTimer()
     signed int result; // r0
 
     (loc_8000AC8)(&dword_86E994C, 100756736, 192);
-    (loc_8000AC8)(dword_86E9A0C, byte_30016F0, 32);
+    (loc_8000AC8)(dword_86E9A0C, gfxDecompressWorkBuffer, 32);
     eStruct2035280_SetRequestBits_801BECC(0x200000);
     dispatch_801DA48(0x200000);
     result = 60;

@@ -14,7 +14,7 @@ chatbox_resetPrinterState_801FE00:
 	strh r0, [r3,#0x2] // (eFlags2036782 - 0x2036780)
 	mov r0, #0xff
 	strb r0, [r3,#0x4] // (byte_2036784 - 0x2036780)
-	ldr r0, off_80200BC // =dword_203F4A0 
+	ldr r0, off_80200BC // =battleLinkTransferBuffer 
 	ldr r1, off_80200C0 // =0x200 
 	bl ZeroFillByEightWords // (int a1, int a2) -> void
 	ldr r0, off_80200C4 // =dword_203CBE0 
@@ -190,7 +190,7 @@ off_801FF08:
 	.word sub_801FF18+1
 	thumb_func_end eStruct200BC30_dispatchStateHandler_801FEEE
 
-// symdb: Battle link-transfer builder (mode 2): packs each connected player's input record into the transfer buffers dword_203F4A0 / dword_203F5A0, and when no link is connected drains one word of dword_203CBE0 per frame into slot eStruct2036780+8, counting down — the no-link loopback that carries the battle seed.
+// symdb: Battle link-transfer builder (mode 2): packs each connected player's input record into the transfer buffers battleLinkTransferBuffer / dword_203F5A0, and when no link is connected drains one word of dword_203CBE0 per frame into slot eStruct2036780+8, counting down — the no-link loopback that carries the battle seed.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801FF18.yaml
 	thumb_local_start
 sub_801FF18:
@@ -204,7 +204,7 @@ sub_801FF18:
 	ldr r5, off_80200F4 // =unk_20399F0 
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldr r7, off_80200F8 // =dword_203F4A0 
+	ldr r7, off_80200F8 // =battleLinkTransferBuffer 
 	ldrh r1, [r5,#0x2] // (word_20399F2 - 0x20399f0)
 	mov r2, #0xfc
 	lsl r2, r2, #8
@@ -322,7 +322,7 @@ loc_801FFEA:
 	ldr r5, off_8020114 // =unk_20399F0 
 	mov r6, r10
 	ldr r6, [r6,#oToolkit_BattleStatePtr]
-	ldr r7, off_8020118 // =dword_203F4A0 
+	ldr r7, off_8020118 // =battleLinkTransferBuffer 
 	ldrh r1, [r5,#0x2] // (word_20399F2 - 0x20399f0)
 	mov r2, #0xfc
 	lsl r2, r2, #8
@@ -443,7 +443,7 @@ off_80200B4:
 off_80200B8:
 	.word eStruct2036780
 off_80200BC:
-	.word dword_203F4A0
+	.word battleLinkTransferBuffer
 off_80200C0:
 	.word 0x200
 off_80200C4:
@@ -473,7 +473,7 @@ off_80200F0:
 off_80200F4:
 	.word unk_20399F0
 off_80200F8:
-	.word dword_203F4A0
+	.word battleLinkTransferBuffer
 off_80200FC:
 	.word unk_2036120
 off_8020100:
@@ -489,7 +489,7 @@ off_8020110:
 off_8020114:
 	.word unk_20399F0
 off_8020118:
-	.word dword_203F4A0
+	.word battleLinkTransferBuffer
 off_802011C:
 	.word unk_2036120
 off_8020120:

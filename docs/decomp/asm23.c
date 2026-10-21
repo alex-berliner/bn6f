@@ -91,7 +91,7 @@ int __fastcall submenu_loadSelectedEntryGfx(int a1)
     int v1; // r1
     int v2; // r2
 
-    CopyWords(&byte_87DE44C[8 * a1], byte_30016F0, 0x20u);
+    CopyWords(&byte_87DE44C[8 * a1], gfxDecompressWorkBuffer, 0x20u);
     decompAndCopyData(byte_8089268);
     return PlaySoundEffect(127, v1, v2);
 }

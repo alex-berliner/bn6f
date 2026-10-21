@@ -35365,13 +35365,13 @@ mapName_runSequence_811EC50:
 	pop {pc}
 	thumb_func_end mapName_runSequence_811EC50
 
-// symdb: Builds the per-frame GFX transfer list in the staging buffer at unk_20096E0 (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
+// symdb: Builds the per-frame GFX transfer list in the staging buffer at eDecompInitRefsBuffer (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
 // symdb: void sub_811EC68(void /* uses r10/lr as inputs per lifter, no meaningful args */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/queueGFXTransfersFromTable_811EC68.yaml
 	thumb_local_start
 queueGFXTransfersFromTable_811EC68:
 	push {r4-r7,lr}
-	ldr r4, off_811ECF4 // =unk_20096E0
+	ldr r4, off_811ECF4 // =eDecompInitRefsBuffer
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_811ECF8 // =off_811ECFC
@@ -35404,7 +35404,7 @@ loc_811EC9A:
 	tst r0, r0
 	bne loc_811EC9A
 	// dataList
-	ldr r0, off_811ECF4 // =unk_20096E0 
+	ldr r0, off_811ECF4 // =eDecompInitRefsBuffer 
 	bl QueueGFXTransfersInList // (u32 *dataRefs) -> void
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -35418,7 +35418,7 @@ off_811ECB4:
 	.word 0x600D340
 	.word 0xB40
 	.word dword_86C9AF4
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 	.word 0x20
 	.word dword_86CD924
 	.word 0x6016E80
@@ -35428,7 +35428,7 @@ off_811ECB4:
 	.word 0x160
 	.word NULL
 off_811ECF4:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_811ECF8:
 	.word off_811ECFC
 off_811ECFC:

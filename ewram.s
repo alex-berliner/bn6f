@@ -27,8 +27,8 @@ byte_2000210:: // 0x2000210
 	.space 8
 	.space 64
 // symdb: Proposed name: battleBestTimes. Best recorded completion time for each battle/slot index, paired with unk_20018C0. (table of u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2000260.yaml
-unk_2000260:: // 0x2000260
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleBestTimes.yaml
+battleBestTimes:: // 0x2000260
 	.space 48
 reqBBS_requestEntriesList:: // 0x2000290
 	.space 128
@@ -191,8 +191,8 @@ dword_2000F9C:: // 0x2000f9c
 word_2000FA0:: // 0x2000fa0
 	.space 32
 // symdb: Proposed name: BBSMessageCounts. Per-board circular message-table write counts for BBS messages. (table of u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2000FC0.yaml
-unk_2000FC0:: // 0x2000fc0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/BBSMessageCounts.yaml
+BBSMessageCounts:: // 0x2000fc0
 	.space 16
 unk_2000FD0:: // 0x2000fd0
 	.space 16
@@ -500,8 +500,8 @@ unk_2006798:: // 0x2006798
 byte_20067AE:: // 0x20067ae
 	.space 18
 // symdb: Proposed name: eSaveWorkBuffer. a 128-byte EWRAM scratch buffer that the save routines fill, hand to libSave_CopyToGamePak, and flush to the Game Pak save area at 0xE007F80 (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_20067C0.yaml
-dword_20067C0:: // 0x20067c0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eSaveWorkBuffer.yaml
+eSaveWorkBuffer:: // 0x20067c0
 	.space 128
 unk_2006840:: // 0x2006840
 	.space 8
@@ -693,14 +693,14 @@ dword_20096C8:: // 0x20096c8
 dword_20096CC:: // 0x20096cc
 	.space 4
 // symdb: Proposed name: eRenderDirtyFlags. Word of per-frame dirty/affected render flags consumed by sprite_queueFramePieces, set during cross-over/transform palette cycles and cleared on teardown. (u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_20096D0.yaml
-dword_20096D0:: // 0x20096d0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eRenderDirtyFlags.yaml
+eRenderDirtyFlags:: // 0x20096d0
 	.space 8
 byte_20096D8:: // 0x20096d8
 	.space 8
 // symdb: Proposed name: eDecompInitRefsBuffer. Staging buffer in EWRAM built as a 0-terminated list of (src, dst, size|flags) entries that drive decompAndCopyData / QueueGFXTransfersInList. (table of u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_20096E0.yaml
-unk_20096E0:: // 0x20096e0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eDecompInitRefsBuffer.yaml
+eDecompInitRefsBuffer:: // 0x20096e0
 	.space 96
 unk_2009740:: // 0x2009740
 	.space 16
@@ -923,8 +923,8 @@ word_200A6F4:: // 0x200a6f4
 word_200A6F6:: // 0x200a6f6
 	.space 378
 // symdb: Proposed name: gameFrameCounter. Global count advanced once per game step and used to time the update to the configured frames-per-step interval. (u32)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_200A870.yaml
-dword_200A870:: // 0x200a870
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/gameFrameCounter.yaml
+gameFrameCounter:: // 0x200a870
 	.space 16
 
 eBGScrollCallbacks:: // 0x200a880
@@ -1015,8 +1015,8 @@ byte_200AF90:: // 0x200af90
 dword_200AF94:: // 0x200af94
 	.space 12
 // symdb: Proposed name: chatboxTextSlots. Eight 64-byte chatbox text-buffer slots shared by script execution, nested text levels, and queued sprite animation data (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_200AFA0.yaml
-byte_200AFA0:: // 0x200afa0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/chatboxTextSlots.yaml
+chatboxTextSlots:: // 0x200afa0
 	.space 512
 eStartScreenAnimationControl200B1A0:: // 0x200b1a0
     .space 8
@@ -1427,8 +1427,8 @@ word_2010168:: // 0x2010168
 byte_20101B0:: // 0x20101b0
 	.space 4
 // symdb: Proposed name: uniConnectionState. Wireless UNI link connection/state flag used by the RFU routines. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20101B4.yaml
-byte_20101B4:: // 0x20101b4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/uniConnectionState.yaml
+uniConnectionState:: // 0x20101b4
 	.space 28
 byte_20101D0:: // 0x20101d0
 	.space 4
@@ -1473,8 +1473,8 @@ unk_2010294:: // 0x2010294
 word_20102C6:: // 0x20102c6
 	.space 10
 // symdb: Proposed name: rfu_connectionState. RFU wireless connection state, with three meaning the link is connected (u16)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/word_20102D0.yaml
-word_20102D0:: // 0x20102d0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_connectionState.yaml
+rfu_connectionState:: // 0x20102d0
 	.space 16
 unk_20102E0:: // 0x20102e0
 	.space 40
@@ -1507,8 +1507,8 @@ unk_20103A0:: // 0x20103a0
 byte_20103DC:: // 0x20103dc
 	.space 4
 // symdb: Proposed name: rfuSlotId. Selected RFU wireless-link slot index used to dispatch per-slot state-machine commands. (u8)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_20103E0.yaml
-byte_20103E0:: // 0x20103e0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuSlotId.yaml
+rfuSlotId:: // 0x20103e0
 	.space 4
 byte_20103E4:: // 0x20103e4
 	.space 12
@@ -1629,8 +1629,8 @@ off_2010CA0:: // 0x2010ca0
 dword_2010CAC:: // 0x2010cac
 	.space 4
 // symdb: Proposed name: rfuConnectionSlots. Array of pointers to the RFU library's per-connection slot structures. (table of pointers to RFU connection slots)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_2010CB0.yaml
-dword_2010CB0:: // 0x2010cb0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfuConnectionSlots.yaml
+rfuConnectionSlots:: // 0x2010cb0
 	.space 16
 dword_2010CC0:: // 0x2010cc0
 	.space 4
@@ -1639,8 +1639,8 @@ dword_2010CC4:: // 0x2010cc4
 dword_2010CC8:: // 0x2010cc8
 	.space 4
 // symdb: Proposed name: pSTWIWork. Pointer to the shared STWI wireless-library work structure. (pointer)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_2010CCC.yaml
-dword_2010CCC:: // 0x2010ccc
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/pSTWIWork.yaml
+pSTWIWork:: // 0x2010ccc
 	.space 4
 byte_2010CD0:: // 0x2010cd0
 	.space 1
@@ -2248,8 +2248,8 @@ eGuiSprite2022AA0:: // 0x2022aa0
 byte_2022AB0:: // 0x2022ab0
 	.space 192
 // symdb: Proposed name: eBattleState_TrackedObjectTags. Six-byte slot table in the battle state buffer that tracks up to six active battle-object tag (descriptor) bytes. (table of u8 (6 slots))
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/unk_2022B70.yaml
-unk_2022B70:: // 0x2022b70
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eBattleState_TrackedObjectTags.yaml
+eBattleState_TrackedObjectTags:: // 0x2022b70
 	.space 6
 byte_2022B76:: // 0x2022b76
 	.space 30
@@ -3321,8 +3321,8 @@ byte_203EDA0:: // 0x203eda0
 byte_203EFA0:: // 0x203efa0
 	.space 1280
 // symdb: Proposed name: battleLinkTransferBuffer. First half of the two-player battle link input-transfer buffer, tracked and synchronized by battle ID. (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_203F4A0.yaml
-dword_203F4A0:: // 0x203f4a0
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battleLinkTransferBuffer.yaml
+battleLinkTransferBuffer:: // 0x203f4a0
 	.space 4
 // symdb: Payload of the received (loopback) battle link packet: the battle seed the primary RNG is restored from at battle phase 8; later the 12-byte battle result record (reward word at +8, 0x0203F4AC).
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/byte_203F4A4.yaml
@@ -3353,8 +3353,8 @@ byte_203F594:: // 0x203f594
 dword_203F5A0:: // 0x203f5a0
 	.space 4
 // symdb: Proposed name: eBattleLinkPacketEnemy. Second (player 2 / enemy) battle link packet buffer in EWRAM, mirroring player 1's byte_203F4A4 (struct)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/byte_203F5A4.yaml
-byte_203F5A4:: // 0x203f5a4
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/eBattleLinkPacketEnemy.yaml
+eBattleLinkPacketEnemy:: // 0x203f5a4
 	.space 8
 byte_203F5AC:: // 0x203f5ac
 	.space 72

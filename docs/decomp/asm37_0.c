@@ -3168,7 +3168,7 @@ signed int sub_813D9F4()
     signed int v0; // r4
 
     v0 = 2;
-    if ( byte_20101B4 > 1 )
+    if ( uniConnectionState > 1 )
         v0 = 4;
     return v0;
 }

@@ -4711,7 +4711,7 @@ sub_813D9E8:
 sub_813D9F4:
 	push {lr}
 	mov r4, #2
-	ldr r0, off_813DA08 // =byte_20101B4 
+	ldr r0, off_813DA08 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #1
 	ble loc_813DA02
@@ -4721,7 +4721,7 @@ loc_813DA02:
 	pop {pc}
 	.balign 4, 0x00
 off_813DA08:
-	.word byte_20101B4
+	.word uniConnectionState
 	thumb_func_end sub_813D9F4
 
 	thumb_local_start

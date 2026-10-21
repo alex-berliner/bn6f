@@ -4057,7 +4057,7 @@ scenario_prepareEnterMap_8004D48:
 	mov r0, #0
 	ldr r1, off_8004DE8 // =eCamera+76
 	strb r0, [r1]
-	ldr r1, off_8004DEC // =dword_20096D0
+	ldr r1, off_8004DEC // =eRenderDirtyFlags
 	strb r0, [r1]
 
 	bl npc_clearOverworldNpcStateWord_8004702
@@ -4098,7 +4098,7 @@ off_8004DE4:
 off_8004DE8:
 	.word eCamera+0x4C // eCamera.unk_4C
 off_8004DEC:
-	.word dword_20096D0
+	.word eRenderDirtyFlags
 	thumb_func_end scenario_prepareEnterMap_8004D48
 
 // Breaking on this pauses right on ^R on game boot
@@ -7287,9 +7287,9 @@ off_8006510:
 	.word sub_8006580+1
 	thumb_func_end fade_tick_80064BE
 
-// symdb: Per-frame step of an entity's palette color cycle: looks up the cycle entry from byte_80065BC using [r5+0xd], calls sub_8002378 to write palette slots 0x14 and 0x15 (with arg from [r5+0x10] and [r5+0x14]), raises the 0x40 update flag in dword_20096D0, increments [r5+0xd] modulo 16, and dirties renderInfo halfwords +6/+8/+0xa while storing a replicated-nibble color derived from [r5+6] into renderInfo+2.
+// symdb: Per-frame step of an entity's palette color cycle: looks up the cycle entry from byte_80065BC using [r5+0xd], calls sub_8002378 to write palette slots 0x14 and 0x15 (with arg from [r5+0x10] and [r5+0x14]), raises the 0x40 update flag in eRenderDirtyFlags, increments [r5+0xd] modulo 16, and dirties renderInfo halfwords +6/+8/+0xa while storing a replicated-nibble color derived from [r5+6] into renderInfo+2.
 // symdb: (r5 = effect/entity struct; no args in r0-r3) -> r0 = 0 after palette calls; writes palette
-// symdb: slots 0x14/0x15 via sub_8002378, dword_20096D0 = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
+// symdb: slots 0x14/0x15 via sub_8002378, eRenderDirtyFlags = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
 // symdb: +2 = color from [r5+6]>>4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_stepColorCycle.yaml
 	thumb_local_start
@@ -7313,7 +7313,7 @@ e_stepColorCycle:
 	mov r3, #0x15
 	ldr r4, [r5,#0x14]
 	bl sub_8002378
-	ldr r0, off_80065B4 // =dword_20096D0
+	ldr r0, off_80065B4 // =eRenderDirtyFlags
 	mov r1, #0x40
 	str r1, [r0]
 	ldrb r0, [r5,#0xd]
@@ -7357,7 +7357,7 @@ sub_8006580:
 	bl Terminate_ePalette20097a0_Transform
 	mov r0, #0x15
 	bl Terminate_ePalette20097a0_Transform
-	ldr r0, off_80065B4 // =dword_20096D0
+	ldr r0, off_80065B4 // =eRenderDirtyFlags
 	mov r1, #0
 	str r1, [r0]
 	strb r1, [r5,#0xd]
@@ -7378,7 +7378,7 @@ sub_8006580:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_80065B4:
-	.word dword_20096D0
+	.word eRenderDirtyFlags
 off_80065B8:
 	.word byte_80065BC
 byte_80065BC:
@@ -17901,7 +17901,7 @@ clearIndexEntryPair_800AAFC:
 	bl WordFill
 	mov r1, #0x28
 	mul r4, r1
-	ldr r0, off_800ABFC // =unk_2000260
+	ldr r0, off_800ABFC // =battleBestTimes
 	add r0, r0, r4
 	mov r2, #0
 	mvn r2, r2
@@ -18065,7 +18065,7 @@ off_800ABF4:
 off_800ABF8:
 	.word unk_20018C0
 off_800ABFC:
-	.word unk_2000260
+	.word battleBestTimes
 off_800AC00:
 	.word word_2000FA0
 off_800AC04:
@@ -18986,7 +18986,7 @@ loc_800B242:
 	add r1, r1, r4
 	mov r2, #0x28
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
-	ldr r0, off_800B2D0 // =unk_2000260
+	ldr r0, off_800B2D0 // =battleBestTimes
 	mov r1, #0x98
 	add r1, r1, r4
 	mov r2, #0x28
@@ -19045,7 +19045,7 @@ off_800B2C8:
 off_800B2CC:
 	.word unk_20018C0
 off_800B2D0:
-	.word unk_2000260
+	.word battleBestTimes
 dword_800B2D4:
 	.word 0x12345678
 	thumb_func_end battle_initBattleStateBuffer_800B144
@@ -19195,7 +19195,7 @@ loc_800B3EC:
 	mov r1, #8
 	tst r0, r1
 	beq loc_800B408
-	ldr r4, off_800B624 // =byte_203F5A4
+	ldr r4, off_800B624 // =eBattleLinkPacketEnemy
 	ldrb r1, [r4]
 	cmp r1, #0xff
 	beq loc_800B408
@@ -19240,7 +19240,7 @@ off_800B440:
 	.word 0x3C4
 	thumb_func_end sub_800B428
 
-// symdb: Restores the battle result records from the received link payloads: 12 bytes byte_203F4A4 -> unk_2035260 and byte_203F5A4 -> unk_203526C, then runs battle_syncEffectSlotBetweenBuffers_802C9EA.
+// symdb: Restores the battle result records from the received link payloads: 12 bytes byte_203F4A4 -> unk_2035260 and eBattleLinkPacketEnemy -> unk_203526C, then runs battle_syncEffectSlotBetweenBuffers_802C9EA.
 // symdb: void sub_800B444(void)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
 	thumb_local_start
@@ -19250,7 +19250,7 @@ sub_800B444:
 	ldr r1, off_800B64C // =unk_2035260
 	mov r2, #0xc
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
-	ldr r0, off_800B650 // =byte_203F5A4
+	ldr r0, off_800B650 // =eBattleLinkPacketEnemy
 	ldr r1, off_800B654 // =unk_203526C
 	mov r2, #0xc
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
@@ -19264,14 +19264,14 @@ sub_800B444:
 	thumb_func_start battle_resetLinkSyncFlags_800B460
 battle_resetLinkSyncFlags_800B460:
 	mov r0, #0
-	ldr r1, off_800B658 // =dword_203F4A0
+	ldr r1, off_800B658 // =battleLinkTransferBuffer
 	str r0, [r1]
 	ldr r1, off_800B65C // =dword_203F5A0
 	str r0, [r1]
 	mov pc, lr
 	thumb_func_end battle_resetLinkSyncFlags_800B460
 
-// symdb: Returns TRUE only if both tracked id slots (dword_203F4A0 and dword_203F5A0) hold the given id, else FALSE.
+// symdb: Returns TRUE only if both tracked id slots (battleLinkTransferBuffer and dword_203F5A0) hold the given id, else FALSE.
 // symdb: bool battle_doBothTrackedIdsMatch(u32 id); // in: r0=id, lr; out: r0=TRUE(1)/FALSE(0),
 // symdb: r1=tracked id A, r2=tracked id B, r3=id (echoed); c/v set from last compare, nz clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_doBothTrackedIdsMatch_800B46C.yaml
@@ -19279,7 +19279,7 @@ battle_resetLinkSyncFlags_800B460:
 battle_doBothTrackedIdsMatch_800B46C:
 	mov r3, r0
 	mov r0, #FALSE
-	ldr r1, off_800B660 // =dword_203F4A0
+	ldr r1, off_800B660 // =battleLinkTransferBuffer
 	ldr r1, [r1]
 	ldr r2, off_800B664 // =dword_203F5A0
 	ldr r2, [r2]
@@ -19320,7 +19320,7 @@ battle_initLoopbackLinkPackets:
 	ldr r1, off_800B678 // =byte_203F4A4
 	bl sub_802E45E
 	mov r0, #1
-	ldr r1, off_800B67C // =byte_203F5A4
+	ldr r1, off_800B67C // =eBattleLinkPacketEnemy
 	bl sub_802E45E
 	pop {r6,r7,pc}
 	thumb_func_end battle_initLoopbackLinkPackets
@@ -19391,8 +19391,8 @@ locret_800B50C:
 	pop {pc}
 	thumb_func_end battle_findActorSlotOffset
 
-// symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from byte_203F5A4 when GetBattleEffects has bit 0x8 set.
-// symdb: () -> void; reads byte_203F4A4 (and byte_203F5A4), writes entry+0x44 (word) and entry+0xE (byte)
+// symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from eBattleLinkPacketEnemy when GetBattleEffects has bit 0x8 set.
+// symdb: () -> void; reads byte_203F4A4 (and eBattleLinkPacketEnemy), writes entry+0x44 (word) and entry+0xE (byte)
 // symdb: of unk_2036120 records 0/1
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBattlerSeed.yaml
 	thumb_local_start
@@ -19413,7 +19413,7 @@ battle_loadBattlerSeed:
 	beq locret_800B546
 	mov r0, #1
 	bl getEntryPtr_2036120_1D0_802E070
-	ldr r1, off_800B690 // =byte_203F5A4
+	ldr r1, off_800B690 // =eBattleLinkPacketEnemy
 	ldr r2, [r1]
 	mov r3, #1
 	bl sub_800B548
@@ -19538,7 +19538,7 @@ off_800B61C:
 off_800B620:
 	.word byte_20349C0
 off_800B624:
-	.word byte_203F5A4
+	.word eBattleLinkPacketEnemy
 off_800B628:
 	.word byte_2034A10
 off_800B62C:
@@ -19560,15 +19560,15 @@ off_800B648:
 off_800B64C:
 	.word unk_2035260
 off_800B650:
-	.word byte_203F5A4
+	.word eBattleLinkPacketEnemy
 off_800B654:
 	.word unk_203526C
 off_800B658:
-	.word dword_203F4A0
+	.word battleLinkTransferBuffer
 off_800B65C:
 	.word dword_203F5A0
 off_800B660:
-	.word dword_203F4A0
+	.word battleLinkTransferBuffer
 off_800B664:
 	.word dword_203F5A0
 dword_800B668:
@@ -19582,7 +19582,7 @@ off_800B674:
 off_800B678:
 	.word byte_203F4A4
 off_800B67C:
-	.word byte_203F5A4
+	.word eBattleLinkPacketEnemy
 dword_800B680:
 	.word 0xA9B8C7D6
 off_800B684:
@@ -19592,7 +19592,7 @@ off_800B688:
 off_800B68C:
 	.word byte_203F4A4
 off_800B690:
-	.word byte_203F5A4
+	.word eBattleLinkPacketEnemy
 	thumb_func_end sub_800B548
 
 	thumb_local_start

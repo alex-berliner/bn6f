@@ -1,8 +1,8 @@
 
 off_801ECB4::
 	// <endfile>
-	.word dword_86B7AC0
-	.word byte_3001710
+	.word ChatboxPalette
+	.word chatboxTileRowScratchBuf
 	.word 0x20
 	.word dword_86E1638
 	.word 0x600B400

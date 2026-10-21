@@ -4422,12 +4422,12 @@ void __noreturn sub_804A61C()
         v3 = v1 + 4;
         v4 = *(&off_804A69C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_804A69C + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_804A69C + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -4435,8 +4435,8 @@ void __noreturn sub_804A61C()
         while ( v5 < 2 );
     }
     while ( v1 < 64 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&initRefs_804A6E4);
     CopyBackgroundTiles(0, 0, 1, &unk_2020A20, 30, dword_14);
     CopyBackgroundTiles(-30, 2, 1, &unk_201CA20, 60, &dword_10 + 1);

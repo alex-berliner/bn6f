@@ -101,7 +101,7 @@ off_80679D4:
 	gfx_anim_loop
 
 off_8067A14:
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x05
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x05
 	gfx_anim_data_ptr ptr=unk_859E524 delay=0x00000010
 	gfx_anim_data_ptr ptr=unk_859E544 delay=0x00000010
 	gfx_anim_data_ptr ptr=unk_859E564 delay=0x00000010

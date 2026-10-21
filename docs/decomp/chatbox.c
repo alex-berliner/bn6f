@@ -514,7 +514,7 @@ void __fastcall chatbox_runScript(void *dialogScript, int scriptOffIdx)
     chatbox->unk_90 = 13;
     (loc_8000AC8)(dword_86BEB20, 100719744, 352);
     CopyByEightWords(byte_86BEC80, &unk_3001B40, 0x20u);
-    CopyByEightWords(dword_86B7AC0, byte_3001710, 0x20u);
+    CopyByEightWords(ChatboxPalette, chatboxTileRowScratchBuf, 0x20u);
 }
 
 
@@ -582,7 +582,7 @@ void __fastcall chatbox_reqBBS_80404C0(u16 *pDialogScript, int scriptIdx, int a3
     cb->unk_90 = 13;
     (loc_8000AC8)(dword_86BEB20, 100719744, 352);
     CopyByEightWords(byte_86BEC80, &unk_3001B40, 0x20u);
-    CopyByEightWords(v4, byte_3001710, 0x20u);
+    CopyByEightWords(v4, chatboxTileRowScratchBuf, 0x20u);
 }
 
 
@@ -653,7 +653,7 @@ void __fastcall dead_80405F8(int a1, int a2, int a3, int a4)
     *(v7 + 144) = 13;
     (loc_8000AC8)(v5, 100719744, v6);
     CopyByEightWords(v15, &unk_3001B40, 0x20u);
-    CopyByEightWords(dword_86B7AC0, byte_3001710, 0x20u);
+    CopyByEightWords(ChatboxPalette, chatboxTileRowScratchBuf, 0x20u);
 }
 
 
@@ -2612,9 +2612,9 @@ signed int chatbox_F6_textcolor()
     int v1; // r5
 
     if ( *(v0 + 1) )
-        CopyByEightWords(*(v1 + 4 * *(v0 + 2) + 76), byte_3001710, 0x20u);
+        CopyByEightWords(*(v1 + 4 * *(v0 + 2) + 76), chatboxTileRowScratchBuf, 0x20u);
     else
-        CopyByEightWords(&dword_86B7AA0[8 * *(v0 + 2)], byte_3001710, 0x20u);
+        CopyByEightWords(&dword_86B7AA0[8 * *(v0 + 2)], chatboxTileRowScratchBuf, 0x20u);
     return 1;
 }
 
@@ -2790,7 +2790,7 @@ signed int chatbox_8041FB4()
         if ( (v3 & 0xF) == 5 || (v3 & 0xF) == 6 )
             v2 >>= 2;
     }
-    v5 = &byte_200AFA0[64 * *(v1 + 100)];
+    v5 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyBytes(&(**(&off_8042064 + (v3 & 0xF)))[*&(**(&off_8042064 + (v3 & 0xF)))[2 * v2]], v5, 64);
     ++*(v1 + 100);
     *(v1 + 44) = v5;
@@ -2814,7 +2814,7 @@ signed int chatbox_loadNaviTextLine_80420BC()
     ++*(v1 + 5);
     v2 = getPETNaviSelect();
     v3 = *(&off_8042118 + *(v0 + 2));
-    v4 = &byte_200AFA0[64 * *(v1 + 100)];
+    v4 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyBytes(v3 + *(v3 + 2 * v2), v4, 64);
     ++*(v1 + 100);
     *(v1 + 44) = v4;
@@ -2845,8 +2845,8 @@ signed int chatbox_pushTextLevel_8042128()
         v2 = *(v1 + 4 * (*(v0 + 3) - 1) + 76);
     else
         v2 = protectedZennyOrZero_803D06C();
-    chatbox_formatBcdNumber_8042A14(v2, *(v0 + 2), &byte_200AFA0[64 * *(v0 + 3)]);
-    *(v1 + 44) = &byte_200AFA0[64 * *(v0 + 3)];
+    chatbox_formatBcdNumber_8042A14(v2, *(v0 + 2), &chatboxTextSlots[64 * *(v0 + 3)]);
+    *(v1 + 44) = &chatboxTextSlots[64 * *(v0 + 3)];
     v3 = v0 + 4;
     *(v1 + 68) = v3;
     *(&dword_140[*(v1 + 5) - 1] + v1) = v3;
@@ -2880,7 +2880,7 @@ signed int chatbox_80421D8()
     int v3; // r4
 
     ++*(v1 + 5);
-    v2 = &byte_200AFA0[64 * *(v1 + 100)];
+    v2 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyBytes(*(v1 + *(v0 + 2) + 76), v2, 3);
     v2[3] = -27;
     ++*(v1 + 100);
@@ -2903,7 +2903,7 @@ signed int chatbox_804222C()
 
     ++*(v1 + 5);
     v2 = &byte_8043B54[8 * *(v0 + 2)];
-    v3 = &byte_200AFA0[64 * *(v1 + 100)];
+    v3 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyWords(*v2, v3, *(v2 + 1));
     ++*(v1 + 100);
     *(v1 + 44) = v3;
@@ -4015,7 +4015,7 @@ signed int dead_804303C()
     v2 = *(v0 + 2);
     if ( *(v0 + 1) )
         v2 += 2;
-    v3 = &byte_200AFA0[64 * *(v1 + 100)];
+    v3 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyBytes(off_8043088[v2], v3, 64);
     ++*(v1 + 100);
     *(v1 + offsetof(ChatBoxPropreties, pScriptCursor)) = v3;
@@ -4037,7 +4037,7 @@ signed int chatbox_80430A0()
     v2 = *(v0 + 2);
     if ( *(v0 + 1) )
         v2 += 2;
-    v3 = &byte_200AFA0[64 * *(v1 + 100)];
+    v3 = &chatboxTextSlots[64 * *(v1 + 100)];
     CopyBytes(*&byte_80430FC[4 * v2], v3, 64);
     ++*(v1 + 100);
     *(v1 + 44) = v3;

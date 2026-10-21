@@ -1094,8 +1094,8 @@ chatbox_runScript: // (archive: *const TextScriptArchive, script_idx: u8) -> ()
 	ldr r1, off_8040480 // =unk_3001B40 
 	mov r2, #0x20 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
-	ldr r0, off_8040484 // =dword_86B7AC0
-	ldr r1, off_8040488 // =byte_3001710
+	ldr r0, off_8040484 // =ChatboxPalette
+	ldr r1, off_8040488 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {r4-r6,pc}
@@ -1112,9 +1112,9 @@ off_804047C:
 off_8040480:
 	.word unk_3001B40
 off_8040484:
-	.word dword_86B7AC0
+	.word ChatboxPalette
 off_8040488:
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 off_804048C:
 	.word unk_200B2B0
 off_8040490:
@@ -1253,7 +1253,7 @@ chatbox_reqBBS_80404C0:
 	mov r2, #0x20 
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {r0}
-	ldr r1, off_80405C0 // =byte_3001710
+	ldr r1, off_80405C0 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {r4-r6,pc}
@@ -1268,9 +1268,9 @@ off_80405B4:
 	.word byte_86BEC80
 off_80405B8:
 	.word unk_3001B40
-	.word dword_86B7AC0
+	.word ChatboxPalette
 off_80405C0:
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 off_80405C4:
 	.word unk_200B2B0
 off_80405C8:
@@ -1407,8 +1407,8 @@ dead_80405F8:
 	ldr r1, off_80406F0 // =unk_3001B40
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
-	ldr r0, off_80406F4 // =dword_86B7AC0
-	ldr r1, off_80406F8 // =byte_3001710
+	ldr r0, off_80406F4 // =ChatboxPalette
+	ldr r1, off_80406F8 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	pop {r4-r6,pc}
@@ -1420,9 +1420,9 @@ byte_80406E4:
 off_80406F0:
 	.word unk_3001B40
 off_80406F4:
-	.word dword_86B7AC0
+	.word ChatboxPalette
 off_80406F8:
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 off_80406FC:
 	.word unk_200B2B0
 off_8040700:
@@ -4836,7 +4836,7 @@ chatbox_F6_textcolor:
 	lsl r0, r0, #5
 	ldr r1, off_8041DEC // =dword_86B7AA0
 	add r0, r0, r1
-	ldr r1, off_8041DF0 // =byte_3001710
+	ldr r1, off_8041DF0 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	b loc_8041DE6
@@ -4845,7 +4845,7 @@ loc_8041DD6:
 	lsl r0, r0, #2
 	add r0, #0x4c
 	ldr r0, [r5,r0]
-	ldr r1, off_8041DF0 // =byte_3001710
+	ldr r1, off_8041DF0 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 loc_8041DE6:
@@ -4856,7 +4856,7 @@ loc_8041DE6:
 off_8041DEC:
 	.word dword_86B7AA0
 off_8041DF0:
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 	thumb_func_end chatbox_F6_textcolor
 
 	thumb_local_start
@@ -5175,7 +5175,7 @@ loc_8042014:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_804217C // =byte_200AFA0
+	ldr r1, off_804217C // =chatboxTextSlots
 	add r1, r1, r2
 	push {r1}
 	mov r2, #0x40
@@ -5247,7 +5247,7 @@ chatbox_loadNaviTextLine_80420BC:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_804217C // =byte_200AFA0
+	ldr r1, off_804217C // =chatboxTextSlots
 	add r1, r1, r2
 	push {r1}
 	mov r2, #0x40
@@ -5293,7 +5293,7 @@ chatbox_8042124:
 // symdb: void chatbox_pushTextLevel(u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg3 /* r3 */, const u8*
 // symdb: cmdWord /* r4, points at a 4-byte chatbox text command */, struct Chatbox* chat /* r5 */); -> r0
 // symdb: = 1 (always), r1 = historySlotOffset (0x140 + (depth-1)*4), r2 = 4 (mul scratch left in place),
-// symdb: r4 = per-slot text buffer base (byte_200AFA0 + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
+// symdb: r4 = per-slot text buffer base (chatboxTextSlots + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
 // symdb: clobbered.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_pushTextLevel_8042128.yaml
 	thumb_local_start
@@ -5315,13 +5315,13 @@ loc_8042140:
 	bl protectedZennyOrZero_803D06C
 	pop {r1-r3}
 loc_8042148:
-	ldr r2, off_804217C // =byte_200AFA0
+	ldr r2, off_804217C // =chatboxTextSlots
 	ldrb r1, [r4,#3]
 	lsl r1, r1, #6
 	add r2, r2, r1
 	ldrb r1, [r4,#2]
 	bl chatbox_formatBcdNumber_8042A14
-	ldr r0, off_804217C // =byte_200AFA0
+	ldr r0, off_804217C // =chatboxTextSlots
 	ldrb r1, [r4,#3]
 	lsl r1, r1, #6
 	add r0, r0, r1
@@ -5342,7 +5342,7 @@ loc_8042148:
 	pop {pc}
 	.balign 4, 0
 off_804217C:
-	.word byte_200AFA0
+	.word chatboxTextSlots
 off_8042180:
 	.word 0x140
 	thumb_func_end chatbox_pushTextLevel_8042128
@@ -5358,13 +5358,13 @@ chatbox_8042184:
 	lsl r1, r1, #2
 	ldr r1, [r0,r1]
 	ldrh r0, [r1]
-	ldr r2, off_80421CC // =byte_200AFA0
+	ldr r2, off_80421CC // =chatboxTextSlots
 	mov r1, #1
 	lsl r1, r1, #6
 	add r2, r2, r1
 	ldrb r1, [r4,#2]
 	bl chatbox_formatBcdNumber_8042A14
-	ldr r0, off_80421CC // =byte_200AFA0
+	ldr r0, off_80421CC // =chatboxTextSlots
 	mov r1, #1
 	lsl r1, r1, #6
 	add r0, r0, r1
@@ -5385,7 +5385,7 @@ chatbox_8042184:
 	pop {pc}
 	.balign 4, 0
 off_80421CC:
-	.word byte_200AFA0
+	.word chatboxTextSlots
 off_80421D0:
 	.word 0x140
 off_80421D4:
@@ -5405,7 +5405,7 @@ chatbox_80421D8:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_8042284 // =byte_200AFA0
+	ldr r1, off_8042284 // =chatboxTextSlots
 	add r1, r1, r2
 	push {r1}
 	mov r2, #3
@@ -5459,7 +5459,7 @@ chatbox_804222C:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_8042284 // =byte_200AFA0
+	ldr r1, off_8042284 // =chatboxTextSlots
 	add r1, r1, r2
 	pop {r2}
 	push {r1}
@@ -5489,7 +5489,7 @@ chatbox_804222C:
 off_8042280:
 	.word 0x140
 off_8042284:
-	.word byte_200AFA0
+	.word chatboxTextSlots
 off_8042288:
 	.word byte_8043B54
 	thumb_func_end chatbox_804222C
@@ -7568,7 +7568,7 @@ loc_8043050:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_8043128 // =byte_200AFA0
+	ldr r1, off_8043128 // =chatboxTextSlots
 	add r1, r1, r2
 	push {r1}
 	mov r2, #0x40
@@ -7617,7 +7617,7 @@ loc_80430B4:
 	add r7, #0x64
 	ldrh r2, [r7]
 	lsl r2, r2, #6
-	ldr r1, off_8043128 // =byte_200AFA0
+	ldr r1, off_8043128 // =chatboxTextSlots
 	add r1, r1, r2
 	push {r1}
 	mov r2, #0x40
@@ -7654,7 +7654,7 @@ byte_80430FC:
 off_8043124:
 	.word 0x140
 off_8043128:
-	.word byte_200AFA0
+	.word chatboxTextSlots
 	thumb_func_end chatbox_80430A0
 
 	thumb_local_start

@@ -5888,7 +5888,7 @@ loc_8132CB2:
 saveMenu_config_textscript_8132CB8:
 	push {r4-r7,lr}
 
-	ldr r4, off_8132D78 // =unk_20096E0 
+	ldr r4, off_8132D78 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8132D54 // =off_8132D58
@@ -5925,7 +5925,7 @@ loc_8132CD4:
 
   // Disabling this causes partial background in save menu
 	// initRefs
-	ldr r0, off_8132D78 // =unk_20096E0 
+	ldr r0, off_8132D78 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 
   // Disabling this causes the save menu to have a black background
@@ -5987,7 +5987,7 @@ off_8132D58:
 	.word unk_3001AC0
 	.word 0x20
 off_8132D78:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8132D7C:
 	.word off_8132D80
 off_8132D80:
@@ -8272,7 +8272,7 @@ sub_8133E88:
 	thumb_local_start
 sub_8133EC0:
 	push {r4-r7,lr}
-	ldr r4, off_8133FB0 // =unk_20096E0 
+	ldr r4, off_8133FB0 // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8133F6C // =off_8133F70
@@ -8298,7 +8298,7 @@ loc_8133EDC:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8133FB0 // =unk_20096E0 
+	ldr r0, off_8133FB0 // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8133FB4 // =off_8133FB8
@@ -8361,14 +8361,14 @@ off_8133F70:
 	.word 0x20
 	.word comp_86C9AA4 + COMPRESSED_PTR_FLAG
 	.word 0x2
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word eDecompBuffer2013A00
 	.word byte_872CF94
 	.word 0x2
 	.word unk_3001AE0
 	.word 0x20
 off_8133FB0:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8133FB4:
 	.word off_8133FB8
 off_8133FB8:
@@ -12242,7 +12242,7 @@ battle_loadNaviCustomizerGfx:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r5, [sp]
-	ldr r4, off_8135C5C // =unk_20096E0 
+	ldr r4, off_8135C5C // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8135C28 // =off_8135C2C
@@ -12268,7 +12268,7 @@ loc_8135BB4:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8135C5C // =unk_20096E0 
+	ldr r0, off_8135C5C // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8135C60 // =off_8135C64
@@ -12331,7 +12331,7 @@ off_8135C2C:
 	.word unk_201CF80
 	.word eDecompBuffer2013A00
 off_8135C5C:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8135C60:
 	.word off_8135C64
 off_8135C64:
@@ -13706,7 +13706,7 @@ sprite_writeBeastOutOamAttr0:
 	push {r4-r7,lr}
 	mov r7, r0
 	mov r4, #0
-	ldr r5, off_8136690 // =unk_2022B70 
+	ldr r5, off_8136690 // =eBattleState_TrackedObjectTags 
 	ldr r6, off_8136694 // =unk_30019E0 
 loc_813664E:
 	ldrb r0, [r5,r4]
@@ -13747,7 +13747,7 @@ loc_813667C:
 off_813668C:
 	.word unk_201CF80
 off_8136690:
-	.word unk_2022B70
+	.word eBattleState_TrackedObjectTags
 off_8136694:
 	.word unk_30019E0
 off_8136698:
@@ -13767,7 +13767,7 @@ byte_81366C8:
 	.byte 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F, 0x0, 0x0
 	thumb_func_end sprite_writeBeastOutOamAttr0
 
-// symdb: Registers a battle object's ID into a 6-slot unique-ID list at unk_2022B70 if not already present.
+// symdb: Registers a battle object's ID into a 6-slot unique-ID list at eBattleState_TrackedObjectTags if not already present.
 // symdb: (r5 = current object ptr, reads [r5+0x18] as object index) -> r0 = descriptor byte 3 (leftover,
 // symdb: not a real return); no flags meaningful
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_trackObjectIdInList.yaml
@@ -13777,7 +13777,7 @@ battle_trackObjectIdInList:
 	ldrh r0, [r5,#0x18]
 	bl battleObject_getByIndex_813B780
 	ldrb r4, [r0,#3]
-	ldr r7, off_8136798 // =unk_2022B70 
+	ldr r7, off_8136798 // =eBattleState_TrackedObjectTags 
 	mov r6, #0
 loc_81366DE:
 	ldrb r0, [r7,r6]
@@ -13803,9 +13803,9 @@ sub_81366F4:
 	b loc_8136712
 	thumb_func_end sub_81366F4
 
-// symdb: Removes a battle object's tag byte (descriptor byte +3) from the 6-slot list at unk_2022B70 by shifting later entries left, unless another object in the first N entries of the 2004190 array shares the same tag.
+// symdb: Removes a battle object's tag byte (descriptor byte +3) from the 6-slot list at eBattleState_TrackedObjectTags by shifting later entries left, unless another object in the first N entries of the 2004190 array shares the same tag.
 // symdb: (r5 = battle object/holder with halfwords at +0x28 and +0x2c) -> r0 = destroyed; touches
-// symdb: unk_2022B70[0..6]
+// symdb: eBattleState_TrackedObjectTags[0..6]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_removeObjectTagFromList.yaml
 	thumb_local_start
 battle_removeObjectTagFromList:
@@ -13839,7 +13839,7 @@ loc_8136736:
 	add r6, #1
 	cmp r6, #0x19
 	blt loc_813671A
-	ldr r7, off_8136798 // =unk_2022B70 
+	ldr r7, off_8136798 // =eBattleState_TrackedObjectTags 
 	mov r6, #0
 loc_8136740:
 	ldrb r0, [r7,r6]
@@ -13877,7 +13877,7 @@ loc_8136768:
 battle_copyWorkBlockToBattleWork_813676C:
 	push {lr}
 	ldr r0, off_813679C // =unk_2000090 
-	ldr r1, off_8136798 // =unk_2022B70 
+	ldr r1, off_8136798 // =eBattleState_TrackedObjectTags 
 	mov r2, #8
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
 	pop {pc}
@@ -13890,7 +13890,7 @@ battle_copyWorkBlockToBattleWork_813676C:
 	thumb_local_start
 sub_813677C:
 	push {lr}
-	ldr r0, off_8136798 // =unk_2022B70 
+	ldr r0, off_8136798 // =eBattleState_TrackedObjectTags 
 	ldr r1, off_813679C // =unk_2000090 
 	mov r2, #8
 	bl CopyBytes // (u8 *src, u8 *dest, int byteCount) -> void
@@ -13899,12 +13899,12 @@ sub_813677C:
 	thumb_func_end sub_813677C
 
 	push {lr}
-	ldr r0, off_8136798 // =unk_2022B70 
+	ldr r0, off_8136798 // =eBattleState_TrackedObjectTags 
 	mov r1, #8
 	bl ZeroFillByByte // (mut_mem: *mut (), num_bytes: usize) -> ()
 	pop {pc}
 off_8136798:
-	.word unk_2022B70
+	.word eBattleState_TrackedObjectTags
 off_813679C:
 	.word unk_2000090
 // symdb: Moves the Navicust screen's board cursor one row up (4 slots back), clamping at the top row, plays the menu-select sound.
@@ -16566,7 +16566,7 @@ chatbox_runSceneStepAndCopy:
 	ldr r2, off_8137A78 // =unk_201CF00 
 	add r1, r0, #1
 	ldrb r0, [r2,r1]
-	ldr r2, off_8137A70 // =unk_2000260 
+	ldr r2, off_8137A70 // =battleBestTimes 
 	ldr r3, off_8137A74 // =unk_20018C0 
 	ldrh r1, [r2,r0]
 	strh r1, [r3,r0]
@@ -16582,7 +16582,7 @@ locret_8137A6C:
 	pop {pc}
 	.balign 4, 0
 off_8137A70:
-	.word unk_2000260
+	.word battleBestTimes
 off_8137A74:
 	.word unk_20018C0
 off_8137A78:
@@ -16631,7 +16631,7 @@ locret_8137ACA:
 	thumb_local_start
 battle_loadNaviBackground:
 	push {r4-r7,lr}
-	ldr r4, off_8137B9C // =unk_20096E0 
+	ldr r4, off_8137B9C // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_8137B68 // =off_8137B6C
@@ -16657,7 +16657,7 @@ loc_8137AE8:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_8137B9C // =unk_20096E0 
+	ldr r0, off_8137B9C // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_8137BA0 // =off_8137BA4
@@ -16716,7 +16716,7 @@ off_8137B6C:
 	.word unk_3001A60
 	.word 0x20
 off_8137B9C:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_8137BA0:
 	.word off_8137BA4
 off_8137BA4:
@@ -16963,7 +16963,7 @@ loc_8137DFE:
 	tst r1, r1
 	beq loc_8137E18
 	mov r0, r7
-	ldr r1, off_8137E34 // =unk_2000260 
+	ldr r1, off_8137E34 // =battleBestTimes 
 	bl get_indexedTimeBcd
 	mov r3, r0
 	ldr r0, [sp]
@@ -16986,7 +16986,7 @@ loc_8137E18:
 	pop {r4-r7,pc}
 	.balign 4, 0
 off_8137E34:
-	.word unk_2000260
+	.word battleBestTimes
 off_8137E38:
 	.word 0x200
 	thumb_func_end sub_8137DE4
@@ -17481,7 +17481,7 @@ submenu_showSelectedFastestTime:
 	add r0, #1
 	ldr r1, off_81381FC // =unk_201CF00 
 	ldrb r0, [r1,r0]
-	ldr r1, off_8138200 // =unk_2000260 
+	ldr r1, off_8138200 // =battleBestTimes 
 	ldrh r2, [r1,r0]
 	ldr r1, off_8138204 // =unk_20018C0 
 	ldrh r3, [r1,r0]
@@ -17545,7 +17545,7 @@ loc_81381F6:
 off_81381FC:
 	.word unk_201CF00
 off_8138200:
-	.word unk_2000260
+	.word battleBestTimes
 off_8138204:
 	.word unk_20018C0
 dword_8138208:

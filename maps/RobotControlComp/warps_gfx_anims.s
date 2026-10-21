@@ -133,7 +133,7 @@ byte_8066328::
 	gfx_anim_loop
 
 byte_8066368::
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x04
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x04
 	gfx_anim_data_ptr ptr=unk_8594C9C delay=0x00000012
 	gfx_anim_data_ptr ptr=unk_8594CBC delay=0x0000000A
 	gfx_anim_data_ptr ptr=unk_8594CDC delay=0x00000006

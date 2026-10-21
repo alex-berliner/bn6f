@@ -5666,7 +5666,7 @@ copy_8002668:
 	push {lr}
 
 	ldr r0, off_800268C // =dword_86A5500
-	ldr r1, off_8002690 // =byte_3001710
+	ldr r1, off_8002690 // =chatboxTileRowScratchBuf
 	mov r2, #0x20
 	bl CopyByEightWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 
@@ -5691,7 +5691,7 @@ off_8002688:
 off_800268C:
 	.word dword_86A5500
 off_8002690:
-	.word byte_3001710
+	.word chatboxTileRowScratchBuf
 	thumb_func_end copy_8002668
 
 // symdb: Thumb↔ARM veneer that tail-calls sprite_queueFramePieces on the IWRAM sprite

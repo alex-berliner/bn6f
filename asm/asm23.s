@@ -554,7 +554,7 @@ sub_8089234:
 
 // symdb: Menu cursor-move handler: copies the selected entry's 0x80-byte record into a work buffer, decompresses its display graphics into VRAM, and plays the cursor-move sound effect.
 // symdb: (r0 = selected entry index into table byte_87DE44C, stride 0x80) -> r0 destroyed; loads 0x20
-// symdb: words to byte_30016F0, LZ77 asset to VRAM 0x6014800, plays SOUND_MENU_CUR_MOVE
+// symdb: words to gfxDecompressWorkBuffer, LZ77 asset to VRAM 0x6014800, plays SOUND_MENU_CUR_MOVE
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_loadSelectedEntryGfx.yaml
 	thumb_local_start
 submenu_loadSelectedEntryGfx:
@@ -562,7 +562,7 @@ submenu_loadSelectedEntryGfx:
 	ldr r1, off_8089278 // =byte_87DE44C
 	lsl r0, r0, #5
 	add r0, r0, r1
-	ldr r1, off_808927C // =byte_30016F0
+	ldr r1, off_808927C // =gfxDecompressWorkBuffer
 	mov r2, #0x20
 	bl CopyWords // (src: *const u32, mut_dest: *mut u32, size: u32) -> ()
 	// initRefs
@@ -582,7 +582,7 @@ byte_8089268:
 off_8089278:
 	.word byte_87DE44C
 off_808927C:
-	.word byte_30016F0
+	.word gfxDecompressWorkBuffer
 	thumb_func_end submenu_loadSelectedEntryGfx
 
 // symdb: Selects one of two structurally identical script command tables based on (frame & 0x1F) < 8, runs it via scriptListRun_8001158, then always runs a fixed third table — driving a frame-gated, blink-like sprite animation.

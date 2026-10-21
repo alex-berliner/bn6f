@@ -4159,7 +4159,7 @@ loc_8145E7E:
 	mov r10, r2
 	cmp r0, #0
 	beq loc_8145F34
-	ldr r0, off_8145ED8 // =dword_2010CB0 
+	ldr r0, off_8145ED8 // =rfuConnectionSlots 
 	lsl r1, r6, #2
 	add r1, r1, r0
 	ldr r1, [r1]
@@ -4200,7 +4200,7 @@ loc_8145EC8:
 	b loc_8145EFC
 	.balign 4, 0x00
 off_8145ED8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 dword_8145EDC:
 	.word 0xFFFF
 off_8145EE0:
@@ -4381,7 +4381,7 @@ rfu_handleConnTimeout:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	beq loc_8146036
-	ldr r1, off_81460A8 // =dword_2010CB0 
+	ldr r1, off_81460A8 // =rfuConnectionSlots 
 	ldrb r0, [r4,#0x10] // (byte_200FE10 - 0x200fe00)
 	lsl r0, r0, #2
 	add r0, r0, r1
@@ -4447,7 +4447,7 @@ off_81460A0:
 off_81460A4:
 	.word eStruct200FE00
 off_81460A8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_81460AC:
 	.word dword_2010CC0
 	thumb_func_end rfu_handleConnTimeout
@@ -4462,7 +4462,7 @@ rfu_handleDisconnectPacket:
 	ldrb r0, [r5,#0x4] // (byte_200FE04 - 0x200fe00)
 	cmp r0, #0xf
 	bne loc_81460FC
-	ldr r1, off_8146108 // =dword_2010CB0 
+	ldr r1, off_8146108 // =rfuConnectionSlots 
 	ldrb r2, [r5,#0x10] // (byte_200FE10 - 0x200fe00)
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -4501,7 +4501,7 @@ loc_81460FC:
 off_8146104:
 	.word eStruct200FE00
 off_8146108:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 	thumb_func_end rfu_handleDisconnectPacket
 
 // symdb: Advances the wireless-link state machine at eStruct200FE00 from state 1 to 2, saving the old timer/counter bytes and loading new values (0x10/0x11).
@@ -4677,7 +4677,7 @@ rfu_disconnectSlots:
 	beq loc_8146244
 	mov r4, #0
 loc_814620E:
-	ldr r1, off_81462CC // =dword_2010CB0 
+	ldr r1, off_81462CC // =rfuConnectionSlots 
 	lsl r0, r4, #2
 	add r0, r0, r1
 	ldr r2, [r0]
@@ -4712,7 +4712,7 @@ loc_8146244:
 	beq loc_8146282
 	mov r4, #0
 loc_8146250:
-	ldr r1, off_81462CC // =dword_2010CB0 
+	ldr r1, off_81462CC // =rfuConnectionSlots 
 	lsl r0, r4, #2
 	add r0, r0, r1
 	ldr r2, [r0]
@@ -4779,7 +4779,7 @@ loc_81462C0:
 off_81462C8:
 	.word dword_2010CC0
 off_81462CC:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_81462D0:
 	.word off_2010CA0
 dword_81462D4:
@@ -4787,7 +4787,7 @@ dword_81462D4:
 	thumb_func_end rfu_disconnectSlots
 
 // symdb: Wireless link maintenance: toggles per-peer send-target bits and stops receiving from peers whose local counters exceed the global timeout counter in eStruct200FE00
-// symdb: () -> r0 = destroyed; touches rfu peer table dword_2010CB0[4] and eStruct200FE00
+// symdb: () -> r0 = destroyed; touches rfu peer table rfuConnectionSlots[4] and eStruct200FE00
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateSendRecvTargets.yaml
 	thumb_local_start
 rfu_updateSendRecvTargets:
@@ -4808,7 +4808,7 @@ rfu_updateSendRecvTargets:
 	beq loc_8146378
 	mov r6, #0
 loc_81462F8:
-	ldr r3, off_81463CC // =dword_2010CB0 
+	ldr r3, off_81463CC // =rfuConnectionSlots 
 	lsl r2, r6, #2
 	add r0, r2, r3
 	ldr r0, [r0]
@@ -4883,7 +4883,7 @@ loc_8146378:
 	beq loc_81463B4
 	mov r6, #0
 loc_8146384:
-	ldr r1, off_81463CC // =dword_2010CB0 
+	ldr r1, off_81463CC // =rfuConnectionSlots 
 	lsl r0, r6, #2
 	add r0, r0, r1
 	ldr r2, [r0]
@@ -4922,7 +4922,7 @@ off_81463C4:
 off_81463C8:
 	.word dword_2010CC0
 off_81463CC:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 	thumb_func_end rfu_updateSendRecvTargets
 
 // symdb: Stores a caller-supplied value into the wireless-link work struct and registers the MSC callback that will receive it.
@@ -5194,13 +5194,13 @@ def_8146518:
 	.balign 4, 0
 	thumb_func_end sub_81464FC
 
-// symdb: Returns 1 while the RFU connection state halfword (word_20102D0) is not 3, and 0 once it reaches 3.
-// symdb: () -> r0 = 0 if word_20102D0 == 3 (connected), else 1; flags set by the cmp
+// symdb: Returns 1 while the RFU connection state halfword (rfu_connectionState) is not 3, and 0 once it reaches 3.
+// symdb: () -> r0 = 0 if rfu_connectionState == 3 (connected), else 1; flags set by the cmp
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_isNotConnected.yaml
 	thumb_func_start rfu_isNotConnected
 rfu_isNotConnected:
 	push {lr}
-	ldr r0, off_814657C // =word_20102D0 
+	ldr r0, off_814657C // =rfu_connectionState 
 	ldrh r0, [r0]
 	cmp r0, #3
 	beq loc_8146580
@@ -5208,7 +5208,7 @@ rfu_isNotConnected:
 	b loc_8146582
 	.balign 4, 0
 off_814657C:
-	.word word_20102D0
+	.word rfu_connectionState
 loc_8146580:
 	mov r0, #0
 loc_8146582:
@@ -5769,7 +5769,7 @@ off_81468F0:
 	thumb_func_start sub_81468F4
 sub_81468F4:
 	ldr r1, off_8146904 // =eStruct200FE00 
-	ldr r0, off_8146908 // =byte_20103E0 
+	ldr r0, off_8146908 // =rfuSlotId 
 	ldrb r0, [r0]
 	lsl r0, r0, #1
 	add r1, #0x28 
@@ -5780,7 +5780,7 @@ sub_81468F4:
 off_8146904:
 	.word eStruct200FE00
 off_8146908:
-	.word byte_20103E0
+	.word rfuSlotId
 	thumb_func_end sub_81468F4
 
 // symdb: returns a halfword status/count field of the wireless (RFU) shared struct at 200FE00+0x26, used to decide whether a wireless session has enough participants before ending it
@@ -6255,7 +6255,7 @@ loc_8146C5A:
 sub_8146C60:
 	push {r4,lr}
 	mov r4, r0
-	ldr r1, off_8146C88 // =byte_20103E0 
+	ldr r1, off_8146C88 // =rfuSlotId 
 	mov r0, #0x80
 	lsl r0, r0, #0x11
 	ldrb r1, [r1]
@@ -6274,7 +6274,7 @@ sub_8146C60:
 	b loc_8146C92
 	.balign 4, 0
 off_8146C88:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8146C8C:
 	.word byte_200DD10
 loc_8146C90:
@@ -6295,8 +6295,8 @@ loc_8146C92:
 rfu_handleDisconnectMsg:
 	push {r4,lr}
 	mov r4, r0
-	ldr r1, off_8146CC4 // =dword_2010CB0 
-	ldr r0, off_8146CC8 // =byte_20103E0 
+	ldr r1, off_8146CC4 // =rfuConnectionSlots 
+	ldr r0, off_8146CC8 // =rfuSlotId 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -6314,9 +6314,9 @@ rfu_handleDisconnectMsg:
 	b loc_8146CDC
 	.balign 4, 0
 off_8146CC4:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8146CC8:
-	.word byte_20103E0
+	.word rfuSlotId
 loc_8146CCC:
 	cmp r0, #0x27 
 	bne loc_8146CDC
@@ -6468,7 +6468,7 @@ loc_8146DAE:
 	and r0, r5
 	cmp r0, #0
 	beq loc_8146DFC
-	ldr r0, off_8146DE8 // =dword_2010CB0 
+	ldr r0, off_8146DE8 // =rfuConnectionSlots 
 	lsl r1, r4, #2
 	add r1, r1, r0
 	ldr r0, [r1]
@@ -6488,7 +6488,7 @@ off_8146DE0:
 off_8146DE4:
 	.word byte_2010290
 off_8146DE8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 loc_8146DEC:
 	cmp r0, #0x48 
 	bne loc_8146DFC
@@ -6631,7 +6631,7 @@ rfu_resetRecvSlots:
 	bl rfu_clearSlotBuffer
 	ldr r0, off_8146F6C // =unk_200FE90 
 	bl rfu_clearSlotBuffer
-	ldr r0, off_8146F70 // =byte_20101B4 
+	ldr r0, off_8146F70 // =uniConnectionState 
 	mov r1, #1
 	strb r1, [r0]
 	ldr r2, off_8146F74 // =byte_2010290 
@@ -6711,7 +6711,7 @@ off_8146F68:
 off_8146F6C:
 	.word unk_200FE90
 off_8146F70:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8146F74:
 	.word byte_2010290
 off_8146F78:
@@ -6920,7 +6920,7 @@ loc_8147150:
 	and r0, r5
 	cmp r0, #0
 	beq loc_814719C
-	ldr r0, off_8147188 // =dword_2010CB0 
+	ldr r0, off_8147188 // =rfuConnectionSlots 
 	lsl r1, r4, #2
 	add r1, r1, r0
 	ldr r0, [r1]
@@ -6938,7 +6938,7 @@ loc_8147150:
 off_8147184:
 	.word byte_2010290
 off_8147188:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 loc_814718C:
 	cmp r0, #0x48 
 	bne loc_814719C
@@ -6981,7 +6981,7 @@ off_81471D4:
 	.word byte_2010328
 	thumb_func_end sub_814713C
 
-// symdb: RFU wrapper that issues a 3-byte-offset sendData via rfu_NI_setSendData; on success stores 4 (pending) at [r0], sets 0x80 in word_200BC58, writes 0x83 to byte_20101B4; on failure stores 2 and the result code at [r0+2].
+// symdb: RFU wrapper that issues a 3-byte-offset sendData via rfu_NI_setSendData; on success stores 4 (pending) at [r0], sets 0x80 in word_200BC58, writes 0x83 to uniConnectionState; on failure stores 2 and the result code at [r0+2].
 // symdb: (r0 = status struct ptr, r1 = payload byte/count base (sent as r1+3 to setSendData)) -> r0 = 0;
 // symdb: writes status byte [r0] (4 = busy/sent, 2 = failed) and byte [r0+2] = result code
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_requestSendData.yaml
@@ -7008,7 +7008,7 @@ rfu_requestSendData:
 	mov r0, #0x80
 	orr r0, r1
 	strh r0, [r2,#0x8] // (word_200BC58 - 0x200bc50)
-	ldr r1, off_8147218 // =byte_20101B4 
+	ldr r1, off_8147218 // =uniConnectionState 
 	mov r0, #0x83
 	strb r0, [r1]
 	b loc_8147222
@@ -7020,7 +7020,7 @@ off_8147210:
 off_8147214:
 	.word eS200BC50
 off_8147218:
-	.word byte_20101B4
+	.word uniConnectionState
 loc_814721C:
 	mov r0, #2
 	strb r0, [r4]
@@ -7040,7 +7040,7 @@ rfu_processLinkClose:
 	push {r4-r6,lr}
 	mov r5, r0
 	mov r6, r1
-	ldr r1, off_814726C // =dword_2010CB0 
+	ldr r1, off_814726C // =rfuConnectionSlots 
 	ldr r0, off_8147270 // =byte_2010328 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
@@ -7070,7 +7070,7 @@ rfu_processLinkClose:
 	b loc_8147284
 	.balign 4, 0
 off_814726C:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8147270:
 	.word byte_2010328
 loc_8147274:
@@ -7110,7 +7110,7 @@ loc_81472A4:
 	and r1, r0
 	cmp r1, #0
 	beq loc_81472C4
-	ldr r0, off_81472F0 // =byte_20101B4 
+	ldr r0, off_81472F0 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne loc_81472C4
@@ -7124,7 +7124,7 @@ loc_81472C4:
 	lsr r4, r0, #0x18
 	cmp r4, #3
 	bls loc_81472A4
-	ldr r0, off_81472F0 // =byte_20101B4 
+	ldr r0, off_81472F0 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne loc_81472DC
@@ -7144,7 +7144,7 @@ dword_81472E8:
 off_81472EC:
 	.word byte_2010290
 off_81472F0:
-	.word byte_20101B4
+	.word uniConnectionState
 off_81472F4:
 	.word byte_200DD10
 	thumb_func_end sub_814728C
@@ -7491,7 +7491,7 @@ loc_8147550:
 	mov r0, #0x15
 	bl rfu_setLinkCommand
 loc_8147560:
-	ldr r1, off_8147578 // =word_20102D0 
+	ldr r1, off_8147578 // =rfu_connectionState 
 	ldr r0, off_814757C // =eStruct200FE00 
 	ldrh r0, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	strh r0, [r1]
@@ -7504,7 +7504,7 @@ loc_8147560:
 	b loc_81475AA
 	.balign 4, 0x00
 off_8147578:
-	.word word_20102D0
+	.word rfu_connectionState
 off_814757C:
 	.word eStruct200FE00
 off_8147580:
@@ -8128,7 +8128,7 @@ dword_8147A80:
 
 // symdb: Checks one wireless link slot for a disconnect state (0x26/0x27), releases the RFU slot and updates the connection/error flags.
 // symdb: () -> void; reads slot id byte_2010328, global flag byte_201028C (bit1 = link active), link
-// symdb: array dword_2010CB0; writes byte_201028C, error byte_2010340, eS200BC50+8
+// symdb: array rfuConnectionSlots; writes byte_201028C, error byte_2010340, eS200BC50+8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_pollSlotDisconnect.yaml
 	thumb_local_start
 rfu_pollSlotDisconnect:
@@ -8140,7 +8140,7 @@ rfu_pollSlotDisconnect:
 	and r0, r1
 	cmp r0, #0
 	beq loc_8147B14
-	ldr r1, off_8147AD8 // =dword_2010CB0 
+	ldr r1, off_8147AD8 // =rfuConnectionSlots 
 	ldr r0, off_8147ADC // =byte_2010328 
 	ldrb r3, [r0]
 	lsl r0, r3, #2
@@ -8175,7 +8175,7 @@ rfu_pollSlotDisconnect:
 off_8147AD4:
 	.word byte_201028C
 off_8147AD8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8147ADC:
 	.word byte_2010328
 loc_8147AE0:
@@ -8286,7 +8286,7 @@ rfu_initCommState:
 	bl rfu_clearSlotBuffer
 	ldr r0, off_8147BF8 // =unk_200FE90 
 	bl rfu_clearSlotBuffer
-	ldr r1, off_8147BFC // =byte_20101B4 
+	ldr r1, off_8147BFC // =uniConnectionState 
 	mov r0, #1
 	strb r0, [r1]
 	ldr r1, off_8147C00 // =byte_2010274 
@@ -8314,7 +8314,7 @@ loc_8147BAE:
 	ldr r1, off_8147C14 // =byte_2010390 
 	mov r0, #0
 	strb r0, [r1]
-	ldr r4, off_8147C18 // =byte_20103E0 
+	ldr r4, off_8147C18 // =rfuSlotId 
 	ldrb r1, [r4]
 	mov r0, #0xc
 	bl rfu_clearSlot
@@ -8338,7 +8338,7 @@ off_8147BF4:
 off_8147BF8:
 	.word unk_200FE90
 off_8147BFC:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8147C00:
 	.word byte_2010274
 off_8147C04:
@@ -8352,7 +8352,7 @@ off_8147C10:
 off_8147C14:
 	.word byte_2010390
 off_8147C18:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8147C1C:
 	.word eS200BC50
 	thumb_func_end rfu_initCommState
@@ -8542,8 +8542,8 @@ sub_8147DE0:
 	ldrb r0, [r4,#1]
 	cmp r0, #0
 	bne loc_8147E38
-	ldr r1, off_8147E18 // =dword_2010CB0 
-	ldr r0, off_8147E1C // =byte_20103E0 
+	ldr r1, off_8147E18 // =rfuConnectionSlots 
+	ldr r0, off_8147E1C // =rfuSlotId 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -8563,9 +8563,9 @@ sub_8147DE0:
 	b loc_8147E38
 	.balign 4, 0
 off_8147E18:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8147E1C:
-	.word byte_20103E0
+	.word rfuSlotId
 loc_8147E20:
 	cmp r0, #0x48 
 	bne loc_8147E38
@@ -8588,16 +8588,16 @@ off_8147E40:
 	.word eS200BC50
 	thumb_func_end sub_8147DE0
 
-// symdb: Calls rfu_NI_setSendData to queue a packet (size=r1+2, from byte_2010390) to the linked peer; on rejection writes 2 to *r0, and if the peer's state word at eS200BC50+8 is 0x31 writes 4; sets byte_20101B4=0x83.
+// symdb: Calls rfu_NI_setSendData to queue a packet (size=r1+2, from byte_2010390) to the linked peer; on rejection writes 2 to *r0, and if the peer's state word at eS200BC50+8 is 0x31 writes 4; sets uniConnectionState=0x83.
 // symdb: (r0 = status out ptr (u8*), r1 = size base) -> *r0 = 2 if send rejected, 4 if peer state ==
-// symdb: 0x31, else unchanged; byte_20101B4 = 0x83 on queued send; returns void
+// symdb: 0x31, else unchanged; uniConnectionState = 0x83 on queued send; returns void
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_niSendPacket.yaml
 	thumb_local_start
 rfu_niSendPacket:
 	push {r4,lr}
 	mov r4, r0
 	mov r3, r1
-	ldr r1, off_8147E7C // =byte_20103E0 
+	ldr r1, off_8147E7C // =rfuSlotId 
 	mov r0, #0x80
 	lsl r0, r0, #0x11
 	ldrb r1, [r1]
@@ -8618,19 +8618,19 @@ rfu_niSendPacket:
 	mov r0, #4
 	strb r0, [r4]
 loc_8147E74:
-	ldr r1, off_8147E88 // =byte_20101B4 
+	ldr r1, off_8147E88 // =uniConnectionState 
 	mov r0, #0x83
 	strb r0, [r1]
 	b loc_8147E90
 	.balign 4, 0
 off_8147E7C:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8147E80:
 	.word byte_2010390
 off_8147E84:
 	.word eS200BC50
 off_8147E88:
-	.word byte_20101B4
+	.word uniConnectionState
 loc_8147E8C:
 	mov r0, #2
 	strb r0, [r4]
@@ -8646,8 +8646,8 @@ sub_8147E98:
 	push {r4,r5,lr}
 	mov r4, r0
 	mov r5, r1
-	ldr r1, off_8147ED4 // =dword_2010CB0 
-	ldr r0, off_8147ED8 // =byte_20103E0 
+	ldr r1, off_8147ED4 // =rfuConnectionSlots 
+	ldr r0, off_8147ED8 // =rfuSlotId 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -8671,9 +8671,9 @@ sub_8147E98:
 	b loc_8147EF4
 	.balign 4, 0
 off_8147ED4:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8147ED8:
-	.word byte_20103E0
+	.word rfuSlotId
 loc_8147EDC:
 	cmp r0, #0x27 
 	bne loc_8147EF4
@@ -8714,7 +8714,7 @@ sub_8147F00:
 	mov r0, sp
 	mov r1, r4
 	bl SWI_CpuSet // (src: *const u32, dest: *mut u32, mode: int) -> ()
-	ldr r0, off_8147F48 // =byte_20101B4 
+	ldr r0, off_8147F48 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne loc_8147F3A
@@ -8733,7 +8733,7 @@ loc_8147F3A:
 off_8147F44:
 	.word byte_2010390
 off_8147F48:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8147F4C:
 	.word byte_200DD10
 	thumb_func_end sub_8147F00
@@ -8808,7 +8808,7 @@ sub_8147F98:
 	strb r2, [r1,#0x5] // (byte_200BC55 - 0x200bc50)
 	ldr r0, off_814800C // =byte_2010288 
 	strb r6, [r0]
-	ldr r0, off_8148010 // =byte_20103E0 
+	ldr r0, off_8148010 // =rfuSlotId 
 	strb r6, [r0]
 	mov r0, sp
 	strh r5, [r0]
@@ -8837,7 +8837,7 @@ off_8148008:
 off_814800C:
 	.word byte_2010288
 off_8148010:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8148014:
 	.word byte_2010290
 dword_8148018:
@@ -8961,7 +8961,7 @@ off_81480C8:
 off_81480CC:
 	.word eStruct200FE00
 loc_81480D0:
-	ldr r1, off_81480F4 // =byte_20103E0 
+	ldr r1, off_81480F4 // =rfuSlotId 
 	ldr r0, off_81480F8 // =eStruct200FE00 
 	ldrh r0, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	strb r0, [r1]
@@ -8978,7 +8978,7 @@ loc_81480D0:
 	bl rfu_setLinkCommand
 	b loc_8148200
 off_81480F4:
-	.word byte_20103E0
+	.word rfuSlotId
 off_81480F8:
 	.word eStruct200FE00
 off_81480FC:
@@ -8986,7 +8986,7 @@ off_81480FC:
 off_8148100:
 	.word eS200BC50
 loc_8148104:
-	ldr r1, off_8148118 // =word_20102D0 
+	ldr r1, off_8148118 // =rfu_connectionState 
 	mov r0, #3
 	strh r0, [r1]
 	ldr r1, off_814811C // =eS200BC50 
@@ -8996,7 +8996,7 @@ loc_8148104:
 	bl rfu_setLinkCommand
 	b loc_8148200
 off_8148118:
-	.word word_20102D0
+	.word rfu_connectionState
 off_814811C:
 	.word eS200BC50
 loc_8148120:
@@ -9075,7 +9075,7 @@ loc_81481A8:
 	ldr r1, off_81481C0 // =eS200BC50 
 	mov r0, #0x3f 
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)
-	ldr r1, off_81481C4 // =word_20102D0 
+	ldr r1, off_81481C4 // =rfu_connectionState 
 	ldr r0, off_81481C8 // =eStruct200FE00 
 	ldrh r0, [r0,#0x14] // (word_200FE14 - 0x200fe00)
 	strh r0, [r1]
@@ -9086,7 +9086,7 @@ loc_81481A8:
 off_81481C0:
 	.word eS200BC50
 off_81481C4:
-	.word word_20102D0
+	.word rfu_connectionState
 off_81481C8:
 	.word eStruct200FE00
 loc_81481CC:
@@ -9360,8 +9360,8 @@ loc_8148428:
 off_8148438:
 	.word eS200BC50
 loc_814843C:
-	ldr r1, off_8148470 // =dword_2010CB0 
-	ldr r0, off_8148474 // =byte_20103E0 
+	ldr r1, off_8148470 // =rfuConnectionSlots 
+	ldr r0, off_8148474 // =rfuSlotId 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -9384,9 +9384,9 @@ loc_814843C:
 	bl rfu_setLinkCommand
 	b def_814825A
 off_8148470:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_8148474:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8148478:
 	.word byte_2010290
 loc_814847C:
@@ -9565,7 +9565,7 @@ loc_81485A8:
 	strb r2, [r0]
 	ldr r0, off_81486FC // =byte_20101D0 
 	strb r2, [r0]
-	ldr r0, off_8148700 // =byte_20101B4 
+	ldr r0, off_8148700 // =uniConnectionState 
 	strb r2, [r0]
 	ldr r1, off_8148704 // =byte_20103F0 
 	mov r0, #0
@@ -9713,7 +9713,7 @@ off_81486F8:
 off_81486FC:
 	.word byte_20101D0
 off_8148700:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8148704:
 	.word byte_20103F0
 off_8148708:
@@ -9845,7 +9845,7 @@ loc_81487E4:
 	ldrh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	cmp r0, #0x26 
 	bne loc_8148810
-	ldr r0, off_8148808 // =byte_20101B4 
+	ldr r0, off_8148808 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #0x8f
 	beq loc_81487FC
@@ -9861,7 +9861,7 @@ loc_81487FC:
 off_8148804:
 	.word eStruct200FE00
 off_8148808:
-	.word byte_20101B4
+	.word uniConnectionState
 off_814880C:
 	.word byte_2010290
 loc_8148810:
@@ -10132,7 +10132,7 @@ off_8148A7C:
 sub_8148A80:
 	push {r4-r6,lr}
 	sub sp, sp, #4
-	ldr r0, off_8148B58 // =byte_20101B4 
+	ldr r0, off_8148B58 // =uniConnectionState 
 	ldrb r2, [r0]
 	cmp r2, #0x8f
 	beq loc_8148B4E
@@ -10183,7 +10183,7 @@ loc_8148AD8:
 	and r0, r1
 	cmp r0, #0
 	beq loc_8148B08
-	ldr r0, off_8148B58 // =byte_20101B4 
+	ldr r0, off_8148B58 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne loc_8148B08
@@ -10203,7 +10203,7 @@ loc_8148B08:
 	lsr r4, r0, #0x18
 	cmp r4, #3
 	bls loc_8148AD8
-	ldr r0, off_8148B58 // =byte_20101B4 
+	ldr r0, off_8148B58 // =uniConnectionState 
 	ldrb r4, [r0]
 	cmp r4, #1
 	bne loc_8148B40
@@ -10240,7 +10240,7 @@ loc_8148B4E:
 	bx r0
 	.balign 4, 0
 off_8148B58:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8148B5C:
 	.word byte_20101D0
 off_8148B60:
@@ -10307,12 +10307,12 @@ off_8148BC8:
 
 // symdb: Wireless link watchdog: per active peer slot, compares current received value to last seen, tallies match/increment/decrement/other into per-slot counters, stores new value, and once all masked peers have reported, either sets connection state to 1, transitions to 0x83, or increments a mismatch counter.
 // symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), byte_20101B0
-// symdb: change flags, and state byte byte_20101B4 (=1 or 0x83 on transition)
+// symdb: change flags, and state byte uniConnectionState (=1 or 0x83 on transition)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniPollPeerValueChanges.yaml
 	thumb_local_start
 rfu_uniPollPeerValueChanges:
 	push {r4-r7,lr}
-	ldr r0, off_8148C30 // =byte_20101B4 
+	ldr r0, off_8148C30 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #0x8f
 	bne loc_8148BD8
@@ -10364,7 +10364,7 @@ loc_8148BE0:
 	b loc_8148C92
 	.balign 4, 0
 off_8148C30:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8148C34:
 	.word byte_2010290
 off_8148C38:
@@ -10485,7 +10485,7 @@ loc_8148D08:
 	ldrb r0, [r1]
 	add r0, #1
 	strb r0, [r1]
-	ldr r1, off_8148D20 // =byte_20101B4 
+	ldr r1, off_8148D20 // =uniConnectionState 
 	mov r0, #0x83
 loc_8148D14:
 	strb r0, [r1]
@@ -10496,7 +10496,7 @@ loc_8148D16:
 off_8148D1C:
 	.word byte_20101D4
 off_8148D20:
-	.word byte_20101B4
+	.word uniConnectionState
 	thumb_func_end rfu_uniPollPeerValueChanges
 
 // symdb: Resets the wireless-link working buffers, registers the link callbacks, sets the recv buffer/slot and starts a 14-byte periodic send, returning 0 with error code 0x31 on failure.
@@ -10578,7 +10578,7 @@ loc_8148D9C:
 	lsr r2, r0, #0x18
 	cmp r2, #3
 	bls loc_8148D9C
-	ldr r1, off_8148E50 // =byte_20101B4 
+	ldr r1, off_8148E50 // =uniConnectionState 
 	mov r0, #0
 	strb r0, [r1]
 	ldr r1, off_8148E54 // =byte_2010274 
@@ -10592,7 +10592,7 @@ loc_8148D9C:
 	bl sub_81463E8
 	ldr r0, off_8148E5C // =rfu_recvData+1 
 	bl rfu_setMscCallbackArg
-	ldr r4, off_8148E60 // =byte_20103E0 
+	ldr r4, off_8148E60 // =rfuSlotId 
 	ldrb r1, [r4]
 	ldr r2, off_8148E30 // =unk_20103A0 
 	mov r0, #0x10
@@ -10649,7 +10649,7 @@ off_8148E48:
 off_8148E4C:
 	.word word_2010428
 off_8148E50:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8148E54:
 	.word byte_2010274
 off_8148E58:
@@ -10657,7 +10657,7 @@ off_8148E58:
 off_8148E5C:
 	.word rfu_recvData+1
 off_8148E60:
-	.word byte_20103E0
+	.word rfuSlotId
 off_8148E64:
 	.word eS200BC50
 loc_8148E68:
@@ -10781,7 +10781,7 @@ loc_8148F30:
 	ldrh r0, [r1,#0x14] // (word_200FE14 - 0x200fe00)
 	cmp r0, #0x30 
 	bne loc_8148F56
-	ldr r0, off_8148F70 // =byte_20101B4 
+	ldr r0, off_8148F70 // =uniConnectionState 
 	ldrb r0, [r0]
 	cmp r0, #0x8f
 	bne loc_8148F56
@@ -10809,7 +10809,7 @@ loc_8148F56:
 off_8148F6C:
 	.word eStruct200FE00
 off_8148F70:
-	.word byte_20101B4
+	.word uniConnectionState
 off_8148F74:
 	.word eS200BC50
 loc_8148F78:
@@ -10984,7 +10984,7 @@ off_8149128:
 	.word eS200BC50
 	thumb_func_end sub_8148FC0
 
-// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via sub_8144DB0(1).
+// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from rfuSlotId) ready for unidirectional send, then sets a state via sub_8144DB0(1).
 // symdb: () -> r0 = result of sub_8144DB0(1); no meaningful input
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_readyUniSendIfFlagged.yaml
 	thumb_local_start
@@ -10994,7 +10994,7 @@ rfu_readyUniSendIfFlagged:
 	lsl r0, r0, #0x18
 	cmp r0, #0
 	beq loc_8149140
-	ldr r0, off_814914C // =byte_20103E0 
+	ldr r0, off_814914C // =rfuSlotId 
 	ldrb r0, [r0]
 	bl rfu_UNI_readySendData
 loc_8149140:
@@ -11004,7 +11004,7 @@ loc_8149140:
 	bx r0
 	.balign 4, 0
 off_814914C:
-	.word byte_20103E0
+	.word rfuSlotId
 	thumb_func_end rfu_readyUniSendIfFlagged
 
 // symdb: Per-wireless-packet receive bookkeeping: counts an incoming UNI data chunk and, once the expected chunk count is reached, flushes the assembled buffer and queues a 12-byte completion packet for sending.
@@ -11015,7 +11015,7 @@ off_814914C:
 rfu_uniProcessRecvChunk:
 	push {r4-r6,lr}
 	mov r6, #0
-	ldr r5, off_8149160 // =byte_20101B4 
+	ldr r5, off_8149160 // =uniConnectionState 
 	ldrb r0, [r5]
 	cmp r0, #0x8f
 	bne loc_8149164
@@ -11023,10 +11023,10 @@ rfu_uniProcessRecvChunk:
 	b loc_8149216
 	.balign 4, 0
 off_8149160:
-	.word byte_20101B4
+	.word uniConnectionState
 loc_8149164:
 	ldr r1, off_81491B4 // =off_2010CA0 
-	ldr r0, off_81491B8 // =byte_20103E0 
+	ldr r0, off_81491B8 // =rfuSlotId 
 	ldrb r2, [r0]
 	lsl r0, r2, #2
 	add r0, r0, r1
@@ -11065,7 +11065,7 @@ loc_8149164:
 off_81491B4:
 	.word off_2010CA0
 off_81491B8:
-	.word byte_20103E0
+	.word rfuSlotId
 off_81491BC:
 	.word byte_2010220
 off_81491C0:
@@ -11178,7 +11178,7 @@ loc_8149268:
 	ldr r1, off_8149344 // =dword_2010CC8 
 	add r0, #0x28 
 	str r0, [r1]
-	ldr r2, off_8149348 // =dword_2010CB0 
+	ldr r2, off_8149348 // =rfuConnectionSlots 
 	mov r1, #0xde
 	lsl r1, r1, #1
 	add r0, r4, r1
@@ -11222,7 +11222,7 @@ loc_8149294:
 	bl STWI_init_all
 	bl rfu_STC_clearAPIVariables
 	mov r5, #0
-	ldr r3, off_8149348 // =dword_2010CB0 
+	ldr r3, off_8149348 // =rfuConnectionSlots 
 	mov r2, #0
 loc_81492D8:
 	lsl r1, r5, #2
@@ -11285,7 +11285,7 @@ off_8149340:
 off_8149344:
 	.word dword_2010CC8
 off_8149348:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814934C:
 	.word off_2010CA0
 off_8149350:
@@ -11759,7 +11759,7 @@ rfu_REQ_stopMode:
 	mov r0, #0x3d 
 	mov r1, #6
 	bl rfu_STC_REQ_callback
-	ldr r0, off_8149668 // =dword_2010CCC 
+	ldr r0, off_8149668 // =pSTWIWork 
 	ldr r1, [r0]
 	ldrh r0, [r1,#0x12]
 	mov r0, #6
@@ -11769,7 +11769,7 @@ rfu_REQ_stopMode:
 off_8149664:
 	.word InterruptMasterEnableRegister
 off_8149668:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814966C:
 	bl AgbRFU_SoftReset
 	bl rfu_STC_clearAPIVariables
@@ -11778,7 +11778,7 @@ loc_814966C:
 	ldr r1, dword_81496BC // =0x8001 
 	cmp r0, r1
 	bne loc_81496D0
-	ldr r0, off_81496C0 // =dword_2010CCC 
+	ldr r0, off_81496C0 // =pSTWIWork 
 	ldr r0, [r0]
 	ldrb r0, [r0,#0xa]
 	lsl r0, r0, #2
@@ -11811,7 +11811,7 @@ loc_81496AA:
 dword_81496BC:
 	.word 0x8001
 off_81496C0:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_81496C4:
 	.word Timer0Counter_Reload
 dword_81496C8:
@@ -12074,7 +12074,7 @@ rfu_CB_configGameData:
 	lsr r7, r1, #0x10
 	cmp r7, #0
 	bne loc_814990A
-	ldr r0, off_81498C4 // =dword_2010CCC 
+	ldr r0, off_81498C4 // =pSTWIWork 
 	ldr r0, [r0]
 	ldr r1, [r0,#0x24]
 	ldr r0, off_81498C8 // =dword_2010CC0 
@@ -12102,7 +12102,7 @@ rfu_CB_configGameData:
 	b loc_81498D2
 	.balign 4, 0
 off_81498C4:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_81498C8:
 	.word dword_2010CC0
 loc_81498CC:
@@ -13208,7 +13208,7 @@ rfu_REQBN_watchLink:
 	bne loc_814A09E
 	b loc_814A3FE
 loc_814A09E:
-	ldr r0, off_814A104 // =dword_2010CCC 
+	ldr r0, off_814A104 // =pSTWIWork 
 	ldr r0, [r0]
 	ldrb r0, [r0,#0x14]
 	cmp r0, #0
@@ -13265,7 +13265,7 @@ loc_814A0FA:
 off_814A100:
 	.word dword_2010CC0
 off_814A104:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814A108:
 	.word dword_2010CC4
 off_814A10C:
@@ -14213,7 +14213,7 @@ rfu_getMasterSlave:
 	lsr r2, r0, #0x18
 	cmp r2, #1
 	bne loc_814A81E
-	ldr r0, off_814A824 // =dword_2010CCC 
+	ldr r0, off_814A824 // =pSTWIWork 
 	ldr r1, [r0]
 	mov r0, r1
 	add r0, #0x2c 
@@ -14235,7 +14235,7 @@ loc_814A81E:
 	bx r1
 	.balign 4, 0
 off_814A824:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end rfu_getMasterSlave
 
 // symdb: Clear all four wireless RFU slot buffers (data and link), mark each slot closed, reset the RFU link-state control bytes, and restore the saved IME state.
@@ -14261,7 +14261,7 @@ rfu_clearAllSlot:
 loc_814A844:
 	mov r0, sp
 	strh r7, [r0]
-	ldr r0, off_814A8B0 // =dword_2010CB0 
+	ldr r0, off_814A8B0 // =rfuConnectionSlots 
 	lsl r4, r5, #2
 	add r0, r4, r0
 	ldr r1, [r0]
@@ -14312,7 +14312,7 @@ loc_814A844:
 off_814A8AC:
 	.word InterruptMasterEnableRegister
 off_814A8B0:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 dword_814A8B4:
 	.word 0x1000034
 off_814A8B8:
@@ -14426,7 +14426,7 @@ loc_814A964:
 	cmp r0, #0
 	beq loc_814AA2C
 	mov r3, #0
-	ldr r1, off_814A9AC // =dword_2010CB0 
+	ldr r1, off_814A9AC // =rfuConnectionSlots 
 	lsl r0, r7, #2
 	add r0, r0, r1
 	mov r9, r0
@@ -14454,7 +14454,7 @@ loc_814A982:
 off_814A9A8:
 	.word InterruptMasterEnableRegister
 off_814A9AC:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814A9B0:
 	.word dword_2010CC0
 loc_814A9B4:
@@ -14647,7 +14647,7 @@ loc_814AB0C:
 	and r0, r3
 	cmp r0, #0
 	beq loc_814AB28
-	ldr r0, off_814AB24 // =dword_2010CB0 
+	ldr r0, off_814AB24 // =rfuConnectionSlots 
 	lsl r1, r1, #2
 	add r1, r1, r0
 	ldr r0, [r1]
@@ -14656,7 +14656,7 @@ loc_814AB0C:
 	b loc_814AB42
 	.balign 4, 0
 off_814AB24:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 loc_814AB28:
 	mov r0, #0x10
 	and r2, r0
@@ -14909,7 +14909,7 @@ loc_814ACBE:
 	cmp r6, #0x40 
 	bne loc_814AD94
 loc_814ACD8:
-	ldr r1, off_814AD10 // =dword_2010CB0 
+	ldr r1, off_814AD10 // =rfuConnectionSlots 
 	lsl r0, r2, #2
 	add r0, r0, r1
 	ldr r0, [r0]
@@ -14938,7 +14938,7 @@ loc_814ACD8:
 off_814AD0C:
 	.word InterruptMasterEnableRegister
 off_814AD10:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 loc_814AD14:
 	mov r0, #1
 	strb r0, [r1]
@@ -14971,7 +14971,7 @@ loc_814AD38:
 	bls loc_814AD38
 	mov r2, #0
 	mov r5, #1
-	ldr r4, off_814AD8C // =dword_2010CB0 
+	ldr r4, off_814AD8C // =rfuConnectionSlots 
 	mov r1, #0
 loc_814AD52:
 	mov r0, r3
@@ -15005,7 +15005,7 @@ loc_814AD64:
 	strh r0, [r2]
 	b loc_814ADCC
 off_814AD8C:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 dword_814AD90:
 	.word 0x8021
 loc_814AD94:
@@ -15084,7 +15084,7 @@ rfu_changeSendTarget:
 loc_814AE18:
 	cmp r0, #0x20 
 	bne loc_814AEB8
-	ldr r0, off_814AEA8 // =dword_2010CB0 
+	ldr r0, off_814AEA8 // =rfuConnectionSlots 
 	mov r12, r0
 	lsl r0, r7, #2
 	add r0, r12
@@ -15158,7 +15158,7 @@ loc_814AE9E:
 	b loc_814AF4A
 	.balign 4, 0
 off_814AEA8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 dword_814AEAC:
 	.word 0x8020
 off_814AEB0:
@@ -15270,7 +15270,7 @@ rfu_NI_stopReceivingData:
 	lsl r0, r0, #3
 	b loc_814AFC6
 loc_814AF6C:
-	ldr r1, off_814AF98 // =dword_2010CB0 
+	ldr r1, off_814AF98 // =rfuConnectionSlots 
 	lsl r0, r3, #2
 	add r0, r0, r1
 	ldr r2, [r0]
@@ -15294,7 +15294,7 @@ loc_814AF6C:
 	b loc_814AFA6
 	.balign 4, 0
 off_814AF98:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814AF9C:
 	.word InterruptMasterEnableRegister
 dword_814AFA0:
@@ -15600,7 +15600,7 @@ loc_814B1B2:
 	ldrb r0, [r0]
 	cmp r0, #1
 	bne loc_814B1E4
-	ldr r0, off_814B1E0 // =dword_2010CCC 
+	ldr r0, off_814B1E0 // =pSTWIWork 
 	ldr r0, [r0]
 	ldr r1, [r0,#0x1c]
 	cmp r1, #0
@@ -15616,7 +15616,7 @@ off_814B1D8:
 off_814B1DC:
 	.word dword_2010CC0
 off_814B1E0:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814B1E4:
 	ldr r0, off_814B1F4 // =rfu_CB_sendData2+1 
 	bl STWI_set_Callback_M
@@ -15652,7 +15652,7 @@ loc_814B20C:
 	mov r0, #0
 	strb r0, [r1,#2]
 loc_814B21E:
-	ldr r0, off_814B288 // =dword_2010CB0 
+	ldr r0, off_814B288 // =rfuConnectionSlots 
 	add r0, r2, r0
 	ldr r4, [r0]
 	ldrh r0, [r4]
@@ -15707,7 +15707,7 @@ dword_814B280:
 off_814B284:
 	.word off_2010CA0
 off_814B288:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814B28C:
 	.word dword_2010CC0
 	thumb_func_end rfu_CB_sendData
@@ -15785,7 +15785,7 @@ loc_814B2E0:
 	mov r10, r1
 loc_814B30A:
 	mov r5, #0
-	ldr r0, off_814B380 // =dword_2010CB0 
+	ldr r0, off_814B380 // =rfuConnectionSlots 
 	lsl r7, r6, #2
 	add r4, r7, r0
 	ldr r2, [r4]
@@ -15844,7 +15844,7 @@ off_814B378:
 dword_814B37C:
 	.word 0x8024
 off_814B380:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814B384:
 	.word off_2010CA0
 loc_814B388:
@@ -16357,7 +16357,7 @@ loc_814B720:
 	mov r8, r0
 	ldr r3, off_814B7B4 // =dword_2010CC0 
 loc_814B728:
-	ldr r0, off_814B7B8 // =dword_2010CB0 
+	ldr r0, off_814B7B8 // =rfuConnectionSlots 
 	lsl r1, r6, #2
 	add r1, r1, r0
 	ldr r4, [r1]
@@ -16431,7 +16431,7 @@ dword_814B7B0:
 off_814B7B4:
 	.word dword_2010CC0
 off_814B7B8:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814B7BC:
 	.word dword_2010CC4
 	thumb_func_end rfu_CB_recvData
@@ -16760,7 +16760,7 @@ loc_814BA04:
 	b loc_814BADC
 loc_814BA18:
 	mov r4, #0
-	ldr r1, off_814BA30 // =dword_2010CB0 
+	ldr r1, off_814BA30 // =rfuConnectionSlots 
 	ldr r0, [r1]
 	ldrb r0, [r0,#0x1a]
 	mov r5, r12
@@ -16772,7 +16772,7 @@ loc_814BA18:
 	b loc_814BA5A
 	.byte 0, 0
 off_814BA30:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 loc_814BA34:
 	add r0, r4, #1
 	lsl r0, r0, #0x18
@@ -16988,7 +16988,7 @@ rfu_STC_NI_receive_Sender:
 	lsl r1, r1, #0x18
 	lsr r1, r1, #0x18
 	mov r10, r1
-	ldr r1, off_814BC74 // =dword_2010CB0 
+	ldr r1, off_814BC74 // =rfuConnectionSlots 
 	lsr r0, r0, #0x16
 	add r0, r0, r1
 	ldr r0, [r0]
@@ -17085,7 +17085,7 @@ loc_814BC22:
 	b loc_814BC9E
 	.balign 4, 0
 off_814BC74:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 dword_814BC78:
 	.word 0x8022
 dword_814BC7C:
@@ -17212,7 +17212,7 @@ loc_814BD48:
 	mov r1, #0
 	strb r0, [r3,#2]
 	lsl r0, r7, #2
-	ldr r3, off_814BD90 // =dword_2010CB0 
+	ldr r3, off_814BD90 // =rfuConnectionSlots 
 	add r0, r0, r3
 	ldr r0, [r0]
 	strh r1, [r0,#2]
@@ -17236,7 +17236,7 @@ off_814BD88:
 off_814BD8C:
 	.word dword_2010CC4
 off_814BD90:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 	thumb_func_end rfu_STC_NI_receive_Sender
 
 	thumb_local_start
@@ -17253,7 +17253,7 @@ rfu_STC_NI_receive_Receiver:
 	lsr r0, r0, #0x18
 	mov r8, r0
 	mov r7, #0
-	ldr r1, off_814BDF4 // =dword_2010CB0 
+	ldr r1, off_814BDF4 // =rfuConnectionSlots 
 	lsl r0, r0, #2
 	add r0, r0, r1
 	ldr r4, [r0]
@@ -17291,7 +17291,7 @@ rfu_STC_NI_receive_Receiver:
 	b loc_814BE4A
 	.balign 4, 0
 off_814BDF4:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814BDF8:
 	.word dword_2010CC4
 dword_814BDFC:
@@ -17543,7 +17543,7 @@ rfu_STC_NI_initSlot_asRecvDataEntity:
 off_814BFC0:
 	.word dword_2010CC0
 loc_814BFC4:
-	ldr r1, off_814C008 // =dword_2010CB0 
+	ldr r1, off_814C008 // =rfuConnectionSlots 
 	lsl r0, r5, #2
 	add r0, r0, r1
 	ldr r2, [r0]
@@ -17577,7 +17577,7 @@ loc_814BFC4:
 	b loc_814C04C
 	.balign 4, 0x00
 off_814C008:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 off_814C00C:
 	.word dword_2010CC4
 off_814C010:
@@ -17644,7 +17644,7 @@ rfu_NI_checkCommFailCounter:
 	mov r3, #0
 	mov r6, r1
 	mov r5, r2
-	ldr r4, off_814C0F0 // =dword_2010CB0 
+	ldr r4, off_814C0F0 // =rfuConnectionSlots 
 loc_814C082:
 	mov r0, #0x80
 	lsl r0, r0, #0x11
@@ -17706,7 +17706,7 @@ off_814C0E8:
 off_814C0EC:
 	.word dword_2010CC4
 off_814C0F0:
-	.word dword_2010CB0
+	.word rfuConnectionSlots
 	thumb_func_end rfu_NI_checkCommFailCounter
 
 	thumb_local_start 2
@@ -17742,7 +17742,7 @@ STWI_init_all:
 	ldr r0, dword_814C13C // =0x800004b0 
 	str r0, [r1,#0x8] // (DMA3WordCount - 0x40000d4)
 	ldr r0, [r1,#0x8] // (DMA3WordCount - 0x40000d4)
-	ldr r1, off_814C140 // =dword_2010CCC 
+	ldr r1, off_814C140 // =pSTWIWork 
 	ldr r2, dword_814C144 // =0xa48 
 	add r0, r3, r2
 	b loc_814C152
@@ -17754,13 +17754,13 @@ off_814C138:
 dword_814C13C:
 	.word 0x800004B0
 off_814C140:
-	.word dword_2010CCC
+	.word pSTWIWork
 dword_814C144:
 	.word 0xA48
 loc_814C148:
 	ldr r0, off_814C1CC // =IntrSIO32
 	str r0, [r1]
-	ldr r1, off_814C1D0 // =dword_2010CCC 
+	ldr r1, off_814C1D0 // =pSTWIWork 
 	mov r0, r3
 	add r0, #0xe8
 loc_814C152:
@@ -17826,7 +17826,7 @@ loc_814C152:
 off_814C1CC:
 	.word IntrSIO32
 off_814C1D0:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814C1D4:
 	.word SIOModeSelect_GeneralPurposeData
 dword_814C1D8:
@@ -17846,7 +17846,7 @@ STWI_init_timer:
 	push {r4,r5,lr}
 	ldr r2, off_814C210 // =STWI_intr_timer+1 
 	str r2, [r0]
-	ldr r5, off_814C214 // =dword_2010CCC 
+	ldr r5, off_814C214 // =pSTWIWork 
 	ldr r0, [r5]
 	mov r4, #0
 	strb r1, [r0,#0xa]
@@ -17869,7 +17869,7 @@ STWI_init_timer:
 off_814C210:
 	.word STWI_intr_timer+1
 off_814C214:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814C218:
 	.word InterruptMasterEnableRegister
 off_814C21C:
@@ -17887,7 +17887,7 @@ AgbRFU_SoftReset:
 	ldr r2, dword_814C2BC // =0x80a0 
 	mov r0, r2
 	strh r0, [r5]
-	ldr r1, off_814C2C0 // =dword_2010CCC 
+	ldr r1, off_814C2C0 // =pSTWIWork 
 	ldr r0, [r1]
 	ldrb r0, [r0,#0xa]
 	lsl r0, r0, #2
@@ -17962,7 +17962,7 @@ off_814C2B8:
 dword_814C2BC:
 	.word 0x80A0
 off_814C2C0:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814C2C4:
 	.word Timer0Counter_Reload
 off_814C2C8:
@@ -17984,7 +17984,7 @@ STWI_set_MS_mode:
 	bx r14
 	.balign 4, 0
 off_814C2E4:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_set_MS_mode
 
 	thumb_local_start
@@ -18007,36 +18007,36 @@ loc_814C2FE:
 	beq loc_814C330
 	b loc_814C33C
 loc_814C308:
-	ldr r0, off_814C310 // =dword_2010CCC 
+	ldr r0, off_814C310 // =pSTWIWork 
 	ldr r0, [r0]
 	ldrh r0, [r0,#0x12]
 	b loc_814C33E
 	.balign 4, 0
 off_814C310:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C314:
-	ldr r0, off_814C31C // =dword_2010CCC 
+	ldr r0, off_814C31C // =pSTWIWork 
 	ldr r0, [r0]
 	ldrb r0, [r0,#0x14]
 	b loc_814C33E
 off_814C31C:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C320:
-	ldr r0, off_814C32C // =dword_2010CCC 
+	ldr r0, off_814C32C // =pSTWIWork 
 	ldr r0, [r0]
 	ldr r0, [r0]
 	lsl r0, r0, #0x10
 	lsr r0, r0, #0x10
 	b loc_814C33E
 off_814C32C:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C330:
-	ldr r0, off_814C338 // =dword_2010CCC 
+	ldr r0, off_814C338 // =pSTWIWork 
 	ldr r0, [r0]
 	ldrb r0, [r0,#6]
 	b loc_814C33E
 off_814C338:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C33C:
 	ldr r0, dword_814C344 // =0xffff 
 loc_814C33E:
@@ -18079,12 +18079,12 @@ STWI_init_Callback_S:
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_M.yaml
 	thumb_local_start
 STWI_set_Callback_M:
-	ldr r1, off_814C368 // =dword_2010CCC 
+	ldr r1, off_814C368 // =pSTWIWork 
 	ldr r1, [r1]
 	str r0, [r1,#0x18]
 	bx lr
 off_814C368:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_set_Callback_M
 
 // symdb: Registers a callback function in the wireless (STWI) driver work area to be invoked when a wireless send completes.
@@ -18092,12 +18092,12 @@ off_814C368:
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_S.yaml
 	thumb_local_start
 STWI_set_Callback_S:
-	ldr r1, off_814C374 // =dword_2010CCC 
+	ldr r1, off_814C374 // =pSTWIWork 
 	ldr r1, [r1]
 	str r0, [r1,#0x1c]
 	bx lr
 off_814C374:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_set_Callback_S
 
 // symdb: Sets the wireless (STWI) callback ID by storing it into the callback-ID field of the STWI work struct.
@@ -18105,18 +18105,18 @@ off_814C374:
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/STWI_set_Callback_ID.yaml
 	thumb_local_start
 STWI_set_Callback_ID:
-	ldr r1, off_814C380 // =dword_2010CCC 
+	ldr r1, off_814C380 // =pSTWIWork 
 	ldr r1, [r1]
 	str r0, [r1,#0x20]
 	bx lr
 off_814C380:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_set_Callback_ID
 
 	thumb_local_start
 STWI_poll_CommandEnd:
 	push {lr}
-	ldr r0, off_814C3A8 // =dword_2010CCC 
+	ldr r0, off_814C3A8 // =pSTWIWork 
 	ldr r1, [r0]
 	mov r2, r1
 	add r2, #0x2c 
@@ -18136,7 +18136,7 @@ loc_814C39E:
 	bx r1
 	.balign 4, 0
 off_814C3A8:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_poll_CommandEnd
 
 	thumb_local_start
@@ -18148,7 +18148,7 @@ STWI_send_ResetREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C3C6
-	ldr r0, off_814C3CC // =dword_2010CCC 
+	ldr r0, off_814C3CC // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18157,7 +18157,7 @@ loc_814C3C6:
 	bx r0
 	.balign 4, 0
 off_814C3CC:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_ResetREQ
 
 	thumb_local_start
@@ -18169,7 +18169,7 @@ STWI_send_LinkStatusREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C3EA
-	ldr r0, off_814C3F0 // =dword_2010CCC 
+	ldr r0, off_814C3F0 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18178,7 +18178,7 @@ loc_814C3EA:
 	bx r0
 	.balign 4, 0
 off_814C3F0:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_LinkStatusREQ
 
 	thumb_local_start 2
@@ -18190,7 +18190,7 @@ STWI_send_VersionStatusREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C40E
-	ldr r0, off_814C414 // =dword_2010CCC 
+	ldr r0, off_814C414 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18199,7 +18199,7 @@ loc_814C40E:
 	bx r0
 	.balign 4, 0x00
 off_814C414:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_VersionStatusREQ
 
 	thumb_local_start 2
@@ -18211,7 +18211,7 @@ STWI_send_SystemStatusREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C432
-	ldr r0, off_814C438 // =dword_2010CCC 
+	ldr r0, off_814C438 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18220,7 +18220,7 @@ loc_814C432:
 	bx r0
 	.balign 4, 0
 off_814C438:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SystemStatusREQ
 
 	thumb_local_start
@@ -18232,7 +18232,7 @@ STWI_send_SlotStatusREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C456
-	ldr r0, off_814C45C // =dword_2010CCC 
+	ldr r0, off_814C45C // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18241,7 +18241,7 @@ loc_814C456:
 	bx r0
 	.balign 4, 0
 off_814C45C:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SlotStatusREQ
 
 	thumb_local_start 2
@@ -18253,7 +18253,7 @@ STWI_send_ConfigStatusREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C47A
-	ldr r0, off_814C480 // =dword_2010CCC 
+	ldr r0, off_814C480 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18262,7 +18262,7 @@ loc_814C47A:
 	bx r0
 	.balign 4, 0
 off_814C480:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_ConfigStatusREQ
 
 	thumb_local_start
@@ -18275,7 +18275,7 @@ STWI_send_GameConfigREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C4D0
-	ldr r2, off_814C4D8 // =dword_2010CCC 
+	ldr r2, off_814C4D8 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #6
 	strb r0, [r1,#4]
@@ -18311,7 +18311,7 @@ loc_814C4D0:
 	bx r0
 	.balign 4, 0
 off_814C4D8:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_GameConfigREQ
 
 	thumb_local_start
@@ -18328,7 +18328,7 @@ STWI_send_SystemConfigREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C512
-	ldr r2, off_814C518 // =dword_2010CCC 
+	ldr r2, off_814C518 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18347,7 +18347,7 @@ loc_814C512:
 	bx r0
 	.balign 4, 0
 off_814C518:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SystemConfigREQ
 
 	thumb_local_start
@@ -18359,7 +18359,7 @@ STWI_send_SC_StartREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C536
-	ldr r0, off_814C53C // =dword_2010CCC 
+	ldr r0, off_814C53C // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18368,7 +18368,7 @@ loc_814C536:
 	bx r0
 	.balign 4, 0
 off_814C53C:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SC_StartREQ
 
 	thumb_local_start
@@ -18380,7 +18380,7 @@ STWI_send_SC_PollingREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C55A
-	ldr r0, off_814C560 // =dword_2010CCC 
+	ldr r0, off_814C560 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18389,7 +18389,7 @@ loc_814C55A:
 	bx r0
 	.balign 4, 0
 off_814C560:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SC_PollingREQ
 
 	thumb_local_start
@@ -18401,7 +18401,7 @@ STWI_send_SC_EndREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C57E
-	ldr r0, off_814C584 // =dword_2010CCC 
+	ldr r0, off_814C584 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18410,7 +18410,7 @@ loc_814C57E:
 	bx r0
 	.balign 4, 0
 off_814C584:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SC_EndREQ
 
 	thumb_local_start
@@ -18422,7 +18422,7 @@ STWI_send_SP_StartREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C5A2
-	ldr r0, off_814C5A8 // =dword_2010CCC 
+	ldr r0, off_814C5A8 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18431,7 +18431,7 @@ loc_814C5A2:
 	bx r0
 	.balign 4, 0
 off_814C5A8:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SP_StartREQ
 
 	thumb_local_start
@@ -18443,7 +18443,7 @@ STWI_send_SP_PollingREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C5C6
-	ldr r0, off_814C5CC // =dword_2010CCC 
+	ldr r0, off_814C5CC // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18452,7 +18452,7 @@ loc_814C5C6:
 	bx r0
 	.balign 4, 0
 off_814C5CC:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SP_EndREQ
 
 	thumb_local_start
@@ -18464,7 +18464,7 @@ STWI_send_SP_EndREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C5EA
-	ldr r0, off_814C5F0 // =dword_2010CCC 
+	ldr r0, off_814C5F0 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18473,7 +18473,7 @@ loc_814C5EA:
 	bx r0
 	.balign 4, 0
 off_814C5F0:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_SP_EndREQ
 
 	thumb_local_start
@@ -18486,7 +18486,7 @@ STWI_send_CP_StartREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C618
-	ldr r2, off_814C620 // =dword_2010CCC 
+	ldr r2, off_814C620 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18500,7 +18500,7 @@ loc_814C618:
 	bx r0
 	.balign 4, 0
 off_814C620:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CP_StartREQ
 
 	thumb_local_start
@@ -18512,7 +18512,7 @@ STWI_send_CP_PollingREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C63E
-	ldr r0, off_814C644 // =dword_2010CCC 
+	ldr r0, off_814C644 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18521,7 +18521,7 @@ loc_814C63E:
 	bx r0
 	.balign 4, 0
 off_814C644:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CP_PollingREQ
 
 	thumb_local_start
@@ -18533,7 +18533,7 @@ STWI_send_CP_EndREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C662
-	ldr r0, off_814C668 // =dword_2010CCC 
+	ldr r0, off_814C668 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18542,7 +18542,7 @@ loc_814C662:
 	bx r0
 	.balign 4, 0
 off_814C668:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CP_EndREQ
 
 	thumb_local_start
@@ -18563,7 +18563,7 @@ STWI_send_DataTxREQ:
 	beq loc_814C68C
 	add r2, #1
 loc_814C68C:
-	ldr r1, off_814C6B0 // =dword_2010CCC 
+	ldr r1, off_814C6B0 // =pSTWIWork 
 	ldr r0, [r1]
 	strb r2, [r0,#4]
 	ldr r0, [r1]
@@ -18582,7 +18582,7 @@ loc_814C6AA:
 	bx r0
 	.balign 4, 0
 off_814C6B0:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DataTxREQ
 
 	thumb_local_start
@@ -18603,7 +18603,7 @@ STWI_send_DataTxAndChangeREQ:
 	beq loc_814C6D4
 	add r2, #1
 loc_814C6D4:
-	ldr r1, off_814C6F8 // =dword_2010CCC 
+	ldr r1, off_814C6F8 // =pSTWIWork 
 	ldr r0, [r1]
 	strb r2, [r0,#4]
 	ldr r0, [r1]
@@ -18622,7 +18622,7 @@ loc_814C6F2:
 	bx r0
 	.balign 4, 0
 off_814C6F8:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DataTxAndChangeREQ
 
 	thumb_local_start
@@ -18634,7 +18634,7 @@ STWI_send_DataRxREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C716
-	ldr r0, off_814C71C // =dword_2010CCC 
+	ldr r0, off_814C71C // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18643,7 +18643,7 @@ loc_814C716:
 	bx r0
 	.balign 4, 0
 off_814C71C:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DataRxREQ
 
 	thumb_local_start
@@ -18655,7 +18655,7 @@ STWI_send_MS_ChangeREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C73A
-	ldr r0, off_814C740 // =dword_2010CCC 
+	ldr r0, off_814C740 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18664,7 +18664,7 @@ loc_814C73A:
 	bx r0
 	.balign 4, 0
 off_814C740:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_MS_ChangeREQ
 
 	thumb_local_start
@@ -18681,15 +18681,15 @@ STWI_send_DataReadyAndChangeREQ:
 	bne loc_814C78A
 	cmp r4, #0
 	bne loc_814C76C
-	ldr r0, off_814C768 // =dword_2010CCC 
+	ldr r0, off_814C768 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r3, [r0,#4]
 	b loc_814C786
 	.balign 4, 0
 off_814C768:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C76C:
-	ldr r2, off_814C790 // =dword_2010CCC 
+	ldr r2, off_814C790 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18709,7 +18709,7 @@ loc_814C78A:
 	pop {r0}
 	bx r0
 off_814C790:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DataReadyAndChangeREQ
 
 	thumb_local_start
@@ -18725,7 +18725,7 @@ STWI_send_DisconnectedAndChangeREQ:
 	lsr r3, r0, #0x10
 	cmp r3, #0
 	bne loc_814C7CA
-	ldr r2, off_814C7D0 // =dword_2010CCC 
+	ldr r2, off_814C7D0 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18745,7 +18745,7 @@ loc_814C7CA:
 	bx r0
 	.balign 4, 0
 off_814C7D0:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DisconnectedAndChangeREQ
 
 	thumb_local_start
@@ -18757,7 +18757,7 @@ STWI_send_ResumeRetransmitAndChangeREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C7EE
-	ldr r0, off_814C7F4 // =dword_2010CCC 
+	ldr r0, off_814C7F4 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18766,7 +18766,7 @@ loc_814C7EE:
 	bx r0
 	.balign 4, 0
 off_814C7F4:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_ResumeRetransmitAndChangeREQ
 
 	thumb_local_start
@@ -18779,7 +18779,7 @@ STWI_send_DisconnectREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C81C
-	ldr r2, off_814C824 // =dword_2010CCC 
+	ldr r2, off_814C824 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18793,7 +18793,7 @@ loc_814C81C:
 	bx r0
 	.balign 4, 0
 off_814C824:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_DisconnectREQ
 
 	thumb_local_start
@@ -18808,7 +18808,7 @@ STWI_send_TestModeREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C854
-	ldr r2, off_814C85C // =dword_2010CCC 
+	ldr r2, off_814C85C // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #1
 	strb r0, [r1,#4]
@@ -18824,7 +18824,7 @@ loc_814C854:
 	bx r0
 	.balign 4, 0
 off_814C85C:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_TestModeREQ
 
 	thumb_local_start
@@ -18841,7 +18841,7 @@ STWI_send_CPR_StartREQ:
 	lsl r0, r0, #0x10
 	cmp r0, #0
 	bne loc_814C892
-	ldr r2, off_814C898 // =dword_2010CCC 
+	ldr r2, off_814C898 // =pSTWIWork 
 	ldr r1, [r2]
 	mov r0, #2
 	strb r0, [r1,#4]
@@ -18858,7 +18858,7 @@ loc_814C892:
 	bx r0
 	.balign 4, 0
 off_814C898:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CPR_StartREQ
 
 	thumb_local_start
@@ -18870,7 +18870,7 @@ STWI_send_CPR_PollingREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C8B6
-	ldr r0, off_814C8BC // =dword_2010CCC 
+	ldr r0, off_814C8BC // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18879,7 +18879,7 @@ loc_814C8B6:
 	bx r0
 	.balign 4, 0
 off_814C8BC:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CPR_PollingREQ
 
 	thumb_local_start
@@ -18891,7 +18891,7 @@ STWI_send_CPR_EndREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C8DA
-	ldr r0, off_814C8E0 // =dword_2010CCC 
+	ldr r0, off_814C8E0 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18900,7 +18900,7 @@ loc_814C8DA:
 	bx r0
 	.balign 4, 0
 off_814C8E0:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_CPR_EndREQ
 
 	thumb_local_start
@@ -18912,7 +18912,7 @@ STWI_send_StopModeREQ:
 	lsr r1, r0, #0x10
 	cmp r1, #0
 	bne loc_814C8FE
-	ldr r0, off_814C904 // =dword_2010CCC 
+	ldr r0, off_814C904 // =pSTWIWork 
 	ldr r0, [r0]
 	strb r1, [r0,#4]
 	bl STWI_start_Command
@@ -18921,13 +18921,13 @@ loc_814C8FE:
 	bx r0
 	.balign 4, 0
 off_814C904:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end STWI_send_StopModeREQ
 
 	thumb_local_start
 STWI_intr_timer:
 	push {r4,lr}
-	ldr r4, off_814C920 // =dword_2010CCC 
+	ldr r4, off_814C920 // =pSTWIWork 
 	ldr r1, [r4]
 	ldr r0, [r1,#0xc]
 	cmp r0, #2
@@ -18939,7 +18939,7 @@ STWI_intr_timer:
 	b loc_814C964
 	.balign 4, 0
 off_814C920:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814C924:
 	cmp r0, #3
 	beq loc_814C946
@@ -18983,7 +18983,7 @@ STWI_set_timer:
 	lsl r0, r0, #0x18
 	lsr r3, r0, #0x18
 	mov r5, r3
-	ldr r2, off_814C99C // =dword_2010CCC 
+	ldr r2, off_814C99C // =pSTWIWork 
 	ldr r0, [r2]
 	ldrb r0, [r0,#0xa]
 	lsl r0, r0, #2
@@ -19004,7 +19004,7 @@ STWI_set_timer:
 	b loc_814C9F0
 	.balign 4, 0
 off_814C99C:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814C9A0:
 	.word Timer0Counter_Reload
 off_814C9A4:
@@ -19076,7 +19076,7 @@ off_814CA14:
 
 	thumb_local_start
 STWI_stop_timer:
-	ldr r2, off_814CA38 // =dword_2010CCC 
+	ldr r2, off_814CA38 // =pSTWIWork 
 	ldr r0, [r2]
 	mov r1, #0
 	str r1, [r0,#0xc]
@@ -19094,7 +19094,7 @@ STWI_stop_timer:
 	bx lr
 	.balign 4, 0
 off_814CA38:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814CA3C:
 	.word Timer0Counter_Reload
 off_814CA40:
@@ -19111,7 +19111,7 @@ STWI_init:
 	ldrh r0, [r0]
 	cmp r0, #0
 	bne loc_814CA78
-	ldr r0, off_814CA74 // =dword_2010CCC 
+	ldr r0, off_814CA74 // =pSTWIWork 
 	ldr r1, [r0]
 	ldrh r0, [r1,#0x12]
 	mov r0, #6
@@ -19127,9 +19127,9 @@ STWI_init:
 off_814CA70:
 	.word InterruptMasterEnableRegister
 off_814CA74:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814CA78:
-	ldr r4, off_814CAA4 // =dword_2010CCC 
+	ldr r4, off_814CAA4 // =pSTWIWork 
 	ldr r2, [r4]
 	mov r3, r2
 	add r3, #0x2c 
@@ -19152,7 +19152,7 @@ loc_814CA9E:
 	bl rfu_callFuncByPtr_814DA68
 	b loc_814CAC2
 off_814CAA4:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814CAA8:
 	ldrb r0, [r2,#0x14]
 	cmp r0, #0
@@ -19219,7 +19219,7 @@ dword_814CB18:
 	thumb_local_start
 STWI_start_Command:
 	push {r4,r5,lr}
-	ldr r5, off_814CB74 // =dword_2010CCC 
+	ldr r5, off_814CB74 // =pSTWIWork 
 	ldr r0, [r5]
 	ldr r3, [r0,#0x24]
 	ldrb r1, [r0,#4]
@@ -19264,7 +19264,7 @@ STWI_start_Command:
 	bx r1
 	.balign 4, 0
 off_814CB74:
-	.word dword_2010CCC
+	.word pSTWIWork
 dword_814CB78:
 	.word 0x99660000
 off_814CB7C:
@@ -19282,7 +19282,7 @@ dword_814CB8C:
 	thumb_local_start
 STWI_restart_Command:
 	push {r4,lr}
-	ldr r4, off_814CBA8 // =dword_2010CCC 
+	ldr r4, off_814CBA8 // =pSTWIWork 
 	ldr r2, [r4]
 	ldrb r0, [r2,#0x15]
 	mov r3, r4
@@ -19294,7 +19294,7 @@ STWI_restart_Command:
 	b loc_814CC06
 	.balign 4, 0
 off_814CBA8:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814CBAC:
 	ldrb r0, [r2,#6]
 	cmp r0, #0x27 
@@ -19352,7 +19352,7 @@ loc_814CC06:
 
 	thumb_local_start 2
 STWI_reset_ClockCounter:
-	ldr r3, off_814CC3C // =dword_2010CCC 
+	ldr r3, off_814CC3C // =pSTWIWork 
 	ldr r1, [r3]
 	mov r0, #5
 	str r0, [r1]
@@ -19376,7 +19376,7 @@ STWI_reset_ClockCounter:
 	bx lr
 	.balign 4, 0
 off_814CC3C:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814CC40:
 	.word SIOData0_Parent__Multi_PlayerMode_
 dword_814CC44:
@@ -19404,7 +19404,7 @@ loc_814CC64:
 	ldr r0, off_814CC90 // =InterruptEnableRegister 
 	ldrh r0, [r0]
 	mov r8, r0
-	ldr r4, off_814CC94 // =dword_2010CCC 
+	ldr r4, off_814CC94 // =pSTWIWork 
 	ldr r1, [r4]
 	mov r0, #0xa
 	str r0, [r1]
@@ -19424,7 +19424,7 @@ loc_814CC64:
 off_814CC90:
 	.word InterruptEnableRegister
 off_814CC94:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814CC98:
 	.word Sio32IDIntr+1
 off_814CC9C:
@@ -19459,7 +19459,7 @@ loc_814CCC6:
 	strh r2, [r0]
 	mov r0, #1
 	strh r0, [r1]
-	ldr r0, off_814CCF8 // =dword_2010CCC 
+	ldr r0, off_814CCF8 // =pSTWIWork 
 	ldr r1, [r0]
 	mov r0, #0
 	str r0, [r1]
@@ -19477,7 +19477,7 @@ off_814CCF0:
 off_814CCF4:
 	.word InterruptEnableRegister
 off_814CCF8:
-	.word dword_2010CCC
+	.word pSTWIWork
 	thumb_func_end AgbRFU_checkID
 
 // symdb: Initializes the GBA serial I/O hardware into multiplayer-link mode, readying the link-cable ID buffer before the handshake begins.
@@ -19491,7 +19491,7 @@ Sio32IDInit:
 	mov r4, #0
 	strh r4, [r3]
 	ldr r2, off_814CD58 // =InterruptEnableRegister 
-	ldr r0, off_814CD5C // =dword_2010CCC 
+	ldr r0, off_814CD5C // =pSTWIWork 
 	ldr r0, [r0]
 	mov r1, #8
 	ldrb r0, [r0,#0xa]
@@ -19534,7 +19534,7 @@ off_814CD54:
 off_814CD58:
 	.word InterruptEnableRegister
 off_814CD5C:
-	.word dword_2010CCC
+	.word pSTWIWork
 off_814CD60:
 	.word SIOModeSelect_GeneralPurposeData
 off_814CD64:
@@ -19854,7 +19854,7 @@ loc_814CFA8:
 	ldmdb fp, {fp, sp, lr}
 	bx lr
 off_814CFB4:
-	.word dword_2010CCC
+	.word pSTWIWork
 sub_814CFB8:
 	mov ip, sp
 	push {r4, r5, r6, fp, ip, lr, pc}
@@ -20025,7 +20025,7 @@ loc_814D200:
 	bl sub_814D8A8
 	b loc_814D240
 dword_814D22C:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814D230:
 	add r3, r5, #3
 	strh r3, [r4]
@@ -20287,7 +20287,7 @@ loc_814D5E4:
 	bhi loc_814D5E4
 	b loc_814D620
 dword_814D5F4:
-	.word dword_2010CCC
+	.word pSTWIWork
 dword_814D5F8:
 	.word 0x996601ee
 loc_814D5FC:
@@ -20345,7 +20345,7 @@ loc_814D6A4:
 	ldmdb fp, {fp, sp, lr}
 	bx lr
 dword_814D6B8:
-	.word dword_2010CCC
+	.word pSTWIWork
 sub_814D6BC:
 	mov ip, sp
 	push {r4, r5, fp, ip, lr, pc}
@@ -20398,7 +20398,7 @@ loc_814D75C:
 	mov r3, #3
 	b loc_814D78C
 dword_814D774:
-	.word dword_2010CCC
+	.word pSTWIWork
 loc_814D778:
 	mvn r3, #2128
 	sub r3, r3, #2
@@ -20444,7 +20444,7 @@ sub_814D7CC:
 	ldmdb fp, {fp, sp, lr}
 	bx lr
 dword_814D818:
-	.word dword_2010CCC
+	.word pSTWIWork
 sub_814D81C:
 	mov ip, sp
 	push {fp, ip, lr, pc}
@@ -20481,7 +20481,7 @@ sub_814D81C:
 	ldmdb fp, {fp, sp, lr}
 	bx lr
 off_814D8A4:
-	.word dword_2010CCC
+	.word pSTWIWork
 sub_814D8A8:
 	bx r2
 sub_814D8AC:

@@ -524,12 +524,12 @@ void __noreturn chipFolder_initGfx_812386C()
         v3 = v1 + 4;
         v4 = *(&off_812391C + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_812391C + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_812391C + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -537,8 +537,8 @@ void __noreturn chipFolder_initGfx_812386C()
         while ( v5 < 2 );
     }
     while ( v1 < 64 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(&dword_8123964);
     battle_loadTileGridByNavi_8123300(&off_81238E4, &eTextScript201C220, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, eTextScript201BA20, 30, dword_14);
@@ -1240,12 +1240,12 @@ void subchip_initGfx_81243B0()
         v3 = v1 + 4;
         v4 = *(&off_8124450 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8124450 + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8124450 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -1253,8 +1253,8 @@ void subchip_initGfx_81243B0()
         while ( v5 < 2 );
     }
     while ( v1 < 48 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(byte_8124488);
     battle_loadTileGridByNavi_8123300(&off_8124410, &eTextScript201C100, eDecompBuffer2013A00);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
@@ -4408,12 +4408,12 @@ void initTitleScreens_81270D0()
         v3 = v1 + 4;
         v4 = *(&off_8127160 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8127160 + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8127160 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -4421,8 +4421,8 @@ void initTitleScreens_81270D0()
         while ( v5 < 2 );
     }
     while ( v1 < 32 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(byte_8127188);
     battle_loadTileGridByNavi_8123300(off_8127120, eTextScript201BF20, eDecompBuffer2013A00);
 }
@@ -5169,12 +5169,12 @@ void __noreturn battle_setupSceneTiles_8127CB8()
         v4 = v2 + 4;
         v5 = *(&off_8127DB8 + v4);
         v2 = v4 + 4;
-        *(&unk_20096E0 + v1) = getKeyedTableEntry_811FB84(v3, v5);
+        *(&eDecompInitRefsBuffer + v1) = getKeyedTableEntry_811FB84(v3, v5);
         v1 += 4;
         v6 = 0;
         do
         {
-            *(&unk_20096E0 + v1) = *(&off_8127DB8 + v2);
+            *(&eDecompInitRefsBuffer + v1) = *(&off_8127DB8 + v2);
             v1 += 4;
             v2 += 4;
             ++v6;
@@ -5182,8 +5182,8 @@ void __noreturn battle_setupSceneTiles_8127CB8()
         while ( v6 < 2 );
     }
     while ( v2 < 48 );
-    *(&unk_20096E0 + v1) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v1) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(byte_8127DF0);
     v7 = &off_8127D78;
     if ( v9 & 1 )
@@ -5927,12 +5927,12 @@ void init_loadScreenAssets()
         v3 = v1 + 4;
         v4 = *(&off_8128950 + v3);
         v1 = v3 + 4;
-        *(&unk_20096E0 + v0) = getKeyedTableEntry_811FB84(v2, v4);
+        *(&eDecompInitRefsBuffer + v0) = getKeyedTableEntry_811FB84(v2, v4);
         v0 += 4;
         v5 = 0;
         do
         {
-            *(&unk_20096E0 + v0) = *(&off_8128950 + v1);
+            *(&eDecompInitRefsBuffer + v0) = *(&off_8128950 + v1);
             v0 += 4;
             v1 += 4;
             ++v5;
@@ -5940,8 +5940,8 @@ void init_loadScreenAssets()
         while ( v5 < 2 );
     }
     while ( v1 < 32 );
-    *(&unk_20096E0 + v0) = 0;
-    decompAndCopyData(&unk_20096E0);
+    *(&eDecompInitRefsBuffer + v0) = 0;
+    decompAndCopyData(&eDecompInitRefsBuffer);
     decompAndCopyData(byte_8128978);
     CopyBackgroundTiles(0, 0, 1, &eTextScript201BA00, 30, dword_14);
 }

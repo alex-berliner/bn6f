@@ -95319,8 +95319,8 @@ dword_86B7AA0::
 	.word 0x7BFE0000, 0x1CE82928, 0x1CE87BFE, 0x6F9B7BFE, 0x28E62E1F
 	.word 0x128409E0, 0x3E70326, 0x7BFE27EE
 // symdb: Proposed name: ChatboxPalette. default 32-byte palette copied into the chatbox palette buffer and queued for palette upload (table of what)
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/dword_86B7AC0.yaml
-dword_86B7AC0::
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ChatboxPalette.yaml
+ChatboxPalette::
 	.word 0x1CE87BFE, 0x6F9B7379, 0x7BFE0000, 0x1CE82928, 0x28E62E1F
 	.word 0x128409E0, 0x3E70326, 0x7BFE27EE
 dword_86B7AE0::

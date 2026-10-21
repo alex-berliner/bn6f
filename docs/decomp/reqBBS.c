@@ -430,10 +430,10 @@ int __fastcall reqBBS_addBBSMessage_813e5dc(unsigned int a1)
     SetEventFlag(&loc_19A0 + v1 - &loc_17A0);
     v2 = v1 - &loc_17A0;
     v3 = 4 * (v2 >> 6) & 0xFFFFFFF;
-    v4 = *(&unk_2000FC0 + v3);
+    v4 = *(&BBSMessageCounts + v3);
     byte_2001400[64 * (v2 >> 6) + v4] = v2 & 0x3F;
     result = v4 + 1;
-    *(&unk_2000FC0 + v3) = result;
+    *(&BBSMessageCounts + v3) = result;
     return result;
 }
 
@@ -442,7 +442,7 @@ int __fastcall reqBBS_addBBSMessage_813e5dc(unsigned int a1)
 void reqBBS_813E616()
 {
     ByteFill(byte_2001400, byte_200, 0x40u);
-    ZeroFillByWord(&unk_2000FC0, 32);
+    ZeroFillByWord(&BBSMessageCounts, 32);
     ZeroFillByWord(&unk_2000FF0, 32);
 }
 
@@ -454,7 +454,7 @@ void __fastcall reqBBS_dead_813E634(int a1)
 
     v1 = a1;
     ByteFill(&byte_2001400[64 * a1], 64, 0x40u);
-    ZeroFillByWord(&unk_2000FC0 + 4 * v1, 4);
+    ZeroFillByWord(&BBSMessageCounts + 4 * v1, 4);
     ZeroFillByWord(&unk_2000FF0 + 4 * v1, 4);
 }
 

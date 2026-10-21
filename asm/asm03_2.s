@@ -6535,7 +6535,7 @@ off_8049C6C:
 off_8049C70:
 	.word byte_3001730
 	.word byte_3001650
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word byte_30016D0
 off_8049C80:
 	.word off_8049C84
@@ -7910,7 +7910,7 @@ sub_804A61C:
 	push {r4-r7,lr}
 	sub sp, sp, #4
 	str r5, [sp]
-	ldr r4, off_804A6DC // =unk_20096E0 
+	ldr r4, off_804A6DC // =eDecompInitRefsBuffer 
 	mov r6, #0
 	mov r7, #0
 	ldr r5, off_804A698 // =off_804A69C 
@@ -7936,7 +7936,7 @@ loc_804A63C:
 	mov r0, #0
 	str r0, [r4,r6]
 	// initRefs
-	ldr r0, off_804A6DC // =unk_20096E0 
+	ldr r0, off_804A6DC // =eDecompInitRefsBuffer 
 	bl decompAndCopyData // (u32 *initRefs) -> void
 	// initRefs
 	ldr r0, off_804A6E0 // =initRefs_804A6E4 
@@ -7993,14 +7993,14 @@ off_804A69C:
 	.word 0x20
 	.word comp_86C9AA4 + COMPRESSED_PTR_FLAG
 	.word 0x2
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word eDecompBuffer2013A00
 	.word byte_872CF94
 	.word 0x2
 	.word unk_3001AE0
 	.word 0x20
 off_804A6DC:
-	.word unk_20096E0
+	.word eDecompInitRefsBuffer
 off_804A6E0:
 	.word initRefs_804A6E4
 initRefs_804A6E4:

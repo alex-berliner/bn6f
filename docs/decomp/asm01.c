@@ -4,7 +4,7 @@ void __fastcall chatbox_resetPrinterState_801FE00(int a1, int a2, int a3)
     *eStruct203F7D8 = 0;
     eFlags2036782 = 0;
     byte_2036784 = -1;
-    ZeroFillByEightWords(dword_203F4A0, byte_200);
+    ZeroFillByEightWords(battleLinkTransferBuffer, byte_200);
     ZeroFillByEightWords(dword_203CBE0, byte_100);
 }
 
@@ -127,7 +127,7 @@ int __fastcall sub_801FF18(int result)
             *(v2 + 20) = byte_20399F6;
             word_203614C = word_20399FC;
             if ( !((byte_20399F4 < 0) ^ v3) )
-                dword_203F4A0[byte_20399F4] = dword_20399F8;
+                battleLinkTransferBuffer[byte_20399F4] = dword_20399F8;
         }
         v4 = eStruct203F7D8[0];
         if ( !eStruct203F7D8[0] || (v4 = word_2039A02, word_2039A02 & 0xFC00) )
@@ -196,7 +196,7 @@ int __fastcall sub_801FFD6(int result)
                 if ( !((byte_20399F4 < 0) ^ v4) )
                 {
                     result = 4 * byte_20399F4;
-                    *(dword_203F4A0 + result) = dword_20399F8;
+                    *(battleLinkTransferBuffer + result) = dword_20399F8;
                 }
             }
             v5 = eStruct203F7D8[0];

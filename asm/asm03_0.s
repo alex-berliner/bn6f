@@ -1776,7 +1776,7 @@ loc_8027096:
 	add r0, #0x18
 	str r0, [r5,#0x44]
 	ldr r0, off_80270C4 // =byte_872CF94 
-	ldr r1, off_80270C8 // =byte_30016F0 
+	ldr r1, off_80270C8 // =gfxDecompressWorkBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, #4
@@ -1788,7 +1788,7 @@ dword_80270C0:
 off_80270C4:
 	.word byte_872CF94
 off_80270C8:
-	.word byte_30016F0
+	.word gfxDecompressWorkBuffer
 off_80270CC:
 	.word byte_8725894
 	thumb_func_end battle_queueActiveChipGfx
@@ -4201,7 +4201,7 @@ gfx_flushDataListAndContinue_802811C:
 	pop {pc}
 	thumb_func_end gfx_flushDataListAndContinue_802811C
 
-// symdb: Queues the tile graphics of an indexed 0x80-byte record for VRAM transfer, split into two 0x40-byte halves at 0x060170E0/0x06017160, plus a linked 0x20-byte chunk to IWRAM at byte_30016B0.
+// symdb: Queues the tile graphics of an indexed 0x80-byte record for VRAM transfer, split into two 0x40-byte halves at 0x060170E0/0x06017160, plus a linked 0x20-byte chunk to IWRAM at gfxIWRAMTransferBuffer.
 // symdb: void gfx_queueIndexedRecordTiles(u32 recordIndex /* r0 */); preserves r4-r7, clobbers flags and
 // symdb: r0-r3/lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_queueIndexedRecordTiles_802812C.yaml
@@ -4218,7 +4218,7 @@ gfx_queueIndexedRecordTiles_802812C:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	mov r0, r4
 	bl getPermutedRecord32_8028172
-	ldr r1, off_8028160 // =byte_30016B0 
+	ldr r1, off_8028160 // =gfxIWRAMTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {r4,pc}
@@ -4230,7 +4230,7 @@ dword_8028158:
 dword_802815C:
 	.word 0x6017160
 off_8028160:
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	thumb_func_end gfx_queueIndexedRecordTiles_802812C
 
 // symdb: Maps an index through a lookup table and returns the pointer to that entry's 0x80-byte record in the dat38_86F5834 data table.
@@ -4867,7 +4867,7 @@ loc_802854C:
 	mul r0, r2
 	ldr r1, off_8028818 // =byte_86E587C 
 	add r0, r0, r1
-	ldr r1, off_802881C // =unk_3001A80 
+	ldr r1, off_802881C // =iGfxTransferBuffer 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	ldr r0, [sp]
 	lsr r0, r0, #9
@@ -5236,7 +5236,7 @@ loadOneSpriteTileRow_80287D2:
 	mov r3, #8
 	bl battle_loadGfxChunkBySelectorWithRows_802868C
 	ldr r0, off_8028818 // =byte_86E587C 
-	ldr r1, off_802881C // =unk_3001A80 
+	ldr r1, off_802881C // =iGfxTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {pc}
@@ -5262,7 +5262,7 @@ off_802880C:
 off_8028818:
 	.word byte_86E587C
 off_802881C:
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	thumb_func_end loadOneSpriteTileRow_80287D2
 
 // symdb: Custom-menu chip-select dispatcher: routes per selected-slot index to a small handler that packs (row,column) pair-coords into FIFO records.
@@ -10997,11 +10997,11 @@ off_802B08C:
 	.word decomp_2032000
 
 	.word byte_86DDB24
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 	.word 0x20
 
 	.word byte_86C9D6C
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	.word 0x20
 
 	.word comp_86C9BD4 + COMPRESSED_PTR_FLAG
@@ -13420,7 +13420,7 @@ setupNaviDisplay_802C34E:
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	bl GetCurPETNavi // () -> u8
 	bl getPermutedRecord32_8028172
-	ldr r1, off_802C45C // =byte_30016B0 
+	ldr r1, off_802C45C // =gfxIWRAMTransferBuffer 
 	mov r2, #0x20 
 	bl QueueEightWordAlignedGFXTransfer // (queued_src: *const (), mut_queued_dest: *mut (), queued_size: u32) -> ()
 	pop {r4-r7,pc}
@@ -13444,7 +13444,7 @@ off_802C420:
 off_802C424:
 	.word dword_8732814
 off_802C428:
-	.word unk_3001A80
+	.word iGfxTransferBuffer
 off_802C42C:
 	.word 0x60
 off_802C430:
@@ -13467,7 +13467,7 @@ off_802C450:
 dword_802C458:
 	.word 0x6014000
 off_802C45C:
-	.word byte_30016B0
+	.word gfxIWRAMTransferBuffer
 	thumb_func_end setupNaviDisplay_802C34E
 
 // symdb: handles up/down arrow D-pad input on the chip-select screen, advancing/retreating a cursor row and animating the chip icon when it changes column
@@ -14235,7 +14235,7 @@ battle_checkTimerWindowSubstate_802C97E:
 	b loc_802C9AE
 loc_802C99E:
 	mov r4, #1
-	ldr r1, off_802CB04 // =unk_2000260 
+	ldr r1, off_802CB04 // =battleBestTimes 
 	ldrh r2, [r1,r0]
 	ldr r3, [r5,#0x1c]
 	cmp r3, r2
@@ -14270,11 +14270,11 @@ battle_updateSlotBestRecords_802C9B8:
 	cmp r4, r2
 	bge loc_802C9DE
 	strh r4, [r1,r0]
-	ldr r1, off_802CB0C // =unk_2000260 
+	ldr r1, off_802CB0C // =battleBestTimes 
 	strh r4, [r1,r0]
 	b locret_802C9E8
 loc_802C9DE:
-	ldr r1, off_802CB10 // =unk_2000260 
+	ldr r1, off_802CB10 // =battleBestTimes 
 	ldrh r2, [r1,r0]
 	cmp r4, r2
 	bge locret_802C9E8
@@ -14458,13 +14458,13 @@ off_802CAFC:
 off_802CB00:
 	.word unk_20018C0
 off_802CB04:
-	.word unk_2000260
+	.word battleBestTimes
 off_802CB08:
 	.word unk_20018C0
 off_802CB0C:
-	.word unk_2000260
+	.word battleBestTimes
 off_802CB10:
-	.word unk_2000260
+	.word battleBestTimes
 off_802CB14:
 	.word unk_203526C
 off_802CB18:
@@ -20439,7 +20439,7 @@ off_802F3A0:
 	gfx_anim_loop
 
 off_802F3F0:
-	gfx_anim_pal_copy dest=unk_3001A80 size=0x00000020 index=0x06
+	gfx_anim_pal_copy dest=iGfxTransferBuffer size=0x00000020 index=0x06
 	gfx_anim_data_ptr ptr=byte_87F94F4 delay=0x00000024
 	gfx_anim_data_ptr ptr=byte_87F9514 delay=0x00000007
 	gfx_anim_data_ptr ptr=byte_87F9534 delay=0x00000007

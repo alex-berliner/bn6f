@@ -3062,7 +3062,7 @@ void copyPalletesToIWRAM_8002650()
 // 0x8002668
 void copy_8002668()
 {
-    CopyByEightWords(dword_86A5500, byte_3001710, 0x20u);
+    CopyByEightWords(dword_86A5500, chatboxTileRowScratchBuf, 0x20u);
     CopyByEightWords(byte_80025CC, byte_3001730, 0x20u);
 }
 

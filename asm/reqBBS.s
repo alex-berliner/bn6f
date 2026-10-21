@@ -738,7 +738,7 @@ reqBBS_addBBSMessage_813e5dc:
 	ldr r2, off_813E6AC // =byte_2001400 
 	add r2, r2, r3
 	lsr r3, r3, #4
-	ldr r1, off_813E6B0 // =unk_2000FC0 
+	ldr r1, off_813E6B0 // =BBSMessageCounts 
 	ldr r0, [r1,r3]
 	lsl r7, r7, #0x1a
 	lsr r7, r7, #0x1a
@@ -763,7 +763,7 @@ reqBBS_813E616:
 	mov r2, #0x40 
 	bl ByteFill // (u8 *mem, int byteCount, u8 byte) -> void
 	// memBlock
-	ldr r0, off_813E6BC // =unk_2000FC0 
+	ldr r0, off_813E6BC // =BBSMessageCounts 
 	// size
 	mov r1, #0x20 
 	bl ZeroFillByWord // (mut_mem: *mut (), num_bytes: usize) -> ()
@@ -789,7 +789,7 @@ reqBBS_dead_813E634:
 	mov r2, #0x40 
 	bl ByteFill // (u8 *mem, int byteCount, u8 byte) -> void
 	lsl r0, r4, #2
-	ldr r1, off_813E6C8 // =unk_2000FC0 
+	ldr r1, off_813E6C8 // =BBSMessageCounts 
 	// memBlock
 	add r0, r0, r1
 	// size
@@ -841,19 +841,19 @@ off_813E6A8:
 off_813E6AC:
 	.word byte_2001400
 off_813E6B0:
-	.word unk_2000FC0
+	.word BBSMessageCounts
 off_813E6B4:
 	.word byte_2001400
 byteCount:
 	.word 0x200
 off_813E6BC:
-	.word unk_2000FC0
+	.word BBSMessageCounts
 off_813E6C0:
 	.word unk_2000FF0
 off_813E6C4:
 	.word byte_2001400
 off_813E6C8:
-	.word unk_2000FC0
+	.word BBSMessageCounts
 off_813E6CC:
 	.word unk_2000FF0
 	thumb_func_end reqBBS_813E660
