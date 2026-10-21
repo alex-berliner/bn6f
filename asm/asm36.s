@@ -13192,6 +13192,10 @@ off_8136298:
 	.word word_201DA80
 	thumb_func_end beastsp_getCodeEntry
 
+// symdb: Checks whether the Navi board cell has an occupied battle-object slot and whether the player owns that slot's key item.
+// symdb: (r0 = board cell ID) -> r0 = 1 if the cell's object slot exists and its key item is held,
+// symdb: otherwise 0; flags are caller-saved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813629C.yaml
 	thumb_local_start
 sub_813629C:
 	push {r4,lr}

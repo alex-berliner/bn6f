@@ -1632,6 +1632,9 @@ locret_8026FA8:
 	pop {r4,pc}
 	thumb_func_end battle_custMenuTickPlayerChipCursor_8026F1A
 
+// symdb: Advances a chip's execution state to 4 (and clears its sub-field) once chatbox/cutscene flag 0x80 is no longer set; otherwise leaves state untouched.
+// symdb: (no args; uses r5 = chip state struct) -> no return; branch only
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8026FAA.yaml
 	thumb_local_start
 sub_8026FAA:
 	push {lr}

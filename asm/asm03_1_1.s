@@ -15057,6 +15057,9 @@ off_803FBE4:
 	.word 0x40
 	thumb_func_end maybeResetStartScreen_803FBC2
 
+// symdb: Enqueues a BG-tile-decomp shutdown request and zeroes the 0x140-byte decomp work buffer used by it.
+// symdb: () -> ()
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803FBE8.yaml
 	thumb_local_start
 sub_803FBE8:
 	push {lr}

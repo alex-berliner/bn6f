@@ -420,6 +420,9 @@ off_810C748::
 	.word sub_810C7B6+1
 	thumb_func_end sub_810C72E
 
+// symdb: Initializes an object's Sniper-style attack state and starts attack pattern 9.
+// symdb: (r0 = ..., r1 = ...) -> r0 = ...; flags ...
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810C754.yaml
 	thumb_local_start
 sub_810C754::
 	push {lr}
@@ -705,6 +708,9 @@ locret_810CA4A::
 	pop {pc}
 	thumb_func_end sub_810C9F4
 
+// symdb: AI attack step that polls a panel-chooser callback and reserves the chosen panel.
+// symdb: () -> void; r7 = AI attack vars struct
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810CA4C.yaml
 	thumb_local_start
 sub_810CA4C::
 	push {lr}
@@ -1685,6 +1691,9 @@ locret_810D34A::
 	pop {r4,pc}
 	thumb_func_end sub_810D2E4
 
+// symdb: Advances an object's attack step timer and resets the next charged attack cycle when it expires.
+// symdb: (r0 = implicit current object via r7; r1-r3 unchanged) -> r0 = updated timer; flags preserved
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D34C.yaml
 	thumb_local_start
 sub_810D34C::
 	push {lr}
@@ -1879,6 +1888,9 @@ dword_810D494::
 	.word 0x2D00FF00
 	thumb_func_end sub_810D476
 
+// symdb: Counts two categories of enemy battle objects by the caller's alliance and returns the total while optionally writing their object pointers to the supplied array.
+// symdb: (r0 = u32 *out, r1 unused) -> r0 = total count; flags caller-dependent
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D498.yaml
 	thumb_local_start
 sub_810D498::
 	push {r4,r6,lr}
@@ -2339,6 +2351,9 @@ locret_810D8B0::
 	pop {r4,r6,pc}
 	thumb_func_end ai_attackVars_stepChargeAndShoot_810D808
 
+// symdb: Advances an AI-controlled attack's substep and timer, then resets it to the animation and duration state for the next cycle.
+// symdb: (r5 = battleObject, r7 = AIAttackVars) -> void; flags conditionally modified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D8B2.yaml
 	thumb_local_start
 sub_810D8B2::
 	push {lr}
@@ -2409,6 +2424,10 @@ off_810D910::
 	.word sub_810D7E4+1
 	thumb_func_end sub_810D8EA
 
+// symdb: Initializes a battle object's auxiliary entity and loads version-specific ExtraVars values.
+// symdb: (r0 = battle object pointer, r5 = battle object pointer used implicitly) -> no return value;
+// symdb: flags unspecified
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_810D940.yaml
 	thumb_func_start sub_810D940
 sub_810D940::
 	push {lr}
