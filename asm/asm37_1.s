@@ -2203,9 +2203,9 @@ sub_8142BF4:
 
 // symdb: Marks active overworld Navicust entries adjacent to the player.
 // symdb: (r0 = unused, r1 = unused) -> r0 = unused; flags = caller-saved/condition flags clobbered
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8142BFA.yaml
-	thumb_func_start sub_8142BFA
-sub_8142BFA:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/ow_markAdjacentNavicust.yaml
+	thumb_func_start ow_markAdjacentNavicust
+ow_markAdjacentNavicust:
 	push {r4-r7,lr}
 	mov r7, #0xc
 loc_8142BFE:
@@ -2226,7 +2226,7 @@ loc_8142C16:
 	cmp r4, #0x14
 	blt loc_8142C02
 	pop {r4-r7,pc}
-	thumb_func_end sub_8142BFA
+	thumb_func_end ow_markAdjacentNavicust
 
 // symdb: counts active battle entries whose team byte matches the given team id
 // symdb: (r0 = team id) -> r0 = count ; side effects: none (clobbers nzcv, r4-r7)

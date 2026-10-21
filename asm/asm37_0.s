@@ -4028,16 +4028,16 @@ sub_813D5DC:
 	pop {r4,pc}
 // symdb: Sets bits in the t1 status flag byte (byte_200AF85) by OR-ing the argument.
 // symdb: (r0 = flag bitmask) -> none; side effect: byte_200AF85 |= r0
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_813D5E8.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1SetFlags.yaml
 	thumb_local_start
-sub_813D5E8:
+t1SetFlags:
 	ldr r1, off_813D608 // =byte_200AF80 
 	ldrb r2, [r1,#0x5] // (byte_200AF85 - 0x200af80)
 	orr r2, r0
 	strb r2, [r1,#0x5] // (byte_200AF85 - 0x200af80)
 	mov pc, lr
 	.balign 4, 0x00
-	thumb_func_end sub_813D5E8
+	thumb_func_end t1SetFlags
 
 dead_813D5F4::
 	ldr r1, off_813D608 // =byte_200AF80 
@@ -4326,7 +4326,7 @@ byte_813D7A0:
 	.byte 0x40, 0x0, 0x0, 0x0, 0x0, 0x1, 0x0, 0x0
 	thumb_func_end rfu_setEntryFlagBit
 
-// symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls sub_813D5E8(1); clears byte_200AF81 each tick.
+// symdb: Steps a 21-state sequence (counter at [r0+1] 0..0x14): indexes a 6-entry handler table off_813D7E4 and invokes the handler; on completion (counter > 0x14) calls t1SetFlags(1); clears byte_200AF81 each tick.
 // symdb: (r0 = ptr to state struct; [r0+1] = step counter 0..0x14) -> r0 = 0 (or finalize result); r5/r7
 // symdb: clobbered
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/t1StepSequence.yaml
@@ -4351,7 +4351,7 @@ t1StepSequence:
 	pop {r5,r7,pc}
 loc_813D7DC:
 	mov r0, #1
-	bl sub_813D5E8
+	bl t1SetFlags
 	pop {r5,r7,pc}
 	.balign 4, 0
 off_813D7E4:

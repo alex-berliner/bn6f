@@ -47,7 +47,7 @@ off_812C2EC::
 	.word sub_812C884+1
 	.word sub_812CA68+1
 	.word sub_812CC44+1
-	.word sub_812CE28+1
+	.word submenu_dispatchById+1
 	.word sub_812CEF0+1
 	.word sub_812CFD4+1
 	.word sub_812D0C0+1
@@ -1478,9 +1478,9 @@ locret_812CE26::
 
 // symdb: Dispatches a submenu operation using byte 0x0C of the active structure as an index into a four-entry handler table.
 // symdb: (r5 = active submenu structure) -> r0, r1, ...; flags preserved
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812CE28.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/submenu_dispatchById.yaml
 	thumb_local_start
-sub_812CE28::
+submenu_dispatchById::
 	push {lr}
 	ldr r0, off_812CE3C // =off_812CE40 
 	ldrb r1, [r5,#0xc]
@@ -1497,7 +1497,7 @@ off_812CE40::
 	.word sub_812CE50+1
 	.word sub_812CEA4+1
 	.word sub_812CEEC+1
-	thumb_func_end sub_812CE28
+	thumb_func_end submenu_dispatchById
 
 	thumb_local_start
 sub_812CE50::

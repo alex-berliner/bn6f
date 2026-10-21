@@ -1124,7 +1124,7 @@ off_804679C:
 	.word e_dispatchByState+1
 	.word sprite_dispatchUpdate+1
 	.word sub_811E858+1
-	.word sub_811E914+1
+	.word object_initKind23Variant+1
 	.word sub_811E9A0+1
 	thumb_func_end battleObject_scanHitboxesAndSetFlags_80466D8
 
@@ -5107,7 +5107,7 @@ loc_8049184:
 	thumb_local_start
 sub_804918A:
 	push {r4-r7,lr}
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C
@@ -5487,7 +5487,7 @@ sub_804946E:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_80494C0
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C
@@ -5580,7 +5580,7 @@ sub_804952C:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8049578
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C

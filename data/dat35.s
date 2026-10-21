@@ -106,8 +106,8 @@ off_812F0C0::
 	.word sub_812F628+1
 	.word sub_812F904+1
 	.word sub_812FAE4+1
-	.word sub_812FD44+1
-	.word sub_812FD44+1
+	.word t4_dispatchAndUpdateChoiceOam+1
+	.word t4_dispatchAndUpdateChoiceOam+1
 	.word sub_812FE10+1
 	.word sub_812FEF0+1
 	.word sub_812FC2C+1
@@ -1709,9 +1709,9 @@ locret_812FD42::
 
 // symdb: Dispatches on a T4 object's sub-type byte (offset 0xC) to one of four handlers, then refreshes the choice OAM/player box.
 // symdb: (r5 = T4 object ptr) -> void; no flags
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_812FD44.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/t4_dispatchAndUpdateChoiceOam.yaml
 	thumb_local_start
-sub_812FD44::
+t4_dispatchAndUpdateChoiceOam::
 	push {lr}
 	ldr r0, off_812FD58 // =off_812FD5C 
 	ldrb r1, [r5,#0xc]
@@ -1728,7 +1728,7 @@ off_812FD5C::
 	.word sub_812FD6C+1
 	.word sub_812FDC0+1
 	.word sub_812FE0C+1
-	thumb_func_end sub_812FD44
+	thumb_func_end t4_dispatchAndUpdateChoiceOam
 
 	thumb_local_start
 sub_812FD6C::

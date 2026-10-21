@@ -14626,7 +14626,7 @@ locret_812A056:
 rfu_initLinkSessionState:
 	push {r4,lr}
 	bl sprite_drawIfFlagSet_812B504
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	bl eStruct200BC30_getJumpOffset00
 	cmp r0, #8
 	beq loc_812A088

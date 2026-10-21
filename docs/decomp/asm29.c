@@ -4833,10 +4833,10 @@ void __noreturn sub_80A89FC()
     sprite_noShadow(v0);
     *(v0 + 36) = 0;
     *(v0 + 8) = 4;
-    sub_80A8A7C();
-    sub_80A8A7C();
-    sub_80A8A7C();
-    v1 = sub_80A8A7C();
+    object_updateMovementAngle();
+    object_updateMovementAngle();
+    object_updateMovementAngle();
+    v1 = object_updateMovementAngle();
     sub_80A8A50(v1);
 }
 
@@ -4847,7 +4847,7 @@ void __fastcall __noreturn sub_80A8A50(int a1)
     int v1; // r5
     int v2; // r0
 
-    sub_80A8A7C();
+    object_updateMovementAngle();
     if ( *(v1 + 6) <= 0 )
         FreeOverworldMapObject();
     v2 = sub_8035694((v1 + 12));
@@ -4864,7 +4864,7 @@ int sub_80A8A74()
 
 
 // 0x80a8a7c
-int sub_80A8A7C()
+int object_updateMovementAngle()
 {
     int v0; // r5
     int v1; // r0

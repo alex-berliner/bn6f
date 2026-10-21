@@ -2762,7 +2762,7 @@ int sub_813D5DC()
 
 
 // 0x813d5e8
-int __fastcall sub_813D5E8(int result)
+int __fastcall t1SetFlags(int result)
 {
     unk_200AF85 |= result;
     return result;
@@ -2905,7 +2905,7 @@ int __fastcall t1StepSequence(int a1)
     getTableEntryPtr32_802D064(0);
     v2 = *(v1 + 1);
     if ( v2 > 20 )
-        return sub_813D5E8(1);
+        return t1SetFlags(1);
     (*(&off_813D7E8 + v2))();
     result = 0;
     unk_200AF81 = 0;

@@ -1327,7 +1327,7 @@ void sub_8142BF4()
 
 
 // 0x8142bfa
-signed int sub_8142BFA()
+signed int ow_markAdjacentNavicust()
 {
     char *v0; // r5
     signed int v1; // r4

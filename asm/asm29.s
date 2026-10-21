@@ -7458,10 +7458,10 @@ sub_80A89FC:
 	str r0, [r5,#0x24]
 	mov r0, #4
 	strb r0, [r5,#8]
-	bl sub_80A8A7C
-	bl sub_80A8A7C
-	bl sub_80A8A7C
-	bl sub_80A8A7C
+	bl object_updateMovementAngle
+	bl object_updateMovementAngle
+	bl object_updateMovementAngle
+	bl object_updateMovementAngle
 	bl sub_80A8A50
 	pop {r4-r7,pc}
 	.balign 4, 0
@@ -7474,7 +7474,7 @@ byte_80A8A48:
 	thumb_local_start
 sub_80A8A50:
 	push {r4-r7,lr}
-	bl sub_80A8A7C
+	bl object_updateMovementAngle
 	mov r1, #6
 	ldrsh r0, [r5,r1]
 	cmp r0, #0
@@ -7498,9 +7498,9 @@ sub_80A8A74:
 
 // symdb: Applies a fixed-distance movement step along the angle of an object and decrements its remaining movement steps.
 // symdb: (implicit object pointer in r5) -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8A7C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_updateMovementAngle.yaml
 	thumb_local_start
-sub_80A8A7C:
+object_updateMovementAngle:
 	push {r4-r7,lr}
 	ldrb r0, [r5,#4]
 	lsl r0, r0, #1
@@ -7531,7 +7531,7 @@ off_80A8AAC:
 	.word math_sinTable
 off_80A8AB0:
 	.word math_cosTable
-	thumb_func_end sub_80A8A7C
+	thumb_func_end object_updateMovementAngle
 
 // symdb: Cybercrow map object (type 0x18) update: copies the crow record's position (s16.16 X/Y/Z at +0x08 / +0x0C / +0x10) into the object at +0x0C/+0x10/+0x14, runs one of 3 state handlers (off_80A8AE8), copies the position back.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_80A8AB4.yaml

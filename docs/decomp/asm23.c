@@ -500,7 +500,7 @@ signed int __fastcall battle_processChipLockout(int a1)
     battle_tickChipLockout_8089CB4();
     if ( !v2 )
     {
-        sub_8142BFA();
+        ow_markAdjacentNavicust();
         *v1 = 64;
     }
     return 1;

@@ -1329,7 +1329,7 @@ int sub_812FD10()
 
 
 // 0x812fd44
-int sub_812FD44()
+int t4_dispatchAndUpdateChoiceOam()
 {
     int v0; // r5
 

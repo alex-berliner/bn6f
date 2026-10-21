@@ -1128,7 +1128,7 @@ int sub_812CDF4()
 
 
 // 0x812ce28
-int sub_812CE28()
+int submenu_dispatchById()
 {
     int v0; // r5
 

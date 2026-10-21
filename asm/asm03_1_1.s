@@ -17,9 +17,9 @@ sub_80385F0:
 
 // symdb: Dispatches the current battle scene state to one of four handler routines via a jump table.
 // symdb: () -> none; uses byte_2011E40 as state index
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8038606.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_runState.yaml
 	thumb_local_start
-sub_8038606:
+battle_runState:
 	push {r4-r7,lr}
 	ldr r5, off_8038618 // =byte_2011E40
 	ldr r0, off_803861C // =off_8038620
@@ -38,7 +38,7 @@ off_8038620:
 	.word sub_8038674+1
 	.word battle_waitTimerThenAdvanceState+1
 	.word sub_80386B2+1
-	thumb_func_end sub_8038606
+	thumb_func_end battle_runState
 
 // symdb: Initializes a battle scene: clears chatbox, applies palette 0xd, sets DISPCNT 0x1340, resets graphics/fade state, starts BGM 0x63 and a (8,8) screen fade, then writes 4 to a scene-state byte.
 // symdb: (r0 = palette index 0xd, r5 = pointer to scene-state byte) -> r0 = clobbered; sets [r5] = 4
@@ -2121,7 +2121,7 @@ loc_8039B04:
 	thumb_local_start
 rfu_tryStartLinkSession:
 	push {r4-r7,lr}
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C
@@ -2528,7 +2528,7 @@ start_wirelessLinkSession:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_8039E7A
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C
@@ -2752,7 +2752,7 @@ sub_8039FEC:
 	mov r0, #8
 	bl chatbox_mask_eFlags2009F38 // (int flag) -> int
 	beq loc_803A034
-	bl sub_8146588
+	bl rfu_initLinkSessionStateVars
 	mov r0, r5
 	add r0, #0xf0
 	bl sub_814695C
@@ -2916,7 +2916,7 @@ rfu_drawConnectedPlayerEntries:
 	bl sub_803A2A4
 	beq locret_803A184
 loc_803A112:
-	bl sub_803A214
+	bl rfu_drawJoinCodeHeader
 	mov r6, #0
 loc_803A118:
 	bl ow_checkJackInFlag
@@ -2996,7 +2996,7 @@ loc_803A194:
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_waitStepUpdateEntities
 
-// symdb: Per-frame battle tick: calls sub_803A214 once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
+// symdb: Per-frame battle tick: calls rfu_drawJoinCodeHeader once, runs sub_803A1D8 four times in a fixed loop, then dispatches entity update handlers and refreshes eStruct sprites; an optional gate sub_803A2A4 at [r5+0x18] can short-circuit the frame.
 // symdb: (r5 = battle/global state struct) -> r0 = clobbered; returns early if gate sub_803A2A4 returns 0
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_stepFrame.yaml
 	thumb_func_start battle_stepFrame
@@ -3008,7 +3008,7 @@ battle_stepFrame:
 	bl sub_803A2A4
 	beq locret_803A1D6
 loc_803A1BE:
-	bl sub_803A214
+	bl rfu_drawJoinCodeHeader
 	mov r6, #0
 loc_803A1C4:
 	bl sub_803A1D8
@@ -3053,9 +3053,9 @@ sub_803A1D8:
 
 // symdb: Per-frame: draws the RFU wireless join-code header (title glyph string + 4-digit join code) onto the OAM sprite layer.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_803A214.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_drawJoinCodeHeader.yaml
 	thumb_local_start
-sub_803A214:
+rfu_drawJoinCodeHeader:
 	push {r4-r7,lr}
 	mov r3, #0xf0
 	add r3, r3, r5
@@ -3071,7 +3071,7 @@ sub_803A214:
 	mov r2, #4
 	bl sub_803B9C0
 	pop {r4-r7,pc}
-	thumb_func_end sub_803A214
+	thumb_func_end rfu_drawJoinCodeHeader
 
 // symdb: Sets or clears a per-row (0-3) bit in a 4-bit menu-state flag, choosing between the two row draw styles at 0x0803A104 and 0x0803A1D8.
 // symdb: (r0 = row index 0-3, r1 = nonzero to set flag / 0 to clear) -> r0 clobbered by callee; no return
@@ -7607,7 +7607,7 @@ off_803C554:
 chatbox_clearTextBuffers:
 	push {r4-r7,lr}
 	bl clearStructBufferPair
-	bl sub_81467A0
+	bl rfu_refreshPeerBuffers
 	pop {r4-r7,pc}
 	thumb_func_end chatbox_clearTextBuffers
 
@@ -8007,7 +8007,7 @@ rfu_advanceLinkState:
 	push {lr}
 	bl chatbox_pollDismiss
 	beq loc_803C7C0
-	bl sub_81467A0
+	bl rfu_refreshPeerBuffers
 loc_803C7C0:
 	ldr r1, off_803C7E0 // =byte_2010288
 	ldrb r1, [r1]

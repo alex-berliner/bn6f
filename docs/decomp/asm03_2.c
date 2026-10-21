@@ -2573,7 +2573,7 @@ int __fastcall sub_804918A(int a1)
     int v2; // r0
     int v3; // r0
 
-    sub_8146588();
+    rfu_initLinkSessionStateVars();
     sub_814695C(v1 + 240);
     v2 = sub_8049D7C();
     v3 = sub_81469BC(v1 + 256, v2);
@@ -2919,7 +2919,7 @@ void sub_804946E()
         chatbox_mask_eFlags2009F38(8);
         if ( !v1 )
         {
-            sub_8146588();
+            rfu_initLinkSessionStateVars();
             sub_814695C(v0 + 240);
             v2 = sub_8049D7C();
             v3 = sub_81469BC(v0 + 256, v2);
@@ -3007,7 +3007,7 @@ void sub_804952C()
     chatbox_mask_eFlags2009F38(8);
     if ( !v1 )
     {
-        sub_8146588();
+        rfu_initLinkSessionStateVars();
         sub_814695C(v0 + 240);
         v2 = sub_8049D7C();
         v3 = sub_81469BC(v0 + 256, v2);

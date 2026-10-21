@@ -5199,7 +5199,7 @@ signed int __fastcall sub_80385F0(int a1, int a2, int a3, int a4)
 
 
 // 0x8038606
-int sub_8038606()
+int battle_runState()
 {
     return (*(&off_8038620 + byte_2011E40))();
 }
@@ -6498,7 +6498,7 @@ int rfu_tryStartLinkSession()
     int v0; // r5
     int v1; // r0
 
-    sub_8146588();
+    rfu_initLinkSessionStateVars();
     sub_814695C(v0 + 240);
     v1 = sub_803C418();
     sub_81469BC(v0 + 256, v1);
@@ -6878,7 +6878,7 @@ int __fastcall start_wirelessLinkSession(int a1)
         chatbox_mask_eFlags2009F38(8);
         if ( !v2 )
         {
-            sub_8146588();
+            rfu_initLinkSessionStateVars();
             sub_814695C(v1 + 240);
             v3 = sub_803C418();
             sub_81469BC(v1 + 256, v3);
@@ -7078,7 +7078,7 @@ int sub_8039FEC()
     chatbox_mask_eFlags2009F38(8);
     if ( !v1 )
     {
-        sub_8146588();
+        rfu_initLinkSessionStateVars();
         sub_814695C(v0 + 240);
         v2 = sub_803C418();
         sub_81469BC(v0 + 256, v2);
@@ -7235,7 +7235,7 @@ int rfu_drawConnectedPlayerEntries()
     char v2; // zf
 
     if ( !*(v0 + 24) || (result = sub_803A2A4(), !v2) )
-        sub_803A214();
+        rfu_drawJoinCodeHeader();
     return result;
 }
 
@@ -7263,7 +7263,7 @@ int battle_stepFrame()
     char v2; // zf
 
     if ( !*(v0 + 24) || (result = sub_803A2A4(), !v2) )
-        sub_803A214();
+        rfu_drawJoinCodeHeader();
     return result;
 }
 
@@ -7290,7 +7290,7 @@ int sub_803A1D8()
 
 
 // 0x803a214
-void __noreturn sub_803A214()
+void __noreturn rfu_drawJoinCodeHeader()
 {
     int v0; // r5
     int v1; // r4
@@ -10239,7 +10239,7 @@ signed int sprite_tryLoadGFXAnim()
 int chatbox_clearTextBuffers()
 {
     clearStructBufferPair();
-    return sub_81467A0();
+    return rfu_refreshPeerBuffers();
 }
 
 
@@ -10449,7 +10449,7 @@ int rfu_advanceLinkState()
 
     result = chatbox_pollDismiss();
     if ( !v2 )
-        result = sub_81467A0();
+        result = rfu_refreshPeerBuffers();
     if ( byte_2010288 )
     {
         result = rfu_getLinkState();

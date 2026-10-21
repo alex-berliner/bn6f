@@ -21924,7 +21924,7 @@ loc_811855E:
 	mov r0, #0xa
 	bl sprite_setAlpha_8002c7a
 	bl sprite_zeroColorShader
-	bl sub_811870C
+	bl sprite_computeTileOffsets
 	bl battleObject_setPaletteFromOffsetTable_81185E4
 	bl battle_beastSpBuildSpriteMaskFromFlagTable
 	pop {pc}
@@ -22184,9 +22184,9 @@ loc_8118702:
 // symdb: Computes tile-offset pairs for a composite sprite from an index into a small table
 // symdb: (r6 = object, r7 = out record from sub_81187DC) -> fills out r7+0xc/0xe with two 16-bit tile
 // symdb: offsets
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811870C.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sprite_computeTileOffsets.yaml
 	thumb_local_start
-sub_811870C:
+sprite_computeTileOffsets:
 	push {r4-r7,lr}
 	bl sub_81187DC
 	mov r7, r0
@@ -22212,7 +22212,7 @@ off_8118738:
 	.word byte_811873C
 byte_811873C:
 	.byte 0x16, 0x26, 0xE, 0x26, 0xE, 0x1E, 0x0, 0x0
-	thumb_func_end sub_811870C
+	thumb_func_end sprite_computeTileOffsets
 
 	thumb_local_start
 sub_8118744:
@@ -35037,9 +35037,9 @@ byte_811E8FC:
 // symdb: Dispatches to one of three subtype initializers for 'kind 23' objects based on a subtype byte at entity+8.
 // symdb: (r5 = entity*, uses r6 = eStruct2001010) -> never returns normally (bx+pop {pc}); dispatches via
 // symdb: jump table
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_811E914.yaml
-	thumb_func_start sub_811E914
-sub_811E914:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/object_initKind23Variant.yaml
+	thumb_func_start object_initKind23Variant
+object_initKind23Variant:
 	push {lr}
 	ldr r6, off_811E934 // =eStruct2001010
 	ldr r0, off_811E924 // =off_811E928
@@ -35057,7 +35057,7 @@ off_811E928:
 	.word sub_811E998+1
 off_811E934:
 	.word eStruct2001010
-	thumb_func_end sub_811E914
+	thumb_func_end object_initKind23Variant
 
 // symdb: Initializes a kind-0x23 object: writes kind byte, calls loc_8002774 with 0x66, runs the standard sprite init block (animation 0, load anim data, no shadow, palette bank 0xF, subrecord A=0, priority 0, palette 0), stores selector 0x2A8 via slotList, and sets byte [r5+8]=4 before tail-calling sub_811E980.
 // symdb: (r5 = object ptr, clobbers r0) -> r0 = result of last callee; object fields at [r5], [r5+8]

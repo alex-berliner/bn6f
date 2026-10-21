@@ -1265,16 +1265,16 @@ loc_80898E4:
 	pop {r4-r7,pc}
 	thumb_func_end battleObject_beastModeAiPhaseInit_80898B2
 
-// symdb: Per-frame chip-lockout handler: decrements AIData+0x18 via battle_tickChipLockout_8089CB4; if the timer has not expired it returns 1 immediately, else calls sub_8142BFA, writes 0x40 to [r5] and returns 1.
+// symdb: Per-frame chip-lockout handler: decrements AIData+0x18 via battle_tickChipLockout_8089CB4; if the timer has not expired it returns 1 immediately, else calls ow_markAdjacentNavicust, writes 0x40 to [r5] and returns 1.
 // symdb: (r5 = some battle/AI struct pointer, set by caller) -> r0 = 1 always; calls
-// symdb: battle_tickChipLockout_8089CB4 and sub_8142BFA
+// symdb: battle_tickChipLockout_8089CB4 and ow_markAdjacentNavicust
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_processChipLockout.yaml
 	thumb_local_start
 battle_processChipLockout:
 	push {r4-r7,lr}
 	bl battle_tickChipLockout_8089CB4
 	beq loc_80898F8
-	bl sub_8142BFA
+	bl ow_markAdjacentNavicust
 	mov r0, #0x40 
 	strb r0, [r5]
 loc_80898F8:

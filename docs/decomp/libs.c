@@ -810,7 +810,7 @@ int rfu_clearConnectionInfo()
 
 
 // 0x8144e70
-int __fastcall sub_8144E70(int a1)
+int __fastcall rfu_initConnState(int a1)
 {
     int v1; // r4
     int v3; // [sp+4h] [bp-4h]
@@ -2346,7 +2346,7 @@ BOOL rfu_isNotConnected()
 
 
 // 0x8146588
-signed int sub_8146588()
+signed int rfu_initLinkSessionStateVars()
 {
     signed int result; // r0
 
@@ -2493,7 +2493,7 @@ int populateLookupEntriesFromStaging()
 
 
 // 0x81467a0
-int sub_81467A0()
+int rfu_refreshPeerBuffers()
 {
     _BYTE *v0; // r7
     _BYTE *v1; // r6
@@ -3479,7 +3479,7 @@ int __fastcall rfu_connectionStateUpdate(unsigned __int16 *a1)
     switch ( word_200BC58 )
     {
         case 1:
-            sub_8144E70(&unk_2010350);
+            rfu_initConnState(&unk_2010350);
             v2 = 2;
             goto LABEL_27;
         case 3:
@@ -4126,7 +4126,7 @@ int __fastcall sub_8148234(unsigned __int16 *a1)
     switch ( word_200BC58 )
     {
         case 1:
-            sub_8144E70(&unk_2010350);
+            rfu_initConnState(&unk_2010350);
             word_200BC58 = 2;
             return v6;
         case 5:

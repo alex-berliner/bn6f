@@ -13449,7 +13449,7 @@ int sub_8118550()
     v0[12] = 0;
     sub_8002C7A(10);
     sprite_zeroColorShader();
-    sub_811870C();
+    sprite_computeTileOffsets();
     battleObject_setPaletteFromOffsetTable_81185E4();
     return battle_beastSpBuildSpriteMaskFromFlagTable();
 }
@@ -13627,7 +13627,7 @@ signed int battle_beastOutScrollStep()
 
 
 // 0x811870c
-int sub_811870C()
+int sprite_computeTileOffsets()
 {
     int v0; // r6
     unsigned int v1; // r0
@@ -20950,7 +20950,7 @@ int sound_applyBiasWithSpriteFade()
 
 
 // 0x811e914
-int sub_811E914()
+int object_initKind23Variant()
 {
     int v0; // r5
 

@@ -1993,9 +1993,9 @@ dword_8144E6C:
 
 // symdb: Initializes the RFU link connection state struct (eStruct200FE00) for a target, clearing it then copying over slot/role fields from a caller-supplied struct.
 // symdb: (r0 = targetStruct ptr) -> r0 = 2; clobbers r1,r2
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8144E70.yaml
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initConnState.yaml
 	thumb_local_start
-sub_8144E70:
+rfu_initConnState:
 	push {r4,lr}
 	mov r4, r0
 	bl rfu_clearConnState
@@ -2022,7 +2022,7 @@ loc_8144E98:
 	.balign 4, 0
 off_8144EA0:
 	.word eStruct200FE00
-	thumb_func_end sub_8144E70
+	thumb_func_end rfu_initConnState
 
 // symdb: Clears the RFU link-connection state struct eStruct200FE00, resetting connection state fields and slot tables.
 // symdb: () -> void; clobbers r0-r5, lr
@@ -5228,9 +5228,9 @@ loc_8146582:
 
 // symdb: Initializes RFU link-session state variables in EWRAM to defaults before rfu_initLinkSession is called.
 // symdb: () -> void
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_8146588.yaml
-	thumb_func_start sub_8146588
-sub_8146588:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_initLinkSessionStateVars.yaml
+	thumb_func_start rfu_initLinkSessionStateVars
+rfu_initLinkSessionStateVars:
 	ldr r1, off_81465A8 // =byte_200FE80 
 	mov r0, #0
 	strb r0, [r1]
@@ -5257,7 +5257,7 @@ off_81465B4:
 	.word byte_2010164
 off_81465B8:
 	.word word_200FE50
-	thumb_func_end sub_8146588
+	thumb_func_end rfu_initLinkSessionStateVars
 
 // symdb: Initializes the wireless adapter (rfu) API on a fixed work buffer, installs its timer interrupt, tears down any current link, and resets the eLink state block for a new link session.
 // symdb: (no args) -> r0 = 1 if rfu_initializeAPI succeeded (returned 0), else 0; calls
@@ -5567,9 +5567,9 @@ off_814679C:
 // symdb: Per-frame: refreshes the per-RFU-peer 13-byte buffer at unk_20098B0 and 8-byte buffer at unk_2009750 for every peer recorded in byte_2010288, bumping the counter at byte_2009470.
 // symdb: () -> void; reads byte_2010288 as peer count, writes unk_20098B0 (16-byte stride), unk_2009750
 // symdb: (8-byte stride), and byte_2009470
-// symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_81467A0.yaml
-	thumb_func_start sub_81467A0
-sub_81467A0:
+// symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_refreshPeerBuffers.yaml
+	thumb_func_start rfu_refreshPeerBuffers
+rfu_refreshPeerBuffers:
 	push {r4-r7,lr}
 	ldr r7, off_81467F8 // =unk_20098B0 
 	ldr r6, off_81467FC // =unk_2009750 
@@ -5619,7 +5619,7 @@ off_8146800:
 	.word byte_2009470
 off_8146804:
 	.word byte_2010288
-	thumb_func_end sub_81467A0
+	thumb_func_end rfu_refreshPeerBuffers
 
 // symdb: Searches the wireless peer list for the entry whose 13-byte record matches the record selected from unk_20098B0, returning its slot index or 4 if none matches.
 // symdb: (r0 = record index into unk_20098B0, stride 16) -> r0 = matching slot index, or 4 when no peer
@@ -7716,7 +7716,7 @@ jpt_814762C:
 	.word loc_814781E
 loc_8147748:
 	ldr r0, off_8147754 // =unk_2010350 
-	bl sub_8144E70
+	bl rfu_initConnState
 	ldr r1, off_8147758 // =eS200BC50 
 	mov r0, #2
 	b loc_8147828
@@ -9283,7 +9283,7 @@ jpt_814825A:
 	.word def_814825A
 loc_8148368:
 	ldr r0, off_8148378 // =unk_2010350 
-	bl sub_8144E70
+	bl rfu_initConnState
 	ldr r1, off_814837C // =eS200BC50 
 	mov r0, #2
 	strh r0, [r1,#0x8] // (word_200BC58 - 0x200bc50)

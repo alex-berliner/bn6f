@@ -8022,7 +8022,7 @@ int __fastcall rfu_initLinkSessionState(int a1)
     int result; // r0
 
     sprite_drawIfFlagSet_812B504();
-    sub_8146588();
+    rfu_initLinkSessionStateVars();
     if ( eStruct200BC30_getJumpOffset00() != 8 )
     {
         chatbox_expandWordTable();
