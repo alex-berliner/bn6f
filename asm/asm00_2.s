@@ -32074,7 +32074,7 @@ sub_801DE1E:
 	thumb_func_end sub_801DE1E
 
 // symdb: Queues a small GFX upload, draws an 18x2 run of background tiles from a static tile list, and sets bit 0x20 in the eStruct2035280 flag word.
-// symdb: () -> void; touches IWRAM GFX queue buffer iGfxTransferBuffer, BG tile VRAM via CopyBackgroundTiles,
+// symdb: () -> void; touches IWRAM GFX queue buffer unk_3001A80, BG tile VRAM via CopyBackgroundTiles,
 // symdb: and flag word eStruct2035280+0x44
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadOverlayTiles.yaml
 	thumb_local_start

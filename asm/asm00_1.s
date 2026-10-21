@@ -7287,9 +7287,9 @@ off_8006510:
 	.word sub_8006580+1
 	thumb_func_end fade_tick_80064BE
 
-// symdb: Per-frame step of an entity's palette color cycle: looks up the cycle entry from byte_80065BC using [r5+0xd], calls sub_8002378 to write palette slots 0x14 and 0x15 (with arg from [r5+0x10] and [r5+0x14]), raises the 0x40 update flag in eRenderDirtyFlags, increments [r5+0xd] modulo 16, and dirties renderInfo halfwords +6/+8/+0xa while storing a replicated-nibble color derived from [r5+6] into renderInfo+2.
+// symdb: Per-frame step of an entity's palette color cycle: looks up the cycle entry from byte_80065BC using [r5+0xd], calls sub_8002378 to write palette slots 0x14 and 0x15 (with arg from [r5+0x10] and [r5+0x14]), raises the 0x40 update flag in dword_20096D0, increments [r5+0xd] modulo 16, and dirties renderInfo halfwords +6/+8/+0xa while storing a replicated-nibble color derived from [r5+6] into renderInfo+2.
 // symdb: (r5 = effect/entity struct; no args in r0-r3) -> r0 = 0 after palette calls; writes palette
-// symdb: slots 0x14/0x15 via sub_8002378, eRenderDirtyFlags = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
+// symdb: slots 0x14/0x15 via sub_8002378, dword_20096D0 = 0x40, renderInfo +6/+8/+0xA |= 0x40, renderInfo
 // symdb: +2 = color from [r5+6]>>4
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/e_stepColorCycle.yaml
 	thumb_local_start
@@ -19240,7 +19240,7 @@ off_800B440:
 	.word 0x3C4
 	thumb_func_end sub_800B428
 
-// symdb: Restores the battle result records from the received link payloads: 12 bytes byte_203F4A4 -> unk_2035260 and eBattleLinkPacketEnemy -> unk_203526C, then runs battle_syncEffectSlotBetweenBuffers_802C9EA.
+// symdb: Restores the battle result records from the received link payloads: 12 bytes byte_203F4A4 -> unk_2035260 and byte_203F5A4 -> unk_203526C, then runs battle_syncEffectSlotBetweenBuffers_802C9EA.
 // symdb: void sub_800B444(void)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_800B444.yaml
 	thumb_local_start
@@ -19271,7 +19271,7 @@ battle_resetLinkSyncFlags_800B460:
 	mov pc, lr
 	thumb_func_end battle_resetLinkSyncFlags_800B460
 
-// symdb: Returns TRUE only if both tracked id slots (battleLinkTransferBuffer and dword_203F5A0) hold the given id, else FALSE.
+// symdb: Returns TRUE only if both tracked id slots (dword_203F4A0 and dword_203F5A0) hold the given id, else FALSE.
 // symdb: bool battle_doBothTrackedIdsMatch(u32 id); // in: r0=id, lr; out: r0=TRUE(1)/FALSE(0),
 // symdb: r1=tracked id A, r2=tracked id B, r3=id (echoed); c/v set from last compare, nz clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/battle_doBothTrackedIdsMatch_800B46C.yaml
@@ -19391,8 +19391,8 @@ locret_800B50C:
 	pop {pc}
 	thumb_func_end battle_findActorSlotOffset
 
-// symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from eBattleLinkPacketEnemy when GetBattleEffects has bit 0x8 set.
-// symdb: () -> void; reads byte_203F4A4 (and eBattleLinkPacketEnemy), writes entry+0x44 (word) and entry+0xE (byte)
+// symdb: Loads the primary RNG seed word and a related seed byte from byte_203F4A4 into unk_2036120 entry 0's +0x44/+0xE fields (via sub_800B548), and conditionally does the same for entry 1 from byte_203F5A4 when GetBattleEffects has bit 0x8 set.
+// symdb: () -> void; reads byte_203F4A4 (and byte_203F5A4), writes entry+0x44 (word) and entry+0xE (byte)
 // symdb: of unk_2036120 records 0/1
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_loadBattlerSeed.yaml
 	thumb_local_start

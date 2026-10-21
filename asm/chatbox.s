@@ -5293,7 +5293,7 @@ chatbox_8042124:
 // symdb: void chatbox_pushTextLevel(u32 arg1 /* r1 */, u32 arg2 /* r2 */, u32 arg3 /* r3 */, const u8*
 // symdb: cmdWord /* r4, points at a 4-byte chatbox text command */, struct Chatbox* chat /* r5 */); -> r0
 // symdb: = 1 (always), r1 = historySlotOffset (0x140 + (depth-1)*4), r2 = 4 (mul scratch left in place),
-// symdb: r4 = per-slot text buffer base (chatboxTextSlots + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
+// symdb: r4 = per-slot text buffer base (byte_200AFA0 + slot*64); NZ from r0=1, C/V cleared; r5, r10, lr
 // symdb: clobbered.
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/chatbox_pushTextLevel_8042128.yaml
 	thumb_local_start

@@ -13767,7 +13767,7 @@ byte_81366C8:
 	.byte 0x7A, 0x7B, 0x7C, 0x7D, 0x7E, 0x7F, 0x0, 0x0
 	thumb_func_end sprite_writeBeastOutOamAttr0
 
-// symdb: Registers a battle object's ID into a 6-slot unique-ID list at eBattleState_TrackedObjectTags if not already present.
+// symdb: Registers a battle object's ID into a 6-slot unique-ID list at unk_2022B70 if not already present.
 // symdb: (r5 = current object ptr, reads [r5+0x18] as object index) -> r0 = descriptor byte 3 (leftover,
 // symdb: not a real return); no flags meaningful
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_trackObjectIdInList.yaml
@@ -13803,9 +13803,9 @@ sub_81366F4:
 	b loc_8136712
 	thumb_func_end sub_81366F4
 
-// symdb: Removes a battle object's tag byte (descriptor byte +3) from the 6-slot list at eBattleState_TrackedObjectTags by shifting later entries left, unless another object in the first N entries of the 2004190 array shares the same tag.
+// symdb: Removes a battle object's tag byte (descriptor byte +3) from the 6-slot list at unk_2022B70 by shifting later entries left, unless another object in the first N entries of the 2004190 array shares the same tag.
 // symdb: (r5 = battle object/holder with halfwords at +0x28 and +0x2c) -> r0 = destroyed; touches
-// symdb: eBattleState_TrackedObjectTags[0..6]
+// symdb: unk_2022B70[0..6]
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/battle_removeObjectTagFromList.yaml
 	thumb_local_start
 battle_removeObjectTagFromList:

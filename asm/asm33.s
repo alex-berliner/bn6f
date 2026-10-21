@@ -8249,7 +8249,7 @@ sub_8127060:
 	.byte 0, 0
 	thumb_func_end sub_8127060
 
-// symdb: Initialize the eDecompInitRefsBuffer dispatch table and the text-script/decompression tables used by the title-screen flow.
+// symdb: Initialize the unk_20096E0 dispatch table and the text-script/decompression tables used by the title-screen flow.
 // symdb: void initTitleScreens_81270D0(void); // inputs: r10, lr; outputs: r5, r7; clobbers: nzcv, r0-r3,
 // symdb: lr; preserved: r4-r7
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/initTitleScreens_81270D0.yaml

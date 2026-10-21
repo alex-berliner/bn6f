@@ -190,7 +190,7 @@ off_801FF08:
 	.word sub_801FF18+1
 	thumb_func_end eStruct200BC30_dispatchStateHandler_801FEEE
 
-// symdb: Battle link-transfer builder (mode 2): packs each connected player's input record into the transfer buffers battleLinkTransferBuffer / dword_203F5A0, and when no link is connected drains one word of dword_203CBE0 per frame into slot eStruct2036780+8, counting down — the no-link loopback that carries the battle seed.
+// symdb: Battle link-transfer builder (mode 2): packs each connected player's input record into the transfer buffers dword_203F4A0 / dword_203F5A0, and when no link is connected drains one word of dword_203CBE0 per frame into slot eStruct2036780+8, counting down — the no-link loopback that carries the battle seed.
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/sub_801FF18.yaml
 	thumb_local_start
 sub_801FF18:

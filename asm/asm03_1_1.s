@@ -14794,7 +14794,7 @@ off_803FAB0:
 	.word EXE6_InfoText_timestamp
 	thumb_func_end sub_803FA42
 
-// symdb: Backs up the 0x80-byte save block at eSaveWorkBuffer into the game pak backup area, retrying up to three times, and returns 1 if any attempt verified successfully.
+// symdb: Backs up the 0x80-byte save block at dword_20067C0 into the game pak backup area, retrying up to three times, and returns 1 if any attempt verified successfully.
 // symdb: bool sub_803FAB4(void); returns r0 = 1 if at least one of three attempts copied and verified, r0
 // symdb: = 0 if all three failed; r4-r7 and NZ flags (on r0) are the observable outputs; clobbers r0-r3
 // symdb: and lr
@@ -14832,7 +14832,7 @@ loc_803FAEA:
 	pop {r4-r7,pc}
 	thumb_func_end save_BackupToGamePakWithRetry_803FAB4
 
-// symdb: Fills the 0x80-byte buffer at eSaveWorkBuffer with 32 random 32-bit words from the hardware RNG.
+// symdb: Fills the 0x80-byte buffer at dword_20067C0 with 32 random 32-bit words from the hardware RNG.
 // symdb: void sub_803FAEE(void)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/rng_FillSeedBuffer_803FAEE.yaml
 	thumb_local_start
@@ -14850,7 +14850,7 @@ loc_803FAF6:
 	pop {r4-r7,pc}
 	thumb_func_end rng_FillSeedBuffer_803FAEE
 
-// symdb: Writes the caller's value into the save work buffer at eSaveWorkBuffer and flushes the 0x80-byte buffer to the Game Pak save area at 0xE007F80.
+// symdb: Writes the caller's value into the save work buffer at dword_20067C0 and flushes the 0x80-byte buffer to the Game Pak save area at 0xE007F80.
 // symdb: void save_CommitWorkBufferToGamePak_803FB04(u32 value /* r0, stored as first word of the save
 // symdb: block */); all registers r0-r7 preserved (push {r0-r7,lr} / pop {r0-r7,pc}); flags clobbered
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/save_CommitWorkBufferToGamePak_803FB04.yaml

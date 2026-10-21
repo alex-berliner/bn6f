@@ -4201,7 +4201,7 @@ gfx_flushDataListAndContinue_802811C:
 	pop {pc}
 	thumb_func_end gfx_flushDataListAndContinue_802811C
 
-// symdb: Queues the tile graphics of an indexed 0x80-byte record for VRAM transfer, split into two 0x40-byte halves at 0x060170E0/0x06017160, plus a linked 0x20-byte chunk to IWRAM at gfxIWRAMTransferBuffer.
+// symdb: Queues the tile graphics of an indexed 0x80-byte record for VRAM transfer, split into two 0x40-byte halves at 0x060170E0/0x06017160, plus a linked 0x20-byte chunk to IWRAM at byte_30016B0.
 // symdb: void gfx_queueIndexedRecordTiles(u32 recordIndex /* r0 */); preserves r4-r7, clobbers flags and
 // symdb: r0-r3/lr
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/gfx_queueIndexedRecordTiles_802812C.yaml

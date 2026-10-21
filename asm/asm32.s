@@ -35365,7 +35365,7 @@ mapName_runSequence_811EC50:
 	pop {pc}
 	thumb_func_end mapName_runSequence_811EC50
 
-// symdb: Builds the per-frame GFX transfer list in the staging buffer at eDecompInitRefsBuffer (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
+// symdb: Builds the per-frame GFX transfer list in the staging buffer at unk_20096E0 (packing two source-table entries via sub_811FB84, then appending the trailing off_811ECB4 table verbatim) and submits it via QueueGFXTransfersInList.
 // symdb: void sub_811EC68(void /* uses r10/lr as inputs per lifter, no meaningful args */)
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/queueGFXTransfersFromTable_811EC68.yaml
 	thumb_local_start

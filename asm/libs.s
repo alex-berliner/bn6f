@@ -4787,7 +4787,7 @@ dword_81462D4:
 	thumb_func_end rfu_disconnectSlots
 
 // symdb: Wireless link maintenance: toggles per-peer send-target bits and stops receiving from peers whose local counters exceed the global timeout counter in eStruct200FE00
-// symdb: () -> r0 = destroyed; touches rfu peer table rfuConnectionSlots[4] and eStruct200FE00
+// symdb: () -> r0 = destroyed; touches rfu peer table dword_2010CB0[4] and eStruct200FE00
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_updateSendRecvTargets.yaml
 	thumb_local_start
 rfu_updateSendRecvTargets:
@@ -5194,8 +5194,8 @@ def_8146518:
 	.balign 4, 0
 	thumb_func_end sub_81464FC
 
-// symdb: Returns 1 while the RFU connection state halfword (rfu_connectionState) is not 3, and 0 once it reaches 3.
-// symdb: () -> r0 = 0 if rfu_connectionState == 3 (connected), else 1; flags set by the cmp
+// symdb: Returns 1 while the RFU connection state halfword (word_20102D0) is not 3, and 0 once it reaches 3.
+// symdb: () -> r0 = 0 if word_20102D0 == 3 (connected), else 1; flags set by the cmp
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_isNotConnected.yaml
 	thumb_func_start rfu_isNotConnected
 rfu_isNotConnected:
@@ -6981,7 +6981,7 @@ off_81471D4:
 	.word byte_2010328
 	thumb_func_end sub_814713C
 
-// symdb: RFU wrapper that issues a 3-byte-offset sendData via rfu_NI_setSendData; on success stores 4 (pending) at [r0], sets 0x80 in word_200BC58, writes 0x83 to uniConnectionState; on failure stores 2 and the result code at [r0+2].
+// symdb: RFU wrapper that issues a 3-byte-offset sendData via rfu_NI_setSendData; on success stores 4 (pending) at [r0], sets 0x80 in word_200BC58, writes 0x83 to byte_20101B4; on failure stores 2 and the result code at [r0+2].
 // symdb: (r0 = status struct ptr, r1 = payload byte/count base (sent as r1+3 to setSendData)) -> r0 = 0;
 // symdb: writes status byte [r0] (4 = busy/sent, 2 = failed) and byte [r0+2] = result code
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_requestSendData.yaml
@@ -8128,7 +8128,7 @@ dword_8147A80:
 
 // symdb: Checks one wireless link slot for a disconnect state (0x26/0x27), releases the RFU slot and updates the connection/error flags.
 // symdb: () -> void; reads slot id byte_2010328, global flag byte_201028C (bit1 = link active), link
-// symdb: array rfuConnectionSlots; writes byte_201028C, error byte_2010340, eS200BC50+8
+// symdb: array dword_2010CB0; writes byte_201028C, error byte_2010340, eS200BC50+8
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_pollSlotDisconnect.yaml
 	thumb_local_start
 rfu_pollSlotDisconnect:
@@ -8588,9 +8588,9 @@ off_8147E40:
 	.word eS200BC50
 	thumb_func_end sub_8147DE0
 
-// symdb: Calls rfu_NI_setSendData to queue a packet (size=r1+2, from byte_2010390) to the linked peer; on rejection writes 2 to *r0, and if the peer's state word at eS200BC50+8 is 0x31 writes 4; sets uniConnectionState=0x83.
+// symdb: Calls rfu_NI_setSendData to queue a packet (size=r1+2, from byte_2010390) to the linked peer; on rejection writes 2 to *r0, and if the peer's state word at eS200BC50+8 is 0x31 writes 4; sets byte_20101B4=0x83.
 // symdb: (r0 = status out ptr (u8*), r1 = size base) -> *r0 = 2 if send rejected, 4 if peer state ==
-// symdb: 0x31, else unchanged; uniConnectionState = 0x83 on queued send; returns void
+// symdb: 0x31, else unchanged; byte_20101B4 = 0x83 on queued send; returns void
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_niSendPacket.yaml
 	thumb_local_start
 rfu_niSendPacket:
@@ -10307,7 +10307,7 @@ off_8148BC8:
 
 // symdb: Wireless link watchdog: per active peer slot, compares current received value to last seen, tallies match/increment/decrement/other into per-slot counters, stores new value, and once all masked peers have reported, either sets connection state to 1, transitions to 0x83, or increments a mismatch counter.
 // symdb: () -> void; writes per-slot change counters (word_2010400/2010410/2010420/2010428), byte_20101B0
-// symdb: change flags, and state byte uniConnectionState (=1 or 0x83 on transition)
+// symdb: change flags, and state byte byte_20101B4 (=1 or 0x83 on transition)
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_uniPollPeerValueChanges.yaml
 	thumb_local_start
 rfu_uniPollPeerValueChanges:
@@ -10984,7 +10984,7 @@ off_8149128:
 	.word eS200BC50
 	thumb_func_end sub_8148FC0
 
-// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from rfuSlotId) ready for unidirectional send, then sets a state via sub_8144DB0(1).
+// symdb: Checks a wireless-communication flag and, when set, marks the UNI send buffer (id read from byte_20103E0) ready for unidirectional send, then sets a state via sub_8144DB0(1).
 // symdb: () -> r0 = result of sub_8144DB0(1); no meaningful input
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/rfu_readyUniSendIfFlagged.yaml
 	thumb_local_start
