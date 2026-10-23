@@ -117845,7 +117845,7 @@ off_80EC03C:
 	.word ai_attackCleanupWait+1
 	thumb_func_end sub_80EC02A
 
-// symdb: Enemy AI front-step strike: on first call spawns a t1 subtype-5 step object on the front panel, adds AttackBoost to Damage, spawns a 0x1B strike effect (sub_80CEAA2 or battle_spawnType1BStrike at difficulty 1) into RelatedObject1Ptr, arms a 30-frame timer, and advances AttackElement to 4. On later calls, marks HitElement=4 once the spawned object is cleared.
+// symdb: Enemy AI front-step strike: on first call spawns a t1 subtype-5 step object on the front panel, adds AttackBoost to Damage, spawns a 0x1B strike effect (sub_80CEAA2 or sub_80E85FA at difficulty 1) into RelatedObject1Ptr, arms a 30-frame timer, and advances AttackElement to 4. On later calls, marks HitElement=4 once the spawned object is cleared.
 // symdb: (r5 = battle object via working register, r7 = AI attack vars block) -> r0 = clobbered; no
 // symdb: meaningful return
 // symdb: probable; evidence and how to reproduce it: recomp symbols/db/ai_enemyFrontStepStrike.yaml
