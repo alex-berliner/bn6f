@@ -507,6 +507,8 @@ CompText87618C0::
 // symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CompText876210C.yaml
 CompText876210C::
 	.incbin "data/textscript/compressed/CompText876210C.s.lz"
+// symdb: Graveyard's text scripts; scripts 0x76/0x77 are the "mark of S" door: it opens (EVENT_83 cleared) only with exactly 200 standard chips in the library.
+// symdb: confirmed; evidence and how to reproduce it: recomp symbols/db/CompText8762434.yaml
 CompText8762434::
 	.incbin "data/textscript/compressed/CompText8762434.s.lz"
 CompText8762F98::
