@@ -11791,14 +11791,32 @@ off_804CD30:
 	.word off_804CD34
 off_804CD34:
 	.word battle_initBeastspBackground+1, battle_initBeastspBgRenderLayer3+1
-	.byte 0xF0
 
-unk_804CD3D:
-	.word 0xA14654B5, 0x47880868, 0x0843904A, 0x48481F80, 0x24465481, 0x2020086A, 0xF0E03C70
-	.byte 0xBD
-	.byte 0x00
-	.byte 0x00
 	thumb_func_end battleObject_runCurAnimHandler_804CD20
+
+// Previously disassembled as data bytes (sub_804CD3C+1); referenced only as
+// ptr5 of ms_init_eStruct200a6a0 in map-script data (unaligned pointers in
+// the ROM). Clears RenderInfo flag 0x800, sets RenderInfo+0xA = 0x1F0B and
+// Unk2009740[0] = 8, then jumps to the pop in battle_initBeastspBgRenderLayer3.
+	thumb_local_start
+sub_804CD3C:
+	push {r4-r7,lr}
+	mov r4, r10
+	ldr r1, [r4,#oToolkit_RenderInfoPtr]
+	ldrh r0, [r1]
+	ldr r2, dword_804CE64 // =0x800
+	bic r0, r2
+	strh r0, [r1]
+	ldr r0, dword_804CDC8 // =0x1f0b
+	strh r0, [r1,#0xa]
+	mov r4, r10
+	ldr r4, [r4,#oToolkit_Unk2009740_Ptr]
+	mov r0, #8
+	strb r0, [r4]
+	b locret_804CDD2
+	pop {r4-r7,pc}
+	.balign 4, 0
+	thumb_func_end sub_804CD3C
 
 // symdb: Initializes a static battle background: uploads its tiles and palette, resets scroll/render state, and renders the BG layer-3 tile map.
 // symdb: () -> void; no meaningful return, clobbers r4-r7
@@ -11854,7 +11872,9 @@ off_804CDBC:
 off_804CDC0:
 	.word byte_3001B00
 byte_804CDC4:
-	.byte 0x9, 0x1F, 0x0, 0x0, 0xB, 0x1F, 0x0, 0x0
+	.byte 0x9, 0x1F, 0x0, 0x0
+dword_804CDC8:
+	.byte 0xB, 0x1F, 0x0, 0x0
 	thumb_func_end battle_initBeastspBackground
 
 // symdb: Thin wrapper that renders the battle background's BG layer-3 tile map and handles its story-flag event during beastsp background init.
@@ -11864,6 +11884,7 @@ byte_804CDC4:
 battle_initBeastspBgRenderLayer3:
 	push {r4-r7,lr}
 	bl battle_renderBgLayer3TilesAndHandleEvent_804CDD4
+locret_804CDD2:
 	pop {r4-r7,pc}
 	thumb_func_end battle_initBeastspBgRenderLayer3
 
